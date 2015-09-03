@@ -3,9 +3,8 @@
 #import "../lib/common.js"
 #import "../lib/provider.js"
 
-function testAll() {
+function testProviderAll() {
 	var ok = login("000","000000");
-	UIALogger.logMessage("login ok="+ok);
 	if(ok) {
 		run("testProviderRepeat");
 		//testTapMenu();
