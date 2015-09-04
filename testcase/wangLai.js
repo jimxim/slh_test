@@ -3,13 +3,8 @@
 #import "../lib/common.js"
 #import "../lib/provider.js"
 
-function testProviderAll() {
-	var ok = login("000","000000");
-	if(ok) {
-		run("testProviderRepeat");
-		//testTapMenu();
-		logout();
-	}
+function testWanLaiAll() {
+	run("testProviderRepeat");
 }
 
 //一个测试用例，需要先定义用例名，最后返回布尔结果
