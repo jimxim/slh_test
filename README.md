@@ -1,14 +1,9 @@
 # slh_test
 商陆花批发版UIAutomation项目
 
-//一个测试用例，需要先定义用例名，最后返回布尔结果
-function testXxx() {
-	caseName = "用例名称。。。";
-	//。。。
-	return exp of true or false;
-}
+设计原则1 尽量把注释写成代码
 
-DTObj=Dongling Test Object 通用测试对象，含单选，多选，文本框等
+DTElement=Dongling Test Element 通用测试元素，含单选，多选，文本框等
 
 关键字 英文/拼音--中文对照
 wangLai--往来
