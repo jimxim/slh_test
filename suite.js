@@ -15,12 +15,10 @@ function test000All() {
 	//debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
-//		testParamAll();
-		
-//		testWanLaiAll();
-		testGoodsAll();
+//		testParamAll();	
+		testWanLaiAll();
+//		testGoodsAll();
 //		logout();
-		
 //	}
 }
 

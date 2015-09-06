@@ -2,7 +2,8 @@
 
 
 function testWanLaiAll() {
-	run("厂商测试名称或手机重复", "testProviderRepeat");
+	//run("厂商测试名称或手机重复", "testProviderRepeat");
+	run("输入客户查询客户", "testQueryCustomer");
 }
 
 function testProviderRepeat() {
@@ -16,4 +17,14 @@ function testProviderRepeat() {
 	}
 	addProvider(name,mobile,address,price) ;
 	return isIn("重复", alertMsg);
+}
+
+function testQueryCustomer() {
+	tapMenu("往来管理","客户查询");
+	setTextFieldValue(window, 0, "a");
+	tap(window.tableViews()[1].visibleCells()[0]);
+	tapButton(window, QUERY);
+	var texts = getStaticTexts(getView());
+	var ret = existsInTexts("Qaq", texts);
+	return ret;
 }
