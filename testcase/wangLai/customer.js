@@ -7,7 +7,7 @@ function testWanLaiCustomerAll() {
 	// run("输入类别查询客户", "testQueryCustomerByType");
 	// run("查询客户是否停用", "testQueryCustomerByStop");
 	// run("输入店员查询客户", "testQueryCustomerByStaff");
-	 run("查询客户清除按钮", "testQueryCustomerClear");
+//	 run("查询客户清除按钮", "testQueryCustomerClear");
 
 	// run("查询客户翻页", "testQueryCustomerNextPage");
 	// run("查询客户跳转修改", "testQueryCustomerToEdit");
@@ -15,6 +15,7 @@ function testWanLaiCustomerAll() {
 	// run("客户启用", "testCustomerSart");
 	// run("客户消费明细", "testCustomerConsumeDetail");
 //	run("客户修改保存", "testCustomerEdit");
+	run("客户新增保存", "testCustomerAdd");
 }
 
 function queryCustomerFields() {
