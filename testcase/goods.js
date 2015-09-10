@@ -37,7 +37,7 @@ function getCode() {
 		}
 	}
 	if (!code) {
-		UIALogger.logWarn("没能成功随机生成不存在的款号");
+		logWarn("没能成功随机生成不存在的款号");
 	}
 	return code;
 }
