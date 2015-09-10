@@ -13,6 +13,48 @@ function editCustomerField(key) {
 	case "shop":
 		e = new DTElement("门店", "sc", 1, "常青店");
 		break;
+	case "birthday":
+		e = new DTElement("生日", "tf-dt",4, "2015-09-10");
+		break;
+	case "seller":
+			e = new DTElement("店员", "tf",5, "000");
+			break;
+	case "super":
+		e = new DTElement("上级客户", "tf",6, "b");
+		break;
+	case "type":
+		e = new DTElement("客户类别", "sc",2, "零批客户");
+		break;
+	case "return":
+		e = new DTElement("允许退货", "sc",4, "是");
+		break;
+	case "inprice":
+		e = new DTElement("适用价格", "sc",5, "零批价");
+		break;
+	case "mobile":
+		e = new DTElement("手机", "tf",10, "123456789");
+		break;
+	case "weixin":
+		e = new DTElement("微信", "tf",11, "x123456");
+		break;
+	case "fax":
+		e = new DTElement("传真号", "tf",12, "55555");
+		break;
+	case "address":
+		e = new DTElement("地址", "tf",13, "地址");
+		break;
+	case "remarks":
+		e = new DTElement("备注", "tf",14, "123");
+		break;
+	case "discount":
+		e = new DTElement("拿货折扣", "tf",15, "0.9");
+		break;
+	case "creditbalance":
+		e = new DTElement("信用额度", "tf",16, "10000");
+		break;	
+	case "alarmbalance":
+		e = new DTElement("欠款报警", "tf",17, "5000");
+		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -20,8 +62,12 @@ function editCustomerField(key) {
 }
 
 function testCustomerAdd() {
-	tapMenu("往来管理", "新增客户+");
-	var fields = editCustomerFields("name","shop");
+//	tapMenu("往来管理", "新增客户+");
+//	debugElemnets(getView());
+//	debugElemnetTree(getView());
+	var fields = editCustomerFields("name","shop","birthday","seller","super",
+			"type","return","inprice","mobile","weixin","fax",
+			"address","remarks","discount","creditbalance","alarmbalance");
 	setElemnetsValue(getView(), fields);
 	
 	return true;

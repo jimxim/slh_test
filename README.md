@@ -8,7 +8,7 @@ DTElement=Dongling Test Element 通用测试元素，含单选，多选，文本
 q=query--查询
 
 关键字 英文/拼音--中文对照
-add--增加 edit--编辑/修改 tap--点击
+add--增加 edit--编辑/修改
 wangLai--往来
 provider--厂商  name--名称  mobile--手机  address--地址
 menu--菜单  testcase--用例  title--标题
@@ -17,4 +17,4 @@ code--款号  color--颜色  size--尺码
 param--设置
 customer--客户  stop--停用  type--类别 staff--店员
 consume--消费
-area--区域 shop--门店 inv--仓库
+area--区域 
