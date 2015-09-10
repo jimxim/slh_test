@@ -18,4 +18,6 @@ param--设置
 customer--客户  stop--停用  type--类别 staff--店员
 consume--消费
 area--区域 super--上级 return--退货 remarks--备注
-credit--信用 alarm--报警
+credit--信用 alarm--报警 account--账
+active--活跃
+logistics--物流

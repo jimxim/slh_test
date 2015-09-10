@@ -140,3 +140,30 @@ function queryCustomerAccountField(key) {
 	}
 	return e;
 }
+
+// 活跃
+function testQueryCustomerActiveFields() {
+	var fields = queryCustomerActiveFields("name","customer");
+	setElementsValue(window, fields);
+	
+	return true;
+}
+
+function queryCustomerActiveFields() {
+	return getDTFields("queryCustomerActiveField", arguments);
+}
+function queryCustomerActiveField(key) {
+	var e;
+	switch (key) {
+	case "name":
+		e = new DTElement("客户名称", "tf", 0, "a");
+		break;
+	case "customer":
+		e = new DTElement("客户", "tf-ac", 1, "a", 1, 0);
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
+
