@@ -7,14 +7,14 @@ function testWanLaiCustomerAll() {
 	// run("输入类别查询客户", "testQueryCustomerByType");
 	// run("查询客户是否停用", "testQueryCustomerByStop");
 	// run("输入店员查询客户", "testQueryCustomerByStaff");
-//	 run("查询客户清除按钮", "testQueryCustomerClear");
+	// run("查询客户清除按钮", "testQueryCustomerClear");
 
 	// run("查询客户翻页", "testQueryCustomerNextPage");
 	// run("查询客户跳转修改", "testQueryCustomerToEdit");
 	// run("客户停用", "testCustomerStop");
 	// run("客户启用", "testCustomerSart");
 	// run("客户消费明细", "testCustomerConsumeDetail");
-//	run("客户修改保存", "testCustomerEdit");
+	// run("客户修改保存", "testCustomerEdit");
 	run("客户新增保存", "testCustomerAdd");
 }
 
@@ -65,7 +65,46 @@ function editCustomerField(key) {
 		e = new DTElement("门店", "sc", 1, "常青店");
 		break;
 	case "birthday":
-		e = new DTElement("生日", "tf-dt",4, "1980-09-10");
+		e = new DTElement("生日", "tf-dt", 4, "1980-09-10");
+		break;
+	case "staff":
+		e = new DTElement("店员", "tf", 5, "000");
+		break;
+	case "super":
+		e = new DTElement("上级客户", "tf", 6, "b");
+		break;
+	case "type":
+		e = new DTElement("客户类别", "sc", 2, "零批客户");
+		break;
+	case "return":
+		e = new DTElement("允许退货", "sc", 4, "是");
+		break;
+	case "price":
+		e = new DTElement("适用价格", "sc", 5, "零批价");
+		break;
+	case "mobile":
+		e = new DTElement("手机", "tf", 12, "123456789");
+		break;
+	case "weixin":
+		e = new DTElement("微信", "tf", 13, "x123456");
+		break;
+	case "fax":
+		e = new DTElement("传真号", "tf", 14, "55555");
+		break;
+	case "address":
+		e = new DTElement("地址", "tf", 15, "地址");
+		break;
+	case "remarks":
+		e = new DTElement("备注", "tf", 16, "123");
+		break;
+	case "discount":
+		e = new DTElement("拿货折扣", "tf", 17, "0.9");
+		break;
+	case "credit":
+		e = new DTElement("信用额度", "tf", 18, "10000");
+		break;
+	case "alarm":
+		e = new DTElement("欠款报警", "tf", 19, "5000");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -251,12 +290,12 @@ function testCustomerConsumeDetail() {
 function testCustomerEdit() {
 	var qFields = queryCustomerFields("customer");
 	var qf = qFields[0];
-	qf.value = "xg"; //修改
+	qf.value = "xg"; // 修改
 	var texts = query(qFields);
 	var i = getFirstIndexOfTextsByTitle(texts, "序号");
 	tap(texts[i]);// 进入修改页面
-	var fields = editCustomerFields("name","shop");
-	
+	var fields = editCustomerFields("name", "shop");
+
 	var actual = "";
 	var expected = "小薛";
 
@@ -264,9 +303,13 @@ function testCustomerEdit() {
 }
 
 function testCustomerAdd() {
-	//tapMenu("往来管理", "新增客户+");
-	var fields = editCustomerFields("name","shop","birthday");
-	setElemnetsValue(getView(), fields);
-	
+	// tapMenu("往来管理", "新增客户+");
+	var fields = editCustomerFields("name", "shop", "birthday", "staff",
+			"super", "type", "return", "price", "mobile", "weixin", "fax",
+			"address", "remarks", "discount", "credit", "alarm");
+	setElementsValue(getView(), fields);
+//	debugElementTree(getView());
+	debugElements(getView());
+
 	return true;
 }

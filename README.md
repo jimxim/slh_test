@@ -17,4 +17,5 @@ code--款号  color--颜色  size--尺码
 param--设置
 customer--客户  stop--停用  type--类别 staff--店员
 consume--消费
-area--区域 
+area--区域 super--上级 return--退货 remarks--备注
+credit--信用 alarm--报警

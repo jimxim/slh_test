@@ -25,7 +25,7 @@ function test000All() {
 //	}
 }
 
-function debugElemnets() {
+function debugElements() {
 	//debugAddGoods();
 	debugGlobalParamPopValue();
 }
