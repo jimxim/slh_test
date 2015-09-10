@@ -7,7 +7,7 @@
 #import "lib/param.js"
 
 #import "testcase/wangLai/customer.js"
-#import "testcase/wangLai/customerFields.js"
+//#import "testcase/wangLai/customerFields.js"
 #import "testcase/wangLai/provider.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"

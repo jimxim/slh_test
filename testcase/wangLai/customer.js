@@ -21,40 +21,7 @@ function testWanLaiCustomerAll() {
 function queryCustomerFields() {
 	tapMenu("往来管理", "客户查询");
 	return getDTFields("queryCustomerField", arguments);
-	/*
-	var qFields = [];
-	for (var i = 0; i < arguments.length; i++) {
-		var key = arguments[i];
-		var e;
-		switch (key) {
-		case "customer":
-			e = new DTElement("客户", "tf-ac", 0, "a", 1, 0);
-			break;
-		case "name":
-			e = new DTElement("名称", "tf", 1, "a");
-			break;
-		case "mobile":
-			e = new DTElement("手机", "tf", 2, "13312344321");
-			break;
-		case "stop":
-			e = new DTElement("是否停用", "tf-sc", 3, "是");
-			break;
-		case "type":
-			e = new DTElement("类别", "tf-sc", 4, "零批客户");
-			break;
-		case "staff":
-			e = new DTElement("店员", "tf-ac", 5, "000", 1, 0);
-			break;
-		default:
-			logWarn("未知key＝" + key);
-		}
-		qFields.push(e);
-	}
-
-	return qFields;
-	*/
 }
-
 function queryCustomerField(key) {
 	var e;
 	switch (key) {
@@ -75,6 +42,30 @@ function queryCustomerField(key) {
 		break;
 	case "staff":
 		e = new DTElement("店员", "tf-ac", 5, "000", 1, 0);
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
+
+function editCustomerFields() {
+	return getDTFields("editCustomerField", arguments);
+}
+function editCustomerField(key) {
+	var e;
+	switch (key) {
+	case "name":
+		e = new DTElement("名称", "tf", 1, "a");
+		break;
+	case "area":
+		e = new DTElement("区域", "sc", 0, "供应商");
+		break;
+	case "shop":
+		e = new DTElement("门店", "sc", 1, "常青店");
+		break;
+	case "birthday":
+		e = new DTElement("生日", "tf-dt",4, "1980-09-10");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -260,14 +251,22 @@ function testCustomerConsumeDetail() {
 function testCustomerEdit() {
 	var qFields = queryCustomerFields("customer");
 	var qf = qFields[0];
-	qf.value = "xg";
+	qf.value = "xg"; //修改
 	var texts = query(qFields);
 	var i = getFirstIndexOfTextsByTitle(texts, "序号");
 	tap(texts[i]);// 进入修改页面
-	debugElemnets(getView());
-
+	var fields = editCustomerFields("name","shop");
+	
 	var actual = "";
 	var expected = "小薛";
 
 	return (actual == expected);
+}
+
+function testCustomerAdd() {
+	//tapMenu("往来管理", "新增客户+");
+	var fields = editCustomerFields("name","shop","birthday");
+	setElemnetsValue(getView(), fields);
+	
+	return true;
 }
