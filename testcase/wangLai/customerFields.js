@@ -72,3 +72,79 @@ function testCustomerAdd() {
 	
 	return true;
 }
+
+function testQueryCustomerShopAccountFields() {
+	var fields = queryCustomerShopAccountFields();
+	setElemnetsValue(window, fields);
+	
+	return true;
+}
+
+// 客户门店账
+function queryCustomerShopAccountFields() {
+	return getDTFields("queryCustomerField", arguments);
+}
+function queryCustomerShopAccountField(key) {
+	var e;
+	switch (key) {
+	case "customer":
+		e = new DTElement("客户", "tf-ac", 0, "a", 1, 0);
+		break;
+	case "name":
+		e = new DTElement("名称", "tf", 1, "a");
+		break;
+	case "mobile":
+		e = new DTElement("手机", "tf", 2, "13312344321");
+		break;
+	case "stop":
+		e = new DTElement("是否停用", "tf-sc", 3, "是");
+		break;
+	case "type":
+		e = new DTElement("类别", "tf-sc", 4, "零批客户");
+		break;
+	case "staff":
+		e = new DTElement("店员", "tf-ac", 5, "000", 1, 0);
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
+
+function testQueryCustomerAccountFields() {
+	var fields = queryCustomerAccountFields();
+	setElemnetsValue(window, fields);
+	
+	return true;
+}
+
+// 客户总账
+function queryCustomerAccountFields() {
+	return getDTFields("queryCustomerAccountField", arguments);
+}
+function queryCustomerAccountField(key) {
+	var e;
+	switch (key) {
+	case "customer":
+		e = new DTElement("客户", "tf-ac", 0, "a", 1, 0);
+		break;
+	case "name":
+		e = new DTElement("名称", "tf", 1, "a");
+		break;
+	case "mobile":
+		e = new DTElement("手机", "tf", 2, "13312344321");
+		break;
+	case "stop":
+		e = new DTElement("是否停用", "tf-sc", 3, "是");
+		break;
+	case "type":
+		e = new DTElement("类别", "tf-sc", 4, "零批客户");
+		break;
+	case "staff":
+		e = new DTElement("店员", "tf-ac", 5, "000", 1, 0);
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
