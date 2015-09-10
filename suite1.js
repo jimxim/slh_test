@@ -18,8 +18,10 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //		testParamAll();	
-//	 run("查询客户清除按钮", "testQueryCustomerClear");
-		run("客户新增保存", "testCustomerAdd");
+//	    run("查询客户清除按钮", "testQueryCustomerClear");
+//		run("客户新增保存", "testCustomerAdd");
+//	    run("客户门店账", "testQueryCustomerShopAccountFields");
+	    run("客户总账", "testQueryCustomerAccountFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
