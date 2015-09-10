@@ -21,7 +21,16 @@ function test000All() {
 //	    run("查询客户清除按钮", "testQueryCustomerClear");
 //		run("客户新增保存", "testCustomerAdd");
 //	    run("客户门店账", "testQueryCustomerShopAccountFields");
-	    run("客户总账", "testQueryCustomerAccountFields");
+//	    run("客户总账", "testQueryCustomerAccountFields");
+//	    run("客户活跃度", "testQueryCustomerActiveFields");
+//	    run("积分查询", "testQueryScoreFields");
+//	    run("厂商查询", "testQueryProviderFields");
+//	    run("新增厂商", "testQueryAddProviderFields");
+//	    run("厂商门店帐", "testQueryProviderShopAccountFields");
+//	    run("厂商总帐", "testQueryProviderAccountFields");
+//	    run("物流商查询", "testQueryLogisticsFields");  
+//	    run("客户回访", "testQueryCustomerBackFields");
+//      run("新增客户回访", "testQueryAddCustomerBackFields");	    
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
