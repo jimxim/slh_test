@@ -224,96 +224,102 @@ function queryGoodsField(key) {
 
 //新增货品
 function testEditGoodsFields() {
-	var keys = [ "name", "shop", "birthday", "staff", "type", "return",
-			"price", "mobile", "weixin", "fax", "address", "remarks",
-			"discount", "credit", "alarm" ];
+	var keys = [ "code","name","brand","color","size","price1","price2",
+	             "price3","price4","price5","season","provider","warehouse",
+	             "staff","type","barcode","discount","remarks"];
 	var fields = editGoodsFields(keys);
 	setElementsValue(getView(), fields);
 	var showFields = editGoodsFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
 function editGoodsFields(keys, show) {
-	return getDTFields("editCustomerField", keys, show);
+	return getDTFields("editGoodsField", keys, show);
 }
-function editCustomerField(key, show) {
+function editGoodsField(key, show) {
 	var e;
 	switch (key) {
-	case "name":
-		e = new DTElement("名称", "tf", 1, "a");
+	case "code":
+		e = new DTElement("款号", "tf", 0, "a");
 		break;
-	case "area":
-		e = new DTElement("区域", "sc", 0, "供应商");
-		if (show) {
+	case "name":
+		e = new DTElement("名称", "tf", 1, "b");
+		break;
+	case "brand":
+		e = new DTElement("品牌", "sc", 0, "1010pp");
+		if(show){
 			e.type = "tf";
 			e.index = 2;
 		}
 		break;
-	case "shop":
-		e = new DTElement("门店", "sc", 1, "常青店");
+	case "color":
+		e = new DTElement("颜色", "mc", 2, [0,1]);
 		if (show) {
 			e.type = "tf";
 			e.index = 3;
+			e.value = "花色,黑色";
 		}
 		break;
-	case "birthday":
-		e = new DTElement("生日", "tf-dt", 4, "1980-09-10");
+	case "size":
+		e = new DTElement("尺码", "mc", 4, [3,4]);
+		if (show) {
+			e.type = "tf";
+			e.index = 4;
+			e.value = "T120,T130";
+		}
+		break;
+//	case "day":
+//		e = new DTElement("上架日期", "", 1, "2015-09-11");
+//		break;
+	case "price1":
+		e = new DTElement("吊牌价", "tf", 7, "200");
+		break;
+	case "price2":
+		e = new DTElement("进货价", "tf", 8, "100");
+		break;
+	case "price3":
+		e = new DTElement("零批价", "tf", 9, "200");
+		break;
+	case "price4":
+		e = new DTElement("打包价", "tf", 10, "180");
+		break;
+	case "price5":
+		e = new DTElement("vip价格", "tf", 11, "170");
+		break;
+	case "season":
+		e = new DTElement("季节", "sc", 8, "春季新");
+		if(show){
+			e.type = "tf";
+			e.index = 12;
+		}
+		break;
+	case "provider":
+		e = new DTElement("厂商", "tf-ac", 13, "d",1,0);
+		break;
+	case "warehouse":
+		e = new DTElement("仓位", "sc", 10, "默认");
+		if (show) {
+			e.type = "tf";
+			e.index = 14;
+		}
 		break;
 	case "staff":
-		e = new DTElement("店员", "tf", 5, "000");
-		if (show) {
-			// e.value = "000,管理员";
-		}
-		break;
-	case "super":
-		e = new DTElement("上级客户", "tf-ac", 6, "b", 3, 0);
-		if (show) {
-			e.value = "Yvb";
-		}
+		e = new DTElement("经办人", "tf-ac", 15, "000",1,0);
 		break;
 	case "type":
-		e = new DTElement("客户类别", "sc", 2, "零批客户");
+		e = new DTElement("类别", "sc", 11, "登山服");
 		if (show) {
 			e.type = "tf";
-			e.index = 7;
+			e.index = 16;
 		}
 		break;
-	case "return":
-		e = new DTElement("允许退货", "sc", 4, "是");
-		if (show) {
-			e.type = "tf";
-			e.index = 9;
-		}
-		break;
-	case "price":
-		e = new DTElement("适用价格", "sc", 5, "零批价");
-		if (show) {
-			e.type = "tf";
-			e.index = 11;
-		}
-		break;
-	case "mobile":
-		e = new DTElement("手机", "tf", 12, "123456789");
-		break;
-	case "weixin":
-		e = new DTElement("微信", "tf", 13, "x123456");
-		break;
-	case "fax":
-		e = new DTElement("传真号", "tf", 14, "55555");
-		break;
-	case "address":
-		e = new DTElement("地址", "tf", 15, "地址");
-		break;
-	case "remarks":
-		e = new DTElement("备注", "tf", 16, "123");
+	case "barcode":
+		e = new DTElement("条码", "tf", 17, "555555");
 		break;
 	case "discount":
-		e = new DTElement("拿货折扣", "tf", 17, "0.9");
+		e = new DTElement("折扣", "tf", 18, "0.9");
 		break;
-	case "credit":
-		e = new DTElement("信用额度", "tf", 18, "10000");
-		break;
-	case "alarm":
-		e = new DTElement("欠款报警", "tf", 19, "5000");
+	case "remarks":
+		e = new DTElement("备注", "tf", 19, "123");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -323,3 +329,88 @@ function editCustomerField(key, show) {
 
 
 
+//批量调价
+function testPricingFields() {
+	var keys = ["add","multiplication"];
+	var fields = pricingFields(keys);
+	setElementsValue(getView(1), fields);
+	var showFields = pricingFields(keys, true);
+	return checkShowFields(getView(1), showFields);
+}
+function pricingFields(keys, show) {
+	return getDTFields("pricingField", keys, show);
+}
+function pricingField(key, show) {
+	var e;
+	switch (key) {
+	case "add":
+		e = new DTElement("统一加减", "tf", 3, "1");
+		break;
+	case "multiplication":
+		e = new DTElement("统一乘", "tf", 4, "0.8");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
+
+
+
+
+//价格名称
+function testPriceNameFields() {
+	var keys = ["name","use","proportion"];
+	var fields = priceNameFields(keys);
+	setElementsValue(getView(), fields);
+	var showFields = priceNameFields(keys, true);
+	return checkShowFields(getView(), showFields);
+}
+function priceNameFields(keys, show) {
+	return getDTFields("priceNameField", keys, show);
+}
+function priceNameField(key, show) {
+	var e;
+	switch (key) {
+	case "name":
+		e = new DTElement("名称", "tf", 0, "a");
+		break;
+	case "use":
+		e = new DTElement("是否适用", "sc", 0,  "是");
+		if(show){
+			e.type = "tf";
+			e.index = 1;
+		}
+		break;
+	case "proportion":
+		e = new DTElement("比例 ", "tf", 2, "1.3");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}
+
+
+
+//货品类别 
+function testGoodsTypeFields() {
+	var fields = goodsTypeFields("");
+	setElementsValue(window, fields);
+	return true;
+}
+
+function goodsTypeFields() {
+	return getDTFields("goodsTypeField", arguments);
+}
+function goodsTypeField(key) {
+	var e;
+	switch (key) {
+	case "provider":
+		e = new DTElement("厂商", "tf-ac", 0, "a",1,0);
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return e;
+}

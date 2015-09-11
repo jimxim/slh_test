@@ -24,3 +24,4 @@ area--区域 super--上级 return--退货 remarks--备注
 credit--信用 alarm--报警 account--账
 active--活跃
 logistics--物流
+brand--品牌
