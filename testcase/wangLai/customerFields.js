@@ -2,6 +2,19 @@
 function editCustomerFields(keys, show) {
 	return getDTFields("editCustomerField", keys, show);
 }
+
+function testCustomerAdd() {
+	// "super",
+	var keys = [ "name", "shop", "birthday", "staff", "type", "return",
+			"price", "mobile", "weixin", "fax", "address", "remarks",
+			"discount", "credit", "alarm" ];
+	var fields = editCustomerFields(keys);
+	setElementsValue(getView(), fields);
+	// debugElements(getView());
+	var showFields = editCustomerFields(keys, true);
+	return checkShowFields(getView(), showFields);
+}
+
 function editCustomerField(key, show) {
 	var e;
 	switch (key) {
@@ -87,17 +100,7 @@ function editCustomerField(key, show) {
 	}
 	return e;
 }
-function testCustomerAdd() {
-	// "super",
-	var keys = [ "name", "shop", "birthday", "staff", "type", "return",
-			"price", "mobile", "weixin", "fax", "address", "remarks",
-			"discount", "credit", "alarm" ];
-	var fields = editCustomerFields(keys);
-	setElementsValue(getView(), fields);
-	// debugElements(getView());
-	var showFields = editCustomerFields(keys, true);
-	return checkShowFields(getView(), showFields);
-}
+
 
 // 客户门店账
 function testQueryCustomerShopAccountFields() {
@@ -258,18 +261,19 @@ function queryProviderField(key) {
 }
 
 // 新增厂商
-function testQueryAddProviderFields() {
-	var fields = queryAddProviderFields("name", "mobile", "address",
-			"customer", "remarks");
+function testEditProviderFields() {
+	var keys = ["name", "mobile", "address","price","remarks"];
+	var fields =editProviderFields(keys);
 	setElementsValue(getView(), fields);
 	// debugElements(getView());
-	return true;
+	var showFields = editProviderFields(keys,true);
+	return checkShowFields(getView(),showFields);
 }
 
-function queryAddProviderFields() {
-	return getDTFields("queryAddProviderField", arguments);
+function editProviderFields(keys,show) {
+	return getDTFields("editProviderField", keys,show);
 }
-function queryAddProviderField(key) {
+function editProviderField(key,show) {
 	var e;
 	switch (key) {
 	case "name":
@@ -281,11 +285,15 @@ function queryAddProviderField(key) {
 	case "address":
 		e = new DTElement("地址", "tf", 2, "地址");
 		break;
-	case "customer":
-		e = new DTElement("客户", "tf-ac", 3, "a", 1, 0);
+	case "price":
+		e = new DTElement("适用价格", "sc", 0, "打包价");
+		if (show) {
+			e.type = "tf";
+			e.index = 3;
+		}
 		break;
 	case "remarks":
-		e = new DTElement("备注", "tf", 4, "备注");
+		e = new DTElement("备注", "tv", 0, "备注");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -375,17 +383,19 @@ function queryLogisticsField(key) {
 }
 
 // 新增物流商
-function testQueryAddLogisticsFields() {
-	var fields = queryAddLogisticsFields("name", "staff", "mobile", "post",
-			"address", "account", "shop");
+function testAddLogisticsFields() {
+	var keys = ["name", "staff", "mobile", "post","address", "account", 
+	            "shop"];
+	var fields = addLogisticsFields(keys);
 	setElementsValue(getView(), fields);
-	return true;
+	var showFields = addLogisticsFields(keys,true);
+	return checkShowFields(getView(),showFields);
 }
 
-function queryAddLogisticsFields() {
-	return getDTFields("queryAddLogisticsField", arguments);
+function addLogisticsFields(keys,show) {
+	return getDTFields("addLogisticsField", keys,show);
 }
-function queryAddLogisticsField(key) {
+function addLogisticsField(key,show) {
 	var e;
 	switch (key) {
 	case "name":
@@ -396,6 +406,10 @@ function queryAddLogisticsField(key) {
 		break;
 	case "area":
 		e = new DTElement("区域", "sc", 0, "供应商");
+		if(show){
+			e.type = "tf";
+			e.index = 2;
+		}
 		break;
 	case "mobile":
 		e = new DTElement("电话", "tf", 3, "123456789");
@@ -411,6 +425,10 @@ function queryAddLogisticsField(key) {
 		break;
 	case "shop":
 		e = new DTElement("门店", "sc", 1, "常青店");
+		if(show){
+			e.type = "tf";
+			e.index = 7;
+		}
 		break;
 	case "remarks":
 		e = new DTElement("备注", "tf", 8, "备注");
@@ -460,17 +478,19 @@ function queryCustomerBackField(key) {
 }
 
 // 新增回访
-function testQueryAddCustomerBackFields() {
-	var fields = queryAddCustomerBackFields("day", "customer", "staff", "back",
-			"theme", "advice");
+function testAddCustomerBackFields() {
+	var keys = ["day", "customer", "staff", "back",
+	  			"theme", "advice"];
+	var fields = addCustomerBackFields(keys);
 	setElementsValue(getView(), fields);
-	return true;
+	var showFields = addCustomerBackFields(keys,true);
+	return checkShowFields(getView(),showFields);
 }
 
-function queryAddCustomerBackFields() {
-	return getDTFields("queryAddCustomerBackField", arguments);
+function addCustomerBackFields(keys,show) {
+	return getDTFields("addCustomerBackField", keys,show);
 }
-function queryAddCustomerBackField(key) {
+function addCustomerBackField(key,show) {
 	var e;
 	switch (key) {
 	case "day":
@@ -484,12 +504,16 @@ function queryAddCustomerBackField(key) {
 		break;
 	case "back":
 		e = new DTElement("回访类型", "sc", 0, "售后回访");
+		if(show){
+			e.type = "tf";
+			e.index = 3;
+		}
 		break;
 	case "theme":
 		e = new DTElement("主题", "tf", 4, "主题");
 		break;
 	case "advice":
-		e = new DTElement("反馈及建议", "tf", 5, "反馈及建议");
+		e = new DTElement("反馈及建议", "tv", 0, "反馈及建议");
 		break;
 
 	default:

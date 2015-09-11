@@ -6,6 +6,7 @@
 #import "lib/goods.js"
 #import "lib/param.js"
 
+#import "testcase/goods/goodsFields.js"
 #import "testcase/wangLai/customer.js"
 #import "testcase/wangLai/customerFields.js"
 #import "testcase/wangLai/provider.js"
@@ -25,12 +26,20 @@ function test000All() {
 //	    run("客户活跃度", "testQueryCustomerActiveFields");
 //	    run("积分查询", "testQueryScoreFields");
 //	    run("厂商查询", "testQueryProviderFields");
-//	    run("新增厂商", "testQueryAddProviderFields");
+	    run("新增厂商", "testEditProviderFields");
 //	    run("厂商门店帐", "testQueryProviderShopAccountFields");
 //	    run("厂商总帐", "testQueryProviderAccountFields");
-//	    run("物流商查询", "testQueryLogisticsFields");  
+//	    run("物流商查询", "testQueryLogisticsFields");
+//	    run("新增物流商","testAddLogisticsFields");
 //	    run("客户回访", "testQueryCustomerBackFields");
-//      run("新增客户回访", "testQueryAddCustomerBackFields");	    
+//      run("新增客户回访", "testAddCustomerBackFields");	 
+	
+//	    run("当前库存", "testQueryStockFields");	
+//	    run("款号库存", "testQueryCodeStockFields");    
+//	    run("款号分布", "testQueryDistributionFields");
+//	    run("货品进销存", "testQueryInOutFields");
+//      run("货品查询", "testQueryGoodsFields");
+//      run("新增货品", "testQueryAddGoodsFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
