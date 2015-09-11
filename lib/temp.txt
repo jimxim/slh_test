@@ -176,3 +176,12 @@ function testRefresh() {
 	logInfo(isIn(window.tableViews()[0].staticTexts()[1].value(),'刷新于'));
 	return true;
 }
+
+	/*
+	var qFields = queryCustomerFields("customer");
+	var qf = qFields[0];
+	qf.value = "xg"; // 修改 客户1
+	var texts = query(qFields);
+	var i = getFirstIndexOfTextsByTitle(texts, "序号");
+	tap(texts[i]);// 进入修改页面
+	*/

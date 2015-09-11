@@ -1,11 +1,14 @@
 # slh_test
 商陆花批发版UIAutomation项目
 
-设计原则1 尽量把注释写成代码
+设计原则
+1 尽量把注释写成代码
+2 一个函数只做一件事
 
 DTElement=Dongling Test Element 通用测试元素，含单选，多选，文本框等
 
 q=query--查询
+fn1=function name1--函数名1
 
 关键字 英文/拼音--中文对照
 add--增加 edit--编辑/修改
