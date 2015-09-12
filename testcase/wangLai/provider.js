@@ -18,33 +18,37 @@ function testProviderRepeat() {
 	return isIn(alertMsg, "重复");
 }
 function testEditProviderFields() {
-	var keys = [ "name", "mobile", "address",  "remarks" ];
+	var keys = [ "name", "mobile", "address", "price", "remarks" ];
 	var fields = editProviderFields(keys);
-	setElementsValue(getView(), fields);
+	setTFieldsValue(getView(), fields);
 	// debugElements(getView());
 	var showFields = editProviderFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
 function editProviderFields(keys, show) {
-	return getDTFields("editProviderField", keys, show);
+	return getTFields("editProviderField", keys, show);
 }
 function editProviderField(key, show) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("名称", "tf", 0, "a");
+		e = new TField("名称", TF, 0, "a");
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 1, "123456789");
+		e = new TField("手机", TF, 1, "123456789");
 		break;
 	case "address":
-		e = new DTElement("地址", "tf", 2, "地址");
+		e = new TField("地址", TF, 2, "地址");
 		break;
-	case "customer":
-		e = new DTElement("客户", "tf-ac", 3, "a", 1, 0);
+	case "price":
+		e = new TField("适用价格", BTN_SC, 0, "打包价");
+		if (show) {
+			e.type = TF;
+			e.index = 3;
+		}
 		break;
 	case "remarks":
-		e = new DTElement("备注", "tv", 0, "备注");
+		e = new TField("备注", TV, 0, "备注");
 		break;
 	default:
 		logWarn("未知key＝" + key);

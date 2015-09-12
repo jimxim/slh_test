@@ -185,3 +185,4 @@ function testRefresh() {
 	var i = getFirstIndexOfTextsByTitle(texts, "序号");
 	tap(texts[i]);// 进入修改页面
 	*/
+客户签名 UIAScrollView: rect:{{128, 64}, {760, 1000}}

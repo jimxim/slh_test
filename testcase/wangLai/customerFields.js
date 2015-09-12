@@ -1,6 +1,6 @@
 //新增客户
 function editCustomerFields(keys, show) {
-	return getDTFields("editCustomerField", keys, show);
+	return getTFields("editCustomerField", keys, show);
 }
 
 function testCustomerAdd() {
@@ -9,7 +9,7 @@ function testCustomerAdd() {
 			"price", "mobile", "weixin", "fax", "address", "remarks",
 			"discount", "credit", "alarm" ];
 	var fields = editCustomerFields(keys);
-	setElementsValue(getView(), fields);
+	setTFieldsValue(getView(), fields);
 	// debugElements(getView());
 	var showFields = editCustomerFields(keys, true);
 	return checkShowFields(getView(), showFields);
@@ -19,81 +19,81 @@ function editCustomerField(key, show) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("名称", "tf", 1, "a");
+		e = new TField("名称", TF, 1, "a");
 		break;
 	case "area":
-		e = new DTElement("区域", "sc", 0, "供应商");
+		e = new TField("区域", BTN_SC, 0, "供应商");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 2;
 		}
 		break;
 	case "shop":
-		e = new DTElement("门店", "sc", 1, "常青店");
+		e = new TField("门店", BTN_SC, 1, "常青店");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 3;
 		}
 		break;
 	case "birthday":
-		e = new DTElement("生日", "tf-dt", 4, "1980-09-10");
+		e = new TField("生日", TF_DT, 4, "1980-09-10");
 		break;
 	case "staff":
-		e = new DTElement("店员", "tf", 5, "000");
+		e = new TField("店员", TF, 5, "000");
 		if (show) {
 			// e.value = "000,管理员";
 		}
 		break;
 	case "super":
-		e = new DTElement("上级客户", "tf-ac", 6, "b", 3, 0);
+		e = new TField("上级客户", TF_AC, 6, "b", 3, 0);
 		if (show) {
 			e.value = "Yvb";
 		}
 		break;
 	case "type":
-		e = new DTElement("客户类别", "sc", 2, "零批客户");
+		e = new TField("客户类别", BTN_SC, 2, "零批客户");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 7;
 		}
 		break;
 	case "return":
-		e = new DTElement("允许退货", "sc", 4, "是");
+		e = new TField("允许退货", BTN_SC, 4, "是");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 9;
 		}
 		break;
 	case "price":
-		e = new DTElement("适用价格", "sc", 5, "零批价");
+		e = new TField("适用价格", BTN_SC, 5, "零批价");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 11;
 		}
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 12, "123456789");
+		e = new TField("手机", TF, 12, "123456789");
 		break;
 	case "weixin":
-		e = new DTElement("微信", "tf", 13, "x123456");
+		e = new TField("微信", TF, 13, "x123456");
 		break;
 	case "fax":
-		e = new DTElement("传真号", "tf", 14, "55555");
+		e = new TField("传真号", TF, 14, "55555");
 		break;
 	case "address":
-		e = new DTElement("地址", "tf", 15, "地址");
+		e = new TField("地址", TF, 15, "地址");
 		break;
 	case "remarks":
-		e = new DTElement("备注", "tf", 16, "123");
+		e = new TField("备注", TF, 16, "123");
 		break;
 	case "discount":
-		e = new DTElement("拿货折扣", "tf", 17, "0.9");
+		e = new TField("拿货折扣", TF, 17, "0.9");
 		break;
 	case "credit":
-		e = new DTElement("信用额度", "tf", 18, "10000");
+		e = new TField("信用额度", TF, 18, "10000");
 		break;
 	case "alarm":
-		e = new DTElement("欠款报警", "tf", 19, "5000");
+		e = new TField("欠款报警", TF, 19, "5000");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -107,38 +107,38 @@ function testQueryCustomerShopAccountFields() {
 	// var fields = queryCustomerShopAccountFields("name","customer","shop",
 	// "staff","type","debt","alarm");
 	var fields = queryCustomerShopAccountFields("shop");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 	// debugElements(window);
 
 	return true;
 }
 
 function queryCustomerShopAccountFields() {
-	return getDTFields("queryCustomerShopAccountField", arguments);
+	return getTFields("queryCustomerShopAccountField", arguments);
 }
 function queryCustomerShopAccountField(key) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("客户名称", "tf", 0, "a");
+		e = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 1, "a", 1, 0);
+		e = new TField("客户", TF_AC, 1, "a", 1, 0);
 		break;
 	case "shop":
-		e = new DTElement("门店", "tf-sc", 2, "仓库店");
+		e = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	case "staff":
-		e = new DTElement("店员", "tf-ac", 3, "000", 1, 0);
+		e = new TField("店员", TF_AC, 3, "000", 1, 0);
 		break;
 	case "type":
-		e = new DTElement("类别", "tf-sc", 4, "零批客户");
+		e = new TField("类别", TF_SC, 4, "零批客户");
 		break;
 	case "debt":
-		e = new DTElement("是否欠款", "tf-sc", 5, "否");
+		e = new TField("是否欠款", TF_SC, 5, "否");
 		break;
 	case "alarm":
-		e = new DTElement("是否欠款报警", "tf-sc", 6, "否");
+		e = new TField("是否欠款报警", TF_SC, 6, "否");
 		break;
 
 	default:
@@ -150,22 +150,22 @@ function queryCustomerShopAccountField(key) {
 // 客户总账
 function testQueryCustomerAccountFields() {
 	var fields = queryCustomerAccountFields("name", "customer");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 
 	return true;
 }
 
 function queryCustomerAccountFields() {
-	return getDTFields("queryCustomerAccountField", arguments);
+	return getTFields("queryCustomerAccountField", arguments);
 }
 function queryCustomerAccountField(key) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("客户名称", "tf", 0, "a");
+		e = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 1, "a", 1, 0);
+		e = new TField("客户", TF_AC, 1, "a", 1, 0);
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -176,25 +176,25 @@ function queryCustomerAccountField(key) {
 // 客户活跃度
 function testQueryCustomerActiveFields() {
 	var fields = queryCustomerActiveFields("customer", "staff", "shop");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 
 	return true;
 }
 
 function queryCustomerActiveFields() {
-	return getDTFields("queryCustomerActiveField", arguments);
+	return getTFields("queryCustomerActiveField", arguments);
 }
 function queryCustomerActiveField(key) {
 	var e;
 	switch (key) {
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 0, "a", 1, 0);
+		e = new TField("客户", TF_AC, 0, "a", 1, 0);
 		break;
 	case "staff":
-		e = new DTElement("店员", "tf-ac", 1, "000", 1, 0);
+		e = new TField("店员", TF_AC, 1, "000", 1, 0);
 		break;
 	case "shop":
-		e = new DTElement("门店", "tf-sc", 2, "仓库店");
+		e = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -205,25 +205,25 @@ function queryCustomerActiveField(key) {
 // 积分查询
 function testQueryScoreFields() {
 	var fields = queryScoreFields("shop", "customer", "mobile");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 
 	return true;
 }
 
 function queryScoreFields() {
-	return getDTFields("queryScoreField", arguments);
+	return getTFields("queryScoreField", arguments);
 }
 function queryScoreField(key) {
 	var e;
 	switch (key) {
 	case "shop":
-		e = new DTElement("门店", "tf-sc", 0, "仓库店");
+		e = new TField("门店", TF_SC, 0, "仓库店");
 		break;
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 1, "a", 1, 0);
+		e = new TField("客户", TF_AC, 1, "a", 1, 0);
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 2, "123456789");
+		e = new TField("手机", TF, 2, "123456789");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -234,25 +234,25 @@ function queryScoreField(key) {
 // 厂商查询
 function testQueryProviderFields() {
 	var fields = queryProviderFields("provider", "mobile", "stop");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 
 	return true;
 }
 
 function queryProviderFields() {
-	return getDTFields("queryProviderField", arguments);
+	return getTFields("queryProviderField", arguments);
 }
 function queryProviderField(key) {
 	var e;
 	switch (key) {
 	case "provider":
-		e = new DTElement("厂商", "tf-ac", 0, "a", 1, 0);
+		e = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 1, "123456789");
+		e = new TField("手机", TF, 1, "123456789");
 		break;
 	case "stop":
-		e = new DTElement("是否停用", "tf-sc", 2, "否");
+		e = new TField("是否停用", TF_SC, 2, "否");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -264,36 +264,36 @@ function queryProviderField(key) {
 function testEditProviderFields() {
 	var keys = ["name", "mobile", "address","price","remarks"];
 	var fields =editProviderFields(keys);
-	setElementsValue(getView(), fields);
+	setTFieldsValue(getView(), fields);
 	// debugElements(getView());
 	var showFields = editProviderFields(keys,true);
 	return checkShowFields(getView(),showFields);
 }
 
 function editProviderFields(keys,show) {
-	return getDTFields("editProviderField", keys,show);
+	return getTFields("editProviderField", keys,show);
 }
 function editProviderField(key,show) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("名称", "tf", 0, "a");
+		e = new TField("名称", TF, 0, "a");
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 1, "123456789");
+		e = new TField("手机", TF, 1, "123456789");
 		break;
 	case "address":
-		e = new DTElement("地址", "tf", 2, "地址");
+		e = new TField("地址", TF, 2, "地址");
 		break;
 	case "price":
-		e = new DTElement("适用价格", "sc", 0, "打包价");
+		e = new TField("适用价格", BTN_SC, 0, "打包价");
 		if (show) {
-			e.type = "tf";
+			e.type = TF;
 			e.index = 3;
 		}
 		break;
 	case "remarks":
-		e = new DTElement("备注", "tv", 0, "备注");
+		e = new TField("备注", TV, 0, "备注");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -304,21 +304,21 @@ function editProviderField(key,show) {
 // 厂商门店帐
 function testQueryProviderShopAccountFields() {
 	var fields = queryProviderShopAccountFields("provider", "shop");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 	return true;
 }
 
 function queryProviderShopAccountFields() {
-	return getDTFields("queryProviderShopAccountField", arguments);
+	return getTFields("queryProviderShopAccountField", arguments);
 }
 function queryProviderShopAccountField(key) {
 	var e;
 	switch (key) {
 	case "provider":
-		e = new DTElement("厂商", "tf-ac", 0, "a", 1, 0);
+		e = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		break;
 	case "shop":
-		e = new DTElement("门店", "tf-sc", 1, "常青店");
+		e = new TField("门店", TF_SC, 1, "常青店");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -329,18 +329,18 @@ function queryProviderShopAccountField(key) {
 // 厂商总帐
 function testQueryProviderAccountFields() {
 	var fields = queryProviderAccountFields("provider");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 	return true;
 }
 
 function queryProviderAccountFields() {
-	return getDTFields("queryProviderAccountField", arguments);
+	return getTFields("queryProviderAccountField", arguments);
 }
 function queryProviderAccountField(key) {
 	var e;
 	switch (key) {
 	case "provider":
-		e = new DTElement("厂商", "tf-ac", 0, "a", 1, 0);
+		e = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -351,30 +351,30 @@ function queryProviderAccountField(key) {
 // 物流商查询
 function testQueryLogisticsFields() {
 	var fields = queryLogisticsFields("name", "staff", "mobile", "shop", "stop");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 	return true;
 }
 
 function queryLogisticsFields() {
-	return getDTFields("queryLogisticsField", arguments);
+	return getTFields("queryLogisticsField", arguments);
 }
 function queryLogisticsField(key) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("名称", "tf", 0, "a");
+		e = new TField("名称", TF, 0, "a");
 		break;
 	case "staff":
-		e = new DTElement("店员", "tf-ac", 1, "000", 1, 0);
+		e = new TField("店员", TF_AC, 1, "000", 1, 0);
 		break;
 	case "mobile":
-		e = new DTElement("手机", "tf", 2, "123456789");
+		e = new TField("手机", TF, 2, "123456789");
 		break;
 	case "shop":
-		e = new DTElement("门店", "tf-sc", 3, "常青店");
+		e = new TField("门店", TF_SC, 3, "常青店");
 		break;
 	case "stop":
-		e = new DTElement("是否停用", "tf-sc", 4, "否");
+		e = new TField("是否停用", TF_SC, 4, "否");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -387,51 +387,51 @@ function testAddLogisticsFields() {
 	var keys = ["name", "staff", "mobile", "post","address", "account", 
 	            "shop"];
 	var fields = addLogisticsFields(keys);
-	setElementsValue(getView(), fields);
+	setTFieldsValue(getView(), fields);
 	var showFields = addLogisticsFields(keys,true);
 	return checkShowFields(getView(),showFields);
 }
 
 function addLogisticsFields(keys,show) {
-	return getDTFields("addLogisticsField", keys,show);
+	return getTFields("addLogisticsField", keys,show);
 }
 function addLogisticsField(key,show) {
 	var e;
 	switch (key) {
 	case "name":
-		e = new DTElement("名称", "tf", 0, "a");
+		e = new TField("名称", TF, 0, "a");
 		break;
 	case "staff":
-		e = new DTElement("经办人", "tf-ac", 1, "000", 1, 0);
+		e = new TField("经办人", TF_AC, 1, "000", 1, 0);
 		break;
 	case "area":
-		e = new DTElement("区域", "sc", 0, "供应商");
+		e = new TField("区域", BTN_SC, 0, "供应商");
 		if(show){
-			e.type = "tf";
+			e.type = TF;
 			e.index = 2;
 		}
 		break;
 	case "mobile":
-		e = new DTElement("电话", "tf", 3, "123456789");
+		e = new TField("电话", TF, 3, "123456789");
 		break;
 	case "post":
-		e = new DTElement("邮编", "tf", 4, "310000");
+		e = new TField("邮编", TF, 4, "310000");
 		break;
 	case "address":
-		e = new DTElement("地址", "tf", 5, "地址");
+		e = new TField("地址", TF, 5, "地址");
 		break;
 	case "account":
-		e = new DTElement("账号", "tf", 6, "abc");
+		e = new TField("账号", TF, 6, "abc");
 		break;
 	case "shop":
-		e = new DTElement("门店", "sc", 1, "常青店");
+		e = new TField("门店", BTN_SC, 1, "常青店");
 		if(show){
-			e.type = "tf";
+			e.type = TF;
 			e.index = 7;
 		}
 		break;
 	case "remarks":
-		e = new DTElement("备注", "tf", 8, "备注");
+		e = new TField("备注", TF, 8, "备注");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -443,33 +443,33 @@ function addLogisticsField(key,show) {
 function testQueryCustomerBackFields() {
 	var fields = queryCustomerBackFields("day1", "day2", "customer", "theme",
 			"advice", "staff");
-	setElementsValue(window, fields);
+	setTFieldsValue(window, fields);
 	return true;
 }
 
 function queryCustomerBackFields() {
-	return getDTFields("queryCustomerBackField", arguments);
+	return getTFields("queryCustomerBackField", arguments);
 }
 function queryCustomerBackField(key) {
 	var e;
 	switch (key) {
 	case "day1":
-		e = new DTElement("回访日期从", "tf-dt", 0, "2015-09-10");
+		e = new TField("回访日期从", TF_DT, 0, "2015-09-10");
 		break;
 	case "day2":
-		e = new DTElement("到", "tf-dt", 1, "2015-09-10");
+		e = new TField("到", TF_DT, 1, "2015-09-10");
 		break;
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 2, "a", 1, 0);
+		e = new TField("客户", TF_AC, 2, "a", 1, 0);
 		break;
 	case "theme":
-		e = new DTElement("主题", "tf", 3, "主题");
+		e = new TField("主题", TF, 3, "主题");
 		break;
 	case "advice":
-		e = new DTElement("反馈及建议", "tf", 4, "反馈及建议");
+		e = new TField("反馈及建议", TF, 4, "反馈及建议");
 		break;
 	case "staff":
-		e = new DTElement("经办人", "tf-ac", 5, "000", 1, 0);
+		e = new TField("经办人", TF_AC, 5, "000", 1, 0);
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -482,38 +482,38 @@ function testAddCustomerBackFields() {
 	var keys = ["day", "customer", "staff", "back",
 	  			"theme", "advice"];
 	var fields = addCustomerBackFields(keys);
-	setElementsValue(getView(), fields);
+	setTFieldsValue(getView(), fields);
 	var showFields = addCustomerBackFields(keys,true);
 	return checkShowFields(getView(),showFields);
 }
 
 function addCustomerBackFields(keys,show) {
-	return getDTFields("addCustomerBackField", keys,show);
+	return getTFields("addCustomerBackField", keys,show);
 }
 function addCustomerBackField(key,show) {
 	var e;
 	switch (key) {
 	case "day":
-		e = new DTElement("回访日期", "tf-dt", 0, "2015-09-10");
+		e = new TField("回访日期", TF_DT, 0, "2015-09-10");
 		break;
 	case "customer":
-		e = new DTElement("客户", "tf-ac", 1, "a", 1, 0);
+		e = new TField("客户", TF_AC, 1, "a", 1, 0);
 		break;
 	case "staff":
-		e = new DTElement("经办人", "tf-ac", 2, "000", 1, 0);
+		e = new TField("经办人", TF_AC, 2, "000", 1, 0);
 		break;
 	case "back":
-		e = new DTElement("回访类型", "sc", 0, "售后回访");
+		e = new TField("回访类型", BTN_SC, 0, "售后回访");
 		if(show){
-			e.type = "tf";
+			e.type = TF;
 			e.index = 3;
 		}
 		break;
 	case "theme":
-		e = new DTElement("主题", "tf", 4, "主题");
+		e = new TField("主题", TF, 4, "主题");
 		break;
 	case "advice":
-		e = new DTElement("反馈及建议", "tv", 0, "反馈及建议");
+		e = new TField("反馈及建议", TV, 0, "反馈及建议");
 		break;
 
 	default:
