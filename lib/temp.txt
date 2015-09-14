@@ -1,3 +1,6 @@
+新增供应商，操作人 000
+区域选择
+
 function debugElemnetsAtView() {
 	var view1 = window.scrollViews()[0];
 	debugElemnetsAt(view1);
