@@ -17,7 +17,7 @@ function testWanLaiCustomerAll() {
 	// run("客户修改保存", "testCustomerEdit");
 	// run("客户新增保存", "testCustomerAdd");
 	// run("客户签名", "testCustomerSign");
-	 run("新增分店", "testCustomerAddBranch");
+	run("新增分店", "testCustomerAddBranch");
 }
 
 function queryCustomerFields(keys, show) {
@@ -153,6 +153,9 @@ function editCustomerBranchField(key, show) {
 	switch (key) {
 	case "name":
 		f = new TField("名称", TF, 0, "分店测试1-");
+		if (show) {
+			f.label = "分店名称";
+		}
 		break;
 	case "mobile":
 		f = new TField("电话", TF, 1, "13311112");
@@ -482,31 +485,38 @@ function testCustomerAddBranch() {
 	tapButton(window, "新增分店+");
 
 	var r = getRandomInt(1000);
-	r = 324;
 	var keys = [ "name", "mobile", "weixin", "address", "remarks" ];
 	var fields = editCustomerBranchFields(keys);
-	for ( var i in fields) {
-		var f = fields[i];
-		f.value = f.value + r;
-	}
+	appendTFieldsValue(fields, r);
 	setTFieldsValue(window, fields);
 	tapNaviRightButton();
 	if (isIn(alertMsg, "已存在")) {
 		tapNaviLeftButton();
 	}
 
-	keys = [ "name", "mobile", "stop" ];
-	var qFields = queryCustomerBranchFields(keys);
-	var f1 = qFields["name"];
-	var f2 = qFields["mobile"];
-	f1.value = f1.value + r;
-	f2.value = f2.value + r;
+	var qKeys = [ "name", "mobile", "stop" ];
+	var qFields = queryCustomerBranchFields(qKeys);
+	appendTFieldsValue(qFields, r, [ "name", "mobile" ]);
+
 	var view = getView(1);
 	tapButton(view, CLEAR);
 	setTFieldsValue(view, qFields);
 	tapButton(view, QUERY);
-	debugElements(view);
 
-	return true;
+	var firstTitle = "分店名称";
+	var lastTitle = "备注";
+	var qr = getQResult2(view, firstTitle, lastTitle);
+
+	fields = editCustomerBranchFields(keys, true);
+	appendTFieldsValue(fields, r);
+	var ret = true;
+	for ( var key in fields) {
+		var f = fields[key];
+		var title = f.label;
+		ret = ret && isEqualQRData1ByTitle(qr, title, f.value);
+	}
+	tapNaviLeftButton();
+	tapButton(window, RETURN);
+
+	return ret;
 }
-
