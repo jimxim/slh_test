@@ -1,7 +1,7 @@
 //LuXingXin <52619481 at qq.com> 20150915
 
 //按批次查
-function testQueryBatchFields() {
+function testPurchaseQueryBatchFields() {
 	var keys = [ "provider", "day1", "day2", "order", "batch1", "batch2",
 			"shop", "staff" ];
 	var fields = queryBatchFields(keys);
@@ -54,7 +54,7 @@ function queryBatchField(key, show) {
 }
 
 // 按明细查
-function testQueryParticularFields() {
+function testPurchaseQueryParticularFields() {
 	var keys = [ "code", "name", "provider", "day1", "day2", "shop" ];
 	var fields = queryParticularFields(keys);
 	setTFieldsValue(window, fields);
@@ -99,7 +99,7 @@ function queryParticularField(key, show) {
 }
 
 // 按金额汇总
-function testPriceFields() {
+function testPurchasePriceFields() {
 	var fields = priceFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
@@ -124,7 +124,7 @@ function priceField(key) {
 }
 
 // 按款号汇总
-function testCodeFields() {
+function testPurchaseCodeFields() {
 	var keys = [ "code", "day1", "day2", "day3", "day4" ];
 	var fields = codeFields(keys);
 	setTFieldsValue(window, fields);
@@ -163,7 +163,7 @@ function codeField(key, show) {
 }
 
 // 按厂商返货
-function testProviderReturnFields() {
+function testPurchaseProviderReturnFields() {
 	var keys = [ "code", "day1", "day2", "provider" ];
 	var fields = providerReturnFields(keys);
 	setTFieldsValue(window, fields);
@@ -202,7 +202,7 @@ function providerReturnField(key, show) {
 }
 
 // 按厂商汇总
-function testProviderFields() {
+function testPurchaseProviderFields() {
 	var keys = [ "day1", "day2", "provider" ];
 	var fields = providerFields(keys);
 	setTFieldsValue(window, fields);
@@ -235,7 +235,7 @@ function providerField(key, show) {
 }
 
 // 按出入库汇总
-function testInOutFields() {
+function testPurchaseInOutFields() {
 	var fields = inOutFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
@@ -260,7 +260,7 @@ function inOutField(key) {
 }
 
 // 供应商对账单
-function testSupplierFields() {
+function testPurchaseSupplierFields() {
 	var keys = [ "day1", "day2", "supplier" ];
 	var fields = supplierFields(keys);
 	setTFieldsValue(window, fields);
@@ -293,7 +293,7 @@ function supplierField(key, show) {
 }
 
 // 按类别汇总
-function testTypeFields() {
+function testPurchaseTypeFields() {
 	var fields = typeFields("day1", "day2", "type");
 	setTFieldsValue(window, fields);
 	return true;
@@ -321,7 +321,7 @@ function typeField(key) {
 }
 
 // 按订货入库
-function testOrderFields() {
+function testPurchaseOrderFields() {
 	var keys = [ "day1", "day2", "provider", "code" ];
 	var fields = orderFields(keys);
 	setTFieldsValue(window, fields);
@@ -360,7 +360,7 @@ function orderField(key, show) {
 }
 
 // 厂商总账
-function testProviderAccountFields() {
+function testPurchaseProviderAccountFields() {
 	var keys = [ "provider" ];
 	var fields = providerAccountFields(keys);
 	setTFieldsValue(window, fields);
@@ -387,7 +387,7 @@ function providerAccountField(key, show) {
 }
 
 // 厂商门店账
-function testShopAccountFields() {
+function testPurchaseShopAccountFields() {
 	var keys = [ "provider", "shop" ];
 	var fields = shopAccountFields(keys);
 	setTFieldsValue(window, fields);
