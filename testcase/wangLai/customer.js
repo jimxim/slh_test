@@ -152,7 +152,7 @@ function editCustomerBranchField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
-		f = new TField("名称", TF, 0, "分店测试1-");
+		f = new TField("名称", TF, 0, "分店测试-");
 		if (show) {
 			f.label = "分店名称";
 		}
