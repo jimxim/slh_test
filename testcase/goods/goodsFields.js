@@ -2,231 +2,259 @@
 
 //当前库存
 function testQueryStockFields() {
-	var fields = queryStockFields("code","name","shop","provider","color",
-			"size","brand","season","day1","day2","stop");
+	var keys = [ "code", "name", "shop", "provider", "color", "size", "brand",
+			"season", "day1", "day2", "stop" ];
+	var fields = queryStockFields(keys);
 	setTFieldsValue(window, fields);
-//	debugElements(window);	
-	return true;
+	// debugElements(window);
+	var showFields = queryStockFields(keys, true);
+	return checkShowFields(window, showFields);
 }
 
-function queryStockFields() {
-	return getTFields("queryStockField", arguments);
+function queryStockFields(keys, show) {
+	return getTFields("queryStockField", keys, show);
 }
-function queryStockField(key) {
-	var e;
+function queryStockField(key, show) {
+	var f;
 	switch (key) {
 	case "code":
-		e = new TField("款号", TF_AC, 0, "a",1,0);
+		f = new TField("款号", TF_AC, 0, "b", 1, 0);
+		if (show) {
+			f.value = "741,Abc,44元";
+		}
 		break;
 	case "name":
-		e = new TField("款号名称", TF, 1, "a");
+		f = new TField("款号名称", TF, 1, "a");
 		break;
 	case "shop":
-		e = new TField("门店", TF_SC, 2, "仓库店");
+		f = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	case "provider":
-		e = new TField("厂商", TF_AC, 3, "a",1,0);
+		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
 		break;
 	case "color":
-		e = new TField("颜色", TF_SC, 4, "花色");
+		f = new TField("颜色", TF_SC, 4, "花色");
 		break;
 	case "size":
-		e = new TField("尺码", TF_SC, 5, "XL");
+		f = new TField("尺码", TF_SC, 5, "XL");
 		break;
 	case "brand":
-		e = new TField("品牌", TF_SC, 6, "1010pp");
+		f = new TField("品牌", TF_SC, 6, "1010pp");
 		break;
 	case "season":
-		e = new TField("季节", TF_SC, 7, "春季新");
+		f = new TField("季节", TF_SC, 7, "春季新");
 		break;
 	case "day1":
-		e = new TField("上架从", TF_DT, 8, "2015-9-11");
-		break;	
+		f = new TField("上架从", TF_DT, 8, "2015-9-11");
+		break;
 	case "day2":
-		e = new TField("到", TF_DT, 9, "2015-9-11");
-		break;	
+		f = new TField("到", TF_DT, 9, "2015-9-14");
+		break;
 	case "stop":
-		e = new TField("是否停用", TF_SC, 10, "否");
-		break;	
+		f = new TField("是否停用", TF_SC, 10, "否");
+		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-//款号库存
+// 款号库存
 function testQueryCodeStockFields() {
-	var fields = queryCodeStockFields("code","name","shop","provider",
-		"season","day1","day2");
+	var keys = [ "code", "name", "shop", "provider", "season", "day1", "day2" ];
+	var fields = queryCodeStockFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = queryCodeStockFields(keys, true);
+	return checkShowFields(window, showFields);
 }
 
-function queryCodeStockFields() {
-	return getTFields("queryCodeStockField", arguments);
+function queryCodeStockFields(keys, show) {
+	return getTFields("queryCodeStockField", keys, show);
 }
-function queryCodeStockField(key) {
-	var e;
+function queryCodeStockField(key, show) {
+	var f;
 	switch (key) {
 	case "code":
-		e = new TField("款号", TF_AC, 0, "a",1,0);
+		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		if (show) {
+			f.value = "5880,kha,210元";
+		}
 		break;
 	case "name":
-		e = new TField("款号名称", TF, 1, "a");
+		f = new TField("款号名称", TF, 1, "a");
 		break;
 	case "shop":
-		e = new TField("门店", TF_SC, 2, "仓库店");
+		f = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	case "provider":
-		e = new TField("厂商", TF_AC, 3, "a",1,0);
+		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
 		break;
 	case "season":
-		e = new TField("季节", TF_SC, 4, "春季新");
+		f = new TField("季节", TF_SC, 4, "春季新");
 		break;
 	case "day1":
-		e = new TField("上架从", TF_DT, 5, "2015-9-11");
-		break;	
+		f = new TField("上架从", TF_DT, 5, "2015-9-11");
+		break;
 	case "day2":
-		e = new TField("到", TF_DT, 6, "2015-9-11");
-		break;	
+		f = new TField("到", TF_DT, 6, "2015-9-11");
+		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-//库存分布
+// 库存分布
 function testQueryDistributionFields() {
-	var fields = queryDistributionFields("type","provider");
+	var keys = [ "type", "provider" ];
+	var fields = queryDistributionFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = queryDistributionFields(keys, true);
+	return checkShowFields(window, showFields);
 }
 
-function queryDistributionFields() {
-	return getTFields("queryDistributionField", arguments);
+function queryDistributionFields(keys, show) {
+	return getTFields("queryDistributionField", keys, show);
 }
-function queryDistributionField(key) {
-	var e;
+function queryDistributionField(key, show) {
+	var f;
 	switch (key) {
 	case "type":
-		e = new TField("类别", TF_SC, 0, "登山服");
+		f = new TField("类别", TF_SC, 0, "登山服");
 		break;
 	case "provider":
-		e = new TField("厂商", TF_AC, 1, "a",1,0);
-		break;	
+		f = new TField("厂商", TF_AC, 1, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
+		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-//货品进销存
+// 货品进销存
 function testQueryInOutFields() {
-	var fields = queryInOutFields("shop","code","name","provider",
-			"day1","day2","season","brand");
+	var keys = [ "shop", "code", "name", "provider", "day1", "day2", "season",
+			"brand" ];
+	var fields = queryInOutFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = queryInOutFields(keys, true);
+	return checkShowFields(window, showFields);
 }
 
-function queryInOutFields() {
-	return getTFields("queryInOutField", arguments);
+function queryInOutFields(keys, show) {
+	return getTFields("queryInOutField", keys, show);
 }
-function queryInOutField(key) {
-	var e;
+function queryInOutField(key, show) {
+	var f;
 	switch (key) {
 	case "shop":
-		e = new TField("门店", TF_SC, 0, "仓库店");
+		f = new TField("门店", TF_SC, 0, "仓库店");
 		break;
 	case "code":
-		e = new TField("款号", TF_AC, 1, "a",1,0);
+		f = new TField("款号", TF_AC, 1, "a", 1, 0);
+		if (show) {
+			f.value = "5880,kha,210元";
+		}
 		break;
 	case "name":
-		e = new TField("款号名称", TF, 2, "a");
+		f = new TField("款号名称", TF, 2, "a");
 		break;
 	case "provider":
-		e = new TField("厂商", TF_AC, 3, "a",1,0);
+		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
 		break;
 	case "day1":
-		e = new TField("上架从", TF_DT, 4, "2015-9-11");
-		break;	
+		f = new TField("上架从", TF_DT, 4, "2015-9-11");
+		break;
 	case "day2":
-		e = new TField("到", TF_DT, 5, "2015-9-11");
-		break;	
+		f = new TField("到", TF_DT, 5, "2015-9-11");
+		break;
 	case "season":
-		e = new TField("季节", TF_SC, 6, "春季新");
+		f = new TField("季节", TF_SC, 6, "春季新");
 		break;
 	case "brand":
-		e = new TField("品牌", TF_SC, 7, "1010pp");
+		f = new TField("品牌", TF_SC, 7, "1010pp");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-//货品查询
+// 货品查询
 function testQueryGoodsFields() {
-	var fields = queryGoodsFields("provider","name","brand","day1","day2",
-			"color","staff","stop","type","season");
+	var keys = [ "provider", "name", "brand", "day1", "day2", "color", "staff",
+			"stop", "type", "season" ];
+	var fields = queryGoodsFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = queryGoodsFields(keys, true);
+	return checkShowFields(window, showFields);
 }
 
-function queryGoodsFields() {
-	return getTFields("queryGoodsField", arguments);
+function queryGoodsFields(keys, show) {
+	return getTFields("queryGoodsField", keys, show);
 }
-function queryGoodsField(key) {
-	var e;
+function queryGoodsField(key, show) {
+	var f;
 	switch (key) {
 	case "provider":
-		e = new TField("厂商", TF_AC, 0, "a",1,0);
+		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
 		break;
 	case "name":
-		e = new TField("款号名称", TF, 1, "a");
+		f = new TField("款号名称", TF, 1, "a");
 		break;
 	case "brand":
-		e = new TField("品牌", TF_SC, 2, "1010pp");
+		f = new TField("品牌", TF_SC, 2, "1010pp");
 		break;
 	case "day1":
-		e = new TField("上架从", TF_DT, 3, "2015-9-11");
-		break;	
+		f = new TField("上架从", TF_DT, 3, "2015-9-11");
+		break;
 	case "day2":
-		e = new TField("到", TF_DT, 4, "2015-9-11");
-		break;	
+		f = new TField("到", TF_DT, 4, "2015-9-14");
+		break;
 	case "color":
-		e = new TField("颜色", TF_SC, 5, "花色");
+		f = new TField("颜色", TF_SC, 5, "花色");
 		break;
 	case "staff":
-		e = new TField("经办人", TF_AC, 6, "000",1,0);
+		f = new TField("经办人", TF_AC, 6, "000", 2, 0);
+		if (show) {
+			f.value = "000,管理员";
+		}
 		break;
 	case "stop":
-		e = new TField("是否停用", TF_SC, 7, "否");
+		f = new TField("是否停用", TF_SC, 7, "否");
 		break;
 	case "type":
-		e = new TField("类别", TF_SC, 8, "登山服");
+		f = new TField("类别", TF_SC, 8, "登山服");
 		break;
 	case "season":
-		e = new TField("季节", TF_SC, 9, "春季新");
+		f = new TField("季节", TF_SC, 9, "春季新");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-//新增货品
+// 新增货品
 function testEditGoodsFields() {
-	var keys = [ "code","name","brand","color","size","price1","price2",
-	             "price3","price4","price5","season","provider","warehouse",
-	             "staff","type","barcode","discount","remarks"];
+	var keys = [ "code", "name", "brand", "color", "size", "day", "price1",
+			"price2", "price3", "price4", "price5", "season", "provider",
+			"warehouse", "staff", "type", "barcode", "discount", "remarks" ];
 	var fields = editGoodsFields(keys);
 	setTFieldsValue(getView(), fields);
 	var showFields = editGoodsFields(keys, true);
@@ -236,102 +264,110 @@ function editGoodsFields(keys, show) {
 	return getTFields("editGoodsField", keys, show);
 }
 function editGoodsField(key, show) {
-	var e;
+	var f;
 	switch (key) {
 	case "code":
-		e = new TField("款号", TF, 0, "a");
+		f = new TField("款号", TF, 0, "a");
 		break;
 	case "name":
-		e = new TField("名称", TF, 1, "b");
+		f = new TField("名称", TF, 1, "b");
 		break;
 	case "brand":
-		e = new TField("品牌", BTN_SC, 0, "1010pp");
-		if(show){
-			e.type = TF;
-			e.index = 2;
+		f = new TField("品牌", BTN_SC, 0, "1010pp");
+		if (show) {
+			f.type = TF;
+			f.index = 2;
 		}
 		break;
 	case "color":
-		e = new TField("颜色", BTN_MC, 2, [0,1]);
+		f = new TField("颜色", BTN_MC, 2, [ 0, 1 ]);
 		if (show) {
-			e.type = TF;
-			e.index = 3;
-			e.value = "花色,黑色";
+			f.type = TF;
+			f.index = 3;
+			f.value = "花色,黑色";
 		}
 		break;
 	case "size":
-		e = new TField("尺码", BTN_MC, 4, [3,4]);
+		f = new TField("尺码", BTN_MC, 4, [ 3, 4 ]);
 		if (show) {
-			e.type = TF;
-			e.index = 4;
-			e.value = "T120,T130";
+			f.type = TF;
+			f.index = 4;
+			f.value = "T120,T130";
 		}
 		break;
-//	case "day":
-//		e = new TField("上架日期", "", 1, "2015-09-11");
-//		break;
+	case "day":
+		f = new TField("上架日期", BTN, 6, getToday());
+		if (show) {
+			f.type = TF;
+			f.index = 5;
+		}
+		break;
 	case "price1":
-		e = new TField("吊牌价", TF, 7, "200");
+		f = new TField("吊牌价", TF, 7, "200");
 		break;
 	case "price2":
-		e = new TField("进货价", TF, 8, "100");
+		f = new TField("进货价", TF, 8, "100");
 		break;
 	case "price3":
-		e = new TField("零批价", TF, 9, "200");
+		f = new TField("零批价", TF, 9, "200");
 		break;
 	case "price4":
-		e = new TField("打包价", TF, 10, "180");
+		f = new TField("打包价", TF, 10, "180");
 		break;
 	case "price5":
-		e = new TField("vip价格", TF, 11, "170");
+		f = new TField("vip价格", TF, 11, "170");
 		break;
 	case "season":
-		e = new TField("季节", BTN_SC, 8, "春季新");
-		if(show){
-			e.type = TF;
-			e.index = 12;
+		f = new TField("季节", BTN_SC, 8, "春季新");
+		if (show) {
+			f.type = TF;
+			f.index = 12;
 		}
 		break;
 	case "provider":
-		e = new TField("厂商", TF_AC, 13, "d",1,0);
+		f = new TField("厂商", TF_AC, 13, "a", 4, 0);
+		if (show) {
+			f.value = "Adida公司";
+		}
 		break;
 	case "warehouse":
-		e = new TField("仓位", BTN_SC, 10, "默认");
+		f = new TField("仓位", BTN_SC, 10, "默认");
 		if (show) {
-			e.type = TF;
-			e.index = 14;
+			f.type = TF;
+			f.index = 14;
 		}
 		break;
 	case "staff":
-		e = new TField("经办人", TF_AC, 15, "000",1,0);
+		f = new TField("经办人", TF_AC, 15, "000", 4, 0);
+		if (show) {
+			f.value = "000,管理员";
+		}
 		break;
 	case "type":
-		e = new TField("类别", BTN_SC, 11, "登山服");
+		f = new TField("类别", BTN_SC, 11, "登山服");
 		if (show) {
-			e.type = TF;
-			e.index = 16;
+			f.type = TF;
+			f.index = 16;
 		}
 		break;
 	case "barcode":
-		e = new TField("条码", TF, 17, "555555");
+		f = new TField("条码", TF, 17, "555555");
 		break;
 	case "discount":
-		e = new TField("折扣", TF, 18, "0.9");
+		f = new TField("折扣", TF, 18, "0.9");
 		break;
 	case "remarks":
-		e = new TField("备注", TF, 19, "123");
+		f = new TField("备注", TF, 19, "123");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-//批量调价
+// 批量调价
 function testPricingFields() {
-	var keys = ["add","multiplication"];
+	var keys = [ "add", "multiplication" ];
 	var fields = pricingFields(keys);
 	setTFieldsValue(getView(1), fields);
 	var showFields = pricingFields(keys, true);
@@ -341,26 +377,23 @@ function pricingFields(keys, show) {
 	return getTFields("pricingField", keys, show);
 }
 function pricingField(key, show) {
-	var e;
+	var f;
 	switch (key) {
 	case "add":
-		e = new TField("统一加减", TF, 3, "1");
+		f = new TField("统一加减", TF, 3, "1");
 		break;
 	case "multiplication":
-		e = new TField("统一乘", TF, 4, "0.8");
+		f = new TField("统一乘", TF, 4, "0.8");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-
-//价格名称
+// 价格名称
 function testPriceNameFields() {
-	var keys = ["name","use","proportion"];
+	var keys = [ "name", "use", "proportion" ];
 	var fields = priceNameFields(keys);
 	setTFieldsValue(getView(), fields);
 	var showFields = priceNameFields(keys, true);
@@ -370,32 +403,30 @@ function priceNameFields(keys, show) {
 	return getTFields("priceNameField", keys, show);
 }
 function priceNameField(key, show) {
-	var e;
+	var f;
 	switch (key) {
 	case "name":
-		e = new TField("名称", TF, 0, "a");
+		f = new TField("名称", TF, 0, "a");
 		break;
 	case "use":
-		e = new TField("是否适用", BTN_SC, 0,  "是");
-		if(show){
-			e.type = TF;
-			e.index = 1;
+		f = new TField("是否适用", BTN_SC, 0, "是");
+		if (show) {
+			f.type = TF;
+			f.index = 1;
 		}
 		break;
 	case "proportion":
-		e = new TField("比例 ", TF, 2, "1.3");
+		f = new TField("比例 ", TF, 2, "1.3");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
 }
 
-
-
-//货品类别 
+// 货品类别
 function testGoodsTypeFields() {
-	var fields = goodsTypeFields("");
+	var fields = goodsTypeFields("name");
 	setTFieldsValue(window, fields);
 	return true;
 }
@@ -404,13 +435,223 @@ function goodsTypeFields() {
 	return getTFields("goodsTypeField", arguments);
 }
 function goodsTypeField(key) {
-	var e;
+	var f;
 	switch (key) {
-	case "provider":
-		e = new TField("厂商", TF_AC, 0, "a",1,0);
+	case "name":
+		f = new TField("类别名称", TF, 0, "qqq");
 		break;
 	default:
 		logWarn("未知key＝" + key);
 	}
-	return e;
+	return f;
+}
+
+// 新增类别
+function testGoodsAddFields() {
+	var fields = goodsAddFields("name");
+	setTFieldsValue(getView(), fields);
+	return true;
+}
+
+function goodsAddFields() {
+	return getTFields("goodsAddField", arguments);
+}
+function goodsAddField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("类别名称", TF, 0, "qqq");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 所有颜色
+function testColorFields() {
+	var fields = colorFields("name");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function colorFields() {
+	return getTFields("colorField", arguments);
+}
+function colorField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("类别名称", TF, 0, "q");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增颜色
+function testColorAddFields() {
+	var keys = [ "type", "code", "name" ];
+	var fields = colorAddFields(keys);
+	setTFieldsValue(getView(), fields);
+	var showFields = colorAddFields(keys, true);
+	return checkShowFields(getView(), showFields);
+}
+
+function colorAddFields(keys, show) {
+	return getTFields("colorAddField", keys, show);
+}
+function colorAddField(key, show) {
+	var f;
+	switch (key) {
+	case "type":
+		f = new TField("颜色类别", BTN_SC, 0, "中");
+		if (show) {
+			f.type = TF;
+			f.index = 0;
+		}
+		break;
+	case "code":
+		f = new TField("编码", TF, 1, "123");
+		break;
+	case "name":
+		f = new TField("名称", TF, 2, "qqq");
+		break;
+	// 颜色值
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 所有尺码
+function testSizeFields() {
+	var fields = sizeFields("sizeids", "name");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function sizeFields() {
+	return getTFields("sizeField", arguments);
+}
+function sizeField(key) {
+	var f;
+	switch (key) {
+	case "sizeids":
+		f = new TField("尺码组", TF_SC, 0, "童装尺码组1");
+		break;
+	case "name":
+		f = new TField("类别名称", TF, 1, "q");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增尺码
+function testSizeAddFields() {
+	var keys = [ "type", "code", "name", "sequence", "num" ];
+	var fields = sizeAddFields(keys);
+	setTFieldsValue(getView(), fields);
+	var showFields = sizeAddFields(keys, true);
+	return checkShowFields(getView(), showFields);
+}
+
+function sizeAddFields(keys, show) {
+	return getTFields("sizeAddField", keys, show);
+}
+function sizeAddField(key, show) {
+	var f;
+	switch (key) {
+	case "type":
+		f = new TField("尺码类别", BTN_SC, 0, "童装尺码组1");
+		if (show) {
+			f.type = TF;
+			f.index = 0;
+		}
+		break;
+	case "code":
+		f = new TField("编码", TF, 1, "123");
+		break;
+	case "name":
+		f = new TField("名称", TF, 2, "qqq");
+		break;
+	case "sequence":
+		f = new TField("显示顺序", TF, 3, "10");
+		break;
+	case "num":
+		f = new TField("对应件数", TF, 4, "12");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 所有品牌
+function testBrandFields() {
+	var fields = brandFields("name");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function brandFields() {
+	return getTFields("brandField", arguments);
+}
+function brandField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "a");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增品牌
+function testBrandAddFields() {
+	var fields = brandAddFields("name");
+	setTFieldsValue(getView(), fields);
+	return true;
+}
+
+function brandAddFields() {
+	return getTFields("brandAddField", arguments);
+}
+function brandAddField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "a");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 所有尺码组
+function testSizeidsFields() {
+	var fields = sizeFields("name");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function sizeidsFields() {
+	return getTFields("sizeidsField", arguments);
+}
+function sizeidsField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "衣服尺码");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
 }

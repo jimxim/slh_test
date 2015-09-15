@@ -33,7 +33,7 @@ function test000All() {
 // run("导出对账单", "testExportFields");
 // run("厂商总帐", "testQueryProviderAccountFields");
 // run("物流商查询", "testQueryLogisticsFields");
- run("新增物流商","testAddLogisticsFields");
+// run("新增物流商","testAddLogisticsFields");
 // run("客户回访", "testQueryCustomerBackFields");
 // run("新增客户回访", "testAddCustomerBackFields");
 	
@@ -46,6 +46,15 @@ function test000All() {
 // run("批量调价", "testPricingFields");
 // run("价格名称", "testPriceNameFields");
 // run("货品类别", "testGoodsTypeFields");
+// run("新增类别", "testGoodsAddFields");
+// run("所有颜色", "testColorFields");
+// run("新增颜色", "testColorAddFields");
+// run("所有尺码", "testSizeFields");
+//	run("新增尺码", "testSizeAddFields");
+//	run("所有品牌", "testBrandFields");
+//	run("新增品牌", "testBrandAddFields");
+	 run("所有尺码组", "testSizeidsFields");
+	
 // testWanLaiProviderAll();
 // testGoodsAll();
 // logout();
