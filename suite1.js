@@ -65,7 +65,13 @@ function test000All() {
 // run("按金额汇总", "testPriceFields");
 // run("按款号汇总", "testCodeFields");
 // run("按厂商返货", "testProviderReturnFields");
-	run("按厂商汇总", "testProviderFields");
+// run("按厂商汇总", "testProviderFields");
+// run("按出入库汇总", "testInOutFields");
+// run("供应商对账单", "testSupplierFields"); 下标错误
+// run("按类别汇总", "testTypeFields");
+// run("按订货入库", "testOrderFields");
+// run("厂商总账", "testProviderAccountFields");
+	run("厂商门店账", "testShopAccountFields");
 	
 // testWanLaiProviderAll();
 // testGoodsAll();
