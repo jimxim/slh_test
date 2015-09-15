@@ -12,7 +12,7 @@
 // #import "testcase/wangLai/provider.js"
 #import "testcase/purchase/purchaseFields.js"
 #import "testcase/purchaseOrder/purchaseOrderFields.js"
-#import "testcase/shopIn/shopInFields,js";
+#import "testcase/shopIn/shopInFields.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
 
@@ -83,7 +83,8 @@ function test000All() {
 // run("新增订货", "testPurchaseOrderAddFields");
 // run("新增厂商", "testPurchaseOrderProviderAddFields");
 	
- run("按批次查", "testShopInQueryBatchFields");
+	run("在途调拨", "testShopInFlitFields");
+// run("按批次查", "testShopInQueryBatchFields");
 // run("按明细查", "testShopInQueryParticularFields");	
 	
 // testWanLaiProviderAll();
