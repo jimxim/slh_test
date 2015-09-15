@@ -27,3 +27,5 @@ logistics--物流
 brand--品牌
 branch--分店
 weixin--微信
+purchase--采购
+order--订货

@@ -10,6 +10,7 @@
 // #import "testcase/wangLai/customer.js"
 #import "testcase/wangLai/customerFields.js"
 // #import "testcase/wangLai/provider.js"
+#import "testcase/purchase/purchaseFields.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
 
@@ -50,10 +51,21 @@ function test000All() {
 // run("所有颜色", "testColorFields");
 // run("新增颜色", "testColorAddFields");
 // run("所有尺码", "testSizeFields");
-//	run("新增尺码", "testSizeAddFields");
-//	run("所有品牌", "testBrandFields");
-//	run("新增品牌", "testBrandAddFields");
-	 run("所有尺码组", "testSizeidsFields");
+// run("新增尺码", "testSizeAddFields");
+// run("所有品牌", "testBrandFields");
+// run("新增品牌", "testBrandAddFields");
+// run("所有尺码组", "testSizeidsFields");
+// run("新增尺码组", "testSizeidsAddFields");
+// run("所有品牌折扣", "testBrandDiscountFields");
+// run("新增品牌折扣", "testBrandDiscountAddFields");
+// run("客户上货", "testCustomerFields");
+	
+// run("按批次查", "testQueryBatchFields");
+// run("按明细查", "testQueryParticularFields");
+// run("按金额汇总", "testPriceFields");
+// run("按款号汇总", "testCodeFields");
+// run("按厂商返货", "testProviderReturnFields");
+	run("按厂商汇总", "testProviderFields");
 	
 // testWanLaiProviderAll();
 // testGoodsAll();

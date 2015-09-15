@@ -230,7 +230,7 @@ function queryGoodsField(key, show) {
 		f = new TField("颜色", TF_SC, 5, "花色");
 		break;
 	case "staff":
-		f = new TField("经办人", TF_AC, 6, "000", 2, 0);
+		f = new TField("经办人", TF_AC, 6, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -636,7 +636,7 @@ function brandAddField(key) {
 
 // 所有尺码组
 function testSizeidsFields() {
-	var fields = sizeFields("name");
+	var fields = sizeidsFields("name");
 	setTFieldsValue(window, fields);
 	return true;
 }
@@ -648,7 +648,118 @@ function sizeidsField(key) {
 	var f;
 	switch (key) {
 	case "name":
-		f = new TField("名称", TF, 0, "衣服尺码");
+		f = new TField("名称", TF, 0, "a");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增尺码组
+function testSizeidsAddFields() {
+	var fields = sizeidsAddFields("name");
+	setTFieldsValue(getView(), fields);
+	return true;
+}
+
+function sizeidsAddFields() {
+	return getTFields("sizeidsAddField", arguments);
+}
+function sizeidsAddField(key) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "a");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 所有品牌折扣
+function testBrandDiscountFields() {
+	var fields = brandDiscountFields("brand");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function brandDiscountFields() {
+	return getTFields("brandDiscountField", arguments);
+}
+function brandDiscountField(key) {
+	var f;
+	switch (key) {
+	case "brand":
+		f = new TField("品牌", TF_SC, 0, "1010pp");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增品牌折扣
+function testBrandDiscountAddFields() {
+	var keys=["brand","discount","price1","price2","price3"];
+	var fields = brandDiscountAddFields(keys);
+	setTFieldsValue(getView(), fields);
+	var showFields= brandDiscountAddFields(keys,true);
+	return checkShowFields=(getView(),showFields);
+}
+
+function brandDiscountAddFields(keys,show) {
+	return getTFields("brandDiscountAddField", keys,show);
+}
+function brandDiscountAddField(key,show) {
+	var f;
+	switch (key) {
+	case "brand":
+		f = new TField("品牌", BTN_SC, 0, "1010pp");
+		if(show){
+			f.type =  TF;
+			f.index = 0;
+		}
+		break;
+	case "discount":
+		f = new TField("进货价折扣", TF, 1, "1");
+		break;
+	case "price1":
+		f = new TField("零批价", TF, 2, "0.5");
+		break;
+	case "price2":
+		f = new TField("打包价", TF, 3, "0.4");
+		break;
+	case "price3":
+		f = new TField("Vip价格", TF, 4, "0.3");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 客户上货
+function testCustomerFields() {
+	var keys=["code"];
+	var fields = customerFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields=customerFields(keys,true);
+	return checkShowFields=(window,showFields);
+}
+
+function customerFields(keys,show) {
+	return getTFields("customerField", keys,show);
+}
+function customerField(key,show) {
+	var f;
+	switch (key) {
+	case "code":
+		f = new TField("款号", TF_AC, 0, "a",1,0);
+		if(show){
+			f.value="5880,kha,210元";
+		}
 		break;
 	default:
 		logWarn("未知key＝" + key);
