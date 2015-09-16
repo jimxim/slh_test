@@ -3,16 +3,16 @@
 //在途调拨
 function testShopInFlitFields() {
 	var keys = [ "day1", "day2", "shop", "batch1", "batch2", ];
-	var fields = flitFields(keys);
+	var fields = shopInFlitFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = flitFields(keys, true);
+	var showFields = shopInFlitFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function flitFields(keys, show) {
-	return getTFields("flitField", keys, show);
+function shopInFlitFields(keys, show) {
+	return getTFields("shopInFlitField", keys, show);
 }
-function flitField(key, show) {
+function shopInFlitField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -39,16 +39,16 @@ function flitField(key, show) {
 // 按批次查
 function testShopInQueryBatchFields() {
 	var keys = [ "day1", "day2", "shopOut", "batch1", "batch2", "shopIn" ];
-	var fields = queryBatchFields(keys);
+	var fields = shopInQueryBatchFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryBatchFields(keys, true);
+	var showFields = shopInQueryBatchFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryBatchFields(keys, show) {
-	return getTFields("queryBatchField", keys, show);
+function shopInQueryBatchFields(keys, show) {
+	return getTFields("shopInQueryBatchField", keys, show);
 }
-function queryBatchField(key, show) {
+function shopInQueryBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -78,16 +78,16 @@ function queryBatchField(key, show) {
 // 按明细查
 function testShopInQueryParticularFields() {
 	var keys = [ "code", "day1", "day2", "shopOut", "shopIn" ];
-	var fields = queryParticularFields(keys);
+	var fields = shopInQueryParticularFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryParticularFields(keys, true);
+	var showFields = shopInQueryParticularFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryParticularFields(keys, show) {
-	return getTFields("queryParticularField", keys, show);
+function shopInQueryParticularFields(keys, show) {
+	return getTFields("shopInQueryParticularField", keys, show);
 }
-function queryParticularField(key, show) {
+function shopInQueryParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "code":

@@ -339,7 +339,7 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "staff":
-		f = new TField("经办人", TF_AC, 15,"000", l-1,"000,总经理"); 
+		f = new TField("经办人", TF_AC, 15,"000", l-1,"000,管理员"); 
 		if (show) {
 			f.value = f.p2;
 		}

@@ -3,16 +3,16 @@
 //按批次查
 function testPurchaseOrderQueryBatchFields() {
 	var keys = [ "provider", "day1", "day2", "batch1", "batch2", "shop" ];
-	var fields = queryBatchFields(keys);
+	var fields = purchaseOrderQueryBatchFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryBatchFields(keys, true);
+	var showFields = purchaseOrderQueryBatchFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryBatchFields(keys, show) {
-	return getTFields("queryBatchField", keys, show);
+function purchaseOrderQueryBatchFields(keys, show) {
+	return getTFields("purchaseOrderQueryBatchField", keys, show);
 }
-function queryBatchField(key, show) {
+function purchaseOrderQueryBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
@@ -45,16 +45,16 @@ function queryBatchField(key, show) {
 // 按明细查
 function testPurchaseOrderQueryParticularFields() {
 	var keys = [ "shop", "code", "provider", "day1", "day2" ];
-	var fields = queryParticularFields(keys);
+	var fields = purchaseOrderQueryParticularFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryParticularFields(keys, true);
+	var showFields = purchaseOrderQueryParticularFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryParticularFields(keys, show) {
-	return getTFields("queryParticularField", keys, show);
+function purchaseOrderQueryParticularFields(keys, show) {
+	return getTFields("purchaseOrderQueryParticularField", keys, show);
 }
-function queryParticularField(key, show) {
+function purchaseOrderQueryParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
@@ -87,16 +87,16 @@ function queryParticularField(key, show) {
 // 按款号
 function testPurchaseOrderCodeFields() {
 	var keys = [ "day1", "day2", "code" ];
-	var fields = codeFields(keys);
+	var fields = purchaseOrderCodeFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = codeFields(keys, true);
+	var showFields = purchaseOrderCodeFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function codeFields(keys, show) {
-	return getTFields("codeField", keys, show);
+function purchaseOrderCodeFields(keys, show) {
+	return getTFields("purchaseOrderCodeField", keys, show);
 }
-function codeField(key, show) {
+function purchaseOrderCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -120,16 +120,16 @@ function codeField(key, show) {
 // 按厂商
 function testPurchaseOrderProviderFields() {
 	var keys = [ "day1", "day2", "provider" ];
-	var fields = providerFields(keys);
+	var fields = purchaseOrderProviderFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = providerFields(keys, true);
+	var showFields = purchaseOrderProviderFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function providerFields(keys, show) {
-	return getTFields("providerField", keys, show);
+function purchaseOrderProviderFields(keys, show) {
+	return getTFields("purchaseOrderProviderField", keys, show);
 }
-function providerField(key, show) {
+function purchaseOrderProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -153,16 +153,16 @@ function providerField(key, show) {
 // 按门店
 function testPurchaseOrderShopFields() {
 	var keys = [ "day1", "day2", "shop" ];
-	var fields = shopFields(keys);
+	var fields = purchaseOrderShopFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = shopFields(keys, true);
+	var showFields = purchaseOrderShopFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function shopFields(keys, show) {
-	return getTFields("shopField", keys, show);
+function purchaseOrderShopFields(keys, show) {
+	return getTFields("purchaseOrderShopField", keys, show);
 }
-function shopField(key, show) {
+function purchaseOrderShopField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -183,26 +183,27 @@ function shopField(key, show) {
 // 新增订货
 function testPurchaseOrderAddFields() {
 	var keys = [ "provider", "staff", "day", "remarks" ];
-	var fields = orderAddFields(keys);
+	var fields = purchaseOrderAddFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = orderAddFields(keys, true);
+	var showFields = purchaseOrderAddFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function orderAddFields(keys, show) {
-	return getTFields("orderAddField", keys, show);
+function purchaseOrderAddFields(keys, show) {
+	return getTFields("purchaseOrderAddField", keys, show);
 }
-function orderAddField(key, show) {
+function purchaseOrderAddField(key, show) {
+	var l = getTableViews().length;
 	var f;
-	switch (key) {
+	switch (key) {	
 	case "provider":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", l-1,"aa");
 		if (show) {
-			f.value = "aa";
+			f.value = f.p2;
 		}
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 1, "000", 1, 0);
+		f = new TField("店员", TF_AC, 1, "000", l-1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -221,15 +222,15 @@ function orderAddField(key, show) {
 
 // 新增厂商
 function testPurchaseOrderProviderAddFields() {
-	var fields = providerAddFields("coding", "mobile", "authcode");
+	var fields = purchaseOrderProviderAddFields("coding", "mobile", "authcode");
 	setTFieldsValue(getView(), fields);
 	return true;
 }
 
-function providerAddFields() {
-	return getTFields("providerAddField", arguments);
+function purchaseOrderProviderAddFields() {
+	return getTFields("purchaseOrderProviderAddField", arguments);
 }
-function providerAddField(key) {
+function purchaseOrderProviderAddField(key) {
 	var f;
 	switch (key) {
 	case "coding":

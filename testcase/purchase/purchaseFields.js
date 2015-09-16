@@ -4,16 +4,16 @@
 function testPurchaseQueryBatchFields() {
 	var keys = [ "provider", "day1", "day2", "order", "batch1", "batch2",
 			"shop", "staff" ];
-	var fields = queryBatchFields(keys);
+	var fields = purchaseQueryBatchFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryBatchFields(keys, true);
+	var showFields = purchaseQueryBatchFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryBatchFields(keys, show) {
-	return getTFields("queryBatchField", keys, show);
+function purchaseQueryBatchFields(keys, show) {
+	return getTFields("purchaseQueryBatchField", keys, show);
 }
-function queryBatchField(key, show) {
+function purchaseQueryBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
@@ -56,16 +56,16 @@ function queryBatchField(key, show) {
 // 按明细查
 function testPurchaseQueryParticularFields() {
 	var keys = [ "code", "name", "provider", "day1", "day2", "shop" ];
-	var fields = queryParticularFields(keys);
+	var fields = purchaseQueryParticularFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryParticularFields(keys, true);
+	var showFields = purchaseQueryParticularFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryParticularFields(keys, show) {
-	return getTFields("queryParticularField", keys, show);
+function purchaseQueryParticularFields(keys, show) {
+	return getTFields("purchaseQueryParticularField", keys, show);
 }
-function queryParticularField(key, show) {
+function purchaseQueryParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
@@ -100,15 +100,15 @@ function queryParticularField(key, show) {
 
 // 按金额汇总
 function testPurchasePriceFields() {
-	var fields = priceFields("day1", "day2");
+	var fields = purchasePriceFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function priceFields() {
-	return getTFields("priceField", arguments);
+function purchasePriceFields() {
+	return getTFields("purchasePriceField", arguments);
 }
-function priceField(key) {
+function purchasePriceField(key) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -126,16 +126,16 @@ function priceField(key) {
 // 按款号汇总
 function testPurchaseCodeFields() {
 	var keys = [ "code", "day1", "day2", "day3", "day4" ];
-	var fields = codeFields(keys);
+	var fields = purchaseCodeFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = codeFields(keys, true);
+	var showFields = purchaseCodeFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function codeFields(keys, show) {
-	return getTFields("codeField", keys, show);
+function purchaseCodeFields(keys, show) {
+	return getTFields("purchaseCodeField", keys, show);
 }
-function codeField(key, show) {
+function purchaseCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
@@ -165,16 +165,16 @@ function codeField(key, show) {
 // 按厂商返货
 function testPurchaseProviderReturnFields() {
 	var keys = [ "code", "day1", "day2", "provider" ];
-	var fields = providerReturnFields(keys);
+	var fields = purchaseProviderReturnFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = providerReturnFields(keys, true);
+	var showFields = purchaseProviderReturnFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function providerReturnFields(keys, show) {
-	return getTFields("providerReturnField", keys, show);
+function purchaseProviderReturnFields(keys, show) {
+	return getTFields("purchaseProviderReturnField", keys, show);
 }
-function providerReturnField(key, show) {
+function purchaseProviderReturnField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
@@ -204,16 +204,16 @@ function providerReturnField(key, show) {
 // 按厂商汇总
 function testPurchaseProviderFields() {
 	var keys = [ "day1", "day2", "provider" ];
-	var fields = providerFields(keys);
+	var fields = purchaseProviderFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = providerFields(keys, true);
+	var showFields = purchaseProviderFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function providerFields(keys, show) {
-	return getTFields("providerField", keys, show);
+function purchaseProviderFields(keys, show) {
+	return getTFields("purchaseProviderField", keys, show);
 }
-function providerField(key, show) {
+function purchaseProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -236,15 +236,15 @@ function providerField(key, show) {
 
 // 按出入库汇总
 function testPurchaseInOutFields() {
-	var fields = inOutFields("day1", "day2");
+	var fields = purchaseInOutFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function inOutFields() {
-	return getTFields("inOutField", arguments);
+function purchaseInOutFields() {
+	return getTFields("purchaseInOutField", arguments);
 }
-function inOutField(key) {
+function purchaseInOutField(key) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -260,30 +260,30 @@ function inOutField(key) {
 }
 
 // 供应商对账单
-function testPurchaseSupplierFields() {
+function testPurchaseQueryProviderFields() {
 	var keys = [ "day1", "day2", "supplier" ];
-	var fields = supplierFields(keys);
+	var fields = purchaseQueryProviderFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = supplierFields(keys, true);
+	var showFields = purchaseQueryProviderFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function supplierFields(keys, show) {
-	return getTFields("supplierField", keys, show);
+function purchaseQueryProviderFields(keys, show) {
+	return getTFields("purchaseQueryProviderField", keys, show);
 }
-function supplierField(key, show) {
+function purchaseQueryProviderField(key, show) {
 	var l = getTextFields().length;
 	var f;
 	switch (key) {
 	case "day1":
-		f = new TField("日期从", TF_DT, l-3, "2015-9-11");
+		f = new TField("日期从", TF_DT, l - 3, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, l-2, "2015-9-15");
+		f = new TField("到", TF_DT, l - 2, "2015-9-15");
 		break;
 	case "supplier":
-		var tableViewIndex = getTableViews().length -1;
-		f = new TField("供应商", TF_AC, l-1, "a", tableViewIndex, 0);
+		var tableViewIndex = getTableViews().length - 1;
+		f = new TField("供应商", TF_AC, l - 1, "a", tableViewIndex, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -296,15 +296,15 @@ function supplierField(key, show) {
 
 // 按类别汇总
 function testPurchaseTypeFields() {
-	var fields = typeFields("day1", "day2", "type");
+	var fields = purchaseTypeFields("day1", "day2", "type");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function typeFields() {
-	return getTFields("typeField", arguments);
+function purchaseTypeFields() {
+	return getTFields("purchaseTypeField", arguments);
 }
-function typeField(key) {
+function purchaseTypeField(key) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -325,16 +325,16 @@ function typeField(key) {
 // 按订货入库
 function testPurchaseOrderFields() {
 	var keys = [ "day1", "day2", "provider", "code" ];
-	var fields = orderFields(keys);
+	var fields = purchaseOrderFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = orderFields(keys, true);
+	var showFields = purchaseOrderFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function orderFields(keys, show) {
-	return getTFields("orderField", keys, show);
+function purchaseOrderFields(keys, show) {
+	return getTFields("purchaseOrderField", keys, show);
 }
-function orderField(key, show) {
+function purchaseOrderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -364,16 +364,16 @@ function orderField(key, show) {
 // 厂商总账
 function testPurchaseProviderAccountFields() {
 	var keys = [ "provider" ];
-	var fields = providerAccountFields(keys);
+	var fields = purchaseProviderAccountFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = providerAccountFields(keys, true);
+	var showFields = purchaseProviderAccountFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function providerAccountFields(keys, show) {
-	return getTFields("providerAccountField", keys, show);
+function purchaseProviderAccountFields(keys, show) {
+	return getTFields("purchaseProviderAccountField", keys, show);
 }
-function providerAccountField(key, show) {
+function purchaseProviderAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
@@ -391,16 +391,16 @@ function providerAccountField(key, show) {
 // 厂商门店账
 function testPurchaseShopAccountFields() {
 	var keys = [ "provider", "shop" ];
-	var fields = shopAccountFields(keys);
+	var fields = purchaseShopAccountFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = shopAccountFields(keys, true);
+	var showFields = purchaseShopAccountFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function shopAccountFields(keys, show) {
-	return getTFields("shopAccountField", keys, show);
+function purchaseShopAccountFields(keys, show) {
+	return getTFields("purchaseShopAccountField", keys, show);
 }
-function shopAccountField(key, show) {
+function purchaseShopAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
