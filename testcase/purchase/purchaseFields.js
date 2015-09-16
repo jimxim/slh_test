@@ -272,16 +272,18 @@ function supplierFields(keys, show) {
 	return getTFields("supplierField", keys, show);
 }
 function supplierField(key, show) {
+	var l = getTextFields().length;
 	var f;
 	switch (key) {
 	case "day1":
-		f = new TField("日期从", TF_DT, 1, "2015-9-11");
+		f = new TField("日期从", TF_DT, l-3, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 2, "2015-9-15");
+		f = new TField("到", TF_DT, l-2, "2015-9-15");
 		break;
 	case "supplier":
-		f = new TField("供应商", TF_AC, 3, "a", 1, 0);
+		var tableViewIndex = getTableViews().length -1;
+		f = new TField("供应商", TF_AC, l-1, "a", tableViewIndex, 0);
 		if (show) {
 			f.value = "aa";
 		}

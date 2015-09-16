@@ -325,7 +325,7 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "provider":
-		f = new TField("厂商", TF_AC, 13, "a", 4, 0);
+		f = new TField("厂商", TF_AC, 13, "Adida公司","a");//, 4, 0
 		if (show) {
 			f.value = "Adida公司";
 		}
@@ -338,7 +338,7 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "staff":
-		f = new TField("经办人", TF_AC, 15, "000", 4, 0);
+		f = new TField("经办人", TF_AC, 15, "000,管理员","000"); //, 4, 0
 		if (show) {
 			f.value = "000,管理员";
 		}
