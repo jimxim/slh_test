@@ -15,6 +15,7 @@
 #import "testcase/shopIn/shopInFields.js"
 #import "testcase/shopOut/shopOutFields.js"
 #import "testcase/salesOrder/salesOrderFields.js"
+#import "testcase/sales/salesFields.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
 
@@ -95,12 +96,21 @@ function test000All() {
 // 销售订货
 // run("按批次查", "testSalesOrderQueryBatchFields");
 // run("按明细查", "testSalesOrderQueryParticularFields");
- run("按款号图像", "testSalesOrderPictureFields"); 
+// run("按款号图像", "testSalesOrderPictureFields"); 款号X
 // run("按款号", "testSalesOrderCodeFields");
 // run("按店员", "testSalesOrderStaffFields");
 // run("按客户", "testSalesOrderCustomerFields");
 // run("按门店", "testSalesOrderShopFields");
 // run("新增订货", "testSalesOrderAddFields");
+// 销售开单
+// run("按批次查", "testSalesQueryBatchFields");
+// run("按明细查", "testSalesQueryParticularFields");
+// run("按金额汇总", "testSalesPriceFields");
+// run("按款号汇总", "testSalesCodeFields");
+// run("按退货汇总", "testSalesReturnFields");
+// run("按店员汇总", "testSalesStaffFields");
+// run("按客户销售", "testSalesStaffConsumeFields");  区域X
+
 // testWanLaiProviderAll();
 // testGoodsAll();
 // logout();

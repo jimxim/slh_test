@@ -26,7 +26,7 @@ function salesOrderQueryBatchField(key, show) {
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 2, "2015-9-16");
+		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "staff":
 		f = new TField("店员", TF_AC, 3, "000", 1, 0);
@@ -74,7 +74,7 @@ function salesOrderQueryParticularField(key, show) {
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 2, "2015-9-16");
+		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "customer":
 		f = new TField("客户", TF_AC, 3, "z", 1, 0);
@@ -102,30 +102,29 @@ function salesOrderQueryParticularField(key, show) {
 
 // 按款号图像
 function testSalesOrderPictureFields() {
-	debugElementTree(getTableViews()[2]);
+	var view1=getTableViews()[2].groups()["日期"];
 	var keys = [ "day1", "day2", "code" ];
 	var fields = salesOrderPictureFields(keys);
-	setTFieldsValue(getTableViews()[2], fields);
+	setTFieldsValue(view1, fields);
 	
 	var showFields = salesOrderPictureFields(keys, true);
-	return checkShowFields(getTableViews()[2], showFields);
+	return checkShowFields(view1, showFields);
 }
 
 function salesOrderPictureFields(keys, show) {
 	return getTFields("salesOrderPictureField", keys, show);
 }
 function salesOrderPictureField(key, show) {
-
 	var f;
 	switch (key) {
 	case "day1":
 		f = new TField("日期", TF_DT, 0, "2015-7-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-7-16");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
-		f = new TField("款号", TF_AC, 2, "a", 1, 0);
+		f = new TField("款号", TF_AC, 2,"a",1,0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -155,7 +154,7 @@ function salesOrderCodeField(key, show) {
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-16");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
 		f = new TField("款号", TF_AC, 2, "a", 1, 0);
@@ -197,7 +196,7 @@ function salesOrderStaffField(key, show) {
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-16");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "staff":
 		f = new TField("店员", TF_AC, 2, "000", 1, 0);
@@ -230,7 +229,7 @@ function salesOrderCustomerField(key, show) {
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-16");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "customer":
 		f = new TField("客户", TF_AC, 2, "a", 1, 0);
@@ -262,7 +261,7 @@ function salesOrderShopField(key, show) {
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-16");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
 		f = new TField("门店", TF_SC, 2, "常青店");
