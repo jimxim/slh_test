@@ -1,6 +1,57 @@
 新增供应商，操作人 000
 区域选择
 
+debugElementTree(app.keyboard());
+UIAButton: name:Return rect:{{866, 511}, {158, 79}}
+UIAButton: name:shift rect:{{0, 597}, {91, 79}}
+UIAKey: name:, rect:{{725, 597}, {90, 79}}
+UIAButton: name:shift rect:{{905, 597}, {119, 79}}
+UIAKey: name:more, numbers rect:{{0, 683}, {90, 79}}   .?123
+UIAButton: name:Next keyboard value:Emoji rect:{{90, 683}, {91, 79}} 笑脸，表情
+UIAButton: name:Dictate rect:{{181, 683}, {91, 79}}
+UIAKey: name:space rect:{{181, 683}, {634, 79}}
+UIAButton: name:Hide keyboard rect:{{933, 683}, {91, 79}}
+
+// 返回texts标题＝title的等于value的下标
+function getIndexEqualsTexts1ByTitle(texts, value, title) {
+	if (debug) {
+		logDebug("value=" + value + " title=" + title);
+		debugArray(texts);
+	}
+
+	var qrTitle = getQResultTitle(texts, title);
+	var titleIndex = qrTitle.index;
+	var titleTotal = qrTitle.total;
+
+	var ret = -1;
+	for (var i = titleIndex + titleTotal; i < texts.length; i++) {
+		if (value === texts[i].value()) {
+			ret = i;
+			break;
+		}
+	}
+
+	return ret;
+}
+// texts元素中包含value的个数
+function getCountInTexts1ByTitle(texts, value, title) {
+	var qrTitle = getQResultTitle(texts, title);
+	var titleIndex = qrTitle.index;
+	var titleTotal = qrTitle.total;
+	var ret = 0;
+	for (var i = titleIndex + titleTotal; i < texts.length; i++) {
+		if (isIn(texts[i].value(), value)) {
+			ret++;
+		}
+	}
+	logDebug("value=" + value + " count in query result=", ret);
+	return ret;
+}
+// 如果 texts 标题＝title的任一值等于a ，返回真
+function isEqualsTexts1ByTitle(texts, value, title) {
+	return getIndexEqualsTexts1ByTitle(texts, value, title) != -1;
+}
+
 // 设置文本框-自动完成值，AC=Auto Complete
 function setTextFieldACValue(view1, e1) {
 //	view1.scrollUp();

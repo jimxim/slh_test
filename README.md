@@ -29,3 +29,12 @@ branch--分店
 weixin--微信
 purchase--采购
 order--订货
+
+
+
+
+主要问题解决：
+1.点击一个菜单完成操作后，再点第二个菜单无反应，原因是因为操作太快，来不及响应，加delay
+2.编辑页面自动完成控件不响应，需要用keyboard.typeString触发
+  模拟器的设置如下： Hardware - Keyboard 中，将“Connect Hardware Keyboard” 去掉，这样 虚拟键盘会出现，键盘事件就会起作用。
+3.虚拟键盘出现后，会占位置，导致单选等操作失败
