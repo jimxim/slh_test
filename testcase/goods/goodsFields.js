@@ -264,6 +264,7 @@ function editGoodsFields(keys, show) {
 	return getTFields("editGoodsField", keys, show);
 }
 function editGoodsField(key, show) {
+	var l = getTableViews().length;
 	var f;
 	switch (key) {
 	case "code":
@@ -325,9 +326,9 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "provider":
-		f = new TField("厂商", TF_AC, 13, "Adida公司","a");//, 4, 0
+		f = new TField("厂商", TF_AC, 13, "a", l-1,"Adida公司");
 		if (show) {
-			f.value = "Adida公司";
+			f.value = f.p2;
 		}
 		break;
 	case "warehouse":
@@ -338,9 +339,9 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "staff":
-		f = new TField("经办人", TF_AC, 15, "000,管理员","000"); //, 4, 0
+		f = new TField("经办人", TF_AC, 15,"000", l-1,"000,总经理"); 
 		if (show) {
-			f.value = "000,管理员";
+			f.value = f.p2;
 		}
 		break;
 	case "type":

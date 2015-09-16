@@ -1,6 +1,55 @@
 新增供应商，操作人 000
 区域选择
 
+// 设置文本框-自动完成值，AC=Auto Complete
+function setTextFieldACValue(view1, e1) {
+//	view1.scrollUp();
+	var i = e1.index;
+	var value = e1.value;
+	var tf = view1.textFields()[i].textFields()[0];
+	tap(tf);
+//	app.keyboard().typeString(value);
+//	var vKeyboard = target.frontMostApp().keyboard();
+//	vKeyboard.setInterKeyDelay(0.1);
+	app.keyboard().typeString(value);
+//	UIATarget.localTarget().frontMostApp().keyboard().typeString("a");
+//	delay(10);
+//	tf.scrollToVisible();
+//	delay();
+//	logDebug("tf.isValid="+tf.isValid());
+//	tf.setValue(value);
+//	tap(view1.textFields()[i].buttons()["Clear text"]);
+//	tf.touchAndHold(1);
+//	tf.setValue(value);
+//	delay(20);
+//	delay();
+//	tf.setValue("");
+//	delay();
+//	tf.setValue(value+value);
+//	delay();
+//	tap(tf);
+	var tableViewIndex = e1.p1;
+	var cellIndex = e1.p2;
+//	target.pushTimeout(10);
+//	setTextFieldValue(view1, e1);
+//	delay(10);
+//	debugElements(window);
+//	target.popTimeout();
+	tap(window.tableViews()[tableViewIndex].cells()[cellIndex]);
+	/*
+	var tableViews = window.tableViews();
+	for(var i=1;i<tableViews.length;i++) {
+		var cells = tableViews[i].cells();
+		for(var j=0;j<cells.length;j++) {
+			var cell = cells[j];
+			if(value == cell.value()) {
+				cell.tap();
+				break;
+			}
+		}
+	}*/
+}
+
 function debugElemnetsAtView() {
 	var view1 = window.scrollViews()[0];
 	debugElemnetsAt(view1);
