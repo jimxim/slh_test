@@ -73,7 +73,7 @@ function editCustomerFields(keys, show) {
 
 function testCustomerAdd() {
 	// "super",
-	var keys = [ "name", "shop", "birthday", "staff", "type", "return",
+	var keys = [ "name", "area","shop", "birthday", "staff", "type", "return",
 			"price", "mobile", "weixin", "fax", "address", "remarks",
 			"discount", "credit", "alarm" ];
 	var fields = editCustomerFields(keys);
@@ -84,13 +84,14 @@ function testCustomerAdd() {
 }
 
 function editCustomerField(key, show) {
+	var l = getTableViews().length;
 	var f;
 	switch (key) {
 	case "name":
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "area":
-		f = new TField("区域", BTN_SC, 0, "供应商");
+		f = new TField("区域", BTN_AREA, 0, "辽宁",0,"中国,东北");
 		if (show) {
 			f.type = TF;
 			f.index = 2;
@@ -107,9 +108,9 @@ function editCustomerField(key, show) {
 		f = new TField("生日", TF_DT, 4, "1980-09-10");
 		break;
 	case "staff":
-		f = new TField("店员", TF, 5, "000");
+		f = new TField("店员", TF_AC, 5, "000",l-1,0);
 		if (show) {
-			// e.value = "000,管理员";
+			f.value = "000,管理员";
 		}
 		break;
 	case "super":
@@ -517,8 +518,8 @@ function queryLogisticsField(key,show) {
 
 // 新增物流商
 function testAddLogisticsFields() {
-	var keys = [ "name", "staff", "mobile", "post", "address", "account",
-			"shop" ];
+	var keys = [ "name", "staff", "area","mobile", "post", "address", "account",
+			"shop" ,"remarks"];
 	var fields = addLogisticsFields(keys);
 	setTFieldsValue(getView(), fields);
 	var showFields = addLogisticsFields(keys, true);
@@ -529,19 +530,20 @@ function addLogisticsFields(keys, show) {
 	return getTFields("addLogisticsField", keys, show);
 }
 function addLogisticsField(key, show) {
+	var l = getTableViews().length;
 	var f;
 	switch (key) {
 	case "name":
 		f = new TField("名称", TF, 0, "a");
 		break;
 	case "staff":
-		f = new TField("经办人", TF_AC, 1, "000",2,0);
+		f = new TField("经办人", TF_AC, 1, "000",l-1,0);
 		if(show){
 			f.value = "000,管理员";
 		}
 		break;
 	case "area":
-		f = new TField("区域", BTN_SC, 0, "供应商");
+		f = new TField("区域", BTN_AREA, 0, "华北",0,"中国");
 		if (show) {
 			f.type = TF;
 			f.index = 2;

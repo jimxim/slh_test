@@ -272,18 +272,18 @@ function salesStaffField(key, show) {
 }
 
 // 按客户销售
-function testSalesStaffConsumeFields() {
-	var keys = [ "customer", "day1", "day2" ];
-	var fields = salesStaffConsumeFields(keys);
+function testSalesCustomerConsumeFields() {
+	var keys = [ "customer", "area","day1", "day2" ];
+	var fields = salesCustomerConsumeFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = salesStaffConsumeFields(keys, true);
+	var showFields = salesCustomerConsumeFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function salesStaffConsumeFields(keys, show) {
-	return getTFields("salesStaffConsumeField", keys, show);
+function salesCustomerConsumeFields(keys, show) {
+	return getTFields("salesCustomerConsumeField", keys, show);
 }
-function salesStaffConsumeField(key, show) {
+function salesCustomerConsumeField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
@@ -293,7 +293,7 @@ function salesStaffConsumeField(key, show) {
 		}
 		break;
 	case "area":
-		f = new TField("区域", TF_SC, 1, "中国");
+		f = new TField("区域", TF_AREA, 1, "吉林",0,"中国,东北");
 		break;
 	case "day1":
 		f = new TField("日期从", TF_DT, 2, "2015-9-11");
@@ -307,35 +307,37 @@ function salesStaffConsumeField(key, show) {
 	return f;
 }
 
-
-
-// 供应商对账单
-function testPurchaseQueryProviderFields() {
-	var keys = [ "day1", "day2", "supplier" ];
-	var fields = purchaseQueryProviderFields(keys);
+// 按客户未结
+function testSalesCustomerOutstandingFields() {
+	var keys = [ "day1", "day2", "customer", "staff" ];
+	var fields = salesCustomerOutstandingFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = purchaseQueryProviderFields(keys, true);
+	var showFields = salesCustomerOutstandingFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function purchaseQueryProviderFields(keys, show) {
-	return getTFields("purchaseQueryProviderField", keys, show);
+function salesCustomerOutstandingFields(keys, show) {
+	return getTFields("salesCustomerOutstandingField", keys, show);
 }
-function purchaseQueryProviderField(key, show) {
-	var l = getTextFields().length;
+function salesCustomerOutstandingField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
-		f = new TField("日期从", TF_DT, l - 3, "2015-9-11");
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, l - 2, "2015-9-15");
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
-	case "supplier":
-		var tableViewIndex = getTableViews().length - 1;
-		f = new TField("供应商", TF_AC, l - 1, "a", tableViewIndex, 0);
+	case "customer":
+		f = new TField("客户", TF_AC, 2, "z", 1, 0);
 		if (show) {
-			f.value = "aa";
+			f.value = "zz";
+		}
+		break;
+	case "staff":
+		f = new TField("店员", TF_AC, 3, "000", 1, 0);
+		if (show) {
+			f.value = "000,管理员";
 		}
 		break;
 	default:
@@ -344,24 +346,133 @@ function purchaseQueryProviderField(key, show) {
 	return f;
 }
 
-// 按类别汇总
-function testPurchaseTypeFields() {
-	var fields = purchaseTypeFields("day1", "day2", "type");
+// 按客户上货
+function testSalesCustomerSupplyFields() {
+	var keys = [ "customer", "day1", "day2", "code", "brand", "day3", "day4", ];
+	var fields = salesCustomerSupplyFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = salesCustomerSupplyFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function salesCustomerSupplyFields(keys, show) {
+	return getTFields("salesCustomerSupplyField", keys, show);
+}
+function salesCustomerSupplyField(key, show) {
+	var f;
+	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "z", 1, 0);
+		if (show) {
+			f.value = "zz";
+		}
+		break;
+	case "day1":
+		f = new TField("上架日期从", TF_DT, 1, "2014-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 2, "2014-9-17");
+		break;
+	case "code":
+		f = new TField("款号", TF_AC, 3, "a", 1, 0);
+		if (show) {
+			f.value = "5880,kha,210元";
+		}
+		break;
+	case "brand":
+		f = new TField("品牌", TF_SC, 4, "1010pp");
+		break;
+	case "day3":
+		f = new TField("日期从", TF_DT, 5, "2015-9-11");
+		break;
+	case "day4":
+		f = new TField("到", TF_DT, 6, getToday());
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 代人核销表
+function testSalesVerifyFields() {
+	var fields = salesVerifyFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function purchaseTypeFields() {
-	return getTFields("purchaseTypeField", arguments);
+function salesVerifyFields() {
+	return getTFields("salesVerifyField", arguments);
 }
-function purchaseTypeField(key) {
+function salesVerifyField(key) {
 	var f;
 	switch (key) {
 	case "day1":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-15");
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 客户对账单
+function testSalesQueryCustomerFields() {
+	var keys = [ "customer", "shop", "day1", "day2" ];
+	var fields = salesQueryCustomerFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = salesQueryCustomerFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function salesQueryCustomerFields(keys, show) {
+	return getTFields("salesQueryCustomerField", keys, show);
+}
+function salesQueryCustomerField(key, show) {
+	var f;
+	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "z", 1, 0);
+		if (show) {
+			f.value = "zz";
+		}
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 1, "常青店");
+		break;
+	case "day1":
+		f = new TField("日期从", TF_DT, 2, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 3, getToday());
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按类别汇总
+function testSalesTypeFields() {
+	var fields = salesTypeFields("day1", "day2", "type");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function salesTypeFields() {
+	return getTFields("salesTypeField", arguments);
+}
+function salesTypeField(key) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "type":
 		f = new TField("类别", TF_SC, 2, "登山服");
@@ -372,9 +483,9 @@ function purchaseTypeField(key) {
 	return f;
 }
 
-//按供应商汇总
+// 按供应商汇总
 function testSalesProviderFields() {
-	var keys = [ "day1", "day2", "provider" ];
+	var keys = [ "provider", "day1", "day2" ];
 	var fields = salesProviderFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = salesProviderFields(keys, true);
@@ -387,17 +498,17 @@ function salesProviderFields(keys, show) {
 function salesProviderField(key, show) {
 	var f;
 	switch (key) {
-	case "day1":
-		f = new TField("日期从", TF_DT, 0, "2015-9-11");
-		break;
-	case "day2":
-		f = new TField("到", TF_DT, 1, "2015-9-15");
-		break;
 	case "provider":
-		f = new TField("厂商", TF_AC, 2, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
+		break;
+	case "day1":
+		f = new TField("日期从", TF_DT, 1, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -405,3 +516,206 @@ function salesProviderField(key, show) {
 	return f;
 }
 
+// 开单
+function testSalesBillFields() {
+	var keys = [ "customer", "staff", "day", "remarks" ];
+	var fields = salesBillFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = salesBillFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function salesBillFields(keys, show) {
+	return getTFields("salesBillField", keys, show);
+}
+function salesBillField(key, show) {
+	var l = getTableViews().length;
+	var f;
+	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
+		if (show) {
+			f.value = "Qaq";
+		}
+		break;
+	case "staff":
+		f = new TField("店员", TF_AC, 5, "000", l - 1, 0);
+		if (show) {
+			f.value = "000,管理员";
+		}
+		break;
+	case "day":
+		f = new TField("日期", TF_DT, 9, getToday());
+		break;
+	case "remarks":
+		f = new TField("备注", TF, 10, "123");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按订货开单
+function testSalesBillOrderFields() {
+	var keys = [ "day1", "day2", "code", "customer", "shop", "batch1",
+			"batch2", "flag" ];
+	var fields = salesBillOrderFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = salesBillOrderFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function salesBillOrderFields(keys, show) {
+	return getTFields("salesBillOrderField", keys, show);
+}
+function salesBillOrderField(key, show) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	case "code":
+		f = new TField("款号", TF_AC, 2, "a", 1, 0);
+		if (show) {
+			f.value = "5880,kha,210元";
+		}
+		break;
+	case "customer":
+		f = new TField("客户", TF_AC, 3, "z", 1, 0);
+		if (show) {
+			f.value = "zz";
+		}
+		break;
+	case "shop":
+		f = new TField("店员", TF_SC, 4, "常青店");
+		break;
+	case "batch1":
+		f = new TField("批次从", TF, 5, "1");
+		break;
+	case "batch2":
+		f = new TField("到", TF, 6, "20");
+		break;
+	case "flag":
+		f = new TField("发货状态", TF_SC, 7, "未发货");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+//收款记录
+function testSalesCollectionRecordFields() {
+	var fields = salesCollectionRecordFields("day1", "day2");
+	setTFieldsValue(window, fields);
+	return true;
+}
+
+function salesCollectionRecordFields() {
+	return getTFields("salesCollectionRecordField", arguments);
+}
+function salesCollectionRecordField(key) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+//物流商查询
+function testSalesQueryLogisticsFields() {
+	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "billno","collection"];
+	var fields = salesQueryLogisticsFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields=salesQueryLogisticsFields(keys,true);
+	return checkShowFields=(window,showFields);
+}
+
+function salesQueryLogisticsFields(keys,show) {
+	return getTFields("salesQueryLogisticsField", keys,show);
+}
+function salesQueryLogisticsField(key,show) {
+	var f;
+	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "a", 1, 0);
+		if (show) {
+			f.value = "Qaq";
+		}
+		break;
+	case "day1":
+		f = new TField("日期从", TF_DT, 1, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 2, getToday());
+		break;
+	case "logistics":
+		f = new TField("物流商", TF_SC, 3, "顺丰快递");
+		break;
+	case "batch1":
+		f = new TField("批次从", TF, 4, "1");
+		break;
+	case "batch2":
+		f = new TField("到", TF, 5, "20");
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 6, "常青店");
+		break;
+	case "billno":
+		f = new TField("运单号", TF, 7, "12345678");
+		break;
+	case "collection":
+		f = new TField("是否收款", TF_SC, 8, "否");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+//代收收款
+function testSalesCollectionFields() {
+	var keys=[ "batch1","batch2", "shop","day1","day2"];
+	var fields = salesCollectionFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields=salesCollectionFields(keys,true);
+	return checkShowFields=(window,showFields);
+}
+
+function salesCollectionFields(keys,show) {
+	return getTFields("salesCollectionField", keys,show);
+}
+function salesCollectionField(key,show) {
+	var f;
+	switch (key) {
+	case "batch1":
+		f = new TField("批次从", TF, 0, "1");
+		break;
+	case "batch2":
+		f = new TField("到", TF, 1, "20");
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 2, "常青店");
+		break;
+	case "day1":
+		f = new TField("日期从", TF_DT, 3, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 4, getToday());
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}

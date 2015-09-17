@@ -16,6 +16,9 @@
 #import "testcase/shopOut/shopOutFields.js"
 #import "testcase/salesOrder/salesOrderFields.js"
 #import "testcase/sales/salesFields.js"
+#import "testcase/check/checkFields.js"
+#import "testcase/statisticAnalysis/statisticAnalysisFields.js"
+#import "testcase/statisticPicture/statisticPictureFields.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
 
@@ -109,8 +112,44 @@ function test000All() {
 // run("按款号汇总", "testSalesCodeFields");
 // run("按退货汇总", "testSalesReturnFields");
 // run("按店员汇总", "testSalesStaffFields");
-// run("按客户销售", "testSalesStaffConsumeFields");  区域X
-
+// run("按客户销售", "testSalesCustomerConsumeFields");
+// run("按客户未结", "testSalesCustomerOutstandingFields");
+// run("按客户上货", "testSalesCustomerSupplyFields");
+// run("代人核销表", "testSalesVerifyFields");
+// run("客户对账单", "testSalesQueryCustomerFields");
+// run("按类别汇总", "testSalesTypeFields");
+// run("按供应商汇总", "testSalesProviderFields");
+// run("开单", "testSalesBillFields");
+// run("按订货开单", "testSalesBillOrderFields");
+// run("收款记录", "testSalesCollectionRecordFields");
+// run("物流商查询", "testSalesQueryLogisticsFields");
+// run("代收收款", "testSalesCollectionFields");
+// 盘点管理
+// run("按批次查", "testCheckQueryBatchFields");
+// run("按明细查", "testCheckQueryParticularFields");
+// run("盘点处理", "testCheckProcessFields");
+// run("处理记录", "testCheckProcessRecordFields");
+// run("盈亏表", "testCheckProfitAndLossFields");
+// run("库存表", "testCheckMaterialFields");
+// 统计分析
+// run("收支表", "testStatisticAnalysisInOutFields");
+// run("利润表", "testStatisticAnalysisProfitFields");
+//	run("综合汇总", "testStatisticAnalysisSynthesisFields");
+//	run("退货表", "testStatisticAnalysisReturnFields");
+//	run("畅销表", "testStatisticAnalysisGoodMarketFields");
+//	run("滞销表", "testStatisticAnalysisUnsalableFields");
+//	run("收支汇总", "testStatisticAnalysisInOutSummaryFields");
+//	run("新增收入", "testStatisticAnalysisInAddFields");
+//	run("新增支出", "testStatisticAnalysisOutAddFields");
+//	run("收支流水", "testStatisticAnalysisInOutAccountFields");
+// 统计图表
+//	run("按门店", "testPictureShopFields");
+//	run("按门店汇总", "testPictureShopSummaryFields");
+//	run("按客户", "testPictureCustomerFields");
+//	run("按款号", "testPictureCodeFields");
+//	run("按款号图片", "testPictureCodePictureFields");      X
+//	run("按店员", "testPictureStaffFields");
+	run("按趋势", "testPictureTrendFields");
 // testWanLaiProviderAll();
 // testGoodsAll();
 // logout();
