@@ -21,7 +21,7 @@ function testAddGoods() {
 
 	var menu2 = "货品查询";
 	var queryField = new TField("款号名称", TF, 1, code);
-	return exists(menu1, menu2, queryField);
+	return query1(menu1, menu2, queryField);
 }
 
 function getCode() {
@@ -31,7 +31,7 @@ function getCode() {
 	for (var i = 0; i < 30; i++) {
 		var v1 = "k" + getRandomInt(1000);
 		var queryField = new TField("款号名称", TF, 1, v1);
-		if (!exists(menu1, menu2, queryField)) {
+		if (!query1(menu1, menu2, queryField)) {
 			code = v1;
 			break;
 		}

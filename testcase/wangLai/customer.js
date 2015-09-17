@@ -10,15 +10,15 @@ function testWanLaiCustomerAll() {
 	// run("查询客户清除按钮", "testQueryCustomerClear");
 
 	// run("查询客户翻页", "testQueryCustomerNextPage");
-	 run("查询客户跳转修改", "testQueryCustomerToEdit");
+	// run("查询客户跳转修改", "testQueryCustomerToEdit");
 	// run("客户停用", "testCustomerStop");
 	// run("客户启用", "testCustomerSart");
 	// run("客户消费明细", "testCustomerConsumeDetail");
 	// run("客户修改保存", "testCustomerEdit");
-	// run("客户新增保存", "testCustomerAdd");
+	run("客户新增保存", "testCustomerAdd");
 	// run("客户签名", "testCustomerSign");
 	// run("新增分店", "testCustomerAddBranch");
-//	run("客户修改时向上滚动", "testCustomerEditVisible");
+	// run("客户修改时向上滚动", "testCustomerEditVisible");
 }
 
 function queryCustomerFields(keys, show) {
@@ -69,8 +69,9 @@ function editCustomerField(key, show) {
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "area":
-		f = new TField("区域", BTN_SC, 0, "供应商");
+		f = new TField("区域", BTN_AREA, 0, "黑龙江", 0, "中国,东北");
 		if (show) {
+			f.type = TF;
 			f.index = 2;
 		}
 		break;
@@ -85,7 +86,7 @@ function editCustomerField(key, show) {
 		f = new TField("生日", TF_DT, 4, "1980-09-10");
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 5, "000", l-1, "000,管理员");
+		f = new TField("店员", TF_AC, 5, "000", l - 1, "000,管理员");
 		if (show) {
 			f.value = f.p2;
 		}
@@ -315,12 +316,11 @@ function testQueryCustomerNextPage() {
 
 function testQueryCustomerToEdit() {
 	var qFields = queryCustomerFields();
-//	tapButton(window, CLEAR);
-//	setTFieldsValue(window, qFields);
-//	tapButton(window, QUERY);
+	// tapButton(window, CLEAR);
+	// setTFieldsValue(window, qFields);
+	// tapButton(window, QUERY);
 	query(qFields);
-	var qr = getQResult();
-	tapFirstQRText(getView(), qr) ;
+	tapFirstText();
 
 	var ret = window.buttons()["修改保存"].isVisible();
 	tapButton(window, RETURN);
@@ -341,11 +341,7 @@ function stopStartCustomer(cmd) {
 	var qf = qFields[key];
 	qf.value = "停用启用测试";
 	query(qFields);
-	var texts = getStaticTexts(getView());
-
-	var qrTitle = getQResultTitle(texts, "序号");
-	var i = getFirstIndexOfTextsByQRTitle(texts, qrTitle);
-	tap(texts[i]);
+	tapFirstText();
 
 	tapButton(window, cmd);
 	tapPrompt(OK);
@@ -356,8 +352,8 @@ function stopStartCustomer(cmd) {
 
 	tapMenu("销售开单", "开  单+");
 	var value = "tyq"; // 停用启
-	var e1 = new TField("客户", TF, 0, value)
-	setTextFieldValue(window, e1);
+	var f = new TField("客户", TF, 0, value)
+	setTextFieldValue(window, f);
 
 	var expected = qf.value;
 	var actual = getTextFieldValue(window, 0);
@@ -442,10 +438,12 @@ function testCustomerAdd() {
 	var keys = [ "name", "shop", "birthday", "staff", "super", "type",
 			"return", "price", "mobile", "weixin", "fax", "address", "remarks",
 			"discount", "credit", "alarm" ];
+	keys = [ "area" ];
 	var fields = editCustomerFields(keys);
 	setTFieldsValue(getView(), fields);
-	// debugElementTree(getView());
-	debugElements(getView());
+	// debugElements(getTableViews(getPop())[0]);
+	debugElements(getPop());
+	// debugElements(getView());
 
 	return true;
 }
