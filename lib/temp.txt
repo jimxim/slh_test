@@ -3,6 +3,50 @@
 
 logInfo("timeout="+target.timeout()); //默认超时是5秒
 
+// 设置文本框-自动完成值，AC=Auto Complete
+function setTextFieldACValue(view1, f) {
+	// target.pushTimeout(15);
+	// logInfo("timeout="+target.timeout());
+	var i = f.index;
+	var value = f.value;
+	var tf = view1.textFields()[i].textFields()[0];
+	tap(tf);
+	var kb = app.keyboard();
+	// kb.setInterKeyDelay(0.2);
+	kb.typeString(value);
+	// tf.setValue(value);
+	delay();
+	// target.popTimeout();
+
+	var tableViewIndex = f.p1;
+	var cellIndex = f.p2;
+	if (tableViewIndex < 0) {
+		var tableViews = getTableViews();
+		for (var iTV = tableViews.length - 1; iTV > 0; iTV--) {
+			var cells = tableViews[iTV].cells();
+			for (var j = 0; j < cells.length; j++) {
+				var cell = cells[j];
+				if (isEqual(cellIndex, cell.name())) {
+					tableViewIndex = iTV;
+					cellIndex = j;
+					break;
+				}
+			}
+		}
+	}
+	logInfo("tableViewIndex=" + tableViewIndex + " cellIndex=" + cellIndex);
+	logInfo("getTableViewLastIndex=" + getTableViewLastIndex());
+
+	// debugElements(window);
+	// delay(10);
+	// debugElementTree(window);
+	var cond = "window.tableViews()[" + tableViewIndex + "].cells().length>0"
+
+	// var cells = window.tableViews()[tableViewIndex].cells();
+	// waitUntil(cond);
+	tap(window.tableViews()[tableViewIndex].cells()[cellIndex]);
+}
+
 debugElementTree(app.keyboard());
 UIAButton: name:Return rect:{{866, 511}, {158, 79}}
 UIAButton: name:shift rect:{{0, 597}, {91, 79}}

@@ -102,11 +102,11 @@ function salesOrderQueryParticularField(key, show) {
 
 // 按款号图像
 function testSalesOrderPictureFields() {
-	var view1=getTableViews()[2].groups()["日期"];
+	var view1 = getTableViews()[2].groups()["日期"];
 	var keys = [ "day1", "day2", "code" ];
 	var fields = salesOrderPictureFields(keys);
 	setTFieldsValue(view1, fields);
-	
+
 	var showFields = salesOrderPictureFields(keys, true);
 	return checkShowFields(view1, showFields);
 }
@@ -124,9 +124,9 @@ function salesOrderPictureField(key, show) {
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
-		f = new TField("款号", TF_AC, 2,"a",1,0);
+		f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元");
 		if (show) {
-			f.value = "5880,kha,210元";
+			f.value = "741,Abc";
 		}
 		break;
 	default:
@@ -285,17 +285,17 @@ function salesOrderAddFields(keys, show) {
 	return getTFields("salesOrderAddField", keys, show);
 }
 function salesOrderAddField(key, show) {
-	var l=getTableViews().length;
+	var l = getTableViews().length;
 	var f;
 	switch (key) {
 	case "customer":
-		f = new TField("客户", TF_AC, 0, "a", l-1, 0);
+		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 4, "000", l-1, 0);
+		f = new TField("店员", TF_AC, 4, "000", l - 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
