@@ -1,6 +1,8 @@
 新增供应商，操作人 000
 区域选择
 
+logInfo("timeout="+target.timeout()); //默认超时是5秒
+
 debugElementTree(app.keyboard());
 UIAButton: name:Return rect:{{866, 511}, {158, 79}}
 UIAButton: name:shift rect:{{0, 597}, {91, 79}}
