@@ -158,7 +158,7 @@ function salesPriceField(key) {
 
 // 按款号汇总
 function testSalesCodeFields() {
-	var keys = [ "day1", "day2", "day3", "day4", "color", "size", "code" ];
+	var keys = [ "day1", "day2", "market1", "market2", "color", "size", "code" ];
 	var fields = salesCodeFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = salesCodeFields(keys, true);
@@ -177,10 +177,10 @@ function salesCodeField(key, show) {
 	case "day2":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
-	case "day3":
+	case "market1":
 		f = new TField("上架日期从", TF_DT, 2, "2015-8-11");
 		break;
-	case "day4":
+	case "market2":
 		f = new TField("到", TF_DT, 3, "2015-8-16");
 		break;
 	case "color":
@@ -348,7 +348,7 @@ function salesCustomerOutstandingField(key, show) {
 
 // 按客户上货
 function testSalesCustomerSupplyFields() {
-	var keys = [ "customer", "day1", "day2", "code", "brand", "day3", "day4", ];
+	var keys = [ "customer", "market1", "market2", "code", "brand", "day1", "day2", ];
 	var fields = salesCustomerSupplyFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = salesCustomerSupplyFields(keys, true);
@@ -367,10 +367,10 @@ function salesCustomerSupplyField(key, show) {
 			f.value = "zz";
 		}
 		break;
-	case "day1":
+	case "market1":
 		f = new TField("上架日期从", TF_DT, 1, "2014-9-11");
 		break;
-	case "day2":
+	case "market2":
 		f = new TField("到", TF_DT, 2, "2014-9-17");
 		break;
 	case "code":
@@ -382,10 +382,10 @@ function salesCustomerSupplyField(key, show) {
 	case "brand":
 		f = new TField("品牌", TF_SC, 4, "1010pp");
 		break;
-	case "day3":
+	case "day1":
 		f = new TField("日期从", TF_DT, 5, "2015-9-11");
 		break;
-	case "day4":
+	case "day2":
 		f = new TField("到", TF_DT, 6, getToday());
 		break;
 	default:

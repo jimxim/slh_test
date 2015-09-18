@@ -19,6 +19,8 @@
 #import "testcase/check/checkFields.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
 #import "testcase/statisticPicture/statisticPictureFields.js"
+#import "testcase/system/systemFields.js"
+#import "testcase/help/helpFields.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
 
@@ -29,44 +31,44 @@ function test000All() {
 // if( ok ) {
 // testParamAll();
 // run("查询客户清除按钮", "testQueryCustomerClear");
-// run("客户新增保存", "testCustomerAdd");
+// run("客户新增", "testEditCustomerFields");
 // run("客户分店", "testCustomerBranchFields");
-// run("新增分店", "testBranchAddFields");
+// run("新增分店", "testEditCustomerBranchFields");
 // run("客户门店账", "testQueryCustomerShopAccountFields");
 // run("客户总账", "testQueryCustomerAccountFields");
 // run("客户活跃度", "testQueryCustomerActiveFields");
-// run("积分查询", "testQueryScoreFields");
-// run("厂商查询", "testQueryProviderFields");
-// run("新增厂商", "testEditProviderFields");
-// run("厂商门店帐", "testQueryProviderShopAccountFields");
-// run("导出对账单", "testExportFields");
-// run("厂商总帐", "testQueryProviderAccountFields");
-// run("物流商查询", "testQueryLogisticsFields");
-// run("新增物流商","testAddLogisticsFields");
+// run("积分查询", "testQueryCustomerScoreFields");
+// run("厂商查询", "testQueryCustomerProviderFields");
+// run("新增厂商", "testEditCustomerProviderFields");
+// run("厂商门店帐", "testQueryCustomerShopAccountFields");
+// run("导出对账单", "testCustomerExportFields");
+// run("厂商总帐", "testQueryCustomerProviderAccountFields");
+// run("物流商查询", "testQueryCustomerLogisticsFields");
+// run("新增物流商","testEditCustomerLogisticsFields");
 // run("客户回访", "testQueryCustomerBackFields");
-// run("新增客户回访", "testAddCustomerBackFields");
+// run("新增客户回访", "testEditCustomerBackFields");
 // 货品管理
-// run("当前库存", "testQueryStockFields");
-// run("款号库存", "testQueryCodeStockFields");
-// run("款号分布", "testQueryDistributionFields");
-// run("货品进销存", "testQueryInOutFields");
+// run("当前库存", "testQueryGoodsStockFields");
+// run("款号库存", "testQueryGoodsCodeStockFields");
+// run("款号分布", "testQueryGoodsDistributionFields");
+// run("货品进销存", "testQueryGoodsInOutFields");
 // run("货品查询", "testQueryGoodsFields");
 // run("新增货品", "testEditGoodsFields");
-// run("批量调价", "testPricingFields");
-// run("价格名称", "testPriceNameFields");
+// run("批量调价", "testGoodsPricingFields");
+// run("价格名称", "testGoodsPriceNameFields");
 // run("货品类别", "testGoodsTypeFields");
-// run("新增类别", "testGoodsAddFields");
-// run("所有颜色", "testColorFields");
-// run("新增颜色", "testColorAddFields");
-// run("所有尺码", "testSizeFields");
-// run("新增尺码", "testSizeAddFields");
-// run("所有品牌", "testBrandFields");
-// run("新增品牌", "testBrandAddFields");
-// run("所有尺码组", "testSizeidsFields");
-// run("新增尺码组", "testSizeidsAddFields");
-// run("所有品牌折扣", "testBrandDiscountFields");
-// run("新增品牌折扣", "testBrandDiscountAddFields");
-// run("客户上货", "testCustomerFields");
+// run("新增类别", "testEditGoodsFields");
+// run("所有颜色", "testGoodsColorFields");
+// run("新增颜色", "testEditGoodsColorFields");
+// run("所有尺码", "testGoodsSizeFields");
+// run("新增尺码", "testEditGoodsSizeFields");
+// run("所有品牌", "testGoodsBrandFields");
+// run("新增品牌", "testEditGoodsBrandFields");
+// run("所有尺码组", "testGoodsSizeidsFields");
+// run("新增尺码组", "testEditGoodsSizeidsFields");
+// run("所有品牌折扣", "testGoodsBrandDiscountFields");
+// run("新增品牌折扣", "testEditGoodsBrandDiscountFields");
+// run("客户上货", "testGoodsCustomerFields");
 // 采购入库
 // run("按批次查", "testPurchaseQueryBatchFields");
 // run("按明细查", "testPurchaseQueryParticularFields");
@@ -99,7 +101,7 @@ function test000All() {
 // 销售订货
 // run("按批次查", "testSalesOrderQueryBatchFields");
 // run("按明细查", "testSalesOrderQueryParticularFields");
-// run("按款号图像", "testSalesOrderPictureFields"); 款号X
+// run("按款号图像", "testSalesOrderPictureFields");
 // run("按款号", "testSalesOrderCodeFields");
 // run("按店员", "testSalesOrderStaffFields");
 // run("按客户", "testSalesOrderCustomerFields");
@@ -125,8 +127,8 @@ function test000All() {
 // run("物流商查询", "testSalesQueryLogisticsFields");
 // run("代收收款", "testSalesCollectionFields");
 // 盘点管理
-// run("按批次查", "testCheckQueryBatchFields");
-// run("按明细查", "testCheckQueryParticularFields");
+// run("按批次查", "testQueryCheckBatchFields");
+// run("按明细查", "testQueryCheckParticularFields");
 // run("盘点处理", "testCheckProcessFields");
 // run("处理记录", "testCheckProcessRecordFields");
 // run("盈亏表", "testCheckProfitAndLossFields");
@@ -134,22 +136,38 @@ function test000All() {
 // 统计分析
 // run("收支表", "testStatisticAnalysisInOutFields");
 // run("利润表", "testStatisticAnalysisProfitFields");
-//	run("综合汇总", "testStatisticAnalysisSynthesisFields");
-//	run("退货表", "testStatisticAnalysisReturnFields");
-//	run("畅销表", "testStatisticAnalysisGoodMarketFields");
-//	run("滞销表", "testStatisticAnalysisUnsalableFields");
-//	run("收支汇总", "testStatisticAnalysisInOutSummaryFields");
-//	run("新增收入", "testStatisticAnalysisInAddFields");
-//	run("新增支出", "testStatisticAnalysisOutAddFields");
-//	run("收支流水", "testStatisticAnalysisInOutAccountFields");
+// run("综合汇总", "testStatisticAnalysisSynthesisFields");
+// run("退货表", "testStatisticAnalysisReturnFields");
+// run("畅销表", "testStatisticAnalysisGoodMarketFields");
+// run("滞销表", "testStatisticAnalysisUnsalableFields");
+// run("收支汇总", "testStatisticAnalysisInOutSummaryFields");
+// run("新增收入", "testEditStatisticAnalysisInFields");
+// run("新增支出", "testEditStatisticAnalysisOutFields");
+// run("收支流水", "testStatisticAnalysisInOutAccountFields");
 // 统计图表
-//	run("按门店", "testPictureShopFields");
-//	run("按门店汇总", "testPictureShopSummaryFields");
-//	run("按客户", "testPictureCustomerFields");
-//	run("按款号", "testPictureCodeFields");
-//	run("按款号图片", "testPictureCodePictureFields");      X
-//	run("按店员", "testPictureStaffFields");
-	run("按趋势", "testPictureTrendFields");
+// run("按门店", "testPictureShopFields");
+// run("按门店汇总", "testPictureShopSummaryFields");
+// run("按客户", "testPictureCustomerFields");
+// run("按款号", "testPictureCodeFields");
+// run("按款号图片", "testPictureCodePictureFields");
+// run("按店员", "testPictureStaffFields");
+// run("按趋势", "testPictureTrendFields");
+// run("按单笔", "testPictureSingleFields");
+// run("按类别", "testPictureTypeFields");
+// run("按品牌", "testPictureBrandFields");
+// run("按滞销", "testPictureUnsalableFields");
+// 系统设置
+// run("打印机", "testSystemPrinterFields");
+// run("本地设置", "testSystemLocalFields");
+// run("全局设置查询", "testQuerySystemGlobalFields");
+// run("全局设置编辑", "testEditSystemGlobalFields");
+// run("小票信息", "testSystemrReceiptFields");
+// run("人员列表", "testQuerySystemStaffFields");
+// run("新增人员", "testEditSystemStaffFields");
+// run("修改密码", "testEditSystemPasswordFields");
+// 用户帮助
+// run("新增反馈", "testEditHelpFeedbackFields");
+	
 // testWanLaiProviderAll();
 // testGoodsAll();
 // logout();

@@ -1,18 +1,18 @@
 //LuXingXin <52619481 at qq.com> 20150917
 
 //按批次查
-function testCheckQueryBatchFields() {
+function testQueryCheckBatchFields() {
 	var keys = [ "day1", "day2", "batch1", "batch2", "shop" ];
-	var fields = checkQueryBatchFields(keys);
+	var fields = queryCheckBatchFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = checkQueryBatchFields(keys, true);
+	var showFields = queryCheckBatchFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function checkQueryBatchFields(keys, show) {
-	return getTFields("checkQueryBatchField", keys, show);
+function queryCheckBatchFields(keys, show) {
+	return getTFields("queryCheckBatchField", keys, show);
 }
-function checkQueryBatchField(key, show) {
+function queryCheckBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -37,18 +37,18 @@ function checkQueryBatchField(key, show) {
 }
 
 // 按明细查
-function testCheckQueryParticularFields() {
+function testQueryCheckParticularFields() {
 	var keys = [ "code", "name", "day1", "day2" ];
-	var fields =  checkQueryParticularFields(keys);
+	var fields =  queryCheckParticularFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = checkQueryParticularFields(keys, true);
+	var showFields = queryCheckParticularFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function checkQueryParticularFields(keys, show) {
-	return getTFields("checkQueryParticularField", keys, show);
+function queryCheckParticularFields(keys, show) {
+	return getTFields("queryCheckParticularField", keys, show);
 }
-function checkQueryParticularField(key, show) {
+function queryCheckParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "code":

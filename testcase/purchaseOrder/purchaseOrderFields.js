@@ -209,7 +209,7 @@ function purchaseOrderAddField(key, show) {
 		}
 		break;
 	case "day":
-		f = new TField("日期", TF_DT, 2, "2015-9-15");
+		f = new TField("日期", TF_DT, 2, getToday());
 		break;
 	case "remarks":
 		f = new TField("备注", TF, 3, "123");

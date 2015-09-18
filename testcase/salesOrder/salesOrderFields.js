@@ -301,7 +301,7 @@ function salesOrderAddField(key, show) {
 		}
 		break;
 	case "day":
-		f = new TField("日期", TF_DT, 8, "2015-9-16");
+		f = new TField("日期", TF_DT, 8, getToday());
 		break;
 	case "remarks":
 		f = new TField("备注", TF, 9, "123");

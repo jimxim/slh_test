@@ -260,18 +260,18 @@ function statisticAnalysisInOutSummaryField(key, show) {
 }
 
 // 新增收入
-function testStatisticAnalysisInAddFields() {
+function testEditStatisticAnalysisInFields() {
 	var keys = [ "day", "account", "remarks" ];
-	var fields = statisticAnalysisInAddFields(keys);
+	var fields = editStatisticAnalysisInFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = statisticAnalysisInAddFields(keys, true);
+	var showFields = editStatisticAnalysisInFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function statisticAnalysisInAddFields(keys, show) {
-	return getTFields("statisticAnalysisInAddField", keys, show);
+function editStatisticAnalysisInFields(keys, show) {
+	return getTFields("editStatisticAnalysisInField", keys, show);
 }
-function statisticAnalysisInAddField(key, show) {
+function editStatisticAnalysisInField(key, show) {
 	var f;
 	switch (key) {
 	case "day":
@@ -290,18 +290,18 @@ function statisticAnalysisInAddField(key, show) {
 }
 
 // 新增支出
-function testStatisticAnalysisOutAddFields() {
+function testEditStatisticAnalysisOutFields() {
 	var keys = [ "day", "account", "remarks" ];
-	var fields = statisticAnalysisOutAddFields(keys);
+	var fields = editStatisticAnalysisOutFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = statisticAnalysisOutAddFields(keys, true);
+	var showFields = editStatisticAnalysisOutFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function statisticAnalysisOutAddFields(keys, show) {
-	return getTFields("statisticAnalysisOutAddField", keys, show);
+function editStatisticAnalysisOutFields(keys, show) {
+	return getTFields("editStatisticAnalysisOutField", keys, show);
 }
-function statisticAnalysisOutAddField(key, show) {
+function editStatisticAnalysisOutField(key, show) {
 	var f;
 	switch (key) {
 	case "day":

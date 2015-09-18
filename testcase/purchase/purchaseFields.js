@@ -125,7 +125,7 @@ function purchasePriceField(key) {
 
 // 按款号汇总
 function testPurchaseCodeFields() {
-	var keys = [ "code", "day1", "day2", "day3", "day4" ];
+	var keys = [ "code", "day1", "day2", "market1", "market2" ];
 	var fields = purchaseCodeFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = purchaseCodeFields(keys, true);
@@ -150,10 +150,10 @@ function purchaseCodeField(key, show) {
 	case "day2":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
-	case "day3":
-		f = new TField("日期从", TF_DT, 3, "2015-8-11");
+	case "market1":
+		f = new TField("上架日期从", TF_DT, 3, "2015-8-11");
 		break;
-	case "day4":
+	case "market2":
 		f = new TField("到", TF_DT, 4, "2015-8-15");
 		break;
 	default:

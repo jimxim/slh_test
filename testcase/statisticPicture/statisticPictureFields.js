@@ -27,7 +27,7 @@ function pictureShopField(key, show) {
 	return f;
 }
 
-//按门店
+// 按门店
 function testPictureShopSummaryFields() {
 	var keys = [ "day1", "day2" ];
 	var fields = pictureShopSummaryFields(keys);
@@ -54,9 +54,9 @@ function pictureShopSummaryField(key, show) {
 	return f;
 }
 
-//按客户
+// 按客户
 function testPictureCustomerFields() {
-	var keys = [ "day1", "day2","shop","customer" ];
+	var keys = [ "day1", "day2", "shop", "customer" ];
 	var fields = pictureCustomerFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = pictureCustomerFields(keys, true);
@@ -90,9 +90,10 @@ function pictureCustomerField(key, show) {
 	return f;
 }
 
-//按款号
+// 按款号
 function testPictureCodeFields() {
-	var keys = [ "code", "day1", "day2", "name","shop","provider","day3","day4","type","season" ];
+	var keys = [ "code", "day1", "day2", "name", "shop", "provider", "market1",
+			"market2", "type", "season" ];
 	var fields = pictureCodeFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = pictureCodeFields(keys, true);
@@ -129,10 +130,10 @@ function pictureCodeField(key, show) {
 			f.value = "杭州";
 		}
 		break;
-	case "day3":
+	case "market1":
 		f = new TField("上架从", TF_DT, 6, "2014-9-11");
 		break;
-	case "day4":
+	case "market2":
 		f = new TField("到", TF_DT, 7, getToday());
 		break;
 	case "type":
@@ -147,10 +148,10 @@ function pictureCodeField(key, show) {
 	return f;
 }
 
-//按款号图像
+// 按款号图像
 function testPictureCodePictureFields() {
-	var view1=getTableViews()[2].groups()["日期"];
-	var keys = [ "day1", "day2", "code","provider","brand" ];
+	var view1 = getTableViews()[2].groups()["日期"];
+	var keys = [ "day1", "day2", "code", "provider", "brand" ];
 	var fields = pictureCodePictureFields(keys);
 	setTFieldsValue(view1, fields);
 	var showFields = pictureCodePictureFields(keys, true);
@@ -170,7 +171,7 @@ function pictureCodePictureField(key, show) {
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
-		f = new TField("款号", TF_AC, 2,"a",1,0);
+		f = new TField("款号", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -193,9 +194,9 @@ function pictureCodePictureField(key, show) {
 	return f;
 }
 
-//按店员
+// 按店员
 function testPictureStaffFields() {
-	var keys = [ "staff","day1", "day2" ];
+	var keys = [ "staff", "day1", "day2" ];
 	var fields = pictureStaffFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = pictureStaffFields(keys, true);
@@ -226,9 +227,9 @@ function pictureStaffField(key, show) {
 	return f;
 }
 
-//按趋势
+// 按趋势
 function testPictureTrendFields() {
-	var keys = [ "day1", "day2","shop" ];
+	var keys = [ "day1", "day2", "shop" ];
 	var fields = pictureTrendFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = pictureTrendFields(keys, true);
@@ -249,6 +250,123 @@ function pictureTrendField(key, show) {
 		break;
 	case "shop":
 		f = new TField("门店", TF_SC, 2, "常青店");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按单笔
+function testPictureSingleFields() {
+	var keys = [ "day1", "day2", "shop" ];
+	var fields = pictureSingleFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = pictureSingleFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function pictureSingleFields(keys, show) {
+	return getTFields("pictureSingleField", keys, show);
+}
+function pictureSingleField(key, show) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 2, "常青店");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按类别
+function testPictureTypeFields() {
+	var keys = [ "day1", "day2", "shop" ];
+	var fields = pictureTypeFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = pictureTypeFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function pictureTypeFields(keys, show) {
+	return getTFields("pictureTypeField", keys, show);
+}
+function pictureTypeField(key, show) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 2, "常青店");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按品牌
+function testPictureBrandFields() {
+	var keys = [ "day1", "day2", "shop" ];
+	var fields = pictureBrandFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = pictureBrandFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function pictureBrandFields(keys, show) {
+	return getTFields("pictureBrandField", keys, show);
+}
+function pictureBrandField(key, show) {
+	var f;
+	switch (key) {
+	case "day1":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		break;
+	case "day2":
+		f = new TField("到", TF_DT, 1, getToday());
+		break;
+	case "shop":
+		f = new TField("门店", TF_SC, 2, "常青店");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 按滞销
+function testPictureUnsalableFields() {
+	var keys = [ "market1", "market2" ];
+	var fields = pictureUnsalableFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = pictureUnsalableFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function pictureUnsalableFields(keys, show) {
+	return getTFields("pictureUnsalableField", keys, show);
+}
+function pictureUnsalableField(key, show) {
+	var f;
+	switch (key) {
+	case "market1":
+		f = new TField("上架从", TF_DT, 0, "2015-9-11");
+		break;
+	case "market2":
+		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	default:
 		logWarn("未知key＝" + key);

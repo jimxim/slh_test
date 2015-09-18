@@ -1,20 +1,20 @@
 //LuXingXin <52619481 at qq.com> 20150911
 
 //当前库存
-function testQueryStockFields() {
+function testQueryGoodsStockFields() {
 	var keys = [ "code", "name", "shop", "provider", "color", "size", "brand",
-			"season", "day1", "day2", "stop" ];
-	var fields = queryStockFields(keys);
+			"season", "market1", "market2", "stop" ];
+	var fields = queryGoodsStockFields(keys);
 	setTFieldsValue(window, fields);
 	// debugElements(window);
-	var showFields = queryStockFields(keys, true);
+	var showFields = queryGoodsStockFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryStockFields(keys, show) {
-	return getTFields("queryStockField", keys, show);
+function queryGoodsStockFields(keys, show) {
+	return getTFields("queryGoodsStockField", keys, show);
 }
-function queryStockField(key, show) {
+function queryGoodsStockField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
@@ -47,10 +47,10 @@ function queryStockField(key, show) {
 	case "season":
 		f = new TField("季节", TF_SC, 7, "春季新");
 		break;
-	case "day1":
+	case "market1":
 		f = new TField("上架从", TF_DT, 8, "2015-9-11");
 		break;
-	case "day2":
+	case "market2":
 		f = new TField("到", TF_DT, 9, "2015-9-14");
 		break;
 	case "stop":
@@ -63,18 +63,18 @@ function queryStockField(key, show) {
 }
 
 // 款号库存
-function testQueryCodeStockFields() {
-	var keys = [ "code", "name", "shop", "provider", "season", "day1", "day2" ];
-	var fields = queryCodeStockFields(keys);
+function testQueryGoodsCodeStockFields() {
+	var keys = [ "code", "name", "shop", "provider", "season", "market1", "market2" ];
+	var fields = queryGoodsCodeStockFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryCodeStockFields(keys, true);
+	var showFields = queryGoodsCodeStockFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryCodeStockFields(keys, show) {
-	return getTFields("queryCodeStockField", keys, show);
+function queryGoodsCodeStockFields(keys, show) {
+	return getTFields("queryGoodsCodeStockField", keys, show);
 }
-function queryCodeStockField(key, show) {
+function queryGoodsCodeStockField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
@@ -98,10 +98,10 @@ function queryCodeStockField(key, show) {
 	case "season":
 		f = new TField("季节", TF_SC, 4, "春季新");
 		break;
-	case "day1":
+	case "market1":
 		f = new TField("上架从", TF_DT, 5, "2015-9-11");
 		break;
-	case "day2":
+	case "market2":
 		f = new TField("到", TF_DT, 6, "2015-9-11");
 		break;
 	default:
@@ -111,18 +111,18 @@ function queryCodeStockField(key, show) {
 }
 
 // 库存分布
-function testQueryDistributionFields() {
+function testQueryGoodsDistributionFields() {
 	var keys = [ "type", "provider" ];
-	var fields = queryDistributionFields(keys);
+	var fields = queryGoodsDistributionFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryDistributionFields(keys, true);
+	var showFields = queryGoodsDistributionFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryDistributionFields(keys, show) {
-	return getTFields("queryDistributionField", keys, show);
+function queryGoodsDistributionFields(keys, show) {
+	return getTFields("queryGoodsDistributionField", keys, show);
 }
-function queryDistributionField(key, show) {
+function queryGoodsDistributionField(key, show) {
 	var f;
 	switch (key) {
 	case "type":
@@ -141,19 +141,19 @@ function queryDistributionField(key, show) {
 }
 
 // 货品进销存
-function testQueryInOutFields() {
-	var keys = [ "shop", "code", "name", "provider", "day1", "day2", "season",
+function testQueryGoodsInOutFields() {
+	var keys = [ "shop", "code", "name", "provider", "market1", "market2", "season",
 			"brand" ];
-	var fields = queryInOutFields(keys);
+	var fields = queryGoodsInOutFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = queryInOutFields(keys, true);
+	var showFields = queryGoodsInOutFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function queryInOutFields(keys, show) {
-	return getTFields("queryInOutField", keys, show);
+function queryGoodsInOutFields(keys, show) {
+	return getTFields("queryGoodsInOutField", keys, show);
 }
-function queryInOutField(key, show) {
+function queryGoodsInOutField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
@@ -174,10 +174,10 @@ function queryInOutField(key, show) {
 			f.value = "aa";
 		}
 		break;
-	case "day1":
+	case "market1":
 		f = new TField("上架从", TF_DT, 4, "2015-9-11");
 		break;
-	case "day2":
+	case "market2":
 		f = new TField("到", TF_DT, 5, "2015-9-11");
 		break;
 	case "season":
@@ -194,7 +194,7 @@ function queryInOutField(key, show) {
 
 // 货品查询
 function testQueryGoodsFields() {
-	var keys = [ "provider", "name", "brand", "day1", "day2", "color", "staff",
+	var keys = [ "provider", "name", "brand", "market1", "market2", "color", "staff",
 			"stop", "type", "season" ];
 	var fields = queryGoodsFields(keys);
 	setTFieldsValue(window, fields);
@@ -220,10 +220,10 @@ function queryGoodsField(key, show) {
 	case "brand":
 		f = new TField("品牌", TF_SC, 2, "1010pp");
 		break;
-	case "day1":
+	case "market1":
 		f = new TField("上架从", TF_DT, 3, "2015-9-11");
 		break;
-	case "day2":
+	case "market2":
 		f = new TField("到", TF_DT, 4, "2015-9-14");
 		break;
 	case "color":
@@ -252,8 +252,8 @@ function queryGoodsField(key, show) {
 
 // 新增货品
 function testEditGoodsFields() {
-	var keys = [ "code", "name", "brand", "color", "size", "day", "price1",
-			"price2", "price3", "price4", "price5", "season", "provider",
+	var keys = [ "code", "name", "brand", "color", "size", "market", "tag",
+			"purchasePrice", "retail", "pack", "vip", "season", "provider",
 			"warehouse", "staff", "type", "barcode", "discount", "remarks" ];
 	var fields = editGoodsFields(keys);
 	setTFieldsValue(getView(), fields);
@@ -296,26 +296,26 @@ function editGoodsField(key, show) {
 			f.value = "T120,T130";
 		}
 		break;
-	case "day":
+	case "market":
 		f = new TField("上架日期", BTN, 6, getToday());
 		if (show) {
 			f.type = TF;
 			f.index = 5;
 		}
 		break;
-	case "price1":
+	case "tag":
 		f = new TField("吊牌价", TF, 7, "200");
 		break;
-	case "price2":
+	case "purchasePrice":
 		f = new TField("进货价", TF, 8, "100");
 		break;
-	case "price3":
+	case "retail":
 		f = new TField("零批价", TF, 9, "200");
 		break;
-	case "price4":
+	case "pack":
 		f = new TField("打包价", TF, 10, "180");
 		break;
-	case "price5":
+	case "vip":
 		f = new TField("vip价格", TF, 11, "170");
 		break;
 	case "season":
@@ -367,17 +367,17 @@ function editGoodsField(key, show) {
 }
 
 // 批量调价
-function testPricingFields() {
+function testGoodsPricingFields() {
 	var keys = [ "add", "multiplication" ];
-	var fields = pricingFields(keys);
+	var fields = goodsPricingFields(keys);
 	setTFieldsValue(getView(1), fields);
-	var showFields = pricingFields(keys, true);
+	var showFields = goodsPricingFields(keys, true);
 	return checkShowFields(getView(1), showFields);
 }
-function pricingFields(keys, show) {
-	return getTFields("pricingField", keys, show);
+function goodsPricingFields(keys, show) {
+	return getTFields("goodsPricingField", keys, show);
 }
-function pricingField(key, show) {
+function goodsPricingField(key, show) {
 	var f;
 	switch (key) {
 	case "add":
@@ -393,17 +393,17 @@ function pricingField(key, show) {
 }
 
 // 价格名称
-function testPriceNameFields() {
+function testGoodsPriceNameFields() {
 	var keys = [ "name", "use", "proportion" ];
-	var fields = priceNameFields(keys);
+	var fields = goodsPriceNameFields(keys);
 	setTFieldsValue(getView(), fields);
-	var showFields = priceNameFields(keys, true);
+	var showFields = goodsPriceNameFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
-function priceNameFields(keys, show) {
-	return getTFields("priceNameField", keys, show);
+function goodsPriceNameFields(keys, show) {
+	return getTFields("goodsPriceNameField", keys, show);
 }
-function priceNameField(key, show) {
+function goodsPriceNameField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -448,16 +448,16 @@ function goodsTypeField(key) {
 }
 
 // 新增类别
-function testGoodsAddFields() {
-	var fields = goodsAddFields("name");
+function testEditGoodsFields() {
+	var fields = editGoodsFields("name");
 	setTFieldsValue(getView(), fields);
 	return true;
 }
 
-function goodsAddFields() {
-	return getTFields("goodsAddField", arguments);
+function editGoodsFields() {
+	return getTFields("editGoodsField", arguments);
 }
-function goodsAddField(key) {
+function editGoodsField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -470,16 +470,16 @@ function goodsAddField(key) {
 }
 
 // 所有颜色
-function testColorFields() {
-	var fields = colorFields("name");
+function testGoodsColorFields() {
+	var fields = goodsColorFields("name");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function colorFields() {
-	return getTFields("colorField", arguments);
+function goodsColorFields() {
+	return getTFields("goodsColorField", arguments);
 }
-function colorField(key) {
+function goodsColorField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -492,18 +492,18 @@ function colorField(key) {
 }
 
 // 新增颜色
-function testColorAddFields() {
+function testEditGoodsColorFields() {
 	var keys = [ "type", "code", "name" ];
-	var fields = colorAddFields(keys);
+	var fields = editGoodsColorFields(keys);
 	setTFieldsValue(getView(), fields);
-	var showFields = colorAddFields(keys, true);
+	var showFields = editGoodsColorFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
 
-function colorAddFields(keys, show) {
-	return getTFields("colorAddField", keys, show);
+function editGoodsColorFields(keys, show) {
+	return getTFields("editGoodsColorField", keys, show);
 }
-function colorAddField(key, show) {
+function editGoodsColorField(key, show) {
 	var f;
 	switch (key) {
 	case "type":
@@ -527,16 +527,16 @@ function colorAddField(key, show) {
 }
 
 // 所有尺码
-function testSizeFields() {
-	var fields = sizeFields("sizeids", "name");
+function testGoodsSizeFields() {
+	var fields = goodsSizeFields("sizeids", "name");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function sizeFields() {
-	return getTFields("sizeField", arguments);
+function goodsSizeFields() {
+	return getTFields("goodsSizeField", arguments);
 }
-function sizeField(key) {
+function goodsSizeField(key) {
 	var f;
 	switch (key) {
 	case "sizeids":
@@ -552,18 +552,18 @@ function sizeField(key) {
 }
 
 // 新增尺码
-function testSizeAddFields() {
-	var keys = [ "type", "code", "name", "sequence", "num" ];
-	var fields = sizeAddFields(keys);
+function testEditGoodsSizeFields() {
+	var keys = [ "type", "code", "name", "sequence", "number" ];
+	var fields = editGoodsSizeFields(keys);
 	setTFieldsValue(getView(), fields);
-	var showFields = sizeAddFields(keys, true);
+	var showFields = editGoodsSizeFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
 
-function sizeAddFields(keys, show) {
-	return getTFields("sizeAddField", keys, show);
+function editGoodsSizeFields(keys, show) {
+	return getTFields("editGoodsSizeField", keys, show);
 }
-function sizeAddField(key, show) {
+function editGoodsSizeField(key, show) {
 	var f;
 	switch (key) {
 	case "type":
@@ -582,7 +582,7 @@ function sizeAddField(key, show) {
 	case "sequence":
 		f = new TField("显示顺序", TF, 3, "10");
 		break;
-	case "num":
+	case "number":
 		f = new TField("对应件数", TF, 4, "12");
 		break;
 	default:
@@ -592,16 +592,16 @@ function sizeAddField(key, show) {
 }
 
 // 所有品牌
-function testBrandFields() {
-	var fields = brandFields("name");
+function testGoodsBrandFields() {
+	var fields = goodsBrandFields("name");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function brandFields() {
-	return getTFields("brandField", arguments);
+function goodsBrandFields() {
+	return getTFields("goodsBrandField", arguments);
 }
-function brandField(key) {
+function goodsBrandField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -614,16 +614,16 @@ function brandField(key) {
 }
 
 // 新增品牌
-function testBrandAddFields() {
-	var fields = brandAddFields("name");
+function testEditGoodsBrandFields() {
+	var fields = editGoodsBrandFields("name");
 	setTFieldsValue(getView(), fields);
 	return true;
 }
 
-function brandAddFields() {
-	return getTFields("brandAddField", arguments);
+function editGoodsBrandFields() {
+	return getTFields("editGoodsBrandField", arguments);
 }
-function brandAddField(key) {
+function editGoodsBrandField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -636,16 +636,16 @@ function brandAddField(key) {
 }
 
 // 所有尺码组
-function testSizeidsFields() {
-	var fields = sizeidsFields("name");
+function testGoodsSizeidsFields() {
+	var fields = goodsSizeidsFields("name");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function sizeidsFields() {
-	return getTFields("sizeidsField", arguments);
+function goodsSizeidsFields() {
+	return getTFields("goodsSizeidsField", arguments);
 }
-function sizeidsField(key) {
+function goodsSizeidsField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -658,16 +658,16 @@ function sizeidsField(key) {
 }
 
 // 新增尺码组
-function testSizeidsAddFields() {
-	var fields = sizeidsAddFields("name");
+function testEditGoodsSizeidsFields() {
+	var fields = editGoodsSizeidsFields("name");
 	setTFieldsValue(getView(), fields);
 	return true;
 }
 
-function sizeidsAddFields() {
-	return getTFields("sizeidsAddField", arguments);
+function editGoodsSizeidsFields() {
+	return getTFields("editGoodsSizeidsField", arguments);
 }
-function sizeidsAddField(key) {
+function editGoodsSizeidsField(key) {
 	var f;
 	switch (key) {
 	case "name":
@@ -680,16 +680,16 @@ function sizeidsAddField(key) {
 }
 
 // 所有品牌折扣
-function testBrandDiscountFields() {
-	var fields = brandDiscountFields("brand");
+function testGoodsBrandDiscountFields() {
+	var fields = goodsBrandDiscountFields("brand");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function brandDiscountFields() {
-	return getTFields("brandDiscountField", arguments);
+function goodsBrandDiscountFields() {
+	return getTFields("goodsBrandDiscountField", arguments);
 }
-function brandDiscountField(key) {
+function goodsBrandDiscountField(key) {
 	var f;
 	switch (key) {
 	case "brand":
@@ -702,18 +702,18 @@ function brandDiscountField(key) {
 }
 
 // 新增品牌折扣
-function testBrandDiscountAddFields() {
-	var keys=["brand","discount","price1","price2","price3"];
-	var fields = brandDiscountAddFields(keys);
+function testEditGoodsBrandDiscountFields() {
+	var keys=["brand","discount","retail","pack","vip"];
+	var fields = editGoodsBrandDiscountFields(keys);
 	setTFieldsValue(getView(), fields);
-	var showFields= brandDiscountAddFields(keys,true);
+	var showFields= editGoodsBrandDiscountFields(keys,true);
 	return checkShowFields=(getView(),showFields);
 }
 
-function brandDiscountAddFields(keys,show) {
-	return getTFields("brandDiscountAddField", keys,show);
+function editGoodsBrandDiscountFields(keys,show) {
+	return getTFields("editGoodsBrandDiscountField", keys,show);
 }
-function brandDiscountAddField(key,show) {
+function editGoodsBrandDiscountField(key,show) {
 	var f;
 	switch (key) {
 	case "brand":
@@ -726,13 +726,13 @@ function brandDiscountAddField(key,show) {
 	case "discount":
 		f = new TField("进货价折扣", TF, 1, "1");
 		break;
-	case "price1":
+	case "retail":
 		f = new TField("零批价", TF, 2, "0.5");
 		break;
-	case "price2":
+	case "pack":
 		f = new TField("打包价", TF, 3, "0.4");
 		break;
-	case "price3":
+	case "vip":
 		f = new TField("Vip价格", TF, 4, "0.3");
 		break;
 	default:
@@ -742,18 +742,18 @@ function brandDiscountAddField(key,show) {
 }
 
 // 客户上货
-function testCustomerFields() {
+function testGoodsCustomerFields() {
 	var keys=["code"];
-	var fields = customerFields(keys);
+	var fields = goodsCustomerFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields=customerFields(keys,true);
+	var showFields=goodsCustomerFields(keys,true);
 	return checkShowFields=(window,showFields);
 }
 
-function customerFields(keys,show) {
-	return getTFields("customerField", keys,show);
+function goodsCustomerFields(keys,show) {
+	return getTFields("goodsCustomerField", keys,show);
 }
-function customerField(key,show) {
+function goodsCustomerField(key,show) {
 	var f;
 	switch (key) {
 	case "code":
