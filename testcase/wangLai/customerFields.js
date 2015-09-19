@@ -1,28 +1,34 @@
 
-//客户分店
-function testCustomerBranchFields() {
-	var keys = [ "name", "mobile", "stop" ];
-	var fields = customerBranchFields(keys);
-	setTFieldsValue(getView(1), fields);
-	var showFields = customerBranchFields(keys, true);
-	return checkShowFields(getView(1), showFields);
+function queryCustomerFields(keys, show) {
+	tapMenu("往来管理", "客户查询");
+	return getTFields("queryCustomerField", keys, show);
 }
-
-function customerBranchFields(keys, show) {
-	return getTFields("customerBranchField", keys, show);
-}
-
-function customerBranchField(key, show) {
+function queryCustomerField(key, show) {
 	var f;
 	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "a", 1, 0);
+		if (show) {
+			f.value = "Qaq";
+		}
+		break;
 	case "name":
-		f = new TField("名称", TF, 0, "a");
+		f = new TField("名称", TF, 1, "a");
 		break;
 	case "mobile":
-		f = new TField("手机", TF, 1, "123456789");
+		f = new TField("手机", TF, 2, "13312344321");
 		break;
 	case "stop":
-		f = new TField("是否停用", TF_SC, 2, "否");
+		f = new TField("是否停用", TF_SC, 3, "是");
+		break;
+	case "type":
+		f = new TField("类别", TF_SC, 4, "零批客户");
+		break;
+	case "staff":
+		f = new TField("店员", TF_AC, 5, "000", 1, 0);
+		if (show) {
+			f.value = "000,管理员";
+		}
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -30,44 +36,7 @@ function customerBranchField(key, show) {
 	return f;
 }
 
-// 新增分店
-function testEditCustomerBranchFields() {
-	var keys = [ "name", "mobile", "weixin", "address", "remarks" ];
-	var fields = editCustomerBranchFields(keys);
-	setTFieldsValue(window, fields);
-	var showFields = editCustomerBranchFields(keys, true);
-	return checkShowFields(window, showFields);
-}
-
-function editCustomerBranchFields(keys, show) {
-	return getTFields("editCustomerBranchField", keys, show);
-}
-
-function editCustomerBranchField(key, show) {
-	var f;
-	switch (key) {
-	case "name":
-		f = new TField("名称", TF, 0, "a");
-		break;
-	case "mobile":
-		f = new TField("电话", TF, 1, "123456789");
-		break;
-	case "weixin":
-		f = new TField("微信", TF, 2, "qwe123");
-		break;
-	case "address":
-		f = new TField("地址", TF, 3, "地址");
-		break;
-	case "remarks":
-		f = new TField("备注", TF, 4, "备注");
-		break;
-	default:
-		logWarn("未知key＝" + key);
-	}
-	return f;
-}
-
-// 新增客户
+//新增客户
 function testEditCustomerFields() {
 	// "super",
 	var keys = [ "name", "area","shop", "birthday", "staff", "type", "return",
@@ -79,11 +48,9 @@ function testEditCustomerFields() {
 	var showFields = editCustomerFields(keys, true);
 	return checkShowFields(getView(), showFields);
 }
-
 function editCustomerFields(keys, show) {
 	return getTFields("editCustomerField", keys, show);
 }
-
 function editCustomerField(key, show) {
 	var l = getTableViews().length;
 	var f;
@@ -92,7 +59,7 @@ function editCustomerField(key, show) {
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "area":
-		f = new TField("区域", BTN_AREA, 0, "辽宁",0,"中国,东北");
+		f = new TField("区域", BTN_AREA, 0, "黑龙江", 0, "中国,东北");
 		if (show) {
 			f.type = TF;
 			f.index = 2;
@@ -109,9 +76,9 @@ function editCustomerField(key, show) {
 		f = new TField("生日", TF_DT, 4, "1980-09-10");
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 5, "000",l-1,0);
+		f = new TField("店员", TF_AC, 5, "000", l - 1, "000,管理员");
 		if (show) {
-			f.value = "000,管理员";
+			f.value = f.p2;
 		}
 		break;
 	case "super":
@@ -169,6 +136,74 @@ function editCustomerField(key, show) {
 		logWarn("未知key＝" + key);
 	}
 	return f;
+}
+
+//新增分店
+function testEditCustomerBranchFields() {
+	var keys = [ "name", "mobile", "weixin", "address", "remarks" ];
+	var fields = editCustomerBranchFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = editCustomerBranchFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+function editCustomerBranchFields(keys, show) {
+	return getTFields("editCustomerBranchField", keys, show);
+}
+function editCustomerBranchField(key, show) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "分店测试-");
+		if (show) {
+			f.label = "分店名称";
+		}
+		break;
+	case "mobile":
+		f = new TField("电话", TF, 1, "13311112");
+		break;
+	case "weixin":
+		f = new TField("微信", TF, 2, "wx");
+		break;
+	case "address":
+		f = new TField("地址", TF, 3, "地址");
+		break;
+	case "remarks":
+		f = new TField("备注", TF, 4, "备注");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+function queryCustomerBranchFields(keys, show) {
+	tapMenu2("客户分店");
+	return getTFields("queryCustomerBranchField", keys, show);
+}
+function queryCustomerBranchField(key, show) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("名称", TF, 0, "分店测试1-");
+		break;
+	case "mobile":
+		f = new TField("手机", TF, 1, "13311112");
+		break;
+	case "stop":
+		f = new TField("是否停用", TF_SC, 2, "否");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+//客户分店
+function testCustomerBranchFields() {
+	var keys = [ "name", "mobile", "stop" ];
+	var fields = customerBranchFields(keys);
+	setTFieldsValue(getView(1), fields);
+	var showFields = customerBranchFields(keys, true);
+	return checkShowFields(getView(1), showFields);
 }
 
 // 客户门店账
