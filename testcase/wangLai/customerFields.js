@@ -518,7 +518,7 @@ function queryCustomerLogisticsField(key,show) {
 
 // 新增物流商
 function testEditCustomerLogisticsFields() {
-	var keys = [ "name", "staff", "area","mobile", "post", "address", "account",
+	var keys = [ "name", "staff", "area","mobile", "postcode", "address", "account",
 			"shop" ,"remarks"];
 	var fields = editCustomerLogisticsFields(keys);
 	setTFieldsValue(getView(), fields);
@@ -552,7 +552,7 @@ function editCustomerLogisticsField(key, show) {
 	case "mobile":
 		f = new TField("电话", TF, 3, "123456789");
 		break;
-	case "post":
+	case "postcode":
 		f = new TField("邮编", TF, 4, "310000");
 		break;
 	case "address":

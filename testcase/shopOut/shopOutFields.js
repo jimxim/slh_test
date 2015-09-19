@@ -3,7 +3,7 @@
 
 // 按批次查
 function testShopOutQueryBatchFields() {
-	var keys = [ "day1", "day2", "shopIn", "batch1", "batch2", "shopOut" ];
+	var keys = [ "day1", "day2", "shop-in", "batch1", "batch2", "shop-out" ];
 	var fields = shopOutQueryBatchFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = shopOutQueryBatchFields(keys, true);
@@ -22,7 +22,7 @@ function shopOutQueryBatchField(key, show) {
 	case "day2":
 		f = new TField("到", TF_DT, 1, "2015-9-16");
 		break;
-	case "shopIn":
+	case "shop-in":
 		f = new TField("调入门店", TF_SC, 2, "仓库店");
 		break;
 	case "batch1":
@@ -31,7 +31,7 @@ function shopOutQueryBatchField(key, show) {
 	case "batch2":
 		f = new TField("到", TF, 4, "20");
 		break;
-	case "shopOut":
+	case "shop-out":
 		f = new TField("调出门店", TF_SC, 5, "常青店");
 		break;
 	default:
@@ -42,7 +42,7 @@ function shopOutQueryBatchField(key, show) {
 
 // 按明细查
 function testShopOutQueryParticularFields() {
-	var keys = [ "code", "day1", "day2", "shopOut", "shopIn" ];
+	var keys = [ "code", "day1", "day2", "shop-out", "shop-in" ];
 	var fields = shopOutQueryParticularFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = shopOutQueryParticularFields(keys, true);
@@ -67,10 +67,10 @@ function shopOutQueryParticularField(key, show) {
 	case "day2":
 		f = new TField("到", TF_DT, 2, "2015-9-16");
 		break;
-	case "shopOut":
+	case "shop-out":
 		f = new TField("调出门店", TF_SC, 3, "常青店");
 		break;
-	case "shopIn":
+	case "shop-in":
 		f = new TField("调入门店", TF_SC, 4, "仓库店");
 		break;
 	default:

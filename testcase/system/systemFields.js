@@ -99,7 +99,7 @@ function editSystemGlobalField(key) {
 
 // 小票信息
 function testSystemrReceiptFields() {
-	var fields = systemrReceiptFields("receipt", "mobile1", "mobile", "address",
+	var fields = systemrReceiptFields("title", "mobile1", "mobile", "address",
 			"name", "account", "name2", "account2", "name3", "account3",
 			"name4", "account4", "name5", "account5", "name6", "account6",
 			"remarks");
@@ -113,7 +113,7 @@ function systemrReceiptFields() {
 function systemrReceiptField(key) {
 	var f;
 	switch (key) {
-	case "receipt":
+	case "title":
 		f = new TField("小票抬头", TF, 0, "常青店");
 		break;
 	case "mobile1":
@@ -172,7 +172,7 @@ function systemrReceiptField(key) {
 
 // 人员列表
 function testQuerySystemStaffFields() {
-	var fields = querySystemStaffFields("id", "stop", "name", "shop");
+	var fields = querySystemStaffFields("jobno", "stop", "name", "shop");
 	setTFieldsValue(window, fields);
 	return true;
 }
@@ -183,7 +183,7 @@ function querySystemStaffFields() {
 function querySystemStaffField(key) {
 	var f;
 	switch (key) {
-	case "id":
+	case "jobno":
 		f = new TField("工号", TF, 0, "000");
 		break;
 	case "stop":
@@ -203,7 +203,7 @@ function querySystemStaffField(key) {
 
 // 新增人员
 function testEditSystemStaffFields() {
-	var keys = [ "id", "name", "shop", "job" ]
+	var keys = [ "jobno", "name", "shop", "job" ]
 	var fields = EditSystemStaffFields(keys);
 	setTFieldsValue(getView(), fields);
 	var showFields = EditSystemStaffFields(keys, true);
@@ -216,7 +216,7 @@ function EditSystemStaffFields(keys, show) {
 function EditSystemStaffField(key, show) {
 	var f;
 	switch (key) {
-	case "id":
+	case "jobno":
 		f = new TField("工号", TF, 0, "000");
 		break;
 	case "name":

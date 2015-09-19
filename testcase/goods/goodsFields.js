@@ -253,7 +253,7 @@ function queryGoodsField(key, show) {
 // 新增货品
 function testEditGoodsFields() {
 	var keys = [ "code", "name", "brand", "color", "size", "market", "tag",
-			"purchasePrice", "retail", "pack", "vip", "season", "provider",
+			"purchase-price", "retail", "pack", "vip", "season", "provider",
 			"warehouse", "staff", "type", "barcode", "discount", "remarks" ];
 	var fields = editGoodsFields(keys);
 	setTFieldsValue(getView(), fields);
@@ -306,7 +306,7 @@ function editGoodsField(key, show) {
 	case "tag":
 		f = new TField("吊牌价", TF, 7, "200");
 		break;
-	case "purchasePrice":
+	case "purchase-price":
 		f = new TField("进货价", TF, 8, "100");
 		break;
 	case "retail":
@@ -368,7 +368,7 @@ function editGoodsField(key, show) {
 
 // 批量调价
 function testGoodsPricingFields() {
-	var keys = [ "add", "multiplication" ];
+	var keys = [ "plus-minus", "multiplication" ];
 	var fields = goodsPricingFields(keys);
 	setTFieldsValue(getView(1), fields);
 	var showFields = goodsPricingFields(keys, true);
@@ -380,7 +380,7 @@ function goodsPricingFields(keys, show) {
 function goodsPricingField(key, show) {
 	var f;
 	switch (key) {
-	case "add":
+	case "plus-minus":
 		f = new TField("统一加减", TF, 3, "1");
 		break;
 	case "multiplication":
@@ -394,7 +394,7 @@ function goodsPricingField(key, show) {
 
 // 价格名称
 function testGoodsPriceNameFields() {
-	var keys = [ "name", "use", "proportion" ];
+	var keys = [ "name", "use", "ratio" ];
 	var fields = goodsPriceNameFields(keys);
 	setTFieldsValue(getView(), fields);
 	var showFields = goodsPriceNameFields(keys, true);
@@ -416,7 +416,7 @@ function goodsPriceNameField(key, show) {
 			f.index = 1;
 		}
 		break;
-	case "proportion":
+	case "ratio":
 		f = new TField("比例 ", TF, 2, "1.3");
 		break;
 	default:
@@ -528,7 +528,7 @@ function editGoodsColorField(key, show) {
 
 // 所有尺码
 function testGoodsSizeFields() {
-	var fields = goodsSizeFields("sizeids", "name");
+	var fields = goodsSizeFields("size-group", "name");
 	setTFieldsValue(window, fields);
 	return true;
 }
@@ -539,7 +539,7 @@ function goodsSizeFields() {
 function goodsSizeField(key) {
 	var f;
 	switch (key) {
-	case "sizeids":
+	case "size-group":
 		f = new TField("尺码组", TF_SC, 0, "童装尺码组1");
 		break;
 	case "name":

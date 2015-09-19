@@ -559,7 +559,7 @@ function salesBillField(key, show) {
 // 按订货开单
 function testSalesBillOrderFields() {
 	var keys = [ "day1", "day2", "code", "customer", "shop", "batch1",
-			"batch2", "flag" ];
+			"batch2", "shipping" ];
 	var fields = salesBillOrderFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = salesBillOrderFields(keys, true);
@@ -591,7 +591,7 @@ function salesBillOrderField(key, show) {
 		}
 		break;
 	case "shop":
-		f = new TField("店员", TF_SC, 4, "常青店");
+		f = new TField("门店", TF_SC, 4, "常青店");
 		break;
 	case "batch1":
 		f = new TField("批次从", TF, 5, "1");
@@ -599,7 +599,7 @@ function salesBillOrderField(key, show) {
 	case "batch2":
 		f = new TField("到", TF, 6, "20");
 		break;
-	case "flag":
+	case "shipping":
 		f = new TField("发货状态", TF_SC, 7, "未发货");
 		break;
 	default:
@@ -635,7 +635,7 @@ function salesCollectionRecordField(key) {
 
 //物流商查询
 function testSalesQueryLogisticsFields() {
-	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "billno","collection"];
+	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "shipno","receive"];
 	var fields = salesQueryLogisticsFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=salesQueryLogisticsFields(keys,true);
@@ -672,10 +672,10 @@ function salesQueryLogisticsField(key,show) {
 	case "shop":
 		f = new TField("门店", TF_SC, 6, "常青店");
 		break;
-	case "billno":
+	case "shipno":
 		f = new TField("运单号", TF, 7, "12345678");
 		break;
-	case "collection":
+	case "receive":
 		f = new TField("是否收款", TF_SC, 8, "否");
 		break;
 	default:

@@ -222,7 +222,7 @@ function purchaseOrderAddField(key, show) {
 
 // 新增厂商
 function testPurchaseOrderProviderAddFields() {
-	var fields = purchaseOrderProviderAddFields("coding", "mobile", "authcode");
+	var fields = purchaseOrderProviderAddFields("provider-code", "mobile", "authcode");
 	setTFieldsValue(getView(), fields);
 	return true;
 }
@@ -233,7 +233,7 @@ function purchaseOrderProviderAddFields() {
 function purchaseOrderProviderAddField(key) {
 	var f;
 	switch (key) {
-	case "coding":
+	case "provider-code":
 		f = new TField("厂商编码", TF, 0, "12345678");
 		break;
 	case "mobile":

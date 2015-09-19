@@ -3,7 +3,7 @@
 //按批次查
 function testSalesOrderQueryBatchFields() {
 	var keys = [ "customer", "day1", "day2", "staff", "batch1", "batch2",
-			"shop", "flag" ];
+			"shop", "shipping" ];
 	var fields = salesOrderQueryBatchFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = salesOrderQueryBatchFields(keys, true);
@@ -43,7 +43,7 @@ function salesOrderQueryBatchField(key, show) {
 	case "shop":
 		f = new TField("门店", TF_SC, 6, "常青店");
 		break;
-	case "flag":
+	case "shipping":
 		f = new TField("发货状态", TF_SC, 7, "未发货");
 		break;
 	default:

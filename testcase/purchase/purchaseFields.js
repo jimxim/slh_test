@@ -261,7 +261,7 @@ function purchaseInOutField(key) {
 
 // 供应商对账单
 function testPurchaseQueryProviderFields() {
-	var keys = [ "day1", "day2", "supplier" ];
+	var keys = [ "day1", "day2", "provider" ];
 	var fields = purchaseQueryProviderFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = purchaseQueryProviderFields(keys, true);
@@ -281,7 +281,7 @@ function purchaseQueryProviderField(key, show) {
 	case "day2":
 		f = new TField("到", TF_DT, l - 2, "2015-9-15");
 		break;
-	case "supplier":
+	case "provider":
 		var tableViewIndex = getTableViews().length - 1;
 		f = new TField("供应商", TF_AC, l - 1, "a", tableViewIndex, 0);
 		if (show) {
