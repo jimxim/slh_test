@@ -519,16 +519,16 @@ function salesProviderField(key, show) {
 // 开单
 function testSalesBillFields() {
 	var keys = [ "customer", "staff", "day", "remarks" ];
-	var fields = salesBillFields(keys);
+	var fields = editSalesBillFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields = salesBillFields(keys, true);
+	var showFields = editSalesBillFields(keys, true);
 	return checkShowFields(window, showFields);
 }
 
-function salesBillFields(keys, show) {
-	return getTFields("salesBillField", keys, show);
+function editSalesBillFields(keys, show) {
+	return getTFields("editSalesBillField", keys, show);
 }
-function salesBillField(key, show) {
+function editSalesBillField(key, show) {
 	var l = getTableViews().length;
 	var f;
 	switch (key) {
@@ -549,6 +549,12 @@ function salesBillField(key, show) {
 		break;
 	case "remarks":
 		f = new TField("备注", TF, 10, "123");
+		break;
+	case "code":
+		f = new TField("款号", TF_AC, 16, "k526", -1,"k526,铅笔裤,300元");
+		if (show) {
+			f.value = "k526,铅笔裤";
+		}
 		break;
 	default:
 		logWarn("未知key＝" + key);

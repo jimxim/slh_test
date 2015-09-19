@@ -1,3 +1,12 @@
+target.frontMostApp().statusBar().tapWithOptions({tapOffset:{x:0.80, y:0.52}});
+target.frontMostApp().mainWindow().buttons()["开  单+"].tap();
+
+target.frontMostApp().mainWindow().textFields()[16].textFields()[0].tap();
+target.frontMostApp().keyboard().typeString("K");
+target.frontMostApp().mainWindow().tableViews()[4].tapWithOptions({tapOffset:{x:0.20, y:0.07}});
+
+
+
 function editCustomerFields(keys, show) {
 	return getTFields("editCustomerField", keys, show);
 }
