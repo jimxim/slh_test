@@ -15,9 +15,9 @@ function testWanLaiCustomerAll() {
 	// run("客户启用", "testCustomerSart");
 	// run("客户消费明细", "testCustomerConsumeDetail");
 	// run("客户修改保存", "testCustomerEdit");
-	run("客户新增保存", "testCustomerAdd");
+	// run("客户新增保存", "testCustomerAdd");
 	// run("客户签名", "testCustomerSign");
-	// run("新增分店", "testCustomerAddBranch");
+	// run("新增分店", "testCustomerEditBranch");
 	// run("客户修改时向上滚动", "testCustomerEditVisible");
 }
 
@@ -299,7 +299,7 @@ function testCustomerSign() {
 	return true;
 }
 
-function testCustomerAddBranch() {
+function testCustomerEditBranch() {
 	var value = "fdcs1";// 分店测试1
 	queryCustomerByCustomerToEdit(value);
 	tapButton(window, "新增分店+");

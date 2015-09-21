@@ -562,6 +562,43 @@ function editSalesBillField(key, show) {
 	return f;
 }
 
+function editSalesBillDetailFields(keys, show) {
+	return getTFields("editSalesBillDetailField", keys, show);
+}
+function editSalesBillDetailField(key, show) {
+	var l = getTableViews().length;
+	var f;
+	switch (key) {
+	case "customer":
+		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
+		if (show) {
+			f.value = "Qaq";
+		}
+		break;
+	case "staff":
+		f = new TField("店员", TF_AC, 5, "000", l - 1, 0);
+		if (show) {
+			f.value = "000,管理员";
+		}
+		break;
+	case "day":
+		f = new TField("日期", TF_DT, 9, getToday());
+		break;
+	case "remarks":
+		f = new TField("备注", TF, 10, "123");
+		break;
+	case "code":
+		f = new TField("款号", TF_AC, 16, "k526", -1,"k526,铅笔裤,300元");
+		if (show) {
+			f.value = "k526,铅笔裤";
+		}
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
 // 按订货开单
 function testSalesBillOrderFields() {
 	var keys = [ "day1", "day2", "code", "customer", "shop", "batch1",
