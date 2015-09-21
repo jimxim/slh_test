@@ -3,7 +3,7 @@
 //新增反馈
 function testEditHelpFeedbackFields() {
 	var fields = editHelpFeedbackFields("title","content");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 

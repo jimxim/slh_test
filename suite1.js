@@ -30,7 +30,7 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
- run("输入客户查询客户", "testQueryCustomer");
+	testWanLaiCustomerAll();
 // run("查询客户清除按钮", "testQueryCustomerClear");
 // run("客户新增", "testEditCustomerFields");
 // run("客户分店", "testCustomerBranchFields");

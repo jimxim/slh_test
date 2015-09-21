@@ -36,17 +36,17 @@ function queryCustomerField(key, show) {
 	return f;
 }
 
-//新增客户
+// 新增客户
 function testEditCustomerFields() {
 	// "super",
-	var keys = [ "name", "area","shop", "birthday", "staff", "type", "return",
-			"price", "mobile", "weixin", "fax", "address", "remarks",
+	var keys = [ "name", "area","mobile", "weixin", "shop", "birthday", "staff", "type", "return",
+			"price", "fax", "remarks","address", 
 			"discount", "credit", "alarm" ];
 	var fields = editCustomerFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	// debugElements(getView());
 	var showFields = editCustomerFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 function editCustomerFields(keys, show) {
 	return getTFields("editCustomerField", keys, show);
@@ -65,24 +65,30 @@ function editCustomerField(key, show) {
 			f.index = 2;
 		}
 		break;
+	case "mobile":
+		f = new TField("手机", TF, 3, "123456789");
+		break;
+	case "weixin":
+		f = new TField("微信", TF, 4, "x123456");
+		break;
 	case "shop":
 		f = new TField("门店", BTN_SC, 1, "常青店");
 		if (show) {
 			f.type = TF;
-			f.index = 3;
+			f.index = 5;
 		}
 		break;
 	case "birthday":
-		f = new TField("生日", TF_DT, 4, "1980-09-10");
+		f = new TField("生日", TF_DT, 6, "1980-09-10");
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 5, "000", l - 1, "000,管理员");
+		f = new TField("店员", TF_AC, 7, "000", l - 1, "000,管理员");
 		if (show) {
 			f.value = f.p2;
 		}
 		break;
 	case "super":
-		f = new TField("上级客户", TF_AC, 6, "b", 3, 0);
+		f = new TField("上级客户", TF_AC, 8, "b", 3, 0);
 		if (show) {
 			f.value = "Yvb";
 		}
@@ -91,46 +97,42 @@ function editCustomerField(key, show) {
 		f = new TField("客户类别", BTN_SC, 2, "零批客户");
 		if (show) {
 			f.type = TF;
-			f.index = 7;
+			f.index = 9;
 		}
 		break;
 	case "return":
 		f = new TField("允许退货", BTN_SC, 4, "是");
 		if (show) {
 			f.type = TF;
-			f.index = 9;
+			f.index = 11;
 		}
 		break;
 	case "price":
 		f = new TField("适用价格", BTN_SC, 5, "零批价");
 		if (show) {
 			f.type = TF;
-			f.index = 11;
+			f.index = 13;
 		}
 		break;
-	case "mobile":
-		f = new TField("手机", TF, 12, "123456789");
-		break;
-	case "weixin":
-		f = new TField("微信", TF, 13, "x123456");
-		break;
+
 	case "fax":
 		f = new TField("传真号", TF, 14, "55555");
 		break;
-	case "address":
-		f = new TField("地址", TF, 15, "地址");
-		break;
 	case "remarks":
-		f = new TField("备注", TF, 16, "123");
+		f = new TField("备注", TF, 15, "123");
 		break;
+	case "address":
+		f = new TField("地址", TF, 16, "地址");
+		break;
+
 	case "discount":
 		f = new TField("拿货折扣", TF, 17, "0.9");
 		break;
 	case "credit":
-		f = new TField("信用额度", TF, 18, "10000");
+		f = new TField("信用额度", TF, 19, "10000");
 		break;
 	case "alarm":
-		f = new TField("欠款报警", TF, 19, "5000");
+		f = new TField("欠款报警", TF, 20, "5000");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -138,7 +140,7 @@ function editCustomerField(key, show) {
 	return f;
 }
 
-//新增分店
+// 新增分店
 function testEditCustomerBranchFields() {
 	var keys = [ "name", "mobile", "weixin", "address", "remarks" ];
 	var fields = editCustomerBranchFields(keys);
@@ -197,13 +199,13 @@ function queryCustomerBranchField(key, show) {
 	return f;
 }
 
-//客户分店
+// 客户分店
 function testCustomerBranchFields() {
 	var keys = [ "name", "mobile", "stop" ];
 	var fields = customerBranchFields(keys);
-	setTFieldsValue(getView(1), fields);
+	setTFieldsValue(getScrollView(1), fields);
 	var showFields = customerBranchFields(keys, true);
-	return checkShowFields(getView(1), showFields);
+	return checkShowFields(getScrollView(1), showFields);
 }
 
 // 客户门店账
@@ -392,9 +394,9 @@ function queryCustomerProviderField(key, show) {
 function testEditCustomerProviderFields() {
 	var keys = [ "name", "mobile", "address", "price", "remarks" ];
 	var fields = editCustomerProviderFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editCustomerProviderFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function editCustomerProviderFields(keys, show) {
@@ -556,9 +558,9 @@ function testEditCustomerLogisticsFields() {
 	var keys = [ "name", "staff", "area","mobile", "postcode", "address", "account",
 			"shop" ,"remarks"];
 	var fields = editCustomerLogisticsFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editCustomerLogisticsFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function editCustomerLogisticsFields(keys, show) {
@@ -661,9 +663,9 @@ function queryCustomerBackField(key,show) {
 function testEditCustomerBackFields() {
 	var keys = [ "day", "customer", "staff", "type", "theme", "feedback" ];
 	var fields = editCustomerBackFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editCustomerBackFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function editCustomerBackFields(keys, show) {

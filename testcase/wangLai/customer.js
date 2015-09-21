@@ -19,6 +19,8 @@ function testWanLaiCustomerAll() {
 	// run("客户签名", "testCustomerSign");
 	// run("新增分店", "testCustomerEditBranch");
 	// run("客户修改时向上滚动", "testCustomerEditVisible");
+	run("新增相同客户", "testCustomerAddSame");
+	// run("客户分店", "testCustomerBranch");
 }
 
 function testQueryCustomer() {
@@ -26,7 +28,7 @@ function testQueryCustomer() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult();
 	// 返回结果确定只有一条
 	var showField = queryCustomerField(key, true);
 	var expected = showField.value;
@@ -40,7 +42,7 @@ function testQueryCustomerByName() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult();
 
 	var showField = queryCustomerField(key, true);
 
@@ -52,7 +54,7 @@ function testQueryCustomerByMobile() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult(window, getScrollView());
 
 	var showField = queryCustomerField(key, true);
 
@@ -67,7 +69,7 @@ function testQueryCustomerByStop() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult(window, getScrollView());
 
 	target.captureScreenWithName("customer_stop");
 
@@ -79,7 +81,7 @@ function testQueryCustomerByType() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult(window, getScrollView());
 
 	return isEqualQRData1ByTitle(qr, "名称", "零批客户1");
 }
@@ -89,7 +91,7 @@ function testQueryCustomerByStaff() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult(window, getScrollView());
 
 	var showField = queryCustomerField(key, true);
 	var title = showField.label;
@@ -122,14 +124,14 @@ function testQueryCustomerClear() {
 function testQueryCustomerNextPage() {
 	var qFields = queryCustomerFields();
 	query(qFields);
-	var qr = getQResult(window, getView());
+	var qr = getQResult(window, getScrollView());
 
 	var seq1 = qr.data[0][0];
 	var name1 = qr.data[0][1];
 
 	scrollNextPage();
 
-	var qr2 = getQResult(window, getView());
+	var qr2 = getQResult(window, getScrollView());
 	var seq2 = qr2.data[0][0];
 	var name2 = qr2.data[0][1];
 
@@ -203,12 +205,12 @@ function testCustomerConsumeDetail() {
 	var qf = qFields[key];
 	qf.value = "xx";
 	query(qFields);
-	var texts = getStaticTexts(getView());
+	var texts = getStaticTexts(getScrollView());
 	var i = getFirstIndexOfTextsByTitle(texts, "序号");
 	tap(texts[i]);// 进入修改页面
 
 	tapButton(window, "消费明细");
-	texts = getStaticTexts(getView(1));
+	texts = getStaticTexts(getScrollView(1));
 	var actual = texts[0].value(); // 需要验证的值及时记下，经过若干操作后指针位置可能会被变更
 	var expected = "小薛";
 
@@ -225,7 +227,7 @@ function queryCustomerByCustomerToEdit(value) {
 	var qf = qFields[key];
 	qf.value = value;
 	query(qFields);
-	var texts = getStaticTexts(getView());
+	var texts = getStaticTexts(getScrollView());
 	var i = getFirstIndexOfTextsByTitle(texts, "序号");
 	tap(texts[i]);// 进入修改页面
 }
@@ -234,22 +236,24 @@ function testCustomerEdit() {
 	queryCustomerByCustomerToEdit(value);
 
 	// "super",
-	var keys = [ "shop", "birthday", "staff", "type", "return", "price",
-			"mobile", "weixin", "fax", "address", "remarks", "discount",
+	var keys = [ "area", "mobile", "weixin", "shop", "birthday", "staff",
+			"type", "return", "price", "fax", "remarks", "address", "discount",
 			"credit", "alarm" ];
 	var fields = editCustomerFields(keys);
-	var mobileField = fields["mobile"];
-	mobileField.value = "15311112222";
-	setTFieldsValue(getView(), fields);
+	// var mobileField = fields["mobile"];
+	// mobileField.value = "15311112222";
+	changeTFieldValue(fields["mobile"], "15311112222");
+	setTFieldsValue(getScrollView(), fields);
 	tapButton(window, EDIT_SAVE);
 	tapButton(window, RETURN);
 
 	queryCustomerByCustomerToEdit(value);
 
 	var showFields = editCustomerFields(keys, true);
-	var showMobileField = showFields["mobile"];
-	showMobileField.value = "15311112222";
-	var ret = checkShowFields(getView(), showFields);
+	// var showMobileField = showFields["mobile"];
+	// showMobileField.value = "15311112222";
+	changeTFieldValue(showFields["mobile"], "15311112222");
+	var ret = checkShowFields(getScrollView(), showFields);
 
 	tapButton(window, RETURN);
 	return ret;
@@ -262,7 +266,7 @@ function testCustomerAdd() {
 			"discount", "credit", "alarm" ];
 	keys = [ "area" ];
 	var fields = editCustomerFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	// debugElements(getTableViews(getPop())[0]);
 	debugElements(getPop());
 	// debugElements(getView());
@@ -318,7 +322,7 @@ function testCustomerEditBranch() {
 	var qFields = queryCustomerBranchFields(qKeys);
 	appendTFieldsValue(qFields, r, [ "name", "mobile" ]);
 
-	var view = getView(1);
+	var view = getScrollView(1);
 	tapButton(view, CLEAR);
 	setTFieldsValue(view, qFields);
 	tapButton(view, QUERY);
@@ -343,15 +347,91 @@ function testCustomerEditBranch() {
 
 function testCustomerEditVisible() {
 	tapMenu("往来管理", "新增客户+");
-	var keys = [ "name", "shop", "birthday", "staff", "type", "return",
-			"price", "mobile", "weixin", "fax", "address", "remarks",
+	var keys = [ "name", "area", "mobile", "weixin", "shop", "birthday",
+			"staff", "type", "return", "price", "fax", "remarks", "address",
 			"discount", "credit", "alarm" ];
 	var fields = editCustomerFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 
 	var showFields = editCustomerFields(keys, true);
-	var ret = checkShowFields(getView(), showFields);
+	var ret = checkShowFields(getScrollView(), showFields);
 	//
 	// tapButton(window, RETURN);
 	return ret;
+}
+
+// 客户分店
+function testCustomerBranch() {
+	var value = "fdcs1";
+	queryCustomerByCustomerToEdit(value);
+	tapButton(window, "客户分店");
+
+	var Keys = [ "name" ];
+	var Fields = queryCustomerBranchFields(Keys);
+	setTFieldsValue(getScrollView(), fields);
+
+}
+
+function testCustomerAddSame() {
+	tapMenu("往来管理", "新增客户+");
+	var keys = [ "name", "mobile", "shop" ];
+	var fields = editCustomerFields(keys);
+	changeTFieldValue(fields["name"], "修改测试1");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+
+	var ret1 = false;
+	if (isIn(alertMsg, "名称重复")) {
+		ret1 = true;
+	}
+
+	tapMenu("往来管理", "新增客户+");
+	var r = getToday() + getRandomInt(10000);
+	fields = editCustomerFields(keys);
+	appendTFieldValue(fields["name"], r);
+	changeTFieldValue(fields["mobile"], "15311112222");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+	var ret2 = false;
+	if (isIn(alertMsg, "手机号码重复")) {
+		ret2 = true;
+	}
+
+	return ret1 && ret2;
+}
+
+function testCustomerAdd() {
+	tapMenu("往来管理", "新增客户+");
+	var keys = [ "name", "mobile" ];
+	var fields = editCustomerFields(keys);
+	changeTFieldValue(fields["name"], "修改测试1");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+
+	var ret1 = false;
+	if (isIn(alertMsg, "名称重复")) {
+		ret1 = true;
+	}
+
+	tapMenu("往来管理", "新增客户+");
+	var r = getToday() + getRandomInt(10000);
+	fields = editCustomerFields(keys);
+	appendTFieldValue(fields["name"], r);
+	changeTFieldValue(fields["mobile"], "15311112222");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+	var ret2 = false;
+	if (isIn(alertMsg, "手机号码重复")) {
+		ret2 = true;
+	}
+
+	return ret1 && ret2;
 }

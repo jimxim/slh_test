@@ -256,9 +256,9 @@ function testEditGoodsFields() {
 			"purchase-price", "retail", "pack", "vip", "season", "provider",
 			"warehouse", "staff", "type", "barcode", "discount", "remarks" ];
 	var fields = editGoodsFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editGoodsFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 function editGoodsFields(keys, show) {
 	return getTFields("editGoodsField", keys, show);
@@ -370,9 +370,9 @@ function editGoodsField(key, show) {
 function testGoodsPricingFields() {
 	var keys = [ "plus-minus", "multiplication" ];
 	var fields = goodsPricingFields(keys);
-	setTFieldsValue(getView(1), fields);
+	setTFieldsValue(getScrollView(1), fields);
 	var showFields = goodsPricingFields(keys, true);
-	return checkShowFields(getView(1), showFields);
+	return checkShowFields(getScrollView(1), showFields);
 }
 function goodsPricingFields(keys, show) {
 	return getTFields("goodsPricingField", keys, show);
@@ -396,9 +396,9 @@ function goodsPricingField(key, show) {
 function testGoodsPriceNameFields() {
 	var keys = [ "name", "use", "ratio" ];
 	var fields = goodsPriceNameFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = goodsPriceNameFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 function goodsPriceNameFields(keys, show) {
 	return getTFields("goodsPriceNameField", keys, show);
@@ -450,7 +450,7 @@ function goodsTypeField(key) {
 // 新增类别
 function testEditGoodsFields() {
 	var fields = editGoodsFields("name");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -495,9 +495,9 @@ function goodsColorField(key) {
 function testEditGoodsColorFields() {
 	var keys = [ "type", "code", "name" ];
 	var fields = editGoodsColorFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editGoodsColorFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function editGoodsColorFields(keys, show) {
@@ -555,9 +555,9 @@ function goodsSizeField(key) {
 function testEditGoodsSizeFields() {
 	var keys = [ "type", "code", "name", "sequence", "number" ];
 	var fields = editGoodsSizeFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = editGoodsSizeFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function editGoodsSizeFields(keys, show) {
@@ -616,7 +616,7 @@ function goodsBrandField(key) {
 // 新增品牌
 function testEditGoodsBrandFields() {
 	var fields = editGoodsBrandFields("name");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -660,7 +660,7 @@ function goodsSizeidsField(key) {
 // 新增尺码组
 function testEditGoodsSizeidsFields() {
 	var fields = editGoodsSizeidsFields("name");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -705,9 +705,9 @@ function goodsBrandDiscountField(key) {
 function testEditGoodsBrandDiscountFields() {
 	var keys=["brand","discount","retail","pack","vip"];
 	var fields = editGoodsBrandDiscountFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields= editGoodsBrandDiscountFields(keys,true);
-	return checkShowFields=(getView(),showFields);
+	return checkShowFields=(getScrollView(),showFields);
 }
 
 function editGoodsBrandDiscountFields(keys,show) {

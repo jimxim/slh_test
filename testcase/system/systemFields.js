@@ -3,7 +3,7 @@
 //打印机
 function testSystemPrinterFields() {
 	var fields = systemPrinterFields("number");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -25,7 +25,7 @@ function systemPrinterField(key) {
 // 本地设置
 function testSystemLocalFields() {
 	var fields = systemLocalFields("number");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -75,7 +75,7 @@ function querySystemGlobalField(key) {
 // 全局设置编辑
 function testEditSystemGlobalFields() {
 	var fields = editSystemGlobalFields("number", "authcode");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -103,7 +103,7 @@ function testSystemrReceiptFields() {
 			"name", "account", "name2", "account2", "name3", "account3",
 			"name4", "account4", "name5", "account5", "name6", "account6",
 			"remarks");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
@@ -205,9 +205,9 @@ function querySystemStaffField(key) {
 function testEditSystemStaffFields() {
 	var keys = [ "jobno", "name", "shop", "job" ]
 	var fields = EditSystemStaffFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = EditSystemStaffFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function EditSystemStaffFields(keys, show) {

@@ -76,9 +76,9 @@ function queryCheckParticularField(key, show) {
 function testCheckProcessFields() {
 	var keys = [ "day", "shop" ];
 	var fields = checkProcessFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	var showFields = checkProcessFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 
 function checkProcessFields(keys, show) {

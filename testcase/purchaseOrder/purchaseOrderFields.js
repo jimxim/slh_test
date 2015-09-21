@@ -223,7 +223,7 @@ function purchaseOrderAddField(key, show) {
 // 新增厂商
 function testPurchaseOrderProviderAddFields() {
 	var fields = purchaseOrderProviderAddFields("provider-code", "mobile", "authcode");
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 

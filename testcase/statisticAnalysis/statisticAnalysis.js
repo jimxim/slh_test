@@ -9,12 +9,12 @@ function editSalesBill() {
 	f1.value = "zhhz1"; // 综合汇总1
 	setTFieldsValue(window, fields);
 	
-	tap(getTextField(getView(), 0)); //进入明细
+	tap(getTextField(getScrollView(), 0)); //进入明细
 	keys = [ "code" ];
 	fields = editSalesBillFields(keys);
 	setTFieldsValue(window, fields);
 	
 	//明细textfields
-	var detailTF1 = getTextField(getView(3), 0);
+	var detailTF1 = getTextField(getScrollView(3), 0);
 	detailTF1
 }

@@ -20,10 +20,10 @@ function testProviderRepeat() {
 function testEditProviderFields() {
 	var keys = [ "name", "mobile", "address", "price", "remarks" ];
 	var fields = editProviderFields(keys);
-	setTFieldsValue(getView(), fields);
+	setTFieldsValue(getScrollView(), fields);
 	// debugElements(getView());
 	var showFields = editProviderFields(keys, true);
-	return checkShowFields(getView(), showFields);
+	return checkShowFields(getScrollView(), showFields);
 }
 function editProviderFields(keys, show) {
 	return getTFields("editProviderField", keys, show);
