@@ -258,6 +258,36 @@ function queryCustomerShopAccountField(key, show) {
 	return f;
 }
 
+//按上级单位
+function testQueryCustomerSuperFields() {
+	var keys = [ "name", "customer" ]
+	var fields = queryCustomerSuperFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = queryCustomerSuperFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function queryCustomerSuperFields(keys, show) {
+	return getTFields("queryCustomerSuperField", keys, show);
+}
+function queryCustomerSuperField(key, show) {
+	var f;
+	switch (key) {
+	case "name":
+		f = new TField("客户名称", TF, 0, "a");
+		break;
+	case "customer":
+		f = new TField("客户", TF_AC, 1, "a", 1, 0);
+		if (show) {
+			f.value = "Qaq";
+		}
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
 // 客户总账
 function testQueryCustomerAccountFields() {
 	var keys = [ "name", "customer" ]
@@ -316,7 +346,7 @@ function queryCustomerActiveField(key, show) {
 		}
 		break;
 	case "shop":
-		f = new TField("门店", TF_SC, 2, "仓库店");
+		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
 		logWarn("未知key＝" + key);
