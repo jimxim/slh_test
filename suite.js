@@ -11,6 +11,7 @@
 #import "testcase/wangLai/provider.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
+#import "testcase/sales/salesFields.js"
 #import "testcase/sales/sales.js"
 
 //总经理
@@ -18,6 +19,7 @@ function test000All() {
 	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
+	testSalesBillAll();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
 //		testWanLaiProviderAll();

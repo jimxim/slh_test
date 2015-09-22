@@ -1,3 +1,10 @@
+销售开单同时订货
+是否需要颜色尺码   1，默认均色均码，操作更简单
+开单模式 1，现金＋刷卡＋汇款
+
+1.新增开单，无颜色尺码 1500，k526,300*5
+
+
 target.frontMostApp().statusBar().tapWithOptions({tapOffset:{x:0.80, y:0.52}});
 target.frontMostApp().mainWindow().buttons()["开  单+"].tap();
 
