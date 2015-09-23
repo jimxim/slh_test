@@ -82,7 +82,7 @@ function editCustomerField(key, show) {
 		f = new TField("生日", TF_DT, 6, "1980-09-10");
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 7, "000", l - 1, "000,管理员");
+		f = new TField("店员", TF_AC, 7, "000",  - 1, "000,管理员");
 		if (show) {
 			f.value = f.p2;
 		}
@@ -307,7 +307,7 @@ function queryCustomerAccountField(key, show) {
 		f = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
-		f = new TField("客户", TF_AC, 1, "a", 1, 0);
+		f = new TField("客户", TF_AC, 1, "a", -1, 0, ZH);
 		if (show) {
 			f.value = "Qaq";
 		}
@@ -461,18 +461,18 @@ function editCustomerProviderField(key, show) {
 }
 
 // 厂商门店帐
-function testQueryCustomerShopAccountFields() {
+function testQueryProviderShopAccountFields() {
 	var keys=["provider", "shop"];
-	var fields = queryCustomerShopAccountFields(keys);
+	var fields = queryProviderShopAccountFields(keys);
 	setTFieldsValue(window, fields);
-	var showFields=queryCustomerShopAccountFields(keys,true);
+	var showFields=queryProviderShopAccountFields(keys,true);
 	return checkShowFields=(window,showFields);
 }
 
-function queryCustomerShopAccountFields(keys,show) {
-	return getTFields("queryCustomerShopAccountField", keys,show);
+function queryProviderShopAccountFields(keys,show) {
+	return getTFields("queryProviderShopAccountField", keys,show);
 }
-function queryCustomerShopAccountField(key,show) {
+function queryProviderShopAccountField(key,show) {
 	var f;
 	switch (key) {
 	case "provider":

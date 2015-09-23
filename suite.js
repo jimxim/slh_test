@@ -7,7 +7,7 @@
 #import "lib/param.js"
 
 #import "testcase/wangLai/customer.js"
-//#import "testcase/wangLai/customerFields.js"
+#import "testcase/wangLai/customerFields.js"
 #import "testcase/wangLai/provider.js"
 #import "testcase/goods.js"
 #import "testcase/param.js"
@@ -16,12 +16,12 @@
 
 //总经理
 function test000All() {
-	debug = true;
+//	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
-	testSalesBillAll();
+//	testSalesBillAll();
 //		testParamAll();	
-//		testWanLaiCustomerAll();
+		testWanLaiCustomerAll();
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
