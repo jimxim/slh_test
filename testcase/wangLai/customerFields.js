@@ -258,7 +258,7 @@ function queryCustomerShopAccountField(key, show) {
 	return f;
 }
 
-//按上级单位
+// 按上级单位
 function testQueryCustomerSuperFields() {
 	var keys = [ "name", "customer" ]
 	var fields = queryCustomerSuperFields(keys);
@@ -334,19 +334,19 @@ function queryCustomerActiveField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
-		f = new TField("客户", TF_AC, 0, "a", 1, 0);
+		f = new TField("客户", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "staff":
-		f = new TField("店员", TF_AC, 1, "000", 1, 0);
+		f = new TField("店员", TF_AC, 1, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "shop":
-		f = new TField("门店", TF_SC, 2, "常青店");
+		f = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	default:
 		logWarn("未知key＝" + key);
