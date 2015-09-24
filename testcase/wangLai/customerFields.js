@@ -228,7 +228,7 @@ function queryCustomerShopAccountField(key, show) {
 		f = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
-		f = new TField("客户", TF_AC, 1, "a", 1, 0);
+		f = new TField("客户", TF_AC, 1, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
