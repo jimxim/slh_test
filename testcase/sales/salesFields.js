@@ -538,6 +538,9 @@ function editSalesBillField(key, show) {
 			f.value = "Qaq";
 		}
 		break;
+	case "cash":
+		f = new TField("现金", TF, 2, 0);
+		break;
 	case "staff":
 		f = new TField("店员", TF_AC, 5, "000", l - 1, 0);
 		if (show) {

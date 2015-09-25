@@ -360,7 +360,8 @@ function testQueryCustomerScoreFields() {
 	var fields = queryCustomerScoreFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = queryCustomerScoreFields(keys, true);
-	return checkShowFields(window, showFields);
+	var ret = checkShowFields(window, showFields);
+	return ret;
 }
 
 function queryCustomerScoreFields(keys, show) {
@@ -373,9 +374,9 @@ function queryCustomerScoreField(key, show) {
 		f = new TField("门店", TF_SC, 0, "仓库店");
 		break;
 	case "customer":
-		f = new TField("客户", TF_AC, 1, "a", 1, 0);
+		f = new TField("客户", TF_AC, 1, "jfcs1", -1, 0);
 		if (show) {
-			f.value = "Qaq";
+			f.value = "积分测试1";
 		}
 		break;
 	case "mobile":
@@ -466,7 +467,7 @@ function testQueryProviderShopAccountFields() {
 	var fields = queryProviderShopAccountFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=queryProviderShopAccountFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function queryProviderShopAccountFields(keys,show) {
@@ -523,7 +524,7 @@ function testQueryCustomerProviderAccountFields() {
 	var fields = queryCustomerProviderAccountFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=queryCustomerProviderAccountFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function queryCustomerProviderAccountFields(keys,show) {
@@ -550,7 +551,7 @@ function testQueryCustomerLogisticsFields() {
 	var fields = queryCustomerLogisticsFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=queryCustomerLogisticsFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function queryCustomerLogisticsFields(keys,show) {

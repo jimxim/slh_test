@@ -16,12 +16,14 @@
 
 //总经理
 function test000All() {
-//	debug = true;
+	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
 //		testParamAll();	
-		testWanLaiCustomerAll();
+//		testWanLaiCustomerAll();
+	run("积分查询", "testQueryCustomerScoreFields");
+	run("客户新增", "testEditCustomerFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
