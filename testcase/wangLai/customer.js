@@ -27,13 +27,16 @@ function testWanLaiCustomerAll() {
 	// run("客户门店帐余款核对", "testQueryCustomerShopAccountCheck");
 	// run("按上级单位", "testQueryCustomerSuper");
 	// run("客户总帐", "testQueryCustomerAccount");
-	// run("客户活跃度", "testQueryCustomerActive");
+	run("客户活跃度", "testQueryCustomerActive");
 	// run("积分查询", "testQueryCustomerScore");
 	// run("新增相同厂商", "testCustomerProviderAddSame");
 	// run("厂商查询", "testQueryCustomerProvider");
 	// run("厂商门店账", "testQueryProviderShopAccount");
 	// run("厂商总账", "testQueryCustomerProviderAccount");
-	
+	// run("物流商查询", "testQueryCustomerLogistics");
+	// run("新增/修改物流商", "testEditCustomerLogistics");
+	// run("客户未拿货天数检测", "testQueryCustomerDayCheck");
+
 }
 
 function testQueryCustomer() {
@@ -432,6 +435,7 @@ function testCustomerAddSame() {
 
 	return ret1 && ret2;
 }
+
 function testCustomerAddDifferent() {
 	tapMenu("往来管理", "新增客户+");
 	var r = getToday() + getRandomInt(10000);
@@ -596,17 +600,16 @@ function testQueryCustomerActive() {
 
 	var keys = [ "customer" ];
 	var fields = queryCustomerActiveFields(keys);
-	changeTFieldValue(fields["customer"], "cl", -1, 1, ZH);
+	changeTFieldValue(fields["customer"], "cl");
 	query(fields);
 	tapButton(window, CLEAR);
 
 	var qkeys = [ "customer" ];
 	var qFields = queryCustomerActiveFields(qkeys);
-	changeTFieldValue(qFields["customer"], "bk");
+	changeTFieldValue(qFields["customer"], "不开单客户");
 	query(qFields);
 	var qr = getQResult();
-	// var total = qr.total;
-	var total = 0;
+	var total = qr.total;
 	var ret2 = true;
 	if (total >= 1) {
 		ret2 = false;
@@ -626,7 +629,7 @@ function testQueryCustomerScore() {
 	// debugQResult(qr1);
 	var index1 = qr1.titles["积分"];
 	var i = qr1.counts[index1];
-	var ret = isEqualQRData1ByTitle(qr1, "客户", "积分测试1");
+	var ret1 = isEqualQRData1ByTitle(qr1, "客户", "积分测试1");
 
 	tapButton(window, CLEAR);
 
@@ -639,10 +642,11 @@ function testQueryCustomerScore() {
 	var qr2 = getQResult();
 	var index2 = qr2.titles["金额"];
 	var j = qr2.counts[index2];
-	if (i != j) {
-		ret = false;
+	var ret2 = false;
+	if (i == j) {
+		ret2 = true;
 	}
-	return ret;
+	return ret1 && ret2;
 }
 
 function testCustomerProviderAddSame() {
@@ -738,6 +742,115 @@ function testQueryCustomerProviderAccount() {
 	tapFirstText(getScrollView(), TITLE_SEQ, 3);
 	tapNaviLeftButton();
 
+	return ret;
+}
+
+function testQueryCustomerLogistics() {
+	tapMenu("往来管理", "更多.", "物流商查询");
+	query();
+
+	var keys = [ "name" ];
+	var fields = queryCustomerLogisticsFields(keys);
+	changeTFieldValue(fields["name"], "ttkd");
+	query(fields);
+	var qr = getQResult();
+	var ret = isEqualQRData1ByTitle(qr, "名称", "天天快递");
+
+	var qkeys = [ "name", "staff", "mobile", "shop", "stop" ];
+	var qFields = queryCustomerLogisticsFields(qkeys);
+	changeTFieldValue(qFields["name"], "dlwl");
+	changeTFieldValue(qFields["staff"], "109");
+	changeTFieldValue(qFields["mobile"], "13833331111");
+	changeTFieldValue(qFields["shop"], "常青店(test)36新");
+	query(qFields);
+	var qr2 = getQResult();
+	var ret = ret && isEqualQRData1ByTitle(qr2, "名称", "东灵物流");
+
+	return ret;
+}
+
+function testEditCustomerLogistics() {
+	tapMenu("往来管理", "更多.", "新增物流商");
+	var r = getToday() + getRandomInt(10000);
+	var keys = [ "name" ];
+	var fields = editCustomerLogisticsFields(keys);
+	appendTFieldValue(fields["name"], r);
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+
+	tapMenu("往来管理", "更多.", "物流商查询");
+	var qKeys = [ "name" ];
+	var qFields = queryCustomerLogisticsFields(qKeys);
+	appendTFieldValue(qFields["name"], r);
+	setTFieldsValue(window, qFields);
+	query(qFields);
+	var qr = getQResult();
+	var ret = isEqualQRData1ByTitle(qr);
+	delay();
+
+	tapFirstText(getScrollView(), TITLE_SEQ, 9);
+	var key1 = [ "staff", "area", "postcode", "address", "account", "shop",
+			"remarks" ];
+	var fields1 = editCustomerLogisticsFields(key1);
+	setTFieldsValue(getScrollView(), fields1);
+	tapButton(window, SAVE);
+
+	var qr1 = getQResult();
+	delay();
+	ret = ret && isEqualQRData1ByTitle(qr1, "经办人", "管理员");
+
+	tapFirstText(getScrollView(), TITLE_SEQ, 9);
+	tapButton(window, STOP);
+	tapPrompt(OK)
+	var key2 = [ "stop" ];
+	var fields2 = queryCustomerLogisticsFields(key2);
+	changeTFieldValue(fields2["stop"], "是");
+	setTFieldsValue(window, fields2);
+	tapButton(window, QUERY);
+	var qr2 = getQResult();
+	delay();
+	ret = ret && isEqualQRData1ByTitle(qr2, "经办人", "管理员");
+
+	tapFirstText(getScrollView(), TITLE_SEQ, 9);
+	tapButton(window, START);
+	tapPrompt(OK);
+	var key3 = [ "stop" ];
+	var fields3 = queryCustomerLogisticsFields(key3);
+	changeTFieldValue(fields3["stop"], "否");
+	setTFieldsValue(window, fields3);
+	tapButton(window, QUERY);
+	var qr3 = getQResult();
+	delay();
+	ret = ret && isEqualQRData1ByTitle(qr3, "经办人", "管理员");
+
+	return ret;
+}
+
+function testQueryCustomerDayCheck() {
+	tapMenu("往来管理", "客户账款", "客户门店账");
+	var key = [ "name" ];
+	var fields = queryCustomerShopAccountFields(key);
+	changeTFieldValue(fields["name"], "小王");
+	query(fields);
+	var qr1 = getQResult();
+	// debugQResult(qr1);
+	var index1 = qr1.titles["未拿货天数"];
+	var i = qr1.data[0][index1];
+
+	tapMenu("往来管理", "客户活跃度");
+	var keys = [ "customer" ];
+	var qFields = queryCustomerActiveFields(keys);
+	changeTFieldValue(qFields["customer"], "xw");
+	query(qFields);
+	var qr2 = getQResult();
+	var index2 = qr2.titles["未拿货天数"];
+	var j = qr2.data[0][index2];
+
+	var ret = false;
+	if (i == j) {
+		ret = true;
+	}
 	return ret;
 }
 

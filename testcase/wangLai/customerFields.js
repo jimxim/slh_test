@@ -546,7 +546,7 @@ function queryCustomerProviderAccountField(key,show) {
 
 // 物流商查询
 function testQueryCustomerLogisticsFields() {
-	var keys=["name", "mobile", "shop", "stop"];
+	var keys=["name", "staff","mobile", "shop", "stop"];
 	var fields = queryCustomerLogisticsFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=queryCustomerLogisticsFields(keys,true);

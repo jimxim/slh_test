@@ -21,9 +21,9 @@ function test000All() {
 //	if( ok ) {
 //	testSalesBillAll();
 //		testParamAll();	
-//		testWanLaiCustomerAll();
-	run("积分查询", "testQueryCustomerScoreFields");
-	run("客户新增", "testEditCustomerFields");
+		testWanLaiCustomerAll();
+//	run("积分查询", "testQueryCustomerScoreFields");
+//	run("客户新增", "testEditCustomerFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //		logout();
