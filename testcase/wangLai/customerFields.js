@@ -1,6 +1,5 @@
 
 function queryCustomerFields(keys, show) {
-	tapMenu("往来管理", "客户查询");
 	return getTFields("queryCustomerField", keys, show);
 }
 function queryCustomerField(key, show) {
