@@ -28,11 +28,12 @@ function testWanLaiCustomerAll() {
 	// run("按上级单位", "testQueryCustomerSuper");
 	// run("客户总帐", "testQueryCustomerAccount");
 	// run("客户活跃度", "testQueryCustomerActive");
-	run("积分查询", "testQueryCustomerScore");
-
+	 run("积分查询", "testQueryCustomerScore");
+//	 run("新增相同厂商", "testCustomerProviderAddSame");
 }
 
 function testQueryCustomer() {
+	tapMenu("往来管理", "客户查询");
 	var key = "customer";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -47,6 +48,7 @@ function testQueryCustomer() {
 }
 
 function testQueryCustomerByName() {
+	tapMenu("往来管理", "客户查询");
 	var key = "name";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -59,6 +61,7 @@ function testQueryCustomerByName() {
 }
 
 function testQueryCustomerByMobile() {
+	tapMenu("往来管理", "客户查询");
 	var key = "mobile";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -74,6 +77,7 @@ function testQueryCustomerByMobile() {
 }
 
 function testQueryCustomerByStop() {
+	tapMenu("往来管理", "客户查询");
 	var key = "stop";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -86,6 +90,7 @@ function testQueryCustomerByStop() {
 }
 
 function testQueryCustomerByType() {
+	tapMenu("往来管理", "客户查询");
 	var key = "type";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -96,6 +101,7 @@ function testQueryCustomerByType() {
 }
 
 function testQueryCustomerByStaff() {
+	tapMenu("往来管理", "客户查询");
 	var key = "staff";
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
@@ -110,6 +116,7 @@ function testQueryCustomerByStaff() {
 }
 
 function testQueryCustomerClear() {
+	tapMenu("往来管理", "客户查询");
 	var keys = [ "customer", "name", "mobile", "stop", "type", "staff" ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
@@ -602,26 +609,77 @@ function testQueryCustomerScore() {
 	var key = [ "shop", "customer", "mobile" ];
 	var fields = queryCustomerScoreFields(key);
 	changeTFieldValue(fields["shop"], "常青店(test)36新");
-	changeTFieldValue(fields["customer"], "jfc");
+	changeTFieldValue(fields["customer"], "jfcs1");
 	changeTFieldValue(fields["mobile"], "2015092400");
 	query(fields);
 	var qr1 = getQResult();
 	var index1 = qr1.titles["积分"];
 	var i = qr1.counts[index1];
+	tapButton(window, CLEAR);
 
 	tapMenu("销售开单", "按批次查");
-	var keys = [ "customer" ,"day1"];
+	var keys = [ "customer", "day1" ];
 	var qFields = salesQueryBatchFields(keys);
-	changeTFieldValue(qFields["customer"], "jfc");
+	changeTFieldValue(qFields["customer"], "jfcs1");
 	changeTFieldValue(qFields["day1"], "2015-1-1");
 	query(qFields);
 	var qr2 = getQResult();
 	var index2 = qr2.titles["金额"];
 	var j = qr2.counts[index2];
 
-	var ret = true;
-	if (i != j) {
-		ret = false;
+	var ret = false;
+	if (i == j) {
+		ret = true;
 	}
-	return isEqualQRData1ByTitle(qr, "客户", "积分测试1") && ret;
+	return isEqualQRData1ByTitle(qr1, "客户", "积分测试1") && ret;
+}
+
+function testCustomerProviderAddSame() {
+	tapMenu("往来管理", "新增厂商+");
+	var keys = [ "name", "mobile" ];
+	var fields = editCustomerProviderFields(keys);
+	changeTFieldValue(fields["name"], "东灵公司");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+
+	var ret1 = false;
+	if (isIn(alertMsg, "名称重复")) {
+		ret1 = true;
+	}
+
+	tapMenu("往来管理", "新增厂商+");
+	var r = getToday() + getRandomInt(10000);
+	fields = editCustomerProviderFields(keys);
+	appendTFieldValue(fields["name"], r);
+	changeTFieldValue(fields["mobile"], "123456789");
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	delay();
+	tapButton(window, RETURN);
+	var ret2 = false;
+	if (isIn(alertMsg, "手机号码重复")) {
+		ret2 = true;
+	}
+
+	return ret1 && ret2;
+}
+
+function testQueryCustomerProvider() {
+	tapMenu("往来管理", "厂商查询");
+	var key = [  "provider", "mobile", "stop" ];
+	var fields = queryCustomerProviderFields(key);
+	changeTFieldValue(fields["provider"], "xjk");
+	query(fields);
+	var qr1 = getQResult();
+
+	var key2 = [ "mobile" ];
+	var fields2 = queryCustomerShopAccountFields(key2);
+	changeTFieldValue(fields2["mobile"], "sjkh1");
+	query(fields2);
+	var qr2 = getQResult();
+
+	return isEqualQRData1ByTitle(qr1, "名称", "下级客户1")
+			&& isEqualQRData1ByTitle(qr2, "名称", "上级客户1");
 }
