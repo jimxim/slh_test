@@ -4,30 +4,50 @@ function testSalesBillAll() {
 	run("新增开单，无颜色尺码", "testEditSalesBillNoColorSize");
 }
 
-
 function testEditSalesBillNoColorSize() {
-	// 综合汇总1
-	var json = '{ "customer": "zhh", "goods": "k526", "number": "5" }';
+
+	var json = {
+		"customer" : "zhhz1",
+		"details" : [ {
+			"goods" : "k526",
+			"number" : "5"
+		} ],
+		"cash" : "0"
+	};
 	editSalesBillNoColorSize(json);
 	return true;
 }
 // 新增开单，无颜色尺码
 function editSalesBillNoColorSize(json) {
-	var o = eval('(' + json + ')');
 	tapMenu("销售开单", "开  单+");
+
+	var o = (json);
 	var keys = [ "customer" ];
 	var fields = editSalesBillFields(keys);
 	changeTFieldValue(fields["customer"], o.customer);
 	setTFieldsValue(window, fields);
 
-	var f0 = new TField("货品", TF_AC, 0, o.goods, -1, 0);
-	var f3 = new TField("数量", TF, 3, o.number);
-	var fields = [ f0, f3 ];
-	setTFieldsValue(getScrollView(), fields);
+	var details = o.details;
+	for ( var i in details) {
+		var d = details[i];
+		var f0 = new TField("货品", TF_AC, 0, d.goods, -1, 0);
+		var f3 = new TField("数量", TF, 3, d.number);
+		var fields = [ f0, f3 ];
+		setTFieldsValue(getScrollView(), fields);
+	}
 
-	fields = editSalesBillFields([ "cash" ]);
-	setTFieldsValue(window, fields);
+	if (!isUndefined(o.cash)) {
+		var f = editSalesBillField("cash");
+		changeTFieldValue(f, o.cash);
+		setTFieldsValue(window, [ f ]);
+	}
 
-	// debugElementTree(window);
-	return true;
+	tapButton(window, SAVE);
+	tapPrompt();
+	// 保存成功后还有一个是否打印的弹窗
+	cond = "!isAlertVisible()";
+	waitUntil(cond, 9);
+//	clearAlert();
+
+	tapButton(window, RETURN);
 }

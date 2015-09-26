@@ -13,6 +13,8 @@
 #import "testcase/param.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/sales.js"
+#import "testcase/statisticAnalysis/statisticAnalysisFields.js"
+#import "testcase/statisticAnalysis/statisticAnalysis.js"
 
 //总经理
 function test000All() {
@@ -20,8 +22,9 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
+	testStatisticAnalysisAll();
 //		testParamAll();	
-		testWanLaiCustomerAll();
+//		testWanLaiCustomerAll();
 //	run("积分查询", "testQueryCustomerScoreFields");
 //	run("客户新增", "testEditCustomerFields");
 //		testWanLaiProviderAll();
