@@ -17,30 +17,38 @@ function purchaseQueryBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
 	case "order":
+	case "订货号":
 		f = new TField("订货号", TF, 3, "123");
 		break;
 	case "batch1":
+	case "批次从":
 		f = new TField("批次从", TF, 4, "1");
 		break;
 	case "batch2":
+	case "批次到":
 		f = new TField("到", TF, 5, "20");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 6, "仓库店");
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 7, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
@@ -69,27 +77,33 @@ function purchaseQueryParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 1, "aaa");
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 3, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 4, "2015-9-15");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 5, "仓库店");
 		break;
 	default:
@@ -112,9 +126,11 @@ function purchasePriceField(key) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-9-15");
 		break;
 	default:
@@ -139,21 +155,26 @@ function purchaseCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 0, "b", 1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
 	case "market1":
+	case "上架日期从":
 		f = new TField("上架日期从", TF_DT, 3, "2015-8-11");
 		break;
 	case "market2":
+	case "上架日期到":
 		f = new TField("到", TF_DT, 4, "2015-8-15");
 		break;
 	default:
@@ -178,18 +199,22 @@ function purchaseProviderReturnField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 0, "b", 1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
@@ -217,12 +242,15 @@ function purchaseProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-9-15");
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
@@ -248,9 +276,11 @@ function purchaseInOutField(key) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-9-15");
 		break;
 	default:
@@ -276,12 +306,15 @@ function purchaseQueryProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, l - 3, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, l - 2, "2015-9-15");
 		break;
 	case "provider":
+	case "供应商":
 		var tableViewIndex = getTableViews().length - 1;
 		f = new TField("供应商", TF_AC, l - 1, "a", tableViewIndex, 0);
 		if (show) {
@@ -308,12 +341,15 @@ function purchaseTypeField(key) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-9-15");
 		break;
 	case "type":
+	case "类别":
 		f = new TField("类别", TF_SC, 2, "登山服");
 		break;
 	default:
@@ -338,18 +374,22 @@ function purchaseOrderField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-9-15");
 		break;
 	case "provider":
+	case "供应商":
 		f = new TField("供应商", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 3, "b", 1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
@@ -377,6 +417,7 @@ function purchaseProviderAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
@@ -404,12 +445,14 @@ function purchaseShopAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 1, "常青店");
 		break;
 	default:

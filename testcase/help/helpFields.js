@@ -14,9 +14,11 @@ function editHelpFeedbackField(key) {
 	var f;
 	switch (key) {
 	case "title":
+	case "反馈标题":
 		f = new TField("反馈标题", TF, 0, "反馈");
 		break;
 	case "content":
+	case "反馈内容":
 		f = new TField("反馈内容", TV, 0, "反馈内容");
 		break;
 	default:

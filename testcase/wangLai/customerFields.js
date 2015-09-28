@@ -6,24 +6,30 @@ function queryCustomerField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 2, "13312344321");
 		break;
 	case "stop":
+	case "是否停用":
 		f = new TField("是否停用", TF_SC, 3, "是");
 		break;
 	case "type":
+	case "类别":
 		f = new TField("类别", TF_SC, 4, "零批客户");
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 5, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
@@ -55,9 +61,11 @@ function editCustomerField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "area":
+	case "区域":
 		f = new TField("区域", BTN_AREA, 0, "黑龙江", 0, "中国,东北");
 		if (show) {
 			f.type = TF;
@@ -65,12 +73,15 @@ function editCustomerField(key, show) {
 		}
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 3, "123456789");
 		break;
 	case "weixin":
+	case "微信":
 		f = new TField("微信", TF, 4, "x123456");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", BTN_SC, 1, "常青店");
 		if (show) {
 			f.type = TF;
@@ -78,21 +89,25 @@ function editCustomerField(key, show) {
 		}
 		break;
 	case "birthday":
+	case "生日":
 		f = new TField("生日", TF_DT, 6, "1980-09-10");
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 7, "000",  - 1, "000,管理员");
 		if (show) {
 			f.value = f.p2;
 		}
 		break;
 	case "super":
+	case "上级客户":
 		f = new TField("上级客户", TF_AC, 8, "b", 3, 0);
 		if (show) {
 			f.value = "Yvb";
 		}
 		break;
 	case "type":
+	case "客户类别":
 		f = new TField("客户类别", BTN_SC, 2, "零批客户");
 		if (show) {
 			f.type = TF;
@@ -100,6 +115,7 @@ function editCustomerField(key, show) {
 		}
 		break;
 	case "return":
+	case "允许退货":
 		f = new TField("允许退货", BTN_SC, 4, "是");
 		if (show) {
 			f.type = TF;
@@ -107,6 +123,7 @@ function editCustomerField(key, show) {
 		}
 		break;
 	case "price":
+	case "适用价格":
 		f = new TField("适用价格", BTN_SC, 5, "零批价");
 		if (show) {
 			f.type = TF;
@@ -115,22 +132,28 @@ function editCustomerField(key, show) {
 		break;
 
 	case "fax":
+	case "传真号":
 		f = new TField("传真号", TF, 14, "55555");
 		break;
 	case "remarks":
+	case "备注":
 		f = new TField("备注", TF, 15, "123");
 		break;
 	case "address":
+	case "地址":
 		f = new TField("地址", TF, 16, "地址");
 		break;
 
 	case "discount":
+	case "拿货折扣":
 		f = new TField("拿货折扣", TF, 17, "0.9");
 		break;
 	case "credit":
+	case "信用额度":
 		f = new TField("信用额度", TF, 19, "10000");
 		break;
 	case "alarm":
+	case "欠款报警":
 		f = new TField("欠款报警", TF, 20, "5000");
 		break;
 	default:
@@ -154,21 +177,26 @@ function editCustomerBranchField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 0, "分店测试-");
 		if (show) {
 			f.label = "分店名称";
 		}
 		break;
 	case "mobile":
+	case "电话":
 		f = new TField("电话", TF, 1, "13311112");
 		break;
 	case "weixin":
+	case "微信":
 		f = new TField("微信", TF, 2, "wx");
 		break;
 	case "address":
+	case "地址":
 		f = new TField("地址", TF, 3, "地址");
 		break;
 	case "remarks":
+	case "备注":
 		f = new TField("备注", TF, 4, "备注");
 		break;
 	default:
@@ -184,12 +212,15 @@ function queryCustomerBranchField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 0, "分店测试1-");
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 1, "13311112");
 		break;
 	case "stop":
+	case "是否停用":
 		f = new TField("是否停用", TF_SC, 2, "否");
 		break;
 	default:
@@ -224,30 +255,37 @@ function queryCustomerShopAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "客户名称":
 		f = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 1, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 3, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "type":
+	case "类别":
 		f = new TField("类别", TF_SC, 4, "零批客户");
 		break;
 	case "debt":
+	case "是否欠款":
 		f = new TField("是否欠款", TF_SC, 5, "否");
 		break;
 	case "alarm":
+	case "是否欠款报警":
 		f = new TField("是否欠款报警", TF_SC, 6, "否");
 		break;
 
@@ -273,9 +311,11 @@ function queryCustomerSuperField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "客户名称":
 		f = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 1, "a", 1, 0);
 		if (show) {
 			f.value = "Qaq";
@@ -303,9 +343,11 @@ function queryCustomerAccountField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "客户名称":
 		f = new TField("客户名称", TF, 0, "a");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 1, "a", -1, 0, ZH);
 		if (show) {
 			f.value = "Qaq";
@@ -333,18 +375,21 @@ function queryCustomerActiveField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 1, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "仓库店");
 		break;
 	default:
@@ -370,15 +415,18 @@ function queryCustomerScoreField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 0, "仓库店");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 1, "jfcs1", -1, 0);
 		if (show) {
 			f.value = "积分测试1";
 		}
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 2, "123456789");
 		break;
 	default:
@@ -403,15 +451,18 @@ function queryCustomerProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 1, "123456789");
 		break;
 	case "stop":
+	case "是否停用":
 		f = new TField("是否停用", TF_SC, 2, "否");
 		break;
 	default:
@@ -436,15 +487,19 @@ function editCustomerProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 0, "a");
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 1, "123456789");
 		break;
 	case "address":
+	case "地址":
 		f = new TField("地址", TF, 2, "地址");
 		break;
 	case "price":
+	case "适用价格":
 		f = new TField("适用价格", BTN_SC, 0, "打包价");
 		if (show) {
 			f.type = TF;
@@ -452,6 +507,7 @@ function editCustomerProviderField(key, show) {
 		}
 		break;
 	case "remarks":
+	case "备注":
 		f = new TField("备注", TV, 0, "备注");
 		break;
 	default:
@@ -476,12 +532,14 @@ function queryProviderShopAccountField(key,show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if(show){
 			f.value="aa";
 			}
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 1, "常青店");
 		break;
 	default:
@@ -504,9 +562,11 @@ function customerExportField(key) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 2, "2015-8-14");
 		break;	
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 3, getToday());
 		break;
 	default:
@@ -533,6 +593,7 @@ function queryCustomerProviderAccountField(key,show) {
 	var f;
 	switch (key) {
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if(show){
 			f.value="aa";
@@ -560,21 +621,26 @@ function queryCustomerLogisticsField(key,show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 0, "a");
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 1, "000", 1, 0);
 		if(show){
 			f.value="000，管理员";
 		}
 		break;
 	case "mobile":
+	case "手机":
 		f = new TField("手机", TF, 2, "123456789");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 3, "常青店");
 		break;
 	case "stop":
+	case "是否停用":
 		f = new TField("是否停用", TF_SC, 4, "否");
 		break;
 	default:
@@ -601,15 +667,18 @@ function editCustomerLogisticsField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 0, "a");
 		break;
 	case "staff":
+	case "经办人":
 		f = new TField("经办人", TF_AC, 1, "000",l-1,0);
 		if(show){
 			f.value = "000,管理员";
 		}
 		break;
 	case "area":
+	case "区域":
 		f = new TField("区域", BTN_AREA, 0, "华北",0,"中国");
 		if (show) {
 			f.type = TF;
@@ -617,18 +686,23 @@ function editCustomerLogisticsField(key, show) {
 		}
 		break;
 	case "mobile":
+	case "电话":
 		f = new TField("电话", TF, 3, "123456789");
 		break;
 	case "postcode":
+	case "邮编":
 		f = new TField("邮编", TF, 4, "310000");
 		break;
 	case "address":
+	case "地址":
 		f = new TField("地址", TF, 5, "地址");
 		break;
 	case "account":
+	case "账号":
 		f = new TField("账号", TF, 6, "abc");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", BTN_SC, 1, "常青店");
 		if (show) {
 			f.type = TF;
@@ -636,6 +710,7 @@ function editCustomerLogisticsField(key, show) {
 		}
 		break;
 	case "remarks":
+	case "备注":
 		f = new TField("备注", TF, 8, "备注");
 		break;
 	default:
@@ -660,24 +735,30 @@ function queryCustomerBackField(key,show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "回访日期从":
 		f = new TField("回访日期从", TF_DT, 0, "2015-09-10");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, "2015-09-10");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 2, "a", 1, 0);
 		if(show){
 			f.value="Qaq";
 		}
 		break;
 	case "theme":
+	case "主题":
 		f = new TField("主题", TF, 3, "主题");
 		break;
 	case "feedback":
+	case "反馈及建议":
 		f = new TField("反馈及建议", TF, 4, "反馈及建议");
 		break;
 	case "staff":
+	case "经办人":
 		f = new TField("经办人", TF_AC, 5, "000", 1, 0);
 		if(show){
 			f.value="000,管理员";
@@ -705,21 +786,25 @@ function editCustomerBackField(key, show) {
 	var f;
 	switch (key) {
 	case "day":
+	case "回访日期":
 		f = new TField("回访日期", TF_DT, 0, "2015-09-10");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 1, "a", 1, 0);
 		if(show){
 			f.value="Qaq";
 		}
 		break;
 	case "staff":
+	case "经办人":
 		f = new TField("经办人", TF_AC, 2, "000", 1, 0);
 		if(show){
 			f.value="000,管理员";
 		}
 		break;
 	case "type":
+	case "回访类型":
 		f = new TField("回访类型", BTN_SC, 0, "售后回访");
 		if (show) {
 			f.type = TF;
@@ -727,9 +812,11 @@ function editCustomerBackField(key, show) {
 		}
 		break;
 	case "theme":
+	case "主题":
 		f = new TField("主题", TF, 4, "主题");
 		break;
 	case "feedback":
+	case "反馈及建议":
 		f = new TField("反馈及建议", TV, 0, "反馈及建议");
 		break;
 

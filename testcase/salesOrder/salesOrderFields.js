@@ -17,33 +17,41 @@ function salesOrderQueryBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 0, "z", 1, 0);
 		if (show) {
 			f.value = "zz";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 3, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "batch1":
+	case "批次从":
 		f = new TField("批次从", TF, 4, "1");
 		break;
 	case "batch2":
+	case "批次到":
 		f = new TField("到", TF, 5, "20");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 6, "常青店");
 		break;
 	case "shipping":
+	case "发货状态":
 		f = new TField("发货状态", TF_SC, 7, "未发货");
 		break;
 	default:
@@ -68,27 +76,34 @@ function salesOrderQueryParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 0, "常青店");
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 3, "z", 1, 0);
 		if (show) {
 			f.value = "zz";
 		}
 		break;
 	case "batch1":
+	case "批次从":
 		f = new TField("批次从", TF, 4, "1");
 		break;
 	case "batch2":
+	case "批次到":
 		f = new TField("到", TF, 5, "20");
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 6, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
@@ -118,12 +133,15 @@ function salesOrderPictureField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期":
 		f = new TField("日期", TF_DT, 0, "2015-7-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元");
 		if (show) {
 			f.value = "741,Abc";
@@ -151,21 +169,26 @@ function salesOrderCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "color":
+	case "是否显示颜色尺码":
 		f = new TField("是否显示颜色尺码", TF_SC, 3, "否");
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 4, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
@@ -193,12 +216,15 @@ function salesOrderStaffField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 2, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
@@ -226,12 +252,15 @@ function salesOrderCustomerField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "Qaq";
@@ -258,12 +287,15 @@ function salesOrderShopField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -289,21 +321,25 @@ function salesOrderAddField(key, show) {
 	var f;
 	switch (key) {
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 4, "000", l - 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "day":
+	case "日期":
 		f = new TField("日期", TF_DT, 8, getToday());
 		break;
 	case "remarks":
+	case "备注":
 		f = new TField("备注", TF, 9, "123");
 		break;
 	default:

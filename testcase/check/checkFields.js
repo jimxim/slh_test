@@ -16,18 +16,23 @@ function queryCheckBatchField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "batch1":
+	case "批次从":
 		f = new TField("批次从", TF, 2, "1");
 		break;
 	case "batch2":
+	case "批次到":
 		f = new TField("到", TF, 3, "20");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 4, "常青店");
 		break;
 	default:
@@ -52,18 +57,22 @@ function queryCheckParticularField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "name":
+	case "名称":
 		f = new TField("名称", TF, 1, "aaa");
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 2, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 3, getToday());
 		break;
 	default:
@@ -88,9 +97,11 @@ function checkProcessField(key, show) {
 	var f;
 	switch (key) {
 	case "day":
+	case "盘点日期":
 		f = new TField("盘点日期", TF_DT, 0, getToday());
 		break;
 	case "shop":
+	case "盘点门店":
 		f = new TField("盘点门店", BTN_SC, 0, "常青店");
 		if (show) {
 			f.type = TF;
@@ -119,12 +130,15 @@ function checkProcessRecordField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -149,27 +163,34 @@ function checkMaterialField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 0, "常青店");
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 1, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "name":
+	case "款号名称":
 		f = new TField("款号名称", TF, 2, "aaa");
 		break;
 	case "brand":
+	case "品牌":
 		f = new TField("品牌", TF_SC, 3, "1010pp");
 		break;
 	case "season":
+	case "季节":
 		f = new TField("季节", TF_SC, 4, "夏季");
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 5, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 6, getToday());
 		break;
 	default:
@@ -194,18 +215,22 @@ function checkProfitAndLossField(key, show) {
 	var f;
 	switch (key) {
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 0, "常青店");
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 1, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 2, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 3, getToday());
 		break;
 

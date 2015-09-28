@@ -27,7 +27,7 @@ function testWanLaiCustomerAll() {
 	// run("客户门店帐余款核对", "testQueryCustomerShopAccountCheck");
 	// run("按上级单位", "testQueryCustomerSuper");
 	// run("客户总帐", "testQueryCustomerAccount");
-	run("客户活跃度", "testQueryCustomerActive");
+	// run("客户活跃度", "testQueryCustomerActive");
 	// run("积分查询", "testQueryCustomerScore");
 	// run("新增相同厂商", "testCustomerProviderAddSame");
 	// run("厂商查询", "testQueryCustomerProvider");
@@ -36,6 +36,7 @@ function testWanLaiCustomerAll() {
 	// run("物流商查询", "testQueryCustomerLogistics");
 	// run("新增/修改物流商", "testEditCustomerLogistics");
 	// run("客户未拿货天数检测", "testQueryCustomerDayCheck");
+//	 run("店长类人员查看客户门店帐", "testQueryCustomerShopAccountByShopkeeper");
 
 }
 
@@ -467,11 +468,11 @@ function testQueryCustomerShopAccount() {
 	query();
 
 	var ret = true;
-	ret = ret && sortByTitle("门店", 1);
-	ret = ret && sortByTitle("名称", 2);
-	// ret = ret && sortByTitle("手机", 3);
-	// ret = ret && sortByTitle("余额", 4);
-	// ret = ret && sortByTitle("未拿货天数", 5);
+	ret = ret && sortByTitle("门店");
+	ret = ret && sortByTitle("名称");
+	// ret = ret && sortByTitle("手机");
+	// ret = ret && sortByTitle("余额",IS_NUM);
+	// ret = ret && sortByTitle("未拿货天数",IS_NUM);
 
 	var keys = [ "name" ];
 	var fields = queryCustomerShopAccountFields(keys);
@@ -506,21 +507,20 @@ function testQueryCustomerShopAccountCheck() {
 	tapMenu("往来管理", "客户账款", "客户门店账");
 	query();
 	var qr = getQResult();
-	var index = qr.titles["余额"];
 	var actual = 0;
 	var totalPageNo = qr.totalPageNo;
 	for (var j = 1; j <= totalPageNo; j++) {
 		for (var i = 0; i < qr.curPageTotal; i++) {
-			actual += Number(qr.data[i][index]);
+			actual += Number(qr.data[i]["余额"]);
 		}
 		if (j < totalPageNo) {
 			scrollNextPage();
 			qr = getQResult();
 		}
 	}
-	logDebug("index＝" + index + " expected＝" + actual + " count＝"
-			+ qr.counts[index]);
-	var ret = Math.abs(actual - qr.counts[index]) < 1;
+	logDebug("index＝" + "余额" + " expected＝" + actual + " count＝"
+			+ qr.counts["余额"]);
+	var ret = Math.abs(actual - qr.counts["余额"]) < 1;
 	return ret;
 }
 
@@ -554,8 +554,8 @@ function testQueryCustomerAccount() {
 	query();
 
 	var ret = true;
-	ret = ret && sortByTitle("名称", 1);
-	ret = ret && sortByTitle("余额", 2, true);
+	ret = ret && sortByTitle("名称");
+	ret = ret && sortByTitle("余额", IS_NUM);
 
 	var keys = [ "name" ];
 	var fields = queryCustomerAccountFields(keys);
@@ -586,27 +586,27 @@ function testQueryCustomerActive() {
 	query();
 
 	var ret = true;
-	ret = ret && sortByTitle("门店", 1);
+	ret = ret && sortByTitle("门店");
 	logDebug("ret=" + ret);
-	ret = ret && sortByTitle("名称", 2);
+	ret = ret && sortByTitle("名称");
 	logDebug("ret=" + ret);
-	// ret = ret && sortByTitle("手机", 3);
-	ret = ret && sortByTitle("店员", 4);
+	// ret = ret && sortByTitle("手机");
+	ret = ret && sortByTitle("店员");
 	logDebug("ret=" + ret);
-	ret = ret && sortByTitle("最后一次拿货", 5);
+	ret = ret && sortByTitle("最后一次拿货");
 	logDebug("ret=" + ret);
-	ret = ret && sortByTitle("未拿货天数", 6, true);
+	ret = ret && sortByTitle("未拿货天数",IS_NUM);
 	logDebug("ret=" + ret);
 
-	var keys = [ "customer" ];
+	var keys = [ "客户" ];
 	var fields = queryCustomerActiveFields(keys);
-	changeTFieldValue(fields["customer"], "cl");
+	changeTFieldValue(fields["客户"], "cl");
 	query(fields);
 	tapButton(window, CLEAR);
 
-	var qkeys = [ "customer" ];
+	var qkeys = [ "客户" ];
 	var qFields = queryCustomerActiveFields(qkeys);
-	changeTFieldValue(qFields["customer"], "不开单客户");
+	changeTFieldValue(qFields["客户"], "不开单客户");
 	query(qFields);
 	var qr = getQResult();
 	var total = qr.total;
@@ -627,8 +627,7 @@ function testQueryCustomerScore() {
 	query(fields);
 	var qr1 = getQResult();
 	// debugQResult(qr1);
-	var index1 = qr1.titles["积分"];
-	var i = qr1.counts[index1];
+	var i = qr1.counts["积分"];
 	var ret1 = isEqualQRData1ByTitle(qr1, "客户", "积分测试1");
 
 	tapButton(window, CLEAR);
@@ -640,8 +639,7 @@ function testQueryCustomerScore() {
 	changeTFieldValue(qFields["day1"], "2015-1-1");
 	query(qFields);
 	var qr2 = getQResult();
-	var index2 = qr2.titles["金额"];
-	var j = qr2.counts[index2];
+	var j = qr2.counts["金额"];
 	var ret2 = false;
 	if (i == j) {
 		ret2 = true;
@@ -730,8 +728,8 @@ function testQueryCustomerProviderAccount() {
 	tapMenu("往来管理", "厂商账款", "厂商总账");
 	query();
 	var ret = true;
-	ret = ret && sortByTitle("名称", 1);
-	ret = ret && sortByTitle("余额", 2, true);
+	ret = ret && sortByTitle("名称");
+	ret = ret && sortByTitle("余额",IS_NUM);
 
 	var keys = [ "provider" ];
 	var fields = queryCustomerProviderAccountFields(keys);
@@ -835,8 +833,7 @@ function testQueryCustomerDayCheck() {
 	query(fields);
 	var qr1 = getQResult();
 	// debugQResult(qr1);
-	var index1 = qr1.titles["未拿货天数"];
-	var i = qr1.data[0][index1];
+	var i = qr1.data[0]["未拿货天数"];
 
 	tapMenu("往来管理", "客户活跃度");
 	var keys = [ "customer" ];
@@ -844,8 +841,7 @@ function testQueryCustomerDayCheck() {
 	changeTFieldValue(qFields["customer"], "xw");
 	query(qFields);
 	var qr2 = getQResult();
-	var index2 = qr2.titles["未拿货天数"];
-	var j = qr2.data[0][index2];
+	var j = qr2.data[0]["未拿货天数"];
 
 	var ret = false;
 	if (i == j) {
@@ -854,3 +850,21 @@ function testQueryCustomerDayCheck() {
 	return ret;
 }
 
+
+function testQueryCustomerShopAccountByShopkeeper() {
+	tapMenu("往来管理", "客户账款", "客户门店账");
+
+	var keys = [ "门店" ];
+	var fields = queryCustomerShopAccountFields(keys);
+	changeTFieldValue(fields["门店"], "仓库店");
+	query(fields);
+	var qr = getQResult();
+	debugQResult(qr);
+	var total = qr.total;
+	var ret = true;
+	if (total >= 1) {
+		ret = false;
+	}
+
+	return ret;
+}

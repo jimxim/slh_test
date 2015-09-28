@@ -6,6 +6,7 @@
 #import "lib/goods.js"
 #import "lib/param.js"
 
+#import "testcase/goods/goods.js"
 #import "testcase/goods/goodsFields.js"
 #import "testcase/wangLai/customer.js"
 #import "testcase/wangLai/customerFields.js"
@@ -30,7 +31,14 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
-	testWanLaiCustomerAll();
+// testWanLaiCustomerAll();
+   testGoodsGoodsAll();
+	
+	
+	
+	
+	
+	
 // run("查询客户清除按钮", "testQueryCustomerClear");
 // run("客户新增", "testEditCustomerFields");
 // run("客户分店", "testCustomerBranchFields");

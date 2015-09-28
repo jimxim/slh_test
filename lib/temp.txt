@@ -1,3 +1,73 @@
+function getQResult(pageInfoView, dataView, firstTitle) {
+	if (isUndefined(pageInfoView)) {
+		pageInfoView = window;
+	}
+	if (isUndefined(dataView)) {
+		dataView = getScrollView();
+	}
+	if (isUndefined(firstTitle)) {
+		firstTitle = TITLE_SEQ;
+	}
+
+	var regTotal = /共\s*(\d+)条/;
+	var total;
+	var curPageNo;
+	var totalPageNo;
+	var texts = getStaticTexts(pageInfoView);
+	for (var i = 0; i < texts.length; i++) {
+		var v = texts[i].value();
+		if (regTotal.test(v)) {
+			var a1 = regTotal.exec(v);
+			total = a1[1];
+			var v1 = texts[i + 1].value(); // 页码信息就在下一个
+			var a2 = v1.split("/");
+			curPageNo = a2[0];
+			totalPageNo = a2[1];
+			break;
+		}
+	}
+	var curPageTotal;
+	if (curPageNo == totalPageNo) { // 最后页
+		curPageTotal = total - (totalPageNo - 1) * PAGE_MAX_TOTAL;
+	} else {
+		curPageTotal = PAGE_MAX_TOTAL;
+	}
+
+	texts = getStaticTexts(dataView);
+	var qrTitle = getQResultTitle(texts, firstTitle);
+	var titleIndex = qrTitle.index;
+	var titleTotal = qrTitle.total;
+	var titles = new Array(titleTotal);
+	for (var i = 0; i < titleTotal; i++) {
+		var key = texts[titleIndex + i].value();
+		titles[key] = i;
+	}
+
+	var counts;
+	var data;
+	if (curPageTotal > 0) {
+		data = new Array(curPageTotal);
+		for (var i = 0; i <= curPageTotal; i++) {
+			var data1 = new Array(titleTotal);
+			for (var j = 0; j < titleTotal; j++) {
+				var index = titleIndex + (i + 1) * titleTotal + j;
+				if (index < texts.length) {
+					data1[j] = texts[index].value();
+				}
+			}
+			if (i < curPageTotal) {
+				data[i] = data1;
+			} else {
+				counts = data1;
+			}
+		}
+	}
+
+	var qResult = new QResult(titles, data, total, curPageTotal, curPageNo,
+			totalPageNo, titleIndex, counts);
+	return qResult;
+}
+
 销售开单同时订货
 是否需要颜色尺码   1，默认均色均码，操作更简单
 开单模式 1，现金＋刷卡＋汇款

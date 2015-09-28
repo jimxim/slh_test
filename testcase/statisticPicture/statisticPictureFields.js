@@ -16,9 +16,11 @@ function pictureShopField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	default:
@@ -43,9 +45,11 @@ function pictureShopSummaryField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	default:
@@ -70,15 +74,19 @@ function pictureCustomerField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	case "customer":
+	case "客户":
 		f = new TField("客户", TF_AC, 3, "a", 1, 0);
 		if (show) {
 			f.value = "Qaq";
@@ -107,39 +115,49 @@ function pictureCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "name":
+	case "款号名称":
 		f = new TField("款号名称", TF, 3, "aaa");
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 4, "常青店");
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 5, "z", 1, 0);
 		if (show) {
 			f.value = "杭州";
 		}
 		break;
 	case "market1":
+	case "上架从":
 		f = new TField("上架从", TF_DT, 6, "2014-9-11");
 		break;
 	case "market2":
+	case "上架到":
 		f = new TField("到", TF_DT, 7, getToday());
 		break;
 	case "type":
+	case "类别":
 		f = new TField("类别", TF_SC, 8, "登山服");
 		break;
 	case "season":
+	case "季节":
 		f = new TField("季节", TF_SC, 9, "秋季");
 		break;
 	default:
@@ -165,24 +183,29 @@ function pictureCodePictureField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期", TF_DT, 0, "2015-7-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "code":
+	case "款号":
 		f = new TField("款号", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "provider":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 3, "z", 1, 0);
 		if (show) {
 			f.value = "杭州";
 		}
 		break;
 	case "brand":
+	case "品牌":
 		f = new TField("品牌", TF_AC, 4, "1", 1, 0);
 		if (show) {
 			f.value = "1010pp";
@@ -210,15 +233,18 @@ function pictureStaffField(key, show) {
 	var f;
 	switch (key) {
 	case "staff":
+	case "店员":
 		f = new TField("店员", TF_AC, 0, "000", 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	default:
@@ -243,12 +269,15 @@ function pictureTrendField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -273,12 +302,15 @@ function pictureSingleField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -303,12 +335,15 @@ function pictureTypeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -333,12 +368,15 @@ function pictureBrandField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	case "shop":
+	case "门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	default:
@@ -363,9 +401,11 @@ function pictureUnsalableField(key, show) {
 	var f;
 	switch (key) {
 	case "market1":
+	case "上架从":
 		f = new TField("上架从", TF_DT, 0, "2015-9-11");
 		break;
 	case "market2":
+	case "到":
 		f = new TField("到", TF_DT, 1, getToday());
 		break;
 	default:
