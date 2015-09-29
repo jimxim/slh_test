@@ -65,7 +65,7 @@ function test000All() {
 // run("新增货品", "testEditGoodsFields");
 // run("批量调价", "testGoodsPricingFields");
 // run("价格名称", "testGoodsPriceNameFields");
-// run("货品类别", "testGoodsTypeFields");
+// run("货品类别", "testEditGoodsTypeFields");
 // run("新增类别", "testEditGoodsFields");
 // run("所有颜色", "testGoodsColorFields");
 // run("新增颜色", "testEditGoodsColorFields");

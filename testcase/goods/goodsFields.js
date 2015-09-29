@@ -302,7 +302,6 @@ function editGoodsFields(keys, show) {
 	return getTFields("editGoodsField", keys, show);
 }
 function editGoodsField(key, show) {
-	var l = getTableViews().length;
 	var f;
 	switch (key) {
 	case "code":
@@ -311,7 +310,7 @@ function editGoodsField(key, show) {
 		break;
 	case "name":
 	case "名称":
-		f = new TField("名称", TF, 1, "b");
+		f = new TField("名称", TF, 1, "a");
 		break;
 	case "brand":
 	case "品牌":
@@ -348,7 +347,7 @@ function editGoodsField(key, show) {
 		}
 		break;
 	case "tag":
-	case "品牌价":
+	case "吊牌价":
 		f = new TField("吊牌价", TF, 7, "200");
 		break;
 	case "purchase-price":
@@ -389,7 +388,7 @@ function editGoodsField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 15, "a", l-1,"Adida公司");
+		f = new TField("厂商", TF_AC, 15, "a", -1,"Adida公司");
 		if (show) {
 			f.value = f.p2;
 		}
@@ -420,7 +419,7 @@ function editGoodsField(key, show) {
 		break;
 	case "staff":
 	case "经办人":
-		f = new TField("经办人", TF_AC, 20,"000", l-1,"000,管理员"); 
+		f = new TField("经办人", TF_AC, 20,"000", -1,"000,管理员"); 
 		if (show) {
 			f.value = f.p2;
 		}
@@ -527,16 +526,16 @@ function goodsTypeField(key) {
 }
 
 // 新增类别
-function testEditGoodsFields() {
-	var fields = editGoodsFields("name");
+function testEditGoodsTypeFields() {
+	var fields = editGoodsTypeFields("name");
 	setTFieldsValue(getScrollView(), fields);
 	return true;
 }
 
-function editGoodsFields() {
-	return getTFields("editGoodsField", arguments);
+function editGoodsTypeFields() {
+	return getTFields("editGoodsTypeField", arguments);
 }
-function editGoodsField(key) {
+function editGoodsTypeField(key) {
 	var f;
 	switch (key) {
 	case "name":

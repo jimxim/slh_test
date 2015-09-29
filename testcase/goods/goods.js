@@ -5,7 +5,7 @@ function testGoodsGoodsAll() {
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
-	// run("货品查询", "testQueryGoods");
+	 run("货品查询", "testQueryGoods");
 }
 
 function testQueryGoodsStock() {
@@ -123,32 +123,58 @@ function testQueryGoods() {
 	var r = getToday() + getRandomInt(10000);
 	var keys = [ "款号", "名称" ];
 	var fields = editGoodsFields(keys);
-	appendTFieldValue(fields["款号"], r);
-	appendTFieldValue(fields["名称"], r);
+	changeTFieldValue(fields["款号"], r);
+	changeTFieldValue(fields["名称"], r);
 	setTFieldsValue(getScrollView(), fields);
 	tapButton(window, SAVE);
+	tapPrompt();
 	delay();
+	tapButton(window, RETURN);
+
 
 	tapMenu("货品管理", "货品查询");
-	var qKeys = [ "款号", "名称" ];
+	var qKeys = [ "款号名称"];
 	var qFields = queryGoodsFields(qKeys);
-	appendTFieldValue(qFields["款号"], r);
-	appendTFieldValue(qFields["名称"], r);
+	changeTFieldValue(qFields["款号名称"], r);
 	setTFieldsValue(window, qFields);
 	query(qFields);
+	delay();
 	var qr = getQResult();
+	delay();
+	debugQResult(qr);
 	var ret = isEqualQRData1ByTitle(qr, "款号", r)
-			&& isEqualQRData1ByTitle(qr, "名称", r);
+	&& isEqualQRData1ByTitle(qr, "名称", r);
 	delay();
 
-	tapFirstText(getScrollView(), TITLE_SEQ, 14);
+	tapFirstText(getScrollView(), TITLE_SEQ);
 	var key = [ "品牌", "吊牌价", "季节", "厂商", "备注" ];
-	var fields = editGoodsFields(key);
-	setTFieldsValue(getScrollView(), fields);
-	tapButton(window, SAVE);
+	var fields1 = editGoodsFields(key);
+	setTFieldsValue(getScrollView(), fields1);
+	tapButton(window, EDIT_SAVE);
+	tapPrompt();
+	tapButton(window, RETURN);
 	var qr1 = getQResult();
 	delay();
 	ret = ret && isEqualQRData1ByTitle(qr1, "品牌", "1010pp");
+	
+	return ret;
+}
+
+function testGoodsPricing() {
+	tapMenu("货品管理", "新增货品+");
+	var r = getToday() + getRandomInt(10000);
+	var keys = [ "款号", "名称" ];
+	var fields = editGoodsFields(keys);
+	changeTFieldValue(fields["款号"], r);
+	changeTFieldValue(fields["名称"], r);
+	setTFieldsValue(getScrollView(), fields);
+	tapButton(window, SAVE);
+	tapPrompt();
+	delay();
+	tapButton(window, RETURN);
+
+	tapMenu("货品管理", "新增货品+");
+
 	
 	return ret;
 }
