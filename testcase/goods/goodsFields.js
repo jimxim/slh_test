@@ -298,10 +298,12 @@ function testEditGoodsFields() {
 	var showFields = editGoodsFields(keys, true);
 	return checkShowFields(getScrollView(), showFields);
 }
-function editGoodsFields(keys, show) {
-	return getTFields("editGoodsField", keys, show);
+function editGoodsFields(keys, show, colorSizeStartIndex) {
+	return getTFields("editGoodsField", keys, show, colorSizeStartIndex);
 }
-function editGoodsField(key, show) {
+// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝4
+function editGoodsField(key, show, colorSizeStartIndex) {
+//	logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" + colorSizeStartIndex);
 	var f;
 	switch (key) {
 	case "code":
@@ -340,7 +342,7 @@ function editGoodsField(key, show) {
 		break;
 	case "market":
 	case "上架日期":
-		f = new TField("上架日期", BTN, 6, getToday());
+		f = new TField("上架日期", BTN, colorSizeStartIndex+2, getToday());
 		if (show) {
 			f.type = TF;
 			f.index = 5;
@@ -372,7 +374,7 @@ function editGoodsField(key, show) {
 		break;
 	case "season":
 	case "季节":
-		f = new TField("季节", BTN_SC, 8, "春季新");
+		f = new TField("季节", BTN_SC, colorSizeStartIndex+4, "春季新");
 		if (show) {
 			f.type = TF;
 			f.index = 13;
@@ -380,7 +382,7 @@ function editGoodsField(key, show) {
 		break;
 	case "type":
 	case "类别":
-		f = new TField("类别", BTN_SC, 9, "登山服");
+		f = new TField("类别", BTN_SC, colorSizeStartIndex+5, "登山服");
 		if (show) {
 			f.type = TF;
 			f.index = 14;
@@ -395,7 +397,7 @@ function editGoodsField(key, show) {
 		break;
 	case "measure":
 	case "计量单位":
-		f = new TField("计量单位", BTN_SC, 9, "件");
+		f = new TField("计量单位", BTN_SC, colorSizeStartIndex+9, "件");
 		if (show) {
 			f.type = TF;
 			f.index = 16;
@@ -403,7 +405,7 @@ function editGoodsField(key, show) {
 		break;
 	case "warehouse":
 	case "仓位":
-		f = new TField("仓位", BTN_SC, 10, "默认");
+		f = new TField("仓位", BTN_SC, colorSizeStartIndex+10, "默认");
 		if (show) {
 			f.type = TF;
 			f.index = 17;
@@ -452,6 +454,18 @@ function goodsPricingFields(keys, show) {
 function goodsPricingField(key, show) {
 	var f;
 	switch (key) {
+	case "retail":
+	case "零批价":
+		f = new TField("零批价", TF, 0, "200");
+		break;
+	case "pack":
+	case "打包价":
+		f = new TField("打包价", TF, 1, "180");
+		break;
+	case "vip":
+	case "Vip价格":
+		f = new TField("Vip价格", TF, 2, "150");
+		break;
 	case "plus-minus":
 	case "统一加减":
 		f = new TField("统一加减", TF, 3, "1");
