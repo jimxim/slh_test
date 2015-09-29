@@ -22,7 +22,8 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
-	testStatisticAnalysisAll();
+//	testStatisticAnalysisAll();
+	testTemp();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
 //	run("积分查询", "testQueryCustomerScoreFields");
@@ -36,4 +37,13 @@ function test000All() {
 function debugElements() {
 	//debugAddGoods();
 	debugGlobalParamPopValue();
+}
+
+function testTemp() {
+	tapMenu("货品管理","货品查询");
+//	debugElementTree(getScrollView());
+//	debugElementTree(window);
+	tapChoose(getScrollView(), [0,1,2]);
+//	tapButton(window,ALL);
+//	tapButton(window,NONE);
 }
