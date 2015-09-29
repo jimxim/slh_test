@@ -9,7 +9,8 @@
 #import "testcase/wangLai/customer.js"
 #import "testcase/wangLai/customerFields.js"
 #import "testcase/wangLai/provider.js"
-#import "testcase/goods.js"
+#import "testcase/goods/goodsFields.js"
+#import "testcase/goods/goods.js"
 #import "testcase/param.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/sales.js"
@@ -30,6 +31,7 @@ function test000All() {
 //	run("客户新增", "testEditCustomerFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
+	testGoodsGoodsAll();
 //		logout();
 //	}
 }
@@ -43,7 +45,12 @@ function testTemp() {
 	tapMenu("货品管理","货品查询");
 //	debugElementTree(getScrollView());
 //	debugElementTree(window);
-	tapChoose(getScrollView(), [0,1,2]);
+//	tapChoose(getScrollView(), [0,1,2]);
 //	tapButton(window,ALL);
 //	tapButton(window,NONE);
+	getTimestamp(0);
+	getTimestamp(5);
+	getTimestamp(11);
+	getTimestamp(13);
+	getTimestamp(15);
 }
