@@ -45,7 +45,7 @@ function editSalesBillNoColorSize(json) {
 	tapButton(window, SAVE);
 	tapPrompt();
 	// 保存成功后还有一个是否打印的弹窗
-	cond = "!isAlertVisible()";
+	var cond = "!isAlertVisible()";
 	waitUntil(cond, 9);
 //	clearAlert();
 
