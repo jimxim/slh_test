@@ -31,7 +31,7 @@ function test000All() {
 //	run("客户新增", "testEditCustomerFields");
 //		testWanLaiProviderAll();
 //		testGoodsAll();
-	testGoodsGoodsAll();
+//	testGoodsGoodsAll();
 //		logout();
 //	}
 }
@@ -42,15 +42,18 @@ function debugElements() {
 }
 
 function testTemp() {
-	tapMenu("货品管理","货品查询");
+//	tapMenu("货品管理","货品查询");
 //	debugElementTree(getScrollView());
 //	debugElementTree(window);
 //	tapChoose(getScrollView(), [0,1,2]);
 //	tapButton(window,ALL);
 //	tapButton(window,NONE);
-	getTimestamp(0);
-	getTimestamp(5);
-	getTimestamp(11);
-	getTimestamp(13);
-	getTimestamp(15);
+//	getTimestamp(0);
+//	getTimestamp(5);
+//	getTimestamp(11);
+//	getTimestamp(13);
+//	getTimestamp(15);
+	var key = [ "品牌", "吊牌价", "季节", "厂商", "备注" ];
+	var fields1 = editGoodsFields(key, false, 0);
+	setTFieldsValue(getScrollView(), fields1);
 }

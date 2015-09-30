@@ -301,7 +301,7 @@ function testEditGoodsFields() {
 function editGoodsFields(keys, show, colorSizeStartIndex) {
 	return getTFields("editGoodsField", keys, show, colorSizeStartIndex);
 }
-// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝4
+// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4
 function editGoodsField(key, show, colorSizeStartIndex) {
 //	logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" + colorSizeStartIndex);
 	var f;
