@@ -5,9 +5,9 @@ function testGoodsGoodsAll() {
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
-	 run("货品查询", "testQueryGoods");
-//	 run("批量调价勾选", "testGoodsPricing");
-//	run("批量调价全选", "testGoodsPricingAll");
+	// run("货品查询", "testQueryGoods");
+	// run("批量调价勾选", "testGoodsPricing");
+	// run("批量调价全选", "testGoodsPricingAll");
 	// run("批量操作", "testEditGoodsOperation");
 }
 
@@ -128,7 +128,6 @@ function testQueryGoods() {
 	var fields = editGoodsFields(keys, false, 0);
 	changeTFieldValue(fields["款号"], r);
 	changeTFieldValue(fields["名称"], r);
-	setTFieldsValue(getScrollView(), fields);
 	tapButton(window, SAVE);
 	tapPrompt();
 	delay();
@@ -138,7 +137,6 @@ function testQueryGoods() {
 	var qKeys = [ "款号名称" ];
 	var qFields = queryGoodsFields(qKeys);
 	changeTFieldValue(qFields["款号名称"], r);
-	setTFieldsValue(window, qFields);
 	query(qFields);
 	delay();
 	var qr = getQResult();
@@ -169,7 +167,6 @@ function testGoodsPricing() {
 	var qKeys = [ "款号名称" ];
 	var qFields = queryGoodsFields(qKeys);
 	changeTFieldValue(qFields["款号名称"], "tjcs1");
-	setTFieldsValue(window, qFields);
 	query(qFields);
 
 	// 输入查询条件，修改
@@ -240,12 +237,11 @@ function testGoodsPricing() {
 	tapButton(getScrollView(1), "确 定");
 	var qr3 = getQResult();
 	var l = qr3.data[0]["零批价"];
-//	if(){
-//		
-//	}
-	ret = ret && isEqualQRData1ByTitle(qr3, "进货价", "100")
-			&& isEqualQRData1ByTitle(qr3, "零批价", r * 0.5);
-	
+	if (Math.abs(l - r * 0.5) > 1) {
+		ret = false;
+	}
+	ret = ret && isEqualQRData1ByTitle(qr3, "进货价", "100");
+
 	// && isEqualQRData1ByTitle(qr3, "打包价", r * 0.5);
 
 	// // 统一乘 负值
@@ -355,7 +351,9 @@ function testGoodsPricingAll() {
 	var qr3 = getQResult();
 	for (i = 0; i < qr3.curPageTotal; i++) {
 		l = qr3.data[i]["零批价"];
-		if ( l - r * 0.5  > 1) {
+		var diff = Math.abs(l - r * 0.5);
+		// logDebug("i="+i+" l="+l+" r*0.5="+(r * 0.5)+" diff="+diff);
+		if (diff > 1) {
 			ret = false;
 		}
 	}
@@ -381,12 +379,12 @@ function testGoodsPricingAll() {
 function testEditGoodsOperation() {
 
 	tapMenu("货品管理", "货品查询");
-	var qKeys = [ "款号名称" ];
+	var qKeys = [ "款号名称", "是否停用" ];
 	var qFields = queryGoodsFields(qKeys);
 	changeTFieldValue(qFields["款号名称"], "plczcs");
-	setTFieldsValue(window, qFields);
+	changeTFieldValue(qFields["是否停用"], "否");
 	query(qFields);
-
+	// delay();
 	tapButton(window, ALL);
 	tapMenu("货品管理", "批量操作");
 	tapButton(getScrollView(1), "批量停用");
@@ -396,9 +394,22 @@ function testEditGoodsOperation() {
 	var qFields1 = queryGoodsFields(qKeys1);
 	changeTFieldValue(qFields1["款号名称"], "plczcs");
 	changeTFieldValue(qFields1["是否停用"], "是");
-	setTFieldsValue(window, qFields1);
 	query(qFields1);
 	var qr = getQResult();
+	var ret = isInQRDataAllByTitle(qr, "名称", "批量操作测试");
+
+	tapButton(window, ALL);
+	tapMenu("货品管理", "批量操作");
+	tapButton(getScrollView(1), "批量启用");
+	tapPrompt();
+
+	var qKeys2 = [ "款号名称", "是否停用" ];
+	var qFields2 = queryGoodsFields(qKeys2);
+	changeTFieldValue(qFields2["款号名称"], "plczcs");
+	changeTFieldValue(qFields2["是否停用"], "否");
+	query(qFields2);
+	var qr2 = getQResult();
+	ret = isInQRDataAllByTitle(qr2, "名称", "批量操作测试");
 
 	return ret;
 }

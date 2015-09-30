@@ -2,6 +2,7 @@
 //测试套具，集合测试用例
 
 #import "lib/common.js"
+#import "lib/sales.js"
 #import "lib/provider.js"
 #import "lib/goods.js"
 #import "lib/param.js"
@@ -11,6 +12,7 @@
 #import "testcase/wangLai/customer.js"
 #import "testcase/wangLai/customerFields.js"
 // #import "testcase/wangLai/provider.js"
+#import "testcase/purchase/purchase.js"
 #import "testcase/purchase/purchaseFields.js"
 #import "testcase/purchaseOrder/purchaseOrderFields.js"
 #import "testcase/shopIn/shopInFields.js"
@@ -32,7 +34,8 @@ function test000All() {
 // if( ok ) {
 // testParamAll();
 // testWanLaiCustomerAll();
-   testGoodsGoodsAll();
+// testGoodsGoodsAll();
+	testPurchaseAll();
 	
 	
 	
