@@ -2,6 +2,7 @@
 //测试套具，集合测试用例
 
 #import "lib/common.js"
+#import "lib/sales.js"
 #import "lib/provider.js"
 #import "lib/goods.js"
 #import "lib/param.js"
@@ -19,12 +20,12 @@
 
 //总经理
 function test000All() {
-	debug = true;
+//	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
-//	testStatisticAnalysisAll();
-	testTemp();
+	testStatisticAnalysisAll();
+//	testTemp();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
 //	run("积分查询", "testQueryCustomerScoreFields");
