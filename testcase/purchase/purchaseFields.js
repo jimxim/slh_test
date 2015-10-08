@@ -141,7 +141,7 @@ function purchasePriceField(key) {
 
 // 按款号汇总
 function testPurchaseCodeFields() {
-	var keys = [ "code", "day1", "day2", "market1", "market2" ];
+	var keys = [ "code", "day1", "day2", "market1", "market2", "provider" ];
 	var fields = purchaseCodeFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = purchaseCodeFields(keys, true);
@@ -162,11 +162,11 @@ function purchaseCodeField(key, show) {
 		}
 		break;
 	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 1, "2015-9-11");
+	case "发生日期从":
+		f = new TField("发生日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
-	case "日期到":
+	case "发生日期到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
 	case "market1":
@@ -176,6 +176,13 @@ function purchaseCodeField(key, show) {
 	case "market2":
 	case "上架日期到":
 		f = new TField("到", TF_DT, 4, "2015-8-15");
+		break;
+	case "provider":
+	case "厂商":
+		f = new TField("厂商", TF_AC, 5, "a", 1, 0);
+		if (show) {
+			f.value = "A.k";
+		}
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -329,20 +336,21 @@ function purchaseQueryProviderField(key, show) {
 
 // 按类别汇总
 function testPurchaseTypeFields() {
-	var fields = purchaseTypeFields("day1", "day2", "type");
+	var keys = ["day1", "day2", "type"];
+	var fields = purchaseTypeFields(keys);
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function purchaseTypeFields() {
-	return getTFields("purchaseTypeField", arguments);
+function purchaseTypeFields(keys, show) {
+	return getTFields("purchaseTypeField", keys, show);
 }
 function purchaseTypeField(key) {
 	var f;
 	switch (key) {
 	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+	case "发生日期从":
+		f = new TField("发生日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
 	case "到":
@@ -393,6 +401,34 @@ function purchaseOrderField(key, show) {
 		f = new TField("款号", TF_AC, 3, "b", 1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
+		}
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+//批量入库
+function testPurchaseBatchEditFields() {
+	var keys = [ "staff" ];
+	var fields = purchaseBatchEditFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = purchaseBatchEditFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function purchaseBatchEditFields(keys, show) {
+	return getTFields("purchaseBatchEditField", keys, show);
+}
+function purchaseBatchEditField(key, show) {
+	var f;
+	switch (key) {
+	case "staff":
+	case "店员":
+		f = new TField("店员", TF_AC, 0, "000", -1, 0);
+		if (show) {
+			f.value = "000,管理员";
 		}
 		break;
 	default:

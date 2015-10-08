@@ -1,7 +1,14 @@
 //LuXingXin <52619481 at qq.com> 20150930
 
 function testPurchaseAll() {
-	run("按批次查", "testPurchaseQueryBatch");
+	// run("按批次查", "testPurchaseQueryBatch");
+	// run("按金额汇总", "testPurchasePrice");
+	// run("按款号汇总", "testPurchaseCode");
+	// run("按厂商返货", "testPurchaseProviderReturn");
+	// run("按厂商汇总", "testPurchaseProvider");
+	 run("按类别汇总", "testPurchaseType");
+	// run("新增入库", "testPurchaseEdit");
+//	run("批量入库", "testPurchaseBatchEdit");
 
 }
 
@@ -13,7 +20,7 @@ function testPurchaseQueryBatch() {
 	var fields = queryGoodsStockFields(keys);
 	changeTFieldValue(fields["款号"], "k300");
 	query(fields);
-//	delay();
+	// delay();
 	var expected = {
 		"款号" : "k300",
 		"颜色" : "均色",
@@ -102,6 +109,167 @@ function testPurchasePrice() {
 	changeTFieldValue(fields["日期从"], "2015-09-08");
 	query(fields);
 	var qr = getQResult();
+	var actual = 0, actual1 = 0, actual2 = 0;
+	var totalPageNo = qr.totalPageNo;
+	for (var j = 1; j <= totalPageNo; j++) {
+		for (var i = 0; i < qr.curPageTotal; i++) {
+			actual += Number(qr.data[i]["现金"]);
+			actual1 += Number(qr.data[i]["刷卡"]);
+			actual2 += Number(qr.data[i]["汇款"]);
+		}
+		if (j < totalPageNo) {
+			scrollNextPage();
+			qr = getQResult();
+		}
+	}
+	var ret = false;
+	if (actual == qr.counts["现金"] && actual1 == qr.counts["刷卡"]
+			&& actual2 == qr.counts["汇款"]) {
+		ret = true;
+	}
+	return ret;
+}
 
-	// return ret;
+function testPurchaseCode() {
+	tapMenu("采购入库", "按汇总", "按款号汇总");
+
+	var keys = [ "发生日期从" ];
+	var fields = purchaseCodeFields(keys);
+	changeTFieldValue(fields["发生日期从"], "2015-09-08");
+	query(fields);
+	var qr = getQResult();
+	var actual = 0, actual1 = 0, actual2 = 0;
+	var ret1 = true;
+	var totalPageNo = qr.totalPageNo;
+	for (var j = 1; j <= totalPageNo; j++) {
+		for (var i = 0; i < qr.curPageTotal; i++) {
+			actual += Number(qr.data[i]["数量"]);
+			actual1 += Number(qr.data[i]["拿货数"]);
+			actual2 += Number(qr.data[i]["退货数"]);
+			if (Number(qr.data[i]["数量"]) != Number(qr.data[i]["拿货数"])
+					- Number(qr.data[i]["退货数"])) {
+				ret1 = false;
+			}
+		}
+		if (j < totalPageNo) {
+			scrollNextPage();
+			qr = getQResult();
+		}
+	}
+	var ret = false;
+	if (actual == qr.counts["数量"] && actual1 == qr.counts["拿货数"]
+			&& actual2 == qr.counts["退货数"]) {
+		ret = true;
+	}
+	return ret && ret1;
+}
+
+function testPurchaseProviderReturn() {
+	tapMenu("采购入库", "按汇总", "按厂商返货");
+
+	var keys = [ "款号", "日期从" ];
+	var fields = purchaseProviderReturnFields(keys);
+	changeTFieldValue(fields["款号"], "qqqqqq");
+	changeTFieldValue(fields["日期从"], "2015-10-08");
+	query(fields);
+	var qr = getQResult();
+	var ret = false;
+	if (qr.data[0]["数量"] == qr.counts["数量"]) {
+		ret = true;
+	}
+	return ret && isEqualQRData1ByTitle(qr, "名称", "qqq");
+}
+
+function testPurchaseProvider() {
+	tapMenu("采购入库", "按汇总", "按厂商汇总");
+	
+	var keys = [ "日期从", "到" ];
+	var fields = purchaseProviderFields(keys);
+	changeTFieldValue(fields["日期从"], "2015-10-08");
+	changeTFieldValue(fields["到"], "2015-10-08");
+	query(fields);
+	var qr = getQResult();
+	var actual = 0, actual1 = 0, actual2 = 0, actual3 = 0;
+	var totalPageNo = qr.totalPageNo;
+	for (var j = 1; j <= totalPageNo; j++) {
+		for (var i = 0; i < qr.curPageTotal; i++) {
+			actual += Number(qr.data[i]["现金"]);
+			actual1 += Number(qr.data[i]["进货数"]);
+			actual2 += Number(qr.data[i]["退货数"]);
+			actual3 += Number(qr.data[i]["实进数"]);
+		}
+		if (j < totalPageNo) {
+			scrollNextPage();
+			qr = getQResult();
+		}
+	}
+	var ret = false;
+	if (actual == qr.counts["现金"] && actual1 == qr.counts["进货数"]
+			&& actual2 == qr.counts["退货数"] && actual3 == qr.counts["实进数"]) {
+		ret = true;
+	}
+	return ret;
+}
+
+function testPurchaseType() {
+	tapMenu("采购入库", "按汇总", "按类别汇总");
+
+	var keys = [ "发生日期从", "类别" ];
+	var fields = purchaseTypeFields(keys);
+	changeTFieldValue(fields["发生日期从"], "2015-10-08");
+	query(fields);
+	var qr = getQResult();
+	var actual = 0;
+	var totalPageNo = qr.totalPageNo;
+	for (var j = 1; j <= totalPageNo; j++) {
+		for (var i = 0; i < qr.curPageTotal; i++) {
+			actual += Number(qr.data[i]["数量"]);
+		}
+		if (j < totalPageNo) {
+			scrollNextPage();
+			qr = getQResult();
+		}
+	}
+	var ret = false;
+	if (actual == qr.counts["数量"]) {
+		ret = true;
+	}
+	return ret && isEqualQRData1ByTitle(qr, "类别", "登山服");
+}
+
+function testPurchaseEdit() {
+	tapMenu("采购入库", "新增入库+");
+	var json = {
+		"客户" : "cscs1",
+		"明细" : [ {
+			"货品" : "k300",
+			"数量" : "5"
+		} ],
+		"现金" : "0"
+	};
+	editSalesBillNoColorSize(json);
+
+	tapMenu("采购入库", "按批次查");
+
+}
+
+function testPurchaseBatchEdit() {
+	tapMenu("采购入库", "批量入库+");
+	delay();
+	var keys = [ "店员" ];
+	var fields = purchaseBatchEditFields(keys);
+	setTFieldsValue(window, fields);
+	
+//	var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
+//	var f4 = new TField("数量", TF, 4, "5");
+//	var fields = [ f1, f4 ];
+//	setTFieldsValue(getScrollView(), fields);
+//	
+//	tapButton(window, SAVE);
+//	tapPrompt();
+//	var cond = "!isAlertVisible()";
+//	waitUntil(cond, 9);
+//
+//	tapButton(window, RETURN);
+
 }
