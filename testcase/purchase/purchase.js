@@ -9,15 +9,19 @@ function testPurchaseQueryBatch() {
 	var ret = true;
 	var m1, m2, n1, n2;
 	tapMenu("货品管理", "当前库存");
-	var keys = [ "款号", "颜色", "尺码" ];
+	var keys = [ "款号" ];
 	var fields = queryGoodsStockFields(keys);
 	changeTFieldValue(fields["款号"], "k300");
-	changeTFieldValue(fields["颜色"], "均色");
-	changeTFieldValue(fields["尺码"], "均码");
 	query(fields);
-	delay();
+//	delay();
+	var expected = {
+		"款号" : "k300",
+		"颜色" : "均色",
+		"尺码" : "均码"
+	};
 	var qr = getQResult();
-	m1 = qr.data[0]["库存"];
+	var index = getIndexEqualsQRData1(qr, expected);
+	m1 = qr.data[index]["库存"];
 
 	tapMenu("采购入库", "厂商账款", "厂商总账");
 	var keys1 = [ "厂商" ];
@@ -25,6 +29,7 @@ function testPurchaseQueryBatch() {
 	changeTFieldValue(fields1["厂商"], "cscs1");
 	query(fields1);
 	var qr1 = getQResult();
+
 	n1 = qr1.data[0]["余额"];
 
 	tapMenu("采购入库", "按批次查");
@@ -65,14 +70,12 @@ function testPurchaseQueryBatch() {
 	tapButton(window, RETURN);
 
 	tapMenu("货品管理", "当前库存");
-	var keys2 = [ "款号", "颜色", "尺码" ];
+	var keys2 = [ "款号" ];
 	var fields2 = queryGoodsStockFields(keys2);
 	changeTFieldValue(fields2["款号"], "k300");
-	changeTFieldValue(fields2["颜色"], "均色");
-	changeTFieldValue(fields2["尺码"], "均码");
 	query(fields2);
 	var qr2 = getQResult();
-	m2 = qr2.data[0]["库存"];
+	m2 = qr2.data[index]["库存"];
 	if (m1 != m2) {
 		ret = false;
 	}
@@ -89,4 +92,16 @@ function testPurchaseQueryBatch() {
 	}
 
 	return ret;
+}
+
+function testPurchasePrice() {
+	tapMenu("采购入库", "按汇总", "按金额汇总");
+
+	var keys = [ "日期从" ];
+	var fields = purchasePriceFields(keys);
+	changeTFieldValue(fields["日期从"], "2015-09-08");
+	query(fields);
+	var qr = getQResult();
+
+	// return ret;
 }
