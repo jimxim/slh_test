@@ -8,8 +8,8 @@ function testPurchaseAll() {
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("按类别汇总", "testPurchaseType");
 	// run("新增入库", "testPurchaseEdit");
-	 run("批量入库", "testPurchaseBatchEdit");
-//	run("按订货入库", "testPurchaseOrder");
+	run("批量入库", "testPurchaseBatchEdit");
+	// run("按订货入库", "testPurchaseOrder");
 }
 
 function testPurchaseQueryBatch() {
@@ -254,30 +254,80 @@ function testPurchaseEdit() {
 }
 
 function testPurchaseBatchEdit() {
+//	tapMenu("货品管理", "当前库存");
+//	var keys = [ "款号", "门店" ];
+//	var fields = queryGoodsStockFields(keys);
+//	changeTFieldValue(fields["款号"], "3035");
+//	changeTFieldValue(fields["门店"], "常青店(test)36新");
+//	query(fields);
+//	var qr = getQR();
+//	var a = qr.data[0]["库存"];
+//
+//	tapMenu("货品管理", "款号库存");
+//	var keys1 = [ "款号", "门店" ];
+//	var fields1 = queryGoodsCodeStockFields(keys1);
+//	changeTFieldValue(fields1["款号"], "3035");
+//	changeTFieldValue(fields1["门店"], "常青店(test)36新");
+//	query(fields1);
+//	qr = getQR();
+//	var b1 = qr.data[0]["库存"];
+//	var b2 = qr.data[0]["累计进"];
+//
+//	tapMenu("货品管理", "库存分布");
+//	var keys2 = [ "类别", "厂商" ];
+//	var fields2 = queryGoodsDistributionFields(keys2);
+//	changeTFieldValue(fields2["类别"], "登山服");
+//	changeTFieldValue(fields2["厂商"], "vell");
+//	query(fields2);
+//	qr = getQR();
+//	var c1 = qr.data[0]["库存"];
+//	var c2 = qr.data[0]["常青店(test)36新"];
+
 	tapMenu("采购入库", "批量入库+");
-//	delay(2);
+	// delay();
+	var f1 = new TField("货品", TF_AC, 1, "3035", -1, 0);
+	var f4 = new TField("数量", TF, 4, "10");
+	var fields3 = [ f1, f4 ];
+	setTFieldsValue(getScrollView(), fields3);
 
-//	delay();
-	 var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
-	 var f4 = new TField("数量", TF, 4, "5");
-	 var fields1 = [ f1, f4 ];
-	 setTFieldsValue(getScrollView(), fields1);
+	var keys4 = [ "店员" ];
+	var fields4 = purchaseBatchEditFields(keys4);
+	// debugElementTree(window);
+	setTFieldsValue(window, fields4);
+	// debugElementTree(window);
 
-		var keys = [ "店员" ];
-		var fields = purchaseBatchEditFields(keys);
-		debugElementTree(window);
-		
-		setTFieldsValue(window, fields);
-		debugElementTree(window);
-		
-	 debugElementTree(window);
-		
-//	 tapButton(window, SAVE);
-//	 tapPrompt();
-//	 var cond = "!isAlertVisible()";
-//	 waitUntil(cond, 9);
-//	
-//	 tapButton(window, RETURN);
+	tapButton(window, SAVE);
+	tapAlertButton("确定");
+	tapButton(window, RETURN);
+
+//	tapMenu("货品管理", "当前库存");
+//	tapButton(window, QUERY);
+//	qr = getQR();
+//	var a1 = qr.data[0]["库存"];
+//	var ret1 = true;
+//	if (a1 - a != 10) {
+//		ret1 = false;
+//	}
+//
+//	tapMenu("货品管理", "款号库存");
+//	tapButton(window, QUERY);
+//	qr = getQR();
+//	var ret2 = true;
+//	if ((qr.data[0]["库存"] - b1 != 10) || (qr.data[0]["累计进"] - b2 != 10)) {
+//		ret2 = false;
+//	}
+//
+//	tapMenu("货品管理", "库存分布");
+//	tapButton(window, QUERY);
+//	qr = getQR();
+//	var ret3 = true;
+//	if ((qr.data[0]["库存"] - c1 != 10)
+//			|| (qr.data[0]["常青店(test)36新"] - c2 != 10)) {
+//		ret3 = false;
+//	}
+//
+//	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
+//	return ret1 && ret2 && ret3;
 
 }
 
@@ -355,4 +405,3 @@ function testPurchaseOrder() {
 	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
 	return ret1 && ret2 && ret3;
 }
-
