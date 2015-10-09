@@ -36,6 +36,7 @@ function test000All() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 	testPurchaseAll();
+//	testTemp();
 	
 	
 	
@@ -189,4 +190,8 @@ function test000All() {
 function debugElemnets() {
 	// debugAddGoods();
 	debugGlobalParamPopValue();
+}
+
+function testTemp() {
+
 }
