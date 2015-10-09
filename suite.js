@@ -17,6 +17,8 @@
 #import "testcase/sales/sales.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
 #import "testcase/statisticAnalysis/statisticAnalysis.js"
+#import "testcase/purchase/purchaseFields.js"
+#import "testcase/purchase/purchase.js"
 
 //总经理
 function test000All() {
@@ -24,8 +26,9 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
-//	testStatisticAnalysisAll();
-	testTemp();
+	testStatisticAnalysisAll();
+//	testTemp();
+//	testPurchaseAll();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
 //	run("积分查询", "testQueryCustomerScoreFields");
@@ -59,9 +62,12 @@ function testTemp() {
 //	setTFieldsValue(getScrollView(), fields1);
 //    tap(window.buttons['查 询']);
 //    tapButton(window, '查 询');
-    logDebug("ok="+isUIAButton(window.buttons()['查 询']));
-    logDebug("ok="+isUIAButton(window.buttons()["查 询"]));
+//    logDebug("ok="+isUIAButton(window.buttons()['查 询']));
+//    logDebug("ok="+isUIAButton(window.buttons()["查 询"]));
 //    debugElementTree(window);
-    var qr = getQResult();
+//    var qr = getQResult();
 //    debugQResult(qr);
+    var keys = [ "店员" ];
+    var fields = purchaseBatchEditFields(keys);
+    setTFieldsValue(window, fields);
 }
