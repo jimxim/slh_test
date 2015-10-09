@@ -286,7 +286,7 @@ function testPurchaseOrder() {
 		"尺码" : "均码"
 	};
 	var qr = getQResult();
-	debugQResult(qr);
+//	debugQResult(qr);
 	var index = getIndexEqualsQRData1(qr, expected);
 	var m = qr.data[index]["库存"];
 
@@ -320,29 +320,31 @@ function testPurchaseOrder() {
 	tapButton(window, SAVE);
 	tapPrompt();
 	query();
-	qr1 = getQResult();
+	qr1 = getQR();
 	if (i == qr1.data[0]["差异数"] && j == qr1.data[0]["入库数"]) {
 		ret1 = true;
 	}
 
 	tapMenu("货品管理", "当前库存");
 	tapButton(window, QUERY);
-	qr = getQResult();
-	debugQResult(qr);
+	qr = getQR();
+	// debugQResult(qr);
 	index = getIndexEqualsQRData1(qr, expected);
 	var m1 = qr.data[index]["库存"];
-	logDebug("index="+index+" m1="+m1+" m="+m);
+	// logDebug("index="+index+" m1="+m1+" m="+m);
 	var ret2 = true;
-	if (m1 - m != 10) { //m+10会变成字符串
+	if (m1 - m != 10) { // m+10会变成字符串
 		ret2 = false;
 	}
 
-	// tapMenu("货品管理", "款号库存");
-	// qr = getQResult();
-	// if (qr.data[0]["库存"] != n1 + 10 || qr.data[0]["累计进"] != n2 + 10) {
-	// ret = false;
-	// }
+	tapMenu("货品管理", "款号库存");
+	tapButton(window, QUERY);
+	qr = getQR();
+	var ret3 = true;
+	if (qr.data[0]["库存"] - n1 != 10 || qr.data[0]["累计进"] - n2 != 10) {
+		ret3 = false;
+	}
 
-	logDebug("ret1="+ret1+" ret2="+ret2);
-	return ret1 && ret2;
+	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
+	return ret1 && ret2 && ret3;
 }
