@@ -6,10 +6,10 @@ function testPurchaseAll() {
 	// run("按款号汇总", "testPurchaseCode");
 	// run("按厂商返货", "testPurchaseProviderReturn");
 	// run("按厂商汇总", "testPurchaseProvider");
-	 run("按类别汇总", "testPurchaseType");
+	// run("按类别汇总", "testPurchaseType");
 	// run("新增入库", "testPurchaseEdit");
-//	run("批量入库", "testPurchaseBatchEdit");
-
+	// run("批量入库", "testPurchaseBatchEdit");
+	run("按订货入库", "testPurchaseOrder");
 }
 
 function testPurchaseQueryBatch() {
@@ -182,7 +182,7 @@ function testPurchaseProviderReturn() {
 
 function testPurchaseProvider() {
 	tapMenu("采购入库", "按汇总", "按厂商汇总");
-	
+
 	var keys = [ "日期从", "到" ];
 	var fields = purchaseProviderFields(keys);
 	changeTFieldValue(fields["日期从"], "2015-10-08");
@@ -259,17 +259,86 @@ function testPurchaseBatchEdit() {
 	var keys = [ "店员" ];
 	var fields = purchaseBatchEditFields(keys);
 	setTFieldsValue(window, fields);
-	
-//	var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
-//	var f4 = new TField("数量", TF, 4, "5");
-//	var fields = [ f1, f4 ];
-//	setTFieldsValue(getScrollView(), fields);
-//	
-//	tapButton(window, SAVE);
-//	tapPrompt();
-//	var cond = "!isAlertVisible()";
-//	waitUntil(cond, 9);
-//
-//	tapButton(window, RETURN);
 
+	// var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
+	// var f4 = new TField("数量", TF, 4, "5");
+	// var fields1 = [ f1, f4 ];
+	// setTFieldsValue(getScrollView(), fields1);
+	//	
+	// tapButton(window, SAVE);
+	// tapPrompt();
+	// var cond = "!isAlertVisible()";
+	// waitUntil(cond, 9);
+	//
+	// tapButton(window, RETURN);
+
+}
+
+function testPurchaseOrder() {
+	tapMenu("货品管理", "当前库存");
+	var keys = [ "款号" ];
+	var fields = queryGoodsStockFields(keys);
+	changeTFieldValue(fields["款号"], "k300");
+	query(fields);
+	var expected = {
+		"款号" : "k300",
+		"颜色" : "均色",
+		"尺码" : "均码"
+	};
+	var qr = getQResult();
+	var index = getIndexEqualsQRData1(qr, expected);
+	var m = qr.data[index]["库存"];
+
+	tapMenu("货品管理", "款号库存");
+	var keys1 = [ "款号" ];
+	var fields1 = queryGoodsCodeStockFields(keys1);
+	changeTFieldValue(fields1["款号"], "k300");
+	query(fields1);
+	qr = getQResult();
+	var n1 = qr.data[0]["库存"];
+	var n2 = qr.data[0]["累计进"];
+
+	tapMenu("采购订货", "新增订货+");
+	var keys2 = [ "厂商" ];
+	var fields2 = purchaseOrderAddFields(keys2);
+	setTFieldsValue(window, fields2);
+	var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+	var f3 = new TField("订货数", TF, 3, "10");
+	var fields3 = [ f0, f3 ];
+	setTFieldsValue(getScrollView(), fields3);
+	tapButton(window, SAVE);
+	tapPrompt();
+	tapButton(window, RETURN);
+
+	tapMenu("采购入库", "按订货入库");
+	var qr1 = getQResult();
+	var ret = false;
+	var i = qr1.data[0]["入库数"], j = qr1.data[0]["差异数"];
+
+	tapFirstText();
+	tapButton(window, SAVE);
+	tapPrompt();
+	delay(10);
+	qr1 = getQResult();
+	if (i == qr1.data[0]["差异数"] && j == qr1.data[0]["入库数"]) {
+		ret = true;
+	}
+
+	tapMenu("货品管理", "当前库存");
+	delay();
+	qr = getQResult();
+	debugQResult(qr);
+	var m1 = qr.data[index]["库存"];
+	if (m1 != m + 10) {
+		ret = false;
+	}
+
+	// tapMenu("货品管理", "款号库存");
+	// delay();
+	// qr = getQResult();
+	// if (qr.data[0]["库存"] != n1 + 10 || qr.data[0]["累计进"] != n2 + 10) {
+	// ret = false;
+	// }
+
+	return ret;
 }
