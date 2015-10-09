@@ -20,12 +20,12 @@
 
 //总经理
 function test000All() {
-//	debug = true;
+	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
-	testStatisticAnalysisAll();
-//	testTemp();
+//	testStatisticAnalysisAll();
+	testTemp();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
 //	run("积分查询", "testQueryCustomerScoreFields");
@@ -54,7 +54,14 @@ function testTemp() {
 //	getTimestamp(11);
 //	getTimestamp(13);
 //	getTimestamp(15);
-	var key = [ "品牌", "吊牌价", "季节", "厂商", "备注" ];
-	var fields1 = editGoodsFields(key, false, 0);
-	setTFieldsValue(getScrollView(), fields1);
+//	var key = [ "品牌", "吊牌价", "季节", "厂商", "备注" ];
+//	var fields1 = editGoodsFields(key, false, 0);
+//	setTFieldsValue(getScrollView(), fields1);
+//    tap(window.buttons['查 询']);
+//    tapButton(window, '查 询');
+    logDebug("ok="+isUIAButton(window.buttons()['查 询']));
+    logDebug("ok="+isUIAButton(window.buttons()["查 询"]));
+//    debugElementTree(window);
+    var qr = getQResult();
+//    debugQResult(qr);
 }
