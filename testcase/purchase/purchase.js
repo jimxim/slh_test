@@ -8,8 +8,8 @@ function testPurchaseAll() {
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("按类别汇总", "testPurchaseType");
 	// run("新增入库", "testPurchaseEdit");
-	// run("批量入库", "testPurchaseBatchEdit");
-	run("按订货入库", "testPurchaseOrder");
+	 run("批量入库", "testPurchaseBatchEdit");
+//	run("按订货入库", "testPurchaseOrder");
 }
 
 function testPurchaseQueryBatch() {
@@ -255,22 +255,29 @@ function testPurchaseEdit() {
 
 function testPurchaseBatchEdit() {
 	tapMenu("采购入库", "批量入库+");
-	delay();
-	var keys = [ "店员" ];
-	var fields = purchaseBatchEditFields(keys);
-	setTFieldsValue(window, fields);
+//	delay(2);
 
-	// var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
-	// var f4 = new TField("数量", TF, 4, "5");
-	// var fields1 = [ f1, f4 ];
-	// setTFieldsValue(getScrollView(), fields1);
-	//	
-	// tapButton(window, SAVE);
-	// tapPrompt();
-	// var cond = "!isAlertVisible()";
-	// waitUntil(cond, 9);
-	//
-	// tapButton(window, RETURN);
+//	delay();
+	 var f1 = new TField("货品", TF_AC, 1, "k300", -1, 0);
+	 var f4 = new TField("数量", TF, 4, "5");
+	 var fields1 = [ f1, f4 ];
+	 setTFieldsValue(getScrollView(), fields1);
+
+		var keys = [ "店员" ];
+		var fields = purchaseBatchEditFields(keys);
+		debugElementTree(window);
+		
+		setTFieldsValue(window, fields);
+		debugElementTree(window);
+		
+	 debugElementTree(window);
+		
+//	 tapButton(window, SAVE);
+//	 tapPrompt();
+//	 var cond = "!isAlertVisible()";
+//	 waitUntil(cond, 9);
+//	
+//	 tapButton(window, RETURN);
 
 }
 
@@ -286,7 +293,7 @@ function testPurchaseOrder() {
 		"尺码" : "均码"
 	};
 	var qr = getQResult();
-//	debugQResult(qr);
+	// debugQResult(qr);
 	var index = getIndexEqualsQRData1(qr, expected);
 	var m = qr.data[index]["库存"];
 
@@ -348,3 +355,4 @@ function testPurchaseOrder() {
 	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
 	return ret1 && ret2 && ret3;
 }
+
