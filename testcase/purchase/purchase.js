@@ -7,8 +7,8 @@ function testPurchaseAll() {
 	// run("按厂商返货", "testPurchaseProviderReturn");
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("按类别汇总", "testPurchaseType");
-	 run("新增入库", "testPurchaseEdit");
-	// run("批量入库", "testPurchaseBatchEdit");
+//	 run("新增入库", "testPurchaseEdit");
+	 run("批量入库", "testPurchaseBatchEdit");
 //	run("按订货入库", "testPurchaseOrder");
 }
 
@@ -384,7 +384,7 @@ function testPurchaseBatchEdit() {
 	}
 
 	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
-	// return ret1 && ret2 && ret3;
+	 return ret1 && ret2 && ret3;
 
 }
 
