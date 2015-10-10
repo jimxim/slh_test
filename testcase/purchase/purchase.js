@@ -352,9 +352,7 @@ function testPurchaseBatchEdit() {
 	setTFieldsValue(window, fields4);
 	// debugElementTree(window);
 
-	changeAlertRetTrue();
-	tapButton(window, SAVE);
-	tapAlertButton("确定");
+	saveAndAlertOk();
 	tapButton(window, RETURN);
 
 	// tapMenu("货品管理", "当前库存");

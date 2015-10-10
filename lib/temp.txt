@@ -1,3 +1,7 @@
+function clearAlert() {
+    alertName = "";
+    alertMsg = "";
+}
 	var expected = {
 		"number-in" : "0",
 		"number-out" : "5",
