@@ -7,8 +7,8 @@ function testPurchaseAll() {
 	// run("按厂商返货", "testPurchaseProviderReturn");
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("按类别汇总", "testPurchaseType");
-	// run("新增入库", "testPurchaseEdit");
-	 run("批量入库", "testPurchaseBatchEdit");
+	 run("新增入库", "testPurchaseEdit");
+	// run("批量入库", "testPurchaseBatchEdit");
 //	run("按订货入库", "testPurchaseOrder");
 }
 
@@ -310,34 +310,34 @@ function testPurchaseEdit() {
 }
 
 function testPurchaseBatchEdit() {
-	// tapMenu("货品管理", "当前库存");
-	// var keys = [ "款号", "门店" ];
-	// var fields = queryGoodsStockFields(keys);
-	// changeTFieldValue(fields["款号"], "3035");
-	// changeTFieldValue(fields["门店"], "常青店(test)36新");
-	// query(fields);
-	// var qr = getQR();
-	// var a = qr.data[0]["库存"];
-	//
-	// tapMenu("货品管理", "款号库存");
-	// var keys1 = [ "款号", "门店" ];
-	// var fields1 = queryGoodsCodeStockFields(keys1);
-	// changeTFieldValue(fields1["款号"], "3035");
-	// changeTFieldValue(fields1["门店"], "常青店(test)36新");
-	// query(fields1);
-	// qr = getQR();
-	// var b1 = qr.data[0]["库存"];
-	// var b2 = qr.data[0]["累计进"];
-	//
-	// tapMenu("货品管理", "库存分布");
-	// var keys2 = [ "类别", "厂商" ];
-	// var fields2 = queryGoodsDistributionFields(keys2);
-	// changeTFieldValue(fields2["类别"], "登山服");
-	// changeTFieldValue(fields2["厂商"], "vell");
-	// query(fields2);
-	// qr = getQR();
-	// var c1 = qr.data[0]["库存"];
-	// var c2 = qr.data[0]["常青店(test)36新"];
+	tapMenu("货品管理", "当前库存");
+	var keys = [ "款号", "门店" ];
+	var fields = queryGoodsStockFields(keys);
+	changeTFieldValue(fields["款号"], "3035");
+	changeTFieldValue(fields["门店"], "常青店(test)36新");
+	query(fields);
+	var qr = getQR();
+	var a = qr.data[0]["库存"];
+
+	tapMenu("货品管理", "款号库存");
+	var keys1 = [ "款号", "门店" ];
+	var fields1 = queryGoodsCodeStockFields(keys1);
+	changeTFieldValue(fields1["款号"], "3035");
+	changeTFieldValue(fields1["门店"], "常青店(test)36新");
+	query(fields1);
+	qr = getQR();
+	var b1 = qr.data[0]["库存"];
+	var b2 = qr.data[0]["累计进"];
+
+	tapMenu("货品管理", "库存分布");
+	var keys2 = [ "类别", "厂商" ];
+	var fields2 = queryGoodsDistributionFields(keys2);
+	changeTFieldValue(fields2["类别"], "登山服");
+	changeTFieldValue(fields2["厂商"], "vell");
+	query(fields2);
+	qr = getQR();
+	var c1 = qr.data[0]["库存"];
+	var c2 = qr.data[0]["常青店(test)36新"];
 
 	tapMenu("采购入库", "批量入库+");
 	// delay();
@@ -352,36 +352,38 @@ function testPurchaseBatchEdit() {
 	setTFieldsValue(window, fields4);
 	// debugElementTree(window);
 
+
 	saveAndAlertOk();
+	delay();
 	tapButton(window, RETURN);
 
-	// tapMenu("货品管理", "当前库存");
-	// tapButton(window, QUERY);
-	// qr = getQR();
-	// var a1 = qr.data[0]["库存"];
-	// var ret1 = true;
-	// if (a1 - a != 10) {
-	// ret1 = false;
-	// }
-	//
-	// tapMenu("货品管理", "款号库存");
-	// tapButton(window, QUERY);
-	// qr = getQR();
-	// var ret2 = true;
-	// if ((qr.data[0]["库存"] - b1 != 10) || (qr.data[0]["累计进"] - b2 != 10)) {
-	// ret2 = false;
-	// }
-	//
-	// tapMenu("货品管理", "库存分布");
-	// tapButton(window, QUERY);
-	// qr = getQR();
-	// var ret3 = true;
-	// if ((qr.data[0]["库存"] - c1 != 10)
-	// || (qr.data[0]["常青店(test)36新"] - c2 != 10)) {
-	// ret3 = false;
-	// }
-	//
-	// logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
+	tapMenu("货品管理", "当前库存");
+	tapButton(window, QUERY);
+	qr = getQR();
+	var a1 = qr.data[0]["库存"];
+	var ret1 = true;
+	if (a1 - a != 10) {
+		ret1 = false;
+	}
+
+	tapMenu("货品管理", "款号库存");
+	tapButton(window, QUERY);
+	qr = getQR();
+	var ret2 = true;
+	if ((qr.data[0]["库存"] - b1 != 10) || (qr.data[0]["累计进"] - b2 != 10)) {
+		ret2 = false;
+	}
+
+	tapMenu("货品管理", "库存分布");
+	tapButton(window, QUERY);
+	qr = getQR();
+	var ret3 = true;
+	if ((qr.data[0]["库存"] - c1 != 10)
+			|| (qr.data[0]["常青店(test)36新"] - c2 != 10)) {
+		ret3 = false;
+	}
+
+	logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
 	// return ret1 && ret2 && ret3;
 
 }
@@ -468,7 +470,7 @@ function testPurchaseOrder() {
 		ret3 = false;
 	}
 
-	logDebug("ret=" + ret +" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
+	logDebug("ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
 	return ret && ret1 && ret2 && ret3;
 
 }
