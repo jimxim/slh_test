@@ -7,8 +7,8 @@ function testPurchaseAll() {
 	// run("按厂商返货", "testPurchaseProviderReturn");
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("按类别汇总", "testPurchaseType");
-//	 run("新增入库", "testPurchaseEdit");
-	 run("批量入库", "testPurchaseBatchEdit");
+	 run("新增入库", "testPurchaseEdit");
+//	 run("批量入库", "testPurchaseBatchEdit");
 //	run("按订货入库", "testPurchaseOrder");
 }
 
@@ -246,6 +246,7 @@ function testPurchaseEdit() {
 	query(fields);
 	var qr = getQR();
 	var a = qr.data[0]["库存"];
+//	logDebug("a="+a);
 
 	tapMenu("货品管理", "款号库存");
 	var keys1 = [ "款号", "门店" ];
@@ -274,7 +275,7 @@ function testPurchaseEdit() {
 			"货品" : "3035",
 			"数量" : "10"
 		} ],
-		"现金" : "1000"
+//		"现金" : "1000"
 	};
 	editSalesBillNoColorSize(json);
 
@@ -282,6 +283,7 @@ function testPurchaseEdit() {
 	tapButton(window, QUERY);
 	qr = getQR();
 	var a1 = qr.data[0]["库存"];
+//	logDebug("a1="+a1);
 	var ret1 = true;
 	if (a1 - a != 10) {
 		ret1 = false;
