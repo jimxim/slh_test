@@ -18,8 +18,13 @@ function testStatisticAnalysisAll() {
     // run("新综合汇总接口810", "testStatisticAnalysisSynthesis810");
     // run("新综合汇总接口811", "testStatisticAnalysisSynthesis811");
     // run("新综合汇总接口812", "testStatisticAnalysisSynthesis812");
-    run("新综合汇总接口813", "testStatisticAnalysisSynthesis813");
-    // run("onlytest", "onlytest");
+    // run("新综合汇总接口813", "testStatisticAnalysisSynthesis813");
+    // run("新综合汇总接口814", "testStatisticAnalysisSynthesis814");
+    // run("新综合汇总接口815", "testStatisticAnalysisSynthesis815");
+    // run("新综合汇总接口816", "testStatisticAnalysisSynthesis816");
+    run("新综合汇总接口817", "testStatisticAnalysisSynthesis817");
+    // run("新综合汇总接口818", "testStatisticAnalysisSynthesis818");
+//     run("onlytest", "onlytest");
     // run("新综合汇总接口", "synthesisVerify1500");
 }
 
@@ -247,6 +252,43 @@ function testStatisticAnalysisSynthesis813() {
 
     return ret;
 }
+function testStatisticAnalysisSynthesis814() {
+    var editObj1, expectedObj1, ret = true;
+    ret = synthesisCash1000();
+
+    // 1.纯退货1000，不做其它操作 希望结果：余款1000
+    editObj1 = { "明细" : [ { "货品" : "k200", "数量" : -5 } ], "现金" : 0 };
+    expectedObj1 = { "实销数" : -5, "实销额" : -1000, "退数" : 5, "退额" : 1000,
+        "余款" : 1000 };
+    ret = isAnd(ret, synthesis1(editObj1, expectedObj1));
+
+    return ret;
+}
+function testStatisticAnalysisSynthesis815() {
+    var editObj1, expectedObj1;
+    // 1.购买1000，付400 希望结果：欠600
+    editObj1 = { "明细" : [ { "货品" : "k200", "数量" : 5 } ], "现金" : 400 };
+    expectedObj1 = { "销数" : 5, "销额" : 1000, "实销数" : 5, "实销额" : 1000,
+        "现金" : 400, "欠款" : 600 };
+    return synthesis1(editObj1, expectedObj1);
+}
+// 1.购买1000，不付钱 希望结果：欠1000
+function testStatisticAnalysisSynthesis816() {
+    // = synthesisDebt1000();
+    return true;
+}
+// 销售订货1000 希望结果：余款1000
+function testStatisticAnalysisSynthesis817() {
+    var editObj1, expectedObj1, menus = [ "销售订货", "新增订货+" ];
+    editObj1 = { "明细" : [ { "货品" : "k200", "数量" : 5 } ] };
+    expectedObj1 = { "现金" : 1000, "余款" : 1000 };
+    return synthesis1(editObj1, expectedObj1, menus);
+}
+// 购买1000，付1200 希望结果：余款200
+function testStatisticAnalysisSynthesis818() {
+    // = synthesisSpare200();
+    return true;
+}
 // 新增欠款1000的一张单子,用于核销
 function synthesisDebt1000() {
     var editObj1, expectedObj1;
@@ -273,10 +315,15 @@ function synthesisSpare200() {
 }
 
 // 开单前后综合汇总之差
-function synthesis1(editObj1, expectedObj1) {
+function synthesis1(editObj1, expectedObj1, menus) {
     var jo1 = getStatisticAnalysisSynthesis();
 
-    tapMenu("销售开单", "开  单+");
+    if (isUndefined(menus)) {
+        tapMenu("销售开单", "开  单+");
+    } else {
+        tapMenu(menus[0], menus[1]);
+    }
+
     var do1 = { "客户" : "zhhz1" };
     var edit1 = mixObject(do1, editObj1);
     editSalesBillNoColorSize(edit1);
@@ -292,10 +339,8 @@ function synthesis1(editObj1, expectedObj1) {
 }
 
 function onlytest() {
-    var editObj1 = {
-        "明细" : [ { "货品" : "k300", "数量" : 12 }, { "货品" : "k300", "数量" : -30 } ],
-        "现金" : 1000, "核销" : [ 5 ], "特殊货品" : { "抹零" : 100, "打包费" : 10 } };
-    var do1 = { "客户" : "zhhz1", "onlytest" : 1 };
+    var editObj1 = { "明细" : [ { "货品" : "k200", "数量" : 5 } ] };
+    var do1 = { "客户" : "zhhz1" }; // , "onlytest" : 1
     var edit1 = mixObject(do1, editObj1);
     editSalesBillNoColorSize(edit1);
 }
