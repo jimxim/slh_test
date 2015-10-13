@@ -33,7 +33,8 @@ function testShopOutQueryBatch() {
 
 	tapFirstText();
 	tapButtonAndAlert("作 废");
-	tapButton(Window,RETURN);
+	delay();
+	tapButton(window, RETURN);
 	
 
 	var ret = true;
