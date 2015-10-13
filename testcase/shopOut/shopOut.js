@@ -36,19 +36,18 @@ function testShopOutQueryBatch() {
 	delay();
 	tapButton(window, RETURN);
 	
-
 	var ret = true;
-	// ret = ret && sortByTitle("厂商");
-	// ret = ret && sortByTitle("仓库/门店");
-	// ret = ret && sortByTitle("款号");
-	// ret = ret && sortByTitle("名称");
-	// ret = ret && sortByTitle("颜色");
-	// ret = ret && sortByTitle("尺码");
-	ret = ret && sortByTitle("库存", IS_NUM);
-	// ret = ret && sortByTitle("在途数", IS_NUM);
-	// ret = ret && sortByTitle("品牌");
-	// ret = ret && sortByTitle("上架天数", IS_NUM);
-	// ret = ret && sortByTitle("累计销", IS_NUM);
+//	ret = ret && sortByTitle("厂商");
+//	ret = ret && sortByTitle("仓库/门店");
+//	ret = ret && sortByTitle("款号");
+//	ret = ret && sortByTitle("名称");
+//	ret = ret && sortByTitle("颜色");
+//	ret = ret && sortByTitle("尺码");
+	ret = ret && sortByTitle("数量", IS_NUM);
+//	ret = ret && sortByTitle("在途数", IS_NUM);
+//	ret = ret && sortByTitle("品牌");
+//	ret = ret && sortByTitle("上架天数", IS_NUM);
+//	ret = ret && sortByTitle("累计销", IS_NUM);
 
 	return ret ;
 }
