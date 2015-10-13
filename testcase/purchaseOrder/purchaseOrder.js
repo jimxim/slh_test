@@ -173,13 +173,16 @@ function testPurchaseOrderEdit() {
 	var a = getTextFieldValue(getScrollView(), 0);
 	var b = getTextFieldValue(getScrollView(), 3);
 	if (a == "3035,jkk" && b == 10) {
-		ret2 = true;
+		ret1 = true;
 	}
 	var a1 = getTextFieldValue(getScrollView(), 4);
 	var b1 = getTextFieldValue(getScrollView(), 7);
 	if (a1 == r + "," + r && b1 == 10) {
 		ret2 = true;
 	}
+	delay();
+	tapButton(window, RETURN);
+	logDebug("ret1=" + ret1+"   ret2=" + ret2);
 	return ret1 && ret2;
 }
 
@@ -216,6 +219,7 @@ function testPurchaseOrderEditInvalid() {
 	if (isIn(alertMsg, "订单已入库，不允许作废")) {
 		ret2 = true;
 	}
+	
 	logDebug(" ret1=" + ret1 + " ret2=" + ret2);
 	return ret1 && ret2;
 
