@@ -106,15 +106,15 @@ function shopOutDecruitField(key, show) {
 	var f;
 	switch (key) {
 	case "staff":
-	case "调出人":
-		f = new TField("调出人", TF_AC, 0, "000", 2, 0);
+	case "调出人*":
+		f = new TField("调出人*", TF_AC, 0, "000", 2, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "shop":
-	case "接收店":
-		f = new TField("接收店", TF_SC, 1, "仓库店");
+	case "接收店*":
+		f = new TField("接收店*", TF_SC, 1, "仓库店");
 		break;
 	case "day":
 	case "日期":

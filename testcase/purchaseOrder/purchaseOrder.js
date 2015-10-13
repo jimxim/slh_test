@@ -4,7 +4,7 @@ function testPurchaseOrderAll() {
 	// run("按批次查", "testPurchaseOrderQueryBatch");
 	// run("按明细查", "testPurchaseOrderQueryParticular");
 	// run("订货汇总", "testPurchaseOrderGather");
-	run("新增订货", "testPurchaseOrderEdit");
+//	run("新增订货", "testPurchaseOrderEdit");
 	// run("新增订货部分入库后作废", "testPurchaseOrderEditInvalid");
 
 }

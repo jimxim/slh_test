@@ -1,11 +1,11 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-	// run("当前库存", "testQueryGoodsStock");
+	 run("当前库存", "testQueryGoodsStock");
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
-	// run("货品查询", "testQueryGoods");
+//	 run("货品查询", "testQueryGoods");
 	// run("批量调价勾选", "testGoodsPricing");
 	// run("批量调价全选", "testGoodsPricingAll");
 	// run("批量操作", "testEditGoodsOperation");
