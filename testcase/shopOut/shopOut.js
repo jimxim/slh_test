@@ -1,7 +1,7 @@
 //ZhangY <15068165765 at 139.com> 20151013
 function testShopOutAll() {
 	run("批量调出+", "testShopOutDecruit");
-//	run("按批次查", "testShopOutQueryBatch");
+	run("按批次查", "testShopOutQueryBatch");
 }
 function testShopOutDecruit() {
 	tapMenu("门店调出", "批量调出+");	
