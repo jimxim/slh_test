@@ -3,8 +3,8 @@
 function testPurchaseOrderAll() {
 	// run("按批次查", "testPurchaseOrderQueryBatch");
 	// run("按明细查", "testPurchaseOrderQueryParticular");
-//	run("订货汇总", "testPurchaseOrderGather");
-	 run("新增订货", "testPurchaseOrderEdit");
+	// run("订货汇总", "testPurchaseOrderGather");
+	run("新增订货", "testPurchaseOrderEdit");
 	// run("新增订货部分入库后作废", "testPurchaseOrderEditInvalid");
 
 }
@@ -168,8 +168,19 @@ function testPurchaseOrderEdit() {
 	tapMenu("采购订货", "按批次查");
 	tapButton(window, QUERY);
 	tapFirstText();
+	var ret1 = false;
+	var ret2 = false;
 	var a = getTextFieldValue(getScrollView(), 0);
-
+	var b = getTextFieldValue(getScrollView(), 3);
+	if (a == "3035,jkk" && b == 10) {
+		ret2 = true;
+	}
+	var a1 = getTextFieldValue(getScrollView(), 4);
+	var b1 = getTextFieldValue(getScrollView(), 7);
+	if (a1 == r + "," + r && b1 == 10) {
+		ret2 = true;
+	}
+	return ret1 && ret2;
 }
 
 function testPurchaseOrderEditInvalid() {
