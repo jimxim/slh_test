@@ -88,7 +88,7 @@ function shopInQueryBatchField(key, show) {
 
 // 按明细查
 function testShopInQueryParticularFields() {
-	var keys = [ "code", "day1", "day2", "shop-out", "shop-in" ];
+	var keys = [ "code","name", "shop-out","day1", "day2",  "shop-in" ];
 	var fields = shopInQueryParticularFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields = shopInQueryParticularFields(keys, true);
@@ -108,21 +108,26 @@ function shopInQueryParticularField(key, show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
-	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 1, "2015-9-11");
-		break;
-	case "day2":
-	case "到":
-		f = new TField("到", TF_DT, 2, "2015-9-15");
+	case "name":
+	case "名称":
+		f = new TField("名称", TF, 1, "a");
 		break;
 	case "shop-out":
 	case "调出门店":
-		f = new TField("调出门店", TF_SC, 3, "常青店");
+		f = new TField("调出门店", TF_SC, 2, "常青店");
 		break;
+	case "day1":
+	case "日期从":
+		f = new TField("日期从", TF_DT, 3, "2015-9-11");
+		break;
+	case "day2":
+	case "到":
+		f = new TField("到", TF_DT, 4, "2015-9-15");
+		break;
+	
 	case "shop-in":
 	case "调入门店":
-		f = new TField("调入门店", TF_SC, 4, "仓库店");
+		f = new TField("调入门店", TF_SC, 5, "仓库店");
 		break;
 	default:
 		logWarn("未知key＝" + key);
