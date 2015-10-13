@@ -16,8 +16,8 @@ function testPurchaseAll() {
 	// run("不支持按订货开单的跨门店操作", "testPurchaseOrderStrangeLand");
 	// run("厂商总账", "testPurchaseProviderAccount");
 	// run("厂商门店账", "testPurchaseShopAccount");
-	run("新增入库单修改保存", "testPurchaseAddAndEdit");
-
+	// run("新增入库单修改保存", "testPurchaseAddAndEdit");
+	// run("新增厂商没选适用价格,检查款号价格", "testPurchasePriceCheck");
 }
 
 function testPurchaseQueryBatch() {
@@ -914,18 +914,51 @@ function testPurchaseAddAndEdit() {
 	editSalesBillNoColorSize(json);
 
 	tapMenu("采购入库", "按批次查");
-	tapFirstText();
-	var f7 = new TField("货品", TF_AC, 1, "k300", -1, 0);
-	var f10 = new TField("数量", TF, 4, "10");
-    var fields = [ f7, f10 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    var cond = "!isAlertVisible()";
-    delay();
-    tapButton(window, RETURN);
+	var qr = getQR();
+	var a = qr.data[0]["总数"];
 
-//	logDebug();
-//	return ret;
+	tapFirstText();
+	var f7 = new TField("货品", TF_AC, 7, "k300", -1, 0);
+	var f10 = new TField("数量", TF, 10, "10");
+	var fields = [ f7, f10 ];
+	setTFieldsValue(getScrollView(), fields);
+	saveAndAlertOk();
+	tapPrompt();
+	var cond = "!isAlertVisible()";
+	delay();
+	tapButton(window, RETURN);
+
+	qr = getQR();
+	var ret = false;
+	if (qr.data[0]["总数"] - a == 10) {
+		ret = true;
+	}
+
+	logDebug("ret=" + ret);
+	return ret;
+
+}
+
+function testPurchasePriceCheck() {
+	tapMenu("采购入库", "新增入库+");
+	var keys = [ "厂商" ];
+	var fields = purchaseEditFields(keys);
+	changeTFieldValue(fields["厂商"], "dltest002"); // dltest002没有选择适用价格,则默认为进货价
+	setTFieldsValue(window, fields);
+
+	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+	var f3 = new TField("数量", TF, 3, "10");
+	var fields = [ f0, f3 ];
+	setTFieldsValue(getScrollView(), fields);
+
+	var a = getTextFieldValue(getScrollView(), 4);
+	if (a == 100) {
+		var ret = true;
+	}
+	delay();
+	tapButton(window, RETURN);
+
+	logDebug("ret=" + ret);
+	return ret;
 
 }

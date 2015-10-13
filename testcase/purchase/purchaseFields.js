@@ -336,7 +336,7 @@ function purchaseQueryProviderField(key, show) {
 
 // 按类别汇总
 function testPurchaseTypeFields() {
-	var keys = ["day1", "day2", "type"];
+	var keys = [ "day1", "day2", "type" ];
 	var fields = purchaseTypeFields(keys);
 	setTFieldsValue(window, fields);
 	return true;
@@ -359,6 +359,50 @@ function purchaseTypeField(key) {
 	case "type":
 	case "类别":
 		f = new TField("类别", TF_SC, 2, "登山服");
+		break;
+	default:
+		logWarn("未知key＝" + key);
+	}
+	return f;
+}
+
+// 新增入库+
+function testPurchaseEditFields() {
+	var keys = [ "provider", "staff", "day", "remarks" ];
+	var fields = purchaseEditFields(keys);
+	setTFieldsValue(window, fields);
+	var showFields = purchaseEditFields(keys, true);
+	return checkShowFields(window, showFields);
+}
+
+function purchaseEditFields(keys, show) {
+	return getTFields("purchaseEditField", keys, show);
+}
+function purchaseEditField(key, show) {
+	var f;
+	switch (key) {
+	case "provider":
+	case "厂商":
+		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		if (show) {
+			f.value = "aa";
+		}
+		break;
+	case "staff":
+	case "店员":
+		f = new TField("店员", TF_AC, 4, "000");
+		if (show) {
+			f.value = "000,管理员";
+		}
+		break;
+	case "day2":
+	case "日期":
+		f = new TField("日期", TF_DT, 8, getToday());
+		break;
+
+	case "remarks":
+	case "备":
+		f = new TField("备", TF, 9, "b");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -409,7 +453,7 @@ function purchaseOrderField(key, show) {
 	return f;
 }
 
-//批量入库
+// 批量入库
 function testPurchaseBatchEditFields() {
 	var keys = [ "staff" ];
 	var fields = purchaseBatchEditFields(keys);

@@ -14,6 +14,7 @@
 // #import "testcase/wangLai/provider.js"
 #import "testcase/purchase/purchase.js"
 #import "testcase/purchase/purchaseFields.js"
+#import "testcase/purchaseOrder/purchaseOrder.js"
 #import "testcase/purchaseOrder/purchaseOrderFields.js"
 #import "testcase/shopIn/shopInFields.js"
 #import "testcase/shopOut/shopOutFields.js"
@@ -35,8 +36,9 @@ function test000All() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
-	testPurchaseAll();
-//	testTemp();
+// testPurchaseAll();
+	testPurchaseOrderAll();
+// testTemp();
 	
 	
 	
@@ -92,6 +94,7 @@ function test000All() {
 // run("按出入库汇总", "testPurchaseInOutFields");
 // run("供应商对账单", "testPurchaseQueryProviderFields");
 // run("按类别汇总", "testPurchaseTypeFields");
+// run("新增入库", "testPurchaseEditFields");
 // run("按订货入库", "testPurchaseOrderFields");
 // run("厂商总账", "testPurchaseProviderAccountFields");
 // run("厂商门店账", "testPurchaseShopAccountFields");
