@@ -1,8 +1,9 @@
 //luxingxin <52619481 at qq.com> 20151013
 function testShopInAll() {
-	run("在途调拨", "testShopInFlit");
+	// run("在途调拨", "testShopInFlit");
 	// run("作废调入", "testShopInFlitStop");
 	// run("按批次/明细查", "testShopInQueryBatch");
+	// run("在途调拨日期检查", "testShopInFlitDay");
 }
 
 // 需要先在B店做一个调出单
@@ -147,4 +148,24 @@ function testShopInQueryBatch() {
 	logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3 + " ret4="
 			+ ret4);
 	return ret1 && ret2 && ret3 && ret4;
+}
+
+function testShopInFlitDay() {
+	tapMenu("门店调入", "在途调拨");
+	var keys = [ "日期从", "日期到" ];
+	var fields = shopInFlitFields(keys);
+	changeTFieldValue(fields["日期从"], "2015-10-13");
+	changeTFieldValue(fields["日期到"], "2015-10-13");
+	query(fields);
+
+	tapFirstText();
+	var a = getTextFieldValue(window, 0);
+	if (a == getToday()) {
+		var ret = true;
+	}
+	delay();
+	tapButton(window, RETURN);
+
+	logDebug("ret=" + ret);
+	return ret;
 }
