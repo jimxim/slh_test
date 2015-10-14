@@ -1,9 +1,9 @@
 //ZhangY <15068165765 at 139.com> 20151013
 function testShopOutAll() {
 	// run("批量调出+", "testShopOutDecruit");
-//	 run("按批次查", "testShopOutQueryBatch");
+	 run("按批次查", "testShopOutQueryBatch");
 	// run("按明细查", "testShopOutQueryParticular");
-	run("批量调出+", "testShopOutQueryPassword");
+//	run("批量调出+", "testShopOutQueryPassword");
 }
 
 function testShopOutDecruit() {
@@ -171,6 +171,10 @@ function testShopOutQueryPassword() {
 	tf.setValue("999999");	
 	tapButton(window,SAVE);
 	saveAndAlertOk();
+	if (isIn(alertMsg, "确定保存吗?")) {
+		ret3 = true;
+	}
+	delay();
 	if (isIn(alertMsg, "确定保存吗?")) {
 		ret3 = true;
 	}

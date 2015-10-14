@@ -42,8 +42,8 @@ function test000All() {
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //	testGoodsGoodsAll();
-//	testShopOutAll();
-	testShopInAll();
+	testShopOutAll();
+//	testShopInAll();
 //		logout();
 //	}
 }
