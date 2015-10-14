@@ -924,7 +924,6 @@ function testPurchaseAddAndEdit() {
 	setTFieldsValue(getScrollView(), fields);
 	saveAndAlertOk();
 	tapPrompt();
-	var cond = "!isAlertVisible()";
 	delay();
 	tapButton(window, RETURN);
 

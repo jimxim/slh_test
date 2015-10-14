@@ -161,7 +161,6 @@ function testPurchaseOrderEdit() {
 
 	saveAndAlertOk();
 	tapPrompt();
-	var cond = "!isAlertVisible()";
 	delay();
 	tapButton(window, RETURN);
 
@@ -204,7 +203,6 @@ function testPurchaseOrderEditInvalid() {
 	setTFieldsValue(getScrollView(), fields);
 	saveAndAlertOk();
 	tapPrompt();
-	var cond = "!isAlertVisible()";
 	delay();
 	tapButton(window, RETURN);
 
