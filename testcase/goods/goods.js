@@ -1,11 +1,11 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-	 run("当前库存", "testQueryGoodsStock");
+	// run("当前库存", "testQueryGoodsStock");
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
-//	 run("货品查询", "testQueryGoods");
+	// run("货品查询", "testQueryGoods");
 	// run("批量调价勾选", "testGoodsPricing");
 	// run("批量调价全选", "testGoodsPricingAll");
 	// run("批量操作", "testEditGoodsOperation");
@@ -33,13 +33,13 @@ function testQueryGoodsStock() {
 
 	var keys = [ "款号" ];
 	var fields = queryGoodsStockFields(keys);
-	changeTFieldValue(fields["款号"], "9528");
+	changeTFieldValue(fields["款号"], "3035");
 	query(fields);
 	var qr = getQResult();
 	tapFirstText(getScrollView(), TITLE_SEQ);
 	tapNaviLeftButton();
 
-	return ret && isEqualQRData1ByTitle(qr, "款号", "9528");
+	return ret && isEqualQRData1ByTitle(qr, "款号", "3035");
 }
 
 function testQueryGoodsCodeStock() {
@@ -61,13 +61,13 @@ function testQueryGoodsCodeStock() {
 
 	var keys = [ "款号" ];
 	var fields = queryGoodsCodeStockFields(keys);
-	changeTFieldValue(fields["款号"], "9528");
+	changeTFieldValue(fields["款号"], "3035");
 	query(fields);
 	var qr = getQResult();
 	tapFirstText(getScrollView(), TITLE_SEQ);
 	tapNaviLeftButton();
 
-	return ret && isEqualQRData1ByTitle(qr, "款号", "9528");
+	return ret && isEqualQRData1ByTitle(qr, "款号", "3035");
 }
 
 function testQueryGoodsDistribution() {
@@ -110,14 +110,14 @@ function testQueryGoodsInOut() {
 
 	var keys = [ "款号" ];
 	var fields = queryGoodsInOutFields(keys);
-	changeTFieldValue(fields["款号"], "9528");
+	changeTFieldValue(fields["款号"], "3035");
 	query(fields);
 	var qr = getQResult();
 	debugQResult(qr);
 	tapFirstText(getScrollView(), TITLE_SEQ);
 	tapNaviLeftButton();
 
-	return ret && isEqualQRData1ByTitle(qr, "款号", "9528");
+	return ret && isEqualQRData1ByTitle(qr, "款号", "3035");
 }
 
 // 7-33 待细化
@@ -166,7 +166,7 @@ function testGoodsPricing() {
 
 	var qKeys = [ "款号名称" ];
 	var qFields = queryGoodsFields(qKeys);
-	changeTFieldValue(qFields["款号名称"], "tjcs1");
+	changeTFieldValue(qFields["款号名称"], "tjcs1");   //调价测试1
 	query(qFields);
 
 	// 输入查询条件，修改
@@ -381,7 +381,7 @@ function testEditGoodsOperation() {
 	tapMenu("货品管理", "货品查询");
 	var qKeys = [ "款号名称", "是否停用" ];
 	var qFields = queryGoodsFields(qKeys);
-	changeTFieldValue(qFields["款号名称"], "plczcs");
+	changeTFieldValue(qFields["款号名称"], "plczcs");   //批量操作测试1，2，3
 	changeTFieldValue(qFields["是否停用"], "否");
 	query(qFields);
 	// delay();
