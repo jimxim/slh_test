@@ -21,6 +21,10 @@
 #import "testcase/purchase/purchase.js"
 #import "testcase/shopOut/shopOut.js"
 #import "testcase/shopOut/shopOutFields.js"
+#import "testcase/check/check.js"
+#import "testcase/check/checkFields.js"
+#import "testcase/shopIn/shopIn.js"
+#import "testcase/shopIn/shopInFields.js"
 
 //总经理
 function test000All() {
@@ -38,7 +42,8 @@ function test000All() {
 //		testWanLaiProviderAll();
 //		testGoodsAll();
 //	testGoodsGoodsAll();
-	testShopOutAll();
+//	testShopOutAll();
+	testShopInAll();
 //		logout();
 //	}
 }
