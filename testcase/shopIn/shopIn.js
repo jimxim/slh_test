@@ -12,11 +12,12 @@ function testShopInFlit() {
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
 	changeTFieldValue(fields["款号"], "3035");
-	changeTFieldValue(fields["门店"], "常青店(test)36新");
+	changeTFieldValue(fields["门店"], "常青店");
 	query(fields);
 	var qr = getQR();
 	var a = qr.data[0]["库存"];
 	var a1 = qr.data[0]["在途数"];
+	logDebug(" a=" + a + " a1=" + a1);
 
 	tapMenu("货品管理", "库存分布");
 	var keys1 = [ "类别", "厂商" ];
@@ -26,16 +27,18 @@ function testShopInFlit() {
 	query(fields1);
 	qr = getQR();
 	var b = qr.data[0]["库存"];
-	var b1 = qr.data[0]["常青店(test)36新"];
-	var b2 = qr.data[0]["中洲店(test)36新"];
+	var b1 = qr.data[0]["常青店"];
+	var b2 = qr.data[0]["中洲店"];
+	logDebug(" b=" + b + " b1=" + b1 + " b2=" + b2);
 
 	tapMenu("门店调入", "在途调拨");
 	var keys2 = [ "门店" ];
 	var fields3 = shopInFlitFields(keys2);
-	changeTFieldValue(fields3["门店"], "中洲店(test)36新");
+	changeTFieldValue(fields3["门店"], "中洲店");
 	query(fields3);
 	var qr = getQR();
 	var c = qr.data[0]["数量"];
+	logDebug(" c=" + c);
 	tapFirstText();
 	tapButtonAndAlert("调 入");
 	delay();
@@ -43,6 +46,7 @@ function testShopInFlit() {
 	tapMenu("货品管理", "当前库存");
 	query(fields);
 	qr = getQR();
+	logDebug(" 库存=" + qr.data[0]["库存"] + " 在途数=" + qr.data[0]["在途数"]);
 	var ret1 = true;
 	if (qr.data[0]["库存"] - a != 0 && qr.data[0]["在途数"] - a1 != c) {
 		ret1 = false;
@@ -51,9 +55,11 @@ function testShopInFlit() {
 	tapMenu("货品管理", "库存分布");
 	query(fields1);
 	qr = getQR();
+	logDebug(" 库存=" + qr.data[0]["库存"] + " 常青店=" + qr.data[0]["常青店"]
+			+ " 中洲店=" + qr.data[0]["中洲店"]);
 	var ret2 = true;
-	if (qr.data[0]["库存"] - b != 0 && qr.data[0]["常青店(test)36新"] - b1 != c
-			&& b2 - qr.data[0]["中洲店(test)36新"] != c) {
+	if ((qr.data[0]["库存"] - b != 0 && qr.data[0]["常青店"] - b1 != c)
+			|| (b2 - qr.data[0]["中洲店"] != c)) {
 		ret2 = false;
 	}
 
@@ -66,7 +72,7 @@ function testShopInFlitStop() {
 	tapMenu("门店调入", "在途调拨");
 	var keys = [ "门店" ];
 	var fields = shopInFlitFields(keys);
-	changeTFieldValue(fields["门店"], "中洲店(test)36新");
+	changeTFieldValue(fields["门店"], "中洲店");
 	query(fields);
 
 	tapFirstText();
@@ -93,7 +99,7 @@ function testShopInQueryBatch() {
 	tapMenu("门店调入", "在途调拨");
 	var keys = [ "门店" ];
 	var fields = shopInFlitFields(keys);
-	changeTFieldValue(fields["门店"], "中洲店(test)36新");
+	changeTFieldValue(fields["门店"], "中洲店");
 	query(fields);
 	var qr = getQR();
 	var batch = qr.data[0]["批次"];
@@ -102,7 +108,7 @@ function testShopInQueryBatch() {
 	tapMenu("门店调入", "按批次查");
 	var keys1 = [ "调出门店" ];
 	var fields1 = shopInQueryBatchFields(keys1);
-	changeTFieldValue(fields1["调出门店"], "中洲店(test)36新");
+	changeTFieldValue(fields1["调出门店"], "中洲店");
 	query(fields1);
 	qr = getQR();
 	var ret1 = true;
@@ -115,7 +121,7 @@ function testShopInQueryBatch() {
 	tapMenu("门店调入", "按明细查");
 	var keys2 = [ "调出门店" ];
 	var fields2 = shopInQueryParticularFields(keys2);
-	changeTFieldValue(fields2["调出门店"], "中洲店(test)36新");
+	changeTFieldValue(fields2["调出门店"], "中洲店");
 	query(fields2);
 	qr = getQR();
 	var ret2 = true;

@@ -290,16 +290,18 @@ function testCheckProcessFalse() {
 	var f = new TField("盘点门店", BTN_SC, 0, "常青店(test)36新");
 	var fields = [ f ];
 	setTFieldsValue(getScrollView(), fields);
-	
+	delay();
 	tapButtonAndAlert("部分处理");
 	var ret1 = false, ret2 = false;
 	if (isIn(alertMsg, "确定部分处理吗")) {
 		ret1 = true;
 	}
 	delay();
-	if (isIn(alertMsg, "订单已入库，不允许作废")) {
+	if (isIn(alertMsg, "操作失败，[本仓库(店铺)还有调拨单没有接收入库，请全部接收之后再做盘点处理")) {
 		ret2 = true;
 	}
+	delay();
+	tapButton(window, RETURN);
 	
 	logDebug(" ret1=" + ret1 + " ret2=" + ret2);
 	return ret1 && ret2;

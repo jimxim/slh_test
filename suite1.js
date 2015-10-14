@@ -16,10 +16,13 @@
 #import "testcase/purchase/purchaseFields.js"
 #import "testcase/purchaseOrder/purchaseOrder.js"
 #import "testcase/purchaseOrder/purchaseOrderFields.js"
+#import "testcase/shopIn/shopIn.js"
 #import "testcase/shopIn/shopInFields.js"
+#import "testcase/shopOut/shopOut.js"
 #import "testcase/shopOut/shopOutFields.js"
 #import "testcase/salesOrder/salesOrderFields.js"
 #import "testcase/sales/salesFields.js"
+#import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
 #import "testcase/statisticPicture/statisticPictureFields.js"
@@ -37,8 +40,12 @@ function test000All() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
-	testPurchaseOrderAll();
+// testPurchaseOrderAll();
+//	testShopInAll();
+//	testShopOutAll();
+	testCheckAll();
 // testTemp();
+	
 	
 	
 	
