@@ -25,9 +25,9 @@ function test000All() {
 	debug = true;
 //	var ok = login("000","000000");
 //	if( ok ) {
-//	testSalesBillAll();
+	testSalesBillAll();
 //	testStatisticAnalysisAll();
-	testTemp();
+//	testTemp();
 //	testPurchaseAll();
 //		testParamAll();	
 //		testWanLaiCustomerAll();

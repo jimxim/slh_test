@@ -607,7 +607,8 @@ function editSalesBillField(key, show) {
 		break;
 	case "cash":
 	case "现金":
-		f = new TField("现金", TF, 2, 0);
+	    // 模拟器里有个bug,设值后回车会触发款号输入页面
+		f = new TField("现金", TF, 2, 0,"NoNeedReturn"); 
 		break;
 	case "staff":
 	case "店员":
