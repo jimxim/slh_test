@@ -26,8 +26,8 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	testSalesBillAll();
-	testStatisticAnalysisAll();
-//	testTemp();
+//	testStatisticAnalysisAll();
+	testTemp();
 //	testPurchaseAll();
 //		testParamAll();	
 //		testWanLaiCustomerAll();
@@ -67,7 +67,9 @@ function testTemp() {
 //    debugElementTree(window);
 //    var qr = getQResult();
 //    debugQResult(qr);
-    var keys = [ "店员" ];
-    var fields = purchaseBatchEditFields(keys);
-    setTFieldsValue(window, fields);
+//    var keys = [ "店员" ];
+//    var fields = purchaseBatchEditFields(keys);
+//    setTFieldsValue(window, fields);
+    var qr = getQR();
+    goPage("8", qr);
 }
