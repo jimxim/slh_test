@@ -44,9 +44,13 @@ function queryCustomerField(key, show) {
 // 新增客户
 function testEditCustomerFields() {
 	// "super",
-	var keys = [ "name", "area","mobile", "weixin", "shop", "birthday", "staff", "type", "return",
-			"price", "fax", "remarks","address", 
-			"discount", "credit", "alarm" ];
+//	var keys = [ "name", "area","mobile", "weixin", "shop", "birthday", "staff", "type", "return",
+//			"price", "fax", "remarks","address", 
+//			"discount", "credit", "alarm" ];
+	var keys = [ "name",  "area","shop", "birthday", "staff", "super", "type",
+	 			"return", "price", "mobile", "weixin", "fax", "address", "remarks",
+	 			"discount", "credit", "alarm" ];
+//	var keys=["shop","birthday"];
 	var fields = editCustomerFields(keys);
 	setTFieldsValue(getScrollView(), fields);
 	// debugElements(getView());
@@ -66,42 +70,34 @@ function editCustomerField(key, show) {
 		break;
 	case "area":
 	case "区域":
-		f = new TField("区域", BTN_AREA, 0, "黑龙江", 0, "中国,东北");
+		f = new TField("区域", BTN_AREA, 0, "黑龙江", 0, "客户,东北");
 		if (show) {
 			f.type = TF;
 			f.index = 2;
 		}
-		break;
-	case "mobile":
-	case "手机":
-		f = new TField("手机", TF, 3, "123456789");
-		break;
-	case "weixin":
-	case "微信":
-		f = new TField("微信", TF, 4, "x123456");
 		break;
 	case "shop":
 	case "门店":
 		f = new TField("门店", BTN_SC, 1, "常青店");
 		if (show) {
 			f.type = TF;
-			f.index = 5;
+			f.index = 3;
 		}
 		break;
 	case "birthday":
 	case "生日":
-		f = new TField("生日", TF_DT, 6, "1980-09-10");
+		f = new TField("生日", TF_DT,4, "1980-09-10");
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 7, "000",  - 1, "000,管理员");
+		f = new TField("店员", TF_AC, 5, "000",  - 1, "000,总经理");
 		if (show) {
 			f.value = f.p2;
 		}
 		break;
 	case "super":
 	case "上级客户":
-		f = new TField("上级客户", TF_AC, 8, "b", 3, 0);
+		f = new TField("上级客户", TF_AC, 6, "b", 3, 0);
 		if (show) {
 			f.value = "Yvb";
 		}
@@ -111,50 +107,56 @@ function editCustomerField(key, show) {
 		f = new TField("客户类别", BTN_SC, 2, "零批客户");
 		if (show) {
 			f.type = TF;
-			f.index = 9;
+			f.index = 7;
 		}
 		break;
 	case "return":
 	case "允许退货":
-		f = new TField("允许退货", BTN_SC, 4, "是");
+		f = new TField("允许退货", BTN_SC, 3, "是");
 		if (show) {
 			f.type = TF;
-			f.index = 11;
+			f.index = 8;
 		}
 		break;
 	case "price":
 	case "适用价格":
-		f = new TField("适用价格", BTN_SC, 5, "零批价");
+		f = new TField("适用价格", BTN_SC, 4, "零批价");
 		if (show) {
 			f.type = TF;
-			f.index = 13;
+			f.index = 9;
 		}
 		break;
-
+	case "mobile":
+	case "手机":
+		f = new TField("手机", TF, 12, "111555");
+		break;
+	case "weixin":
+	case "微信":
+		f = new TField("微信", TF, 13, "x123456");
+		break;
 	case "fax":
 	case "传真号":
 		f = new TField("传真号", TF, 14, "55555");
 		break;
-	case "remarks":
-	case "备注":
-		f = new TField("备注", TF, 15, "123");
-		break;
 	case "address":
 	case "地址":
-		f = new TField("地址", TF, 16, "地址");
+		f = new TField("地址", TF, 15, "地址");
 		break;
-
+	case "remarks":
+	case "备注":
+		f = new TField("备注", TF, 16, "123");
+		break;
 	case "discount":
 	case "拿货折扣":
 		f = new TField("拿货折扣", TF, 17, "0.9");
 		break;
 	case "credit":
 	case "信用额度":
-		f = new TField("信用额度", TF, 19, "10000");
+		f = new TField("信用额度", TF, 18, "10000");
 		break;
 	case "alarm":
 	case "欠款报警":
-		f = new TField("欠款报警", TF, 20, "5000");
+		f = new TField("欠款报警", TF, 19, "5000");
 		break;
 	default:
 		logWarn("未知key＝" + key);

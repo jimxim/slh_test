@@ -1,24 +1,24 @@
 //JinXinhua <79202792 at qq.com> 20150901
 
 function testWanLaiCustomerAll() {
-	// run("输入客户查询客户", "testQueryCustomer");
-	// run("输入名称查询客户", "testQueryCustomerByName");
-	// run("输入手机查询客户", "testQueryCustomerByMobile");
-	// run("查询客户是否停用,有截图", "testQueryCustomerByStop");
-	// run("输入类别查询客户", "testQueryCustomerByType");
-	// run("输入店员查询客户", "testQueryCustomerByStaff");
-	// run("查询客户清除按钮", "testQueryCustomerClear");
+//	 run("输入客户查询客户", "testQueryCustomer");
+//	 run("输入名称查询客户", "testQueryCustomerByName");
+//	 run("输入手机查询客户", "testQueryCustomerByMobile");
+//	 run("查询客户是否停用,有截图", "testQueryCustomerByStop");
+//	 run("输入类别查询客户", "testQueryCustomerByType");
+//	 run("输入店员查询客户", "testQueryCustomerByStaff");
+//	 run("查询客户清除按钮", "testQueryCustomerClear");
 
-	// run("查询客户翻页", "testQueryCustomerNextPage");
-	// run("查询客户跳转修改", "testQueryCustomerToEdit");
-	// run("客户停用", "testCustomerStop");
-	// run("客户启用", "testCustomerSart");
-	// run("客户消费明细", "testCustomerConsumeDetail");
-	// run("客户修改保存", "testCustomerEdit");
-	// run("客户新增保存", "testCustomerAdd");
-	// run("客户签名", "testCustomerSign");
-	// run("新增分店", "testCustomerEditBranch");
-	// run("客户修改时向上滚动", "testCustomerEditVisible");
+//	 run("查询客户翻页", "testQueryCustomerNextPage");
+//	 run("查询客户跳转修改", "testQueryCustomerToEdit");
+//	 run("客户停用", "testCustomerStop");
+//	 run("客户启用", "testCustomerSart");
+//	 run("客户消费明细", "testCustomerConsumeDetail");
+//	 run("客户修改保存", "testCustomerEdit");
+//	 run("客户新增保存", "testCustomerAdd");
+//	 run("客户签名", "testCustomerSign");
+	 run("新增分店", "testCustomerEditBranch");
+//	 run("客户修改时向上滚动", "testCustomerEditVisible");
 	// run("客户分店", "testCustomerBranch");
 	// run("新增相同客户", "testCustomerAddSame");
 	// run("新增不同客户", "testCustomerAddDifferent");
@@ -46,7 +46,7 @@ function testQueryCustomer() {
 	var keys = [ key ];
 	var qFields = queryCustomerFields(keys);
 	query(qFields);
-	var qr = getQResult();
+	var qr = getQR();
 	// 返回结果确定只有一条
 	var showField = queryCustomerField(key, true);
 	var expected = showField.value;
@@ -118,7 +118,7 @@ function testQueryCustomerByStaff() {
 
 	var showField = queryCustomerField(key, true);
 	var title = showField.label;
-	var expected = "管理员";
+	var expected = "总经理";
 
 	return isInQRDataAllByTitle(qr, title, expected);
 }
@@ -194,35 +194,38 @@ function stopStartCustomer(cmd) {
 	query(qFields);
 	tapFirstText();
 
-	tapButton(window, cmd);
-	tapPrompt(OK);
-	tapButton(window, RETURN);
+	tapButtonAndAlert("停 用");
+	delay();
 
 	// 刷新
 	tapRefresh();
+	delay();
 
 	tapMenu("销售开单", "开  单+");
 	var value = "tyq"; // 停用启
 	var f = new TField("客户", TF, 0, value)
 	setTextFieldValue(window, f);
+//	delay();
 
 	var expected = qf.value;
 	var actual = getTextFieldValue(window, 0);
 
 	var ret = false;
-	if (cmd == START) {
-		ret = (actual == expected);
-	}
 	if (cmd == STOP) {
 		ret = (actual != expected);
 	}
+
+	if (cmd == START) {
+		ret = (actual == expected);
+	}
+		
 	logDebug("expected=" + expected + " actual=" + actual + " cmd=" + cmd
 			+ " ret=" + ret);
 
 	tapButton(window, RETURN);
 	tapPrompt();
 
-	return ret;
+	return ret ;
 }
 
 // 验证待细化
@@ -261,31 +264,34 @@ function queryCustomerByCustomerToEdit(value) {
 	tap(texts[i]);// 进入修改页面
 }
 function testCustomerEdit() {
-	var value = "xg";// 修改 客户1
-	queryCustomerByCustomerToEdit(value);
-
-	// "super",
-	var keys = [ "area", "mobile", "weixin", "shop", "birthday", "staff",
-			"type", "return", "price", "fax", "remarks", "address", "discount",
-			"credit", "alarm" ];
+	tapMenu("往来管理", "客户查询");
+	var r=getTimestamp(8);
+	var keys1 = [ "客户" ];
+	var fields1 = queryCustomerFields(keys1);
+	changeTFieldValue(fields1["客户"],"xgcs");
+    query(fields1);
+    tapFirstText();
+	var keys = [ "手机" ];
 	var fields = editCustomerFields(keys);
-	// var mobileField = fields["mobile"];
-	// mobileField.value = "15311112222";
-	changeTFieldValue(fields["mobile"], "15311112222");
+	changeTFieldValue(fields["手机"], r);
 	setTFieldsValue(getScrollView(), fields);
 	tapButton(window, EDIT_SAVE);
+//	delay();
+
+	tapMenu("往来管理", "客户查询");
+
+    query(fields1);
+	var qr=getQR();
+	var ret1 = false;
+	var a=qr.data[0]["手机"];
+	logDebug("a="+a);
+	if (a == r ) {
+		ret1 = true;
+	}
+	delay();
 	tapButton(window, RETURN);
-
-	queryCustomerByCustomerToEdit(value);
-
-	var showFields = editCustomerFields(keys, true);
-	// var showMobileField = showFields["mobile"];
-	// showMobileField.value = "15311112222";
-	changeTFieldValue(showFields["mobile"], "15311112222");
-	var ret = checkShowFields(getScrollView(), showFields);
-
-	tapButton(window, RETURN);
-	return ret;
+	
+	return ret1;
 }
 
 function testCustomerAdd() {
@@ -377,9 +383,8 @@ function testCustomerEditBranch() {
 
 function testCustomerEditVisible() {
 	tapMenu("往来管理", "新增客户+");
-	var keys = [ "name", "area", "mobile", "weixin", "shop", "birthday",
-			"staff", "type", "return", "price", "fax", "remarks", "address",
-			"discount", "credit", "alarm" ];
+	var keys = [ "name", "area","shop","birthday", "staff","type","return","price", "mobile", "weixin", "fax", 
+			    "address", "remarks","discount", "credit", "alarm" ];
 	var fields = editCustomerFields(keys);
 	setTFieldsValue(getScrollView(), fields);
 
