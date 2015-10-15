@@ -70,6 +70,11 @@ function testTemp() {
 //    var keys = [ "店员" ];
 //    var fields = purchaseBatchEditFields(keys);
 //    setTFieldsValue(window, fields);
-    var qr = getQR();
-    goPage("8", qr);
+    scrollNextPage();
+    delay();
+    var qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
+debugQResult(qr);
+//    debugElementTree(getScrollView(1));
+var texts = getStaticTexts(getScrollView(1));
+debugArray(texts);
 }
