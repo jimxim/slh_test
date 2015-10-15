@@ -39,11 +39,11 @@ function test000All() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
-// testPurchaseAll();
+ testPurchaseAll();
 // testPurchaseOrderAll();
 //	testShopInAll();
 //	testShopOutAll();
-	testCheckAll();
+//	testCheckAll();
 // testTemp();
 	
 	
@@ -194,6 +194,10 @@ function test000All() {
 // testWanLaiProviderAll();
 // testGoodsAll();
 // logout();
+// }
+// var ok = login("200","000000");
+// if( ok ) {
+//	 
 // }
 }
 

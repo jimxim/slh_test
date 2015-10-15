@@ -1,7 +1,7 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-	// run("当前库存", "testQueryGoodsStock");
+	run("当前库存", "testQueryGoodsStock");
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
@@ -166,7 +166,7 @@ function testGoodsPricing() {
 
 	var qKeys = [ "款号名称" ];
 	var qFields = queryGoodsFields(qKeys);
-	changeTFieldValue(qFields["款号名称"], "tjcs1");   //调价测试1
+	changeTFieldValue(qFields["款号名称"], "tjcs1"); // 调价测试1
 	query(qFields);
 
 	// 输入查询条件，修改
@@ -381,7 +381,7 @@ function testEditGoodsOperation() {
 	tapMenu("货品管理", "货品查询");
 	var qKeys = [ "款号名称", "是否停用" ];
 	var qFields = queryGoodsFields(qKeys);
-	changeTFieldValue(qFields["款号名称"], "plczcs");   //批量操作测试1，2，3
+	changeTFieldValue(qFields["款号名称"], "plczcs"); // 批量操作测试1，2，3
 	changeTFieldValue(qFields["是否停用"], "否");
 	query(qFields);
 	// delay();
