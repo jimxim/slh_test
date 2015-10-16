@@ -22,7 +22,7 @@
 
 // 总经理
 function test000All() {
-	debug = true;
+//	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
 // testSalesBillAll();
@@ -50,7 +50,7 @@ function testTemp() {
   if( ok ) {
       logout();
   }
-  ok = login("200","000000");
+  ok = login("001","000000");
   if( ok ) {
       logout();
   }
