@@ -66,7 +66,7 @@ function editCustomerField(key, show) {
 	switch (key) {
 	case "name":
 	case "名称":
-		f = new TField("名称", TF, 1, "a");
+		f = new TField("名称", TF, 1, "aaa");
 		break;
 	case "area":
 	case "区域":
@@ -112,15 +112,16 @@ function editCustomerField(key, show) {
 		break;
 	case "return":
 	case "允许退货":
-		f = new TField("允许退货", BTN_SC, 3, "是");
+		f = new TField("允许退货", BTN_SC, 4, "是");
 		if (show) {
 			f.type = TF;
 			f.index = 8;
 		}
 		break;
+		
 	case "price":
 	case "适用价格":
-		f = new TField("适用价格", BTN_SC, 4, "零批价");
+		f = new TField("适用价格", BTN_SC, 5, "零批价");
 		if (show) {
 			f.type = TF;
 			f.index = 9;

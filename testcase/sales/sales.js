@@ -10,6 +10,7 @@ function testEditSalesBillNoColorSize() {
     var json = { "客户" : "zhhz1", "明细" : [ { "货品" : "k526", "数量" : "5" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
+    
     return true;
 }
 

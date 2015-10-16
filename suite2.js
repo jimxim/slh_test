@@ -37,12 +37,12 @@ function test000All() {
 //	var ok = login("000","000000");
 //	if( ok ) {
 //	 testParamAll();
-	 testWanLaiCustomerAll();
+//	 testWanLaiCustomerAll();
 	// testGoodsGoodsAll();
 	// testPurchaseAll();
 	// testPurchaseOrderAll();
 //		testShopInAll();
-//		testShopOutAll();
+		testShopOutAll();
 //		testCheckAll();
 //		logout();
 //	}	 

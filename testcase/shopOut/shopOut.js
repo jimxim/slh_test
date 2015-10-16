@@ -1,9 +1,9 @@
 //ZhangY <15068165765 at 139.com> 20151013
 function testShopOutAll() {
-	// run("批量调出+", "testShopOutDecruit");
-	 run("按批次查", "testShopOutQueryBatch");
-	// run("按明细查", "testShopOutQueryParticular");
-//	run("批量调出+", "testShopOutQueryPassword");
+	 run("批量调出+", "testShopOutDecruit");
+//	 run("按批次查", "testShopOutQueryBatch");
+	 run("按明细查", "testShopOutQueryParticular");
+	run("批量调出+", "testShopOutQueryPassword");
 }
 
 function testShopOutDecruit() {
@@ -16,8 +16,9 @@ function testShopOutDecruit() {
 
 	var keys = [ "调出人*", "接收店*" ];
 	var fields1 = shopOutDecruitFields(keys);
-	changeTFieldValue(fields1["调出人*"], "3001", -1, 0);
-	changeTFieldValue(fields1["接收店*"], "常青店(test)36新");
+	changeTFieldValue(fields1["调出人*"], "000", -1, 0);
+	changeTFieldValue(fields1["接收店*"], "常青店");
+	delay();
 	setTFieldsValue(window, fields1);
 
 	saveAndAlertOk();
@@ -57,7 +58,7 @@ function testShopOutQueryBatch() {
 	var keys1 = [ "调出人*", "接收店*" ];
 	var fields2 = shopOutDecruitFields(keys1);
 	changeTFieldValue(fields2["调出人*"], "3001", -1, 0);
-	changeTFieldValue(fields2["接收店*"], "常青店(test)36新");
+	changeTFieldValue(fields2["接收店*"], "常青店");
 	setTFieldsValue(window, fields2);
 	saveAndAlertOk();
 	tapPrompt();
