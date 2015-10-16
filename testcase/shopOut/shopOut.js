@@ -1,8 +1,8 @@
 //ZhangY <15068165765 at 139.com> 20151013
 function testShopOutAll() {
-	 run("批量调出+", "testShopOutDecruit");
+//	 run("批量调出+", "testShopOutDecruit");
 //	 run("按批次查", "testShopOutQueryBatch");
-	 run("按明细查", "testShopOutQueryParticular");
+//	 run("按明细查", "testShopOutQueryParticular");
 	run("批量调出+", "testShopOutQueryPassword");
 }
 
@@ -16,7 +16,7 @@ function testShopOutDecruit() {
 
 	var keys = [ "调出人*", "接收店*" ];
 	var fields1 = shopOutDecruitFields(keys);
-	changeTFieldValue(fields1["调出人*"], "000", -1, 0);
+	changeTFieldValue(fields1["调出人*"], "200,", -1, 0);
 	changeTFieldValue(fields1["接收店*"], "常青店");
 	delay();
 	setTFieldsValue(window, fields1);
@@ -36,6 +36,7 @@ function testShopOutDecruit() {
 	}
 	delay();
 	tapButton(window, RETURN);
+	return ret1;
 }
 
 function testShopOutQueryBatch() {
@@ -57,7 +58,7 @@ function testShopOutQueryBatch() {
 
 	var keys1 = [ "调出人*", "接收店*" ];
 	var fields2 = shopOutDecruitFields(keys1);
-	changeTFieldValue(fields2["调出人*"], "3001", -1, 0);
+	changeTFieldValue(fields2["调出人*"], "200,", -1, 0);
 	changeTFieldValue(fields2["接收店*"], "常青店");
 	setTFieldsValue(window, fields2);
 	saveAndAlertOk();
@@ -118,7 +119,7 @@ function testShopOutQueryBatch() {
 function testShopOutQueryParticular() {
 	tapMenu("门店调出", "按明细查");
 	var keys = [ "款号", "日期从" ];
-	var fields = ShopOutQueryParticular(keys);
+	var fields = shopOutQueryParticularFields(keys);
 	changeTFieldValue(fields["款号"], "3035");
 	changeTFieldValue(fields["日期从"], "2014-09-12");
 	query(fields);
@@ -149,13 +150,14 @@ function testShopOutQueryPassword() {
 
 	var keys = [ "调出人*", "接收店*" ];
 	var fields1 = shopOutDecruitFields(keys);
-	changeTFieldValue(fields1["调出人*"], "3001", -1, 0);
-	changeTFieldValue(fields1["接收店*"], "常青店(test)36新");
+	changeTFieldValue(fields1["调出人*"], "200,", -1, 0);
+	changeTFieldValue(fields1["接收店*"], "常青店");
 	setTFieldsValue(window, fields1);
 
 	saveAndAlertOk();
-	tapPrompt();
-	tapButton(window,SAVE);
+//	tapPrompt();
+//	tapButton(window,SAVE);
+	delay();
 	
 	 var ret1 = false, ret2 = false;
 	 var ret3 = false, ret4 = false;
@@ -163,10 +165,14 @@ function testShopOutQueryPassword() {
 	 if (isIn(alertMsg, "确定保存吗?")) {
 	 ret1 = true;
 	 }
-	 delay();
+	 if (isIn(alertMsg, "确定保存吗?")) {
+		 ret1 = true;
+		 }
+	delay();
 	 if (isIn(alertMsg, "密码要填写")) {
 	 ret2 = true;
 	 }
+	 delay();
 	
 	var tf = window.secureTextFields()[0].secureTextFields()[0];
 	tf.setValue("999999");	
@@ -176,30 +182,34 @@ function testShopOutQueryPassword() {
 		ret3 = true;
 	}
 	delay();
-	if (isIn(alertMsg, "确定保存吗?")) {
-		ret3 = true;
-	}
-	delay();
+//	if (isIn(alertMsg, "确定保存吗?")) {
+//		ret3 = true;
+//	}
+//	delay();
 	if (isIn(alertMsg, "操作人/接收人密码错误")) {
 		ret4 = true;
-	}	
+	}
+	delay();
+	
 	var tf1 = window.secureTextFields()[0].secureTextFields()[0];
 	tf1.setValue("000000");	
-	tapButton(window,SAVE);
+//	tapButton(window,SAVE);
 	saveAndAlertOk();
 	if (isIn(alertMsg, "保存成功，是否打印?")) {
 		ret5 = true;
 	}	
 	saveAndAlertOk();
+	delay();
 	
 	tapButton(window,"打 印");
 	if (isIn(alertMsg, "填写密码后才能打印")) {
 		ret6 = true;
-	}	
+	}
+	delay();
 	var tf2 = window.secureTextFields()[1].secureTextFields()[0];
 	tf2.setValue("110000");
 	tapButton(window,"打 印");
-	if (isIn(alertMsg, "操作失败,［密码错误］")) {
+	if (isIn(alertMsg, "操作失败，[密码错误]")) {
 		ret7 = true;
 	}
 	saveAndAlertOk();
