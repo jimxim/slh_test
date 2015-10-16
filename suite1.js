@@ -37,8 +37,8 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
-// testWanLaiCustomerAll();
- testGoodsGoodsAll();
+ testWanLaiCustomerAll();
+// testGoodsGoodsAll();
 // testPurchaseAll();
 // testPurchaseOrderAll();
 //	testShopInAll();

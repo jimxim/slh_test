@@ -682,7 +682,7 @@ function editCustomerLogisticsField(key, show) {
 		break;
 	case "area":
 	case "区域":
-		f = new TField("区域", BTN_AREA, 0, "华北",0,"中国");
+		f = new TField("区域", BTN_AREA, 0, "华北",0,"客户");
 		if (show) {
 			f.type = TF;
 			f.index = 2;

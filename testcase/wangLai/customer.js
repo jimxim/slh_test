@@ -17,35 +17,33 @@ function testWanLaiCustomerAll() {
 	// run("客户修改保存", "testCustomerEdit");
 	// run("客户新增保存", "testCustomerAdd");
 	// run("客户签名", "testCustomerSign");
-	
+
 	// run("新增分店", "testCustomerEditBranch");
 	// run("客户分店", "testCustomerBranch");
 	// 分店模式未测，需换帐套/////
-	
+
 	// run("客户修改时向上滚动", "testCustomerEditVisible");
 	// run("新增相同客户", "testCustomerAddSame");
 	// run("新增不同客户", "testCustomerAddDifferent");
-    
-	//	run("客户门店帐", "testQueryCustomerShopAccount");
-    //	run("客户门店帐上下级客户查询", "testQueryCustomerShopAccountBySuper");
-    //	run("客户门店帐余款核对", "testQueryCustomerShopAccountCheck"); 
-	//	zhangy客户门店账无法查询，待测试/////
 
-	
-//	 run("按上级单位", "testQueryCustomerSuper");
-//	 run("客户总帐", "testQueryCustomerAccount");
-//	 run("客户活跃度", "testQueryCustomerActive");
-//	 run("积分查询", "testQueryCustomerScore");//商路花6.59／v6.5904版本无积分查询模块
-//	 run("新增相同厂商", "testCustomerProviderAddSame");
-//	 run("厂商查询", "testQueryCustomerProvider");
-//	 run("厂商门店账", "testQueryProviderShopAccount");
-//	 run("厂商总账", "testQueryCustomerProviderAccount");
-	
-//	 run("物流商查询", "testQueryCustomerLogistics");/////
-//	 run("新增/修改物流商", "testEditCustomerLogistics");/////	
-//	 run("客户未拿货天数检测", "testQueryCustomerDayCheck");/////
-	
-	 run("店长类人员查看客户门店帐", "testQueryCustomerShopAccountByShopkeeper");
+//	run("客户门店帐", "testQueryCustomerShopAccount");
+//	 run("客户门店帐上下级客户查询", "testQueryCustomerShopAccountBySuper");
+//	 run("客户门店帐余款核对", "testQueryCustomerShopAccountCheck");
+
+	// run("按上级单位", "testQueryCustomerSuper");
+	// run("客户总帐", "testQueryCustomerAccount");
+	// run("客户活跃度", "testQueryCustomerActive");
+	// run("积分查询", "testQueryCustomerScore");//商路花6.59／v6.5904版本无积分查询模块
+	// run("新增相同厂商", "testCustomerProviderAddSame");
+	// run("厂商查询", "testQueryCustomerProvider");
+	// run("厂商门店账", "testQueryProviderShopAccount");
+	// run("厂商总账", "testQueryCustomerProviderAccount");
+
+//	 run("物流商查询", "testQueryCustomerLogistics");
+	 run("新增/修改物流商", "testEditCustomerLogistics");
+//	 run("客户未拿货天数检测", "testQueryCustomerDayCheck");
+
+	// run("店长类人员查看客户门店帐", "testQueryCustomerShopAccountByShopkeeper");
 
 }
 
@@ -499,6 +497,42 @@ function testCustomerAddDifferent() {
 }
 
 function testQueryCustomerShopAccount() {
+	tapMenu("往来管理", "客户账款", "客户门店账");
+	delay();
+	query();
+	var qr = getQR();
+	var a = qr.data[0]["余额"];
+
+	tapFirstText();
+	qr = getQResult2(getScrollView(1), "批次", "未结")
+	var sum = 0;
+	var totalPageNo = qr.totalPageNo;
+	for (var j = 1; j <= totalPageNo; j++) {
+		for (var i = 0; i < qr.curPageTotal; i++) {
+			sum += Number(qr.data[i]["未结"]);
+		}
+		if (j < totalPageNo) {
+			scrollNextPage();
+			qr = getQResult();
+		}
+	}
+	tapNaviLeftButton();
+	if (a == sum) {
+		var ret1 = true;
+	}
+
+	var ret = true;
+	// ret = ret && sortByTitle("门店");
+	// ret = ret && sortByTitle("名称");
+	// ret = ret && sortByTitle("手机");
+	ret = ret && sortByTitle("余额", IS_NUM);
+	// ret = ret && sortByTitle("未拿货天数",IS_NUM);
+
+	logDebug("ret=" + ret + "   ret1=" + ret1)
+	return ret && ret1;
+}
+
+function testQueryCustomerShopAccountBySuper() {
 	tapMenu("销售开单", "开  单+");
 	var json = {
 		"客户" : "xjkh1",
@@ -508,7 +542,8 @@ function testQueryCustomerShopAccount() {
 		} ],
 		"现金" : "0"
 	};
-	editSalesBillNoColorSize(json); 
+	editSalesBillNoColorSize(json);
+
 	tapMenu("销售开单", "开  单+");
 	var json = {
 		"客户" : "sjkh1",
@@ -519,40 +554,18 @@ function testQueryCustomerShopAccount() {
 		"现金" : "0"
 	};
 	editSalesBillNoColorSize(json);
-	
+
 	tapMenu("往来管理", "客户账款", "客户门店账");
-	query();
-
-	var ret = true;
-	ret = ret && sortByTitle("门店");
-	ret = ret && sortByTitle("名称");
-	// ret = ret && sortByTitle("手机");
-	// ret = ret && sortByTitle("余额",IS_NUM);
-	// ret = ret && sortByTitle("未拿货天数",IS_NUM);
-
-	var keys = [ "name" ];
+	var keys = [ "客户" ];
 	var fields = queryCustomerShopAccountFields(keys);
-	changeTFieldValue(fields["name"], "下级客户1");
-	query(fields);
-	delay();
-	var qr = getQR();
-	tapFirstText(getScrollView(), TITLE_SEQ, 6);
-
-	return ret && isEqualQRData1ByTitle(qr, "名称", "下架客户1");
-}
-
-function testQueryCustomerShopAccountBySuper() {
-	tapMenu("往来管理", "客户账款", "客户门店账");
-	var keys = [ "customer" ];
-	var fields = queryCustomerShopAccountFields(keys);
-	changeTFieldValue(fields["customer"], "xjkh1");
+	changeTFieldValue(fields["客户"], "xjkh1");
 	query(fields);
 	var qr1 = getQR();
 
-	var keys2 = [ "customer" ];
-	var qFields = queryCustomerShopAccountFields(keys2);
-	changeTFieldValue(qFields["customer"], "sjkh1");
-	query(qFields);
+	var keys2 = [ "客户" ];
+	fields = queryCustomerShopAccountFields(keys2);
+	changeTFieldValue(fields["客户"], "sjkh1");
+	query(fields);
 	var qr2 = getQR();
 
 	return isEqualQRData1ByTitle(qr1, "名称", "下级客户1")
@@ -574,8 +587,7 @@ function testQueryCustomerShopAccountCheck() {
 			qr = getQResult();
 		}
 	}
-	logDebug("index＝" + "余额" + " expected＝" + actual + " count＝"
-			+ qr.counts["余额"]);
+
 	var ret = Math.abs(actual - qr.counts["余额"]) < 1;
 	return ret;
 }
@@ -621,30 +633,30 @@ function testQueryCustomerAccount() {
 	delay();
 	var qr1 = getQR();
 	var a = qr1.data[0]["余额"];
-	logDebug("a="+a);
-//	tapFirstText(getScrollView(), TITLE_SEQ, 3);
+	logDebug("a=" + a);
+	// tapFirstText(getScrollView(), TITLE_SEQ, 3);
 	tapFirstText();
-//	 debugElementTree(getScrollView());
-//	 debugElements(getScrollView());
-//	tapNaviLeftButton();
-	var qr2 = getQResult2(getScrollView(1),"批次","未结");
-	var b=qr2.data[0]["未结"];
-	logDebug("b="+b);
+	// debugElementTree(getScrollView());
+	// debugElements(getScrollView());
+	// tapNaviLeftButton();
+	var qr2 = getQResult2(getScrollView(1), "批次", "未结");
+	var b = qr2.data[0]["未结"];
+	logDebug("b=" + b);
 	tapNaviLeftButton();
 
-//	var qkey = [ "customer" ];
-//	var qFields = queryCustomerAccountFields(qkey);
-//	changeTFieldValue(qFields["customer"], "xw");
-//	query(qFields);
-//	tapFirstText(getScrollView(), TITLE_SEQ, 3);
-//	tapNaviLeftButton();
-    var ret=false;
-	if(a==b){
-		ret=true;
+	// var qkey = [ "customer" ];
+	// var qFields = queryCustomerAccountFields(qkey);
+	// changeTFieldValue(qFields["customer"], "xw");
+	// query(qFields);
+	// tapFirstText(getScrollView(), TITLE_SEQ, 3);
+	// tapNaviLeftButton();
+	var ret = false;
+	if (a == b) {
+		ret = true;
 	}
 	return ret;
-//	return ret && isEqualQRData1ByTitle(qr2, "未结", expected);
-//	return ret && isEqualQRData1ByTitle("未结", expected);
+	// return ret && isEqualQRData1ByTitle(qr2, "未结", expected);
+	// return ret && isEqualQRData1ByTitle("未结", expected);
 }
 
 function testQueryCustomerActive() {
@@ -667,10 +679,10 @@ function testQueryCustomerActive() {
 
 	var keys = [ "客户" ];
 	var fields = queryCustomerActiveFields(keys);
-	changeTFieldValue(fields["客户"], "xw");//客户小王
+	changeTFieldValue(fields["客户"], "xw");// 客户小王
 	query(fields);
-	var ret1 =  true;
-	if (total> 1) {
+	var ret1 = true;
+	if (total > 1) {
 		ret1 = false;
 	}
 	tapButton(window, CLEAR);
@@ -694,7 +706,7 @@ function testQueryCustomerScore() {
 	var fields = queryCustomerScoreFields(key);
 	changeTFieldValue(fields["shop"], "常青店(test)36新");
 	changeTFieldValue(fields["customer"], "jfcs1");
-	changeTFieldValue(fields["mobile"] );
+	changeTFieldValue(fields["mobile"]);
 	query(fields);
 	var qr1 = getQResult();
 	// debugQResult(qr1);
@@ -758,8 +770,8 @@ function testQueryCustomerProvider() {
 	query(fields);
 	var qr1 = getQResult();
 	var ret = isEqualQRData1ByTitle(qr1, "名称", "东灵公司");
-	 tapFirstText(getScrollView(), TITLE_SEQ, 6);
-	 tapButton(window, RETURN);
+	tapFirstText(getScrollView(), TITLE_SEQ, 6);
+	tapButton(window, RETURN);
 	delay();
 
 	var key2 = [ "mobile" ];
@@ -835,15 +847,15 @@ function testQueryCustomerLogistics() {
 	query(qFields);
 	var qr1 = getQR();
 	var ret = ret && isEqualQRData1ByTitle(qr2, "名称", "天天物流");
-//	tapFirstText();
-//	var ret1 = false;
-//	var qr2 = getQResult2(getScrollView(1),"批次","未结");
-//	var b = getTextFieldValue(getScrollView(), 3); 
-//	if () {
-//		ret1 = true;
-//	}
-//	delay();
-//	tapButton(window, RETURN);
+	// tapFirstText();
+	// var ret1 = false;
+	// var qr2 = getQResult2(getScrollView(1),"批次","未结");
+	// var b = getTextFieldValue(getScrollView(), 3);
+	// if () {
+	// ret1 = true;
+	// }
+	// delay();
+	// tapButton(window, RETURN);
 	return ret;
 }
 
@@ -907,21 +919,21 @@ function testEditCustomerLogistics() {
 
 function testQueryCustomerDayCheck() {
 	tapMenu("往来管理", "客户账款", "客户门店账");
-	var key = [ "name" ];
+	var key = [ "客户" ];
 	var fields = queryCustomerShopAccountFields(key);
-	changeTFieldValue(fields["name"], "小王");
+	changeTFieldValue(fields["客户"], "xw");
 	query(fields);
-	var qr1 = getQResult();
+	var qr = getQR();
 	// debugQResult(qr1);
-	var i = qr1.data[0]["未拿货天数"];
+	var i = qr.data[0]["未拿货天数"];
 
 	tapMenu("往来管理", "客户活跃度");
-	var keys = [ "customer" ];
+	var keys = [ "客户" ];
 	var qFields = queryCustomerActiveFields(keys);
-	changeTFieldValue(qFields["customer"], "xw");
+	changeTFieldValue(qFields["客户"], "xw");
 	query(qFields);
-	var qr2 = getQResult();
-	var j = qr2.data[0]["未拿货天数"];
+	qr = getQR();
+	var j = qr.data[0]["未拿货天数"];
 
 	var ret = false;
 	if (i == j) {
