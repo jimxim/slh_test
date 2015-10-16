@@ -1,10 +1,11 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrderAll() {
+	// run("新增订货", "testPurchaseOrderEditNoColorSize"); //均色均码
+	run("新增订货", "testPurchaseOrderEditColorSize"); // 颜色尺码
 	// run("按批次查", "testPurchaseOrderQueryBatch");
 	// run("按明细查", "testPurchaseOrderQueryParticular");
 	// run("订货汇总", "testPurchaseOrderGather");
-//	run("新增订货", "testPurchaseOrderEdit");
 	// run("新增订货部分入库后作废", "testPurchaseOrderEditInvalid");
 
 }
@@ -81,7 +82,7 @@ function testPurchaseOrderGather() {
 	var keys3 = [ "日期从", "门店" ];
 	var fields3 = purchaseOrderShopFields(keys3);
 	changeTFieldValue(fields3["日期从"], "2015-10-12");
-	changeTFieldValue(fields3["门店"], "常青店(test)36新");
+	changeTFieldValue(fields3["门店"], "常青店");
 	query(fields3);
 	qr = getQR();
 	var c = qr.data[0]["数量"];
@@ -133,7 +134,7 @@ function testPurchaseOrderGather() {
 	return ret1 && ret2 && ret3;
 }
 
-function testPurchaseOrderEdit() {
+function testPurchaseOrderEditNoColorSize() {
 	var r = getTimestamp(6);
 	tapMenu("采购订货", "新增订货+");
 	tapButton(window, "新增+");
@@ -144,7 +145,7 @@ function testPurchaseOrderEdit() {
 	tapButton(getPop(), "关 闭");
 
 	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-	var f3 = new TField("订货数", TF, 3, "10");
+	var f3 = new TField("订货数", TF, 3, "30");
 	var fields = [ f0, f3 ];
 	setTFieldsValue(getScrollView(), fields);
 
@@ -155,34 +156,73 @@ function testPurchaseOrderEdit() {
 	setTFieldsValue(getPopView(), fields);
 	tapButton(getPop(), OK);
 	tapButton(getPop(), "关 闭");
-	var f7 = new TField("订货数", TF, 7, "10");
+	var f7 = new TField("订货数", TF, 7, "30");
 	var fields = [ f7 ];
 	setTFieldsValue(getScrollView(), fields);
 
 	saveAndAlertOk();
-	tapPrompt();
 	delay();
 	tapButton(window, RETURN);
 
 	tapMenu("采购订货", "按批次查");
-	tapButton(window, QUERY);
+	delay();
+	query();
 	tapFirstText();
 	var ret1 = false;
 	var ret2 = false;
 	var a = getTextFieldValue(getScrollView(), 0);
 	var b = getTextFieldValue(getScrollView(), 3);
-	if (a == "3035,jkk" && b == 10) {
+	if (a == "3035,jkk" && b == 30) {
 		ret1 = true;
 	}
 	var a1 = getTextFieldValue(getScrollView(), 4);
 	var b1 = getTextFieldValue(getScrollView(), 7);
-	if (a1 == r + "," + r && b1 == 10) {
+	if (a1 == r + "," + r && b1 == 30) {
 		ret2 = true;
 	}
 	delay();
 	tapButton(window, RETURN);
-	logDebug("ret1=" + ret1+"   ret2=" + ret2);
+	logDebug("ret1=" + ret1 + "   ret2=" + ret2);
 	return ret1 && ret2;
+}
+
+function testPurchaseOrderEditColorSize() {
+	tapMenu("采购订货", "新增订货+");
+	var json = {
+		"客户" : "vell",
+		"goodsFieldIndex" : -2,      
+		"明细" : [ {
+			"货品" : "3035",
+			"数量" : [ 30 ]
+		}, {
+			"货品" : "k300",
+			"数量" : [ 20 ]
+		} ]
+
+	};
+	editSalesBillColorSize(json);
+
+	tapMenu("采购订货", "按批次查");
+	delay();
+	query();
+	tapFirstText();
+	var ret1 = false;
+	var ret2 = false;
+	var a = getTextFieldValue(getScrollView(), 0);
+	var b = getTextFieldValue(getScrollView(), 3);
+	if (a == "3035,jkk" && b == 30) {
+		ret1 = true;
+	}
+	var a1 = getTextFieldValue(getScrollView(), 4);
+	var b1 = getTextFieldValue(getScrollView(), 7);
+	if (a1 == "k300,铅笔裤" && b1 == 20) {
+		ret2 = true;
+	}
+	delay();
+	tapButton(window, RETURN);
+	logDebug("ret1=" + ret1 + "   ret2=" + ret2);
+	return ret1 && ret2;
+
 }
 
 function testPurchaseOrderEditInvalid() {
@@ -217,7 +257,8 @@ function testPurchaseOrderEditInvalid() {
 	if (isIn(alertMsg, "订单已入库，不允许作废")) {
 		ret2 = true;
 	}
-	
+	delay();
+	tapButton(window, RETURN);
 	logDebug(" ret1=" + ret1 + " ret2=" + ret2);
 	return ret1 && ret2;
 

@@ -11,13 +11,13 @@ function testPurchaseAll() {
 	// run("按款号汇总", "testPurchaseCode");
 	// run("按厂商返货", "testPurchaseProviderReturn");
 	// run("按厂商汇总", "testPurchaseProvider");
-//	run("出入库汇总", "testPurchaseInOut");
+	// run("出入库汇总", "testPurchaseInOut");
 	// run("按类别汇总", "testPurchaseType");
 	// run("批量入库", "testPurchaseBatchEdit");
 	// run("按订货入库", "testPurchaseOrder");
 	// run("不支持按订货开单的跨门店操作", "testPurchaseOrderStrangeLand");
 	// run("厂商总账", "testPurchaseProviderAccount");
-	 run("厂商门店账", "testPurchaseShopAccount");
+	// run("厂商门店账", "testPurchaseShopAccount");
 	// run("新增入库单修改保存", "testPurchaseAddAndEdit");
 	// run("新增厂商没选适用价格,检查款号价格", "testPurchasePriceCheck");
 }
@@ -213,28 +213,45 @@ function testPurchaseProvider() {
 }
 
 function testPurchaseInOut() {
+	tapMenu("采购入库", "新增入库+");
+	var json = {
+		"客户" : "vell",
+		"明细" : [ {
+			"货品" : "3035",
+			"数量" : "5"
+		} ],
+		"现金" : "0"
+	};
+	editSalesBillNoColorSize(json);
+
 	tapMenu("采购入库", "采购汇总", "出入库汇总");
 	delay();
 	query();
-	
+
 	var qr = getQR();
-	var actual1 = 0, actual2 = 0;
-	var totalPageNo = qr.totalPageNo;
-	for (var j = 1; j <= totalPageNo; j++) {
-		for (var i = 0; i < qr.curPageTotal; i++) {
-			actual1 += Number(qr.data[i]["金额"]);
-			actual2 += Number(qr.data[i]["总数"]);
-		}
-		if (j < totalPageNo) {
-			scrollNextPage();
-			qr = getQR();
-		}
+	var a = qr.data[0]["总数"];
+	if (a == 5) {
+		var ret = true;
 	}
-	logDebug("actual1="+actual1+"   actual2="+actual2);
-	var ret = false;
-	if (actual1 == qr.counts["金额"] && actual2 == qr.counts["总数"]) {
-		ret = true;
-	}
+
+	// 无法判定作废单据，汇总信息不能验证
+	// var actual1 = 0, actual2 = 0;
+	// var totalPageNo = qr.totalPageNo;
+	// for (var j = 1; j <= totalPageNo; j++) {
+	// for (var i = 0; i < qr.curPageTotal; i++) {
+	// actual1 += Number(qr.data[i]["金额"]);
+	// actual2 += Number(qr.data[i]["总数"]);
+	// }
+	// if (j < totalPageNo) {
+	// scrollNextPage();
+	// qr = getQR();
+	// }
+	// }
+	// logDebug("actual1=" + actual1 + " actual2=" + actual2);
+	// var ret1 = false;
+	// if (actual1 == qr.counts["金额"] && actual2 == qr.counts["总数"]) {
+	// ret1 = true;
+	// }
 	return ret;
 }
 
@@ -899,17 +916,15 @@ function testPurchaseShopAccount() {
 		for (i = 0; i < qr.curPageTotal; i++) {
 			sum += Number(qr.data[i]["未结"]);
 		}
-		logDebug("  sum1=" + sum);
 		if (j < totalPageNo) {
 			scrollNextPage();
 			delay();
 			qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
-//debugQResult(qr);
-			debugElementTree(getScrollView(1));
-var texts = getStaticTexts(getScrollView(1));
-debugArray(texts);
+			// debugQResult(qr);
+//			debugElementTree(getScrollView(1));
+//			var texts = getStaticTexts(getScrollView(1));
+//			debugArray(texts);
 		}
-		logDebug("  sum2=" + sum);
 	}
 	logDebug("sum=" + sum);
 
