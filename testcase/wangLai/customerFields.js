@@ -670,8 +670,8 @@ function editCustomerLogisticsField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
-	case "名称":
-		f = new TField("名称", TF, 0, "a");
+	case "名称*":
+		f = new TField("名称*", TF, 0, "a");
 		break;
 	case "staff":
 	case "经办人":

@@ -29,7 +29,7 @@
 #import "testcase/system/systemFields.js"
 #import "testcase/help/helpFields.js"
 #import "testcase/goods.js"
-#import "testcase/param.js"
+#import "testcase/system/param.js"
 
 // 总经理
 function test000All() {
@@ -37,10 +37,10 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
- testWanLaiCustomerAll();
+// testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
-// testPurchaseOrderAll();
+ testPurchaseOrderAll();
 //	testShopInAll();
 //	testShopOutAll();
 //	testCheckAll();

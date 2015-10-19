@@ -1,8 +1,8 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrderAll() {
-	// run("新增订货", "testPurchaseOrderEditNoColorSize"); //均色均码
-	run("新增订货", "testPurchaseOrderEditColorSize"); // 颜色尺码
+	 run("新增订货", "testPurchaseOrderEditNoColorSize"); //均色均码
+//	run("新增订货", "testPurchaseOrderEditColorSize"); // 颜色尺码
 	// run("按批次查", "testPurchaseOrderQueryBatch");
 	// run("按明细查", "testPurchaseOrderQueryParticular");
 	// run("订货汇总", "testPurchaseOrderGather");

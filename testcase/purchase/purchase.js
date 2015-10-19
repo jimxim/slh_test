@@ -2,14 +2,14 @@
 
 function testPurchaseAll() {
 	// 清除数据后，要先手动新增入库3035，并未付款
-	// run("新增入库", "testPurchaseEdit");
-	// run("新增入库不付款", "testPurchaseEditNo");
-	// run("退货+退款", "testPurchaseEditReturn");
-	// run("退货+不退款", "testPurchaseEditReturnNo");
-	// run("按批次查", "testPurchaseQueryBatch");
-	// run("按金额汇总", "testPurchasePrice");
-	// run("按款号汇总", "testPurchaseCode");
-	// run("按厂商返货", "testPurchaseProviderReturn");
+//	 run("【采购入库-新增入库】新增入库+付款", "test120019");
+//	 run("【采购入库-新增入库】新增入库+不付款", "test120023");
+//	 run("【采购入库-新增入库】退货+退款", "test120020");
+	// run("【采购入库-新增入库】退货+不退款", "test120021");
+	 run("【采购入库-按批次查】按批次查_排序_作废_输入不存在的款号提示信息", "test120001_120003_120005");
+	// run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
+	// run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
+//	run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
 	// run("按厂商汇总", "testPurchaseProvider");
 	// run("出入库汇总", "testPurchaseInOut");
 	// run("按类别汇总", "testPurchaseType");
@@ -22,7 +22,7 @@ function testPurchaseAll() {
 	// run("新增厂商没选适用价格,检查款号价格", "testPurchasePriceCheck");
 }
 
-function testPurchaseQueryBatch() {
+function test120001_120003_120005() {
 	var ret = true;
 	var m1, m2, n1, n2;
 	tapMenu("货品管理", "当前库存");
@@ -72,9 +72,34 @@ function testPurchaseQueryBatch() {
 	};
 	editSalesBillNoColorSize(json);
 
-	// 作废
+	// 输入不存在的款号提示信息
 	tapMenu("采购入库", "按批次查");
 	query();
+	tapFirstText(getScrollView(), TITLE_SEQ);
+	var r = getRandomInt(10000) + getToday();
+	var f7 = new TField("货品", TF, 7, r);
+	var f10 = new TField("数量", TF, 10, "30");
+	var fields2 = [ f7, f10 ];
+	setTFieldsValue(getScrollView(), fields2);
+	saveAndAlertOk();
+	delay();
+	tapPrompt();
+	if (isIn(alertMsg, "货品 必须从下拉列表选择，请检查")) {
+		var ret3 = true;
+	}
+	tapButton(getScrollView(), 1);
+	f7 = new TField("货品", TF_AC, 7, "k300", -1, 0);
+	f10 = new TField("数量", TF, 10, "30");
+	fields2 = [ f7, f10 ];
+	setTFieldsValue(getScrollView(), fields2);
+	saveAndAlertOk();
+	delay();
+	tapPrompt();
+	tapButton(window, RETURN);
+
+	// 作废
+	// tapMenu("采购入库", "按批次查");
+	// query();
 	tapFirstText(getScrollView(), TITLE_SEQ);
 	tapButtonAndAlert("作 废");
 	delay();
@@ -98,11 +123,12 @@ function testPurchaseQueryBatch() {
 		ret2 = false;
 	}
 
-	logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2);
-	return ret && ret1 && ret2;
+	logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3="
+			+ ret3);
+	return ret && ret1 && ret2 && ret3;
 }
 
-function testPurchasePrice() {
+function test120007() {
 	tapMenu("采购入库", "采购汇总", "按金额汇总");
 
 	var keys = [ "日期从" ];
@@ -131,7 +157,7 @@ function testPurchasePrice() {
 	return ret;
 }
 
-function testPurchaseCode() {
+function test120008() {
 	tapMenu("采购入库", "采购汇总", "按款号汇总");
 
 	var keys = [ "发生日期从" ];
@@ -166,7 +192,7 @@ function testPurchaseCode() {
 	return ret && ret1;
 }
 
-function testPurchaseProviderReturn() {
+function test120009() {
 	tapMenu("采购入库", "采购汇总", "按厂商返货");
 
 	var keys = [ "款号", "日期从" ];
@@ -300,8 +326,9 @@ function testPurchaseType() {
 	return ret && ret1 && ret2;
 }
 
-function testPurchaseEdit() {
+function test120019() {
 	tapMenu("货品管理", "当前库存");
+	delay();
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
 	changeTFieldValue(fields["款号"], "3035");
@@ -382,7 +409,7 @@ function testPurchaseEdit() {
 
 }
 
-function testPurchaseEditNo() {
+function test120023() {
 	tapMenu("货品管理", "当前库存");
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
@@ -473,7 +500,7 @@ function testPurchaseEditNo() {
 
 }
 
-function testPurchaseEditReturn() {
+function test120020() {
 	tapMenu("货品管理", "当前库存");
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
@@ -553,7 +580,7 @@ function testPurchaseEditReturn() {
 
 }
 
-function testPurchaseEditReturnNo() {
+function test120021() {
 	tapMenu("货品管理", "当前库存");
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
@@ -921,9 +948,9 @@ function testPurchaseShopAccount() {
 			delay();
 			qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
 			// debugQResult(qr);
-//			debugElementTree(getScrollView(1));
-//			var texts = getStaticTexts(getScrollView(1));
-//			debugArray(texts);
+			// debugElementTree(getScrollView(1));
+			// var texts = getStaticTexts(getScrollView(1));
+			// debugArray(texts);
 		}
 	}
 	logDebug("sum=" + sum);
