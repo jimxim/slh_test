@@ -176,7 +176,7 @@ function testShopOutQueryPassword() {
 	
 	var tf = window.secureTextFields()[0].secureTextFields()[0];
 	tf.setValue("999999");	
-	tapButton(window,SAVE);
+	
 	saveAndAlertOk();
 	if (isIn(alertMsg, "确定保存吗?")) {
 		ret3 = true;
