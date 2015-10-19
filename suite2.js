@@ -41,8 +41,8 @@ function test000All() {
 	// testGoodsGoodsAll();
 	// testPurchaseAll();
 	// testPurchaseOrderAll();
-//		testShopInAll();
-		testShopOutAll();
+		testShopInAll();
+//		testShopOutAll();
 //		testCheckAll();
 //		logout();
 //	}	 

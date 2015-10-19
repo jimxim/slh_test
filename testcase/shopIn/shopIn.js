@@ -1,6 +1,6 @@
 //luxingxin <52619481 at qq.com> 20151013
 function testShopInAll() {
-	// run("在途调拨", "testShopInFlit");
+	 run("在途调拨", "testShopInFlit");
 	// run("作废调入", "testShopInFlitStop");
 	// run("按批次/明细查", "testShopInQueryBatch");
 	// run("在途调拨日期检查", "testShopInFlitDay");
