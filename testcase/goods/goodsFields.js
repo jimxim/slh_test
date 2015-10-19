@@ -25,7 +25,7 @@ function queryGoodsStockField(key, show) {
 		}
 		break;
 	case "name":
-	case "客户名称":
+	case "款号名称":
 		f = new TField("款号名称", TF, 1, "a");
 		break;
 	case "shop":
