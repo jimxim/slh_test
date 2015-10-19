@@ -29,7 +29,7 @@
 #import "testcase/system/systemFields.js"
 #import "testcase/help/helpFields.js"
 #import "testcase/goods.js"
-#import "testcase/param.js"
+#import "testcase/system/param.js"
 
 //总经理
 function test000All() {
