@@ -13,6 +13,7 @@
 #import "testcase/goods/goodsFields.js"
 #import "testcase/goods/goods.js"
 #import "testcase/system/param.js"
+#import "testcase/system/systemFields.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/sales.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
@@ -22,14 +23,14 @@
 
 // 总经理
 function test000All() {
-//	debug = true;
+	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
 // testSalesBillAll();
-// testStatisticAnalysisAll();
+ testStatisticAnalysisAll();
 //	testTemp();
 // testPurchaseAll();
- testParamAll();
+// testParamAll();
 // testWanLaiCustomerAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
@@ -46,12 +47,10 @@ function debugElements() {
 }
 
 function testTemp() {
-  var ok = login("000","000000");
-  if( ok ) {
-      logout();
-  }
-  ok = login("001","000000");
-  if( ok ) {
-      logout();
-  }
+    var keys = [ "款号" ];
+    var t = Object.prototype.toString.call(keys);
+    logDebug("keys="+keys+" t="+t+" isArray="+isArray(keys));
+    keys = {"款号":"0001"};
+    t = Object.prototype.toString.call(keys);
+    logDebug("keys="+keys+" t="+t+" isObject="+isObject(keys));
 }

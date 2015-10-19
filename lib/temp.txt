@@ -1,3 +1,37 @@
+function getIndexOfGlobalParamValue(name, remark) {
+    var menu1 = "系统设置";
+    var menu2 = "全局设置";
+    tapMenu(menu1, menu2);
+    var ret = 0;
+    var obj = new TField("名称", TF, 0, name);
+    setTextFieldValue(window, obj);
+    obj = new TField("备注", TF, 1, remark);
+    setTextFieldValue(window, obj);
+    if (name || remark) {
+        window.buttons()[QUERY].tap();
+        delay();
+        var texts = getStaticTexts(getScrollView()); // 标题重复10次之多
+        var qrTitle = getQResultTitle(texts, "数值");
+        var titleIndex = qrTitle.index;
+        var titleTotal = qrTitle.total;
+        ret = getFirstIndexOfTextsByQRTitle(texts, qrTitle);
+    } else {
+        logWarn("查询值必须输入");
+    }
+    return ret;
+}
+
+function debugGlobalParamPopValue() {
+    var name = "";
+    var remark = "是否需要颜色尺码";
+    var i = getIndexOfGlobalParamValue(name, remark);
+    var texts = getStaticTexts(getScrollView());
+    tap(texts[i]);
+    delay();
+    tap(window.scrollViews()[0].buttons()[0]);
+    debugElements(getPopView());
+}
+
 function clearAlert() {
     alertName = "";
     alertMsg = "";
