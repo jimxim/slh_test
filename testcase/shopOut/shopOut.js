@@ -3,7 +3,7 @@ function testShopOutAll() {
 //	 run("【门店调出-按批次查】按批次查", "test150001");
 //	 run("【门店调出-批量调出】批量调出", "test150003");
 //	run("【门店调出】 调拨是否启用密码验证", "test150006");
-	 run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "test150007");
+//	 run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "test150007");//商路花6.5904上无此功能
 }
 
 function test150001() {
@@ -233,7 +233,23 @@ function test150006() {
 //	ret1 && ret2 && 
 }
 
-function test150007(){
-	
-	
-}
+//function test150007(){
+//	tapMenu("门店调出", "批量调出+");
+//	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+//	var f3 = new TField("数量", TF, 3, "2");
+//	
+//	var fields1 = [ f0, f3 ];
+//	setTFieldsValue(getScrollView(), fields1);
+//	delay();
+//
+//	var keys1 = [ "调出人*", "接收店*" ];
+//	var fields2 = shopOutDecruitFields(keys1);
+//	changeTFieldValue(fields2["调出人*"], "200,", -1, 0);
+//	changeTFieldValue(fields2["接收店*"], "常青店");
+//	setTFieldsValue(window, fields2);
+//	saveAndAlertOk();
+//	tapPrompt();
+//	delay();
+//	tapButton(window, RETURN);
+//	
+//}

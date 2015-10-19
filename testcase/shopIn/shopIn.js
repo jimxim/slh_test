@@ -1,13 +1,13 @@
 //luxingxin <52619481 at qq.com> 20151013
 function testShopInAll() {
-	 run("在途调拨", "testShopInFlit");
-	// run("作废调入", "testShopInFlitStop");
-	// run("按批次/明细查", "testShopInQueryBatch");
-	// run("在途调拨日期检查", "testShopInFlitDay");
+//	 run("【门店调入-在途调拨】在途调拨", "test140001");
+//	 run("【门店调出-按批次查】作废", "test150002");
+//	 run("【门店调入-按批次查】按批次查/【门店调入-按明细查】按明细查", "test140002_140003");
+	 run("【门店调出】门店调拨-在途调拨，默认日期检查", "test150005");
 }
 
 // 需要先在B店做一个调出单
-function testShopInFlit() {
+function test140001() {
 	tapMenu("货品管理", "当前库存");
 	var keys = [ "款号", "门店" ];
 	var fields = queryGoodsStockFields(keys);
@@ -30,6 +30,25 @@ function testShopInFlit() {
 	var b1 = qr.data[0]["常青店"];
 	var b2 = qr.data[0]["中洲店"];
 	logDebug(" b=" + b + " b1=" + b1 + " b2=" + b2);
+	
+//	tapMenu("退出系统", "退出");
+//	
+//	tapMenu("门店调出", "批量调出+");
+//	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+//	var f3 = new TField("数量", TF, 3, "2");
+//	var fields1 = [ f0, f3 ];
+//	setTFieldsValue(getScrollView(), fields1);
+//	delay();
+//
+//	var keys1 = [ "调出人*", "接收店*" ];
+//	var fields2 = shopOutDecruitFields(keys1);
+//	changeTFieldValue(fields2["调出人*"], "200,", -1, 0);
+//	changeTFieldValue(fields2["接收店*"], "常青店");
+//	setTFieldsValue(window, fields2);
+//	saveAndAlertOk();
+//	tapPrompt();
+//	delay();
+//	tapButton(window, RETURN);
 
 	tapMenu("门店调入", "在途调拨");
 	var keys2 = [ "门店" ];
@@ -41,15 +60,19 @@ function testShopInFlit() {
 	logDebug(" c=" + c);
 	tapFirstText();
 	tapButtonAndAlert("调 入");
-	delay();
+	delay(10);
 
 	tapMenu("货品管理", "当前库存");
+	var keys = [ "款号", "门店" ];
+	var fields = queryGoodsStockFields(keys);
+	changeTFieldValue(fields["款号"], "3035");
+	changeTFieldValue(fields["门店"], "常青店");
 	query(fields);
 	qr = getQR();
 	logDebug(" 库存=" + qr.data[0]["库存"] + " 在途数=" + qr.data[0]["在途数"]);
-	var ret1 = true;
-	if (qr.data[0]["库存"] - a != 0 && qr.data[0]["在途数"] - a1 != c) {
-		ret1 = false;
+	var ret1 = false;
+	if (qr.data[0]["库存"] - a != 0 && a1-qr.data[0]["在途数"]  == c) {
+		ret1 = true;
 	}
 
 	tapMenu("货品管理", "库存分布");
@@ -57,18 +80,30 @@ function testShopInFlit() {
 	qr = getQR();
 	logDebug(" 库存=" + qr.data[0]["库存"] + " 常青店=" + qr.data[0]["常青店"]
 			+ " 中洲店=" + qr.data[0]["中洲店"]);
-	var ret2 = true;
-	if ((qr.data[0]["库存"] - b != 0 && qr.data[0]["常青店"] - b1 != c)
+	var ret2 = false;
+	if ((qr.data[0]["库存"] - b != 0 && b1-qr.data[0]["常青店"] == c)
 			|| (b2 - qr.data[0]["中洲店"] != c)) {
-		ret2 = false;
+		ret2 = true;
 	}
 
 	logDebug(" ret1=" + ret1 + " ret2=" + ret2);
-	return ret && ret1 && ret2;
+	return ret1 && ret2;
 }
 
 // 需要现在B店做一个调出单，并作废
-function testShopInFlitStop() {
+function test150002() {
+//	tapMenu("退出系统", "退出");
+	
+//	tapMenu("门店调出", "按批次查");
+//	var keys2= [ "日期从" ];
+//	var fields3 = shopOutQueryBatchFields(keys2);
+//	changeTFieldValue(fields3["日期从"], "2014-08-18");
+//	query(fields3);
+//	tapFirstText();
+//	tapButtonAndAlert("作 废");
+//	delay();
+//	tapButton(window, RETURN);
+	
 	tapMenu("门店调入", "在途调拨");
 	var keys = [ "门店" ];
 	var fields = shopInFlitFields(keys);
@@ -95,7 +130,7 @@ function testShopInFlitStop() {
 }
 
 // 需要先在B店做一个调出单
-function testShopInQueryBatch() {
+function test140002_140003() {
 	tapMenu("门店调入", "在途调拨");
 	var keys = [ "门店" ];
 	var fields = shopInFlitFields(keys);
@@ -156,18 +191,39 @@ function testShopInQueryBatch() {
 	return ret1 && ret2 && ret3 && ret4;
 }
 
-function testShopInFlitDay() {
+function test150005() {
+//	tapMenu("退出系统", "退出");
+	
+//	tapMenu("门店调出", "批量调出+");
+//	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+//	var f3 = new TField("数量", TF, 3, "2");
+//	var fields1 = [ f0, f3 ];
+//	setTFieldsValue(getScrollView(), fields1);
+//	delay();
+//
+//	var keys1 = [ "调出人*", "接收店*","日期" ];
+//	var fields2 = shopOutDecruitFields(keys1);
+//	changeTFieldValue(fields2["调出人*"], "200,", -1, 0);
+//	changeTFieldValue(fields2["接收店*"], "常青店");
+//	changeTFieldValue(fields2["日期"], "2015-10-17");
+//	setTFieldsValue(window, fields2);
+//	saveAndAlertOk();
+//	tapPrompt();
+//	delay();
+//	tapButton(window, RETURN);
+	
 	tapMenu("门店调入", "在途调拨");
 	var keys = [ "日期从", "日期到" ];
 	var fields = shopInFlitFields(keys);
-	changeTFieldValue(fields["日期从"], "2015-10-13");
-	changeTFieldValue(fields["日期到"], "2015-10-13");
+	changeTFieldValue(fields["日期从"], "2015-10-17");
+	changeTFieldValue(fields["日期到"], "2015-10-17");
 	query(fields);
 
 	tapFirstText();
+	var ret=false;
 	var a = getTextFieldValue(window, 0);
 	if (a == getToday()) {
-		var ret = true;
+		ret = true;
 	}
 	delay();
 	tapButton(window, RETURN);
