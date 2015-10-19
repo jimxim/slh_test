@@ -12,7 +12,7 @@
 #import "testcase/wangLai/provider.js"
 #import "testcase/goods/goodsFields.js"
 #import "testcase/goods/goods.js"
-#import "testcase/param.js"
+#import "testcase/system/param.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/sales.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
@@ -27,9 +27,9 @@ function test000All() {
 // if( ok ) {
 // testSalesBillAll();
 // testStatisticAnalysisAll();
-	testTemp();
+//	testTemp();
 // testPurchaseAll();
-// testParamAll();
+ testParamAll();
 // testWanLaiCustomerAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");

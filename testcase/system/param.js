@@ -3,7 +3,7 @@
 
 function testParamAll() {
 	run("获取全局设置值", "testGetGlobalParam");
-	run("修改全局设置值", "testSetGlobalParam");
+//	run("修改全局设置值", "testSetGlobalParam");
 }
 
 function testGetGlobalParam() {
