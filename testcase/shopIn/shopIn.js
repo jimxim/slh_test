@@ -30,9 +30,7 @@ function test140001() {
 	var b1 = qr.data[0]["常青店"];
 	var b2 = qr.data[0]["中洲店"];
 	logDebug(" b=" + b + " b1=" + b1 + " b2=" + b2);
-	
-//	tapMenu("退出系统", "退出");
-//	
+		
 //	tapMenu("门店调出", "批量调出+");
 //	var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
 //	var f3 = new TField("数量", TF, 3, "2");

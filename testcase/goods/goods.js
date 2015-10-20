@@ -1,17 +1,17 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-	// run("当前库存", "testQueryGoodsStock");
+	 run("【货品管理-当前库存】当前库存", "test100001");
 	// run("款号库存", "testQueryGoodsCodeStock");
 	// run("库存分布", "testQueryGoodsDistribution");
 	// run("货品进销存", "testQueryGoodsInOut");
 	// run("货品查询", "testQueryGoods");
 //	run("批量调价勾选", "testGoodsPricing");
 //	 run("批量调价全选", "testGoodsPricingAll");
-	 run("批量操作", "testEditGoodsOperation");
+//	 run("批量操作", "testEditGoodsOperation");
 }
 
-function testQueryGoodsStock() {
+function test100001() {
 	tapMenu("采购入库", "新增入库+");
 	var json = {
 		"客户" : "vell",
@@ -27,6 +27,7 @@ function testQueryGoodsStock() {
 	var qr = getQR();
 	scrollNextPage();
 	scrollPrevPage();
+	goPage(1,qr);
 
 	var ret = true;
 	// ret = ret && sortByTitle("厂商");
