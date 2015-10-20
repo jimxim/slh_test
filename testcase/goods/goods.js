@@ -6,6 +6,7 @@ function testGoodsGoodsAll() {
     // run("【货品管理-库存分布】库存分布", "test100006");
     // run("【货品管理-货品进销存】货品进销存", "test100008");/////
     // run("【货品管理-货品查询】修改货品信息不包括款号+重新上传照片", "test100010");
+    run("【货品管理-新增货品】后台品牌新增/启用/停用,ipad端显示", "test100018");
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
@@ -243,6 +244,61 @@ function test100010() {
 
     logDebug("ret=" + ret + "   ret1=" + ret1);
     return ret && ret1;
+}
+
+function test100018() {
+     tapMenu("货品管理", "新增货品+");
+     var r = "a" + getTimestamp(6);
+     var keys = { "款号" : r, "名称" : "货品管理100018", "品牌" : [ "1010pp_new", "in" ] };
+     var fields = editGoodsFields(keys);
+     setTFieldsValue(getScrollView(), fields);
+     saveAndAlertOk();
+     delay(2);
+     tapButton(window, RETURN);
+
+    tapFirstText();
+    var a = getTextFieldValue(getScrollView(), 2);
+     if (a == "1010pp_new") {
+     var ret = true;
+     }
+//     logDebug("品牌=" + a);
+     tapButton(window, RETURN);
+
+     tapMenu("货品管理", "新增货品+");
+     var r = getTimestamp(6);
+     var keys = { "款号" : r, "名称" : "货品管理100018", "品牌" : [ "0309pp_open", "in" ] };
+     var fields = editGoodsFields(keys);
+     setTFieldsValue(getScrollView(), fields);
+     saveAndAlertOk();
+     delay(2);
+     tapButton(window, RETURN);
+     
+     tapFirstText();
+     var b = getTextFieldValue(getScrollView(), 2);
+     if (b == "0309pp_open") {
+     var ret1 = true;
+     }
+     tapButton(window, RETURN)
+    
+//     tapMenu("货品管理", "新增货品+");
+//     var r = getTimestamp(6);
+//     var keys = { "款号" : r, "名称" : "货品管理100018", "品牌" : [ "停用品牌1", "in" ] };
+//     var fields = editGoodsFields(keys);
+//     setTFieldsValue(getScrollView(), fields);
+//     saveAndAlertOk();
+//     delay(2);
+//     tapButton(window, RETURN);
+//     
+//     tapFirstText();
+//     var b = getTextFieldValue(getScrollView(), 2);
+//     var b = qr.data[0]["品牌"];
+//     if (c == null) {
+//     var ret2 = true;
+//     }
+//     tapButton(window, RETURN)
+//    
+     logDebug("ret=" + ret + " ret1=" + ret1 );
+     return ret && ret1;
 }
 
 function test100047_100048_100049_100050_100051_100052() {
