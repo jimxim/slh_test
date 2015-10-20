@@ -161,7 +161,7 @@ function testPurchaseOrderEditNoColorSize() {
 	setTFieldsValue(getScrollView(), fields);
 
 	saveAndAlertOk();
-	delay();
+//	delay();
 	tapButton(window, RETURN);
 
 	tapMenu("采购订货", "按批次查");
