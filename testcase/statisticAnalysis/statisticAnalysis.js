@@ -23,7 +23,7 @@ function testStatisticAnalysisAll() {
     // run("新综合汇总接口814", "testSASynthesis814");
     // run("新综合汇总接口815", "testSASynthesis815");
     // run("新综合汇总接口816", "testSASynthesis816");
-//    run("新综合汇总接口817", "testSASynthesis817");
+    // run("新综合汇总接口817", "testSASynthesis817");
     // run("新综合汇总接口818", "testSASynthesis818");
     // run("onlytest", "onlytest");
     // run("新综合汇总接口", "synthesisVerify1500");
@@ -33,14 +33,14 @@ function testStatisticAnalysisAll() {
 // 销售开单是否合并重复的款号=不合并
 function setSASynthesisParams() {
     var qo, o, ret = true;
-    qo = { "备注" : [ "是否需要颜色尺码" ] };
-    o = { "新值" : [ "1" ], "数值" : [ "均色均码", "in" ], "授权码" : [] };
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
-    qo = { "备注" : [ "销售开单是否合并重复的款号" ] };
-    o = { "新值" : [ "0" ], "数值" : [ "不合并", "in" ], "授权码" : [] };
+
+    qo = { "备注" : "销售开单是否合并重复的款号" };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     return setGlobalParam(qo, o);
 }
 
