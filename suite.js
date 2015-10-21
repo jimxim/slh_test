@@ -26,9 +26,10 @@ function test000All() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-// testSalesBillAll();
+ testSalesBillAll();
 // testStatisticAnalysisAll();
-	testTemp();
+//	testTemp();
+//	testPinyin();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
@@ -52,17 +53,17 @@ function testTemp() {
     var kb = app.keyboard();
     
     var r = kb.buttons()["下一个键盘"].rect();
-    //debugElementTree(nextKb);
+    // debugElementTree(nextKb);
     target.touchAndHold(r, 0.5);
     delay();
-//    debugElementTree(kb);
-//    delay();
-//    debugElementTree(kb);
+// debugElementTree(kb);
+// delay();
+// debugElementTree(kb);
     kb.tapWithOptions({tapOffset:{x:0.12, y:0.48}});
-//    kb.typeString("li");
-//    tap(kb.collectionViews()[0].cells()["李"]);
-//    kb.typeString("si");
-//    tap(kb.collectionViews()[0].cells()["四"]);
+// kb.typeString("li");
+// tap(kb.collectionViews()[0].cells()["李"]);
+// kb.typeString("si");
+// tap(kb.collectionViews()[0].cells()["四"]);
     var s1 = "li,si";
     var a1 = s1.split(",");
     var a2 = ["李","四"];
@@ -70,6 +71,16 @@ function testTemp() {
         kb.typeString(a1[i]);
         tap(kb.collectionViews()[0].cells()[a2[i]]);
     }
-//    debugElementTree(kb);
+// debugElementTree(kb);
     tap(kb.buttons()["隐藏键盘"]);
+}
+
+function testPinyin() {
+    tapMenu("往来管理","客户查询");
+    var o = {"键盘":"简体拼音", "拼音":["li","si"],"汉字":["李","四"]};
+    var f = new TField("款号", TF_AC, 0, "b", 1, 0, o);
+    setTextFieldACValue(window, f);
+    
+    var tf = getTextField(window,1);
+    setTextFieldValueByPinyin(tf, o);
 }
