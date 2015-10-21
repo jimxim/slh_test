@@ -39,8 +39,8 @@ function test000All() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
- testPurchaseAll();
-// testPurchaseOrderAll();
+// testPurchaseAll();
+ testPurchaseOrderAll();
 //	testShopInAll();
 //	testShopOutAll();
 //	testCheckAll();
