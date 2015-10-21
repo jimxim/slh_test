@@ -398,6 +398,9 @@ UIAButton: name:Hide keyboard rect:{{933, 683}, {91, 79}}
 
 UIAButton: name:隐藏键盘 rect:{{933, 683}, {91, 79}}
 
+var kb = app.keyboard();
+tap(kb.buttons()["隐藏键盘"]);
+
 // 返回texts标题＝title的等于value的下标
 function getIndexEqualsTexts1ByTitle(texts, value, title) {
 	if (debug) {

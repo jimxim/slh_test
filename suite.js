@@ -27,8 +27,8 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testSalesBillAll();
- testStatisticAnalysisAll();
-//	testTemp();
+// testStatisticAnalysisAll();
+	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
@@ -47,10 +47,29 @@ function debugElements() {
 }
 
 function testTemp() {
-    var keys = [ "款号" ];
-    var t = Object.prototype.toString.call(keys);
-    logDebug("keys="+keys+" t="+t+" isArray="+isArray(keys));
-    keys = {"款号":"0001"};
-    t = Object.prototype.toString.call(keys);
-    logDebug("keys="+keys+" t="+t+" isObject="+isObject(keys));
+    var tf = getTextField(window, 0);
+    tap(tf);
+    var kb = app.keyboard();
+    
+    var r = kb.buttons()["下一个键盘"].rect();
+    //debugElementTree(nextKb);
+    target.touchAndHold(r, 0.5);
+    delay();
+//    debugElementTree(kb);
+//    delay();
+//    debugElementTree(kb);
+    kb.tapWithOptions({tapOffset:{x:0.12, y:0.48}});
+//    kb.typeString("li");
+//    tap(kb.collectionViews()[0].cells()["李"]);
+//    kb.typeString("si");
+//    tap(kb.collectionViews()[0].cells()["四"]);
+    var s1 = "li,si";
+    var a1 = s1.split(",");
+    var a2 = ["李","四"];
+    for (var i in  a1) {
+        kb.typeString(a1[i]);
+        tap(kb.collectionViews()[0].cells()[a2[i]]);
+    }
+//    debugElementTree(kb);
+    tap(kb.buttons()["隐藏键盘"]);
 }
