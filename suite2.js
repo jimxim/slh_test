@@ -45,6 +45,7 @@ function test000All() {
 //		testShopOutAll();
 //		testCheckAll();
 //		logout();
+//	 run("test", "testGoodsBrandFields");
 //	}	 
 //	 run("客户新增", "testEditCustomerFields");
 }

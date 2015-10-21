@@ -705,15 +705,17 @@ function editGoodsSizeField(key, show) {
 
 // 所有品牌
 function testGoodsBrandFields() {
-	var fields = goodsBrandFields("name");
-	setTFieldsValue(window, fields);
-	return true;
+	var keys = [ "name" ];
+    var fields = goodsBrandFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = goodsBrandFields(keys, true);
+    return checkShowFields(window, showFields);
 }
 
-function goodsBrandFields() {
-	return getTFields("goodsBrandField", arguments);
+function goodsBrandFields(keys, show) {
+	return getTFields("goodsBrandField", keys, show);
 }
-function goodsBrandField(key) {
+function goodsBrandField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -728,15 +730,17 @@ function goodsBrandField(key) {
 
 // 新增品牌
 function testEditGoodsBrandFields() {
-	var fields = editGoodsBrandFields("name");
+    var keys = [ "name" ];
+	var fields = editGoodsBrandFields(keys);
 	setTFieldsValue(getScrollView(), fields);
-	return true;
+	var showFields = editGoodsBrandFields(keys, true);
+    return checkShowFields(window, showFields);
 }
 
-function editGoodsBrandFields() {
-	return getTFields("editGoodsBrandField", arguments);
+function editGoodsBrandFields(keys, show) {
+	return getTFields("editGoodsBrandField", keys, show);
 }
-function editGoodsBrandField(key) {
+function editGoodsBrandField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -751,15 +755,17 @@ function editGoodsBrandField(key) {
 
 // 所有尺码组
 function testGoodsSizeidsFields() {
-	var fields = goodsSizeidsFields("name");
+    var keys = [ "name" ];
+	var fields = goodsSizeidsFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = goodsSizeidsFields(keys, true);
+    return checkShowFields(window, showFields);
 }
 
-function goodsSizeidsFields() {
-	return getTFields("goodsSizeidsField", arguments);
+function goodsSizeidsFields(keys, show) {
+	return getTFields("goodsSizeidsField", keys, show);
 }
-function goodsSizeidsField(key) {
+function goodsSizeidsField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -774,15 +780,17 @@ function goodsSizeidsField(key) {
 
 // 新增尺码组
 function testEditGoodsSizeidsFields() {
-	var fields = editGoodsSizeidsFields("name");
+    var keys = [ "name" ];
+	var fields = editGoodsSizeidsFields(keys);
 	setTFieldsValue(getScrollView(), fields);
-	return true;
+	var showFields = editGoodsSizeidsFields(keys, true);
+    return checkShowFields(getScrollView(), showFields);
 }
 
-function editGoodsSizeidsFields() {
-	return getTFields("editGoodsSizeidsField", arguments);
+function editGoodsSizeidsFields(keys, show) {
+	return getTFields("editGoodsSizeidsField", keys, show);
 }
-function editGoodsSizeidsField(key) {
+function editGoodsSizeidsField(key, show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -797,15 +805,17 @@ function editGoodsSizeidsField(key) {
 
 // 所有品牌折扣
 function testGoodsBrandDiscountFields() {
-	var fields = goodsBrandDiscountFields("brand");
+    var keys = [ "brand" ];
+	var fields = goodsBrandDiscountFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+	var showFields = editGoodsSizeidsFields(keys, true);
+    return checkShowFields(window, showFields);
 }
 
-function goodsBrandDiscountFields() {
-	return getTFields("goodsBrandDiscountField", arguments);
+function goodsBrandDiscountFields(keys, show) {
+	return getTFields("goodsBrandDiscountField", keys, show);
 }
-function goodsBrandDiscountField(key) {
+function goodsBrandDiscountField(key, show) {
 	var f;
 	switch (key) {
 	case "brand":
