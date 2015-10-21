@@ -26,8 +26,8 @@ function test000All() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
- testSalesBillAll();
-// testStatisticAnalysisAll();
+// testSalesBillAll();
+ testStatisticAnalysisAll();
 //	testTemp();
 //	testPinyin();
 // testPurchaseAll();
@@ -77,7 +77,7 @@ function testTemp() {
 
 function testPinyin() {
     tapMenu("往来管理","客户查询");
-    var o = {"键盘":"简体拼音", "拼音":["li","si"],"汉字":["李","四"]};
+    var o = {"键盘":"简体拼音", "拼音":["li","li","si"],"汉字":["li","李","四"]};
     var f = new TField("款号", TF_AC, 0, "b", 1, 0, o);
     setTextFieldACValue(window, f);
     

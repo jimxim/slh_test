@@ -3,30 +3,30 @@
 // SA=StatisticAnalysis
 // 跑一次约需40分钟
 function testStatisticAnalysisAll() {
-    if (setSASynthesisParams()) {
+//    if (setSASynthesisParams()) {
         var caseName = "【新综合汇总接口】";
-        run(caseName, "test190047");
-        run(caseName, "test190048");
-        run(caseName, "test190049");
-        run(caseName, "test190050");
-        run(caseName, "test190051");
-        run(caseName, "test190052");
-        run(caseName, "test190053");
-        run(caseName, "test190054");
-        run(caseName, "test190055");
-        run(caseName, "test190056");
-        run(caseName, "test190057");
-        run(caseName, "test190058");
-        run(caseName, "test190059");
-        run(caseName, "test190060");
-        run(caseName, "test190061");
+//        run(caseName, "test190047");
+//        run(caseName, "test190048");
+//        run(caseName, "test190049");
+//        run(caseName, "test190050");
+//        run(caseName, "test190051");
+//        run(caseName, "test190052");
+//        run(caseName, "test190053");
+//        run(caseName, "test190054");
+//        run(caseName, "test190055");
+//        run(caseName, "test190056");
+//        run(caseName, "test190057");
+//        run(caseName, "test190058");
+//        run(caseName, "test190059");
+//        run(caseName, "test190060");
+//        run(caseName, "test190061");
         run(caseName, "test190062");
-        run(caseName, "test190063");
-        run(caseName, "test190064");
-        run(caseName, "test190065");
-        run(caseName, "test190066");
-        run(caseName, "test190067");
-    }
+//        run(caseName, "test190063");
+//        run(caseName, "test190064");
+//        run(caseName, "test190065");
+//        run(caseName, "test190066");
+//        run(caseName, "test190067");
+//    }
 }
 
 /**
