@@ -38,12 +38,12 @@ function test000All() {
 //	if( ok ) {
 //	 testParamAll();
 //	 testWanLaiCustomerAll();
-	 testGoodsGoodsAll();
+//	 testGoodsGoodsAll();
 	// testPurchaseAll();
 	// testPurchaseOrderAll();
 //		testShopInAll();
 //		testShopOutAll();
-//		testCheckAll();
+		testCheckAll();
 //		logout();
 //	 run("test", "testGoodsBrandFields");
 //	}	 
