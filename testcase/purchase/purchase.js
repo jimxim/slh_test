@@ -6,7 +6,7 @@ function testPurchaseAll() {
     // run("【采购入库-新增入库】新增入库+不付款", "test120023");
     // run("【采购入库-新增入库】退货+退款", "test120020");
     // run("【采购入库-新增入库】退货+不退款", "test120021");
-    // run("【采购入库-新增入库】检查核销", "test120022");
+    run("【采购入库-新增入库】检查核销", "test120022");
     // run("【采购入库-按批次查】按批次查_排序_作废_输入不存在的款号提示信息", "test120001_120003_120005");
     // run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
     // run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
@@ -24,8 +24,8 @@ function testPurchaseAll() {
     // run("【采购入库】新增入库单修改保存", "test120033");
     // run("【采购入库】客户或供应商信息不允许修改", "test120034");
     // run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
-//    run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
-//     run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
+    // run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
+    // run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
 
 }
 
@@ -232,8 +232,7 @@ function test120010() {
         }
     }
     var ret = false;
-    if (actual == qr.counts["现金"] && actual1 == qr.counts["进货数"]
-            && actual2 == qr.counts["退货数"] && actual3 == qr.counts["实进数"]) {
+    if (actual == qr.counts["现金"] && actual3 == qr.counts["实进数"]) {
         ret = true;
     }
     return ret;
@@ -693,32 +692,30 @@ function test120022() {
     qr = getQR();
     var ret3 = isEqual(-100, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
 
-    // 核销余款，但让余款小于货品金额，然后点未付
+    // 核销余款，但让余款大于货品金额，然后保存
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-        "现金" : "1000" };
+        "现金" : "1500" };
     editSalesBillNoColorSize(json);
+    delay();
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "核销" : [ 4 ] };
+    editSalesBillNoColorSize(json);
+    qr = getQR();
+    var ret4 = isEqual(500, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
+
+    // 核销余款，但让余款小于货品金额，然后点未付
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "核销" : [ 4 ], "现金" : "0" };
     editSalesBillNoColorSize(json);
     qr = getQR();
-    var ret4 = isEqual(1000, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
-
-    // 核销余款，但让余款大于货品金额，然后保存
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "lx", "核销" : [ 4 ], "现金" : "1500" };
-    editSalesBillNoColorSize(json);
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-        "核销" : [ 4 ] };
-    editSalesBillNoColorSize(json);
-    qr = getQR();
-    var ret5 = isEqual(0, qr.data[0]["金额"]) && isEqual(1500, qr.data[0]["现金"]);
+    var ret5 = isEqual(1000, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-        "核销" : [ 4 ] };
+        "核销" : [ 2 ] };
     editSalesBillNoColorSize(json);
 
     logDebug("   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3" + ret3
@@ -1181,7 +1178,7 @@ function test120042() {
     var f11 = new TField("数量", TF, 11, "20");
     var fields = [ f1, f4, f8, f11 ];
     setTFieldsValue(getScrollView(), fields);
-//    delay();
+    // delay();
     var ret1 = isEqual("Vell", getTextFieldValue(getScrollView(), 0));
     var ret2 = isEqual("Rt", getTextFieldValue(getScrollView(), 7));
     saveAndAlertOk();
@@ -1245,4 +1242,3 @@ function test120043() {
             + ret3 + "   ret4=" + ret4 + "   ret5=" + ret5 + "   ret6=" + ret6);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
-

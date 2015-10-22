@@ -20,7 +20,9 @@
 #import "testcase/shopIn/shopInFields.js"
 #import "testcase/shopOut/shopOut.js"
 #import "testcase/shopOut/shopOutFields.js"
+#import "testcase/salesOrder/salesOrder.js"
 #import "testcase/salesOrder/salesOrderFields.js"
+#import "testcase/sales/sales.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
@@ -40,9 +42,11 @@ function test000All() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
- testPurchaseOrderAll();
+// testPurchaseOrderAll();
 //	testShopInAll();
 //	testShopOutAll();
+	testSalesOrderAll();
+//	testSalesBillAll();
 //	testCheckAll();
 // testTemp();
 	
