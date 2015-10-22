@@ -30,6 +30,7 @@
 #import "testcase/help/helpFields.js"
 #import "testcase/goods.js"
 #import "testcase/system/param.js"
+#import "testcase/sales/salesNoColorSize.js"
 
 // 总经理
 function test000All() {
