@@ -18,6 +18,7 @@
 #import "testcase/sales/sales.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
 #import "testcase/statisticAnalysis/statisticAnalysis.js"
+#import "testcase/statisticAnalysis/saSynthesis.js"
 #import "testcase/purchase/purchaseFields.js"
 #import "testcase/purchase/purchase.js"
 
@@ -26,10 +27,9 @@ function test000All() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
+	testSASynthesisAll();
 // testSalesBillAll();
-// testStatisticAnalysisAll();
 	testTemp();
-//	testPinyin();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
@@ -49,6 +49,8 @@ function debugElements() {
 
 function testTemp() {
     testDate();
+//    testGetOpTime();
+    testTapKeyboardHide();
 }
 
 function testPinyin() {
@@ -68,4 +70,15 @@ function testDate() {
     logDebug("today+365="+d);
     d = getDay(-365);
     logDebug("today-365="+d);
+    d = getDay(30);
+    logDebug("today+30="+d);
+    d = getDay(-30);
+    logDebug("today-30="+d);
+}
+function testGetOpTime() {
+    var t = getOpTime();
+    logDebug("OpTime="+t);
+}
+function testTapKeyboardHide() {
+    tapKeyboardHide();
 }

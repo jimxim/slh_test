@@ -1,3 +1,5 @@
+自动化测试需实现：销售开单－刷卡
+
 function getIndexOfGlobalParamValue(name, remark) {
     var menu1 = "系统设置";
     var menu2 = "全局设置";
