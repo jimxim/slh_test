@@ -617,6 +617,9 @@ function editSalesBillField(key, show) {
 			f.value = "000,管理员";
 		}
 		break;
+    case "刷卡":
+        f = new TField("刷卡", TF, 7, 0,"NoNeedReturn");
+        break;
 	case "day":
 	case "日期":
 		f = new TField("日期", TF_DT, 9, getToday());
@@ -625,6 +628,9 @@ function editSalesBillField(key, show) {
 	case "备注":
 		f = new TField("备注", TF, 10, "123");
 		break;
+    case "汇款":
+        f = new TField("汇款", TF, 13, 0,"NoNeedReturn");
+        break;
 	case "code":
 	case "款号":
 		f = new TField("款号", TF_AC, 16, "k526", -1,"k526,铅笔裤,300元");
