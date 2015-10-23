@@ -612,13 +612,13 @@ function editSalesBillField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 5, "000", l - 1, 0);
+		f = new TField("店员", TF_AC, 4, "000", l - 1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
     case "刷卡":
-        f = new TField("刷卡", TF, 7, 0,"NoNeedReturn");
+        f = new TField("刷卡", TF, 6, 0,"NoNeedReturn");
         break;
 	case "day":
 	case "日期":
@@ -629,7 +629,7 @@ function editSalesBillField(key, show) {
 		f = new TField("备注", TF, 10, "123");
 		break;
     case "汇款":
-        f = new TField("汇款", TF, 13, 0,"NoNeedReturn");
+        f = new TField("汇款", TF, 12, 0,"NoNeedReturn");
         break;
 	case "code":
 	case "款号":
