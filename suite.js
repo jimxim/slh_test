@@ -27,7 +27,7 @@ function test000All() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-	testSASynthesisAll();
+//	testSASynthesisAll();
 // testSalesBillAll();
 	testTemp();
 // testPurchaseAll();
@@ -50,7 +50,7 @@ function debugElements() {
 function testTemp() {
     testDate();
 //    testGetOpTime();
-    testTapKeyboardHide();
+//    testTapKeyboardHide();
 }
 
 function testPinyin() {
@@ -64,7 +64,7 @@ function testPinyin() {
 }
 
 function testDate() {
-    var d = getDay();
+    var d = getToday("yy");
     logDebug("today="+d);
     d = getDay(365);
     logDebug("today+365="+d);

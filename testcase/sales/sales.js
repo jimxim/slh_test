@@ -1,9 +1,18 @@
 // JinXinhua <79202792 at qq.com> 20150922
 
 function testSalesBillAll() {
-     run("新增开单，无颜色尺码", "testEditSalesBillNoColorSize");
+    run("新增开单，特殊货品", "testSpecial");
+//    run("新增开单，无颜色尺码", "testEditSalesBillNoColorSize");
     // run("新增开单，颜色尺码", "testEditSalesBillColorSize");
     // run("开单界面，新增货品", "testEditSalesBillAddGoods");
+}
+
+function testSpecial() {
+    tapMenu("销售开单", "开  单+");
+    var o = { "特殊货品" : { "抹零" : 100,"打包费" : 9 } };
+    editSalesBillSpecial(o);
+
+    return true;
 }
 
 function testEditSalesBillNoColorSize() {

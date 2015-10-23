@@ -1,4 +1,8 @@
 自动化测试需实现：销售开单－刷卡
+新增客户
+新增订货复用
+160051  返回不可用
+日期2位年
 
 function getIndexOfGlobalParamValue(name, remark) {
     var menu1 = "系统设置";
