@@ -342,8 +342,9 @@ function test170056() {
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    var qr = getQResult2(getScrollView(1), "门店", "操作");
-    var a = qr.data[0]["客户"];
+   var a= getStaticTextValue(getScrollView(1), 0);
+//    var qr = getQResult2(getScrollView(1), "门店", "操作");
+//    var a = qr.data[0]["客户"];
   logDebug("客户＝" + a );
     
 //    tapButton(window, CLEAR);
