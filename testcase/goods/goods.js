@@ -1,12 +1,12 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-     run("【货品管理-当前库存】当前库存", "test100001");
+    // run("【货品管理-当前库存】当前库存", "test100001");
     // run("【货品管理-款号库存】款号库存", "test100005");
     // run("【货品管理-库存分布】库存分布", "test100006");
-    // run("【货品管理-货品进销存】货品进销存", "test100008");/////
+     run("【货品管理-货品进销存】货品进销存", "test100008");/////
     // run("【货品管理-货品查询】修改货品信息不包括款号+重新上传照片", "test100010");
-    //    run("【货品管理-新增货品】后台品牌新增/启用/停用,ipad端显示", "test100018");／／暂时未实现，待完成
+    // run("【货品管理-新增货品】后台品牌新增/启用/停用,ipad端显示", "test100018");／／暂时未实现，待完成
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
@@ -181,15 +181,15 @@ function test100008() {
 
     var keys = [ "款号" ];
     var fields = queryGoodsInOutFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
+    changeTFieldValue(fields["款号"], TF_AC,"3035",-1,0);
     query(fields);
     qr = getQR();
 
     tapFirstText(getScrollView(), TITLE_SEQ);
     tapNaviLeftButton();
 
-    var keys = { "款号" : "3035" };
-    var fields = queryGoodsStockFields(keys);
+    keys = { "款号名称" : "3035" };
+    fields = queryGoodsInOutFields(keys);
     query(fields);
     qr = getQR();
     var c = getTextFieldValue(window, 0);
@@ -271,7 +271,6 @@ function test100018() {
     }
     logDebug("ret1=" + ret1);
 
-   
     // tapMenu("货品管理", "新增货品+");
     // var r = getTimestamp(6);
     // var keys = { "款号" : r, "名称" : "货品管理100018", "品牌" : [ "0309pp_open", "in"
@@ -304,7 +303,7 @@ function test100018() {
     // logDebug("ret1=" + ret1);
     //
     // var ret2 = (ret1 == false);
-    
+
     // logDebug("ret=" + ret + " ret1=" + ret1 );
     // return ret && ret1;
 }
