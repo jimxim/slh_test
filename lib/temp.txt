@@ -5,6 +5,21 @@ ltth图片tfq选ffi款
 160051  返回不可用
 日期2位年
 
+// typeof 返回的是字符串:"number" "String" "boolean" "object" "function"，"undefined"
+
+// 检测是否登录
+// 这个方法没有调试成功，主要是alert不会消失，登录后是可以的，还不明白原因
+function isLogin() {
+    var ret = true;
+    var ok = tapMenu1("退出系统"); // 如果前面已选中，点击是无效的
+    if (!ok) {
+        tapMenu1("货品管理"); //  换个菜单点击
+    }
+    if (isIn(alertMsg, "先登录")) {
+        ret = false;
+    }
+    return ret;
+}
 function getIndexOfGlobalParamValue(name, remark) {
     var menu1 = "系统设置";
     var menu2 = "全局设置";

@@ -1,4 +1,7 @@
+#import "lib/alert.js"
 #import "lib/common.js"
+#import "lib/log.js"
+#import "lib/cache.js"
 #import "lib/sales.js"
 #import "lib/provider.js"
 #import "lib/goods.js"
@@ -21,8 +24,8 @@
 #import "testcase/sales/sales.js"
 #import "testcase/sales/salesFields.js"
 
-#import "testcase/salesOrder/sales.js"
-#import "testcase/salesOrder/salesFields.js"
+#import "testcase/salesOrder/salesOrder.js"
+#import "testcase/salesOrder/salesOrderFields.js"
 
 #import "testcase/shopIn/shopIn.js"
 #import "testcase/shopIn/shopInFields.js"

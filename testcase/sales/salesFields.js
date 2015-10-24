@@ -596,7 +596,7 @@ function editSalesBillFields(keys, show) {
 }
 function editSalesBillField(key, show) {
 	var l = getTableViews().length;
-	var f;
+	var f, staffTFindex = getValueFromCacheF1("getStaffTFindex");
 	switch (key) {
 	case "customer":
 	case "客户":
@@ -612,24 +612,24 @@ function editSalesBillField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 5, "000", l - 1, 0);
+		f = new TField("店员", TF_AC, staffTFindex, "000", l - 1, 0); //5
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
     case "刷卡":
-        f = new TField("刷卡", TF, 7, 0,"NoNeedReturn");
+        f = new TField("刷卡", TF, staffTFindex+2, 0,"NoNeedReturn"); //7
         break;
 	case "day":
 	case "日期":
-		f = new TField("日期", TF_DT, 9, getToday());
+		f = new TField("日期", TF_DT, staffTFindex+4, getToday()); //9
 		break;
 	case "remarks":
 	case "备注":
-		f = new TField("备注", TF, 10, "123");
+		f = new TField("备注", TF, staffTFindex+5, "123"); //10
 		break;
     case "汇款":
-        f = new TField("汇款", TF, 12, 0,"NoNeedReturn");
+        f = new TField("汇款", TF, staffTFindex+7, 0,"NoNeedReturn"); //12
         break;
 	case "code":
 	case "款号":
@@ -643,6 +643,30 @@ function editSalesBillField(key, show) {
 	}
 	return f;
 }
+
+/**
+ * 开单界面上，客户到店员，标题与输入框是一直成对的，所以可以根据标题下标差算输入框下标，客户输入框下标为0
+ * @returns {Number}
+ */
+function getStaffTFindex() {
+    var stCustomerIndex =0, stStaffIndex = 0,ret=0;
+    var a1 = getStaticTexts(window);
+    for(var i=0;i<a1.length;i++) {
+        var e1 = a1[i];
+        if(isUIAStaticText(e1) && e1.name() == "客户") {
+            stCustomerIndex = i;
+        }
+        if(isUIAStaticText(e1) && e1.name() == "店员") {
+            stStaffIndex = i;
+            break;
+        }
+    }
+    
+    ret = stStaffIndex - stCustomerIndex;
+    logDebug("客户文本下标="+stCustomerIndex+" 店员文本下标="+stStaffIndex+" 店员输入框下标="+ret);
+    return ret;
+}
+
 
 function editSalesBillDetailFields(keys, show) {
 	return getTFields("editSalesBillDetailField", keys, show);
@@ -746,7 +770,7 @@ function salesBillOrderField(key, show) {
 	return f;
 }
 
-//收款记录
+// 收款记录
 function testSalesCollectionRecordFields() {
 	var fields = salesCollectionRecordFields("day1", "day2");
 	setTFieldsValue(window, fields);
@@ -773,7 +797,7 @@ function salesCollectionRecordField(key) {
 	return f;
 }
 
-//物流商查询
+// 物流商查询
 function testSalesQueryLogisticsFields() {
 	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "shipno","receive"];
 	var fields = salesQueryLogisticsFields(keys);
@@ -833,7 +857,7 @@ function salesQueryLogisticsField(key,show) {
 	return f;
 }
 
-//代收收款
+// 代收收款
 function testSalesCollectionFields() {
 	var keys=[ "batch1","batch2", "shop","day1","day2"];
 	var fields = salesCollectionFields(keys);
