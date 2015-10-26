@@ -1,11 +1,8 @@
 //JinXinhua <79202792 at qq.com> 20150904
 //测试套具，集合测试用例
 
-#import "lib/common.js"
-#import "lib/sales.js"
-#import "lib/provider.js"
-#import "lib/goods.js"
-#import "lib/param.js"
+#import "all.js"
+
 
 #import "testcase/goods/goods.js"
 #import "testcase/goods/goodsFields.js"
@@ -37,8 +34,8 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
-// testWanLaiCustomerAll();
- testGoodsGoodsAll();
+ testWanLaiCustomerAll();
+// testGoodsGoodsAll();
 // testPurchaseAll();
 // testPurchaseOrderAll();
 //	testShopInAll();
