@@ -19,13 +19,13 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】核销后检查本单已核销", "test170058");
     // run("【销售开单－开单】核销后检查所有已核销", "test170059");
     // run("【销售开单－开单】连续核销后核销界面检查", "test170062");
-    // run("【销售开单】客户或供应商信息不允许修改", "test170063");//
+     run("【销售开单】客户或供应商信息不允许修改", "test170063");
     // run("【销售开单-开单】检查核销", "test170065");//
-//     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
-//    run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
-//     run("【销售开单－开单】款号价格为负数时检查", "test170072");//
-//   run("【销售开单－开单】客户退货数量限制－填写客户", "test170073");
-//  run("【销售开单－开单】客户退货数量限制－填写客户", "test170074");
+    // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
+    // run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
+    // run("【销售开单－开单】款号价格为负数时检查", "test170072");
+    // run("【销售开单－开单】客户退货数量限制－填写客户", "test170073");
+    // run("【销售开单－开单】客户退货数量限制－填写客户", "test170074");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -684,22 +684,16 @@ function test170063() {
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     saveAndAlertOk();
-    // tapButtonAnd(window, SAVE);
-
-    // delay();
     if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
         var ret = true;
     }
-    // if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
-    // var ret2 = true;
-    // }
-    // tapButtonAndAlert("none", OK);
+    delay(5);
     if (isIn(alertMsg, "客户或供应商信息不允许修改")) {
         var ret1 = true;
     }
     // logDebug("ret=" + ret);
     return ret && ret1;
-    // logDebug("ret=" + ret + "ret1=" + ret1);
+     logDebug("ret=" + ret + "ret1=" + ret1);
     // return ret && ret1;
 }
 function test170065() {
@@ -873,29 +867,28 @@ function test170072() {
     var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    
+
     var f4 = new TField("单价", TF, 4, "-100");
     var fields = [ f4 ];
     setTFieldsValue(getScrollView(), fields);
-    
+
     saveAndAlertOk();
-    var alertMsg1 = alertMsg;
-    tapButtonAndAlert("none", OK);
-    var alertMsg2 = alertMsg;
-    if (isIn(alertMsg1, "请仔细核对收款方式和金额,确定保存吗")) {
-        var ret = true;
+    var ret = false;
+    if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗")) {
+        ret = true;
     }
-//    tapButtonAndAlert("none", OK);
-    if (isIn(alertMsg2, "[第1行] 单价或金额不能为负数")) {
-        var ret1 = true;
+
+    delay(3);
+    tapButtonAndAlert("none", OK)
+    var ret1 = false;
+    if (isIn(alertMsg, "[第1行] 单价或金额不能为负数")) {
+        ret1 = true;
     }
-    logDebug("alertMsg1" + alertMsg1+" alertMsg2" + alertMsg2);
-    logDebug("ret" + ret+"ret1" + ret1);
-     return ret&&ret1;
+    logDebug("ret" + ret + "ret1" + ret1);
+
+    return ret && ret1;
 }
 function test170073() {
-    //开启参数 开单保存开启退货数和上次购买数的比对验证
-    
-    
-    
+    // 开启参数 开单保存开启退货数和上次购买数的比对验证
+
 }
