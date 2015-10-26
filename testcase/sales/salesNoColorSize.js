@@ -16,12 +16,12 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】核销（客户欠款）", "test170055");
     // run("【销售开单－开单】客户切换后点核销", "test170056");
     // run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
-    // run("【销售开单－开单】核销后检查本单已核销", "test170058");／／
-    // run("【销售开单－开单】核销后检查所有已核销", "test170059");／／
+    // run("【销售开单－开单】核销后检查本单已核销", "test170058");
+    // run("【销售开单－开单】核销后检查所有已核销", "test170059");
     // run("【销售开单－开单】连续核销后核销界面检查", "test170062");
-    run("【销售开单】客户或供应商信息不允许修改", "test170063");
-//    run("【销售开单-开单】检查核销", "test170065");
-    
+    // run("【销售开单】客户或供应商信息不允许修改", "test170063");//
+    // run("【销售开单-开单】检查核销", "test170065");//
+    // run("【销售开单－开单】核销还款时，输入未付的操作情况", "test170070");
 
 }
 function test170040() {
@@ -524,30 +524,118 @@ function test170057() {
 }
 
 function test170058() {
+    // 有余款单客户
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "1000000" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "核销" : [ 3 ],
+        "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : r };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    delay();
+    tapFirstText();
+
+    var keys = { "客户" : r };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tapButton(getScrollView(1), "全选"[5]);
+    tapNaviRightButton();// 本单已核销
+
+    var qr = getQResult2(getScrollView(1), "日期", "金额");
+    var a1 = qr.data[0]["日期"];
+    var a3 = qr.data[0]["店员"];
+    var a4 = qr.data[0]["数量"];
+    var a5 = qr.data[0]["金额"];
+    if (a1 == getToday("yy")) {
+        var ret1 = true;
+    }
+    if (a3 == "总经理") {
+        var ret2 = true;
+    }
+    if (a4 == "5") {
+        var ret3 = true;
+    }
+    if (a5 == "1500") {
+        var ret4 = true;
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    // saveAndAlertOk();
+    logDebug("ret1=" + ret1 + "ret2=" + ret2 + "ret3=" + ret3 + "ret4=" + ret4);
+    return ret1 && ret2 && ret3 && ret4;
 
 }
 
 function test170059() {
+    // 有欠款单客户
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : "1000000" };
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "核销");
-    tapButton(getScrollView(1), "全选"[5]);
+    var json = { "客户" : r, "核销" : [ 3 ],
+        "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    editSalesBillNoColorSize(json);
 
-}
-function test170061() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : r };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    delay();
+    tapFirstText();
+
+    var keys = { "客户" : r };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+    tapNaviRightButton();// 本单已核销
+    var qr = getQResult2(getScrollView(1), "日期", "金额");
+    var a1 = qr.data[0]["日期"];
+    var a3 = qr.data[0]["店员"];
+    var a4 = qr.data[0]["数量"];
+    var a5 = qr.data[0]["金额"];
+    if (a1 == getToday("yy")) {
+        var ret1 = true;
+    }
+    if (a3 == "总经理") {
+        var ret3 = true;
+    }
+    if (a4 == "5") {
+        var ret4 = true;
+    }
+    if (a5 == "1500") {
+        var ret5 = true;
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    // saveAndAlertOk();
+    logDebug("ret1=" + ret1 + "ret3=" + ret3 + "ret4=" + ret4 + "ret5=" + ret5);
+    return ret1 && ret3 && ret4 && ret5;
 
 }
 function test170062() {
@@ -593,24 +681,148 @@ function test170063() {
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     saveAndAlertOk();
-//    tapButtonAnd(window, SAVE);
-    
-//    delay();
-//     if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
-//     var ret = true;
-//     }
+    // tapButtonAnd(window, SAVE);
+
+    // delay();
+    if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
+        var ret = true;
+    }
     // if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
     // var ret2 = true;
-//     }
-tapButtonAndAlert("none", OK);
+    // }
+    // tapButtonAndAlert("none", OK);
     if (isIn(alertMsg, "客户或供应商信息不允许修改")) {
         var ret1 = true;
     }
-//    logDebug("ret=" + ret);
-    return ret1;
-//     logDebug("ret=" + ret + "ret1=" + ret1);
-//     return ret && ret1;
+    // logDebug("ret=" + ret);
+    return ret && ret1;
+    // logDebug("ret=" + ret + "ret1=" + ret1);
+    // return ret && ret1;
 }
 function test170065() {
-    
+    // 核销欠款，不输入款号
+    // tapMenu("销售开单", "开 单+");
+    // tapButton(window, "新增+");
+    // var r = "anewkh" + getTimestamp(6);
+    // var g0 = new TField("名称", TF, 0, r);
+    // var fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" :
+    // "0" };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "核销" : [ 3 ], "现金" : "0" };
+    // saveAndAlertOk();
+    // delay();
+    // if (isIn(alertMsg, "空单，无法保存")) {
+    // var ret = true;
+    // }
+    // logDebug("ret=" + ret);
+    // return ret;
+
+    // 核销欠款，输入款号
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "核销" : [ 3 ],
+        "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    saveAndAlertOk();
+    if (isIn(alertMsg, "保存成功")) {
+        var ret1 = true;
+    }
+    logDebug("ret1=" + ret1);
+    return ret1;
+
+    // // 核销余款，余款小于货品金额
+    // tapMenu("销售开单", "开 单+");
+    // tapButton(window, "新增+");
+    // var r = "anewkh" + getTimestamp(6);
+    // var g0 = new TField("名称", TF, 0, r);
+    // var fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // "现金" : "2000" };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" :r, "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // "现金" : "0" };
+
+    // tapMenu("销售开单", "按批次查");
+    // var ret2 = isEqual(-100, qr.data[0]["金额"]) && isEqual(0,
+    // qr.data[0]["现金"]);
+    // // return ret2;
+
+    // // 核销余款，余款大于货品金额
+    // tapMenu("销售开单", "开 单+");
+    // tapButton(window, "新增+");
+    // var r = "anewkh" + getTimestamp(6);
+    // var g0 = new TField("名称", TF, 0, r);
+    // var fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // "现金" : "4000" };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // "现金" : "0" };
+    // saveAndAlertOk();
+    // tapMenu("销售开单", "按批次查");
+    // var ret3 = isEqual(-100, qr.data[0]["金额"]) && isEqual(0,
+    // qr.data[0]["现金"]);
+    // // return ret3;
+
+    // // 核销欠款，输入抹零，点未付，保存
+    // tapMenu("销售开单", "开 单+");
+    // tapButton(window, "新增+");
+    // var r = "anewkh" + getTimestamp(6);
+    // var g0 = new TField("名称", TF, 0, r);
+    // var fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    //
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" :
+    // "0" };
+    // editSalesBillNoColorSize(json);
+    //
+    // var json = { "客户" : r, "核销" : [ 4 ], "特殊货品" : { "抹零" : 100 }, "现金" : "0"
+    // };
+    // editSalesBillNoColorSize(json);
+    // tapMenu("销售开单", "按批次查");
+    // qr = getQR();
+    // var ret4 = isEqual(-100, qr.data[0]["金额"]) && isEqual(0,
+    // qr.data[0]["现金"]);
+    // logDebug("ret1=" + ret1 + "ret2=" + ret2 + "ret3=" + ret3 + "ret4=" +
+    // ret4);
+    // return ret1 && ret2 && ret3 && ret4;
+}
+function test170070() {
+
 }
