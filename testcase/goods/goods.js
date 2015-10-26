@@ -1,10 +1,12 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-    // run("【货品管理-当前库存】当前库存", "test100001");
+    // run("【货品管理-当前库存】当前库存", "test100001");// 5.点击右下角的页码，选择某个页码，点击确认
+                                                    // 6.输入一个或全部查询查询条件，点击查询
+    run("【货品管理-当前库存】进货价（总额、单据、小计 ）权限控制", "test100004");
     // run("【货品管理-款号库存】款号库存", "test100005");
     // run("【货品管理-库存分布】库存分布", "test100006");
-     run("【货品管理-货品进销存】货品进销存", "test100008");/////
+    // run("【货品管理-货品进销存】货品进销存", "test100008");/////
     // run("【货品管理-货品查询】修改货品信息不包括款号+重新上传照片", "test100010");
     // run("【货品管理-新增货品】后台品牌新增/启用/停用,ipad端显示", "test100018");／／暂时未实现，待完成
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
@@ -76,11 +78,36 @@ function test100001() {
     return ret && ret1 && ret2;
 }
 
+
+function test100004(){
+    tapMenu("货品管理", "当前库存");
+    var keys = [ "款号" ];
+    var fields = queryGoodsStockFields(keys);
+    changeTFieldValue(fields["款号"], "3035");
+    query(fields);
+    tapFirstText();
+    
+    var qr = getQResult2(getScrollView(1), "批次", "操作人");
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if(isEqual("采购进货",qr.data[i][名称])){
+               
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQResult2(getScrollView(1), "批次", "操作人");
+        }
+    }
+}
+
+
 function test100005() {
     tapMenu("货品管理", "款号库存");
     query();
     var qr = getQR();
-
+ 
     scrollNextPage();
     scrollPrevPage();
 
@@ -106,9 +133,14 @@ function test100005() {
     tapFirstText();
     qr = getQResult2(getScrollView(1), "颜色", "库存");
     var b = qr.data[0]["库存"];
+    var b1=qr.data[0]["颜色"];
     var ret1 = false;
+    var ret3 =false;
     if (a == b) {
         ret1 = true;
+    }
+    if(b1=="均色"){
+        ret3=true;
     }
     tapNaviLeftButton();
 
@@ -122,7 +154,7 @@ function test100005() {
     }
     // logDebug("款号=" + c);
     logDebug("ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
-    return ret && ret1 && ret2;
+    return ret && ret1 && ret2 && ret3;
 }
 
 function test100006() {
@@ -160,7 +192,7 @@ function test100006() {
 }
 
 function test100008() {
-    tapMenu("货品管理", "货品进销存");
+    ç
     query();
     var qr = getQR();
 
@@ -181,10 +213,26 @@ function test100008() {
 
     var keys = [ "款号" ];
     var fields = queryGoodsInOutFields(keys);
-    changeTFieldValue(fields["款号"], TF_AC,"3035",-1,0);
+    changeTFieldValue(fields["款号"], TF_AC, "3035", -1, 0);
     query(fields);
     qr = getQR();
-
+   
+    var actual = 0, actual1 = 0;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            actual += Number(qr.data[i]["在途数"]);
+            actual1 += Number(qr.data[i]["库存"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    if(actual==qr.counts["在途数"]&&actual1==r.counts["库存"]){
+        var ret3=true;
+    }
+    
     tapFirstText(getScrollView(), TITLE_SEQ);
     tapNaviLeftButton();
 
@@ -198,6 +246,13 @@ function test100008() {
     }
 
     return ret && ret1 && isEqualQRData1ByTitle(qr, "款号", "3035");
+}
+
+
+function test100009(){
+    tapMenu("货品管理", "货品进销存");
+    
+    
 }
 
 // 7-33 待细化
