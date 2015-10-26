@@ -21,8 +21,9 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】连续核销后核销界面检查", "test170062");
     // run("【销售开单】客户或供应商信息不允许修改", "test170063");//
     // run("【销售开单-开单】检查核销", "test170065");//
-    // run("【销售开单－开单】核销还款时，输入未付的操作情况", "test170070");
-
+     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
+//    run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
+    // run("【销售开单－开单】款号价格为负数时检查", "test170072");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -824,5 +825,53 @@ function test170065() {
     // return ret1 && ret2 && ret3 && ret4;
 }
 function test170070() {
+    // 设置开单模式为9-快速标记标记代收的开单模式
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "未付" : "yes", "代收" : "是" };
+    editSalesBillNoColorSize(json);
 
+//    tapMenu("销售开单", "按批次查");
+//    var keys = { "客户" : "xjkh" };
+//    var fields = salesQueryBatchFields(keys);
+//    query(fields);
+//    qr = getQR();
+//    var a = qr.data[0]["代收"]
+//    var ret = isEqual(1500, qr.data[0]["金额"])
+//            && isEqual(-1500, qr.data[0]["未结"]);
+//    if (a == "是") {
+//        var ret1 = true;
+//    }
+//    logDebug("ret=" + ret + "是否代收=" + a);
+//    return ret && ret1;
+
+}
+function test170071() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "未付" : "yes", "代收" : "否" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "xjkh" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+    var a = qr.data[0]["代收"]
+    var ret = isEqual(1500, qr.data[0]["金额"])
+            && isEqual(-1500, qr.data[0]["未结"]);
+    if (a == "否") {
+        var ret1 = true;
+    }
+    logDebug("ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
+}
+function test170072() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    
+    
+    
 }
