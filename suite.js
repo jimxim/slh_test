@@ -6,13 +6,13 @@
 
 // 总经理
 function test000All() {
-	debug = true;
+//	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-	testSASynthesisAll();
+//	testSASynthesisAll();
 // testSalesBillAll();
 	
-//	testTemp();
+	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
@@ -31,11 +31,12 @@ function debugElements() {
 }
 
 function testTemp() {
-    testDate();
+//    testDate();
 //    testGetOpTime();
 //    testTapKeyboardHide();
 //    getStaffTFindex() ;
 //    testSalesBillFields();
+    testQRverify();
 }
 
 function testPinyin() {
@@ -66,4 +67,9 @@ function testGetOpTime() {
 }
 function testTapKeyboardHide() {
     tapKeyboardHide();
+}
+
+function testQRverify() {
+    var qr = getQRverify();
+    debugQResult(qr);
 }
