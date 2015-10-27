@@ -37,7 +37,10 @@ function testTemp() {
 //    getStaffTFindex() ;
 //    testSalesBillFields();
 //    testQRverify();
-    testDisplayBarcode();
+//    testDisplayBarcode();
+//    testTapFirstText();
+    testEditSalesBillAgency();
+//    testPushToFixArray();
 }
 
 function testPinyin() {
@@ -84,4 +87,29 @@ function testDisplayBarcode() {
     tapButton(window, "显示条码");
     var qr = getQRtable1();
     debugQResult(qr);
+}
+
+function testTapFirstText() {
+    var view1=getScrollView(-1), firstTitle="名称", titleTotal=7;
+    tapFirstText(view1, firstTitle, titleTotal);
+}
+
+function testEditSalesBillAgency() {
+    var o = {"代收":{"物流商":"yt","运单号":"123","备注":"a","代收金额":90}} ;
+//    editSalesBillAgency(o) ;
+    o = {"代收":{}} ;
+    editSalesBillAgency(o) ;
+    debugObject(o["代收"]);
+}
+
+function testPushToFixArray() {
+    var arr1;
+    pushToFixArray(arr1, "1", 3);
+    debugArray(arr1);
+//    arr1 = pushToFixArray(arr1, "2", 3);
+//    debugArray(arr1);
+//    arr1 = pushToFixArray(arr1, "3", 3);
+//    debugArray(arr1);
+//    arr1 = pushToFixArray(arr1, "4", 3);
+//    debugArray(arr1);
 }
