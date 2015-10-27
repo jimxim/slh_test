@@ -395,30 +395,46 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 		break;
 	case "type":
 	case "类别":
-	    f = new TField("类别", BTN_SC, colorSizeStartIndex+7, "登山服");
+	    f = new TField("类别", BTN_SC, colorSizeStartIndex+5, "登山服");
 	        if (show) {
 	            f.type = TF;
-	            f.index = priceStartIndex+17;
+	            f.index = priceStartIndex+15;
 	        }
 	        break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, priceStartIndex+14, "a", -1,"Adida公司");
+		f = new TField("厂商", TF_AC, priceStartIndex+16, "a", -1,"Adida公司");
 		if (show) {
 			f.value = f.p2;
 		}
 		break;
+	case "measure":
+	case "计量单位":
+	    f = new TField("计量单位", BTN_SC, colorSizeStartIndex+9, "件");
+		if (show) {
+	    f.type = TF;
+		f.index = priceStartIndex+17;
+		}
+		break;
 	case "warehouse":
 	case "仓位":
-		f = new TField("仓位", BTN_SC, colorSizeStartIndex+6, "默认");
+		f = new TField("仓位", BTN_SC, colorSizeStartIndex+10, "默认");
 		if (show) {
 			f.type = TF;
-			f.index = priceStartIndex+15;
+			f.index = priceStartIndex+18;
 		}
+		break;
+	case "min":
+	case "最小库存":
+	    f = new TField("最小库存", TF, priceStartIndex+19, "1");
+		break;
+		case "max":
+		case "最大库存":
+		f = new TField("最大库存", TF, priceStartIndex+20, "200");
 		break;
 	case "staff":
 	case "经办人":
-		f = new TField("经办人", TF_AC, priceStartIndex+16,"000", -1,"000,总经理"); 
+		f = new TField("经办人", TF_AC, priceStartIndex+21,"000", -1,"000,总经理"); 
 		if (show) {
 			f.value = f.p2;
 		}
@@ -426,29 +442,15 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 
 	case "barcode":
 	case "条码":
-		f = new TField("条码", TF, priceStartIndex+18, "555555");
+		f = new TField("条码", TF, priceStartIndex+22, "555555");
 		break;
 
 	case "remarks":
 	case "备注":
-		f = new TField("备注", TF, priceStartIndex+20, "123");
+		f = new TField("备注", TF, priceStartIndex+23, "123");
 		break;
-// case "measure":
-// case "计量单位":
-// f = new TField("计量单位", BTN_SC, colorSizeStartIndex+9, "件");
-// if (show) {
-// f.type = TF;
-// f.index = priceStartIndex+16;
-// }
-// break;
-// case "min":
-// case "最小库存":
-// f = new TField("最小库存", TF, priceStartIndex+18, "1");
-// break;
-// case "max":
-// case "最大库存":
-// f = new TField("最大库存", TF, priceStartIndex+19, "200");
-// break;
+
+
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -536,16 +538,18 @@ function goodsPriceNameField(key, show) {
 }
 
 // 货品类别
-function testGoodsTypeFields() {
-	var fields = goodsTypeFields("name");
+function testGoodsTypeFields() { 
+    var keys=["name"];
+	var fields = goodsTypeFields(keys);
 	setTFieldsValue(window, fields);
-	return true;
+    var showFields = goodsTypeFields(keys, true);
+    return checkShowFields(window, showFields);
 }
 
-function goodsTypeFields() {
-	return getTFields("goodsTypeField", arguments);
+function goodsTypeFields(keys, show) {
+	return getTFields("goodsTypeField", keys, show);
 }
-function goodsTypeField(key) {
+function goodsTypeField(key,show) {
 	var f;
 	switch (key) {
 	case "name":
@@ -572,8 +576,8 @@ function editGoodsTypeField(key) {
 	var f;
 	switch (key) {
 	case "name":
-	case "类别名称":
-		f = new TField("类别名称", TF, 0, "qqq");
+	case "名称":
+		f = new TField("名称", TF, 0, "qqq");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -595,8 +599,8 @@ function goodsColorField(key) {
 	var f;
 	switch (key) {
 	case "name":
-	case "类别名称":
-		f = new TField("类别名称", TF, 0, "q");
+	case "名称":
+		f = new TField("名称", TF, 0, "q");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -660,8 +664,8 @@ function goodsSizeField(key) {
 		f = new TField("尺码组", TF_SC, 0, "童装尺码组1");
 		break;
 	case "name":
-	case "类别名称":
-		f = new TField("类别名称", TF, 1, "q");
+	case "名称":
+		f = new TField("名称", TF, 1, "q");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -874,9 +878,13 @@ function editGoodsBrandDiscountField(key,show) {
 	case "打包价":
 		f = new TField("打包价", TF, 3, "0.4");
 		break;
+	  case "super":
+	    case "大客户价":
+	        f = new TField("大客户价", TF, 3, "0.4");
+	        break;
 	case "vip":
-	case "vip价格":
-		f = new TField("Vip价格", TF, 4, "0.3");
+	case "Vip价格":
+		f = new TField("Vip价格", TF, 5, "0.3");
 		break;
 	default:
 		logWarn("未知key＝" + key);
