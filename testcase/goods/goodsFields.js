@@ -14,6 +14,7 @@ function testQueryGoodsStockFields() {
 function queryGoodsStockFields(keys, show) {
 	return getTFields("queryGoodsStockField", keys, show);
 }
+
 function queryGoodsStockField(key, show) {
 	var f;
 	switch (key) {
@@ -85,6 +86,7 @@ function testQueryGoodsCodeStockFields() {
 function queryGoodsCodeStockFields(keys, show) {
 	return getTFields("queryGoodsCodeStockField", keys, show);
 }
+
 function queryGoodsCodeStockField(key, show) {
 	var f;
 	switch (key) {
@@ -140,6 +142,7 @@ function testQueryGoodsDistributionFields() {
 function queryGoodsDistributionFields(keys, show) {
 	return getTFields("queryGoodsDistributionField", keys, show);
 }
+
 function queryGoodsDistributionField(key, show) {
 	var f;
 	switch (key) {
@@ -173,6 +176,7 @@ function testQueryGoodsInOutFields() {
 function queryGoodsInOutFields(keys, show) {
 	return getTFields("queryGoodsInOutField", keys, show);
 }
+
 function queryGoodsInOutField(key, show) {
 	var f;
 	switch (key) {
@@ -233,6 +237,7 @@ function testQueryGoodsFields() {
 function queryGoodsFields(keys, show) {
 	return getTFields("queryGoodsField", keys, show);
 }
+
 function queryGoodsField(key, show) {
 	var f;
 	switch (key) {
@@ -298,12 +303,16 @@ function testEditGoodsFields() {
 	var showFields = editGoodsFields(keys, true);
 	return checkShowFields(getScrollView(), showFields);
 }
+
 function editGoodsFields(keys, show, colorSizeStartIndex,priceStartIndex) {
 	return getTFields("editGoodsField", keys, show, colorSizeStartIndex,priceStartIndex);
 }
-// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4     priceStartIndex 货品建款的价格模式，省代模式时=0，默认价格模式时=-1
+
+// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4 priceStartIndex
+// 货品建款的价格模式，省代模式时=0，默认价格模式时=-1
 function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
-//	logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" + colorSizeStartIndex);
+// logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" +
+// colorSizeStartIndex);
 	var f;
 	switch (key) {
 	case "code":
@@ -372,14 +381,26 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 	case "Vip价格":
 		f = new TField("Vip价格", TF, priceStartIndex+12, "170");
 		break;
+	case "discount":
+	case "产品折扣":
+	    f = new TField("产品折扣", TF, priceStartIndex+13, "1");
+	    break;
 	case "season":
 	case "季节":
 		f = new TField("季节", BTN_SC, colorSizeStartIndex+4, "夏季");
 		if (show) {
 			f.type = TF;
-			f.index = priceStartIndex+13;
+			f.index = priceStartIndex+14;
 		}
 		break;
+	case "type":
+	case "类别":
+	    f = new TField("类别", BTN_SC, colorSizeStartIndex+7, "登山服");
+	        if (show) {
+	            f.type = TF;
+	            f.index = priceStartIndex+17;
+	        }
+	        break;
 	case "provider":
 	case "厂商":
 		f = new TField("厂商", TF_AC, priceStartIndex+14, "a", -1,"Adida公司");
@@ -402,42 +423,32 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 			f.value = f.p2;
 		}
 		break;
-	case "type":
-	case "类别":
-		f = new TField("类别", BTN_SC, colorSizeStartIndex+7, "登山服");
-		if (show) {
-			f.type = TF;
-			f.index = priceStartIndex+17;
-		}
-		break;
+
 	case "barcode":
 	case "条码":
 		f = new TField("条码", TF, priceStartIndex+18, "555555");
 		break;
-	case "discount":
-	case "折扣":
-		f = new TField("折扣", TF, priceStartIndex+19, "1");
-		break;
+
 	case "remarks":
 	case "备注":
 		f = new TField("备注", TF, priceStartIndex+20, "123");
 		break;
-//	case "measure":
-//	case "计量单位":
-//		f = new TField("计量单位", BTN_SC, colorSizeStartIndex+9, "件");
-//		if (show) {
-//			f.type = TF;
-//			f.index = priceStartIndex+16;
-//		}
-//		break;
-//	case "min":
-//	case "最小库存":
-//		f = new TField("最小库存", TF, priceStartIndex+18, "1");
-//		break;
-//	case "max":
-//	case "最大库存":
-//		f = new TField("最大库存", TF, priceStartIndex+19, "200");
-//		break;
+// case "measure":
+// case "计量单位":
+// f = new TField("计量单位", BTN_SC, colorSizeStartIndex+9, "件");
+// if (show) {
+// f.type = TF;
+// f.index = priceStartIndex+16;
+// }
+// break;
+// case "min":
+// case "最小库存":
+// f = new TField("最小库存", TF, priceStartIndex+18, "1");
+// break;
+// case "max":
+// case "最大库存":
+// f = new TField("最大库存", TF, priceStartIndex+19, "200");
+// break;
 	default:
 		logWarn("未知key＝" + key);
 	}

@@ -229,6 +229,7 @@ function test160051() {
             break;
         }
     }
+    tapKeyboardHide();
 
     var ret2 = true;
     var f4 = new TField("客户", TF_AC, 4, "0", -1);
@@ -241,6 +242,7 @@ function test160051() {
             break;
         }
     }
+    tapKeyboardHide();
 
     delay();
     tapButtonAndAlert(window, RETURN);
