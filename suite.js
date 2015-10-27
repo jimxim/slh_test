@@ -37,7 +37,9 @@ function testTemp() {
 //    getStaffTFindex() ;
 //    testSalesBillFields();
 //    testQRverify();
-    testDisplayBarcode();
+//    testDisplayBarcode();
+//    testTapFirstText();
+    testEditSalesBillAgency();
 }
 
 function testPinyin() {
@@ -84,4 +86,14 @@ function testDisplayBarcode() {
     tapButton(window, "显示条码");
     var qr = getQRtable1();
     debugQResult(qr);
+}
+
+function testTapFirstText() {
+    var view1=getScrollView(-1), firstTitle="名称", titleTotal=7;
+    tapFirstText(view1, firstTitle, titleTotal);
+}
+
+function testEditSalesBillAgency() {
+    var o = {"代收":{"物流商":"yt","运单号":"123","备注":"a","代收金额":90}} ;
+    editSalesBillAgency(o) ;
 }
