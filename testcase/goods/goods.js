@@ -13,11 +13,13 @@ function testGoodsGoodsAll() {
     // run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100025");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
-//     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
-//     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
+    // run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
+    // run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
     // run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
-//    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
-    run("【货品管理-新增货品】显示条码", "test100042");
+    // run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
+    // run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "test100035");
+    // run("【货品管理-新增货品】显示条码", "test100042");
+    // run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
@@ -371,11 +373,28 @@ function test100019() {
     changeTFieldValue(fields["款号"], r);
     changeTFieldValue(fields["名称"], r);
     setTFieldsValue(getScrollView(), fields);
+
+    var ret = isEqual(100, getTextFieldValue(getScrollView(), 8))
+            && isEqual(200, getTextFieldValue(getScrollView(), 9))
+            && isEqual(180, getTextFieldValue(getScrollView(), 10))
+            && isEqual(160, getTextFieldValue(getScrollView(), 11))
+            && isEqual(140, getTextFieldValue(getScrollView(), 12));
+
     saveAndAlertOk();
     tapPrompt();
     delay();
     tapButton(window, RETURN);
 
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], r);
+    query(qFields);
+    var qr = getQR();
+    var ret1 = isEqual(100, qr.data[0]["进货价"]);
+
+    logDebug("ret=" + ret + "   ret1=" + ret1);
+    return ret && ret1;
 }
 
 function test100025() {
@@ -629,7 +648,38 @@ function test100031() {
     return ret;
 }
 
-function test100042(){
+function test100035() {
+    // tapMenu("货品管理", "新增货品+");
+    // var r = getTimestamp(8);
+    // var keys = [ "款号", "名称"];
+    // var fields = editGoodsFields(keys, false, 4, 0);
+    // changeTFieldValue(fields["款号"], r);
+    // changeTFieldValue(fields["名称"], r);
+    // setTFieldsValue(getScrollView(), fields);
+
+    // tapButton(getScrollView(),1);
+    // var g0 = new TField("品牌名称", TF, 0, "pp"+r);
+    // fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), CLOSE);
+
+    // tapButton(getScrollView(), 3);
+    // var g0 = new TField("颜色组", BTN_SC, "选 择", "中");
+    // var g1 = new TField("品牌名称", TF, 1, "Color"+r); ,g1
+    // var fields = [ g0 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), CLOSE);
+
+    // saveAndAlertOk();
+    // tapPrompt();
+    // delay();
+    // tapButton(window, RETURN);
+
+}
+
+function test100042() {
     tapMenu("货品管理", "新增货品+");
     var ret1 = true;
     var ret2 = true;
@@ -645,7 +695,9 @@ function test100042(){
             break;
         }
     }
-    
+    tapKeyboardHide();
+    delay();
+
     var f14 = new TField("厂商", TF_AC, 14, "x", -1);
     cells = getTableViewCells(getScrollView(), f14);
     for (i = 0; i < cells.length; i++) {
@@ -656,24 +708,51 @@ function test100042(){
             break;
         }
     }
-    
+    tapKeyboardHide();
+    delay();
+
     var f16 = new TField("经办人", TF_AC, 16, "0", -1);
     cells = getTableViewCells(getScrollView(), f16);
     for (i = 0; i < cells.length; i++) {
         cell = cells[i];
         v = cell.name();
         if (isEqual("1010pp", v)) {
-            ret3= false;
+            ret3 = false;
             break;
         }
     }
-    
+
     tapButton(window, RETURN);
-    
-    logDebug("   ret1=" + ret1 + "   ret2=" + ret2
-            + "   ret3=" + ret3);
-    return ret1&&ret2&&ret3;
-    
+
+    logDebug("   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3=" + ret3);
+    return ret1 && ret2 && ret3;
+
+}
+
+function test100058() {
+    tapMenu("货品管理", "新增货品+");
+    var r = getTimestamp(8);
+    var keys = [ "款号", "名称" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["款号"], r);
+    changeTFieldValue(fields["名称"], r);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapButton(window, "显示条码");
+    var qr = getQRverify();
+    // getTableViews(),"序号","条码"
+    var expected = { "序号" : "1", "款号" : r, "名称" : r, "颜色" : "均色", "尺码" : "均码" };
+    var ret = isEqualQRData1Object(qr, expected);
+    tapNaviLeftButton();
+    tapButton(window, RETURN);
+
+    return ret;
 }
 
 function test100047_100048_100049_100050_100051_100052() {
