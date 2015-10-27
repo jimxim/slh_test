@@ -1,3 +1,21 @@
+    //var firstTitle = "门店", lastTitle = "备注";
+    var firstTitleIndex = 0, lastTitleIndex = 0, titleTotal = 0;
+//    var texts = getStaticTexts( getScrollView(-1));
+//    debugArray(texts, "texts");
+    for (var i = 0; i < texts.length; i++) {
+        if (firstTitle == texts[i].value()) {
+            firstTitleIndex = i;
+        }
+        if (lastTitle == texts[i].value()) {
+            lastTitleIndex = i;
+            break;
+        }
+    }
+    titleTotal = lastTitleIndex - firstTitleIndex + 1;
+    logDebug("firstTitleIndex=" + firstTitleIndex + " lastTitleIndex="
+            + lastTitleIndex + " titleTotal=" + titleTotal + " texts.length"
+            + texts.length);
+
 自动化测试需实现：销售开单－刷卡
 新增客户
 ltth图片tfq选ffi款

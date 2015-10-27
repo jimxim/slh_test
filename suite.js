@@ -36,7 +36,8 @@ function testTemp() {
 //    testTapKeyboardHide();
 //    getStaffTFindex() ;
 //    testSalesBillFields();
-    testQRverify();
+//    testQRverify();
+    testDisplayBarcode();
 }
 
 function testPinyin() {
@@ -70,6 +71,17 @@ function testTapKeyboardHide() {
 }
 
 function testQRverify() {
-    var qr = getQRverify();
+    tapButton(window, "核销");
+    var texts = getStaticTexts(getScrollView(-1));
+    var qr = getQRverify(texts,"门店",8,2);
+    debugQResult(qr);
+}
+/**
+ * 显示条码
+ * @returns
+ */
+function testDisplayBarcode() {
+    tapButton(window, "显示条码");
+    var qr = getQRtable1();
     debugQResult(qr);
 }
