@@ -600,7 +600,7 @@ function editSalesBillField(key, show) {
 	switch (key) {
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
+		f = new TField("客户", TF_AC, 0, "a",  - 1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
@@ -612,11 +612,17 @@ function editSalesBillField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, staffTFindex, "000", l - 1, 0); //5
+		f = new TField("店员", TF_AC, staffTFindex, "000",  - 1, 0); //5
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
+	case "发货":
+        f = new TField("发货", TF_SC, staffTFindex+1, "仓库店"); 
+        if (show) {
+            f.value = "000,管理员";
+        }
+        break;
     case "刷卡":
         f = new TField("刷卡", TF, staffTFindex+2, 0,"NoNeedReturn"); //7
         break;
