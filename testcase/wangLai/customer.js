@@ -16,8 +16,12 @@ function testWanLaiCustomerAll() {
     // run("客户修改保存", "test110004");
 
     // run("新增不同客户", "test110013");
-    
-    run("【往来管理】是否欠款报警查询", "test110027");//未完成
+
+    // run("【往来管理】是否欠款报警查询", "test110027");
+    // run("【往来管理】是否欠款报警查询", "test110029");
+    // run("【往来管理】是否欠款报警查询", "test110030");//有问题
+//    run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
+    // run("【往来管理】未拿货天数", "test110035");
     // run("允许退货", "test110008");// 有问题
     // run("客户总帐", "test110020");
     // run("不允许退货", "test110009");
@@ -36,10 +40,9 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】所有统计功能", "test110024");//有问题
     // run("客户活跃度", "testQueryCustomerActive");
     // run("积分查询", "testQueryCustomerScore");//商路花6.59／v6.5904版本无积分查询模块
-    // run("新增相同厂商", "testCustomerProviderAddSame");
     // run("厂商查询", "testQueryCustomerProvider");
     // run("厂商门店账", "testQueryProviderShopAccount");
-    // run("厂商总账", "testQueryCustomerProviderAccount");
+//     run("【往来管理-厂商账款】厂商总账", "test110042");
 
     // run("物流商查询", "testQueryCustomerLogistics");
     // run("新增/修改物流商", "testEditCustomerLogistics");
@@ -900,7 +903,7 @@ function test110020() {
         }
         if (j < totalPageNo) {
             scrollNextPage();
-            qr = getQR();
+            qr = getQResult2(getScrollView(1), "批次", "未结");
         }
     }
 
@@ -993,7 +996,7 @@ function testQueryCustomerScore() {
     return ret1 && ret2;
 }
 
-function testCustomerProviderAddSame() {
+function test110038() {
     tapMenu("往来管理", "新增厂商+");
     var keys = [ "name", "mobile" ];
     var fields = editCustomerProviderFields(keys);
@@ -1071,7 +1074,7 @@ function testQueryProviderShopAccount() {
             && isEqualQRData1ByTitle(qr, "门店", "常青店");
 }
 
-function testQueryCustomerProviderAccount() {
+function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     query();
     var ret = true;
@@ -1263,13 +1266,23 @@ function test110024() {
 }
 
 function test110027() {
-    var r=getToday()+getRandomInt(4);
-    var keys={"名称":r,"信用额度":"1000"};
-    var qFields=editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
+    var r1 = getToday() + getRandomInt(5);
+    var r2 = getRandomInt(4) + getToday();
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r1, "欠款报警" : "1000" };
+    var qFields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), qFields);
     tapButton(window, SAVE);
     tapButton(window, RETURN);
-    
+
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r2, "欠款报警" : "1000" };
+    var qFields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), qFields);
+    tapButton(window, SAVE);
+    tapButton(window, RETURN);
+    delay();
+
     tapMenu("销售开单", "开  单+");
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
@@ -1277,22 +1290,36 @@ function test110027() {
     setTFieldsValue(getScrollView(), fields2);
     var keys1 = [ "客户", "现金" ];
     var fields1 = editSalesBillFields(keys1);
-    changeTFieldValue(fields1["客户"], r);
+    changeTFieldValue(fields1["客户"], r1);
     setTFieldsValue(window, fields1);
     saveAndAlertOk();
     tapButton(window, RETURN);
-    
+    delay();
+
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "1");
+    var fields2 = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields2);
+    var keys1 = [ "客户", "现金" ];
+    var fields1 = editSalesBillFields(keys1);
+    changeTFieldValue(fields1["客户"], r2);
+    setTFieldsValue(window, fields1);
+    saveAndAlertOk();
+    tapButton(window, RETURN);
+    delay();
+
     tapMenu("往来管理", "客户账款", "客户门店账");
     var keys = { "是否欠款报警" : "是" };
     var qFields = queryCustomerShopAccountFields(keys);
     query(qFields);
     var qr1 = getQR();
-    var ret1 = true;
+    var ret1 = false;
     var totalPageNo = qr1.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr1.curPageTotal; i++) {
-            if (qr1.data[i]["余额"] > 0) {
-                ret1 = false;
+            if (qr1.data[i]["名称"] == r1) {
+                ret1 = true;
             }
         }
         if (j < totalPageNo) {
@@ -1305,12 +1332,12 @@ function test110027() {
     var qFields = queryCustomerShopAccountFields(keys);
     query(qFields);
     var qr2 = getQR();
-    var ret2 = true;
+    var ret2 = false;
     var totalPageNo = qr2.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr2.curPageTotal; i++) {
-            if (qr2.data[i]["余额"] < 0) {
-                ret1 = false;
+            if (qr2.data[i]["名称"] == r2) {
+                ret2 = true;
             }
         }
         if (j < totalPageNo) {
@@ -1319,5 +1346,140 @@ function test110027() {
         }
     }
 
-    return ret1 && ret2;
+    tapButton(window, "清除");
+    query();
+    var qr3 = getQR();
+    var ret3 = false;
+    var ret4 = false;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr3.curPageTotal; i++) {
+            if (qr3.data[i]["名称"] == r1) {
+                ret3 = true;
+            } else if (qr3.data[i]["名称"] == r2) {
+                ret4 = true;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr3 = getQR();
+        }
+    }
+
+    return ret1 && ret2 && ret3 && ret3 && ret4;
+}
+
+function test110029() {
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    tapButton(window, "清除");
+    query();
+    var qr1 = getQR();
+    var a = qr1.data[0]["余额"];
+    tapFirstText();
+    var qr2 = getQResult2(getScrollView(1), "操作日期", "累计未结");
+    var b = qr2.data[0]["累计未结"];
+    var ret = false;
+    if (a == b) {
+        ret = true;
+    }
+    tapNaviLeftButton();
+    return ret;
+}
+
+function test110030() {
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    tapButton(window, "清除");
+    query();
+    var qr1 = getQR();
+    var a = qr1.data[0]["余额"];
+    tapFirstText();
+    var qr2 = getQResult2(getScrollView(1), "操作日期", "累计未结");
+    var sum = 0;
+    var totalPageNo = qr2.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr2.curPageTotal; i++) {
+
+            sum += Number(qr2.data[i]["未结"]);
+
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            delay();
+            qr2 = getQResult2(getScrollView(1), "操作日期", "累计未结");
+            delay(2);
+        }
+    }
+    logDebug("a=" + a + "/sum=" + sum);
+    var ret = false;
+    if (a == sum) {
+        ret = true;
+    }
+    tapNaviLeftButton();
+    return ret;
+}
+
+function test110034() {
+    var r=getToday()+getRandomInt(100);
+    tapMenu("往来管理", "新增客户+");
+    var keys={"名称":r};
+    var fields=editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapButton(window, RETURN);
+    
+//    tapMenu("销售开单", "开  单+");
+//    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+//    var f3 = new TField("数量", TF, 3, "1");
+//    var fields2 = [ f0, f3 ];
+//    setTFieldsValue(getScrollView(), fields2);
+//    var keys={"客户":r,"现金":"10000"};
+//    var fields = editSalesBillFields(keys);
+//    setTFieldsValue(window, fields);
+//    saveAndAlertOk();
+//    tapButton(window, RETURN);
+//    delay();
+
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : r };
+    var fields = queryCustomerFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    tapFirstText();
+    tapButtonAndAlert("停 用");
+    delay();
+
+    tapMenu("往来管理", "客户活跃度");
+    var keys = { "客户" : r };
+    var fields = queryCustomerActiveFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    var qr1 = getQR();
+    var ret1 = false;
+
+    if (qr1.total == 0) {
+        ret1 = true;
+    }
+    return ret1;
+}
+
+function test110035() {
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    tapButton(window, "清除");
+    query();
+    var qr1 = getQR();
+    var r = qr1.data[0]["名称"];
+    var a = qr1.data[0]["未拿货天数"];
+
+    tapMenu("往来管理", "客户活跃度");
+    var keys = { "客户" : r };
+    var fields = queryCustomerActiveFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    var qr2 = getQR();
+    var a1 = qr2.data[0]["未拿货天数"];
+    var ret = false;
+    if (a == a1) {
+        ret = true;
+    }
+    return ret;
 }
