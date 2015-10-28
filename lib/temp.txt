@@ -5,7 +5,25 @@
  * setTFieldsValue(window, fields); } }
  */
 
-
+/**
+ * 静态文本下标,in表示下标可以部分匹配
+ * @param view1
+ * @param i
+ * @returns {Number}
+ */
+function getStaticTextIndexIn(view1, i) {
+    var index = -1;
+    var texts = getStaticTexts(view1);
+    for (var i = 0; i < texts.length; i++) {
+        var t = texts[i];
+        var v = t.value();
+        if (isIn(v, txt1)) {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
     //var firstTitle = "门店", lastTitle = "备注";
     var firstTitleIndex = 0, lastTitleIndex = 0, titleTotal = 0;
 //    var texts = getStaticTexts( getScrollView(-1));
