@@ -1,3 +1,11 @@
+/*
+ * function editSalesBillStaff(o) { editSalesBillField1(o,"店员"); var key = "店员";
+ * var v = o[key]; if (isDefined(v)) { var keys = [ key ]; var fields =
+ * editSalesBillFields(keys); changeTFieldValue(fields[key], v);
+ * setTFieldsValue(window, fields); } }
+ */
+
+
     //var firstTitle = "门店", lastTitle = "备注";
     var firstTitleIndex = 0, lastTitleIndex = 0, titleTotal = 0;
 //    var texts = getStaticTexts( getScrollView(-1));

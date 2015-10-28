@@ -10,9 +10,9 @@ function test000All() {
 // var ok = login("000","000000");
 // if( ok ) {
 //	testSASynthesisAll();
-// testSalesBillAll();
+ testSalesBillAll();
 	
-	testTemp();
+//	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
