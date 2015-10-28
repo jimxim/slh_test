@@ -245,7 +245,7 @@ function test160051() {
     tapKeyboardHide();
 
     delay();
-    tapButtonAndAlert(window, RETURN);
+    tapButtonAndAlert(RETURN);
 
     logDebug(" ret1=" + ret1 + " ret2=" + ret2);
     return ret1 && ret2;
@@ -391,7 +391,7 @@ function test160062() {
             && isEqual(5, getTextFieldValue(getScrollView(), 3));
     // tapButton(window, RETURN);
     // delay(10);
-    // tapButtonAndAlert(window, RETURN); //不会点返回
+    // tapButtonAndAlert(RETURN); //不会点返回
     editSalesBillSave({});
 
     return ret;
@@ -476,14 +476,11 @@ function test160008() {
 //    fields = [ f0, f3 ];
 //    setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    if (isIn(alertMsg, "确定保存吗")) {
-        var ret1 = true;
-    }
-    tapButtonAndAlert("none", OK);
+   tapButtonAndAlert("none", OK,true);
     if (isIn(alertMsg, "保存成功")) {
         var ret2 = true;
     }
-    tapButtonAndAlert("none", OK);
+    tapButtonAndAlert("none", OK,true);
     if (isIn(alertMsg, "操作失败")) {
         var ret3 = true;
     }

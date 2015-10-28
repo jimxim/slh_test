@@ -14,7 +14,7 @@ function testWanLaiCustomerAll() {
     // run("客户启用", "testCustomerSart");
     // run("客户消费明细", "test110002");
     // run("客户修改保存", "test110004");
-
+<<<<<<< HEAD
 
     // run("新增不同客户", "test110013");
 
@@ -25,7 +25,12 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】未拿货天数", "test110035");
     // run("允许退货", "test110008");// 有问题
     // run("客户总帐", "test110020");
-
+=======
+    // run("客户新增保存", "test110013");//有问题
+    // run("新增不同客户", "test110013_2");//有问题
+    // run("客户签名", "testCustomerSign");
+    // run("允许退货", "test110008");//有问题
+>>>>>>> origin/master
     // run("不允许退货", "test110009");
     // run("新增分店", "testCustomerEditBranch");
     // run("客户分店", "testCustomerBranch");
@@ -917,7 +922,7 @@ function test110020() {
     // debugElements(getScrollView());
     // tapNaviLeftButton();
     var qr2 = getQResult2(getScrollView(1), "批次", "未结");
-
+<<<<<<< HEAD
     var sum = 0;
     var totalPageNo = qr2.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
@@ -931,7 +936,10 @@ function test110020() {
     }
 
     logDebug("sum=" + sum);
-
+=======
+    var b = qr2.data[0]["未结"];
+    logDebug("b=" + b);
+>>>>>>> origin/master
     tapNaviLeftButton();
 
     // var qkey = [ "customer" ];
@@ -1249,7 +1257,7 @@ function testQueryCustomerShopAccountByShopkeeper() {
     }
 
     return ret;
-
+<<<<<<< HEAD
 }
 
 function test110022() {
@@ -1508,4 +1516,6 @@ function test110035() {
     }
     return ret;
 }
-
+=======
+}
+>>>>>>> origin/master

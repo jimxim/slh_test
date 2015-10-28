@@ -2,9 +2,10 @@
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");
-    run("新增开单，无颜色尺码", "testEditSalesBillNoColorSize");
+    // run("新增开单，无颜色尺码", "testEditSalesBillNoColorSize");
     // run("新增开单，颜色尺码", "testEditSalesBillColorSize");
     // run("开单界面，新增货品", "testEditSalesBillAddGoods");
+    run("开单界面，新增货品,重复明细", "testEditSalesBillDetRepeatGoods");
 }
 
 function testSpecial() {
@@ -41,4 +42,14 @@ function testEditSalesBillAddGoods() {
     var o = { "款号" : "kh", "名称" : "名称", "进货价" : 120, "零批价" : 130, "打包价" : 140,
         "大客户价" : 150, "Vip价格" : 160, "添加到单据" : "否" };
     editSalesBillAddGoods(o);
+}
+
+function testEditSalesBillDetRepeatGoods() {
+    tapMenu("销售开单", "开  单+");
+    var o = { "明细" : [ { "货品" : "ck001", "数量" : "5" },
+            { "货品" : "ck001", "数量" : "5" }, { "货品" : "ck002", "数量" : "5" } ] };
+    o = { "明细" : [ { "货品" : "ck001", "数量" : "5" },
+            { "货品" : "ck002", "数量" : "5" } ] };
+    editSalesBillDetNoColorSize(o);
+    return true;
 }
