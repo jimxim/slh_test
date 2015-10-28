@@ -22,8 +22,8 @@ function testGoodsGoodsAll() {
     // run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "test100035");
     // run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
     // run("【货品管理-新增货品】显示条码", "test100042");
-    run("【货品管理-批量操作】批量停用-重复停用提示", "test100054");
-    // run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
+//    run("【货品管理-批量操作】批量停用-重复停用提示", "test100054");
+     run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
@@ -821,7 +821,16 @@ function test100042() {
 }
 
 function test100054() {
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], "xxf001"); //xxf001为启用状态
+    query(qFields);
+    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapButtonAndAlert(STOP);
     
+    changeTFieldValue(qFields["款号名称"], "xxf"); //xxf003为启用状态  xxf001/xxf002为停用
+    query(qFields);
     
 }
 
@@ -841,7 +850,7 @@ function test100058() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     tapButton(window, "显示条码");
-    var qr = getQRverify();
+    var qr = getQRtable1();
     // getTableViews(),"序号","条码"
     var expected = { "序号" : "1", "款号" : r, "名称" : r, "颜色" : "均色", "尺码" : "均码" };
     var ret = isEqualQRData1Object(qr, expected);
