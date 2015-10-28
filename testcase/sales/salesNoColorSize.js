@@ -32,16 +32,19 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单-开单】开单模式-整单折扣", "test170085");
     // run("【销售开单-开单】开单模式-童装模式", "test170087");
     // run("【销售开单-开单】开单模式-代收模式2", "test170090");
-    // run("【销售开单－开单】收款方式选择代收", "test170091");
-    // run("【销售开单－开单】代收模式2", "test170092_170093");
-    // run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
+    // run("【销售开单－开单】收款方式选择代收", "test170091_170092");
+     run("【销售开单－开单】代收模式2", "test170093");
+     run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
     // run("【销售开单－开单】整单备注和明细备注", "test170095");
     // run("【销售开单－开单】退货时备注显示", "test170096");
-    run("【销售开单－开单】退货时明细备注框操作", "test170097");
+    // run("【销售开单－开单】退货时明细备注框操作", "test170097");
     // run("【销售开单－开单】点击日期控件下面的“货品”字样进行排序", "test170098");//
     // run("【销售开单－开单】款号合并", "test1700101");//
     // run("【销售开单－开单】款号合并（既拿货又退货）", "test1700102");//
-    // run("【销售开单-开单】均色均码款号合并", "test1700103");
+    // run("【销售开单-开单】均色均码款号合并", "test1700103");／／
+    // run("【销售开单－开单】退货时明细备注框操作", "test1700104");／／
+//    run("【销售开单－开单】查看上次成交价", "test1700105");
+
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -1072,7 +1075,7 @@ function test170090() {
     logDebug("ret=" + ret + "ret1=" + ret1);
     return ret && ret1;
 }
-function test170091() {
+function test170091_170092() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
@@ -1098,11 +1101,30 @@ function test170091() {
     return ret && ret1;
 
 }
-function test170092_170093() {
+function test170093() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "8989", "数量" : "1", "备注" : "mxbz" } ], "备注" : "zdbz" };
+        "明细" : [ { "货品" : "8989", "数量" : "1" } ]};
     editSalesBillNoColorSize(json);
+    
+    tapStaticText(window, "代收");
+    tapButton(window, "新增+");
+    var r = "kd" + getTimestamp(6);
+    var r1 = getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var g1 = new TField("电话", TF, 0, r1);
+    var g2 = new TField("地址", TF, 0, r);
+    var g3 = new TField("账户", TF, 0, r1);    
+    var fields = [ g0,g1,g2,g3 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapNaviRightButton();
+    
+    var w = json["代收"]["物流商"];
+    if (money == r) {
+        var ret = true;
+    }    
 
 }
 function test170094() {
@@ -1118,8 +1140,25 @@ function test170094() {
     var qr = getQR();
     tapFirstText(getScrollView(), "序号", 20);
 
-    logDebug("ret=" + ret + "ret1=" + ret1);
-    return ret && ret1;
+    var money = json["代收"]["代收金额"];
+    var wls = json["代收"]["物流商"];
+    var ydh = json["代收"]["运单号"];
+    var bz = json["代收"]["备注"];
+    if (money == "416") {
+        var ret = true;
+    }
+    if (wls == "圆通速递") {
+        var ret1 = true;
+    }
+    if (ydh == "123") {
+        var ret2 = true;
+    }
+    if (bz == "a") {
+        var ret3 = true;
+    }
+
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2 + "ret3=" + ret3);
+    return ret && ret1 && ret2 && ret3;
 
 }
 function test170095() {
@@ -1263,5 +1302,17 @@ function test1700102() {
 }
 function test1700103() {
     // 均色均码款号合并
+
+}
+function test1700104() {
+    // 上次成交价界面显示备注信息
+
+}
+function test1700105() {
+    // 开启参数 颜色尺码下，开单是否显示上次单价
+
+}
+function test1700106() {
+    // 不同iPad开单，查看上次成交记录
 
 }
