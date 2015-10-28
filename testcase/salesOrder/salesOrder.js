@@ -167,7 +167,7 @@ function test160050() {
     tapButton(window, "新增+");
     var g0 = new TField("名称", TF, 0, "Rt");
     var fields = [ g0 ];
-    setTFieldsValue(getPopView(), fields);
+    setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapPrompt();
     if (isIn(alertMsg, "名称重复")) {
@@ -177,7 +177,7 @@ function test160050() {
     g0 = new TField("名称", TF, 0, r);
     var g1 = new TField("手机", TF, 1, "13833331116");
     fields = [ g0, g1 ];
-    setTFieldsValue(getPopView(), fields);
+    setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapPrompt();
     if (isIn(alertMsg, "操作失败")) {
@@ -188,7 +188,7 @@ function test160050() {
     var g2 = new TField("店员", TF_AC, 2, "000", -1, 0);
     var g3 = new TField("地址", TF, 3, r);
     fields = [ g1, g2, g3 ];
-    setTFieldsValue(getPopView(), fields);
+    setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
     var ret2 = isEqual(r, getTextFieldValue(window, 0));

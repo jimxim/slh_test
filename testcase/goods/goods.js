@@ -22,11 +22,16 @@ function testGoodsGoodsAll() {
     // run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "test100035");
     // run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
     // run("【货品管理-新增货品】显示条码", "test100042");
-//    run("【货品管理-批量操作】批量停用-重复停用提示", "test100054");
-     run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
+    // run("【货品管理-批量操作】批量停用-重复停用提示", "test100054"); //有问题
+    // run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
+//    run("【货品管理-更多-新增仓位】新增仓位", "test100074");
+//    run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
+    run("【货品管理-更多-仓位列表】保存修改", "test100070")
+//    run("【货品管理-更多-超储统计】最大库存为0不计入超储统计", "test100079_100080_100081")
+
 }
 
 function test100001() {
@@ -821,17 +826,43 @@ function test100042() {
 }
 
 function test100054() {
+    tapMenu("货品管理", "新增货品+");
+    var r = getTimestamp(8);
+    var keys = [ "款号", "名称" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["款号"], r);
+    changeTFieldValue(fields["名称"], r);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
     tapMenu("货品管理", "货品查询");
     var qKeys = [ "款号名称" ];
     var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], "xxf001"); //xxf001为启用状态
+    changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     tapButtonAndAlert(STOP);
-    
-    changeTFieldValue(qFields["款号名称"], "xxf"); //xxf003为启用状态  xxf001/xxf002为停用
-    query(qFields);
-    
+
+    tapMenu("货品管理", "新增货品+");
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapButtonAndAlert(STOP);
+    tapButtonAndAlert("none", OK, true);
+    if (isIn(alertMsg, "操作失败")) {
+        var ret = true;
+    }
+    tapButton(window, RETURN);
+
+    return ret;
 }
 
 function test100058() {
@@ -1128,4 +1159,147 @@ function test100053() {
 
     logDebug("ret=" + ret + "   ret1=" + ret1)
     return ret && ret1;
+}
+
+function test100074() {
+    tapMenu("货品管理", "更多", "新增仓位+");
+    saveAndAlertOk();
+    tapButtonAndAlert("none", OK, true);
+    if (isIn(alertMsg, "名称不能为空")) {
+        var ret1 = true;
+    }
+
+    var f0 = new TField("名称", TF, 0, "AB");
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapButtonAndAlert("none", OK, true);
+    if (isIn(alertMsg, "相同记录已存在")) {
+        var ret2 = true;
+    }
+
+    var r = "cw" + getTimestamp(10);
+    f0 = new TField("名称", TF, 0, r);
+    fields = [ f0 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "更多", "仓位列表");
+    tapButton(window, CLEAR);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var ret3 = isEqual(r, qr.data[0]["名称"]);
+
+    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret3" + ret3);
+    return ret1 && ret2 && ret3;
+
+}
+
+function test100068_100069(){
+    tapMenu("货品管理", "更多", "新增仓位+");
+    var r = "cw" + getTimestamp(6);
+    var f0 = new TField("名称", TF, 0, r);
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay();
+    tapButton(window, RETURN);
+    
+    tapMenu("货品管理", "更多", "仓位列表");
+    query(fields);
+    var qr = getQR();
+    var ret1 = isEqual(r, qr.data[0]["名称"]);
+
+    tapButton(window, CLEAR);
+    tapButton(window, QUERY);
+    qr=getQR();
+    var total=qr.total;
+    if(total>1){
+        var ret2=true;
+    }
+    
+    
+    return ret1&&ret2;
+}
+
+function test100070(){
+//    tapMenu("货品管理", "更多", "新增仓位+");
+    var r = "cw" + getTimestamp(6);
+    var f0 = new TField("名称", TF, 0, r);
+    var fields = [ f0 ];
+//    setTFieldsValue(getScrollView(), fields);
+//    saveAndAlertOk();
+//    delay();
+//    tapButton(window, RETURN);
+
+//    tapMenu("货品管理", "更多", "仓位列表");
+//    tapButton(window, CLEAR);
+//    setTFieldsValue(window, fields);
+//    tapButton(window, QUERY);
+//    delay();
+//    tapFirstText(getScrollView(),"序号",2);
+    
+    setTFieldsValue(getScrollView(), fields);
+//    delay();
+    clearTField(getScrollView(), f0);
+//    tapButtonAndAlert("保存修改");
+//    tapButtonAndAlert("none", OK, true);
+//    if (isIn(alertMsg, "名称不能为空")) {
+//        var ret1 = true;
+//    }
+    
+//    changeTFieldValue(fields[f0], r);            
+//    setTFieldsValue(getScrollView(), fields);
+//    tapButtonAndAlert("保存修改");
+//    tapButtonAndAlert("none", OK, true);
+//    if (isIn(alertMsg, "相同记录已存在")) {
+//        var ret2 = true;
+//    }
+//
+//    var r1=r+"edit";
+//    changeTFieldValue(fields[f0], r1);            
+//    setTFieldsValue(getScrollView(), fields);
+//    tapButtonAndAlert("保存修改");
+//    delay();
+//    tapButton(window, RETURN);
+//
+//    tapMenu("货品管理", "更多", "仓位列表");
+//    tapButton(window, CLEAR);
+//    setTFieldsValue(window, fields);
+//    tapButton(window, QUERY);
+//    var qr = getQR();
+//    var ret3 = isEqual(r1, qr.data[0]["名称"]);
+// 
+//
+//    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret3" + ret3);
+//    return ret1 && ret2 && ret3;
+    
+}
+
+function test100079(){
+    var r = getTimestamp(6);
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window,"新增货品+");
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var fields = [ g0,g1 ];
+    setTFieldsValue(getPopOrView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    
+    var f0 = new TField("厂商", TF_AC, 0, "vell");
+    fields = [ f0 ];
+    setTFieldsValue(window, fields);
+    
+    var g3 = new TField("厂商", TF, 3, 5);
+    fields = [ f0 ];
+    setTFieldsValue(window, fields);
+    
+    
+    
+    
+    
 }

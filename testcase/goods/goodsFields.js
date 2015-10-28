@@ -849,7 +849,7 @@ function testEditGoodsBrandDiscountFields() {
 	var fields = editGoodsBrandDiscountFields(keys);
 	setTFieldsValue(getScrollView(), fields);
 	var showFields= editGoodsBrandDiscountFields(keys,true);
-	return checkShowFields=(getScrollView(),showFields);
+	return checkShowFields(getScrollView(),showFields);
 }
 
 function editGoodsBrandDiscountFields(keys,show) {
@@ -898,7 +898,7 @@ function testGoodsCustomerFields() {
 	var fields = goodsCustomerFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=goodsCustomerFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function goodsCustomerFields(keys,show) {
