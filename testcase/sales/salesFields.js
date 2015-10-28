@@ -749,7 +749,7 @@ function salesBillOrderField(key, show) {
 		break;
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 3, "z", 1, 0);
+		f = new TField("客户", TF_AC, 3, "z", -1, 0);
 		if (show) {
 			f.value = "zz";
 		}
