@@ -1242,8 +1242,7 @@ function test100070(){
 //    delay();
 //    tapFirstText(getScrollView(),"序号",2);
     
-    setTFieldsValue(getScrollView(), fields);
-//    delay();
+
     clearTField(getScrollView(), f0);
 //    tapButtonAndAlert("保存修改");
 //    tapButtonAndAlert("none", OK, true);
