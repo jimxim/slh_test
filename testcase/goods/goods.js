@@ -29,11 +29,19 @@ function testGoodsGoodsAll() {
     // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量操作", "test100053");
-    run("【货品管理】品牌查询条件可以自动完成", "test100060");
+    // run("【货品管理】品牌查询条件可以自动完成", "test100060");
     // run("【货品管理-更多-新增仓位】新增仓位", "test100074");
     // run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
-//     run("【货品管理-更多-仓位列表】保存修改", "test100070")
-//     run("【货品管理-更多-超储统计】最大库存为0不计入超储统计", "test100079_100080_100081")
+    // run("【货品管理-更多-仓位列表】保存修改", "test100070");
+    // run("【货品管理-更多-超储统计】最大库存为0不计入超储统计/库存>最大库存/库存=最大库存",
+    // "test100079_100080_100081");
+    // run("【货品管理-更多-缺货统计】最小库存为0不计入缺货统计", "test100086");
+    // run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
+    // "test100087_100088_100089");
+    // run("【货品管理-更多-超储统计】查询条件单项查询/组合查询/清除/底部数据统计",
+    // "test100075_100076_100077_100078");
+    // run("【货品管理-更多-缺货统计】查询条件单项查询/组合查询/清除/底部数据统计",
+    // "test100082_100083_100084_100085");
 
 }
 
@@ -1397,7 +1405,7 @@ function test100070() {
         ret1 = true;
     }
     delay();
-    
+
     f0 = new TField("名称", TF, 0, "AB");
     fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
@@ -1428,22 +1436,344 @@ function test100070() {
 }
 
 function test100079_100080_100081() {
-    var r = getTimestamp(6);
+    var r = "cc" + getTimestamp(6);
     tapMenu("采购入库", "新增入库+");
+    var f0 = new TField("厂商", TF_AC, 0, "vell");
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
     tapButton(window, "新增货品+");
     var g0 = new TField("款号", TF, 0, r);
     var g1 = new TField("名称", TF, 1, r);
-    var fields = [ g0, g1 ];
+    var g2 = new TField("进货价", TF, 2, 100);
+    fields = [ g0, g1, g2 ];
     setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
 
+    var g3 = new TField("数量", TF, 10, 100);
+    fields = [ g3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    // 修改最大库存为0
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最大库存"], 0);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "超储统计");
+    query();
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : r };
+    var ret1 = true;
+    if (isEqualQRData1Object(qr, expected)) {
+        ret1 = false;
+    }
+
+    // 修改最大库存为100
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最大库存"], 100);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "超储统计");
+    query();
+    qr = getQR();
+    var ret2 = true;
+    if (isEqualQRData1Object(qr, expected)) {
+        ret2 = false;
+    }
+
+    // 修改最大库存为10
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最大库存"], 10);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "超储统计");
+    query();
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : r, "上架日期" : getToday("yy"),
+        "现有库存" : "100", "最大库存" : "10", "超储数" : "90" };
+    var ret3 = isEqualQRData1Object(qr, expected);
+
+    logDebug("ret1=" + ret1 + "   ret2=" + ret2);
+    return ret1 && ret2 && ret3;
+}
+
+function test100086() {
+    var r = "cc" + getTimestamp(6);
+    tapMenu("采购入库", "新增入库+");
     var f0 = new TField("厂商", TF_AC, 0, "vell");
-    fields = [ f0 ];
+    var fields = [ f0 ];
     setTFieldsValue(window, fields);
 
-    var g3 = new TField("厂商", TF, 3, 5);
-    fields = [ f0 ];
+    tapButton(window, "新增货品+");
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, 100);
+    fields = [ g0, g1, g2 ];
+    setTFieldsValue(getPopOrView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var g3 = new TField("数量", TF, 10, -10);
+    fields = [ g3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    // tapMenu("货品管理", "货品查询");
+    // tapFirstText(getScrollView(), "序号", 15);
+    // var keys = [ "最小库存"];
+    // var fields = editGoodsFields(keys, false, 0, 0);
+    // changeTFieldValue(fields["最小库存"], 0);
+    // setTFieldsValue(getScrollView(), fields);
+    // tapButtonAndAlert(EDIT_SAVE);
+    // tapPrompt();
+    // delay();
+
+    tapMenu("货品管理", "更多", "缺货统计");
+    query();
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : r };
+    var ret = true;
+    if (isEqualQRData1Object(qr, expected)) {
+        ret = false;
+    }
+
+    return ret;
+
+}
+
+function test100087_100088_100089() {
+    var r = "cc" + getTimestamp(6);
+    tapMenu("采购入库", "新增入库+");
+    var f0 = new TField("厂商", TF_AC, 0, "vell");
+    var fields = [ f0 ];
     setTFieldsValue(window, fields);
 
+    tapButton(window, "新增货品+");
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, 100);
+    fields = [ g0, g1, g2 ];
+    setTFieldsValue(getPopOrView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var g3 = new TField("数量", TF, 10, 100);
+    fields = [ g3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    // 库存=最小库存
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最小库存", "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最小库存"], 100);
+    changeTFieldValue(fields["最大库存"], 200);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "缺货统计");
+    query();
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : r };
+    var ret1 = true;
+    if (isEqualQRData1Object(qr, expected)) {
+        ret1 = false;
+    }
+
+    // 最小库存<库存<最大库存
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最小库存", "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最小库存"], 90);
+    changeTFieldValue(fields["最大库存"], 120);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "缺货统计");
+    query();
+    qr = getQR();
+    var ret2 = true;
+    if (isEqualQRData1Object(qr, expected)) {
+        ret2 = false;
+    }
+
+    // 库存<最小库存
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), "序号", 15);
+    var keys = [ "最小库存", "最大库存" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    changeTFieldValue(fields["最小库存"], 120);
+    changeTFieldValue(fields["最大库存"], 200);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE);
+    tapPrompt();
+    delay();
+
+    tapMenu("货品管理", "更多", "缺货统计");
+    query();
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : r, "上架日期" : getToday("yy"),
+        "现有库存" : "100", "最小库存" : "120", "缺货数" : "20" };
+    var ret3 = isEqualQRData1Object(qr, expected);
+
+    logDebug("ret1=" + ret1 + "   ret2=" + ret2);
+    return ret1 && ret2 && ret3;
+}
+
+// 需要先跑test100079_100080_100081、test100086、test100087_100088_100089
+function test100075_100076_100077_100078() {
+    tapMenu("货品管理", "更多", "超储统计");
+    var i, j;
+    var sum1 = 0, sum2 = 0, sum3 = 0;
+    var f1 = new TField("款号名称", TF, 1, "cc");
+    var fields = [ f1 ];
+    query(fields);
+
+    var ret1 = true;
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    for (j = 1; j <= totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            ret1 = ret1 && isIn(qr.data[i]["款号"], "cc");
+            sum1 = sum1 + Number(qr.data[i]["现有库存"]);
+            sum2 = sum2 + Number(qr.data[i]["最大库存"]);
+            sum3 = sum3 + Number(qr.data[i]["超储数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var f2 = new TField("上架日期从", TF_DT, 2, getToday());
+    var f3 = new TField("到", TF_DT, 3, getToday());
+    fields = [ f1, f2, f3 ];
+    query(fields);
+
+    var ret2 = true;
+    qr = getQR();
+    totalPageNo = qr.totalPageNo;
+    for (j = 1; j <= totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            ret2 = ret2 && isIn(qr.data[i]["款号"], "cc")
+                    && isEqual(getToday("yy"), qr.data[i]["上架日期"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var f0 = new TField("款号", TF_AC, 0, "3035", -1, 0);
+    fields = [ f0 ];
+    setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
+    var ret3 = isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2))
+            && isEqual("", getTextFieldValue(window, 3));
+
+    var ret = isEqual(qr.counts["现有库存"], sum1)
+            && isEqual(qr.counts["最大库存"], sum2)
+            && isEqual(qr.counts["超储数"], sum3);
+
+    logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+
+function test100082_100083_100084_100085() {
+    tapMenu("货品管理", "更多", "缺货统计");
+    var i, j;
+    var sum1 = 0, sum2 = 0, sum3 = 0;
+    var f1 = new TField("款号名称", TF, 1, "cc");
+    var fields = [ f1 ];
+    query(fields);
+
+    var ret1 = true;
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    for (j = 1; j <= totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            ret1 = ret1 && isIn(qr.data[i]["款号"], "cc");
+            sum1 = sum1 + Number(qr.data[i]["现有库存"]);
+            sum2 = sum2 + Number(qr.data[i]["最小库存"]);
+            sum3 = sum3 + Number(qr.data[i]["缺货数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var f2 = new TField("上架日期从", TF_DT, 2, getToday());
+    var f3 = new TField("到", TF_DT, 3, getToday());
+    fields = [ f1, f2, f3 ];
+    query(fields);
+
+    var ret2 = true;
+    qr = getQR();
+    totalPageNo = qr.totalPageNo;
+    for (j = 1; j <= totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            ret2 = ret2 && isIn(qr.data[i]["款号"], "cc")
+                    && isEqual(getToday("yy"), qr.data[i]["上架日期"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var f0 = new TField("款号", TF_AC, 0, "3035", -1, 0);
+    fields = [ f0 ];
+    setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
+    var ret3 = isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2))
+            && isEqual("", getTextFieldValue(window, 3));
+
+    var ret = isEqual(qr.counts["现有库存"], sum1)
+            && isEqual(qr.counts["最小库存"], sum2)
+            && isEqual(qr.counts["缺货数"], sum3);
+
+    logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
