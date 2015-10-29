@@ -164,13 +164,13 @@ function test180002() {
 function test180003_180004() {
     tapMenu("盘点管理", "按批次查");
     var keys1 = [ "批次从", "批次到", "门店" ];
-    fields = queryCheckBatchFields(keys1);
+    var fields = queryCheckBatchFields(keys1);
     changeTFieldValue(fields["批次从"], "10000");
     changeTFieldValue(fields["批次到"], "10000");
     changeTFieldValue(fields["门店"], "常青店");
     query(fields);
-    qr = getQR();
-    m = qr.counts["数量"];
+    var qr = getQR();
+    var m = qr.counts["数量"];
     // 没有满足查询条件的单据，查询结果为空
     if (m == null) {
         var ret = true;
@@ -305,15 +305,15 @@ function test180013() {
 
 function test180014() {
     var keys1 = [ "款号", "名称", "日期从", "到" ];
-    fields = queryCheckParticularFields(keys1);
+    var fields = queryCheckParticularFields(keys1);
     changeTFieldValue(fields["款号"], "3035");
     changeTFieldValue(fields["名称"], "jkk");
     changeTFieldValue(fields["日期从"], "2015-10-13");
     changeTFieldValue(fields["到"], "2015-10-13");
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     // 没有满足查询条件的单据，查询结果为空
-    m = qr.counts["盘点数量"];
+    var m = qr.counts["盘点数量"];
     if (m == null) {
         var ret = true;
     }
@@ -656,8 +656,8 @@ function test180034() {
     if (c == 20) {
         ret1 = true;
     }
-        ret2 = false;
-    if (d == sub(c,b)) {
+    var ret2 = false;
+    if (d == sub(c, b)) {
         ret2 = true;
     }
     logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
