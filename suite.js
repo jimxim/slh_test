@@ -11,9 +11,9 @@ function test000All() {
 // if( ok ) {
 //	testSASynthesisAll();
 // testSalesBillAll();
- testEditSalesBillAll();
+// testEditSalesBillAll();
 	
-//	testTemp();
+	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
@@ -32,7 +32,7 @@ function debugElements() {
 }
 
 function testTemp() {
-//    testDate();
+    testDate();
 //    testGetOpTime();
 //    testTapKeyboardHide();
 //    getStaffTFindex() ;
@@ -40,7 +40,7 @@ function testTemp() {
 //    testQRverify();
 //    testDisplayBarcode();
 //    testTapFirstText();
-    testEditSalesBillAgency();
+//    testEditSalesBillAgency();
 //    testPushToFixArray();
 }
 
@@ -55,9 +55,9 @@ function testPinyin() {
 }
 
 function testDate() {
-    var d = getToday("yy");
+    var d = getToday("");
     logDebug("today="+d);
-    d = getDay(365);
+    d = getDay(365,"");
     logDebug("today+365="+d);
     d = getDay(-365);
     logDebug("today-365="+d);
