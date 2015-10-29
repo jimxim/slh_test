@@ -597,6 +597,7 @@ function editSalesBillFields(keys, show) {
 function editSalesBillField(key, show) {
 	var l = getTableViews().length;
 	var f, staffTFindex = getValueFromCacheF1("getStaffTFindex");
+	var cardTFindex = getValueFromCacheF1("getCardTFindex");
 	switch (key) {
 	case "customer":
 	case "客户":
@@ -624,18 +625,18 @@ function editSalesBillField(key, show) {
         }
         break;
     case "刷卡":
-        f = new TField("刷卡", TF, staffTFindex+2, 0,"NoNeedReturn"); //7
+        f = new TField("刷卡", TF, cardTFindex, 0,"NoNeedReturn"); //7
         break;
 	case "day":
 	case "日期":
-		f = new TField("日期", TF_DT, staffTFindex+4, getToday()); //9
+		f = new TField("日期", TF_DT, cardTFindex+2, getToday()); //9
 		break;
 	case "remarks":
 	case "备注":
-		f = new TField("备注", TF, staffTFindex+5, "123"); //10
+		f = new TField("备注", TF, cardTFindex+3, "123"); //10
 		break;
     case "汇款":
-        f = new TField("汇款", TF, staffTFindex+7, 0,"NoNeedReturn"); //12
+        f = new TField("汇款", TF, cardTFindex+5, 0,"NoNeedReturn"); //12
         break;
 	case "code":
 	case "款号":
@@ -655,21 +656,27 @@ function editSalesBillField(key, show) {
  * @returns {Number}
  */
 function getStaffTFindex() {
+    return getEditSalesTFindex("客户","店员");
+}
+function getCardTFindex() {
+    return getEditSalesTFindex("客户","刷卡");
+}
+function getEditSalesTFindex(title1,title2) {
     var stCustomerIndex =0, stStaffIndex = 0,ret=0;
     var a1 = getStaticTexts(window);
     for(var i=0;i<a1.length;i++) {
         var e1 = a1[i];
-        if(isUIAStaticText(e1) && e1.name() == "客户") {
+        if(isUIAStaticText(e1) && e1.name() == title1) {
             stCustomerIndex = i;
         }
-        if(isUIAStaticText(e1) && e1.name() == "店员") {
+        if(isUIAStaticText(e1) && e1.name() == title2) {
             stStaffIndex = i;
             break;
         }
     }
     
     ret = stStaffIndex - stCustomerIndex;
-    logDebug("客户文本下标="+stCustomerIndex+" 店员文本下标="+stStaffIndex+" 店员输入框下标="+ret);
+    logDebug(title1+"文本下标="+stCustomerIndex+" "+title2+"文本下标="+stStaffIndex+" "+title2+"输入框下标="+ret);
     return ret;
 }
 
