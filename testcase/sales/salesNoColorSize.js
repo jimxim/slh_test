@@ -38,9 +38,9 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】整单备注和明细备注", "test170095");
     // run("【销售开单－开单】退货时备注显示", "test170096");
     // run("【销售开单－开单】退货时明细备注框操作", "test170097");
-    // run("【销售开单－开单】款号合并", "test1700101");//
-    // run("【销售开单－开单】款号合并（既拿货又退货）", "test1700102");//
-    // run("【销售开单-开单】均色均码款号合并", "test1700103");／／
+    // run("【销售开单－开单】款号合并", "test1700101");
+    // run("【销售开单－开单】款号合并（既拿货又退货）", "test1700102");
+    // run("【销售开单-开单】均色均码款号合并", "test1700103");
     // run("【销售开单－开单】上次成交价界面显示备注信息", "test1700104");／／
     // run("【销售开单－开单】查看上次成交价", "test1700105");//
     // run("【销售开单－开单】查看上次成交记录", "test1700106");//
@@ -51,8 +51,10 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】库存不足时开单修改界面不能打印", "test1700118");
     // run("【销售开单－开单】异地发货－－配货员可查看内容", "test1700119");//
     // run("【销售开单－开单】异地发货－－配货员可查看内容", "test1700125");
-//    run("【销售开单－开单】特殊货品", "test1700128");
-    run("【销售开单－开单】新增货品", "test1700129");
+    // run("【销售开单－开单】特殊货品", "test1700128");
+    // run("【销售开单－开单】新增货品", "test1700129");
+    run("【销售开单－开单】连续新增货品", "test1700131");
+    run("【销售开单－开单】开单保存后再增删款号", "test1700133");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -1281,13 +1283,19 @@ function test1700101() {
         "客户" : "ls",
         "店员" : "000",
         "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ],
-        "onlytest" : "yes" };
+        "明细输入框个数" : 8, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var a = getTextFieldValue(getScrollView(), 6);
+    var a = getTextFieldValue(getScrollView(), 3);
     if (a == "2") {
-        ret = true;
+        var ret = true;
     }
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
     logDebug("ret=" + ret);
     return ret;
 }
@@ -1298,19 +1306,41 @@ function test1700102() {
         "客户" : "ls",
         "店员" : "000",
         "明细" : [ { "货品" : "8989", "数量" : "2" }, { "货品" : "8989", "数量" : "-1" } ],
-        "onlytest" : "yes" };
+        "明细输入框个数" : 8, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var a = getTextFieldValue(getScrollView(), 6);
-    if (a == "1") {
-        ret = true;
-    }
+    var a = getTextFieldValue(getScrollView(), 3);
+
+    var ret = (a == "2");
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
     logDebug("ret=" + ret);
     return ret;
 }
 function test1700103() {
     // 均色均码款号合并
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "店员" : "000",
+        "明细" : [ { "货品" : "8989", "数量" : "2" }, { "货品" : "8989", "数量" : "1" } ],
+        "明细输入框个数" : 8, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
+    var a = getTextFieldValue(getScrollView(), 3);
+    var ret = (a == "3");
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    logDebug("ret=" + ret);
+    return ret;
 }
 function test1700104() {
     // 上次成交价界面显示备注信息
@@ -1423,7 +1453,6 @@ function test1700125() {
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
         "明细输入框个数" : 8 };
-    delay;
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("订货数", TF, 4, "2");
@@ -1474,28 +1503,29 @@ function test1700128() {
     return ret;
 }
 function test1700129() {
-    var r = getTimestamp(6);
+    var r = "anewkhao" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
     tapMenu("销售开单", "开  单+");
-    tapButton(window,"新增货品");
-    
+    tapButton(window, "新增货品");
+
     var g0 = new TField("款号", TF, 0, r);
     var g1 = new TField("名称", TF, 1, r);
-    var g3 = new TField("零批价", TF, 3, r);
-    var g4 = new TField("打包价", TF, 4, r);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
     var fields = [ g0, g1, g3, g4 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
 
-    var json = { "客户" : "ls", "店员" : "000", "明细" : [ { "数量" : "2" } ],
-        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "onlytest" : "yes" };
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : r, "数量" : "2" } ], "特殊货品" : { "抹零" : 9, "打包费" : 10 },
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var k0 = getTextFieldValue(getScrollView(), 0);
     var k1 = getTextFieldValue(getScrollView(), 1);
     var k2 = getTextFieldValue(getScrollView(), 2);
     var ret = false;
-    if (k0 == r && k1 == "均色" && k2 == "均码") {
+    if (k1 == "均色" && k2 == "均码") {
         ret = true;
     }
 
@@ -1511,13 +1541,119 @@ function test1700129() {
     query(qFields);
     var qr = getQR();
     var a = qr.data[0]["款号"];
-    var b = qr.data[0]["款号名称"];
+    var b = qr.data[0]["名称"];
 
     var ret1 = false;
-    if (a == r &&b == r ) {
+    if (a == r && b == r) {
         ret1 = true;
     }
-    // logDebug("k2=" + k2+"k3=" + k3);
-    logDebug("ret=" + ret+"ret=" + ret);
-    return ret&&ret1;
+    // logDebug("款号=" + a+"名称=" + b);
+    logDebug("ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
+}
+function test1700131() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var r = "anewkhao" + getTimestamp(3);
+    var c = "1" + getTimestamp(3);
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g3 = new TField("零批价", TF, 3, c);
+    var g4 = new TField("打包价", TF, 4, c);
+    var fields = [ g0, g1, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    delay();
+
+    var f11 = new TField("数量", TF, 11, "2");
+    var fields = [ f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButton(window, "新增货品");
+    var r1 = "anewkhao1" + getTimestamp(3);
+    var c1 = "2" + getTimestamp(3);
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r1);
+    var g1 = new TField("名称", TF, 1, r1);
+    var g3 = new TField("零批价", TF, 3, c1);
+    var g4 = new TField("打包价", TF, 4, c1);
+    var fields = [ g0, g1, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    delay();
+
+    var f19 = new TField("数量", TF, 19, "3");
+    var fields = [ f19 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var k8 = getTextFieldValue(getScrollView(), 8);
+    var k16 = getTextFieldValue(getScrollView(), 16);
+    var ret = false;
+    if (k8 == r && k16 == r1) {
+        ret = true;
+    }
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], r);
+    query(qFields);
+    var qr = getQR();
+    var a = qr.data[0]["款号"];
+    var b = qr.data[0]["名称"];
+
+    var ret1 = false;
+    if (a == r1 && b == r1) {
+        ret1 = true;
+    }
+    // logDebug("款号=" + a+"名称=" + b);
+    logDebug("ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
+}
+function test1700133() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" },
+                { "货品" : "k300", "数量" : "1" } ,{ "货品" : "k300", "数量" : "1" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    
+    tapButton(getScrollView(), 3);
+    
+    var f24 = new TField("货品", TF, 24, "k200");
+    var f27 = new TField("货品", TF, 27, "4");
+    var fields = [ f24,f27 ];    
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+    
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = (isIn(alertMsg1, "保存成功"));
+
+    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
+    return ret;
 }
