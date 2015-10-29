@@ -32,8 +32,8 @@ function testGoodsGoodsAll() {
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
     // run("【货品管理-更多-新增仓位】新增仓位", "test100074");
     // run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
-    // run("【货品管理-更多-仓位列表】保存修改", "test100070")
-    // run("【货品管理-更多-超储统计】最大库存为0不计入超储统计", "test100079_100080_100081")
+//     run("【货品管理-更多-仓位列表】保存修改", "test100070")
+//     run("【货品管理-更多-超储统计】最大库存为0不计入超储统计", "test100079_100080_100081")
 
 }
 
@@ -1218,7 +1218,7 @@ function test100053() {
 
 function test100060() {
     var i, f, cells, cell, v;
-    var ret1 = false;
+    var ret1 = false, ret4 = false, ret5 = false;
     var ret2 = false;
     var ret3 = false;
 
@@ -1233,22 +1233,78 @@ function test100060() {
             break;
         }
     }
-    clearTField(window, f);
-    
+    tapButton(window, CLEAR);
+
     var keys = { "品牌" : "zws" };
     var fields = queryGoodsStockFields(keys);
     setTFieldsValue(window, fields);
-    ret2=isEqual("真维斯",getTextFieldValue(window,6));
-    
+    ret2 = isEqual("真维斯", getTextFieldValue(window, 6));
+    delay();
+    tapButton(window, CLEAR);
+
     fields = queryGoodsStockFields(keys);
-    fields["客户"].p3 = { "键盘" : "简体拼音",
-        "拼音" : [ "zhen"],
-        "汉字" : [ "真" ] };
+    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
     setTFieldsValue(window, fields);
-    
-    
-    
-//    return ret1&&ret2&&ret3;
+    ret3 = isEqual("真维斯", getTextFieldValue(window, 6));
+    tapButton(window, CLEAR);
+
+    //
+    tapMenu("货品管理", "货品查询");
+    f = new TField("品牌", TF_AC, 2, "z", -1);
+    cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        cell = cells[i];
+        v = cell.name();
+        if (isEqual("真维斯", v)) {
+            ret4 = true;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+
+    keys = { "品牌" : "zws" };
+    fields = queryGoodsFields(keys);
+    setTFieldsValue(window, fields);
+    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 2));
+    delay();
+    tapButton(window, CLEAR);
+
+    fields = queryGoodsFields(keys);
+    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
+    setTFieldsValue(window, fields);
+    ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 2));
+    tapButton(window, CLEAR);
+
+    //
+    tapMenu("货品管理", "货品进销存");
+    f = new TField("品牌", TF_AC, 7, "z", -1);
+    cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        cell = cells[i];
+        v = cell.name();
+        if (isEqual("真维斯", v)) {
+            ret5 = true;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+
+    keys = { "品牌" : "zws" };
+    fields = queryGoodsInOutFields(keys);
+    setTFieldsValue(window, fields);
+    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 7));
+    delay();
+    tapButton(window, CLEAR);
+
+    fields = queryGoodsInOutFields(keys);
+    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
+    setTFieldsValue(window, fields);
+    ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 7));
+    tapButton(window, CLEAR);
+
+    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret3" + ret3 + "   ret4="
+            + ret4 + "   ret5=" + ret5);
+    return ret1 && ret2 && ret3 && ret4 && ret5;
 }
 
 function test100074() {
@@ -1340,8 +1396,10 @@ function test100070() {
     if (isIn(alertMsg, "名称不能为空")) {
         ret1 = true;
     }
-
-    changeTFieldValue(fields[f0], r);
+    delay();
+    
+    f0 = new TField("名称", TF, 0, "AB");
+    fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("保存修改");
     tapButtonAndAlert("none", OK, true);
@@ -1350,7 +1408,8 @@ function test100070() {
     }
 
     var r1 = r + "edit";
-    changeTFieldValue(fields[f0], r1);
+    f0 = new TField("名称", TF, 0, r1);
+    fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("保存修改");
     delay();
@@ -1368,7 +1427,7 @@ function test100070() {
 
 }
 
-function test100079() {
+function test100079_100080_100081() {
     var r = getTimestamp(6);
     tapMenu("采购入库", "新增入库+");
     tapButton(window, "新增货品+");

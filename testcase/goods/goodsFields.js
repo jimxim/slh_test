@@ -50,7 +50,7 @@ function queryGoodsStockField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_SC, 6, "1010pp");
+		f = new TField("品牌", TF_AC, 6, "1010pp");
 		break;
 	case "season":
 	case "季节":
@@ -216,7 +216,7 @@ function queryGoodsInOutField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_SC, 7, "1010pp");
+		f = new TField("品牌", TF_AC, 7, "1010pp");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -254,7 +254,7 @@ function queryGoodsField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_SC, 2, "1010pp");
+		f = new TField("品牌", TF_AC, 2, "1010pp");
 		break;
 	case "market1":
 	case "上架从":
