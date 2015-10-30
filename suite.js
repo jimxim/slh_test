@@ -11,9 +11,9 @@ function test000All() {
 // if( ok ) {
 //	testSASynthesisAll();
 // testSalesBillAll();
-// testEditSalesBillAll();
+ testEditSalesBillAll();
 	
-	testTemp();
+//	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();

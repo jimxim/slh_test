@@ -1,3 +1,5 @@
+颜色尺码 库存 取值
+参数param
 /*
  * function editSalesBillStaff(o) { editSalesBillField1(o,"店员"); var key = "店员";
  * var v = o[key]; if (isDefined(v)) { var keys = [ key ]; var fields =
