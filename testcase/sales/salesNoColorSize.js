@@ -54,9 +54,10 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】开单的同时订货", "test1700125");
     // run("【销售开单－开单】特殊货品", "test1700128");
     // run("【销售开单－开单】新增货品", "test1700129");
-//    run("【销售开单－开单】连续新增货品", "test1700131");
-//    run("【销售开单－开单】开单保存后再增删款号", "test1700133");
-     run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test1700136");
+    // run("【销售开单－开单】连续新增货品", "test1700131");
+//    run("【销售开单－开单】新增货品后再输入别的款号", "test1700132");
+     run("【销售开单－开单】开单保存后再增删款号", "test1700133");
+    // run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test1700136");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -1777,10 +1778,7 @@ function test1700131() {
 
     var k8 = getTextFieldValue(getScrollView(), 8);
     var k16 = getTextFieldValue(getScrollView(), 16);
-    var ret = false;
-    if (k8 == r && k16 == r1) {
-        ret = true;
-    }
+    var ret = isAnd(isIn(k8, r), isIn(k16, r1));
 
     saveAndAlertOk();
     tapPrompt();
@@ -1796,13 +1794,68 @@ function test1700131() {
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
 
-    var ret1 = false;
-    if (a == r1 && b == r1) {
-        ret1 = true;
-    }
+    var ret1 = isAnd(isEqual(r, a), isEqual(r, b));
+
+    tapMenu("货品管理", "货品查询");
+    var qKeys1 = [ "款号名称" ];
+    var qFields1 = queryGoodsFields(qKeys1);
+    changeTFieldValue(qFields1["款号名称"], r1);
+    query(qFields1);
+    var qr = getQR();
+    var a1 = qr.data[0]["款号"];
+    var b1 = qr.data[0]["名称"];
+
+    var ret2 = isAnd(isEqual(r1, a1), isEqual(r1, b1));
+
     // logDebug("款号=" + a+"名称=" + b);
-    logDebug("ret=" + ret + "ret1=" + ret1);
-    return ret && ret1;
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test1700132() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var r = "anewkhao" + getTimestamp(3);
+    var c = "1" + getTimestamp(3);
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g3 = new TField("零批价", TF, 3, c);
+    var g4 = new TField("打包价", TF, 4, c);
+    var fields = [ g0, g1, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    delay();
+
+    var f11 = new TField("数量", TF, 11, "2");
+    var fields = [ f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var f24 = new TField("货品", TF_AC, 24, "3035",-1,0);
+    var f27 = new TField("数量", TF, 27, "4");
+    var fields = [ f24, f27 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], r);
+    query(qFields);
+    var qr = getQR();
+    var a = qr.data[0]["款号"];
+    var b = qr.data[0]["名称"];
+
+    var ret = isAnd(isEqual(r, a), isEqual(r, b));
+    logDebug("ret=" + ret);
+    return ret;
 }
 function test1700133() {
     tapMenu("销售开单", "开  单+");
@@ -1821,7 +1874,7 @@ function test1700133() {
 
     tapButton(getScrollView(), 3);
 
-    var f24 = new TField("货品", TF, 24, "k200");
+    var f24 = new TField("货品", TF_AC, 24, "3035",-1,0);
     var f27 = new TField("货品", TF, 27, "4");
     var fields = [ f24, f27 ];
     setTFieldsValue(getScrollView(), fields);
@@ -1832,7 +1885,7 @@ function test1700133() {
     tapButton(window, RETURN);
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "保存成功"));
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
@@ -1841,12 +1894,10 @@ function test1700133() {
 function test1700136() {
     // 设置销售开单允许修改和作废的天数N,不能用总经理账号测试，使用店长货开单员登陆，常青店长004登陆，3天
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" }], "onlytest" : "yes" };
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-  
+
     var g0 = new TField("日期", TF_DT, 0, getToday(-3));
     var fields = [ g0 ];
     setTFieldsValue(window, fields);
@@ -1854,7 +1905,7 @@ function test1700136() {
     tapPrompt();
     delay();
     tapButton(window, RETURN);
-    
+
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
@@ -1864,7 +1915,7 @@ function test1700136() {
     var g1 = new TField("货品", TF_AC, 0, "k200");
     var fields1 = [ g1 ];
     setTFieldsValue(window, fields1);
-    
+
     saveAndAlertOk();
     var ret = false;
     if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗")) {
