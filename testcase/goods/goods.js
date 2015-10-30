@@ -12,6 +12,9 @@ function testGoodsGoodsAll() {
     // run("【货品管理-货品查询】款号修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015");
     // run("【货品管理-货品查询】款号新增界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100017");
     // run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
+    // run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
+    // run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
+    // run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
     // run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100025");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
@@ -464,6 +467,85 @@ function test100019() {
 
     logDebug("ret=" + ret + "   ret1=" + ret1);
     return ret && ret1;
+}
+
+// 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+// 省代模式
+// 仓管员002登录
+function test100020() {
+    var r = getTimestamp(8);
+    tapMenu("货品管理", "新增货品+");
+    var f0 = new TField("款号", TF, 0, r);
+    var f1 = new TField("名称", TF, 1, "a" + r);
+    var f2 = new TField("品牌", TF_AC, 2, "1010pp", -1, 0);
+    var f7 = new TField("吊牌价", TF, 7, 200);
+    var fields = [ f0, f1, f2, f7 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay(2);
+    tapButton(window, RETURN);
+
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+
+    var ret1 = isEqual(200, getTextFieldValue(getScrollView(), 9))
+            && isEqual(180, getTextFieldValue(getScrollView(), 10))
+            && isEqual(160, getTextFieldValue(getScrollView(), 11))
+            && isEqual(140, getTextFieldValue(getScrollView(), 12));
+    delay();
+    tapButton(window, RETURN);
+
+    return ret1;
+
+    // 总经理000登陆
+    // tapMenu("货品管理", "货品查询");
+    // tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    // var ret2 = isEqual(200, getTextFieldValue(getScrollView(), 8))
+    // && isEqual(200, getTextFieldValue(getScrollView(), 9))
+    // && isEqual(180, getTextFieldValue(getScrollView(), 10))
+    // && isEqual(160, getTextFieldValue(getScrollView(), 11))
+    // && isEqual(140, getTextFieldValue(getScrollView(), 12));
+    // delay();
+    // tapButton(window, RETURN);
+
+}
+
+// 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+// 省代模式
+// 开单员005登录
+function test100022() {
+    tapMenu("货品管理", "新增货品+");
+    var keys = [ "款号", "名称", "品牌", "吊牌价" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
+            && isEqual("", getTextFieldValue(getScrollView(), 10))
+            && isEqual("", getTextFieldValue(getScrollView(), 11))
+            && isEqual("", getTextFieldValue(getScrollView(), 12));
+    delay();
+    tapButton(window, RETURN);
+
+    return ret;
+}
+
+// 全局参数 仓管员是否可以根据吊牌价生成价格 为 不支持
+// 省代模式
+// 仓管员002登录
+function test100021() {
+    tapMenu("货品管理", "新增货品+");
+    var keys = [ "款号", "名称", "品牌", "吊牌价" ];
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
+            && isEqual("", getTextFieldValue(getScrollView(), 10))
+            && isEqual("", getTextFieldValue(getScrollView(), 11))
+            && isEqual("", getTextFieldValue(getScrollView(), 12));
+    delay();
+    tapButton(window, RETURN);
+
+    return ret;
 }
 
 function test100025() {
