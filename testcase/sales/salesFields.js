@@ -152,7 +152,64 @@ function salesQueryParticularField(key, show) {
 	}
 	return f;
 }
-
+//按挂单
+function salesQueryGuaDanFields(keys, show) {
+    return getTFields("salesQueryGuaDanFields", keys, show);
+}
+function salesQueryGuaDanField(key, show) {
+    var f;
+    switch (key) {
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "a", 1, 0);
+        if (show) {
+            f.value = "Qaq";
+        }
+        break;
+    case "branch":
+    case "客户分店":
+        f = new TField("客户分店", TF_AC, 1, "Z", 1, 0);
+        if (show) {
+            f.value = "张晨";
+        }
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 3, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
+    case "remarks":
+    case "备注":
+        f = new TField("备注", TF, 5, "备注");
+        break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 6, "000", 1, 0);
+        if (show) {
+            f.value = "000,管理员";
+        }
+        break;
+    case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 7, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("到", TF, 8, "20");
+        break;
+    
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 // 按金额汇总
 function testSalesPriceFields() {
 	var fields = salesPriceFields("day1", "day2");
