@@ -14,7 +14,22 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
     // run("【往来管理-客户账款】客户门店账", "test1100015");
     // run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test1100017");
+    // run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110018_110019");
+    // run("【往来管理-客户账款】客户总账", "test110020");
+    // run("【往来管理-客户账款】客户总账底部数据汇总", "test110021");//有问题，先跳过
+    // run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
+    // run("【往来管理-客户活跃度】客户活跃度", "test110033");
+    // run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
+    // run("【往来管理】未拿货天数", "test110035");
+    // run("【往来管理-积分查询】积分查询", "test110036");
+    // run("【往来管理-积分查询】积分数值对比", "test110037");
+    // run("【往来管理-新增厂商】新增厂商", "test110038");
+    // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
+    // run("【往来管理-厂商账款】厂商门店账", "test110041");
+    // run("【往来管理-厂商账款】厂商总账", "test110042");
+    // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
+    
     // run("输入类别查询客户", "testQueryCustomerByType");
     // run("输入店员查询客户", "testQueryCustomerByStaff");
     // run("查询客户清除按钮", "testQueryCustomerClear");
@@ -27,12 +42,7 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】是否欠款报警查询", "test110027");
     // run("【往来管理】是否欠款报警查询", "test110029");
     // run("【往来管理】【往来管理】往来管理-厂商账款-厂商门店账", "test110030");//有问题
-    // run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
-    // run("【往来管理】未拿货天数", "test110035");
 
-    // run("客户总帐", "test110020");
-
-    // run("不允许退货", "test110009");
     // run("新增分店", "testCustomerEditBranch");
     // run("客户分店", "testCustomerBranch");
     // 分店模式未测，需换帐套/////
@@ -42,7 +52,6 @@ function testWanLaiCustomerAll() {
     // run("客户门店帐上下级客户查询", "testQueryCustomerShopAccountBySuper");
     // run("客户门店帐余款核对", "testQueryCustomerShopAccountCheck");
 
-    // run("按上级单位", "test110019");
     // run("客户总帐", "test110020");
     // run("客户活跃度", "testQueryCustomerActive");
     // run("积分查询", "testQueryCustomerScore");//商路花6.59／v6.5904版本无积分查询模块
@@ -533,6 +542,7 @@ function test110008() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
+
     // 做退货单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "-10" } ] };
@@ -693,11 +703,11 @@ function test1100017() {
 
     tapFirstText();
     qr = getQResult2(getScrollView(1), "批次", "未结");
-    var sum2 = 0; // 未结汇总
+    var sum3 = 0; // 未结汇总
     totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            sum2 += Number(qr.data[i]["未结"]);
+            sum3 += Number(qr.data[i]["未结"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
@@ -708,41 +718,85 @@ function test1100017() {
     tapNaviLeftButton();
 
     qr = getQR();
-    var ret2 = isEqual(qr.data[0]["余额"], sum2);
+    var ret2 = isEqual(qr.data[0]["余额"], sum3);
 
     logDebug(" ret1=" + ret1 + " ret2=" + ret2);
     return ret1 && ret2;
 
 }
 
-function testQueryCustomerShopAccountBySuper() {
-    //下级客户1开单
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : "0" };
-    editSalesBillNoColorSize(json);
-
-    //上级客户1开单
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "k300", "数量" : "10" } ],
-        "现金" : "0" };
-    editSalesBillNoColorSize(json);
+function test110023() {
+    // // 下级客户1开单
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // "现金" : "0" };
+    // editSalesBillNoColorSize(json);
+    //
+    // // 上级客户1开单
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "k300", "数量" : "10" } ],
+    // "现金" : "0" };
+    // editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     var keys = [ "客户" ];
     var fields = queryCustomerShopAccountFields(keys);
     changeTFieldValue(fields["客户"], "xjkh1");
     query(fields);
-    var qr1 = getQR();
+    var qr = getQR();
+    var ret = isEqual("下级客户1", qr.data[0]["名称"]);
 
-    var keys2 = [ "客户" ];
-    fields = queryCustomerShopAccountFields(keys2);
     changeTFieldValue(fields["客户"], "sjkh1");
     query(fields);
-    var qr2 = getQR();
+    qr = getQR();
+    ret = ret && isEqual("上级客户1", qr.data[0]["名称"]);
 
-    return isEqualQRData1ByTitle(qr1, "名称", "下级客户1")
-            && isEqualQRData1ByTitle(qr2, "名称", "上级客户1");
+    tapMenu("往来管理", "客户账款", "按上级单位");
+    keys = [ "客户名称" ];
+    fields = queryCustomerSuperFields(keys);
+    changeTFieldValue(fields["客户名称"], "下级客户1");
+    query(fields);
+    qr = getQR();
+    var ret1 = isEqual(0, qr.total);
+
+    changeTFieldValue(fields["客户名称"], "上级客户1");
+    query(fields);
+    qr = getQR();
+    ret1 = ret1 && isEqual("上级客户1", qr.data[0]["名称"]);
+
+    tapFirstText();
+    qr = getQResult2(getScrollView(1), "批次", "未结");
+    var totalPageNo = qr.totalPageNo;
+    var ret3 = false;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (qr.data[i]["客户"] == "下级客户1") {
+                ret3 = true;
+                break;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQResult2(getScrollView(1), "批次", "未结");
+        }
+
+    }
+    tapNaviLeftButton();
+
+    tapMenu("往来管理", "客户账款", "客户总账");
+    keys = [ "客户" ];
+    fields = queryCustomerAccountFields(keys);
+    changeTFieldValue(fields["客户"], "xjkh1");
+    query(fields);
+    qr = getQR();
+    var ret2 = isEqual("下级客户1", qr.data[0]["名称"]);
+
+    changeTFieldValue(fields["客户"], "sjkh1");
+    query(fields);
+    qr = getQR();
+    ret2 = ret2 && isEqual("上级客户1", qr.data[0]["名称"]);
+
+    return ret && ret1 && ret2 && ret3;
 }
 
 function testQueryCustomerShopAccountCheck() {
@@ -766,187 +820,295 @@ function testQueryCustomerShopAccountCheck() {
     return ret;
 }
 
-function test110019() {
+function test110018_110019() {
     tapMenu("往来管理", "客户账款", "按上级单位");
+    query();
+    var ret = true;
+    // ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = [ "name" ];
+    var keys = [ "客户名称" ];
     var fields = queryCustomerSuperFields(keys);
-    changeTFieldValue(fields["name"], "下级客户1");
+    changeTFieldValue(fields["客户名称"], "下级客户1");
     query(fields);
     delay();
-    var qr1 = getQR();
-    var total = qr1.total;
-    var ret = true;
-    if (total >= 1) {
-        ret = false;
-    }
+    var qr = getQR();
+    var total = qr.total;
+    var ret = isEqual(0, total);
 
-    var keys2 = [ "name" ];
-    var qFields = queryCustomerSuperFields(keys2);
-    changeTFieldValue(qFields["name"], "上级客户1");
-    query(qFields);
+    changeTFieldValue(fields["客户名称"], "上级客户1");
+    query(fields);
     delay();
-    var qr2 = getQR();
+    qr = getQR();
 
-    return ret && isEqualQRData1ByTitle(qr2, "名称", "上级客户1");
+    return ret && isEqualQRData1ByTitle(qr, "名称", "上级客户1");
 }
 
 function test110020() {
     tapMenu("往来管理", "客户账款", "客户总账");
+    var i, j;
     delay();
     query();
 
     var ret = true;
-    ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = [ "name" ];
+    var keys = [ "客户名称" ];
     var fields = queryCustomerAccountFields(keys);
-    changeTFieldValue(fields["name"], "xxx434224");
+    changeTFieldValue(fields["客户名称"], "小");
     query(fields);
     delay();
-    var qr1 = getQR();
-    var a = qr1.data[0]["余额"];
-    logDebug("a=" + a);
-    // tapFirstText(getScrollView(), TITLE_SEQ, 3);
-    tapFirstText();
-    // debugElementTree(getScrollView());
-    // debugElements(getScrollView());
-    // tapNaviLeftButton();
-    var qr2 = getQResult2(getScrollView(1), "批次", "未结");
+    var qr = getQR();
+    var ret1 = isIn(qr.data[0]["名称"], "小");
 
+    keys = [ "客户" ];
+    fields = queryCustomerAccountFields(keys);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    delay();
+    qr = getQR();
+    ret1 = ret1 && isEqualQRData1ByTitle(qr, "名称", "小王")
+
+    var a = qr.data[0]["余额"];
+    tapFirstText(getScrollView(), TITLE_SEQ, 3);
+    tapFirstText();
+    qr = getQResult2(getScrollView(1), "批次", "未结");
+    var totalPageNo = qr.totalPageNo;
     var sum = 0;
-    var totalPageNo = qr2.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr2.curPageTotal; i++) {
-            sum += Number(qr2.data[i]["未结"]);
+    for (j = 1; j <= totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["未结"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
-            qr2 = getQResult2(getScrollView(1), "批次", "未结");
+            qr = getQResult2(getScrollView(1), "批次", "未结");
         }
     }
-
-    logDebug("sum=" + sum);
-
     tapNaviLeftButton();
 
-    // var qkey = [ "customer" ];
-    // var qFields = queryCustomerAccountFields(qkey);
-    // changeTFieldValue(qFields["customer"], "xw");
-    // query(qFields);
-    // tapFirstText(getScrollView(), TITLE_SEQ, 3);
-    // tapNaviLeftButton();
-    var ret = false;
-    if (a == b) {
-        ret = true;
-    }
-    return ret;
-    // return ret && isEqualQRData1ByTitle(qr2, "未结", expected);
-    // return ret && isEqualQRData1ByTitle("未结", expected);
+    logDebug("sum=" + sum);
+    var ret2 = isEqual(a, sum);
+
+    logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 
-function testQueryCustomerActive() {
+function test110033() {
     tapMenu("往来管理", "客户活跃度");
-    delay();
+    // delay();
     query();
 
     var ret = true;
-    ret = ret && sortByTitle("门店");
-    logDebug("ret=" + ret);
-    ret = ret && sortByTitle("名称");
-    logDebug("ret=" + ret);
+    // ret = ret && sortByTitle("门店");
+    // ret = ret && sortByTitle("名称");
     // ret = ret && sortByTitle("手机");
-    ret = ret && sortByTitle("店员");
-    logDebug("ret=" + ret);
-    ret = ret && sortByTitle("最后一次拿货");
-    logDebug("ret=" + ret);
+    // ret = ret && sortByTitle("店员");
+    // ret = ret && sortByTitle("最后一次拿货");
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
     logDebug("ret=" + ret);
 
     var keys = [ "客户" ];
     var fields = queryCustomerActiveFields(keys);
-    changeTFieldValue(fields["客户"], "xw");// 客户小王
+    changeTFieldValue(fields["客户"], "xw");
     query(fields);
-    var ret1 = true;
-    if (total > 1) {
-        ret1 = false;
-    }
-    tapButton(window, CLEAR);
-    delay();
-    var qkeys = [ "客户" ];
-    var qFields = queryCustomerActiveFields(qkeys);
-    changeTFieldValue(qFields["客户"], "bkdkh");
-    query(qFields);
     var qr = getQR();
-    var total = qr.total;
-    var ret2 = true;
-    if (total >= 1) {
-        ret2 = false;
-    }
-    return ret && ret1 && ret2;
+    var ret1 = isEqual("小王", qr.data[0]["名称"]);
+
+    changeTFieldValue(fields["客户"], "bkdkh"); // 不开单客户
+    query(fields);
+    qr = getQR();
+    ret1 = ret1 && isEqual(0, qr.total);
+
+    return ret && ret1;
 }
 
-function testQueryCustomerScore() {
-    tapMenu("往来管理", "积分查询");
-    var key = [ "shop", "customer", ];
-    var fields = queryCustomerScoreFields(key);
-    changeTFieldValue(fields["shop"], "常青店(test)36新");
-    changeTFieldValue(fields["customer"], "jfcs1");
-    changeTFieldValue(fields["mobile"]);
+function test110034() {
+    var r = "customer" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
+    var keys = [ "名称" ];
+    var fields = editCustomerFields(keys);
+    changeTFieldValue(fields["名称"], r);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "开 单+");
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("往来管理", "客户查询");
+    keys = [ "名称" ];
+    fields = queryCustomerFields(keys);
+    changeTFieldValue(fields["名称"], r);
+    query(qFields);
+    tapFirstText();
+    tapButtonAndAlert(STOP);
+
+    tapMenu("往来管理", "客户活跃度");
+    keys = [ "客户" ];
+    fields = queryCustomerActiveFields(keys);
+    changeTFieldValue(fields["客户"], r);
     query(fields);
-    var qr1 = getQR();
-    // debugQResult(qr1);
-    var i = qr1.counts["积分"];
-    var ret1 = isEqualQRData1ByTitle(qr1, "客户", "积分测试1");
+    var qr = getQR();
+    var ret = isEqual(0, qr.total);
+
+    return ret;
+
+}
+
+function test110035() {
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = [ "客户" ];
+    var fields = queryCustomerShopAccountFields(keys);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    var qr = getQR();
+    var day1 = qr.data[0]["未拿货天数"];
+
+    tapMenu("往来管理", "客户活跃度");
+    keys = [ "客户" ];
+    fields = queryCustomerActiveFields(keys);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    qr = getQR();
+    var day2 = qr.data[0]["未拿货天数"];
+
+    return isEqual(day1, day2);
+
+}
+
+function test110036() {
+    tapMenu("往来管理", "积分查询");
+    var key = [ "门店" ];
+    var fields = queryCustomerScoreFields(key);
+    query(fields);
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (qr.data[i]["门店"] != "常青店") {
+                ret = false;
+                break;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    key = [ "客户" ];
+    fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    qr = getQR();
+    ret = ret && isEqual("小王", qr.data[0]["客户"]);
+
+    key = [ "手机" ];
+    fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["手机"], "13922211121");
+    query(fields);
+    qr = getQR();
+    ret = ret && isEqual("13922211121", qr.data[0]["电话"]);
 
     tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2));
 
-    tapMenu("销售开单", "按批次查");
-    var keys = [ "customer", "day1" ];
-    var qFields = salesQueryBatchFields(keys);
-    changeTFieldValue(qFields["customer"], "jfcs1");
-    changeTFieldValue(qFields["day1"], "2015-1-1");
-    query(qFields);
-    var qr2 = getQR();
-    var j = qr2.counts["金额"];
-    var ret2 = false;
-    if (i == j) {
-        ret2 = true;
-    }
-    return ret1 && ret2;
+    tapButton(window, QUERY);
+    var ret1 = true;
+    // ret1 = ret && sortByTitle("门店");
+    // ret1 = ret && sortByTitle("客户");
+    // ret1 = ret && sortByTitle("电话");
+    ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
+    // ret1 = ret1 && sortByTitle("最近兑换日期");
+
+    return ret && ret1;
+}
+
+function test110037() {
+    tapMenu("往来管理", "积分查询");
+    var key = [ "客户" ];
+    var fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    var qr = getQR();
+    var a = qr.counts["当前积分"];
+
+    tapMenu("往来管理", "客户查询");
+    key = [ "客户" ];
+    fields = queryCustomerFields(key);
+    changeTFieldValue(fields["客户"], "xw");
+    query(fields);
+    qr = getQR();
+    var ret = isEqual(a, qr.data[0]["当前积分"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(1), 1);
+    ret = ret && isIn(b, a);
+    tapNaviLeftButton();
+    tapButtonAndAlert(RETURN);
+
+    return ret;
 }
 
 function test110038() {
     tapMenu("往来管理", "新增厂商+");
-    var keys = [ "name", "mobile" ];
+    var keys = [ "名称" ];
     var fields = editCustomerProviderFields(keys);
-    changeTFieldValue(fields["name"], "东灵公司");
+    changeTFieldValue(fields["名称"], "东灵公司");
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
-
+    tapButtonAndAlert(SAVE);
     var ret1 = false;
     if (isIn(alertMsg, "名称重复")) {
         ret1 = true;
     }
+    delay();
+    tapButton(window, RETURN);
 
     tapMenu("往来管理", "新增厂商+");
     var r = getToday() + getRandomInt(10000);
+    keys = [ "名称", "手机" ];
     fields = editCustomerProviderFields(keys);
-    appendTFieldValue(fields["name"], r);
-    changeTFieldValue(fields["mobile"], "123456789");
+    appendTFieldValue(fields["名称"], r);
+    changeTFieldValue(fields["手机"], "123456789");
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
+    tapButtonAndAlert(SAVE);
     var ret2 = false;
     if (isIn(alertMsg, "手机号码重复")) {
         ret2 = true;
     }
+    delay();
+    tapButton(window, RETURN);
 
     return ret1 && ret2;
+}
+
+function test110039() {
+    tapMenu("货品管理", "新增货品+");
+    tapButton(getScrollView(), 8);
+    var ret1 = true;
+    tapButton(getPopOrView(), "选 择");
+    var cells = getTableViewCells(getScrollView());
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isEqual("进货价", v)) {
+            ret1 = true;
+            break;
+        }
+    }
+    tapKeyboardHide();
+
+    return ret1;
 }
 
 function testQueryCustomerProvider() {
@@ -979,14 +1141,14 @@ function testQueryCustomerProvider() {
     return ret;
 }
 
-function testQueryProviderShopAccount() {
+function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
 
-    var keys = [ "provider", "shop" ];
+    var keys = [ "厂商", "门店" ];
     var fields = queryProviderShopAccountFields(keys);
-    changeTFieldValue(fields["provider"], "Vell");
-    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["厂商"], "Vell");
+    changeTFieldValue(fields["门店"], "常青店");
     delay();
     query(fields);
     var qr = getQR();
@@ -1002,13 +1164,38 @@ function test110042() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = [ "provider" ];
+    var keys = [ "厂商" ];
     var fields = queryCustomerProviderAccountFields(keys);
-    changeTFieldValue(fields["provider"], "Vell");
+    changeTFieldValue(fields["厂商"], "Vell");
     query(fields);
     var qr = getQR();
     ret = ret && isEqualQRData1ByTitle(qr, "名称", "Vell");
-    tapFirstText(getScrollView(), TITLE_SEQ, 3);
+
+    return ret;
+}
+
+function test110043() {
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    query();
+    var qr = getQR();
+    var a = qr.data[0]["余额"];
+
+    tapFirstText(); // getScrollView(), TITLE_SEQ, 3
+    qr = getQResult2(getScrollView(1), "门店", "累计未结");
+    var b = qr.data[0]["累计未结"];
+    var ret = isEqual(b, a);
+    // var totalPageNo = qr.totalPageNo;
+    var sum = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["未结"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQResult2(getScrollView(1), "门店", "累计未结");
+        }
+    }
+    ret = ret && isEqual(b, sum);
     tapNaviLeftButton();
 
     return ret;
@@ -1337,72 +1524,4 @@ function test110030() {
     }
     tapNaviLeftButton();
     return ret;
-}
-
-function test110034() {
-    var r = getToday() + getRandomInt(100);
-    tapMenu("往来管理", "新增客户+");
-    var keys = { "名称" : r };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
-
-    // tapMenu("销售开单", "开 单+");
-    // var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    // var f3 = new TField("数量", TF, 3, "1");
-    // var fields2 = [ f0, f3 ];
-    // setTFieldsValue(getScrollView(), fields2);
-    // var keys={"客户":r,"现金":"10000"};
-    // var fields = editSalesBillFields(keys);
-    // setTFieldsValue(window, fields);
-    // saveAndAlertOk();
-    // tapButton(window, RETURN);
-    // delay();
-
-    tapMenu("往来管理", "客户查询");
-    var keys = { "客户" : r };
-    var fields = queryCustomerFields(keys);
-    setTFieldsValue(window, fields);
-    query(fields);
-    tapFirstText();
-    tapButtonAndAlert("停 用");
-    delay();
-
-    tapMenu("往来管理", "客户活跃度");
-    var keys = { "客户" : r };
-    var fields = queryCustomerActiveFields(keys);
-    setTFieldsValue(window, fields);
-    query(fields);
-    var qr1 = getQR();
-    var ret1 = false;
-
-    if (qr1.total == 0) {
-        ret1 = true;
-    }
-    return ret1;
-}
-
-function test110035() {
-    tapMenu("往来管理", "客户账款", "客户门店账");
-    tapButton(window, "清除");
-    query();
-    var qr1 = getQR();
-    var r = qr1.data[0]["名称"];
-    var a = qr1.data[0]["未拿货天数"];
-
-    tapMenu("往来管理", "客户活跃度");
-    var keys = { "客户" : r };
-    var fields = queryCustomerActiveFields(keys);
-    setTFieldsValue(window, fields);
-    query(fields);
-    var qr2 = getQR();
-    var a1 = qr2.data[0]["未拿货天数"];
-    var ret = false;
-    if (a == a1) {
-        ret = true;
-    }
-    return ret;
-
 }

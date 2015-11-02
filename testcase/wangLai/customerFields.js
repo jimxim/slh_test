@@ -274,7 +274,7 @@ function queryCustomerShopAccountField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 3, "000", 1, 0);
+        f = new TField("店员", TF_AC, 3, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -319,7 +319,7 @@ function queryCustomerSuperField(key, show) {
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "a", 1, 0);
+        f = new TField("客户", TF_AC, 1, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
@@ -419,7 +419,7 @@ function queryCustomerScoreField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "仓库店");
+        f = new TField("门店", TF_SC, 0, "常青店");
         break;
     case "customer":
     case "客户":
