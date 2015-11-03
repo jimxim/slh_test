@@ -78,7 +78,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单-开单】客户不允许退货", "test1700181");
     // run("【销售开单-开单】积分跨门店共享", "test1700183");
     // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test1700184");//
-//    run("【销售开单-开单】积分是否跨门店共享 －开启", "test1700185");
+    // run("【销售开单-开单】积分是否跨门店共享 －开启", "test1700185");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -116,7 +116,7 @@ function test170041() {
         // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("李四  52148899635963", v)) {
-            ret = true;
+            var ret = true;
             break;
         }
     }
@@ -420,7 +420,7 @@ function test170055() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    qr = getQR();
+    var qr = getQR();
     var ret = isEqual(-100, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
     return ret;
 
@@ -905,7 +905,7 @@ function test170071() {
     var keys = { "客户" : "xjkh" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["代收"]
     var ret = isEqual(1500, qr.data[0]["金额"])
             && isEqual(-1500, qr.data[0]["未结"]);
@@ -1497,7 +1497,7 @@ function test1700112() {
     var fields = queryGoodsStockFields(keys);
     changeTFieldValue(fields["款号"], "3035");
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["库存"];
 
     var json = {
@@ -1586,7 +1586,7 @@ function test1700117() {
     var fields = queryGoodsStockFields(keys);
     changeTFieldValue(fields["款号"], r);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["库存"];
     var ret = false;
     if (a == "-2") {
@@ -1674,7 +1674,7 @@ function test1700125() {
     var keys = { "客户" : "ls" };
     var fields1 = salesBillOrderFields(keys);
     query(fields1);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["订货数"];
     var ret = false;
     if (a == "2") {
@@ -2155,9 +2155,9 @@ function test1700167() {
     query(fields);
     var qr = getQR();
     var pc = qr.data[0]["批次"];
-    
-    f7 = new TField("批次从", TF, 7, pc-1);
-    f8 = new TField("到", TF, 8, pc-1);
+
+    var f7 = new TField("批次从", TF, 7, pc - 1);
+    var f8 = new TField("到", TF, 8, pc - 1);
     var fields = [ f7, f8 ];
     setTFieldsValue(window, fields);
     query(fields);
@@ -2559,5 +2559,5 @@ function test1700184() {
     return ret;
 }
 function test1700185() {
-    
+
 }
