@@ -63,17 +63,21 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】待作废", "test1700138");
     // run("【销售开单－开单】复制-粘贴", "test1700139");
     // run("【销售开单－开单】收款（新增界面）", "test1700163");
-    // run("【销售开单－开单】收款（修改界面）", "test1700164");//
+    // run("【销售开单－开单】收款（修改界面）", "test1700164");
     // run("【销售开单－开单】查看修改日志(修改记录)", "test1700166");//
     // run("【销售开单－开单】查看修改日志（核销记录）", "test1700167");//
     // run("【销售开单－开单】挂单保存", "test1700169");
     // run("【销售开单－开单】挂单修改界面新增删除操作", "test1700170");
     // run("【销售开单－开单】挂单转销售单", "test1700171");
     // run("【销售开单－开单】二次挂单功能检查", "test1700173");
-    // run("【销售开单－开单】二次挂单功能检查", "test1700174");//
-     run("【销售开单－开单】对正常销售单执行挂单操作", "test1700175");//
-//    run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test1700176");
-//    run("【销售开单－开单】更多-所有挂单 功能检查", "test1700177");
+    // run("【销售开单－开单】二次挂单功能检查", "test1700174");
+    // run("【销售开单－开单】对正常销售单执行挂单操作", "test1700175");
+    // run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test1700176");
+    // run("【销售开单－开单】更多-所有挂单 功能检查", "test1700177");／／
+    // run("【销售开单－开单】设置已配货", "test1700180");
+    // run("【销售开单-开单】客户不允许退货", "test1700181");
+//    run("【销售开单-开单】积分跨门店共享", "test1700183");//
+    run("【销售开单-开单】积分是否跨门店共享 －开启", "test1700184");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -89,7 +93,7 @@ function test170040() {
         // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("李四  52148899635963", v)) {
-            ret = true;
+            var ret = true;
             break;
         }
     }
@@ -214,7 +218,7 @@ function test170046() {
     setTFieldsValue(window, fields);
     var k0 = getTextFieldValue(window, 1);
     if (k0 <= 0) {
-        ret = true;
+        var ret = true;
     }
     // logDebug("ret" + ret);
     // return ret;
@@ -229,7 +233,7 @@ function test170046() {
     setTFieldsValue(window, fields1);
     var k1 = getTextFieldValue(window, 1);
     if (k1 >= 0) {
-        ret1 = true;
+        var ret1 = true;
     }
     // logDebug("ret1" + ret1);
     // return ret1;
@@ -244,7 +248,7 @@ function test170046() {
     setTFieldsValue(window, fields2);
     var k2 = getTextFieldValue(window, 1);
     if (k2 == 0) {
-        ret2 = true;
+        var ret2 = true;
     }
     logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -402,7 +406,7 @@ function test170054() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    qr = getQR();
+    var qr = getQR();
     var ret = isEqual(-100, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
     return ret;
 }
@@ -879,7 +883,7 @@ function test170070() {
     var keys = { "客户" : "xjkh" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["代收"]
     var ret = isEqual(1500, qr.data[0]["金额"])
             && isEqual(-1500, qr.data[0]["未结"]);
@@ -1067,7 +1071,7 @@ function test170087() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["数量"]
     if (a == "6") {
         var ret = true;
@@ -1513,7 +1517,7 @@ function test1700113() {
     var fields = queryGoodsStockFields(keys);
     changeTFieldValue(fields["款号"], "3035");
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["库存"];
 
     var json = {
@@ -1637,7 +1641,7 @@ function test1700119() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var a = qr.data[0]["开单门店"];
     var b = qr.data[0]["发货门店"];
     var c = qr.data[0]["日期"];
@@ -2072,16 +2076,9 @@ function test1700164() {
     // 一天一般只能收款一次
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    json["日期"] = getDay(-10);
     editSalesBillNoColorSize(json);
-
-    var g0 = new TField("日期", TF_DT, 10, getToday(+1));
-    var fields = [ g0 ];
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
@@ -2091,7 +2088,7 @@ function test1700164() {
 
     tapMenu("销售开单", "更多.", "收 款");
     tapButtonAndAlert(OK);
-    delay();
+    delay(3);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
@@ -2105,15 +2102,8 @@ function test1700166() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    json["日期"] = getDay(-9);
     editSalesBillNoColorSize(json);
-
-    var g0 = new TField("日期", TF_DT, 10, getToday(+1));
-    var fields = [ g0 ];
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
@@ -2121,20 +2111,61 @@ function test1700166() {
     query(fields);
     tapFirstText();
 
-    tapButton(window, "打 印");
-    tapPrompt();
+    tapButtonAndAlert("打 印", "打印(客户用)");
+    delay();
+
+    tapFirstText();
     tapMenu("销售开单", "更多.", "查看修改日志");
-    var texts = getStaticTexts(window);
+    var texts = getStaticTexts(getPop());
+    debugElementTree(getPop());
     var index = getArrayIndexIn(texts, "最后打印时间");
-    var date = getStaticTextValue(window, index);
+    var date = getStaticTextValue(getPop(), "最后打印时间");
 
-    var ret = isEqual(date, getOpTime());
+    // var pt = getStaticTexts(getPop(),-3);
+    var ret = isEqual(getOpTime(), date);
 
-    logDebug("date" + date);
-    // logDebug(" ret" + ret);
+    // logDebug("date==" + date);
+    logDebug(" ret" + ret);
     return ret;
 }
 function test1700167() {
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var keys = [ "客户" ];
+    var fields = editSalesBillFields(keys);
+    changeTFieldValue(fields["客户"], "xjkh", -1, 0);
+    setTFieldsValue(window, fields);
+
+    tapButton(window, "未付");
+    delay();
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh", "核销" : [ 4 ], "特殊货品" : { "抹零" : 100 },
+        "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+
+    tapMenu("销售开单", "更多.", "查看修改日志");
+    var texts = getStaticTexts(getPop());
+    debugElementTree(getPop());
+    var index = getArrayIndexIn(texts, "最后打印时间");
+    var date = getStaticTextValue(getPop(), "最后打印时间");
+
+    logDebug(" ret" + ret);
+    return ret;
 
 }
 function test1700169() {
@@ -2294,13 +2325,13 @@ function test1700174() {
 
     tapMenu("销售开单", "按挂单");
     tapFirstText();
-    var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
-    var f27 = new TField("数量", TF, 27, "4");
-    var fields = [ f24, f27 ];
+    var f14 = new TField("货品", TF_AC, 14, "3035", -1, 0);
+    var f17 = new TField("数量", TF, 17, "4");
+    var fields = [ f14, f17 ];
     setTFieldsValue(getScrollView(), fields);
 
-    var json = { "客户" : "ls",
-        "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
+    var json = { "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a",
+        "代收金额" : "1316" } };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -2329,6 +2360,7 @@ function test1700175() {
     delay();
 
     tapButtonAndAlert("挂 单", OK);
+    delay();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "本单不允许执行挂单操作"));
@@ -2355,17 +2387,164 @@ function test1700176() {
     tapMenu("销售开单", "按挂单");
     tapFirstText();
 
-    var json = { "客户" : "zhhz1", "店员" : "005", "日期" : "2015-10-01",
-        "刷卡" : [ 100, "交" ], "汇款" : [ 100, "交" ], "备注" : "xx", "不返回" : "yes" };
+    var json = { "客户" : "lc", "日期" : "2015-11-01", "刷卡" : [ 596, "交" ],
+        "备注" : "bz" };
     editSalesBillNoColorSize(json);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "保存成功"));
-    
+
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
 function test1700177() {
-    
-    
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    json["日期"] = getDay(-9);
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapMenu("销售开单", "更多.", "所有挂单");
+    var texts = getStaticTexts(getPop());
+    debugElementTree(getPop());
+    var index = getArrayIndexIn(texts, "");
+    var date = getStaticTextValue(getPop(), "");
+
+    var ret = isEqual(getOpTime(), date);
+
+    logDebug(" ret" + ret);
+    return ret;
+}
+function test1700180() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapMenu("销售开单", "更多.", "设置已配货");
+    tapPrompt();
+
+    delay();
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "配货成功"));
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["配货"];
+
+    var ret1 = isEqual("是", a);
+
+    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
+    return ret && ret1;
+
+}
+function test1700181() {
+    var r = "anewkh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "允许退货" : "否" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "-1" } ] };
+    editSalesBillNoColorSize(json);
+
+    var alertMsg1 = getArray1(alertMsgs, -3);
+    var ret = (isIn(alertMsg1, "不允许退货"));
+
+    tapPrompt();
+    delay();
+    tapButtonAndAlert(RETURN, OK);
+
+    logDebug("alertMsg1=" + alertMsg1 + " ret=" + ret);
+    return ret;
+}
+function test1700183() {
+    // 全局设置:开启 积分跨门店共享功能;
+    // 常青店总经理000登陆
+    tapMenu("往来管理", "积分查询");
+    var key = [ "shop", "customer" ];
+    var fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.counts["积分"];
+
+    // 中洲店总经理200登陆
+    delay();
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("往来管理", "积分查询");
+    var key = [ "shop", "customer", ];
+    var fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr1 = getQR();
+    var b = qr1.counts["积分"];
+
+    var ret = false;
+    if (sub(b, a) == "180") {
+        ret = true;
+    }
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
+}
+function test1700184() {
+    // 全局设置:不开启 积分跨门店共享功能;
+    // 常青店总经理000登陆
+    tapMenu("往来管理", "积分查询");
+    var key = [ "shop", "customer" ];
+    var fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.counts["积分"];
+
+    // 中洲店总经理200登陆
+    delay();
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("往来管理", "积分查询");
+    var key = [ "shop", "customer" ];
+    var fields = queryCustomerScoreFields(key);
+    changeTFieldValue(fields["shop"], "常青店(test)36新");
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr1 = getQR();
+    var b = qr1.counts["积分"];
+
+    var ret = false;
+    if (sub(b, a) != "180" && b) {
+        ret = true;
+    }
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
 }
