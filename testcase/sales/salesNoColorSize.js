@@ -44,7 +44,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】上次成交价界面显示备注信息", "test1700104");
     // run("【销售开单－开单】查看上次成交价", "test1700105");
     // run("【销售开单－开单】使用上次成交价", "test1700107");
-    // run("【销售开单－开单】开单时显示当前库存", "test1700112");//
+    run("【销售开单－开单】开单时显示当前库存", "test1700112");
     // run("【销售开单－开单】开单时不显示当前库存", "test1700113");//
     // run("【销售开单－开单】开单是否显示所有门店库存", "test1700114");//
     // run("【销售开单－开单】开单是否显示所有门店库存", "test1700115");//
@@ -65,7 +65,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】收款（新增界面）", "test1700163");
     // run("【销售开单－开单】收款（修改界面）", "test1700164");
     // run("【销售开单－开单】查看修改日志(修改记录)", "test1700166");
-    run("【销售开单－开单】查看修改日志（核销记录）", "test1700167");
+    // run("【销售开单－开单】查看修改日志（核销记录）", "test1700167");／
     // run("【销售开单－开单】挂单保存", "test1700169");
     // run("【销售开单－开单】挂单修改界面新增删除操作", "test1700170");
     // run("【销售开单－开单】挂单转销售单", "test1700171");
@@ -77,8 +77,11 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】设置已配货", "test1700180");
     // run("【销售开单-开单】客户不允许退货", "test1700181");
     // run("【销售开单-开单】积分跨门店共享", "test1700183");
-    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test1700184");//
+    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test1700184");/
     // run("【销售开单-开单】积分是否跨门店共享 －开启", "test1700185");
+//    run("【销售开单－开单】积分兑换", "test1700186");//
+    // run("【销售开单－开单】积分兑换后再次检查剩余积分", "test1700187");
+    // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test1700188");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -1493,45 +1496,45 @@ function test1700112() {
     // 颜色尺码模式下，开启参数 开单时是否显示当前库存
     tapMenu("货品管理", "款号库存");
     query();
-    var keys = [ "款号" ];
+    var keys = {"款号":"3035","门店":"常青店" };
     var fields = queryGoodsStockFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 5, 6, 7 ] },
-                { "货品" : "150921", "数量" : [ 1, 2, 3 ] } ], "现金" : "0", };
-    editSalesBillColorSize(json);
-
-    var ret = isEqual(a, inv);
-    logDebug("a=" + a + "inv=" + inv);
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["均色-均码-常青店"];
+    var ret = isEqual(a, n);
+ 
     return ret;
 }
 function test1700113() {
     // 关闭参数 开单时是否显示当前库存
     tapMenu("货品管理", "款号库存");
     query();
-    var keys = [ "款号" ];
+    var keys = {"款号":"3035","门店":"常青店" };
     var fields = queryGoodsStockFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 5, 6, 7 ] },
-                { "货品" : "150921", "数量" : [ 1, 2, 3 ] } ], "现金" : "0", };
-    editSalesBillColorSize(json);
-    var ret = isEqual(a, inv);
-    logDebug("a=" + a + "inv=" + inv);
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["均色-均码-常青店"];
+    var ret = isEqual(0, n);
+    
     return ret;
 }
 function test1700114() {
     // 设置开单时显示当前库存，开启参数 开单时是否显示当前库存
+    
 
 }
 function test1700115() {
@@ -2491,14 +2494,13 @@ function test1700181() {
 function test1700183() {
     // 全局设置:开启 积分跨门店共享功能;
     // 常青店总经理000登陆
-    tapMenu("往来管理", "积分查询");
-    var key = [ "shop", "customer" ];
-    var fields = queryCustomerScoreFields(key);
-    changeTFieldValue(fields["shop"], "常青店");
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
     var qr = getQR();
-    var a = qr.counts["积分"];
+    var a = qr.data[0]["当前积分"];
 
     // 中洲店总经理200登陆
     delay();
@@ -2507,14 +2509,13 @@ function test1700183() {
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("往来管理", "积分查询");
-    var key = [ "shop", "customer", ];
-    var fields = queryCustomerScoreFields(key);
-    changeTFieldValue(fields["shop"], "常青店");
-    changeTFieldValue(fields["customer"], "ls");
-    query(fields);
+    tapMenu("往来管理", "客户查询");
+    var keys1 = [ "customer" ];
+    var fields1 = queryCustomerFields(keys1);
+    changeTFieldValue(fields1["customer"], "ls");
+    query(fields1);
     var qr1 = getQR();
-    var b = qr1.counts["积分"];
+    var b = qr1.data[0]["当前积分"];
 
     var ret = false;
     if (sub(b, a) == "180") {
@@ -2526,14 +2527,13 @@ function test1700183() {
 function test1700184() {
     // 全局设置:不开启 积分跨门店共享功能;
     // 常青店总经理000登陆
-    tapMenu("往来管理", "积分查询");
-    var key = [ "shop", "customer" ];
-    var fields = queryCustomerScoreFields(key);
-    changeTFieldValue(fields["shop"], "常青店");
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
     var qr = getQR();
-    var a = qr.counts["积分"];
+    var a = qr.data[0]["当前积分"];
 
     // 中洲店总经理200登陆
     delay();
@@ -2542,14 +2542,13 @@ function test1700184() {
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("往来管理", "积分查询");
-    var key = [ "shop", "customer" ];
-    var fields = queryCustomerScoreFields(key);
-    changeTFieldValue(fields["shop"], "常青店(test)36新");
-    changeTFieldValue(fields["customer"], "ls");
-    query(fields);
+    tapMenu("往来管理", "客户查询");
+    var keys1 = [ "customer" ];
+    var fields1 = queryCustomerFields(keys1);
+    changeTFieldValue(fields1["customer"], "ls");
+    query(fields1);
     var qr1 = getQR();
-    var b = qr1.counts["积分"];
+    var b = qr1.data[0]["当前积分"];
 
     var ret = false;
     if (sub(b, a) != "180" && b) {
@@ -2559,5 +2558,102 @@ function test1700184() {
     return ret;
 }
 function test1700185() {
+    // 1销售开单时是否按门店区分客户-不区分；2全局设置:开启 积分跨门店共享功能;
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(1), 1);
+    tapNaviLeftButton();
+
+    var ret = isIn(b, a);
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
+}
+function test1700186() {
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    tapButton(getScrollView(1), "积分兑换");
+    var r = "9" + getTimestamp(6);
+    var g0 = new TField("兑换积分*", TF, 0, r);
+    var g1 = new TField("兑换金额*", TF, 1, r);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = (isIn(alertMsg1, "当前积分不足"));
+
+    tapNaviLeftButton();
+    tapButtonAndAlert(RETURN, OK);
+    delay();
+
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
+}
+function test1700187() {
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    tapButton(getScrollView(1), "积分兑换");
+    var r = "1" + getTimestamp(3);
+    var g0 = new TField("兑换积分*", TF, 0, r);
+    var g1 = new TField("兑换金额*", TF, 1, r);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapNaviLeftButton();
+    tapButtonAndAlert(RETURN, OK);
+    delay(3);
+
+    tapMenu("往来管理", "客户查询");
+    var keys1 = [ "customer" ];
+    var fields1 = queryCustomerFields(keys1);
+    changeTFieldValue(fields1["customer"], "ls");
+    query(fields1);
+    var qr = getQR();
+    var b = qr.data[0]["当前积分"];
+
+    var ret = isEqual(b, a - r);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
+}
+function test1700188() {
 
 }
