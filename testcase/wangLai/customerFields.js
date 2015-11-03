@@ -668,8 +668,8 @@ function editCustomerLogisticsField(key, show) {
     var f;
     switch (key) {
     case "name":
-    case "名称*":
-        f = new TField("名称*", TF, 0, "a");
+    case "名称":
+        f = new TField("名称", TF, 0, "a");
         break;
     case "staff":
     case "经办人":
@@ -788,18 +788,18 @@ function editCustomerBackField(key, show) {
     switch (key) {
     case "day":
     case "回访日期":
-        f = new TField("回访日期", TF_DT, 0, "2015-09-10");
+        f = new TField("回访日期", TF_DT, 0, getToday());
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "a", 1, 0);
+        f = new TField("客户", TF_AC, 1, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 2, "000", 1, 0);
+        f = new TField("经办人", TF_AC, 2, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
