@@ -1097,26 +1097,18 @@ function test110039() {
     var ret1 = true;
     tapButton(getPopOrView(), "选 择");
 
-    // var i = f.index, value = f.value;
-    // i = getTextFieldIndex(getScrollView(-1), i);
-    // for(var j=0;j<5;j++){
-    // logDebug("");
-    //        
-    // }
-    //    
+    var view1 = getPopView(window, -1);
+    var p = "进货价 零批价 打包价 大客户价 Vip价格";
+    var ret1 = true;
+    var texts = getStaticTexts(view1);
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        if (v) {
+            ret1 = isAnd(ret1, isIn(p, v));
+        }
+    }
 
-    // var cells = getTableViewCells(getScrollView(),f);
-    // for (var i = 0; i < cells.length; i++) {
-    // var cell = cells[i];
-    // var v = cell.name();
-    // if (isEqual("进货价", v)) {
-    // ret1 = true;
-    // break;
-    // }
-    // }
-    // tapKeyboardHide();
-
-    // return ret1;
+    return ret1;
 }
 
 function testQueryCustomerProvider() {
@@ -1306,7 +1298,7 @@ function test110047() {
     delay();
     tapButton(window, RETURN);
 
-//    tapMenu("往来管理", "更多.", "客户回访");
+    // tapMenu("往来管理", "更多.", "客户回访");
     var qr = getQR();
     var ret = isEqual("小王", qr.data[0]["客户"]) && isEqual(r, qr.data[0]["主题"]);
 
@@ -1336,8 +1328,8 @@ function test110049() {
     delay();
     tapButton(window, RETURN);
 
-//  tapMenu("往来管理", "更多.", "客户回访");
-    var qr=getQR();
+    // tapMenu("往来管理", "更多.", "客户回访");
+    var qr = getQR();
     tapFirstText(getScrollView(), TITLE_SEQ, 7);
     keys = { "客户" : "zbs", "经办人" : "004,", "回访类型" : "定期回访", "主题" : "待删除",
         "反馈及建议" : "反馈及建议" };
@@ -1353,12 +1345,12 @@ function test110049() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 7);
     tapButtonAndAlert("删 除");
-    
+
     qr = getQR();
-    if(isEqualQRData1ByTitle(qr,"主题","待删除")){
-        ret=false;
+    if (isEqualQRData1ByTitle(qr, "主题", "待删除")) {
+        ret = false;
     }
-    
+
     return ret;
 }
 
