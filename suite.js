@@ -16,7 +16,8 @@ function test000All() {
 //	testTemp();
 // testPurchaseAll();
 // testParamAll();
- testWanLaiCustomerAll();
+// testWanLaiCustomerAll();
+ testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
 // testWanLaiProviderAll();
