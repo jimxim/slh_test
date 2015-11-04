@@ -383,7 +383,7 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 		break;
 	case "discount":
 	case "产品折扣":
-	    f = new TField("产品折扣", TF, priceStartIndex+13, "1");
+	    f = new TField("产品折扣", TF, priceStartIndex+13, "0.888");
 	    break;
 	case "season":
 	case "季节":
