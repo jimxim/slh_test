@@ -11,13 +11,13 @@ function test000All() {
 // if( ok ) {
 //	testSASynthesisAll();
 // testSalesBillAll();
-// testEditSalesBillAll();
+ testEditSalesBillAll();
 	
 //	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
- testSalesNoColorSizeAll();
+// testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
 // testWanLaiProviderAll();
