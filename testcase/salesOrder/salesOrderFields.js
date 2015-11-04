@@ -18,7 +18,7 @@ function salesOrderQueryBatchField(key, show) {
 	switch (key) {
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 0, "z", 1, 0);
+		f = new TField("客户", TF_AC, 0, "z", -1, 0);
 		if (show) {
 			f.value = "zz";
 		}
@@ -33,7 +33,7 @@ function salesOrderQueryBatchField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 3, "000", 1, 0);
+		f = new TField("店员", TF_AC, 3, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -89,7 +89,7 @@ function salesOrderQueryParticularField(key, show) {
 		break;
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 3, "z", 1, 0);
+		f = new TField("客户", TF_AC, 3, "z", -1, 0);
 		if (show) {
 			f.value = "zz";
 		}
@@ -104,7 +104,7 @@ function salesOrderQueryParticularField(key, show) {
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 6, "a", 1, 0);
+		f = new TField("款号", TF_AC, 6, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -178,7 +178,7 @@ function salesOrderCodeField(key, show) {
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 2, "a", 1, 0);
+		f = new TField("款号", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -189,7 +189,7 @@ function salesOrderCodeField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 4, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 4, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -225,7 +225,7 @@ function salesOrderStaffField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 2, "000", 1, 0);
+		f = new TField("店员", TF_AC, 2, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -261,7 +261,7 @@ function salesOrderCustomerField(key, show) {
 		break;
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 2, "a", 1, 0);
+		f = new TField("客户", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
@@ -322,7 +322,7 @@ function salesOrderAddField(key, show) {
 	switch (key) {
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
+        		f = new TField("客户", TF_AC, 0, "a", l - 1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
