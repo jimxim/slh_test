@@ -38,50 +38,54 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】整单备注和明细备注", "test170095");
     // run("【销售开单－开单】退货时备注显示", "test170096");
     // run("【销售开单－开单】退货时明细备注框操作", "test170097");
-    // run("【销售开单－开单】款号合并", "test1700101");
-    // run("【销售开单－开单】款号合并（既拿货又退货）", "test1700102");
+    // run("【销售开单－开单】款号合并", "test170101");
+    // run("【销售开单－开单】款号合并（既拿货又退货）", "test170102");
     // run("【销售开单-开单】均色均码款号合并", "test1700103");
-    // run("【销售开单－开单】上次成交价界面显示备注信息", "test1700104");
-    // run("【销售开单－开单】查看上次成交价", "test1700105");
-    // run("【销售开单－开单】使用上次成交价", "test1700107");
-    // run("【销售开单－开单】开单时显示当前库存", "test1700112");
-    // run("【销售开单－开单】开单时不显示当前库存", "test1700113");//
-    // run("【销售开单－开单】开单是否显示所有门店库存", "test1700114");
-    // run("【销售开单－开单】开单是否显示所有门店库存", "test1700115");//
-    // run("【销售开单－开单】开单时不允许负库存", "test1700116");
-    // run("【销售开单－开单】开单时允许负库存", "test1700117");
-    // run("【销售开单－开单】库存不足时开单修改界面不能打印", "test1700118");
-    // run("【销售开单－开单】异地发货－－配货员可查看内容", "test1700119");
-    // run("【销售开单－开单】开单的同时订货", "test1700125");
-    // run("【销售开单－开单】特殊货品", "test1700128");
-    // run("【销售开单－开单】新增货品", "test1700129");
-    // run("【销售开单－开单】连续新增货品", "test1700131");
-    // run("【销售开单－开单】新增货品后再输入别的款号", "test1700132");
-    // run("【销售开单－开单】开单保存后再增删款号", "test1700133");
-     run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test1700136");
-    // run("【销售开单－开单】作废", "test1700137");
-    // run("【销售开单－开单】待作废", "test1700138");
-    // run("【销售开单－开单】复制-粘贴", "test1700139");
-    // run("【销售开单－开单】收款（新增界面）", "test1700163");
-    // run("【销售开单－开单】收款（修改界面）", "test1700164");
-    // run("【销售开单－开单】查看修改日志(修改记录)", "test1700166");
-    // run("【销售开单－开单】查看修改日志（核销记录）", "test1700167");
+    // run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");
+    // run("【销售开单－开单】查看上次成交价", "test170105");
+    // run("【销售开单－开单】使用上次成交价", "test170107");
+    // run("【销售开单－开单】开单时显示当前库存", "test170112");
+    // run("【销售开单－开单】开单时不显示当前库存", "test170113");
+    // run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
+     run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
+    // run("【销售开单－开单】开单时不允许负库存", "test170116");
+    // run("【销售开单－开单】开单时允许负库存", "test170117");
+    // run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
+    // run("【销售开单－开单】异地发货－－配货员可查看内容", "test170119");
+    // run("【销售开单－开单】开单的同时订货", "test170125");
+    // run("【销售开单－开单】特殊货品", "test170128");
+    // run("【销售开单－开单】新增货品", "test170129");
+    // run("【销售开单－开单】连续新增货品", "test170131");
+    // run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
+    // run("【销售开单－开单】开单保存后再增删款号", "test170133");
+    // run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
+    // run("【销售开单－开单】作废", "test170137");
+    // run("【销售开单－开单】待作废", "test170138");
+    // run("【销售开单－开单】复制-粘贴", "test170139");
+    // run("【销售开单－开单】收款（新增界面）", "test170163");
+    // run("【销售开单－开单】收款（修改界面）", "test170164");
+    // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
+    // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     // run("【销售开单－开单】挂单保存", "test1700169");
-    // run("【销售开单－开单】挂单修改界面新增删除操作", "test1700170");
-    // run("【销售开单－开单】挂单转销售单", "test1700171");
-    // run("【销售开单－开单】二次挂单功能检查", "test1700173");
-    // run("【销售开单－开单】二次挂单功能检查", "test1700174");
-    // run("【销售开单－开单】对正常销售单执行挂单操作", "test1700175");
-    // run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test1700176");
-    // run("【销售开单－开单】更多-所有挂单 功能检查", "test1700177");／／
-    // run("【销售开单－开单】设置已配货", "test1700180");
-    // run("【销售开单-开单】客户不允许退货", "test1700181");
-    // run("【销售开单-开单】积分跨门店共享", "test1700183");
-    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test1700184");/
-    // run("【销售开单-开单】积分是否跨门店共享 －开启", "test1700185");
-    // run("【销售开单－开单】积分兑换", "test1700186");//
-    // run("【销售开单－开单】积分兑换后再次检查剩余积分", "test1700187");
-    // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test1700188");
+    // run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+    // run("【销售开单－开单】挂单转销售单", "test170171");
+    // run("【销售开单－开单】二次挂单功能检查", "test170173");
+    // run("【销售开单－开单】二次挂单功能检查", "test170174");
+    // run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
+    // run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
+    // run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
+    // run("【销售开单－开单】设置已配货", "test170180");
+    // run("【销售开单-开单】客户不允许退货", "test170181");
+    // run("【销售开单-开单】积分跨门店共享", "test170183");
+    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");/
+    // run("【销售开单-开单】积分是否跨门店共享 －开启", "test170185");
+    // run("【销售开单－开单】积分兑换", "test170186");
+    // run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+//     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");／／
+    // run("【销售开单－开单】兑换记录", "test170189");／／
+    // run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
+//    run("【销售开单-开单】总计四舍五入", "test170191");
+//    run("【销售开单-开单】开单员销售价允许改高，不允许改低 【使用开单员角色】", "test170192");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -1303,7 +1307,7 @@ function test170097() {
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 
 }
-function test1700101() {
+function test170101() {
     // 颜色尺码模式下，开启款号合并功能：销售开单是否合并重复的款号
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -1326,7 +1330,7 @@ function test1700101() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700102() {
+function test170102() {
     // 颜色尺码模式下，开启款号合并功能：销售开单是否合并重复的款号（既拿货又退货）
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -1348,7 +1352,7 @@ function test1700102() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700103() {
+function test170103() {
     // 均色均码款号合并
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -1369,7 +1373,7 @@ function test1700103() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700104() {
+function test170104() {
     // 上次成交价界面显示备注信息
     tapMenu("销售开单", "开 单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1403,7 +1407,7 @@ function test1700104() {
     return ret;
 
 }
-function test1700105() {
+function test170105() {
     // 开启参数 颜色尺码下，开单显示上次单价
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1447,7 +1451,7 @@ function test1700105() {
     logDebug("num=" + num + "date=" + date);
     return ret;
 }
-function test1700107() {
+function test170107() {
     // 开启参数 是否启用上次成交价作为本次开单单价
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1492,7 +1496,7 @@ function test1700107() {
     logDebug("c=" + c + "c1=" + c1);
     return ret && ret1;
 }
-function test1700112() {
+function test170112() {
     // 颜色尺码模式下，开启参数 开单时是否显示当前库存
     tapMenu("货品管理", "款号库存");
     query();
@@ -1512,7 +1516,7 @@ function test1700112() {
 
     return ret;
 }
-function test1700113() {
+function test170113() {
     // 关闭参数 开单时是否显示当前库存
     tapMenu("货品管理", "款号库存");
     query();
@@ -1536,7 +1540,7 @@ function test1700113() {
     logDebug("a=" + a + "n=" + n + "ret=" + ret + "ret1=" + ret1);
     return ret && ret1;
 }
-function test1700114() {
+function test170114() {
     // 设置开单时显示当前库存，开启参数 开单时是否显示当前库存
     // 颜色尺码模式下，开启参数 开单时是否显示当前库存
     tapMenu("货品管理", "款号库存");
@@ -1573,7 +1577,7 @@ function test1700114() {
     return ret;
 
 }
-function test1700115() {
+function test170115() {
     // 设置开单时显示当前库存，设置参数 销售开单-是否显示所有门店的当前库存 为默认显示本门店的库存
     tapMenu("货品管理", "款号库存");
     query();
@@ -1588,13 +1592,16 @@ function test1700115() {
     editSalesBillDetColorSize(json);
     var oStockNum = getColorSizeStockNum();
     tapNaviLeftButton();
-    var n = oStockNum["均色-均码-常青店"];
+    var n = oStockNum["均色-均码"];
     var ret = isEqual(a, n);
+    
+    delay();
+    tapButton(window,RETURN);
 
     return ret;
 
 }
-function test1700116() {
+function test170116() {
     // 设置是否允许负库存为 “检查，必须先入库再出库”
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
@@ -1620,7 +1627,7 @@ function test1700116() {
     return ret;
 
 }
-function test1700117() {
+function test170117() {
     // 设置是否允许负库存为 “不检查，允许负库存”
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
@@ -1655,7 +1662,7 @@ function test1700117() {
 
 }
 
-function test1700118() {
+function test170118() {
     // 设置是否允许负库存为 “检查，必须先入库再出库”
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
@@ -1687,7 +1694,7 @@ function test1700118() {
     return ret;
 
 }
-function test1700119() {
+function test170119() {
     // 常青店 先开启异地仓库，再设置异地发货开单模式
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1710,7 +1717,7 @@ function test1700119() {
     return ret;
 
 }
-function test1700125() {
+function test170125() {
     // 开启参数 销售开单的同时订货功能，退出重新登陆
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1741,7 +1748,7 @@ function test1700125() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700128() {
+function test170128() {
     // 设置参数 销售开单同时订货为不启用
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1765,7 +1772,7 @@ function test1700128() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700129() {
+function test170129() {
     var r = "anewkhao" + getTimestamp(3);
     var r1 = "1" + getTimestamp(3);
     tapMenu("销售开单", "开  单+");
@@ -1814,7 +1821,7 @@ function test1700129() {
     logDebug("ret=" + ret + "ret1=" + ret1);
     return ret && ret1;
 }
-function test1700131() {
+function test170131() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -1892,7 +1899,7 @@ function test1700131() {
     logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test1700132() {
+function test170132() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -1938,7 +1945,7 @@ function test1700132() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test1700133() {
+function test170133() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -1972,7 +1979,7 @@ function test1700133() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test1700136() {
+function test170136() {
     // 设置销售开单允许修改和作废的天数N,不能用总经理账号测试，使用店长货开单员登陆，常青店长004登陆，3天
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -1981,23 +1988,26 @@ function test1700136() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
-    var fields = salesQueryBatchFields(keys);
+    var f0 = new TField("客户", TF_AC, 0, "ls", -1, 0);
+    var f2 = new TField("日期从", TF_DT, 2, getDay(-3));
+    var f3 = new TField("到", TF_DT, 3, getDay(-3));
+    var fields = [ f0, f2, f3 ];
+    setTFieldsValue(window, fields);
     query(fields);
     tapFirstText();
 
     tapButtonAndAlert("作 废", OK);
 
     saveAndAlertOk();
-   
+
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "保存成功"));
+    var ret = (isIn(alertMsg1, "操作失败：只能作废或修改 3 天内的单据"));
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test1700137() {
+function test170137() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -2026,7 +2036,7 @@ function test1700137() {
 
     return ret;
 }
-function test1700138() {
+function test170138() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -2061,7 +2071,7 @@ function test1700138() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
     return ret && ret1;
 }
-function test1700139() {
+function test170139() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -2096,7 +2106,7 @@ function test1700139() {
 
     return ret;
 }
-function test1700163() {
+function test170163() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
@@ -2116,7 +2126,7 @@ function test1700163() {
     return ret;
 
 }
-function test1700164() {
+function test170164() {
     // 一天一般只能收款一次
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -2142,7 +2152,7 @@ function test1700164() {
     return ret;
 
 }
-function test1700166() {
+function test170166() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -2174,7 +2184,7 @@ function test1700166() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test1700167() {
+function test170167() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "现金" : "0",
@@ -2214,15 +2224,14 @@ function test1700167() {
     var c = getStaticTextValue(getPopOrView(), index + 3);
     var d = getStaticTextValue(getPopOrView(), index + 5);
 
-    var ret = isAnd(isEqual("总经理", a), isEqual(
-            getOpTime(), c), isEqual(pc, d));
-    var ret1=isAqualOptime(getOpTime(), b);
+    var ret = isAnd(isEqual("总经理", a), isEqual(getOpTime(), c), isEqual(pc, d));
+    var ret1 = isAqualOptime(getOpTime(), b);
 
     logDebug(" ret" + ret);
     return ret;
 
 }
-function test1700169() {
+function test170169() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
@@ -2247,7 +2256,7 @@ function test1700169() {
 
     return ret;
 }
-function test1700170() {
+function test170170() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -2286,7 +2295,7 @@ function test1700170() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test1700171() {
+function test170171() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -2326,7 +2335,7 @@ function test1700171() {
     logDebug(" ret" + ret + " ret1" + ret1);
     return ret && ret1;
 }
-function test1700173() {
+function test170173() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -2363,7 +2372,7 @@ function test1700173() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test1700174() {
+function test170174() {
     // 开单模式选择代收模式
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -2400,7 +2409,7 @@ function test1700174() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test1700175() {
+function test170175() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ] };
@@ -2425,7 +2434,7 @@ function test1700175() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test1700176() {
+function test170176() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -2451,31 +2460,41 @@ function test1700176() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test1700177() {
+function test170177() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
-    json["日期"] = getDay(-9);
+    var json = {
+        "客户" : "ls",
+        "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
+    tapButtonAndAlert("挂 单", OK);
+    delay(2);
+    tapButton(window, RETURN);
 
-    tapFirstText();
+    tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "更多.", "所有挂单");
-    var texts = getStaticTexts(getPop());
-    debugElementTree(getPop());
-    var index = getArrayIndexIn(texts, "");
-    var date = getStaticTextValue(getPop(), "");
+    delay();
+    var qr = getQRtable1();
 
-    var ret = isEqual(getOpTime(), date);
+    debugQResult(qr);
+    loadHangBill(0);
+
+    var a = getTextFieldValue(getScrollView(), 0);
+    var b = getTextFieldValue(getScrollView(), 7);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    var ret = isAnd(isIn(a, "3035"), isIn(b, "8989"));
 
     logDebug(" ret" + ret);
     return ret;
 }
-function test1700180() {
+function test170180() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -2507,7 +2526,7 @@ function test1700180() {
     return ret && ret1;
 
 }
-function test1700181() {
+function test170181() {
     var r = "anewkh" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "允许退货" : "否" };
@@ -2532,7 +2551,7 @@ function test1700181() {
     logDebug("alertMsg1=" + alertMsg1 + " ret=" + ret);
     return ret;
 }
-function test1700183() {
+function test170183() {
     // 全局设置:开启 积分跨门店共享功能;
     // 常青店总经理000登陆
     tapMenu("往来管理", "客户查询");
@@ -2565,7 +2584,7 @@ function test1700183() {
     logDebug(" a=" + a + " b=" + b);
     return ret;
 }
-function test1700184() {
+function test170184() {
     // 全局设置:不开启 积分跨门店共享功能;
     // 常青店总经理000登陆
     tapMenu("往来管理", "客户查询");
@@ -2598,7 +2617,7 @@ function test1700184() {
     logDebug(" a=" + a + " b=" + b);
     return ret;
 }
-function test1700185() {
+function test170185() {
     // 1销售开单时是否按门店区分客户-不区分；2全局设置:开启 积分跨门店共享功能;
     tapMenu("往来管理", "客户查询");
     var key = [ "customer" ];
@@ -2619,7 +2638,8 @@ function test1700185() {
     logDebug(" a=" + a + " b=" + b);
     return ret;
 }
-function test1700186() {
+function test170186() {
+    // 170186验证积分不足，170187验证正常积分兑换
     tapMenu("往来管理", "客户查询");
     var key = [ "customer" ];
     var fields = queryCustomerFields(key);
@@ -2640,18 +2660,20 @@ function test1700186() {
     var fields = [ g0, g1 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
-
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret = (isIn(alertMsg1, "当前积分不足"));
+    delay();
 
     tapNaviLeftButton();
     tapButtonAndAlert(RETURN, OK);
     delay();
 
-    logDebug(" a=" + a + " b=" + b);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = (isIn(alertMsg1, "客户当前积分不足"));
+
+    logDebug("ret=" + ret);
     return ret;
 }
-function test1700187() {
+function test170187() {
     tapMenu("往来管理", "客户查询");
     var key = [ "customer" ];
     var fields = queryCustomerFields(key);
@@ -2695,6 +2717,91 @@ function test1700187() {
     logDebug(" a=" + a + " b=" + b);
     return ret;
 }
-function test1700188() {
+function test170188() {
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "ls", "onlytest" : "yes" };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapButton(window, "核销");
+    // tapButton(getScrollView(1), "积分兑换");
+    // var r = "1" + getTimestamp(3);
+    // var g0 = new TField("兑换积分*", TF, 0, r);
+    // var g1 = new TField("兑换金额*", TF, 1, r);
+    // var fields = [ g0, g1 ];
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    // tapNaviLeftButton();
+    // tapButtonAndAlert(RETURN, OK);
+    // delay(3);
 
+    tapMenu("统计分析", "综合汇总");
+    var f2 = new TField("门店", TF_SC, 2, "常青店");
+    var fields = [ f2 ];
+    setTFieldsValue(window, fields);
+    query(fields);
+    tapFirstText();
+
+    var texts = getStaticTexts(getScrollView(-1));
+    var qr = getQRverify(texts,"名称", 5);
+    var a = qr.data[0]["金额"];
+    
+
+    logDebug("金额=" + a);
+    return ret;
+
+}
+function test170189() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    tapButton(getScrollView(1), "兑换记录");
+
+}
+function test170190() {
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(1), 1);
+    tapNaviLeftButton();
+
+    var ret = isIn(b, a);
+    logDebug(" a=" + a + " b=" + b);
+    return ret;
+}
+function test170191() {
+    // 全局设置：开启 “总计是否四舍五入”
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1.11" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+//    var f4 = new TField("单价", TF, 4, "200");
+//    var fields = [ f4 ];
+//    setTFieldsValue(getScrollView(), fields);
+    var a=getTextFieldValue(window, 12);
+    var ret =isEqual("200",a);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButton(window, RETURN);
+
+    logDebug(" a=" + a + "ret=" + ret);
+    return ret;
+}
+function test170192() {
+    
 }
