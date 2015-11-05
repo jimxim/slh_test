@@ -102,20 +102,24 @@ function salesQueryParticularField(key, show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
+	case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "aaa");
+        break;
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 1, "a", 1, 0);
+		f = new TField("客户", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
-	case "branch":
-	case "客户分店":
-		f = new TField("客户分店", TF_AC, 2, "Z", 1, 0);
-		if (show) {
-			f.value = "张晨";
-		}
-		break;
+	case " staff":
+//	case "客户分店":
+//		f = new TField("客户分店", TF_AC, 2, "Z", 1, 0);
+//		if (show) {
+//			f.value = "张晨";
+//		}
+//		break;
 	case "staff":
 	case "店员":
 		f = new TField("店员", TF_AC, 3, "000", 1, 0);
@@ -123,29 +127,27 @@ function salesQueryParticularField(key, show) {
 			f.value = "000,管理员";
 		}
 		break;
-	case "name":
-	case "名称":
-		f = new TField("名称", TF, 4, "aaa");
-		break;
+	case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
+    case "type":
+    case "类型":
+        f = new TField("类型", TF_SC, 5, "退货");
+        break;    
 	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 5, "2015-9-11");
+	case "发生日期从":
+		f = new TField("日期从", TF_DT, 6, "2015-9-11");
 		break;
 	case "day2":
 	case "到":
-		f = new TField("到", TF_DT, 6, getToday());
+		f = new TField("到", TF_DT, 7, getToday());
 		break;
-	case "type":
-	case "类型":
-		f = new TField("类型", TF_SC, 7, "退货");
-		break;
-	case "shop":
-	case "门店":
-		f = new TField("门店", TF_SC, 8, "常青店");
-		break;
+	
+	
 	case "remarks":
 	case "备注":
-		f = new TField("备注", TF, 9, "备注");
+		f = new TField("备注", TF,8, "备注");
 		break;
 	default:
 		logWarn("未知key＝" + key);
