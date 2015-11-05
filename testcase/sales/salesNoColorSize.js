@@ -102,10 +102,10 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单】开单货品列表是否显示品牌信息", "test170245");
     // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
     // run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    // run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
     // run("【销售开单－开单】按门店区分客户--区分", "test170249");
     // run("【销售开单－开单】按门店区分客户--不区分", "test170250");
-//    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -3326,7 +3326,7 @@ function test170248() {
     var g0 = new TField("名称", TF, 0, r);
     var g1 = new TField("手机", TF, 1, r1);
     var g2 = new TField("店员", TF_AC, 2, "000");
-    var g3 = new TField("适用价格", BTN_SC, 0, "零批价","",-1);
+    var g3 = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
     var g4 = new TField("地址", TF, 4, r);
     var fields = [ g0, g1, g2, g3, g4 ];
     setTFieldsValue(getPopView(), fields);
@@ -3405,13 +3405,45 @@ function test170250() {
     return ret;
 }
 function test170251() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
-        "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
-    editSalesBillNoColorSize(json);
-    
-    
-    
-    
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    // "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a","代收金额":"200" } };
+    // editSalesBillNoColorSize(json);
+    //    
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "tt");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
 
+    // var view1 = getScrollView(-1);
+    // debugElementTree(window);
+    var table1 = getTableViews(window)[0];
+    var cells = table1.cells();
+    // debugElementTree(table1);
+    tap(cells[0]);
+
+    delay();
+    tapNaviRightButton();
+    tapButtonAndAlert(RETURN, OK);
+
+    // tapMenu("销售开单", "按批次查");
+    // var keys = { "客户" : "lx","门店":"常青店" };
+    // var fields = salesQueryBatchFields(keys);
+    // query(fields);
+    //    
+    // tapFirstText();
+    // tapMenu("销售开单", "更多.", "查看修改日志");
+    // var texts = getStaticTexts(getPopOrView());
+    // var index = getArrayIndexIn(texts, "最后打印时间");
+    // var a = getStaticTextValue(getPopOrView(), index - 7);
+    // var b = getStaticTextValue(getPopOrView(), index - 5);
+    // var c = getStaticTextValue(getPopOrView(), index + 3);
+    // var d = getStaticTextValue(getPopOrView(), index + 5);
+    //
+    // var ret = isAnd(isEqual("总经理", a), isEqual("", c), isEqual("", d));
+    // var ret1 = isAqualOptime(getOpTime(), b);
+    //
+    // logDebug(" ret" + ret);
+    // return ret;
 }
