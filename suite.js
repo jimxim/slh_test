@@ -13,11 +13,11 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-//	testTemp();
+	testTemp();
 // testPurchaseAll();
 // testParamAll();
 // testWanLaiCustomerAll();
- testSalesNoColorSizeAll();
+// testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
 // testWanLaiProviderAll();
@@ -33,7 +33,7 @@ function debugElements() {
 }
 
 function testTemp() {
-    testDate();
+//    testDate();
 //    testGetOpTime();
 //    testTapKeyboardHide();
 //    getStaffTFindex() ;
@@ -43,6 +43,7 @@ function testTemp() {
 //    testTapFirstText();
 //    testEditSalesBillAgency();
 //    testPushToFixArray();
+    testScroll();
 }
 
 function testPinyin() {
@@ -114,4 +115,11 @@ function testPushToFixArray() {
 //    debugArray(arr1);
 //    arr1 = pushToFixArray(arr1, "4", 3);
 //    debugArray(arr1);
+}
+
+function testScroll() {
+    tapMenu("销售开单","按批次查");
+    query();
+    var view1 = getScrollView();
+    scrollLeft(view1,"未结");
 }
