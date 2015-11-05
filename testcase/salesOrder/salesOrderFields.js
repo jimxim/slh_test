@@ -169,8 +169,8 @@ function salesOrderCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+	case "发生日期从":
+		f = new TField("发生日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
 	case "到":
@@ -183,13 +183,13 @@ function salesOrderCodeField(key, show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
-	case "color":
-	case "是否显示颜色尺码":
-		f = new TField("是否显示颜色尺码", TF_SC, 3, "否");
-		break;
+//	case "color":
+//	case "是否显示颜色尺码":
+//		f = new TField("是否显示颜色尺码", TF_SC, 3, "否");
+//		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 4, "a", -1, 0);
+		f = new TField("厂商", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
