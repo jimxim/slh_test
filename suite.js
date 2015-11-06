@@ -13,9 +13,9 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-	testTemp();
+//	testTemp();
 // testPurchaseAll();
-// testParamAll();
+
 // testWanLaiCustomerAll();
 // testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
@@ -23,6 +23,7 @@ function test000All() {
 // testWanLaiProviderAll();
 // testGoodsAll();
 // testGoodsGoodsAll();
+	testGlobalParamAll();
 // logout();
 // }
 }
