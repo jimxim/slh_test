@@ -16,7 +16,10 @@ function test000All() {
 // testPurchaseOrderAll();
 //	testShopInAll();
 //	testShopOutAll();
-	testSalesOrderAll();
+//	testSalesOrderAll();
+//	testSalesNoColorSizeAll();
+//	testSalesNoColorSizeElseAll();
+	testSalesColorSizeAll();
 //	testSalesBillAll();
 //	testCheckAll();
 // testTemp();
