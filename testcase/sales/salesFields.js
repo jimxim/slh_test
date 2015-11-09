@@ -842,17 +842,17 @@ function salesBillOrderField(key, show) {
 	return f;
 }
 
-// 收款记录
+// 收款单
 function testSalesCollectionRecordFields() {
 	var fields = salesCollectionRecordFields("day1", "day2");
 	setTFieldsValue(window, fields);
 	return true;
 }
 
-function salesCollectionRecordFields() {
-	return getTFields("salesCollectionRecordField", arguments);
+function salesCollectionRecordFields(keys,show) {
+	return getTFields("salesCollectionRecordField", keys,show);
 }
-function salesCollectionRecordField(key) {
+function salesCollectionRecordField(key,show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -886,7 +886,7 @@ function salesQueryLogisticsField(key,show) {
 	switch (key) {
 	case "customer":	
 	case "客户":
-		f = new TField("客户", TF_AC, 0, "a", 1, 0);
+		f = new TField("客户", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
