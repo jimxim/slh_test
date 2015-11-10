@@ -219,10 +219,10 @@ function testSalesPriceFields() {
 	return true;
 }
 
-function salesPriceFields() {
-	return getTFields("salesPriceField", arguments);
+function salesPriceFields(keys, show) {
+	return getTFields("salesPriceField", keys, show);
 }
-function salesPriceField(key) {
+function salesPriceField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -929,7 +929,7 @@ function salesQueryLogisticsField(key,show) {
 	return f;
 }
 
-// 代收收款
+// 代收收款／代收收款查询
 function testSalesCollectionFields() {
 	var keys=[ "batch1","batch2", "shop","day1","day2"];
 	var fields = salesCollectionFields(keys);
