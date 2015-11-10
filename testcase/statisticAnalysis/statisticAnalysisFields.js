@@ -157,7 +157,7 @@ function statisticAnalysisReturnField(key, show) {
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 2, "a", 1, 0);
+		f = new TField("款号", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -189,7 +189,7 @@ function statisticAnalysisGoodMarketField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
