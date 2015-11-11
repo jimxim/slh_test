@@ -63,28 +63,28 @@ function statisticAnalysisProfitField(key, show) {
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 3, "a", 1, 0);
+		f = new TField("款号", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 4, "a", 1, 0);
+		f = new TField("客户", TF_AC, 4, "a", -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 5, "000", 1, 0);
+		f = new TField("店员", TF_AC, 5, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 6, "z", 1, 0);
+		f = new TField("厂商", TF_AC, 6, "z", -1, 0);
 		if (show) {
 			f.value = "杭州";
 		}
@@ -231,24 +231,24 @@ function statisticAnalysisUnsalableFields(keys, show) {
 function statisticAnalysisUnsalableField(key, show) {
 	var f;
 	switch (key) {
+	case "day1":
+    case "上架日期从":
+        f = new TField("上架日期从", TF_DT, 0, "2015-9-11");
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 1, getToday());
+        break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "shop":
 	case "门店":
-		f = new TField("门店", TF_SC, 1, "常青店");
-		break;
-	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 2, "2015-9-11");
-		break;
-	case "day2":
-	case "到":
-		f = new TField("到", TF_DT, 3, getToday());
+		f = new TField("门店", TF_SC, 3, "常青店");
 		break;
 	default:
 		logWarn("未知key＝" + key);

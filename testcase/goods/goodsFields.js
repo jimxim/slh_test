@@ -308,8 +308,8 @@ function editGoodsFields(keys, show, colorSizeStartIndex,priceStartIndex) {
 	return getTFields("editGoodsField", keys, show, colorSizeStartIndex,priceStartIndex);
 }
 
-// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4 priceStartIndex
-// 货品建款的价格模式，省代模式时=0，默认价格模式时=-1
+// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4 
+// priceStartIndex     货品建款的价格模式，省代模式时=0，默认价格模式时=-1
 function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 // logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" +
 // colorSizeStartIndex);
