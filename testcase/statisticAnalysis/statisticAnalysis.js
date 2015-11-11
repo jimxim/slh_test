@@ -28,6 +28,13 @@ function testStatisticAnalysisAll() {
     // run("【统计分析—收支流水】底部数据检查", "test190026");
     // run("【统计分析—收支类别】保存", "test190028");
     // run("【统计分析—收支类别】返回", "test190029");
+    // run("【统计分析—综合汇总】排序", "test190031");
+//    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
+    // run("【统计分析—综合汇总】检查底部数据", "test190036");
+    // run("【统计分析—综合汇总】清除", "test190032");
+    
+//    run("【新综合汇总】详细-余款", "test190042");
+    run("【新综合汇总】详细-抵扣", "test190043");
 
     // run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
     // run("【统计分析—汇总表-退货表】排序", "test190069");
@@ -36,11 +43,11 @@ function testStatisticAnalysisAll() {
     // run("【统计分析—汇总表-畅销表】查询/清除/款号畅销数检查", "test190073_190075_190076");
     // run("【统计分析—汇总表-畅销表】排序", "test190074");
     // run("【统计分析—汇总表-滞销表】滞销款号检查", "test190077");// 待完善在途调拨相关验证（需要登入登出）
-     run("【统计分析—汇总表-滞销表】查询", "test190078");
+    // run("【统计分析—汇总表-滞销表】查询", "test190078");
     // run("【统计分析—汇总表-滞销表】排序", "test190079");
     // run("【统计分析—汇总表-滞销表】清除", "test190080");
     // run("【统计分析—利润表】明细利润额和按单利润总和一致检查", "test190085");
-//    run("【统计分析—利润表】底部数据检查", "test190086");
+    // run("【统计分析—利润表】底部数据检查", "test190086");
 }
 
 function test190012() {
@@ -605,6 +612,158 @@ function test190029() {
     return ret;
 }
 
+function test190031() {
+    tapMenu("统计分析", "综合汇总");
+    var keys = { "日期从" : getDay(-10) };
+    var fields = statisticAnalysisSynthesisFields(keys);
+    query(fields);
+
+    var ret = true;
+    // ret = ret && sortByTitle("日期");
+    // ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("进数", IS_NUM);
+    ret = ret && sortByTitle("销数", IS_NUM);
+    // ret = ret && sortByTitle("销额", IS_NUM);
+    // ret = ret && sortByTitle("退数", IS_NUM);
+    // ret = ret && sortByTitle("退额", IS_NUM);
+    // ret = ret && sortByTitle("特殊货品", IS_NUM);
+    // ret = ret && sortByTitle("实销数", IS_NUM);
+    // ret = ret && sortByTitle("实销额", IS_NUM);
+    // ret = ret && sortByTitle("现金", IS_NUM);
+    // ret = ret && sortByTitle("刷卡", IS_NUM);
+    // ret = ret && sortByTitle("汇款", IS_NUM);
+    // ret = ret && sortByTitle("代收", IS_NUM);
+    // ret = ret && sortByTitle("还款", IS_NUM);
+    // ret = ret && sortByTitle("欠款", IS_NUM);
+    // ret = ret && sortByTitle("抵扣", IS_NUM);
+    // ret = ret && sortByTitle("余款", IS_NUM);
+
+    return ret;
+}
+
+function test190035() {
+    tapMenu("销售开单", "按批次查");
+    var qr = getQR();
+    var a1 = qr.counts["现金"], a2 = qr.counts["刷卡"], a3 = qr.counts["汇款"], a4 = qr.counts["代收"], a5 = qr.counts["还款/抵扣"];
+
+    tapMenu("销售开单", "按明细查");
+    qr = getQR();
+//    var b1=
+
+    tapMenu("统计分析", "综合汇总");
+    qr = getQR();
+    var ret = isAnd(isEqual(a1, qr.counts["现金"]), isEqual(a2, qr.counts["刷卡"]),
+            isEqual(a3, qr.counts["汇款"]), isEqual(a4, qr.counts["代收"]), isEqual(a5, qr.counts["还款"]))
+
+    return ret;
+}
+
+function test190036() {
+    tapMenu("统计分析", "综合汇总");
+    // var keys = { "日期从" : getDay(-10) };
+    // var fields = statisticAnalysisSynthesisFields(keys);
+    // query(fields);
+
+    var i, j, k;
+    var qr = getQR();
+    var sum = new Array(18);
+    for (k = 3; k <= 18; k++) {
+        sum[k] = 0;
+    }
+    logDebug("sum=" + sum);
+    // for (j = 1; j <= qr.totalPageNo; j++) {
+    // for (i = 0; i < qr.curPageTotal; i++) {
+    // for (k = 3; k <= 18; k++) {
+    //               
+    // }
+    // }
+    // if (j < qr.totalPageNo) {
+    // scrollNextPage();
+    // qr = getQR();
+    // }
+    // }
+    // logDebug("sum=" + sum);
+}
+
+function test190032() {
+    tapMenu("统计分析", "综合汇总");
+    var keys = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" };
+    var fields = statisticAnalysisSynthesisFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
+
+    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2))
+
+    return ret;
+}
+
+function test190042() {
+    //销售开单，余款1000
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],"现金":"2000" };
+    editSalesBillNoColorSize(json);
+    
+    tapMenu("统计分析", "综合汇总");
+    var qr=getQR();
+    var a=qr.data[0]["余款"];
+    
+    tapFirstText();
+    tapNaviButton("余款");
+    delay();
+    qr=getQR2(getScrollView(-1),"批次","核销");
+//    logDebug(qr);
+    var sum=0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+              sum+=Number(qr.data[i]["余款"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            getQR2(getScrollView(-1),"批次","核销");
+        }
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    
+    var ret=isEqual(a,sum);
+    return ret;
+}
+
+function test190043() {
+    //销售开单，余款1000
+//    tapMenu("销售开单", "开  单+");
+//    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],"现金":"2000" };
+//    editSalesBillNoColorSize(json);
+//    
+//    tapMenu("统计分析", "综合汇总");
+//    var qr=getQR();
+//    var a=qr.data[0]["余款"];
+    
+    tapFirstText();
+    tapNaviButton("抵扣");
+
+    delay();
+    qr=getQR2(getScrollView(-1),"批次","核销");
+//    logDebug(qr);
+    var sum=0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+              sum+=Number(qr.data[i]["余款"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            getQR2(getScrollView(-1),"批次","核销");
+        }
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    
+    var ret=isEqual(a,sum);
+    return ret;
+}
+
 function test190068_190070() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
@@ -804,7 +963,6 @@ function test190078() {
     delay();
     tapButton(window, RETURN);
 
-
     // tapMenu("采购入库", "新增入库+");
     // var json = { "客户" : "vell",
     // "明细" : [ { "货品" : r, "数量" : "20" } ],"onlytest" : "yes" };
@@ -870,7 +1028,37 @@ function test190080() {
 }
 
 function test190085() {
+    tapMenu("统计分析", "利润表");
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1), "款号", "利润额");
+    var sum1 = 0, i, j;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["利润额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1), "款号", "利润额");
+        }
+    }
 
+    tapNaviRightButton();
+    qr = getQR2(getScrollView(-1), "批次", "利润额");
+    var sum2 = 0;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum2 += Number(qr.data[i]["利润额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1), "批次", "利润额");
+        }
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    var ret = isEqual(sum1, sum2);
+
+    return ret;
 }
 
 function test190086() {
@@ -892,7 +1080,8 @@ function test190086() {
             qr = getQR();
         }
     }
-    var ret = isEqual(sum1, qr.counts["退货数"]);
+    var ret = isEqual(sum1, qr.counts["数量"]) && isEqual(sum2, qr.counts["金额"])
+            && isEqual(sum3, qr.counts["利润额"]);
 
     return ret;
 
