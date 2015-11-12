@@ -2,9 +2,9 @@
 
 function testGoodsGoodsAll() {
 
-     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
-    // run("【货品管理-当前库存】当前库存_条件查询", "test100001_2");
-//    run("【货品管理-当前库存】当前库存_单据类型", "test100001_3");
+    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+    // run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
+    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
 
     // run("【货品管理-当前库存】进货价（总额、单据、小计 ）权限控制", "test100004");
     // run("【货品管理-款号库存】款号库存", "test100005");
@@ -75,6 +75,7 @@ function goPageCheckByCodeField(n) {
     return ret;
 }
 
+// 向上翻页验证
 function scrollNextPageCheckByCodeField() {
     var qr = getQR();
     var totalPageNo = qr.totalPageNo;
@@ -82,7 +83,7 @@ function scrollNextPageCheckByCodeField() {
 
     var ret = true;
     if (totalPageNo > 1) {
-        scrollNextPage();
+        scrollPrevPage();
         delay();
         qr = getQR();
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -91,7 +92,7 @@ function scrollNextPageCheckByCodeField() {
                 break;
             }
         }
-        scrollPrevPage();
+        // scrollNextPage();
     }
     logDebug("ret=" + ret);
     return ret;
@@ -140,6 +141,7 @@ function test100001_1() {
     return ret;
 }
 
+// 条件查询，清除按钮
 function test100001_2() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
@@ -147,12 +149,71 @@ function test100001_2() {
         "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否" }
     var fields = queryGoodsStockFields(keys);
     query(fields);
+    var ret = isEqual("3035", qr.data[0]["款号"]);
+
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 11; i++) {
+        if (i != 9) {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        }
+    }
+
+    return ret;
+}
+
+// 单据类型判定，还缺门店调入单
+function test100001_3() {
+    tapMenu("货品管理", "新增货品+");
+    var r = "g" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+    // 改成昨天上架
+    tapButton(getScrollView(), "减量");
+    var day = getTextFieldValue(window, 5);// 上架日期
+    if (day != getDay(-1)) {
+        tapButton(getScrollView(), "减量");
+        tapButton(getScrollView(), "减量");
+    }
+
+    saveAndAlertOk();
+    delay();
+    tapButton(window, RETURN, 10);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "5" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "000", "接收店" : "中洲店", "操作人密码" : "000000",
+        "明细" : [ { "货品" : r, "数量" : "10" } ] };
+    editShopOutDecruitIn(json);
+
+    tapMenu("货品管理", "当前库存");
     var qr = getQR();
-    var a = qr.data[0]["库存"];
+    var a = Number(qr.data[0]["库存"]);
+    var b = Number(qr.data[0]["单价"]);
+    var ret1 = isEqual("1", qr.data[0]["上架天数"])
+            && isEqual("5", qr.data[0]["累计销"]) && isEqual("240", b)
+            && isEqual(a * b, qr.data[0]["核算金额"]);
 
     tapFirstText();
     delay();
-    qr = getQR2(getScrollView(1), "批次", "操作人");
+    var view1 = getScrollView(-1);
+    view1 = view1.scrollViews()[0];
+    qr = getQR2(view1, "批次", "操作人");
+    var name0 = qr.data[0]["名称"];
+    var num0 = qr.data[0]["数量"];
+    var name1 = qr.data[1]["名称"];
+    var num1 = qr.data[1]["数量"];
+    var name2 = qr.data[2]["名称"];
+    var num2 = qr.data[2]["数量"];
     var sum = 0;
     var i, j;
     for (j = 1; j <= qr.totalPageNo; j++) {
@@ -161,63 +222,21 @@ function test100001_2() {
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
-            qr = getQR2(getScrollView(1), "批次", "操作人");
+            qr = getQR2(view1, "批次", "操作人");
         }
     }
 
-    tapButton(app.navigationBar(), "历史库存");
+    tapNaviButton("历史库存");
     qr = getQResult2(getScrollView(-1), "操作日期", "数量");
-    var b = qr.data[0]["数量"];
+    var a1 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
-    var ret = isAnd(isEqual(a, b), isEqual(a, sum));
+    var ret2 = isAnd(isEqual(a, a1), isEqual(a, sum));
+    var ret3 = isAnd(isEqual("调拨出库", name0), isEqual("-10", num0), isEqual(
+            "销售出货", name1), isEqual("-5", num1), isEqual("采购进货", name2),
+            isEqual("50", num2));
 
-    tapButton(window, CLEAR);
-    for (i = 0; i < 11; i++) {
-        if (i != 9) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        }
-        if (i == 9) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        }
-    }
-
-    return ret;
-}
-
-function test100001_3() {
-    tapMenu("货品管理", "新增货品+");
-    var r = "g" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
-    var index = getButtonIndex(getScrollView(), "减量");
-    tapButton(getScrollView(), index);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-//    delay();
-//    tapButton(window, RETURN);
-//
-//    tapMenu("采购入库", "新增入库+");
-//    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
-//    editSalesBillNoColorSize(json);
-//
-//    tapMenu("销售开单", "开 单+");
-//    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "5" } ] };
-//    editSalesBillNoColorSize(json);
-//
-//    tapMenu("门店调出", "批量调出+");
-//    json = { "调出人" : "000", "接收店" : "中洲店","操作人密码" : "000000",
-//        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-//    editShopOutDecruitIn(json);
-
-    // tapMenu("货品管理", "当前库存");
-    // tapFirstText();
-    // var qr=qr = getQR2(getScrollView(1), "批次", "操作人");
-    // var name1=qr.data[0]["名称"];
-    // var num1=qr.data[0]["数量"];
-    // tapNaviLeftButton();
-    // var ret = isAnd(isEqual("采购订货", name1), isEqual("50", num1));
+    return ret1 && ret2 && ret3;
 }
 
 function test100004() {
