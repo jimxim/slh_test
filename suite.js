@@ -11,7 +11,7 @@ function test000All() {
 // if( ok ) {
 //	testSASynthesisAll();
 // testSalesBillAll();
-// testEditSalesBillAll();
+ testEditSalesBillAll();
 	
 //	testTemp();
 // testPurchaseAll();
@@ -23,7 +23,7 @@ function test000All() {
 // testWanLaiProviderAll();
 // testGoodsAll();
 // testGoodsGoodsAll();
-	testGlobalParamAll();
+//	testGlobalParamAll();
 // logout();
 // }
 }

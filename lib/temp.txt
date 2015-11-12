@@ -1,3 +1,5 @@
+收入，支出新增类别删除
+
 更多 所有挂单
 sortByTitle valuePre=待删除<= value=主题 false
 时间约等于，相差一分认为相等
