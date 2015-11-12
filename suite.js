@@ -11,9 +11,9 @@ function test000All() {
 // if( ok ) {
 //	testSASynthesisAll();
 // testSalesBillAll();
- testEditSalesBillAll();
+// testEditSalesBillAll();
 	
-//	testTemp();
+	testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -24,6 +24,7 @@ function test000All() {
 // testGoodsAll();
 // testGoodsGoodsAll();
 //	testGlobalParamAll();
+// testStatisticAnalysisAll();
 // logout();
 // }
 }
@@ -44,9 +45,18 @@ function testTemp() {
 //    testTapFirstText();
 //    testEditSalesBillAgency();
 //    testPushToFixArray();
-    testScroll();
+//    testScroll();
+    testGoPage() ;
 }
-
+function testGoPage() {
+    tapMenu("货品管理","货品查询");
+    query();
+    var qr = getQR();
+    goPage(60, qr);
+    query();
+    var qr = getQR();
+    goPage("非法输入", qr);
+}
 function testPinyin() {
     tapMenu("往来管理","客户查询");
     var o = {"键盘":"简体拼音", "拼音":["li","li","si"],"汉字":["li","李","四"]};
