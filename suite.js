@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-	testTemp();
+//	testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -24,7 +24,8 @@ function test000All() {
 // testGoodsAll();
 // testGoodsGoodsAll();
 //	testGlobalParamAll();
-// testStatisticAnalysisAll();
+ testStatisticAnalysisAll();
+//	testGoodsGoodsAll();
 // logout();
 // }
 }
