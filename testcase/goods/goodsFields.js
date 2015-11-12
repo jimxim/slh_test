@@ -20,7 +20,7 @@ function queryGoodsStockField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "b", 1, 0);
+		f = new TField("款号", TF_AC, 0, "b", -1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
@@ -31,11 +31,11 @@ function queryGoodsStockField(key, show) {
 		break;
 	case "shop":
 	case "门店":
-		f = new TField("门店", TF_SC, 2, "仓库店");
+		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -50,7 +50,7 @@ function queryGoodsStockField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_AC, 6, "1010pp");
+		f = new TField("品牌", TF_SC, 6, "1010pp");
 		break;
 	case "season":
 	case "季节":

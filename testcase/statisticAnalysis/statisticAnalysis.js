@@ -29,11 +29,11 @@ function testStatisticAnalysisAll() {
     // run("【统计分析—收支类别】保存", "test190028");
     // run("【统计分析—收支类别】返回", "test190029");
     // run("【统计分析—综合汇总】排序", "test190031");
-//    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
+    // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     // run("【统计分析—综合汇总】检查底部数据", "test190036");
     // run("【统计分析—综合汇总】清除", "test190032");
-    
-//    run("【新综合汇总】详细-余款", "test190042");
+
+    // run("【新综合汇总】详细-余款", "test190042");
     run("【新综合汇总】详细-抵扣", "test190043");
 
     // run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
@@ -648,12 +648,13 @@ function test190035() {
 
     tapMenu("销售开单", "按明细查");
     qr = getQR();
-//    var b1=
+    // var b1=
 
     tapMenu("统计分析", "综合汇总");
     qr = getQR();
     var ret = isAnd(isEqual(a1, qr.counts["现金"]), isEqual(a2, qr.counts["刷卡"]),
-            isEqual(a3, qr.counts["汇款"]), isEqual(a4, qr.counts["代收"]), isEqual(a5, qr.counts["还款"]))
+            isEqual(a3, qr.counts["汇款"]), isEqual(a4, qr.counts["代收"]),
+            isEqual(a5, qr.counts["还款"]))
 
     return ret;
 }
@@ -700,67 +701,69 @@ function test190032() {
 }
 
 function test190042() {
-    //销售开单，余款1000
+    // 销售开单，余款1000
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],"现金":"2000" };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "现金" : "2000" };
     editSalesBillNoColorSize(json);
-    
+
     tapMenu("统计分析", "综合汇总");
-    var qr=getQR();
-    var a=qr.data[0]["余款"];
-    
-    tapFirstText();
+    var qr = getQR();
+    var a = qr.data[0]["余款"];
+
+    tapFirstText(getScrollView(), "序号", 19);
     tapNaviButton("余款");
     delay();
-    qr=getQR2(getScrollView(-1),"批次","核销");
-//    logDebug(qr);
-    var sum=0;
+    qr = getQR2(getScrollView(-1), "批次", "核销");
+    // logDebug(qr);
+    var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-              sum+=Number(qr.data[i]["余款"]);
+            sum += Number(qr.data[i]["余款"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
-            getQR2(getScrollView(-1),"批次","核销");
+            getQR2(getScrollView(-1), "批次", "核销");
         }
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-    
-    var ret=isEqual(a,sum);
+
+    var ret = isEqual(a, sum);
     return ret;
 }
 
 function test190043() {
-    //销售开单，余款1000
-//    tapMenu("销售开单", "开  单+");
-//    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],"现金":"2000" };
-//    editSalesBillNoColorSize(json);
-//    
-//    tapMenu("统计分析", "综合汇总");
-//    var qr=getQR();
-//    var a=qr.data[0]["余款"];
-    
+    // 销售开单，核销190042开的余款单
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "核销" : [ 5 ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("统计分析", "综合汇总");
+    var qr = getQR();
+    var a = qr.data[0]["抵扣"];
+
     tapFirstText();
     tapNaviButton("抵扣");
 
     delay();
-    qr=getQR2(getScrollView(-1),"批次","核销");
-//    logDebug(qr);
-    var sum=0;
+    qr = getQR2(getScrollView(-1), "批次", "核销");
+    // logDebug(qr);
+    var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-              sum+=Number(qr.data[i]["余款"]);
+            sum += Number(qr.data[i]["抵扣"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
-            getQR2(getScrollView(-1),"批次","核销");
+            getQR2(getScrollView(-1), "批次", "核销");
         }
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-    
-    var ret=isEqual(a,sum);
+
+    var ret = isEqual(a, sum);
     return ret;
 }
 

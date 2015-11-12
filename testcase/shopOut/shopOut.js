@@ -253,3 +253,46 @@ function test150006() {
 //	tapButton(window, RETURN);
 //	
 //}
+
+function editShopOutDecruitIn(o) {
+    editStatisticAnalysisInField1(o, "调出人");
+    editStatisticAnalysisInField1(o, "接收店");
+    editStatisticAnalysisInField1(o, "日期");
+    editStatisticAnalysisInField1(o, "备");
+    editStatisticAnalysisInField1(o, "操作人密码");
+    
+
+    editShopOutDecruitDet(o);
+
+    editSalesBillSave(o);
+}
+
+function editShopOutDecruitField1(o, key) {
+    var v = o[key];
+    if (isDefined(v)) {
+        var keys = {};
+        keys[key] = v;
+        var fields = shopOutDecruitFields(keys);
+        setTFieldsValue(window, fields);
+    }
+}
+
+function editShopOutDecruitDet(o) {
+    var details = o["明细"];
+    for ( var i in details) {
+        var d = details[i];
+
+        var f0 = new TField("货品", TF_AC, 0, d["货品"],-1,0);
+        setTFieldsValue(getScrollView(), [ f0 ]);
+
+        var f1 = new TField("数量", TF, 3, d["数量"]);
+        setTFieldsValue(getScrollView(), [ f1 ]);
+
+        var fields = [];
+        if (isDefined(d["备注"])) {
+            fields.push(new TField("备注", TF, 4, d["备注"]));
+        }
+        setTFieldsValue(getScrollView(), fields);
+    }
+}
+

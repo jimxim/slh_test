@@ -11,7 +11,7 @@ function test000All() {
 // if( ok ) {
 // testParamAll();
 // testWanLaiCustomerAll();
-// testGoodsGoodsAll();
+ testGoodsGoodsAll();
 // testPurchaseAll();
 // testPurchaseOrderAll();
 //	testShopInAll();
@@ -22,7 +22,7 @@ function test000All() {
 //	testSalesColorSizeAll();
 //	testSalesBillAll();
 //	testCheckAll();
-	testStatisticAnalysisAll();
+//	testStatisticAnalysisAll();
 // testTemp();
 	
 	
