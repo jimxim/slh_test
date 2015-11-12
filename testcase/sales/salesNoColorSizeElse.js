@@ -72,8 +72,24 @@ function testSalesNoColorSizeElseAll() {
     // run("【销售开单－销售汇总-按类别汇总】排序/翻页/快速翻页", "test170358_170359_170360");
     // run("【销售开单－销售汇总-按供应商汇总】按供应商汇总", "test170361");
     // run("【销售开单－销售汇总-按供应商汇总】清除功能", "test170363");
-    run("【销售开单+整单折扣+代收】挂单转为销售单", "test170365");
-    run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
+    // run("【销售开单+整单折扣+代收】挂单转为销售单", "test170365");
+    // run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
+    // run("【销售开单+整单折扣+代收】整单折扣+代收后核销物流单", "test170368");
+    // run("【销售开单+整单折扣+代收】整单折扣+代收后核销物流单", "test170368_1");
+    // run("【销售开单+整单折扣+代收】销售开单-销售汇总-按店员汇总，检查代收", "test170369");
+    // run("【销售开单+整单折扣+代收】销售开单-销售汇总-按金额汇总，检查代收", "test170370");
+    // run("【销售开单+整单折扣+代收】收支流水界面检查代收款核销单", "test170371");
+    // run("【销售开单+整单折扣+代收】统计分析-综合汇总，检查代收", "test170372");
+    // run("【销售开单+整单折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170373");
+    // run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");
+    // run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
+//    run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
+//     run("【销售开单+产品折扣+代收】销售开单-销售汇总-按店员汇总，检查代收", "test170379");
+//     run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
+//  run("销售开单+产品折扣+代收】销售开单-销售汇总-按金额汇总，检查代收", "test170381");
+//  run("【销售开单+产品折扣+代收】统计分析-综合汇总，检查代收", "test170382");
+//  run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170383");
+  run("【销售开单】销售开单-销售汇总-按退货汇总，点击进入明细，内容检查", "test170394");
 }
 function test170252() {
     tapMenu("销售订货", "新增订货+");
@@ -2539,51 +2555,712 @@ function test170365() {
         "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var f11 = new TField("折扣", TF, 11, "0.58");
-    var fields = [ f11 ];
-    setTFieldsValue(window, fields);
-
     tapButtonAndAlert("挂 单", OK);
     delay();
     tapButton(window, RETURN);
-
-    var k2 = getTextFieldValue(window, 2);
-    var k3 = getTextFieldValue(window, 3);
-    var ret = isAnd(isEqual("316", k2), isEqual("316", k3));
 
     tapMenu("销售开单", "按批次查");
     var keys1 = { "客户" : "ls", "门店" : "常青店", "作废挂单" : "挂单" };
     var fields1 = salesQueryBatchFields(keys1);
     query(fields1);
     tapFirstText();
-    
+
+    var k2 = getTextFieldValue(window, 3);
+    var k3 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("316", k2), isEqual("316", k3));
+
     saveAndAlertOk();
     tapPrompt();
     tapButton(window, RETURN);
-    
-//    tapMenu("销售开单", "物流单");
-//    var k = { "运单号" : "123", "物流商" : "汇通快递" };
-//    var keys = k;
-//    var fields = salesQueryLogisticsFields(keys);
-//    query(fields);
-//
-//    var qr = getQR();
-//    var a = qr.data[0]["代收金额"];
-//    var a1 = qr.data[0]["物流商"];
-//    var a2 = qr.data[0]["运单号"];
-//    var a3 = qr.data[0]["物流备注"];
-//    var a4 = qr.data[0]["代收货款"];
-//    var a5 = qr.data[0]["客户"];
-//    var a6 = qr.data[0]["门店"];
-//    var a7 = qr.data[0]["货款收讫"];
-//
-//    var ret1 = isAnd(isEqual("316", a), isEqual("汇通快递", a1), isEqual("123", a2),
-//            isEqual("a", a3), isEqual("是", a4), isEqual("李四", a5), isEqual(
-//                    "常青店", a6), isEqual("否", a7));
-//
-//    logDebug("ret=" + ret+"ret1=" + ret1);
-//    return ret&&ret1;
+
+    tapMenu("销售开单", "物流单");
+    var k = { "运单号" : "123", "物流商" : "汇通快递" };
+    var keys = k;
+    var fields = salesQueryLogisticsFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("316", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    logDebug("ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
 }
 function test170366() {
+    // 全局设置开单模式：18整单折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    delay();
+
+    var f15 = new TField("货品", TF_AC, 15, "3035", -1, 0);
+    var f18 = new TField("数量", TF, 18, "1");
+    var fields = [ f15, f18 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapStaticText(window, "代收");
+    var d20 = new TField("代收金额", TF, 20, "500");
+    var fields = [ d20 ];
+    setTFieldsValue(window, fields);
+    tapNaviRightButton();
+    delay();
+
+    tapButtonAndAlert("挂 单", OK);
+    tapPrompt();
+    delay();
+    tapButtonAndAlert(RETURN, OK);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    var k4 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("500", k4));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("500", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    return ret && ret1;
+}
+function test170368() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "ht");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var table1 = getTableView(window, -1);
+    var cells = table1.cells();
+    tap(cells[0]);
+
+    tapNaviRightButton();
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("500", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("是", a7));
+
+    tapMenu("销售开单", "更多.", "代收收款查询");
+    var keys1 = { "日期从" : getToday(), "日期到" : getToday() }
+    var fields1 = salesCollectionFields(keys1);
+    query(fields1);
+    var qr1 = getQR();
+    var a1 = qr1.data[0]["日期"];
+    var a2 = qr1.data[0]["门店"];
+    var a3 = qr1.data[0]["金额"];
+    var ret2 = isAnd(isEqual(getToday("yy"), a1), isEqual("常青店", a2), isEqual(
+            "500", a3));
+
+    return ret1 && ret2;
+}
+function test170368_1() {
+    // 19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "ht");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var table1 = getTableView(window, -1);
+    var cells = table1.cells();
+    tap(cells[0]);
+
+    tapNaviRightButton();
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("654", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("是", a7));
+
+    tapMenu("销售开单", "更多.", "代收收款查询");
+    var keys1 = { "日期从" : getToday(), "日期到" : getToday() }
+    var fields1 = salesCollectionFields(keys1);
+    query(fields1);
+    var qr1 = getQR();
+    var a1 = qr1.data[0]["日期"];
+    var a2 = qr1.data[0]["门店"];
+    var a3 = qr1.data[0]["金额"];
+    var ret2 = isAnd(isEqual(getToday("yy"), a1), isEqual("常青店", a2), isEqual(
+            "654", a3));
+
+    return ret1 && ret2;
+}
+function test170369() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店",
+        "店员" : "000,总经理" };
+    var fields = salesStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = Number(qr.data[0]["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys1 = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店",
+        "店员" : "000,总经理" };
+    var fields1 = salesStaffFields(keys1);
+    query(fields1);
+
+    var qr1 = getQR();
+    var a1 = Number(qr1.data[0]["代收"]);
+
+    var ret = isEqual(a + 310, a1);
+
+    return ret;
+}
+function test170370() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    var keys = { "日期从" : getToday(), "到" : getToday() };
+    var fields = salesStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = Number(qr.data[0]["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    var keys1 = { "日期从" : getToday(), "到" : getToday() };
+    var fields1 = salesPriceFields(keys1);
+    query(fields1);
+
+    var qr1 = getQR();
+    var a1 = Number(qr1.data[0]["代收"]);
+
+    var ret = isEqual(a + 310, a1);
+
+    return ret;
+}
+function test170371() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "ht");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var table1 = getTableView(window, -1);
+    var cells = table1.cells();
+    tap(cells[0]);
+
+    tapNaviRightButton();
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("统计分析", "收支流水");
+    var keys = [ "day1", "day2", "shop", "account" ];
+    var fields = statisticAnalysisInOutAccountFields(keys);
+    changeTFieldValue(fields["day1"], getToday());
+    changeTFieldValue(fields["day2"], getToday());
+    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["account"], "代");
+    setTFieldsValue(window, fields);
+    query(fields);
+    var qr1 = getQR();
+    var b = qr1.data[0]["金额"];
+    var b1 = qr1.data[0]["账户"];
+    var ret = isAnd(isEqual("310", b), isEqual("代", b1));
+
+    return ret;
+}
+function test170372() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("统计分析", "综合汇总");
+    query();
+    var qr = getQR();
+    var a = Number(qr.counts["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("统计分析", "综合汇总");
+    query();
+    var qr1 = getQR();
+    var a1 = Number(qr1.counts["代收"]);
+
+    var ret = isEqual(a + 310, a1);
+
+    return ret;
+}
+function test170373() {
+    // 全局设置开单模式为：18整单折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    tapFirstText(getScrollView(), "序号", 20);
+    var k3 = getTextFieldValue(window, 3);
+    var k4 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("310", k4), isEqual("310", k3));
+
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("310", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    return ret && ret1;
+}
+function test170375() {
+    // 全局设置开单模式：2代收， 19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "按批次查");
+    tapFirstText(getScrollView(), "序号", 20);
+    var k3 = getTextFieldValue(window, 3);
+    var k4 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("310", k4), isEqual("310", k3));
+
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("310", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    return ret && ret1;
+
+    return ret;
+}
+function test170376() {
+    // 全局设置开单模式：2代收， 19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    delay();
+
+    var f16 = new TField("货品", TF_AC, 16, "3035", -1, 0);
+    var f19 = new TField("数量", TF, 19, "1");
+    var fields = [ f16, f19 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapStaticText(window, "代收");
+    var d19 = new TField("代收金额", TF, 19, "654");
+    var fields = [ d19 ];
+    setTFieldsValue(window, fields);
+    tapNaviRightButton();
+    delay();
+
+    tapButtonAndAlert("挂 单", OK);
+    tapPrompt();
+    delay();
+    tapButtonAndAlert(RETURN, OK);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    var k4 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("654", k4));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("654", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    return ret && ret1;
+}
+function test170378() {
+    // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "ht");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var table1 = getTableView(window, -1);
+    var cells = table1.cells();
+    tap(cells[0]);
+
+    tapNaviRightButton();
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("404", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("是", a7));
+
+    tapMenu("销售开单", "更多.", "代收收款查询");
+    var keys = { "门店" : "常青店", "日期从" : getToday(), "日期到" : getToday() };
+    var fields = salesCollectionFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["现金"];
+    var a1 = qr.data[0]["金额"];
+    var ret = isAnd(isEqual("404", a), isEqual("404", a1));
+
+    return ret && ret1;
+}
+function test170379() {
+    // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店",
+        "店员" : "000,总经理" };
+    var fields = salesStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = Number(qr.data[0]["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys1 = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店",
+        "店员" : "000,总经理" };
+    var fields1 = salesStaffFields(keys1);
+    query(fields1);
+
+    var qr1 = getQR();
+    var a1 = Number(qr1.data[0]["代收"]);
+
+    var ret = isEqual(a + 404, a1);
+
+    return ret;
+}
+function test170380() {
+    // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "核销+");
+    var f = new TField("物流", TF, 0, "ht");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var table1 = getTableView(window, -1);
+    var cells = table1.cells();
+    tap(cells[0]);
+
+    tapNaviRightButton();
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapButton(window, RETURN);
+
+    tapMenu("统计分析", "收支流水");
+    var keys = [ "day1", "day2", "shop", "account" ];
+    var fields = statisticAnalysisInOutAccountFields(keys);
+    changeTFieldValue(fields["day1"], getToday());
+    changeTFieldValue(fields["day2"], getToday());
+    changeTFieldValue(fields["shop"], "常青店");
+    changeTFieldValue(fields["account"], "代");
+    setTFieldsValue(window, fields);
+    query(fields);
+    var qr1 = getQR();
+    var b = qr1.data[0]["金额"];
+    var b1 = qr1.data[0]["账户"];
+    var ret = isAnd(isEqual("404", b), isEqual("代", b1));
+
+    return ret;
+}
+function test170381() {
+    // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    var keys = { "日期从" : getToday(), "到" : getToday() };
+    var fields = salesStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = Number(qr.data[0]["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    var keys1 = { "日期从" : getToday(), "到" : getToday() };
+    var fields1 = salesPriceFields(keys1);
+    query(fields1);
+
+    var qr1 = getQR();
+    var a1 = Number(qr1.data[0]["代收"]);
+
+    var ret = isEqual(a + 404, a1);
+
+    return ret;
+}
+function test170382() {
+ // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("统计分析", "综合汇总");
+    query();
+    var qr = getQR();
+    var a = Number(qr.counts["代收"]);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("统计分析", "综合汇总");
+    query();
+    var qr1 = getQR();
+    var a1 = Number(qr1.counts["代收"]);
+
+    var ret = isEqual(a +404, a1);
+
+    return ret;
+}
+function test170383() {
+ // 全局设置开单模式为：19产品折扣+代收
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 6 },
+        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    tapFirstText(getScrollView(), "序号", 20);
+    var k3 = getTextFieldValue(window, 3);
+    var k4 = getTextFieldValue(window, 4);
+    var ret = isAnd(isEqual("404", k4), isEqual("404", k3));
+
+    tapButton(window, RETURN);
+
+    tapMenu("销售开单", "物流单");
+    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var fields1 = salesQueryLogisticsFields(keys1);
+    query(fields1);
+
+    var qr = getQR();
+    var a = qr.data[0]["代收金额"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+    var a5 = qr.data[0]["客户"];
+    var a6 = qr.data[0]["门店"];
+    var a7 = qr.data[0]["货款收讫"];
+
+    var ret1 = isAnd(isEqual("404", a), isEqual("汇通快递", a1),
+            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
+                    "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    return ret && ret1;
+}
+function test170394() {
     
 }
