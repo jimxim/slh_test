@@ -586,10 +586,10 @@ function testSalesTypeFields() {
 	return true;
 }
 
-function salesTypeFields() {
-	return getTFields("salesTypeField", arguments);
+function salesTypeFields(keys, show) {
+	return getTFields("salesTypeField", keys, show);
 }
-function salesTypeField(key) {
+function salesTypeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -626,7 +626,7 @@ function salesProviderField(key, show) {
 	var f;
 	switch (key) {
 	case "provider":
-	case "客户":
+	case "厂商":
 		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
 		if (show) {
 			f.value = "aa";
