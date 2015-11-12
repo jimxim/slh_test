@@ -2,9 +2,9 @@
 
 function testGoodsGoodsAll() {
 
-    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     // run("【货品管理-当前库存】当前库存_条件查询", "test100001_2");
-    run("【货品管理-当前库存】当前库存_单据类型", "test100001_3");
+//    run("【货品管理-当前库存】当前库存_单据类型", "test100001_3");
 
     // run("【货品管理-当前库存】进货价（总额、单据、小计 ）权限控制", "test100004");
     // run("【货品管理-款号库存】款号库存", "test100005");
@@ -194,22 +194,22 @@ function test100001_3() {
     tapButton(getScrollView(), index);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-//    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
-
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "开 单+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("门店调出", "批量调出+");
-    json = { "调出人" : "000", "接收店" : "中洲店","操作人密码" : "000000",
-        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    tapPrompt();
+//    delay();
+//    tapButton(window, RETURN);
+//
+//    tapMenu("采购入库", "新增入库+");
+//    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
+//    editSalesBillNoColorSize(json);
+//
+//    tapMenu("销售开单", "开 单+");
+//    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "5" } ] };
+//    editSalesBillNoColorSize(json);
+//
+//    tapMenu("门店调出", "批量调出+");
+//    json = { "调出人" : "000", "接收店" : "中洲店","操作人密码" : "000000",
+//        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+//    editShopOutDecruitIn(json);
 
     // tapMenu("货品管理", "当前库存");
     // tapFirstText();
