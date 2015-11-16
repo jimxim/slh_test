@@ -11,22 +11,22 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】汇款按钮", "test170049");
     // run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
     // run("【销售开单－开单】店员输入检查", "test170052");
-    run("【销售开单－开单】店员输入框清除功能", "test170053");
+//    run("【销售开单－开单】店员输入框清除功能", "test170053");
     // run("【销售开单－开单】核销（客户余款）", "test170054");
-
     // run("【销售开单－开单】核销（客户欠款）", "test170055");
     // run("【销售开单－开单】客户切换后点核销", "test170056");
     // run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
-    run("【销售开单－开单】核销后检查本单已核销", "test170058");
-     run("【销售开单－开单】核销后检查所有已核销", "test170059");
-     run("【销售开单－开单】连续核销后核销界面检查", "test170062");
-    // run("【销售开单】客户或供应商信息不允许修改", "test170063");
-    // run("【销售开单-开单】检查核销", "test170065");//
-    // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
-    // run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
-    // run("【销售开单－开单】款号价格为负数时检查", "test170072");
-    // run("【销售开单－开单】客户退货数量限制－填写客户", "test170073");
-    // run("【销售开单－开单】客户退货数量－不填客户", "test170075");
+//    run("【销售开单－开单】核销后检查本单已核销", "test170058");
+     run("【销售开单－开单】核销后检查所有已核销", "test170059");//
+//     run("【销售开单－开单】连续核销后核销界面检查", "test170062");
+     
+//     run("【销售开单】客户或供应商信息不允许修改", "test170063");
+//     run("【销售开单-开单】检查核销", "test170065");//
+//     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
+//     run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
+//     run("【销售开单－开单】款号价格为负数时检查", "test170072");
+//     run("【销售开单－开单】客户退货数量限制－填写客户", "test170073");
+//     run("【销售开单－开单】客户退货数量－不填客户", "test170075");
     // run("【销售开单－开单】单价小数位精确到元对保存打印的影响", "test170076");
     // run("【销售开单-开单】开单模式-客户折扣", "test170083");
     // run("【销售开单-开单】开单模式-产品折扣", "test170084");
@@ -630,9 +630,10 @@ function test170058() {
     tapFirstText();
 
     tapButton(window, "核销");
+    tapNaviRightButton();
     // 本单已核销
 
-    var qr = getQResult2(getScrollView(1), "日期", "金额");
+    var qr = getQResult2(getScrollView(-1,0), "日期", "金额");
     var a1 = qr.data[0]["日期"];
     var a3 = qr.data[0]["店员"];
     var a4 = qr.data[0]["数量"];
@@ -645,7 +646,7 @@ function test170058() {
     var ret1 = isEqual(getToday("yy"), a1);
     var ret2 = isEqual("总经理", a3);
     var ret3 = isEqual("5", a4);
-    var ret4 = isEqual("1500", a5);
+    var ret4 = isEqual("450", a5);
 
     return ret1 && ret2 && ret3 && ret4;
 }
@@ -681,30 +682,26 @@ function test170059() {
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tapNaviRightButton();// 本单已核销
-    var qr = getQResult2(getScrollView(1), "日期", "金额");
+    tap(app.navigationBar().buttons()["所有已核销"]);
+    // 所有已核销
+    var qr = getQR2(getScrollView(-1,0), "日期", "金额");
+    debugQResult(qr);
+    
     var a1 = qr.data[0]["日期"];
     var a3 = qr.data[0]["店员"];
     var a4 = qr.data[0]["数量"];
     var a5 = qr.data[0]["金额"];
-    if (a1 == getToday("yy")) {
-        var ret1 = true;
-    }
-    if (a3 == "总经理") {
-        var ret3 = true;
-    }
-    if (a4 == "5") {
-        var ret4 = true;
-    }
-    if (a5 == "1500") {
-        var ret5 = true;
-    }
+       
     tapNaviLeftButton();
     tapNaviLeftButton();
-    // saveAndAlertOk();
-    logDebug("ret1=" + ret1 + "ret3=" + ret3 + "ret4=" + ret4 + "ret5=" + ret5);
-    return ret1 && ret3 && ret4 && ret5;
+    tapButtonAndAlert(RETURN, OK);
+    
+    var ret1 = isEqual(getToday("yy"), a1);
+    var ret2 = isEqual("总经理", a3);
+    var ret3 = isEqual("5", a4);
+    var ret4 = isEqual("450", a5);
 
+    return ret1 && ret3 && ret4 && ret5;
 }
 function test170062() {
     tapMenu("销售开单", "开  单+");
@@ -954,7 +951,7 @@ function test170072() {
 function test170073() {
     // 开启参数 开单保存开启退货数和上次购买数的比对验证
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
+    var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
     editSalesBillNoColorSize(json);
 
     debugArray(alertMsgs);
