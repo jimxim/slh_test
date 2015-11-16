@@ -1,7 +1,7 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 function testGoodsGoodsAll() {
-
+    // if(setGoodsParams()){
     // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
@@ -9,16 +9,18 @@ function testGoodsGoodsAll() {
     // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     // run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
     // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
-    // run("【货品管理-库存分布】库存分布", "test100006");
+//     run("【货品管理-库存分布】库存分布", "test100006");
     // run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
     // run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
-     run("【货品管理-货品进销存】货品进销存", "test100008");
-
+    // run("【货品管理-货品进销存】货品进销存", "test100008");
+    // run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
     // run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
-    // run("【货品管理-货品查询】款号修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015");
-    // run("【货品管理-货品查询】款号新增界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100017");
-    // run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
+//    run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
+   
+    // }
+
+    run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
     // run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
     // run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
     // run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
@@ -53,6 +55,23 @@ function testGoodsGoodsAll() {
     // run("【货品管理-更多-缺货统计】查询条件单项查询/组合查询/清除/底部数据统计",
     // "test100082_100083_100084_100085");
 
+}
+
+function setGoodsParams() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "货品建款的价格模式" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "新增界面格式" };
+    o = { "新值" : "0", "数值" : [ "老模式", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
 }
 
 // 翻页检验，检验序号和翻到第n页有没有相同的款号,需要先用查询条件限制门店，防止不同门店的相同款号
@@ -160,7 +179,7 @@ function test100001_2() {
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v,"3035,jkk,200元,Adidas")) {
+        if (isIn(v, "3035,jkk,200元,Adidas")) {
             ret1 = true;
             break;
         }
@@ -267,6 +286,7 @@ function test100001_3() {
             "销售出货", name1), isEqual("-5", num1), isEqual("采购进货", name2),
             isEqual("50", num2));
 
+    logDebug("   ret1=" + ret1 + "   ret2=" + ret2);
     return ret1 && ret2 && ret3;
 }
 
@@ -410,79 +430,94 @@ function test100005_3() {
 }
 
 function test100006() {
-    var i, j;
-    var keys = { "类别" : "登山服", "厂商" : "vell" }
-    var fields = queryGoodsDistributionFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret = isEqualQRData1ByTitle(qr, "名称", "登山服");
-    var jo1 = qr.data[0];// 只有一条数据
+    // var i, j;
+    // var keys = { "类别" : "登山服", "厂商" : "vell" }
+    // var fields = queryGoodsDistributionFields(keys);
+    // query(fields);
+    // var qr = getQR();
+    // var ret = isEqualQRData1ByTitle(qr, "名称", "登山服");
+    // var jo1 = qr.data[0];// 只有一条数据
+    //
+    // tapMenu("采购入库", "新增入库+");
+    // var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("货品管理", "库存分布");
+    // tapButton(window, QUERY);
+    // qr = getQR();
+    // var a = qr.data[0]["库存"];
+    // var jo2 = qr.data[0];
+    // var actual = subObject(jo2, jo1);
+    // var expectedObj1 = { "名称" : "登山服", "库存" : 50, "价值" : 5000, "常青店" : 50 }
+    // var de1 = { "序号" : 0, "名称" : 0, "库存" : 0, "价值" : 0, "仓库店" : 0, "常青店" : 0,
+    // "中洲店" : 0 };
+    // var expected = mixObject(de1, expectedObj1);
+    // var ret = isEqualObject(expected, actual);
+    //
+    // tapFirstText(getScrollView(), "序号", 7);
+    // var qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    // var a1 = qr1.data[0]["库存"];
 
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("货品管理", "库存分布");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var a = qr.data[0]["库存"];
-    var jo2 = qr.data[0];
-    var actual = subObject(jo2, jo1);
-    var expectedObj1 = { "名称" : "登山服", "库存" : 50, "价值" : 5000, "常青店" : 50 }
-    var de1 = { "序号" : 0, "名称" : 0, "库存" : 0, "价值" : 0, "仓库店" : 0, "常青店" : 0,
-        "中洲店" : 0 };
-    var expected = mixObject(de1, expectedObj1);
-    var ret = isEqualObject(expected, actual);
-
-    tapFirstText();
-    var qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var a1 = qr1.data[0]["库存"];
-
-    tapFirstText(getScrollView(-1, 0), "名称", 7);// 点击进入款号明细
-    var qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var sum2 = 0;
-    for (j = 1; j <= qr2.totalPageNo; j++) {
-        for (i = 0; i < qr2.curPageTotal; i++) {
-            sum2 += Number(qr.data[i]["库存"]);
-            if (Number(qr2.data[i]["库存"]) != Number(qr2.data[i]["仓库店"])
-                    + Number(qr2.data[i]["常青店"]) + Number(qr2.data[i]["中洲店"])) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr2.totalPageNo) {
-            scrollNextPage();
-            qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-        }
-    }
-    // logDebug("sum2="+sum2);
-    ret = ret && isEqual(sum2, a1);
-    tapNaviLeftButton();
-
-    var sum1 = 0;
-    for (j = 1; j <= qr1.totalPageNo; j++) {
-        for (i = 0; i < qr1.curPageTotal; i++) {
-            sum1 += Number(qr1.data[i]["库存"]);
-            if (Number(qr1.data[i]["库存"]) != Number(qr1.data[i]["仓库店"])
-                    + Number(qr1.data[i]["常青店"]) + Number(qr1.data[i]["中洲店"])) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr1.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-        }
-    }
-    // logDebug("sum1="+sum1);
-    ret = ret && isEqual(sum1, a);
-    tapNaviLeftButton();
-
-    tapButton(window, CLEAR);
-    ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1));
-
-    return ret;
+    tapFirstText(getScrollView(-1, 0), "名称", 8);// 点击进入款号明细
+    // var qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    // var sum2 = 0;
+    // for (j = 1; j <= qr2.totalPageNo; j++) {
+    // for (i = 0; i < qr2.curPageTotal; i++) {
+    // if (qr2.data[i]["仓库店"] == undefined) {
+    // qr2.data[i]["仓库店"] = 0;
+    // }
+    // if (qr2.data[i]["中洲店"] == undefined) {
+    // qr2.data[i]["中洲店"] = 0;
+    // }
+    // sum2 += Number(qr.data[i]["库存"]);
+    // if (Number(qr2.data[i]["库存"]) != Number(qr2.data[i]["仓库店"])
+    // + Number(qr2.data[i]["常青店"]) + Number(qr2.data[i]["中洲店"])) {
+    // ret = false;
+    // break;
+    // }
+    // }
+    // if (j < qr2.totalPageNo) {
+    // scrollNextPage();
+    // qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    // }
+    // }
+    // logDebug("sum2=" + sum2);
+    // ret = ret && isEqual(sum2, a1);
+    // tapNaviLeftButton();
+    // // delay();
+    //
+    // qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    // var sum1 = 0;
+    // for (j = 1; j <= qr1.totalPageNo; j++) {
+    // for (i = 0; i < qr1.curPageTotal; i++) {
+    // if (qr1.data[i]["仓库店"] == undefined) {
+    // qr1.data[i]["仓库店"] = 0;
+    // }
+    // if (qr1.data[i]["中洲店"] == undefined) {
+    // qr1.data[i]["中洲店"] = 0;
+    // }
+    // sum1 += Number(qr1.data[i]["库存"]);
+    // if (Number(qr1.data[i]["库存"]) != Number(qr1.data[i]["仓库店"])
+    // + Number(qr1.data[i]["常青店"]) + Number(qr1.data[i]["中洲店"])) {
+    // ret = false;
+    // break;
+    // }
+    // }
+    // if (j < qr1.totalPageNo) {
+    // scrollNextPage();
+    // qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    // }
+    // }
+    //
+    // logDebug("sum1=" + sum1);
+    // ret = ret && isEqual(sum1, a);
+    // tapNaviLeftButton();
+    //
+    // tapButton(window, CLEAR);
+    // ret = ret && isEqual("", getTextFieldValue(window, 0))
+    // && isEqual("", getTextFieldValue(window, 1));
+    //
+    // return ret;
 }
 
 function test100006_1() {
@@ -564,10 +599,9 @@ function test100008_1() {
     var keys = { "门店" : "常青店" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    // 点击翻页
+
     var ret = goPageCheckByCodeField(2);
 
-    // 手动滑动翻页
     ret = ret && scrollNextPageCheckByCodeField();
 
     // ret = ret && sortByTitle("厂商");
@@ -600,17 +634,18 @@ function test100008_1() {
     return ret;
 }
 
-//下拉框
+// 下拉框，条件查询，点击详细，清除按钮
+// 点击详细100009
 function test100008() {
     tapMenu("货品管理", "货品进销存");
     var i;
     var ret1 = false;
-    var f = new TField("款号", TF_AC, 0, "303", -1);
+    var f = new TField("款号", TF_AC, 1, "303", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v,"3035,jkk,200元,Adidas")) {
+        if (isIn(v, "3035,jkk,200元,Adidas")) {
             ret1 = true;
             break;
         }
@@ -618,48 +653,77 @@ function test100008() {
     delay();
     tapKeyboardHide();
 
-    var keys = {"款号":"3035"};
+    var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "厂商" : "Vell",
+        "上架从" : "2015-01-01", "到" : getToday(), "季节" : "春季", "品牌" : "Adidas" }
     var fields = queryGoodsInOutFields(keys);
-    changeTFieldValue(fields["款号"], TF_AC, "3035", -1, 0);
     query(fields);
     var qr = getQR();
+    var ret = isEqual("3035", qr.data[0]["款号"]);
+    var a = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
 
-    var actual = 0, actual1 = 0;
-    var totalPageNo = qr.totalPageNo;
-    var ret3 = false;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual += Number(qr.data[i]["在途数"]);
-            actual1 += Number(qr.data[i]["库存"]);
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    if (actual == qr.counts["在途数"] && actual1 == r.counts["库存"]) {
-        ret3 = true;
-    }
-
-    tapFirstText(getScrollView(), TITLE_SEQ);
+    tapFirstText();
+    var oStockNum = getColorSizeStockNum();
+    var b = Number(oStockNum["均色-均码-常青店"]);
+    // +Number(oStockNum["均色-均码-中洲店"])+Number(oStockNum["均色-均码-仓库店"])
+    ret = ret && isEqual(a, b);
     tapNaviLeftButton();
 
-    keys = { "款号名称" : "3035" };
+    tapButton(window, CLEAR);
+    for (i = 0; i < 8; i++) {
+        if (i != 5) {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        }
+    }
+
+    return ret && ret1;
+}
+
+function test100009() {
+    tapMenu("货品管理", "货品进销存");
+    var keys = { "款号" : "3035" }
+    var fields = queryGoodsInOutFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqual("3035", qr.data[0]["款号"]);
+    var a = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
+
+    tapFirstText();
+    // 测试数据一般只有常青店和中洲店的
+    var oStockNum = getColorSizeStockNum();
+    if (oStockNum["均色-均码-仓库店"] == undefined) {
+        var b = Number(oStockNum["均色-均码-常青店"]) + Number(oStockNum["均色-均码-中洲店"]);
+    } else {
+        b = Number(oStockNum["均色-均码-常青店"])
+                + Number(oStockNum["均色-均码-中洲店"]
+                        + Number(oStockNum["均色-均码-仓库店"]));
+    }
+    ret = ret && isEqual(a, b);
+    tapNaviLeftButton();
+
+    keys = { "门店" : "常青店", "款号" : "3035" }
     fields = queryGoodsInOutFields(keys);
     query(fields);
     qr = getQR();
-    var c = getTextFieldValue(window, 0);
-    var ret1 = false;
-    if (c == "3035,jkk,200元,1") {
-        ret1 = true;
-    }
+    var ret1 = isEqual("3035", qr.data[0]["款号"]);
+    var a1 = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
 
-    return ret && ret1 && isEqualQRData1ByTitle(qr, "款号", "3035");
+    tapFirstText();
+    oStockNum = getColorSizeStockNum();
+    var b1 = Number(oStockNum["均色-均码-常青店"]);
+    ret1 = ret1 && isEqual(a1, b1)
+            && isEqual(undefined, oStockNum["均色-均码-中洲店"])
+            && isEqual(undefined, oStockNum["均色-均码-仓库店"]);
+    tapNaviLeftButton();
+
+    return ret && ret1;
 }
 
+// 照片无法验证
 function test100010_100011_100013() {
     tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(8);
+    var r = "g" + getTimestamp(8);
     var keys = [ "款号", "名称" ];
     var fields = editGoodsFields(keys, false, 0, 0);
     changeTFieldValue(fields["款号"], r);
@@ -684,77 +748,72 @@ function test100010_100011_100013() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var r1 = "a" + r;
+    // 修改除了条码图片外所有内容
     var keys1 = [ "款号", "名称", "品牌", "吊牌价", "进货价", "零批价", "打包价", "大客户价",
-            "Vip价格", "季节", "类别", "厂商", "经办人", "备注" ];
+            "Vip价格", "产品折扣", "季节", "类别", "厂商", "计量单位", "仓位", "最小库存", "最大库存",
+            "经办人", "备注" ];
     fields = editGoodsFields(keys1, false, 0, 0);
     changeTFieldValue(fields["款号"], r1);
     changeTFieldValue(fields["名称"], r1);
     setTFieldsValue(getScrollView(), fields);
+    // 改成昨天上架
+    tapButton(getScrollView(), "减量");
+    var day = getTextFieldValue(getScrollView(), 5);// 上架日期
+    if (day != getDay(-1)) {
+        tapButton(getScrollView(), "减量");
+        tapButton(getScrollView(), "减量");
+    }
     tapButtonAndAlert("修改保存");
     delay();
-    tapButton(window, RETURN);
 
     tapMenu("货品管理", "货品查询");
     query(qFields);
     qr = getQR();
     delay();
-    var ret1 = isEqualQRData1ByTitle(qr, "厂商", "Adida公司")
-            && isEqualQRData1ByTitle(qr, "类别", "登山服")
-            && isEqualQRData1ByTitle(qr, "款号", r1)
-            && isEqualQRData1ByTitle(qr, "名称", r1)
-            && isEqualQRData1ByTitle(qr, "进货价", 100)
-            && isEqualQRData1ByTitle(qr, "零批价", 200)
-            && isEqualQRData1ByTitle(qr, "打包价", 180)
-            && isEqualQRData1ByTitle(qr, "品牌", "1010pp")
-            && isEqualQRData1ByTitle(qr, "备注", "123")
-            && isEqualQRData1ByTitle(qr, "建档人", "总经理");
+    var expected = { "厂商" : "Adida公司", "类别" : "登山服", "款号" : r1, "名称" : r1,
+        "进货价" : "100", "零批价" : "200", "打包价" : "180", "品牌" : "1010pp",
+        "备注" : "123", "建档人" : "总经理" };
+    ret = ret && isEqualQRData1Object(qr, expected);
 
-    logDebug("ret=" + ret + "   ret1=" + ret1);
-    return ret && ret1;
-}
-
-function test100015() {
-    tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(8);
-    var keys = [ "款号", "名称" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    tapButton(window, RETURN);
-
-    tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret1 = false;
-    var ret2 = false;
-    var f = new TField("品牌", TF_AC, 2, "pp", -1);
-    var cells = getTableViewCells(getScrollView(), f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isEqual("1010pp", v)) {
-            ret1 = true;
+    var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
+            200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "件", "默认", 1,
+            200, "000,总经理", "", 123);
+    for (var i = 0; i < expected1.length; i++) {
+        var j = i;
+        if (i >= 6) {
+            j = i + 1;
         }
-        if (isIn(v, "品牌")) {
-            ret2 = true;
-        }
+        ret = ret
+                && isEqual(expected1[i], getTextFieldValue(getScrollView(), j));
     }
-    tapKeyboardHide();
     tapButton(window, RETURN);
 
-    logDebug("ret1=" + ret1 + "   ret2=" + ret2);
-    return ret1 && ret2;
+    return ret;
 }
 
-function test100017() {
+function test100014() {
+    // 文本框自动向上滚动在新增修改货品时会检测
+    return true;
+}
+
+function test100016() {
+    // 文本框自动向上滚动在新增修改货品时会检测
+    return true;
+}
+
+function test100015_100017() {
+//    tapMenu("货品管理", "基本设置", "新增品牌+");
+    var r = "品牌" + getTimestamp(8);
+//    var f = new TField("名称", TF, 0, r);
+//    var fields = [ f ];
+//    setTFieldsValue(getScrollView(), fields);
+//    saveAndAlertOk();
+//    tapButton(window, RETURN);
+
     tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(8);
-    var keys = [ "款号", "名称" ];
+    var keys = { "款号" : r, "名称" : r };
     var fields = editGoodsFields(keys, false, 0, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
     setTFieldsValue(getScrollView(), fields);
 
     var ret1 = false;
@@ -765,18 +824,49 @@ function test100017() {
     for (i = 0; i < cells.length; i++) {
         cell = cells[i];
         v = cell.name();
-        if (isEqual("1010pp", v)) {
+        if (isIn(v, "pp")) {
             ret1 = true;
+            break;
         }
+    }
+    for (i = 0; i < cells.length; i++) {
+        cell = cells[i];
+        v = cell.name();
         if (isIn(v, "品牌")) {
             ret2 = true;
+            break;
         }
     }
     tapKeyboardHide();
     tapButton(window, RETURN);
 
-    logDebug("ret1=" + ret1 + "   ret2=" + ret2);
-    return ret1 && ret2;
+    tapMenu("货品管理", "货品查询");
+    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    var ret3 = false;
+    var ret4 = false;
+    var f = new TField("品牌", TF_AC, 2, "pp", -1);
+    var cells = getTableViewCells(getScrollView(), f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "pp")) {
+            ret3 = true;
+            break;
+        }
+    }
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "品牌")) {
+            ret4 = true;
+            break;
+        }
+    }
+    tapKeyboardHide();
+    tapButton(window, RETURN);
+
+    // logDebug("ret="+" "+ret1+" "+ret2+" "+ret3+" "+ret4);
+    return ret1 && ret2 && ret3 && ret4;
 }
 
 function test100019() {

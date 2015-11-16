@@ -212,11 +212,11 @@ function queryGoodsInOutField(key, show) {
 		break;
 	case "season":
 	case "季节":
-		f = new TField("季节", TF_SC, 6, "春季新");
+		f = new TField("季节", TF_SC, 6, "春季");
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_AC, 7, "1010pp");
+		f = new TField("品牌", TF_SC, 7, "1010pp");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -349,6 +349,7 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 			f.value = "T120,T130";
 		}
 		break;
+	// tapButton(getScrollView(), "减量");也许要点击3次才能变成昨天  
 	case "market":
 	case "上架日期":
 		f = new TField("上架日期", BTN, colorSizeStartIndex+2, getToday());
@@ -375,11 +376,11 @@ function editGoodsField(key, show, colorSizeStartIndex,priceStartIndex) {
 		break;
 	case "customerPrice":
 	case "大客户价":
-		f = new TField("大客户价", TF, priceStartIndex+11, "180");
+		f = new TField("大客户价", TF, priceStartIndex+11, "160");
 		break;
 	case "vip":
 	case "Vip价格":
-		f = new TField("Vip价格", TF, priceStartIndex+12, "170");
+		f = new TField("Vip价格", TF, priceStartIndex+12, "140");
 		break;
 	case "discount":
 	case "产品折扣":
