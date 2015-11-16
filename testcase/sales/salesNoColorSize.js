@@ -1,24 +1,25 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-//     run("【销售开单－开单】客户输入检查【字母】", "test170040");
-//     run("【销售开单－开单】客户输入检查【汉字】", "test170041");
-//     run("【销售开单－开单】客户新增按钮", "test170043");
-//     run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
-//     run("【销售开单－开单】客户输入框清除功能", "test170045");
-//     run("【销售开单－开单】结余文本框检查", "test170046");
-//     run("【销售开单－开单】未付按钮", "test170047");
-//     run("【销售开单－开单】刷卡按钮", "test170048");
-//     run("【销售开单－开单】汇款按钮", "test170049");
-//     run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
+    // run("【销售开单－开单】客户输入检查【字母】", "test170040");
+    // run("【销售开单－开单】客户输入检查【汉字】", "test170041");
+    // run("【销售开单－开单】客户新增按钮", "test170043");
+    // run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
+    // run("【销售开单－开单】客户输入框清除功能", "test170045");
+    // run("【销售开单－开单】结余文本框检查", "test170046");
+    // run("【销售开单－开单】未付按钮", "test170047");
+    // run("【销售开单－开单】刷卡按钮", "test170048");
+    // run("【销售开单－开单】汇款按钮", "test170049");
+    // run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
     // run("【销售开单－开单】店员输入检查", "test170052");
-    // run("【销售开单－开单】店员输入框清除功能", "test170053");
+    run("【销售开单－开单】店员输入框清除功能", "test170053");
     // run("【销售开单－开单】核销（客户余款）", "test170054");
+
     // run("【销售开单－开单】核销（客户欠款）", "test170055");
     // run("【销售开单－开单】客户切换后点核销", "test170056");
     // run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
-//     run("【销售开单－开单】核销后检查本单已核销", "test170058");//
-    // run("【销售开单－开单】核销后检查所有已核销", "test170059");
-    // run("【销售开单－开单】连续核销后核销界面检查", "test170062");
+    run("【销售开单－开单】核销后检查本单已核销", "test170058");
+     run("【销售开单－开单】核销后检查所有已核销", "test170059");
+     run("【销售开单－开单】连续核销后核销界面检查", "test170062");
     // run("【销售开单】客户或供应商信息不允许修改", "test170063");
     // run("【销售开单-开单】检查核销", "test170065");//
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -28,10 +29,10 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】客户退货数量－不填客户", "test170075");
     // run("【销售开单－开单】单价小数位精确到元对保存打印的影响", "test170076");
     // run("【销售开单-开单】开单模式-客户折扣", "test170083");
-//     run("【销售开单-开单】开单模式-产品折扣", "test170084");
-//     run("【销售开单-开单】开单模式-整单折扣", "test170085");
+    // run("【销售开单-开单】开单模式-产品折扣", "test170084");
+    // run("【销售开单-开单】开单模式-整单折扣", "test170085");
     // run("【销售开单-开单】开单模式-童装模式", "test170087");
-//     run("【销售开单-开单】开单模式-代收模式2", "test170090");//
+    // run("【销售开单-开单】开单模式-代收模式2", "test170090");//
     // run("【销售开单－开单】收款方式选择代收", "test170091_170092");
     // run("【销售开单－开单】代收模式2", "test170093");
     // run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
@@ -66,7 +67,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】收款（修改界面）", "test170164");
     // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
     // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
-//     run("【销售开单－开单】挂单保存", "test1700169");
+    // run("【销售开单－开单】挂单保存", "test1700169");
     // run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
     // run("【销售开单－开单】挂单转销售单", "test170171");
     // run("【销售开单－开单】二次挂单功能检查", "test170173");
@@ -102,10 +103,10 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单】开单货品列表是否显示品牌信息", "test170245");
     // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
     // run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-//     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    // run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
     // run("【销售开单－开单】按门店区分客户--区分", "test170249");
     // run("【销售开单－开单】按门店区分客户--不区分", "test170250");
-//    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
 }
 function test170040() {
     tapMenu("销售开单", "开  单+");
@@ -330,7 +331,7 @@ function test170048() {
 function test170049() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "汇款" : [ 1500, "农" ] };
+        "汇款" : [ 450, "农" ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -339,9 +340,7 @@ function test170049() {
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["汇款"];
-    if (a == 1500) {
-        var ret = true;
-    }
+    var ret = isEqual("450", a);
     logDebug("ret=" + ret);
     return ret;
 
@@ -366,11 +365,10 @@ function test170050() {
     setTFieldsValue(getScrollView(), fields);
 
     var k2 = getTextFieldValue(window, 2);
-    var ret = false;
-    if (k2 == 2500) {
-        ret = true;
-    }
-    // logDebug("k2=" + k2);
+
+    tapButtonAndAlert(RETURN, OK);
+
+    var ret = isEqual("950", k2);
     logDebug("ret=" + ret);
     return ret;
 }
@@ -378,7 +376,7 @@ function test170052() {
     tapMenu("销售开单", "开  单+");
 
     var ret = false;
-    var f = new TField("店员", TF_AC, 5, "000", -1);
+    var f = new TField("店员", TF_AC, 5, "00", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -389,28 +387,25 @@ function test170052() {
             break;
         }
     }
+    tapButtonAndAlert(RETURN, OK);
+
     logDebug("ret=" + ret);
     return ret;
 }
 function test170053() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "店员" : "000" };
+    var keys = { "店员" : "000,总经理" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
-    var k0 = getTextFieldValue(window, 4);
+    var staffTFindex = getValueFromCacheF1("getStaffTFindex");
+    var k0 = getTextFieldValue(window, staffTFindex);
     tapButton(window, CLEAR);
     delay();
 
     var k1 = getTextFieldValue(window, 4);
-    if (k0 == "000,总经理") {
-        var ret = true;
-    }
-    var ret1 = false;
-    if (k1 == "") {
-        ret1 = true;
-    }
-    // logDebug("客户＝" + k0 + "客户1＝" + k1);
-    logDebug("ret＝" + ret + "ret1＝" + ret1);
+    var ret =isEqual("000,总经理", k0);
+    var ret1 = isEqual(0, k1);
+    
     return ret && ret1;
 
 }
@@ -634,35 +629,25 @@ function test170058() {
     delay();
     tapFirstText();
 
-    var keys = { "客户" : r };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tapNaviRightButton();// 本单已核销
+    // 本单已核销
 
     var qr = getQResult2(getScrollView(1), "日期", "金额");
     var a1 = qr.data[0]["日期"];
     var a3 = qr.data[0]["店员"];
     var a4 = qr.data[0]["数量"];
     var a5 = qr.data[0]["金额"];
-    if (a1 == getToday("yy")) {
-        var ret1 = true;
-    }
-    if (a3 == "总经理") {
-        var ret2 = true;
-    }
-    if (a4 == "5") {
-        var ret3 = true;
-    }
-    if (a5 == "1500") {
-        var ret4 = true;
-    }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-    // saveAndAlertOk();
-    logDebug("ret1=" + ret1 + "ret2=" + ret2 + "ret3=" + ret3 + "ret4=" + ret4);
-    return ret1 && ret2 && ret3 && ret4;
 
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    tapButtonAndAlert(RETURN, OK);
+
+    var ret1 = isEqual(getToday("yy"), a1);
+    var ret2 = isEqual("总经理", a3);
+    var ret3 = isEqual("5", a4);
+    var ret4 = isEqual("1500", a5);
+
+    return ret1 && ret2 && ret3 && ret4;
 }
 
 function test170059() {
