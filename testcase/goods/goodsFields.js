@@ -92,7 +92,7 @@ function queryGoodsCodeStockField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -107,7 +107,7 @@ function queryGoodsCodeStockField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -152,7 +152,7 @@ function queryGoodsDistributionField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 1, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 1, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -186,7 +186,7 @@ function queryGoodsInOutField(key, show) {
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 1, "a", 1, 0);
+		f = new TField("款号", TF_AC, 1, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -197,7 +197,7 @@ function queryGoodsInOutField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -243,7 +243,7 @@ function queryGoodsField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -254,7 +254,7 @@ function queryGoodsField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_AC, 2, "1010pp");
+		f = new TField("品牌", TF_SC, 2, "1010pp");
 		break;
 	case "market1":
 	case "上架从":
@@ -270,7 +270,7 @@ function queryGoodsField(key, show) {
 		break;
 	case "staff":
 	case "经办人":
-		f = new TField("经办人", TF_AC, 6, "000", 1, 0);
+		f = new TField("经办人", TF_AC, 6, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -910,7 +910,7 @@ function goodsCustomerField(key,show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a",1,0);
+		f = new TField("款号", TF_AC, 0, "a",-1,0);
 		if(show){
 			f.value="5880,kha,210元";
 		}
