@@ -16,6 +16,8 @@ function testSalesNoColorSizeElseAll() {
 //  run("【销售开单－按批次查】清除按钮", "test170020");
 //  run("【销售开单－按批次查】修改代收内容", "test170024");
 //  run("【销售开单-按批次查】打印作废单", "test170025"); 
+    run("【销售开单－按明细查】查询条件单独查询", "test170028_170029");
+//    run("【销售开单-按明细查】作废开单后内容检查", "test170030");
     
     // run("【销售开单－按订货开单】单据查询", "test170252");
     // run("【销售开单－按订货开单】清除按钮", "test170253");
@@ -543,6 +545,12 @@ function test170024() {
     
 }
 function test170025() {
+    
+}
+function test170028_170029() {
+    
+}
+function test170030() {
     
 }
 function test170252() {
