@@ -11,7 +11,7 @@ var TITLE_SXE;
 function testSASynthesisAll() {
     TITLE_SXE = getTitleSXE();
     var caseName = "【新综合汇总接口】";
-    // if (setSASynthesisParams()) {
+     if (setSASynthesisParams()) {
      run(caseName, "test190047");
     // run(caseName, "test190048");
     // run(caseName, "test190049");
@@ -33,7 +33,7 @@ function testSASynthesisAll() {
     // run(caseName, "test190065");
     // run(caseName, "test190066");
     // run(caseName, "test190067");
-    // }
+     }
 }
 
 /**
@@ -48,6 +48,10 @@ function setSASynthesisParams() {
 
     qo = { "备注" : "销售开单是否合并重复的款号" };
     o = { "新值" : "0", "数值" : [ "不合并", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "颜色尺码模式开单更便捷" };
+    o = { "新值" : "0", "数值" : [ "不支持", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
