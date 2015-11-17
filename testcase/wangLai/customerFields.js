@@ -1,3 +1,4 @@
+//客户查询
 function queryCustomerFields(keys, show) {
     return getTFields("queryCustomerField", keys, show);
 }
@@ -6,14 +7,14 @@ function queryCustomerField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "a", 1, 0);
+        f = new TField("客户", TF_AC, 0, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "name":
-    case "名称":
-        f = new TField("名称", TF, 1, "a");
+    case "客户名称":
+        f = new TField("客户名称", TF, 1, "a");
         break;
     case "mobile":
     case "手机":
@@ -24,12 +25,12 @@ function queryCustomerField(key, show) {
         f = new TField("是否停用", TF_SC, 3, "是");
         break;
     case "type":
-    case "类别":
-        f = new TField("类别", TF_SC, 4, "零批客户");
+    case "客户类别":
+        f = new TField("客户类别", TF_SC, 4, "零批客户");
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 5, "000", 1, 0);
+        f = new TField("店员", TF_AC, 5, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }

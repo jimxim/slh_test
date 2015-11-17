@@ -2,7 +2,7 @@
 
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
-     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -20,7 +20,7 @@ function testGoodsGoodsAll() {
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
     // run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
     // run("【货品管理-新增货品】显示条码/重设条码", "test100042_100045");
-    // run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
+    run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
     // run("【货品管理-批量操作】批量停用-重复停用提示,前几天停用", "test100054_2");//一天只能跑一次
@@ -202,8 +202,8 @@ function setTagprice_invperson_1() {
     return ret;
 }
 
-// 翻页检验，检验序号和翻到第n页有没有相同的款号,需要先用查询条件限制门店，防止不同门店的相同款号
-function goPageCheckField(title,n) {
+// 翻页检验，检验序号和翻到第n页有没有相同的内容，若验证款号,需要先用查询条件限制门店，防止不同门店的相同款号
+function goPageCheckField(title, n) {
     if (isUndefined(n)) {
         n = 1;
     }
@@ -261,22 +261,22 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("款号",2);
+    var ret = goPageCheckField("款号", 2);
 
     // 手动滑动翻页
     ret = ret && scrollNextPageCheckField("款号");
 
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("仓库/门店");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("颜色");
-    // ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("仓库/门店");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("库存", IS_NUM);
-    // ret = ret && sortByTitle("在途数", IS_NUM);
-    // ret = ret && sortByTitle("品牌");
-    // ret = ret && sortByTitle("上架天数", IS_NUM);
-    // ret = ret && sortByTitle("累计销", IS_NUM);
+    ret = ret && sortByTitle("在途数", IS_NUM);
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("上架天数", IS_NUM);
+    ret = ret && sortByTitle("累计销", IS_NUM);
 
     query();
     var qr = getQR();
@@ -448,7 +448,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("款号",2);
+    var ret = goPageCheckField("款号", 2);
 
     // 手动滑动翻页
     ret = ret && scrollNextPageCheckField("款号");
@@ -730,7 +730,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号",2);
+    var ret = goPageCheckField("款号", 2);
 
     ret = ret && scrollNextPageCheckField("款号");
 
@@ -1655,6 +1655,7 @@ function test100058() {
 function testGoodsPriceChangeField(keys, r, n, m) {
     tapMenu("货品管理", "批量调价");
     var fields = goodsPricingFields(keys);
+    delay();
     setTFieldsValue(getScrollView(-1, 0), fields);
     tapButton(getScrollView(-1, 0), "确 定");
 
@@ -1667,17 +1668,21 @@ function testGoodsPriceChangeField(keys, r, n, m) {
     var expected = (r + n) * m;
 
     var qr = getQR();
-    var ret = isEqualQRData1ByTitle(qr, "进货价", "100")
-            && isEqualQRData1ByTitle(qr, "零批价", expected)
-            && isEqualQRData1ByTitle(qr, "打包价", expected);
+    var ret = isEqual("100", qr.data[0]["进货价"])
+            && isAqualNum(expected, qr.data[0]["零批价"], 0.99)
+            && isAqualNum(expected, qr.data[0]["打包价"], 0.99);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    ret = ret && isEqual(200, getTextFieldValue(getScrollView(), 7))
-            && isEqual(100, getTextFieldValue(getScrollView(), 8))
-            && isEqual(expected, getTextFieldValue(getScrollView(), 9))
-            && isEqual(expected, getTextFieldValue(getScrollView(), 10))
-            && isEqual(expected, getTextFieldValue(getScrollView(), 11))
-            && isEqual(expected, getTextFieldValue(getScrollView(), 12));
+    ret = ret
+            && isEqual("200", getTextFieldValue(getScrollView(), 7))
+            && isEqual("100", getTextFieldValue(getScrollView(), 8))
+            && isAqualNum(expected, getTextFieldValue(getScrollView(), 9), 0.99)
+            && isAqualNum(expected, getTextFieldValue(getScrollView(), 10),
+                    0.99)
+            && isAqualNum(expected, getTextFieldValue(getScrollView(), 11),
+                    0.99)
+            && isAqualNum(expected, getTextFieldValue(getScrollView(), 12),
+                    0.99);
 
     tapButton(window, RETURN);
     return ret;
@@ -1696,7 +1701,7 @@ function test100047_100048_100049_100050_100051_100052() {
     var keys = { "零批价" : r, "打包价" : r, "大客户价" : r, "Vip价格" : r };
     var ret = testGoodsPriceChangeField(keys, r);
 
-    // 统一加200
+    // 统一加
     tapChoose(getScrollView(), [ 0 ]);
     keys = { "统一加减" : "200" };
     ret = ret && testGoodsPriceChangeField(keys, r, 200);
@@ -1711,31 +1716,21 @@ function test100047_100048_100049_100050_100051_100052() {
     tapMenu("货品管理", "批量调价");
     keys = { "统一加减" : "-10000" };
     var fields = goodsPricingFields(keys);
+    delay();
     setTFieldsValue(getScrollView(-1, 0), fields);
     tapButton(getScrollView(-1, 0), "确 定");
-    tapNaviLeftButton();
     var ret1 = false;
     if (isIn(alertMsg, "该操作会导致价格负数")) {
         tapPrompt();
         ret1 = true;
     }
+    tapNaviLeftButton();
     delay();
 
     // 统一乘 正值
     // tapChoose(getScrollView(), [ 0 ]);
-    tapMenu("货品管理", "批量调价");
     keys = { "统一乘" : "0.5" };
-    fields = goodsPricingFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
-    tapButton(getScrollView(-1, 0), "确 定");
-    var qr = getQR();
-    var l = qr.data[0]["零批价"];
-    var p = qr.data[0]["打包价"];
-    var ret4 = true;
-    if ((Math.abs(l - r * 0.5) > 1) || (Math.abs(p - r * 0.5) > 1)) {
-        ret4 = false;
-    }
-    ret4 = ret4 && isEqualQRData1ByTitle(qr, "进货价", "100");
+    ret = ret && testGoodsPriceChangeField(keys, r, 0, 0.5);
 
     // // 统一乘 负值
     // tapChoose(getScrollView(), [ 0 ]);
@@ -1782,7 +1777,6 @@ function test100047_100048_100049_100050_100051_100052All() {
             ret = false;
         }
     }
-    // 同时修改时，打包价可能无法修改
 
     // 统一加
     tapButton(window, ALL);

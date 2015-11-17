@@ -1,6 +1,7 @@
 //JinXinhua <79202792 at qq.com> 20150901
 
 function testWanLaiCustomerAll() {
+//    run("【往来管理-客户查询】翻页_排序", "test110001_1");
     // run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
     // run("【往来管理-客户查询】客户查询->消费明细", "test110002");
     // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
@@ -40,6 +41,33 @@ function testWanLaiCustomerAll() {
 
 }
 
+// 翻页_排序
+function test110001_1() {
+//    tapMenu("往来管理", "客户查询");
+//    query();
+//
+//    var ret = goPageCheckField("名称", 2);
+//    ret = ret && scrollNextPageCheckField("名称");
+var ret=true;
+    var keys={"客户类别":"VIP客户"};
+    var fields = queryCustomerFields(keys);
+    query(fields);
+//    ret = ret && sortByTitle("名称");
+//    ret = ret && sortByTitle("生日");//显示为2位，实际为4位
+    ret = ret && sortByTitle("店员");
+    ret = ret && sortByTitle("手机");
+//    ret = ret && sortByTitle("地址");
+    ret = ret && sortByTitle("传真号");
+    ret = ret && sortByTitle("当前积分", IS_NUM);
+    ret = ret && sortByTitle("上级客户");
+    ret = ret && sortByTitle("备注");
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("操作日期");
+    
+    query();
+    return ret;
+}
+
 function test110001() {
     tapMenu("往来管理", "客户查询");
     var keys = [ "客户" ];
@@ -50,16 +78,16 @@ function test110001() {
     var ret1 = isEqualQRData1ByTitle(qr, "名称", "赵本山");
 
     tapMenu("往来管理", "客户查询");
-    keys = [ "名称" ];
+    keys = [ "客户名称" ];
     qFields = queryCustomerFields(keys);
-    changeTFieldValue(qFields["名称"], "赵本山");
+    changeTFieldValue(qFields["客户名称"], "赵本山");
     query(qFields);
     var qr = getQR();
     var ret2 = isEqualQRData1ByTitle(qr, "名称", "赵本山");
 
     tapMenu("往来管理", "客户查询");
     // var key = "mobile";
-    keys = [ "客户", "名称", "手机", "是否停用", "类别", "店员" ];
+//    keys = {"客户":"zbs", "名称", "手机", "是否停用", "类别", "店员" };
     qFields = queryCustomerFields(keys);
     changeTFieldValue(qFields["客户"], "zbs");
     changeTFieldValue(qFields["名称"], "赵本山");
