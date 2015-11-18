@@ -1,3 +1,39 @@
+多出来的弹窗影响个数，加个忽略功能
+
+javascript object-c  汉字 排序规则
+星尘  16:29:33
+test110001_1
+星尘  16:24:55
+两位年转四位年
+
+isIn2
+170105 回车改隐藏
+
+#import "/Users/dlsoft/Documents/slh_test/suite.js"
+
+test000All();
+        
+
+onAlert onAlert alertName=操作提醒 alertMsg=请仔细核对收款方式和金额,确定保存吗? ret=true
+onAlert onAlert alertName=补货退货信息 alertMsg=本次开单包括了补货退货的货品，是否继续开单保存 \n 1, k200,范范 均色 均码\n ret=true
+onAlert onAlert alertName=提示信息 alertMsg=保存成功，是否打印? ret=false
+
+tapButtonAndAlert i=none alertButtonIndex=取 消 waitUntilAlertMsgChanged=undefined
+
+function tapMenu1(menu_name, failAgainMax) {
+    gMenu1 = menu_name;
+    var menu = window.tableViews()[0].cells()[menu_name];
+    var ok = tap(menu);
+    while (failAgainMax > 0 && !ok) {
+        delay();
+        failAgainMax--;
+        menu = window.tableViews()[0].cells()[menu_name];
+        ok = tap(menu);
+        logDebug("failAgainMax=" + failAgainMax + " ok=" + ok);
+    }
+    return ok;
+}
+
 销数:0 销额:0 退数:5 退额:1000 特殊货品:0 实销数:-5 现金:300 刷卡:0 汇款:0 代收:0 还款:1300 欠款:0 抵扣:0 余款:0 实销额:-1000 
 销数:0 销额:0 退数:5 退额:1000 特殊货品:0 实销数:-5 实销额:-1000 现金:300 刷卡:0 汇款:0 代收:0 还款:0 欠款:0 抵扣:0 余款:1300 
 收入，支出新增类别删除
@@ -9,6 +45,10 @@ sortByTitle valuePre=待删除<= value=主题 false
 新增货品 厂商 新增
 
 
+        if (i < 0) { // 为了防止卡死
+            tapAlertButton();
+        }
+        
 颜色尺码 库存 取值
 
 function addProvider(name,mobile,address,price) {

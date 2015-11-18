@@ -9,31 +9,34 @@ var TITLE_SXE;
 // SA=StatisticAnalysis
 // 跑一次约需40分钟
 function testSASynthesisAll() {
-    TITLE_SXE = getTitleSXE();
+    if (isUndefined(TITLE_SXE)) {
+        TITLE_SXE = getTitleSXE();
+    }
+    // var ok = run("新综合汇总接口参数设置", "setSASynthesisParams");
     var caseName = "【新综合汇总接口】";
-     if (setSASynthesisParams()) {
-     run(caseName, "test190047");
-    // run(caseName, "test190048");
-    // run(caseName, "test190049");
-    // run(caseName, "test190050");
-    // run(caseName, "test190051");
-    // run(caseName, "test190052");
-    // run(caseName, "test190053");
-    // run(caseName, "test190054");
-    // run(caseName, "test190055");
-    // run(caseName, "test190056");
-    // run(caseName, "test190057");
-    // run(caseName, "test190058");
-    // run(caseName, "test190059");
-    // run(caseName, "test190060");
-    // run(caseName, "test190061");
-    // run(caseName, "test190062");
-    // run(caseName, "test190063");
-    // run(caseName, "test190064");
-    // run(caseName, "test190065");
-    // run(caseName, "test190066");
-    // run(caseName, "test190067");
-     }
+    // if (ok) {
+    run(caseName, "test190047");
+//     run(caseName, "test190048");
+//     run(caseName, "test190049");
+//     run(caseName, "test190050");
+//     run(caseName, "test190051");
+//     run(caseName, "test190052");
+//     run(caseName, "test190053");
+//     run(caseName, "test190054");
+//     run(caseName, "test190055");
+//     run(caseName, "test190056");
+//     run(caseName, "test190057");
+//     run(caseName, "test190058");
+//     run(caseName, "test190059");
+//     run(caseName, "test190060");
+//     run(caseName, "test190061");
+//     run(caseName, "test190062");
+//     run(caseName, "test190063");
+//     run(caseName, "test190064");
+//     run(caseName, "test190065");
+//     run(caseName, "test190066");
+//     run(caseName, "test190067");
+    // }
 }
 
 /**
@@ -49,7 +52,7 @@ function setSASynthesisParams() {
     qo = { "备注" : "销售开单是否合并重复的款号" };
     o = { "新值" : "0", "数值" : [ "不合并", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "不支持", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -409,7 +412,8 @@ function onlytest() {
 
 // 
 function getStatisticAnalysisSynthesis() {
-    tapMenu("统计分析", "综合汇总");
+    tapMenu1("统计分析", 3);
+    tapMenu2("综合汇总");
     query();
     var ret;
     var qr = getQResult();
