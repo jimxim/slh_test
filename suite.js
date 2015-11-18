@@ -9,7 +9,7 @@ function test000All() {
 // debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-//	testSASynthesisAll();
+// testSASynthesisAll();
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
@@ -48,8 +48,15 @@ function testTemp() {
 // testPushToFixArray();
 // testScroll();
 // testGoPage() ;
-    testGetDay24();
+// testGetDay24();
+    testSortByTitle();
 }
+function testSortByTitle() {
+    tapMenu("货品管理", "当前库存");
+    var ok = sortByTitle("颜色");
+    logDebug("ok="+ok);
+}
+
 function testGetDay24() {
     var day1="15-11-18";
     logDebug(getDay24(day1));
@@ -57,9 +64,6 @@ function testGetDay24() {
     logDebug(getDay24(day1));
     day1="31-11-18";
     logDebug(getDay24(day1));
-//    debugElementTree(window);
-    var i = getStaffTFindex();
-    logDebug("staffTFindex="+i);
 }
 function testGoPage() {
     tapMenu("货品管理","货品查询");
