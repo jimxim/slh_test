@@ -6,14 +6,14 @@
 
 // 总经理
 function test000All() {
-//	debug = true;
+// debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-	testSASynthesisAll();
+//	testSASynthesisAll();
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-//	testTemp();
+ testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -23,9 +23,9 @@ function test000All() {
 // testWanLaiProviderAll();
 // testGoodsAll();
 // testGoodsGoodsAll();
-//	testGlobalParamAll();
+// testGlobalParamAll();
 // testStatisticAnalysisAll();
-//	testGoodsGoodsAll();
+// testGoodsGoodsAll();
 // logout();
 // }
 }
@@ -36,18 +36,30 @@ function debugElements() {
 }
 
 function testTemp() {
-//    testDate();
-//    testGetOpTime();
-//    testTapKeyboardHide();
-//    getStaffTFindex() ;
-//    testSalesBillFields();
-//    testQRverify();
-//    testDisplayBarcode();
-//    testTapFirstText();
-//    testEditSalesBillAgency();
-//    testPushToFixArray();
-//    testScroll();
-    testGoPage() ;
+// testDate();
+// testGetOpTime();
+// testTapKeyboardHide();
+// getStaffTFindex() ;
+// testSalesBillFields();
+// testQRverify();
+// testDisplayBarcode();
+// testTapFirstText();
+// testEditSalesBillAgency();
+// testPushToFixArray();
+// testScroll();
+// testGoPage() ;
+    testGetDay24();
+}
+function testGetDay24() {
+    var day1="15-11-18";
+    logDebug(getDay24(day1));
+    day1="30-11-18";
+    logDebug(getDay24(day1));
+    day1="31-11-18";
+    logDebug(getDay24(day1));
+    debugElementTree(window);
+    var i = getStaffTFindex();
+    logDebug("staffTFindex="+i);
 }
 function testGoPage() {
     tapMenu("货品管理","货品查询");
@@ -111,7 +123,7 @@ function testTapFirstText() {
 
 function testEditSalesBillAgency() {
     var o = {"代收":{"物流商":"yt","运单号":"123","备注":"a","代收金额":90}} ;
-//    editSalesBillAgency(o) ;
+// editSalesBillAgency(o) ;
     o = {"代收":{}} ;
     editSalesBillAgency(o) ;
     debugObject(o["代收"]);
@@ -121,12 +133,12 @@ function testPushToFixArray() {
     var arr1;
     pushToFixArray(arr1, "1", 3);
     debugArray(arr1);
-//    arr1 = pushToFixArray(arr1, "2", 3);
-//    debugArray(arr1);
-//    arr1 = pushToFixArray(arr1, "3", 3);
-//    debugArray(arr1);
-//    arr1 = pushToFixArray(arr1, "4", 3);
-//    debugArray(arr1);
+// arr1 = pushToFixArray(arr1, "2", 3);
+// debugArray(arr1);
+// arr1 = pushToFixArray(arr1, "3", 3);
+// debugArray(arr1);
+// arr1 = pushToFixArray(arr1, "4", 3);
+// debugArray(arr1);
 }
 
 function testScroll() {

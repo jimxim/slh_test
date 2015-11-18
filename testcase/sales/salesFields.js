@@ -720,17 +720,30 @@ function editSalesBillField(key, show) {
  * @returns {Number}
  */
 function getStaffTFindex() {
-    return getEditSalesTFindex("客户","店员");
+    return getEditSalesTFindex("客户,厂商","店员");
 }
 function getCardTFindex() {
-    return getEditSalesTFindex("客户","刷卡");
+    return getEditSalesTFindex("客户,厂商","刷卡");
 }
 function getEditSalesTFindex(title1,title2) {
-    var stCustomerIndex =0, stStaffIndex = 0,ret=0;
+    var stCustomerIndex =-1, stStaffIndex = 0,ret=0;
+    var a1t = title1.split(",");
+    
     var a1 = getStaticTexts(window);
+    var t1 = a1t[0];
     for(var i=0;i<a1.length;i++) {
         var e1 = a1[i];
-        if(isUIAStaticText(e1) && e1.name() == title1) {
+        if(isUIAStaticText(e1) && e1.name() == t1) {
+            stCustomerIndex = i;
+        }
+    }
+    
+    if(a1t.length>1) {
+        t1 = a1t[1];
+    }
+    for(var i=0;i<a1.length;i++) {
+        var e1 = a1[i];
+        if(stCustomerIndex==-1 && isUIAStaticText(e1) && e1.name() == t1) {
             stCustomerIndex = i;
         }
         if(isUIAStaticText(e1) && e1.name() == title2) {
