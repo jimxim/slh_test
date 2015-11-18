@@ -54,6 +54,11 @@ function testTemp() {
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
     var ok = sortByTitle("颜色");
+//    var ok = CC2PY("货品管理");
+    logDebug("ok="+ok);
+    ok = CC2PY("002夹克");
+    logDebug("ok="+ok);
+    ok = CC2PY("Joe-011箱包");
     logDebug("ok="+ok);
 }
 
