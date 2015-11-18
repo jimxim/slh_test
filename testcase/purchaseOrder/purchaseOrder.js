@@ -1,40 +1,208 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrderAll() {
+    // run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
+    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
+    // run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
+    // run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
     // run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
     // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
-    // run("按【采购订货-按批次查】", "test130001");
-    // run("【采购订货-按明细查】全局变量：颜色尺码+按明细查", "test130002");
+    // run("按【采购订货-按批次查】", "test130001_3");
+    // run("【采购订货-按明细查】全局变量：颜色尺码+按明细查", "test130002_3");
     // run("【采购订货-订货汇总】订货汇总->按款号_按厂商_按门店", "test130004_130005_130006");
     // run("【采购订货-按明细查】作废订单后内容检查", "test130003");
     // run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "test130009");
     // run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
-    run("【采购订货】客户或供应商信息不允许修改", "test130011");
+    // run("【采购订货】客户或供应商信息不允许修改", "test130011");
 
 }
-
-function test130001() {
+// 翻页_排序_汇总
+function test130001_1() {
     tapMenu("采购订货", "按批次查");
-    var keys = [ "厂商", "日期从" ];
+    var keys = { "日期从" : getDay(-100), "日期到" : getToday() };
     var fields = purchaseOrderQueryBatchFields(keys);
-    changeTFieldValue(fields["厂商"], "vell");
-    changeTFieldValue(fields["日期从"], "2015-09-12");
     query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("批次", 2);
 
-    var ret = true;
-    // ret = ret && sortByTitle("批次", IS_NUM);
+    // 手动滑动翻页
+    ret = ret && scrollNextPageCheckField("批次");
+
+    ret = ret && sortByTitle("批次", IS_NUM);
     // ret = ret && sortByTitle("日期");
     // ret = ret && sortByTitle("厂商");
     // ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("总数", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
-    // ret = ret && sortByTitle("差异数", IS_NUM); //本列暂不支持排序
+    ret = ret && sortByTitle("差异数", IS_NUM);
+    ret = ret && sortByTitle("现金", IS_NUM);
+    ret = ret && sortByTitle("刷卡", IS_NUM);
+    ret = ret && sortByTitle("汇款", IS_NUM);
     // ret = ret && sortByTitle("操作日期");
     // ret = ret && sortByTitle("操作人");
+    // ret = ret && sortByTitle("备注");
 
+    logDebug("ret=" + ret);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["现金"]);
+            sum2 += Number(qr.data[i]["刷卡"]);
+            sum3 += Number(qr.data[i]["汇款"]);
+            sum4 += Number(qr.data[i]["总数"]);
+            sum5 += Number(qr.data[i]["金额"]);
+            sum6 += Number(qr.data[i]["入库数"]);
+            sum7 += Number(qr.data[i]["差异数"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    var ret = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
+            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["总数"],
+            sum4), isEqual(qr.counts["金额"], sum5), isEqual(qr.counts["入库数"],
+            sum6), isEqual(qr.counts["差异数"], sum7));
     return ret;
 }
+// 条件查询，清除按钮,下拉框
+function test130001_2() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx"};
+    editSalesBillNoColorSize(json);
+    
+    tapMenu("采购订货", "按批次查");
+    var i;
+    var ret1 = false;
+    var f = new TField("厂商", TF_AC, 0, "v", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "Tv")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    query();
 
+    tapMenu("采购订货", "按批次查");
+    var keys = { "厂商" : "Rt", "日期从" : getToday(), "日期到" : getToday(),
+        "批次从" : "1", "批次到" : "100000", "门店" : "常青店", "备注" : "xx" }
+    var fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["厂商"];
+    var b = qr.data[0]["总数"];
+
+    var ret = isAnd(isEqual("Rt", a), isEqual("20", b));
+
+    tapButton(window, CLEAR);
+    for (i = 0; i < 5; i++) {
+        if (i != 3 && i != 4) {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        }
+    }
+
+    return ret && ret1;
+}
+// 翻页_排序_汇总
+function test130002_1() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "20", "备注" : "xx" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购订货", "按明细查");
+    var keys = { "日期从" : getDay(-700), "到" : getToday() };
+    var fields = purchaseOrderQueryParticularFields(keys);
+    query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("批次", 1);
+
+    // 手动滑动翻页
+    ret = ret && scrollNextPageCheckField("批次");
+
+    ret = ret && sortByTitle("批次");
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("单价", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+    ret = ret && sortByTitle("已入库", IS_NUM);
+    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("备注");
+
+    query();
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["数量"]);
+            sum2 += Number(qr.data[i]["金额"]);
+            sum3 += Number(qr.data[i]["已入库"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    var ret1 = isAnd(isEqual(sum1, qr.counts["数量"]), isEqual(sum2,
+            qr.counts["金额"]), isEqual(sum3, qr.counts["已入库"]));
+
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+// 下拉框,条件查询，清除按钮
+function test130002_2() {
+    tapMenu("采购订货", "按明细查");
+    var i;
+    var ret1 = false;
+    var f = new TField("款号", TF_AC, 0, "303", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "3035,jkk,")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    query();
+
+    var keys = { "门店" : "常青店", "款号" : "3035", "厂商" : "Vell",
+        "日期从" : getToday(), "到" : getToday(), "备注" : "xx" }
+    var fields = purchaseOrderQueryParticularFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqual("3035", qr.data[0]["款号"]);
+
+    tapButton(window, CLEAR);
+    for (i = 0; i < 5; i++) {
+        if (i != 3 && i != 4) {
+            var ret2 = ret && isEqual("", getTextFieldValue(window, i));
+        } else {
+            ret2 = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        }
+    }
+
+    logDebug("ret=" + ret + "ret1=" + ret1 + "   ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
 function test130002() {
     tapMenu("采购订货", "按明细查");
     var keys = [ "厂商", "日期从" ];

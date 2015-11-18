@@ -30,18 +30,22 @@ function purchaseOrderQueryBatchField(key, show) {
 	case "日期到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
+	case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 3, "常青店");
+        break;
 	case "batch1":
 	case "批次从":
-		f = new TField("批次从", TF, 3, "1");
+		f = new TField("批次从", TF, 4, "1");
 		break;
 	case "batch2":
 	case "批次到":
-		f = new TField("到", TF, 4, "20");
-		break;
-	case "shop":
-	case "门店":
-		f = new TField("门店", TF_SC, 5, "常青店");
-		break;
+		f = new TField("到", TF, 5, "20");
+		break;	
+	case "remarks":
+    case "备注":
+        f = new TField("备注", TF, 6, "备注");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -89,6 +93,10 @@ function purchaseOrderQueryParticularField(key, show) {
 	case "到":
 		f = new TField("到", TF_DT, 4, "2015-9-15");
 		break;
+	case "remarks":
+    case "备注":
+        f = new TField("备注", TF, 5, "备注");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -218,14 +226,14 @@ function purchaseOrderAddField(key, show) {
 	switch (key) {	
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", l-1,"aa");
+		f = new TField("厂商", TF_AC, 0, "a", -1,"aa");
 		if (show) {
 			f.value = f.p2;
 		}
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 1, "000", l-1, 0);
+		f = new TField("店员", TF_AC, 1, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
