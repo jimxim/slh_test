@@ -57,7 +57,7 @@ function testGetDay24() {
     logDebug(getDay24(day1));
     day1="31-11-18";
     logDebug(getDay24(day1));
-    debugElementTree(window);
+//    debugElementTree(window);
     var i = getStaffTFindex();
     logDebug("staffTFindex="+i);
 }
