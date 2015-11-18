@@ -28,7 +28,11 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单-开单】检查核销", "test170065_5");
     // run("【销售开单－开单】整单备注和明细备注", "test170095");
     // run("【销售开单－开单】退货时备注显示", "test170096");
-    // run("【销售开单－开单】退货时明细备注框操作", "test170097");
+    // run("【销售开单－开单】退货时明细备注框操作", "test170097");    
+//     run("【销售开单－开单】新增货品", "test170129");
+//     run("【销售开单－开单】连续新增货品", "test170131");
+//     run("【销售开单－开单】新增货品后再输入别的款号", "test170132");     
+     run("【销售开单－开单】开单保存后再增删款号", "test170133");
     // }
     // if (setPayMethod_9Params()) {
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -85,20 +89,17 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
     // }
     // if (setInvinout_checknum_1Params){
-     run("【销售开单－开单】开单时不允许负库存", "test170116");
-     run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
+    // run("【销售开单－开单】开单时不允许负库存", "test170116");
+    // run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
     // }
     // if(setInvinout_checknum_0Params()){
-    // run("【销售开单－开单】开单时允许负库存", "test170117");
+//    run("【销售开单－开单】开单时允许负库存", "test170117");
     // }
 
     // run("【销售开单－开单】异地发货－－配货员可查看内容", "test170119");
     // run("【销售开单－开单】开单的同时订货", "test170125");
     // run("【销售开单－开单】特殊货品", "test170128");
-    // run("【销售开单－开单】新增货品", "test170129");
-    // run("【销售开单－开单】连续新增货品", "test170131");
-    // run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
-    // run("【销售开单－开单】开单保存后再增删款号", "test170133");
+
     // run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
     // run("【销售开单－开单】作废", "test170137");
     // run("【销售开单－开单】待作废", "test170138");
@@ -332,6 +333,10 @@ function setInvinout_checknum_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -1834,11 +1839,9 @@ function test170115() {
 function test170116() {
     // 设置是否允许负库存为 “检查，必须先入库再出库”
     tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "进货价", "季节", "类别", "厂商", "仓位", "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 0, -1);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
@@ -1860,11 +1863,9 @@ function test170116() {
 function test170117() {
     // 设置是否允许负库存为 “不检查，允许负库存”
     tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "进货价", "季节", "类别", "厂商", "仓位", "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 0, -1);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
@@ -2070,8 +2071,8 @@ function test170131() {
     tapButton(getPop(), "关 闭");
     delay();
 
-    var f11 = new TField("数量", TF, 11, "2");
-    var fields = [ f11 ];
+    var f10 = new TField("数量", TF, 10, "2");
+    var fields = [ f10 ];
     setTFieldsValue(getScrollView(), fields);
 
     tapButton(window, "新增货品");
@@ -2090,13 +2091,13 @@ function test170131() {
     tapButton(getPop(), "关 闭");
     delay();
 
-    var f19 = new TField("数量", TF, 19, "3");
-    var fields = [ f19 ];
+    var f17 = new TField("数量", TF, 17, "3");
+    var fields = [ f17 ];
     setTFieldsValue(getScrollView(), fields);
 
-    var k8 = getTextFieldValue(getScrollView(), 8);
-    var k16 = getTextFieldValue(getScrollView(), 16);
-    var ret = isAnd(isIn(k8, r), isIn(k16, r1));
+    var k7 = getTextFieldValue(getScrollView(), 7);
+    var k14 = getTextFieldValue(getScrollView(), 14);
+    var ret = isAnd(isIn(k7, r), isIn(k14, r1));
 
     saveAndAlertOk();
     tapPrompt();
@@ -2125,8 +2126,8 @@ function test170131() {
 
     var ret2 = isAnd(isEqual(r1, a1), isEqual(r1, b1));
 
-    // logDebug("款号=" + a+"名称=" + b);
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+     logDebug("款号=" + a+"名称=" + b);
+//    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170132() {
@@ -2192,15 +2193,15 @@ function test170133() {
 
     tapButton(getScrollView(), 3);
 
-    var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
-    var f27 = new TField("货品", TF, 27, "4");
-    var fields = [ f24, f27 ];
+    var f21 = new TField("货品", TF_AC, 21, "3035", -1, 0);
+    var f24 = new TField("货品", TF, 24, "4");
+    var fields = [ f21, f24 ];
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
     delay();
-    tapButton(window, RETURN);
+    tapButtonAndAlert(RETURN,OK);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
