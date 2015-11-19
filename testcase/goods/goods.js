@@ -2,25 +2,25 @@
 
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
-    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
-    // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
-    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
-    // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
-    // run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
-    // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
-    // run("【货品管理-库存分布】库存分布", "test100006");
-    // run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
+//     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+//     run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
+//     run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+//     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
+//     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
+//     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
+//     run("【货品管理-库存分布】库存分布", "test100006");
+//     run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
-    // run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
-    // run("【货品管理-货品进销存】货品进销存", "test100008");
+//     run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
+//     run("【货品管理-货品进销存】货品进销存", "test100008");
     // run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
-    // run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
+     run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
     // run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
     // run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
     // run("【货品管理-新增货品】显示条码/重设条码", "test100042_100045");
-    run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
+//    run("【货品管理-批量调价", "test100047_100048_100049_100050_100051_100052");
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
     // run("【货品管理-批量操作】批量停用-重复停用提示,前几天停用", "test100054_2");//一天只能跑一次
@@ -73,23 +73,6 @@ function testGoodsGoodsAll() {
     // "test100075_100076_100077_100078");
     // run("【货品管理-更多-缺货统计】查询条件单项查询/组合查询/清除/底部数据统计",
     // "test100082_100083_100084_100085");
-    // run("test","test");
-}
-function test() {
-    // tapMenu("货品管理", "批量调价");
-    var keys5 = [ "统一乘" ];
-    var fields5 = goodsPricingFields(keys5);
-    changeTFieldValue(fields5["统一乘"], "-1");
-    setTFieldsValue(getScrollView(-1, 0), fields5);
-    tapButton(getScrollView(-1, 0), "确 定");
-    debugElementTree(window);
-    // tapNaviLeftButton();
-    var ret5 = false;
-    if (isIn(alertMsg, "该操作会导致价格负数")) {
-        tapPrompt();
-        ret5 = true;
-    }
-    return ret5;
 }
 
 function setGoodsNoColorPriceParams() {
@@ -234,11 +217,11 @@ function goPageCheckField(title, n) {
 // 向上翻页验证
 function scrollNextPageCheckField(title) {
     var qr = getQR();
-    var totalPageNo = qr.totalPageNo;
+    var curPageNo = qr.curPageNo;
     var code = qr.data[0][title];
 
     var ret = true;
-    if (totalPageNo > 1) {
+    if (curPageNo > 1) {
         scrollPrevPage();
         delay();
         qr = getQR();
@@ -277,6 +260,8 @@ function test100001_1() {
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("上架天数", IS_NUM);
     ret = ret && sortByTitle("累计销", IS_NUM);
+    ret = ret && sortByTitle("单价", IS_NUM);//
+    ret = ret && sortByTitle("核销金额", IS_NUM);//
 
     query();
     var qr = getQR();
@@ -316,8 +301,8 @@ function test100001_2() {
     tapKeyboardHide();
 
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
-        "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
-        "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否" }
+            "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
+        "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -453,14 +438,14 @@ function test100005_1() {
     // 手动滑动翻页
     ret = ret && scrollNextPageCheckField("款号");
 
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("仓库/门店");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
+     ret = ret && sortByTitle("厂商");
+     ret = ret && sortByTitle("仓库/门店");
+     ret = ret && sortByTitle("款号");
+     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
-    // ret = ret && sortByTitle("上架日期");
-    // ret = ret && sortByTitle("累计进", IS_NUM);
-    // ret = ret && sortByTitle("在途数", IS_NUM);
+     ret = ret && sortByTitle("上架日期");
+     ret = ret && sortByTitle("累计进", IS_NUM);
+     ret = ret && sortByTitle("在途数", IS_NUM);
 
     query();
     var qr = getQR();
@@ -1652,20 +1637,12 @@ function test100058() {
 }
 
 // n为统一加减的值 m为统一乘的值
-function testGoodsPriceChangeField(keys, r, n, m) {
+function testGoodsPriceChangeField(keys, expected) {
     tapMenu("货品管理", "批量调价");
     var fields = goodsPricingFields(keys);
     delay();
     setTFieldsValue(getScrollView(-1, 0), fields);
     tapButton(getScrollView(-1, 0), "确 定");
-
-    if (isUndefined(m)) {
-        m = 1;
-    }
-    if (isUndefined(n)) {
-        n = 0;
-    }
-    var expected = (r + n) * m;
 
     var qr = getQR();
     var ret = isEqual("100", qr.data[0]["进货价"])
@@ -1704,12 +1681,12 @@ function test100047_100048_100049_100050_100051_100052() {
     // 统一加
     tapChoose(getScrollView(), [ 0 ]);
     keys = { "统一加减" : "200" };
-    ret = ret && testGoodsPriceChangeField(keys, r, 200);
+    ret = ret && testGoodsPriceChangeField(keys, r + 200);
 
     // 统一减，结果为正
     tapChoose(getScrollView(), [ 0 ]);
     keys = { "统一加减" : "-200" };
-    ret = ret && testGoodsPriceChangeField(keys, r, -200);
+    ret = ret && testGoodsPriceChangeField(keys, r);
 
     // 统一减，结果为负
     tapChoose(getScrollView(), [ 0 ]);
@@ -1720,8 +1697,8 @@ function test100047_100048_100049_100050_100051_100052() {
     setTFieldsValue(getScrollView(-1, 0), fields);
     tapButton(getScrollView(-1, 0), "确 定");
     var ret1 = false;
+    tap(app.alert().buttons()["确 定"]);
     if (isIn(alertMsg, "该操作会导致价格负数")) {
-        tapPrompt();
         ret1 = true;
     }
     tapNaviLeftButton();
@@ -1730,7 +1707,7 @@ function test100047_100048_100049_100050_100051_100052() {
     // 统一乘 正值
     // tapChoose(getScrollView(), [ 0 ]);
     keys = { "统一乘" : "0.5" };
-    ret = ret && testGoodsPriceChangeField(keys, r, 0, 0.5);
+    ret = ret && testGoodsPriceChangeField(keys, r * 0.5);
 
     // // 统一乘 负值
     // tapChoose(getScrollView(), [ 0 ]);

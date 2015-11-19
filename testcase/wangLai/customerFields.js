@@ -385,16 +385,16 @@ function queryCustomerActiveField(key, show) {
             f.value = "Qaq";
         }
         break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, 1, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
-        break;
+//    case "staff":
+//    case "店员":
+//        f = new TField("店员", TF_AC, 1, "000", -1, 0);
+//        if (show) {
+//            f.value = "000,管理员";
+//        }
+//        break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "仓库店");
+        f = new TField("门店", TF_SC, 1, "仓库店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -456,7 +456,7 @@ function queryCustomerProviderField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
