@@ -136,7 +136,7 @@ function salesQueryParticularField(key, show) {
         f = new TField("类型", TF_SC, 5, "退货");
         break;    
 	case "day1":
-	case "发生日期从":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 6, "2015-9-11");
 		break;
 	case "day2":
