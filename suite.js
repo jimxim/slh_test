@@ -13,11 +13,11 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
- testTemp();
+// testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
-// testSalesNoColorSizeAll();
+ testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
 // testWanLaiProviderAll();
@@ -49,7 +49,9 @@ function testTemp() {
 // testScroll();
 // testGoPage() ;
 // testGetDay24();
-    testSortByTitle();
+//    testSortByTitle();
+//    testIn2();
+    testQR2();
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
@@ -60,6 +62,26 @@ function testSortByTitle() {
     logDebug("ok="+ok);
     ok = CC2PY("Joe-011箱包");
     logDebug("ok="+ok);
+}
+
+function testIn2() {
+    var txt = "本次开单包括了补货退货的货品，是否继续开单保存 \n 1, k200,范范 均色 均码\n";
+    var key = "补货退货,继续开单保存";
+    var ok = isIn2(txt,key);
+    logDebug("ok="+ok);
+//    debugElementTree(window);
+
+}
+function testQR2() {
+    tapMenu("销售开单", "开  单+");
+    var keys = { "客户" : "anewkh339231" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+    tap(app.navigationBar().buttons()["所有已核销"]);
+    // 所有已核销
+    var qr = getQR2(getScrollView(-1, 0), "日期", "金额");
+    debugQResult(qr);
 }
 
 function testGetDay24() {

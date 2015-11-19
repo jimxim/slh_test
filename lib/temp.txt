@@ -1,7 +1,6 @@
 多出来的弹窗影响个数，加个忽略功能
 
 
-isIn2
 170105 回车改隐藏
 
 #import "/Users/dlsoft/Documents/slh_test/suite.js"
