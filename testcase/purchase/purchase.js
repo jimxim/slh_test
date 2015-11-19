@@ -44,10 +44,7 @@ function test120001_1() {
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("日期");
@@ -1364,10 +1361,7 @@ function test120047_1() {
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
 //    ret = ret && sortByTitle("批次");
 //    ret = ret && sortByTitle("厂商");

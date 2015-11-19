@@ -33,10 +33,7 @@ function test150001_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -129,10 +126,7 @@ function test150001_4() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

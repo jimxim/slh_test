@@ -498,10 +498,7 @@ function test160001_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期");
@@ -871,10 +868,7 @@ function test160019_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 1);
-
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("批次");
+    var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期");
