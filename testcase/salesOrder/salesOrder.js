@@ -488,9 +488,9 @@ function test160068_160069() {
     return ret && ret1;
 }
 function test160001_1() {
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+//    tapMenu("销售订货", "新增订货+");
+//    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+//    editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
@@ -521,29 +521,29 @@ function test160001_1() {
 
     logDebug("ret=" + ret);
 
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["现金"]);
-            sum2 += Number(qr.data[i]["刷卡"]);
-            sum3 += Number(qr.data[i]["汇款"]);
-            sum4 += Number(qr.data[i]["总额"]);
-            sum5 += Number(qr.data[i]["数量"]);
-            sum6 += Number(qr.data[i]["已发数"]);
-            sum7 += Number(qr.data[i]["差异数"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["总额"],
-            sum4), isEqual(qr.counts["数量"], sum5), isEqual(qr.counts["已发数"],
-            sum6), isEqual(qr.counts["差异数"], sum7));
-    return ret && ret1;
+//    query();
+//    var qr = getQR();
+//    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
+//    for (var j = 1; j <= qr.totalPageNo; j++) {
+//        for (var i = 0; i < qr.curPageTotal; i++) {
+//            sum1 += Number(qr.data[i]["现金"]);
+//            sum2 += Number(qr.data[i]["刷卡"]);
+//            sum3 += Number(qr.data[i]["汇款"]);
+//            sum4 += Number(qr.data[i]["总额"]);
+//            sum5 += Number(qr.data[i]["数量"]);
+//            sum6 += Number(qr.data[i]["已发数"]);
+//            sum7 += Number(qr.data[i]["差异数"]);
+//        }
+//        if (j < qr.totalPageNo) {
+//            scrollNextPage();
+//            qr = getQR();
+//        }
+//    }
+//    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
+//            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["总额"],
+//            sum4), isEqual(qr.counts["数量"], sum5), isEqual(qr.counts["已发数"],
+//            sum6), isEqual(qr.counts["差异数"], sum7));
+//    return ret && ret1;
 }
 function test160001_2() {
     tapMenu("销售订货", "按批次查");
