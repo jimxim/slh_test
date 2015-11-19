@@ -34,8 +34,8 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
     // run("【往来管理-新增厂商】新增厂商", "test110038");
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
-    run("【往来管理-厂商账款】厂商门店账", "test110041");
-    run("【往来管理-厂商账款】厂商总账", "test110042");
+//    run("【往来管理-厂商账款】厂商门店账", "test110041");
+//    run("【往来管理-厂商账款】厂商总账", "test110042");
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
     // run("【往来管理-物流商查询】物流商查询", "test110044");
     // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -1170,19 +1170,42 @@ function test110041() {
 
 function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
-    query();
-    var ret = true;
+    var keys = { "厂商" : "vell" };
+    var fields = queryProviderShopAccountFields(keys);
+    query(fields);
+    // 翻页
+    var ret = goPageCheckField("名称");
+
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = [ "厂商" ];
-    var fields = queryCustomerProviderAccountFields(keys);
-    changeTFieldValue(fields["厂商"], "Vell");
+    keys = { "厂商" : "vell", "门店" : "常青店" };
+    fields = queryProviderShopAccountFields(keys);
     query(fields);
     var qr = getQR();
-    ret = ret && isEqualQRData1ByTitle(qr, "名称", "Vell");
+    ret = ret && isEqual("Vell", qr.data[0]["名称"]) && isEqual(1, qr.total)
+            && isEqual(1, qr.totalPageNo)
+            && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
+
+    query();
+    ret = ret && isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2));
+
+    var sum = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["余额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = ret && isEqual(sum, qr.counts["余额"]);
 
     return ret;
+
 }
 
 function test110043() {
