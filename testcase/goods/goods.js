@@ -2,7 +2,7 @@
 
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
-    run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -213,25 +213,26 @@ function goPageCheckField(title) {
             for (j = 0; j < page2.length; j++) {
                 if (page1[i] == page2[j]) {
                     ret = false;
+                    logDebug("page1=" + page1[i] + "   page2=" + page2[j]);
                     break;
                 }
             }
         }
 
-        //向上翻页验证
+        // 向上翻页验证
         scrollPrevPage();
         delay();
         qr = getQR();
         ret = ret && isEqual("1", qr.data[0]["序号"])
                 && isEqual("1", qr.curPageNo);
-        
-      //向下翻页验证
+
+        // 向下翻页验证
         scrollNextPage();
         delay();
         qr = getQR();
         ret = ret && isEqual("16", qr.data[0]["序号"])
                 && isEqual("2", qr.curPageNo);
-        
+
         scrollPrevPage();
 
     } else {
@@ -251,37 +252,36 @@ function test100001_1() {
     // 翻页
     var ret = goPageCheckField("款号");
 
-    //
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("仓库/门店");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("颜色");
-    // ret = ret && sortByTitle("尺码");
-    // ret = ret && sortByTitle("库存", IS_NUM);
-    // ret = ret && sortByTitle("在途数", IS_NUM);
-    // ret = ret && sortByTitle("品牌");
-    // ret = ret && sortByTitle("上架天数", IS_NUM);
-    // ret = ret && sortByTitle("累计销", IS_NUM);
-    // ret = ret && sortByTitle("单价", IS_NUM);//
-    // ret = ret && sortByTitle("核销金额", IS_NUM);//
-    //
-    // query();
-    // var qr = getQR();
-    // var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
-    // for (var j = 1; j <= qr.totalPageNo; j++) {
-    // for (var i = 0; i < qr.curPageTotal; i++) {
-    // sum1 += Number(qr.data[i]["库存"]);
-    // sum2 += Number(qr.data[i]["在途数"]);
-    // sum3 += Number(qr.data[i]["核算金额"]);
-    // }
-    // if (j < qr.totalPageNo) {
-    // scrollNextPage();
-    // qr = getQR();
-    // }
-    // }
-    // ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
-    // qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("仓库/门店");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("库存", IS_NUM);
+    ret = ret && sortByTitle("在途数", IS_NUM);
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("上架天数", IS_NUM);
+    ret = ret && sortByTitle("累计销", IS_NUM);
+    ret = ret && sortByTitle("单价", IS_NUM);
+    ret = ret && sortByTitle("核算金额", IS_NUM);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["库存"]);
+            sum2 += Number(qr.data[i]["在途数"]);
+            sum3 += Number(qr.data[i]["核算金额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
+            qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
     return ret;
 }
 
@@ -309,7 +309,10 @@ function test100001_2() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual("3035", qr.data[0]["款号"]);
+    var ret = isEqual("3035", qr.data[0]["款号"])
+            && isEqual(qr.data[0]["库存"], qr.counts["库存"])
+            && isEqual(qr.data[0]["在途数"], qr.counts["在途数"])
+            && isEqual(qr.data[0]["核算金额"], qr.counts["核算金额"]);
 
     tapButton(window, CLEAR);
     for (i = 0; i < 11; i++) {
@@ -438,7 +441,6 @@ function test100005_1() {
     // 翻页
     var ret = goPageCheckField("款号");
 
-
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
     ret = ret && sortByTitle("款号");
@@ -487,7 +489,8 @@ function test100005_2() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual("3035", qr.data[0]["款号"]);
+    var ret = isEqual("3035", qr.data[0]["款号"])
+            && isEqual(qr.data[0]["库存"], qr.counts["库存"]);
 
     tapButton(window, CLEAR);
     for (i = 0; i < 7; i++) {
@@ -552,6 +555,16 @@ function test100006() {
     var qr = getQR();
     var ret = isEqualQRData1ByTitle(qr, "名称", "登山服");
     var jo1 = qr.data[0];// 只有一条数据
+    
+    ret = isEqual(qr.data[0]["库存"], qr.counts["库存"])
+            && isEqual(qr.data[0]["价值"], qr.counts["价值"])
+            && isEqual(qr.data[0]["常青店"], qr.counts["常青店"]);
+    if (isDefined(qr.data[0]["仓库店"])) {
+        ret = ret && isEqual(qr.data[0]["仓库店"], qr.counts["仓库店"]);
+    }
+    if (isDefined(qr.data[0]["中洲店"])) {
+        ret = ret && isEqual(qr.data[0]["中洲店"], qr.counts["中洲店"]);
+    }
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };

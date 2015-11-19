@@ -1,18 +1,18 @@
 //JinXinhua <79202792 at qq.com> 20150901
 
 function testWanLaiCustomerAll() {
-//     run("【往来管理-客户查询】翻页_排序", "test110001_1");
-//     run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
-//     run("【往来管理-客户查询】客户查询->消费明细", "test110002");
-//     run("【往来管理-客户查询】客户查询->修改保存", "test110004");
-//     run("【往来管理-客户查询】客户查询->客户停用", "test110005");
-//     run("【往来管理-客户查询】客户修改界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110006");
-//     run("【往来管理-客户查询】客户新增界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110007");
-//     run("【往来管理】允许退货－－是", "test110008");
-//     run("【往来管理】允许退货－－否", "test110009");
-//     run("【往来管理】往来管理-客户查询/厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
-//     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
-//     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
+    // run("【往来管理-客户查询】翻页_排序", "test110001_1");
+    // run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
+    // run("【往来管理-客户查询】客户查询->消费明细", "test110002");
+    // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
+    // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
+    // run("【往来管理-客户查询】客户修改界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110006");
+    // run("【往来管理-客户查询】客户新增界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110007");
+    // run("【往来管理】允许退货－－是", "test110008");
+    // run("【往来管理】允许退货－－否", "test110009");
+    // run("【往来管理】往来管理-客户查询/厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
+    // run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
+    // run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
 
     // 先跳过
     // run("【往来管理-客户账款】客户门店账", "test1100015");
@@ -26,16 +26,16 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】店长查看客户门店帐", "test110031");
     // run("【往来管理】开单员查看客户门店帐", "test110032");
 
-//     run("【往来管理-客户活跃度】客户活跃度", "test110033");
+    // run("【往来管理-客户活跃度】客户活跃度", "test110033");
     // run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
     // run("【往来管理】未拿货天数", "test110035");
-//     run("【往来管理-积分查询】积分查询", "test110036");
+    // run("【往来管理-积分查询】积分查询", "test110036");
     // run("【往来管理-积分查询】积分数值对比", "test110037");
-//    run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
+    // run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
     // run("【往来管理-新增厂商】新增厂商", "test110038");
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
-//     run("【往来管理-厂商账款】厂商门店账", "test110041");
-    // run("【往来管理-厂商账款】厂商总账", "test110042");
+    run("【往来管理-厂商账款】厂商门店账", "test110041");
+    run("【往来管理-厂商账款】厂商总账", "test110042");
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
     // run("【往来管理-物流商查询】物流商查询", "test110044");
     // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -913,6 +913,7 @@ function test110035() {
 
 }
 
+// 翻页，汇总，条件查询，清除，排序
 function test110036() {
     tapMenu("往来管理", "积分查询");
     var key = { "门店" : "常青店" };
@@ -921,12 +922,26 @@ function test110036() {
     // 翻页
     var ret = goPageCheckField("名称");
 
+    var qr = getQR();
+    var sum = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["当前积分"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = ret && isEqual(sum, qr.counts["当前积分"]);
+
     key = { "门店" : "常青店", "客户" : "zbs", "手机" : "13922211121" };
     fields = queryCustomerScoreFields(key);
     query(fields);
-    var qr = getQR();
-    ret = ret && isEqual("赵本山", qr.data[0]["名称"]) && isEqual(1, qr.total)
-            && isEqual(1, qr.totalPageNo);
+    qr = getQR();
+    ret = ret && isEqual("赵本山", qr.data[0]["名称"])
+            && isEqual(qr.data[0]["当前积分"], qr.counts["当前积分"])
+            && isEqual(1, qr.total) && isEqual(1, qr.totalPageNo);
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
@@ -939,6 +954,10 @@ function test110036() {
     ret1 = ret1 && sortByTitle("电话");
     ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
     ret1 = ret1 && sortByTitle("最近兑换日期");
+
+    // 验证点击"最近兑换日期"标题后，记录重复的BUG
+    tapTitle(getScrollView(), "最近兑换日期");
+    ret = ret && goPageCheckField("名称")
 
     return ret && ret1;
 }
@@ -975,7 +994,6 @@ function test1100_QueryProvider() {
     query();
     // 翻页
     var ret = goPageCheckField("名称");
-
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -1111,8 +1129,9 @@ function test110039() {
 //
 function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
-    query();
-
+    var keys = { "门店" : "常青店" };
+    var fields = queryProviderShopAccountFields(keys);
+    query(fields);
     // 翻页
     var ret = goPageCheckField("名称");
 
@@ -1120,17 +1139,30 @@ function test110041() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = { "厂商" : "vell", "门店" : "常青店" };
-    var fields = queryProviderShopAccountFields(keys);
+    keys = { "厂商" : "vell", "门店" : "常青店" };
+    fields = queryProviderShopAccountFields(keys);
     query(fields);
     var qr = getQR();
     ret = ret && isEqual("Vell", qr.data[0]["名称"]) && isEqual(1, qr.total)
-            && isEqual(1, qr.totalPageNo);
+            && isEqual(1, qr.totalPageNo)
+            && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2));
+
+    var sum = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["余额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = ret && isEqual(sum, qr.counts["余额"]);
 
     return ret;
 
