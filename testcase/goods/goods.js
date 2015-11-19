@@ -2,7 +2,7 @@
 
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
-     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+    run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -189,16 +189,21 @@ function setTagprice_invperson_1() {
 // 若验证款号,需要先用查询条件限制门店，防止不同门店的相同款号
 function goPageCheckField(title) {
     var qr = getQR();
-    var ret = true, i, j;
+    // 当前页为1
+    var ret = isEqual("1", qr.data[0]["序号"]);
+    var i, j;
     var totalPageNo = qr.totalPageNo;
     if (totalPageNo > 1) {
         var page1 = new Array();
         for (i = 0; i < 10; i++) {
             page1[i] = qr.data[i][title];
         }
-        
+
+        // 翻到第二页
         goPage(2, qr);
         qr = getQR();
+        ret = ret && isEqual("16", qr.data[0]["序号"])
+                && isEqual("2", qr.curPageNo);
         var page2 = new Array();
         for (i = 0; i < 10; i++) {
             page2[i] = qr.data[i][title];
@@ -213,34 +218,27 @@ function goPageCheckField(title) {
             }
         }
 
+        //向上翻页验证
+        scrollPrevPage();
+        delay();
+        qr = getQR();
+        ret = ret && isEqual("1", qr.data[0]["序号"])
+                && isEqual("1", qr.curPageNo);
+        
+      //向下翻页验证
+        scrollNextPage();
+        delay();
+        qr = getQR();
+        ret = ret && isEqual("16", qr.data[0]["序号"])
+                && isEqual("2", qr.curPageNo);
+        
+        scrollPrevPage();
+
     } else {
         ret = true;
         logDebug("总页码数=" + totalPageNo + "   无法做翻页验证");
     }
 
-    return ret;
-}
-
-// 向上翻页验证
-function scrollNextPageCheckField(title) {
-    var qr = getQR();
-    var curPageNo = qr.curPageNo;
-    var code = qr.data[0][title];
-
-    var ret = true;
-    if (curPageNo > 1) {
-        scrollPrevPage();
-        delay();
-        qr = getQR();
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (isEqual(code, qr.data[i][title])) {
-                ret = false;
-                break;
-            }
-        }
-        // scrollNextPage();
-    }
-    logDebug("ret=" + ret);
     return ret;
 }
 
@@ -250,42 +248,40 @@ function test100001_1() {
     var keys = { "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    // 点击翻页
+    // 翻页
     var ret = goPageCheckField("款号");
 
-    // 手动滑动翻页
-//    ret = ret && scrollNextPageCheckField("款号");
-//
-//    ret = ret && sortByTitle("厂商");
-//    ret = ret && sortByTitle("仓库/门店");
-//    ret = ret && sortByTitle("款号");
-//    ret = ret && sortByTitle("名称");
-//    ret = ret && sortByTitle("颜色");
-//    ret = ret && sortByTitle("尺码");
-//    ret = ret && sortByTitle("库存", IS_NUM);
-//    ret = ret && sortByTitle("在途数", IS_NUM);
-//    ret = ret && sortByTitle("品牌");
-//    ret = ret && sortByTitle("上架天数", IS_NUM);
-//    ret = ret && sortByTitle("累计销", IS_NUM);
-//    ret = ret && sortByTitle("单价", IS_NUM);//
-//    ret = ret && sortByTitle("核销金额", IS_NUM);//
-//
-//    query();
-//    var qr = getQR();
-//    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
-//    for (var j = 1; j <= qr.totalPageNo; j++) {
-//        for (var i = 0; i < qr.curPageTotal; i++) {
-//            sum1 += Number(qr.data[i]["库存"]);
-//            sum2 += Number(qr.data[i]["在途数"]);
-//            sum3 += Number(qr.data[i]["核算金额"]);
-//        }
-//        if (j < qr.totalPageNo) {
-//            scrollNextPage();
-//            qr = getQR();
-//        }
-//    }
-//    ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
-//            qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
+    //
+    // ret = ret && sortByTitle("厂商");
+    // ret = ret && sortByTitle("仓库/门店");
+    // ret = ret && sortByTitle("款号");
+    // ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("颜色");
+    // ret = ret && sortByTitle("尺码");
+    // ret = ret && sortByTitle("库存", IS_NUM);
+    // ret = ret && sortByTitle("在途数", IS_NUM);
+    // ret = ret && sortByTitle("品牌");
+    // ret = ret && sortByTitle("上架天数", IS_NUM);
+    // ret = ret && sortByTitle("累计销", IS_NUM);
+    // ret = ret && sortByTitle("单价", IS_NUM);//
+    // ret = ret && sortByTitle("核销金额", IS_NUM);//
+    //
+    // query();
+    // var qr = getQR();
+    // var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    // for (var j = 1; j <= qr.totalPageNo; j++) {
+    // for (var i = 0; i < qr.curPageTotal; i++) {
+    // sum1 += Number(qr.data[i]["库存"]);
+    // sum2 += Number(qr.data[i]["在途数"]);
+    // sum3 += Number(qr.data[i]["核算金额"]);
+    // }
+    // if (j < qr.totalPageNo) {
+    // scrollNextPage();
+    // qr = getQR();
+    // }
+    // }
+    // ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
+    // qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
     return ret;
 }
 
@@ -439,11 +435,9 @@ function test100005_1() {
     var keys = { "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    // 点击翻页
-    var ret = goPageCheckField("款号", 2);
+    // 翻页
+    var ret = goPageCheckField("款号");
 
-    // 手动滑动翻页
-    ret = ret && scrollNextPageCheckField("款号");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -722,9 +716,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号", 2);
-
-    ret = ret && scrollNextPageCheckField("款号");
+    var ret = goPageCheckField("款号");
 
     // ret = ret && sortByTitle("厂商");
     // ret = ret && sortByTitle("款号");

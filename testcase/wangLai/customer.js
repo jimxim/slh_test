@@ -52,8 +52,7 @@ function test110001_1() {
     tapMenu("往来管理", "客户查询");
     query();
 
-    var ret = goPageCheckField("名称", 2);
-    ret = ret && scrollNextPageCheckField("名称");
+    var ret = goPageCheckField("名称");
 
     var keys = { "客户类别" : "VIP客户" };
     var fields = queryCustomerFields(keys);
@@ -920,8 +919,7 @@ function test110036() {
     var fields = queryCustomerScoreFields(key);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("名称", 2);
-    ret = ret && scrollNextPageCheckField("名称");
+    var ret = goPageCheckField("名称");
 
     key = { "门店" : "常青店", "客户" : "zbs", "手机" : "13922211121" };
     fields = queryCustomerScoreFields(key);
@@ -976,8 +974,8 @@ function test1100_QueryProvider() {
     tapMenu("往来管理", "厂商查询");
     query();
     // 翻页
-    var ret = goPageCheckField("名称", 2);
-    ret = ret && scrollNextPageCheckField("名称");
+    var ret = goPageCheckField("名称");
+
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -1116,8 +1114,7 @@ function test110041() {
     query();
 
     // 翻页
-    var ret = goPageCheckField("名称", 1);
-    ret = ret && scrollNextPageCheckField("名称");
+    var ret = goPageCheckField("名称");
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
