@@ -39,7 +39,7 @@ function test120001_1() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "按明细查");
+    tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-700), "日期到" : getToday() };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
