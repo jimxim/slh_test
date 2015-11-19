@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-// testTemp();
+ testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -27,7 +27,7 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testGoodsGoodsAll();
 // logout();
-    testSalesNoColorSizeElseAll();
+//    testSalesNoColorSizeElseAll();
 // }
 }
 
@@ -56,11 +56,12 @@ function testTemp() {
     testStatistics1();
 }
 function testStatistics1() {
-    tapMenu("统计图表", "按门店");
-    delay();
-    debugElementTree(window);
-    delay();
-    debugElementTree(window);
+//    tapMenu("统计图表", "按门店");
+//    delay();
+//    debugElementTree(window);
+//    delay();
+//    debugElementTree(window);
+    sortByTitle("客户") ;
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
