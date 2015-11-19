@@ -1,3 +1,38 @@
+function test170275() {
+    tapMenu("销售开单", "收款单");
+    logDebug("1");
+    var keys = { "日期从" : getDay(-30) };
+    debugObject(keys);
+    var fields = salesCollectionRecordFields(keys);
+    query(fields);
+    
+    logDebug("2");
+    var sum1 = 0;
+    var sum2 = 0;
+    var sum3 = 0;
+    var qr = getQR(window, getScrollView(), "序号", 11);
+    logDebug("3");
+    debugQResult(qr);
+    debugElementTree(window);
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["现金"]);
+            sum2 += Number(qr.data[i]["刷卡"]);
+            sum3 += Number(qr.data[i]["汇款"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR(window, getScrollView(), "序号", 11);
+        }
+    }
+    var ret = isAnd(isEqual(qr.counts["刷卡"], sum1), isEqual(qr.counts["汇款"],
+            sum2));
+    logDebug("sum1=" + sum1 + "   sum2=" + sum2);
+    return ret;
+}
+
+
 多出来的弹窗影响个数，加个忽略功能
 
 

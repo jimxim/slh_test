@@ -17,7 +17,7 @@ function test000All() {
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
- testSalesNoColorSizeAll();
+// testSalesNoColorSizeAll();
 // run("积分查询", "testQueryCustomerScoreFields");
 // run("客户新增", "testEditCustomerFields");
 // testWanLaiProviderAll();
@@ -27,6 +27,7 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testGoodsGoodsAll();
 // logout();
+    testSalesNoColorSizeElseAll();
 // }
 }
 
@@ -51,7 +52,15 @@ function testTemp() {
 // testGetDay24();
 //    testSortByTitle();
 //    testIn2();
-    testQR2();
+//    testQR2();
+    testStatistics1();
+}
+function testStatistics1() {
+    tapMenu("统计图表", "按门店");
+    delay();
+    debugElementTree(window);
+    delay();
+    debugElementTree(window);
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
