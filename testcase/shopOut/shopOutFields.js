@@ -24,7 +24,7 @@ function shopOutQueryBatchField(key, show) {
         f = new TField("到", TF_DT, 1, "2015-9-16");
         break;
     case "shop-in":
-    case "调入门店":
+    case "调出门店":
         f = new TField("调入门店", TF_SC, 2, "仓库店");
         break;
     case "batch1":
@@ -36,7 +36,7 @@ function shopOutQueryBatchField(key, show) {
         f = new TField("到", TF, 4, "20");
         break;
     case "shop-out":
-    case "调出门店":
+    case "调入门店":
         f = new TField("调出门店", TF_SC, 5, "常青店");
         break;
     default:
@@ -74,18 +74,19 @@ function shopOutQueryParticularField(key, show) {
             f.value = "5880,kha,210元";
         }
         break;
+    case "shop-out":
+    case "调出门店":
+        f = new TField("调出门店", TF_SC, 2, "常青店");
+        break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        f = new TField("日期从", TF_DT, 3, "2015-9-11");
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 3, "2015-9-16");
+        f = new TField("到", TF_DT, 4, "2015-9-16");
         break;
-    case "shop-out":
-    case "调出门店":
-        f = new TField("调出门店", TF_SC, 4, "常青店");
-        break;
+    
     case "shop-in":
     case "调入门店":
         f = new TField("调入门店", TF_SC, 5, "仓库店");

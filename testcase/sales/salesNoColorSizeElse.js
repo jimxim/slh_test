@@ -16,7 +16,7 @@ function testSalesNoColorSizeElseAll() {
 //  run("【销售开单－按批次查】清除按钮", "test170020");
 //  run("【销售开单－按批次查】修改代收内容", "test170024");
 //  run("【销售开单-按批次查】打印作废单", "test170025"); 
-    run("【销售开单－按明细查】查询条件单独查询", "test170028_170029");
+//    run("【销售开单－按明细查】查询条件单独查询", "test170028_170029");
 //    run("【销售开单-按明细查】作废开单后内容检查", "test170030");
     
     // run("【销售开单－按订货开单】单据查询", "test170252");
@@ -35,7 +35,7 @@ function testSalesNoColorSizeElseAll() {
     // run("【销售开单－按订货开单】开单日期检查", "test170272");
     // run("【销售开单-按订货开单】开单允许折扣大于1+产品折扣+大于1的折扣", "test170273");
     // run("【销售开单-按订货开单】开单允许折扣大于1+整单折扣+大于1的折扣", "test170274");
-    // run("【销售开单-收款记录】查询", "test170275");
+     run("【销售开单-收款记录】查询", "test170275");
     // run("【销售开单-收款记录】清除功能", "test170276");
     // run("【销售开单-收款撤销】收款撤销", "test170277");
     // run("【销售开单－物流单查询】正常查询", "test170278");
@@ -1153,6 +1153,7 @@ function test170275() {
     var sum2 = 0;
     var sum3 = 0;
     var qr = getQR(window, getScrollView(), "序号", 11);
+    debugQResult(qr);
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {

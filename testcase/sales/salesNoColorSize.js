@@ -912,11 +912,8 @@ function test170059() {
     delay();
     tapFirstText();
 
-    var keys = { "客户" : r };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tap(app.navigationBar().buttons()["所有已核销"]);
+    tapButton(app.navigationBar(),"所有已核销");
     // 所有已核销
     var qr = getQR2(getScrollView(-1, 0), "日期", "金额");
     debugQResult(qr);
