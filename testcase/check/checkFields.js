@@ -31,9 +31,17 @@ function queryCheckBatchField(key, show) {
 	case "批次到":
 		f = new TField("到", TF, 3, "20");
 		break;
+	case "optime1":
+    case "处理时间从":
+        f = new TField("处理时间从", TF_DT, 4, "2015-9-11");
+        break;
+    case "optime2":
+    case "处理时间到":
+        f = new TField("处理时间到", TF_DT, 5, getToday());
+        break;
 	case "shop":
 	case "门店":
-		f = new TField("门店", TF_SC, 4, "常青店");
+		f = new TField("门店", TF_SC, 6, "常青店");
 		break;
 	default:
 		logWarn("未知key＝" + key);

@@ -17,9 +17,9 @@ function test000All() {
 // testShopInAll();
 // testShopOutAll();
 //	 testSalesOrderAll();
-// testCheckAll();
+ testCheckAll();
 // testSalesNoColorSizeAll();
- testSalesNoColorSizeElseAll();
+// testSalesNoColorSizeElseAll();
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
