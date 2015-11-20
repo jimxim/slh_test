@@ -628,7 +628,7 @@ function queryCustomerLogisticsField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, -1, "000", 1, 0);
+        f = new TField("店员", TF_AC, 1, "000", -1, 0);
         if (show) {
             f.value = "000，管理员";
         }

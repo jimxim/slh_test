@@ -2490,7 +2490,8 @@ function test100082_100083_100084_100085() {
 function test10_price() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var ret = true;
-    var qr = getQR();
+//    var qr = getQResult();
+//    debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
     ret = ret && sortByTitle("进货价比例", IS_NUM);

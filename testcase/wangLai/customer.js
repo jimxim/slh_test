@@ -37,7 +37,7 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-厂商账款】厂商门店账", "test110041");
     // run("【往来管理-厂商账款】厂商总账", "test110042");
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
-    run("【往来管理-物流商查询】物流商查询", "test110044");
+    // run("【往来管理-物流商查询】物流商查询", "test110044");
     // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
     // run("【往来管理-更多】新增回访", "test110047");
     // run("【往来管理-更多】客户回访", "test110048");
@@ -1353,20 +1353,36 @@ function test110047() {
 
 function test110048() {
     tapMenu("往来管理", "更多.", "客户回访");
-    query();
     var ret = true;
-    // debugElementTree(getScrollView());
-    // ret = ret && sortByTitle("回访日期");
-    // ret = ret && sortByTitle("客户");
-    // ret = ret && sortByTitle("主题");
-    // ret = ret && sortByTitle("回访类型");
-    // ret = ret && sortByTitle("经办人");
-    // ret = ret && sortByTitle("反馈及建议");
+    query();
+    var qr = getQR();
+    if (qr.totalPageNo > 1) {
+        goPage(2, qr);
+        qr = getQR();
+        ret = ret && isEqual("2", qr.curPageNo)
+                && isEqual("16", qr.data[0]["序号"]);
 
-    var keys = { "回访日期从" : "2015-11-03", "客户" : "xw", "主题" : "主题",
+        scrollPrevPage();
+        delay();
+        qr = getQR();
+        ret = ret && isEqual("1", qr.data[0]["序号"])
+                && isEqual("1", qr.curPageNo);
+    }
+
+    // debugElementTree(getScrollView());
+    ret = ret && sortByTitle("回访日期", IS_DATE2);
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("主题");
+    ret = ret && sortByTitle("回访类型");
+    ret = ret && sortByTitle("店员");
+    ret = ret && sortByTitle("反馈及建议");
+
+    var keys = { "回访日期从" : "2015-11-01", "客户" : "xw", "主题" : "主题",
         "反馈及建议" : "123456", "经办人" : "000" };
     var fields = queryCustomerBackFields(keys);
-    setTFieldsValue(window, fields);
+    query(fields);
+    ret = ret && isEqual("小王", qr.data[0]["名称"]);
+
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual(getToday(), getTextFieldValue(window, 1))
