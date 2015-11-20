@@ -1,3 +1,24 @@
+    var regTotal = /共\s*(\d+)条/;
+    var oPage = getPageInfo(pageInfoView, regTotal);
+    var total = oPage["total"], curPageTotal = oPage["curPageTotal"], curPageNo = oPage["curPageNo"], totalPageNo = oPage["totalPageNo"];
+
+    var titleText1, titles = [],i=0;
+    var texts = getStaticTexts(dataView);
+    for ( i = 0; i < texts.length; i++) {
+        var text = texts[i];
+        var t = text.value();
+        if (isUndefined(titleText1) && t == firstTitle) { // 等于第一个标题
+            titleText1 = text;
+        }
+        if (isSameRow(titleText1, text)) {
+            titles.push(t);
+        }else {
+            break;
+        }
+    }
+    
+
+
 
 
 
@@ -941,3 +962,88 @@ function testRefresh() {
 	tap(texts[i]);// 进入修改页面
 	*/
 客户签名 UIAScrollView: rect:{{128, 64}, {760, 1000}}
+
+
+/**
+ * 获取查询结果
+ * @param pageInfoView 默认window
+ * @param dataView 默认第一个滚动页
+ * @param firstTitle 默认序号
+ * @returns {QResult}
+ */
+function getQResult(pageInfoView, dataView, firstTitle, titleTotal) {
+    if (isUndefined(pageInfoView)) {
+        pageInfoView = window;
+    }
+    if (isUndefined(dataView)) {
+        dataView = getScrollView();
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = TITLE_SEQ;
+    }
+
+    var regTotal = /共\s*(\d+)条/;
+    var oPage = getPageInfo(pageInfoView, regTotal);
+    var total = oPage["total"], curPageTotal = oPage["curPageTotal"], curPageNo = oPage["curPageNo"], totalPageNo = oPage["totalPageNo"];
+
+    texts = getStaticTexts(dataView);
+    var qrTitle = getQResultTitle(texts, firstTitle, titleTotal);
+    var titleIndex = qrTitle.index;
+    var titleTotal = qrTitle.total;
+    var titles = [];
+    var afterChoose = false, xChoose;
+    for (var i = 0; i < titleTotal; i++) {
+        var j = i;
+        if (afterChoose) {
+            j = i - 1;
+        }
+        var text = texts[titleIndex + i];
+        var t = text.value();
+        if (t == "选择") {
+            afterChoose = true;
+            xChoose = text.rect().origin.x;
+        } else {
+            titles[j] = t;
+        }
+    }
+    if (afterChoose) {
+        titleIndex = titleIndex + 1;
+        titleTotal = titles.length;
+    }
+
+    logDebug("xChoose=" + xChoose);
+
+    var hasError = false;
+    var counts = {};
+    var data = new Array(curPageTotal);
+    if (curPageTotal > 0) {
+        for (var i = 0; i <= curPageTotal; i++) {
+            var data1 = {};
+            for (var j = 0; j < titleTotal; j++) {
+                var t = titles[j];
+                var index = titleIndex + (i + 1) * titleTotal + j;
+                if (index < texts.length) {
+                    var text = texts[index];
+                    var xText = text.rect().origin.x;
+                    if (isDefined(xChoose) && isAqualNum(xChoose, xText)) {
+                        logDebug(t + ",xText=" + xText); // 选择列跳过
+                    } else {
+                        data1[t] = texts[index].value();
+                    }
+
+                } else {
+                    hasError = true;
+                }
+            }
+            if (i < curPageTotal) {
+                data[i] = data1;
+            } else {
+                counts = data1;
+            }
+        }
+    }
+
+    var qResult = new QResult(titles, data, total, curPageTotal, curPageNo,
+            totalPageNo, counts, hasError);// titleIndex,
+    return qResult;
+}
