@@ -61,7 +61,12 @@ function testStatistics1() {
 //    debugElementTree(window);
 //    delay();
 //    debugElementTree(window);
-    sortByTitle("客户") ;
+//    sortByTitle("客户") ;
+//    var qr = getQResult();
+    var view1 = getScrollView(-1, 0);
+    debugElementTree(view1);
+    var qr = getQResult2(view1, "批次", "操作人");
+    debugQResult(qr);
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");

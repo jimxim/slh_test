@@ -1,6 +1,4 @@
-    var regTotal = /共\s*(\d+)条/;
-    var oPage = getPageInfo(pageInfoView, regTotal);
-    var total = oPage["total"], curPageTotal = oPage["curPageTotal"], curPageNo = oPage["curPageNo"], totalPageNo = oPage["totalPageNo"];
+排序出服务端错误
 
     var titleText1, titles = [],i=0;
     var texts = getStaticTexts(dataView);
