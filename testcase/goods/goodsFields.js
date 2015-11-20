@@ -654,10 +654,10 @@ function testGoodsSizeFields() {
 	return true;
 }
 
-function goodsSizeFields() {
-	return getTFields("goodsSizeField", arguments);
+function goodsSizeFields(keys, show) {
+	return getTFields("goodsSizeField", keys, show);
 }
-function goodsSizeField(key) {
+function goodsSizeField(key, show) {
 	var f;
 	switch (key) {
 	case "size-group":

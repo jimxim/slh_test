@@ -34,10 +34,10 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
     // run("【往来管理-新增厂商】新增厂商", "test110038");
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
-//    run("【往来管理-厂商账款】厂商门店账", "test110041");
-//    run("【往来管理-厂商账款】厂商总账", "test110042");
+    // run("【往来管理-厂商账款】厂商门店账", "test110041");
+    // run("【往来管理-厂商账款】厂商总账", "test110042");
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
-    // run("【往来管理-物流商查询】物流商查询", "test110044");
+    run("【往来管理-物流商查询】物流商查询", "test110044");
     // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
     // run("【往来管理-更多】新增回访", "test110047");
     // run("【往来管理-更多】客户回访", "test110048");
@@ -1126,7 +1126,7 @@ function test110039() {
     return ret1 && ret2 && ret3 && ret4;
 }
 
-//翻页，排序，查询，清除，汇总
+// 翻页，排序，查询，清除，汇总
 function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     var keys = { "门店" : "常青店" };
@@ -1167,7 +1167,7 @@ function test110041() {
 
 }
 
-//翻页，查询，清除，排序，汇总
+// 翻页，查询，清除，排序，汇总
 function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
@@ -1186,7 +1186,7 @@ function test110042() {
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0));
-    
+
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
@@ -1234,13 +1234,23 @@ function test110043() {
 
 function test110044() {
     tapMenu("往来管理", "更多.", "物流商查询");
+    var ret = goPageCheckField("名称");
+
+    ret = ret && sortByTitle("区域");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("经办人");
+    ret = ret && sortByTitle("电话");
+    ret = ret && sortByTitle("地址");
+    ret = ret && sortByTitle("账号");
+    ret = ret && sortByTitle("备注");
 
     var keys = [ "名称" ];
     var fields = queryCustomerLogisticsFields(keys);
     changeTFieldValue(fields["名称"], "顺丰快递");
     query(fields);
     var qr = getQR();
-    var ret = isEqualQRData1ByTitle(qr, "名称", "顺丰快递");
+    var ret = isEqual("顺丰快递", qr.data[0]["名称"]);
 
     keys = [ "名称", "店员", "手机", "门店", "是否停用" ];
     fields = queryCustomerLogisticsFields(keys);
@@ -1249,10 +1259,13 @@ function test110044() {
     changeTFieldValue(fields["手机"], "13833331112");
     query(fields);
     qr = getQR();
-    ret = ret && isEqualQRData1ByTitle(qr, "名称", "天天物流")
-            && isEqualQRData1ByTitle(qr, "经办人", "yun")
-            && isEqualQRData1ByTitle(qr, "电话", "13833331112");
+    ret = ret && isEqual("天天物流", qr.data[0]["名称"]) && isEqual("1", qr.total)
+            && isEqual("1", qr.totalPageNo);
 
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 5; i++) {
+        ret = ret && isEqual("", getTextFieldValue(window, i));
+    }
     return ret;
 }
 
