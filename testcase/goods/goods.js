@@ -3,7 +3,7 @@
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
     // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
-     run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
+    // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     // run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
@@ -15,6 +15,7 @@ function testGoodsGoodsAll() {
     // run("【货品管理-货品进销存】货品进销存", "test100008");
     // run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
     // run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
+//     run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
     // run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
@@ -24,6 +25,13 @@ function testGoodsGoodsAll() {
     // run("批量调价全选", "test100047_100048_100049_100050_100051_100052All");
     // run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
     // run("【货品管理-批量操作】批量停用-重复停用提示,前几天停用", "test100054_2");//一天只能跑一次
+//    run("【货品管理-基本设置】价格名称", "test10_price");
+//    run("【货品管理-基本设置】货品类别", "test10_type");
+    run("【货品管理-基本设置】所有颜色", "test10_color");
+//    run("【货品管理-基本设置】所有尺码", "test10_size");
+//    run("【货品管理-基本设置】所有品牌", "test10_brand");
+//    run("【货品管理-基本设置】所有尺码组", "test10_size_group");
+//    run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
     // }
 
     // if(setGoodsNoColorDefaultPriceParams()){
@@ -555,7 +563,7 @@ function test100006() {
     var qr = getQR();
     var ret = isEqualQRData1ByTitle(qr, "名称", "登山服");
     var jo1 = qr.data[0];// 只有一条数据
-    
+
     ret = isEqual(qr.data[0]["库存"], qr.counts["库存"])
             && isEqual(qr.data[0]["价值"], qr.counts["价值"])
             && isEqual(qr.data[0]["常青店"], qr.counts["常青店"]);
@@ -731,14 +739,14 @@ function test100008_1() {
 
     var ret = goPageCheckField("款号");
 
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("在途数", IS_NUM);
     ret = ret && sortByTitle("库存", IS_NUM);
     ret = ret && sortByTitle("累计进", IS_NUM);
     ret = ret && sortByTitle("累计销", IS_NUM);
-    // ret = ret && sortByTitle("上架日期", IS_NUM);
+    ret = ret && sortByTitle("上架日期", IS_NUM);
 
     query();
     var qr = getQR();
@@ -862,19 +870,24 @@ function test100010_100011_100013() {
     tapButton(window, RETURN);
 
     tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
+    var qKeys = { "款号名称" : r };
     var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
     delay();
     var qr = getQR();
     delay();
     // debugQResult(qr);
-    var ret = isEqualQRData1ByTitle(qr, "款号", r)
-            && isEqualQRData1ByTitle(qr, "名称", r);
+    var ret = isEqual(r, qr.data[0]["款号"]) && isEqual(r, qr.data[0]["名称"]);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var r1 = "a" + r;
+    // 改成昨天上架
+    tapButton(getScrollView(), "减量");
+    var day = getTextFieldValue(getScrollView(), 5);// 上架日期
+    if (day != getDay(-1)) {
+        tapButton(getScrollView(), "减量");
+        tapButton(getScrollView(), "减量");
+    }
     // 修改除了条码图片外所有内容
     var keys1 = [ "款号", "名称", "品牌", "吊牌价", "进货价", "零批价", "打包价", "大客户价",
             "Vip价格", "产品折扣", "季节", "类别", "厂商", "计量单位", "仓位", "最小库存", "最大库存",
@@ -883,20 +896,13 @@ function test100010_100011_100013() {
     changeTFieldValue(fields["款号"], r1);
     changeTFieldValue(fields["名称"], r1);
     setTFieldsValue(getScrollView(), fields);
-    // 改成昨天上架
-    tapButton(getScrollView(), "减量");
-    var day = getTextFieldValue(getScrollView(), 5);// 上架日期
-    if (day != getDay(-1)) {
-        tapButton(getScrollView(), "减量");
-        tapButton(getScrollView(), "减量");
-    }
     tapButtonAndAlert("修改保存");
     delay();
 
     tapMenu("货品管理", "货品查询");
-    qKeys = { "厂商" : "adida", "款号名称" : r1, "品牌" : "1010pp",
-        "上架从" : "2015-11-1", "到" : getToday(), "颜色" : "均色", "经办人" : "000",
-        "是否停用" : "否", "类别" : "登山服", "季节" : "夏季" };
+    qKeys = { "厂商" : "adida", "款号名称" : r1, "品牌" : "1010pp", "上架从" : getDay(-1),
+        "到" : getToday(), "颜色" : "均色", "经办人" : "000", "是否停用" : "否",
+        "类别" : "登山服", "季节" : "夏季" };
     qFields = queryGoodsFields(qKeys);
     query(qFields);
     qr = getQR();
@@ -904,7 +910,8 @@ function test100010_100011_100013() {
     var expected = { "厂商" : "Adida公司", "类别" : "登山服", "款号" : r1, "名称" : r1,
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "品牌" : "1010pp",
         "总库存" : "0", "备注" : "123", "建档人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected);
+    ret = ret && isEqualQRData1Object(qr, expected) && isEqual("1", qr.total)
+            && isEqual("1", qr.totalPageNo);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
@@ -928,6 +935,29 @@ function test100010_100011_100013() {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         }
     }
+
+    return ret;
+}
+
+// 翻页，排序
+function test100010_100011_100013_1() {
+    tapMenu("货品管理", "货品查询");
+    query();
+//    var ret = goPageCheckField("款号");
+var ret=true;
+//    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("类别");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("进货价", IS_NUM);
+    ret = ret && sortByTitle("零批价", IS_NUM);
+    ret = ret && sortByTitle("打包价", IS_NUM);
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("总库存", IS_NUM);
+    ret = ret && sortByTitle("备注");
+    ret = ret && sortByTitle("商路宝可见");
+    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("建档人");
 
     return ret;
 }
@@ -2454,4 +2484,194 @@ function test100082_100083_100084_100085() {
     logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3="
             + ret3);
     return ret && ret1 && ret2 && ret3;
+}
+
+function test10_price() {
+    tapMenu("货品管理", "基本设置", "价格名称");
+    var ret = true;
+
+//    ret = ret && sortByTitle("名称");
+//    ret = ret && sortByTitle("启用");
+    ret = ret && sortByTitle("进货价比例", IS_NUM);
+
+    return ret;
+}
+
+function test10_type() {
+    tapMenu("货品管理", "基本设置", "货品类别");
+    query();
+    var ret = goPageCheckField("名称");
+
+//    ret = ret && sortByTitle("名称");
+//    ret = ret && sortByTitle("是否停用");
+
+    var keys = { "名称" : "毛衣" };
+    var fields = goodsTypeFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "毛衣")) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+
+    return ret;
+}
+
+function test10_color() {
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    query();
+    var ret = goPageCheckField("名称");
+
+//    ret = ret && sortByTitle("类别");
+//    ret = ret && sortByTitle("编码");
+//    ret = ret && sortByTitle("名称");
+
+    var keys = { "名称" : "红" };
+    var fields = goodsColorFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "红")) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+
+    return ret;
+
+}
+
+function test10_size() {
+    tapMenu("货品管理", "基本设置", "所有尺码");
+    var ret = goPageCheckField("名称");
+
+//    ret = ret && sortByTitle("类别");
+//    ret = ret && sortByTitle("名称");
+
+    var keys = { "尺码组" : "衣服尺码", "名称" : "x" };
+    var fields = goodsSizeFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!(isIn(qr.data[i]["名称"], "x") || isIn(qr.data[i]["名称"], "X"))) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1));
+
+    return ret;
+
+}
+
+function test10_brand() {
+    tapMenu("货品管理", "基本设置", "所有品牌");
+    var ret = goPageCheckField("名称");
+
+//    ret = ret && sortByTitle("类别");
+    ret = ret && sortByTitle("操作日期");
+
+    var keys = { "名称" : "品牌" };
+    var fields = goodsBrandFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "品牌")) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+
+    return ret;
+}
+
+function test10_size_group() {
+    tapMenu("货品管理", "基本设置", "所有尺码组");
+    var ret = goPageCheckField("名称");
+
+    ret = ret && sortByTitle("名称");
+
+    var keys = { "名称" : "尺码" };
+    var fields = goodsSizeidsFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "尺码")) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+
+    return ret;
+}
+
+function test10_discount() {
+    tapMenu("货品管理", "基本设置", "所有品牌折扣");
+    var ret = goPageCheckField("品牌");
+
+    ret = ret && sortByTitle("操作日期");
+//    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("进货价折扣");
+    ret = ret && sortByTitle("零批价");
+    ret = ret && sortByTitle("打包价");
+    ret = ret && sortByTitle("大客户价");
+    ret = ret && sortByTitle("Vip价格");
+
+    var keys = { "品牌" : "1010pp" };
+    var fields = goodsSizeidsFields(keys);
+    query(fields);
+    var qr = getQR();
+    ret = ret && isEqual("1010pp", qr.data[0]["品牌"]);
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+
+    return ret;
 }

@@ -554,8 +554,8 @@ function goodsTypeField(key,show) {
 	var f;
 	switch (key) {
 	case "name":
-	case "类别名称":
-		f = new TField("类别名称", TF, 0, "qqq");
+	case "名称":
+		f = new TField("名称", TF, 0, "qqq");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -593,10 +593,10 @@ function testGoodsColorFields() {
 	return true;
 }
 
-function goodsColorFields() {
-	return getTFields("goodsColorField", arguments);
+function goodsColorFields(keys, show) {
+	return getTFields("goodsColorField", keys, show);
 }
-function goodsColorField(key) {
+function goodsColorField(key, show) {
 	var f;
 	switch (key) {
 	case "name":

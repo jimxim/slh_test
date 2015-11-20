@@ -1126,7 +1126,7 @@ function test110039() {
     return ret1 && ret2 && ret3 && ret4;
 }
 
-//
+//翻页，排序，查询，清除，汇总
 function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     var keys = { "门店" : "常青店" };
@@ -1149,8 +1149,7 @@ function test110041() {
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2));
+            && isEqual("", getTextFieldValue(window, 1));
 
     var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -1168,6 +1167,7 @@ function test110041() {
 
 }
 
+//翻页，查询，清除，排序，汇总
 function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
@@ -1176,11 +1176,8 @@ function test110042() {
     // 翻页
     var ret = goPageCheckField("名称");
 
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("余额", IS_NUM);
-
-    keys = { "厂商" : "vell", "门店" : "常青店" };
-    fields = queryProviderShopAccountFields(keys);
+    keys = { "厂商" : "vell" };
+    fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     var qr = getQR();
     ret = ret && isEqual("Vell", qr.data[0]["名称"]) && isEqual(1, qr.total)
@@ -1188,9 +1185,10 @@ function test110042() {
             && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
 
     query();
-    ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2));
+    ret = ret && isEqual("", getTextFieldValue(window, 0));
+    
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("余额", IS_NUM);
 
     var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
