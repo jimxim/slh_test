@@ -109,7 +109,7 @@ function test150001_2() {
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
-        if (i != 0 && i != 1) {
+        if (i != 0 || i != 1) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
@@ -188,7 +188,7 @@ function test150001_5() {
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
-        if (i != 3 && i != 4) {
+        if (i != 3 || i != 4) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));

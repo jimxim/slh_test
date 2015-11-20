@@ -132,11 +132,12 @@ function test120001_2() {
             qr1.data[0]["批次"]), isEqual(a, qr1.data[0]["订货号"]));
 
     tapButton(window, CLEAR);
+    var ret2=true;
     for (i = 0; i < 9; i++) {
         if (i != 1 && i != 2) {
-            var ret2 = ret && isEqual("", getTextFieldValue(window, i));
+            var ret2 = ret2 && isEqual("", getTextFieldValue(window, i));
         } else {
-            var ret2 = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            var ret2 = ret2 && isEqual(getToday(), getTextFieldValue(window, i));
         }
     }
 
@@ -1417,11 +1418,12 @@ function test120047_2() {
     var ret = isEqual("3035", qr.data[0]["款号"]);
 
     tapButton(window, CLEAR);
+    var ret2=true;
     for (i = 0; i < 5; i++) {
-        if (i != 3 && i != 4) {
-          var ret2 = ret && isEqual("", getTextFieldValue(window, i));
+        if (i != 3 || i != 4) {
+          var ret2 = ret2 && isEqual("", getTextFieldValue(window, i));
         } else {
-            ret2 = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            ret2 = ret2 && isEqual(getToday(), getTextFieldValue(window, i));
         }
     }
 

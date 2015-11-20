@@ -934,7 +934,7 @@ function test160019_2() {
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
-        if (i != 1 && i != 2) {
+        if (i != 1 || i != 2) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));

@@ -21,7 +21,7 @@ function queryCheckBatchField(key, show) {
 		break;
 	case "day2":
 	case "日期到":
-		f = new TField("到", TF_DT, 1, getToday());
+		f = new TField("日期到", TF_DT, 1, getToday());
 		break;
 	case "batch1":
 	case "批次从":
@@ -29,7 +29,7 @@ function queryCheckBatchField(key, show) {
 		break;
 	case "batch2":
 	case "批次到":
-		f = new TField("到", TF, 3, "20");
+		f = new TField("批次到", TF, 3, "20");
 		break;
 	case "optime1":
     case "处理时间从":
@@ -64,25 +64,33 @@ function queryCheckParticularFields(keys, show) {
 function queryCheckParticularField(key, show) {
 	var f;
 	switch (key) {
+	case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 1, getToday());
+        break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 2, "a", 1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "name":
-	case "名称":
-		f = new TField("名称", TF, 1, "aaa");
+	case "款号名称":
+		f = new TField("款号名称", TF, 3, "aaa");
 		break;
-	case "day1":
-	case "日期从":
-		f = new TField("日期从", TF_DT, 2, "2015-9-11");
-		break;
-	case "day2":
-	case "到":
-		f = new TField("到", TF_DT, 3, getToday());
-		break;
+	case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_SC, 4, "1010pp");
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 5, "登山服");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
