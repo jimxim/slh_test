@@ -1,3 +1,7 @@
+百世汇通 610008200820
+
+onAlert 提示信息 alertMsg=操作失败，[会话已过期,请重新登录!] 
+
 排序出服务端错误
 
     var titleText1, titles = [],i=0;

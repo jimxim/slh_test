@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
- testTemp();
+// testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -27,7 +27,7 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testGoodsGoodsAll();
 // logout();
-//    testSalesNoColorSizeElseAll();
+    testSalesNoColorSizeElseAll();
 // }
 }
 
@@ -53,7 +53,24 @@ function testTemp() {
 //    testSortByTitle();
 //    testIn2();
 //    testQR2();
-    testStatistics1();
+//    testStatistics1();
+//    testQR();
+    testTextfieldDate();
+}
+function testTextfieldDate() {
+    tapMenu("销售开单", "收款单");
+    var value = "2015-10-12";
+    var tf = window.textFields()[0].textFields()[0];
+//    tap(tf);
+    tf.setValue(value);
+
+    tap(window.popover().navigationBar().rightButton());
+//    tapNaviRightButton();
+//    debugElementTree(window);
+}
+function testQR() {
+    var qr = getQResult();
+    debugQResult(qr);
 }
 function testStatistics1() {
 //    tapMenu("统计图表", "按门店");
@@ -63,10 +80,37 @@ function testStatistics1() {
 //    debugElementTree(window);
 //    sortByTitle("客户") ;
 //    var qr = getQResult();
-    var view1 = getScrollView(-1, 0);
-    debugElementTree(view1);
-    var qr = getQResult2(view1, "批次", "操作人");
-    debugQResult(qr);
+//    var view1 = getScrollView(-1, 0);
+//    debugElementTree(view1);
+//    var qr = getQResult2(view1, "批次", "操作人");
+//    debugQResult(qr);
+    var t1 = getTimestamp();
+    var xa1 = [];
+    var data = {};
+//    logDebug("xa1="+xa1);
+//    debugObject(data);
+    var texts = getStaticTexts(getScrollView());
+    for(var i=0;i<texts.length;i++) {
+        var text1 = texts[i];
+        var rect = text1.rect();
+        var x1 = toFixed(rect.origin.x,0);
+        var y1 = toFixed(rect.origin.y,0);
+        var data1 = data[y1];
+        if(isUndefined(data1)) {
+            data1 = {};
+        }
+        data1[x1] = text1.value();
+        data[y1] = data1;
+        
+    }
+    for(var i in data) {
+        debugObject(data[i],i);
+    }
+//    logDebug("xa1="+xa1);
+//    debugObject(data);
+//    debugElementTree(window);
+    var t2 = getTimestamp();
+    logDebug("t2-t1="+(t2-t1));
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
@@ -89,11 +133,11 @@ function testIn2() {
 }
 function testQR2() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "anewkh339231" };
+    var keys = { "客户" : "anewkh336009" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tap(app.navigationBar().buttons()["所有已核销"]);
+    tapButton(app.navigationBar(),"所有已核销");
     // 所有已核销
     var qr = getQR2(getScrollView(-1, 0), "日期", "金额");
     debugQResult(qr);
