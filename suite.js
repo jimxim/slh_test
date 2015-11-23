@@ -27,7 +27,9 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testGoodsGoodsAll();
 // logout();
-    testSalesNoColorSizeElseAll();
+//    testSalesNoColorSizeElseAll();
+    testCheckMenuAll();
+    
 // }
 }
 
