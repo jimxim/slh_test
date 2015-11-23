@@ -15,6 +15,8 @@
 
 #import "testcase/help/helpFields.js"
 
+#import "testcase/menu/menu.js"
+
 #import "testcase/purchase/purchase.js"
 #import "testcase/purchase/purchaseFields.js"
 

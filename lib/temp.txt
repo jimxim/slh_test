@@ -1,3 +1,7 @@
+#import "/Users/dlsoft/Documents/slh_test/suite.js"
+
+test000All();
+
 百世汇通 610008200820
 
 onAlert 提示信息 alertMsg=操作失败，[会话已过期,请重新登录!] 
