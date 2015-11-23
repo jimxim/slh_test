@@ -20,11 +20,11 @@ function testSalesNoColorSizeElseAll() {
     // run("【销售开单-按批次查】打印作废单", "test170025");
 
     // run("【销售开单－按明细查】翻页_排序_汇总", "test170028_1");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_1");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_3");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_4");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_5");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_1");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_3");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_4");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_5");
 
     // run("【销售开单－按明细查】查询条件单独查询", "test170028_170029");
     // run("【销售开单-按明细查】作废开单后内容检查", "test170030");
@@ -45,7 +45,7 @@ function testSalesNoColorSizeElseAll() {
     // run("【销售开单－按订货开单】开单日期检查", "test170272");
     // run("【销售开单-按订货开单】开单允许折扣大于1+产品折扣+大于1的折扣", "test170273");
     // run("【销售开单-按订货开单】开单允许折扣大于1+整单折扣+大于1的折扣", "test170274");
-    // run("【销售开单-收款记录】查询", "test170275");／／
+    // run("【销售开单-收款记录】查询", "test170275");
     // run("【销售开单-收款记录】清除功能", "test170276");
     // run("【销售开单-收款撤销】收款撤销", "test170277");
     // run("【销售开单－物流单查询】正常查询", "test170278");
@@ -1449,6 +1449,15 @@ function test170274() {
     return ret;
 }
 function test170275() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "更多.", "收 款");
+    tapButtonAndAlert(OK);
+    delay();
+
     tapMenu("销售开单", "收款单");
     var keys = { "日期从" : getDay(-30) };
     var fields = salesCollectionRecordFields(keys);
@@ -1471,9 +1480,9 @@ function test170275() {
             qr = getQR();
         }
     }
-    var ret = isAnd(isEqual(qr.counts["刷卡"], sum1), isEqual(qr.counts["汇款"],
-            sum2));
-    logDebug("sum1=" + sum1 + "   sum2=" + sum2);
+    var ret = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
+            sum2), isEqual(qr.counts["汇款"], sum3));
+    logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3);
     return ret;
 }
 function test170276() {
