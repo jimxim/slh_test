@@ -38,6 +38,18 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】待作废", "test170138");
     // run("【销售开单－开单】复制-粘贴", "test170139");
     // run("【销售开单－开单】收款（新增界面）", "test170163");
+    // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
+    // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
+    // run("【销售开单－开单】挂单保存", "test170169");
+//    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+
+//     run("【销售开单－开单】挂单转销售单", "test170171");
+//     run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
+     run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
+
+    // run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
+    // run("【销售开单－开单】设置已配货", "test170180");
+    // run("【销售开单-开单】客户不允许退货", "test170181");
     // }
     // if (setPayMethod_9Params()) {
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -68,7 +80,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】收款方式选择代收", "test170091_170092");
     // run("【销售开单－开单】代收模式2", "test170093");
     // run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
-    run("【销售开单－开单】二次挂单功能检查", "test170174");
+    // run("【销售开单－开单】二次挂单功能检查", "test170174");
     // }
     // if (setSales_comb_repeated_0Params()) {
     // run("【销售开单－开单】款号合并", "test170101");
@@ -110,20 +122,10 @@ function testSalesNoColorSizeAll() {
     // if (sales_invalidate_days_3()) {
     // run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
     // }
-
-    // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
-    // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
-    //     
-    // run("【销售开单－开单】挂单保存", "test170169");
-    // run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-    // run("【销售开单－开单】挂单转销售单", "test170171");
+    // if (invalidate_sales_invalidate_0()) {
     // run("【销售开单－开单】二次挂单功能检查", "test170173");
+    // }
 
-    // run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
-    // run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
-    // run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
-    // run("【销售开单－开单】设置已配货", "test170180");
-    // run("【销售开单-开单】客户不允许退货", "test170181");
     // run("【销售开单-开单】积分跨门店共享", "test170183");
     // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");/
     // run("【销售开单-开单】积分是否跨门店共享 －开启", "test170185");
@@ -2561,18 +2563,18 @@ function test170170() {
     tapFirstText();
     tapButton(getScrollView(), 3);
 
-    var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
-    var f27 = new TField("数量", TF, 27, "4");
-    var fields = [ f24, f27 ];
+    var f21 = new TField("货品", TF_AC, 21, "3035", -1, 0);
+    var f24 = new TField("数量", TF, 24, "4");
+    var fields = [ f21, f24 ];
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
-    tapPrompt();
+    tapButtonAndAlert("打 印", "取 消");
     delay();
-    tapButton(window, RETURN);
+    tapButtonAndAlert(RETURN,OK);
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg1 = getArray1(alertMsgs, -2);
     var ret = (isIn(alertMsg1, "保存成功"));
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
@@ -2608,7 +2610,7 @@ function test170171() {
     var ret = (isIn(alertMsg1, "保存成功"));
 
     tapMenu("销售开单", "按批次查");
-    query(fields1);
+    query();
     var qr = getQR();
     var a = qr.data[0]["客户"];
     var b = qr.data[0]["日期"];
@@ -2634,9 +2636,9 @@ function test170173() {
 
     tapMenu("销售开单", "按挂单");
     tapFirstText();
-    var f16 = new TField("货品", TF_AC, 16, "3035", -1, 0);
-    var f19 = new TField("数量", TF, 19, "4");
-    var fields = [ f16, f19 ];
+    var f14 = new TField("货品", TF_AC, 14, "3035", -1, 0);
+    var f17 = new TField("数量", TF, 17, "4");
+    var fields = [ f14, f17 ];
     setTFieldsValue(getScrollView(), fields);
     delay();
 
@@ -2658,8 +2660,8 @@ function test170173() {
     return ret;
 }
 function test170174() {
-    // 开单模式选择代收模式2
-    tapMenu("销售开单", "开  单+");
+    开单模式选择代收模式2
+    tapMenu("销售开单", "开 单+");
     var json = {
         "客户" : "ls",
         "店员" : "000",
@@ -2673,14 +2675,19 @@ function test170174() {
 
     tapMenu("销售开单", "按挂单");
     tapFirstText();
-    var f16 = new TField("货品", TF_AC, 16, "3035", -1, 0);
-    var f19 = new TField("数量", TF, 19, "4");
-    var fields = [ f16, f19 ];
+    delay();
+    var f14 = new TField("货品", TF_AC, 14, "3035", -1, 0);
+    var f17 = new TField("数量", TF, 17, "4");
+    var fields = [ f14, f17 ];
     setTFieldsValue(getScrollView(), fields);
     delay();
 
     var json = { "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
     editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapButtonAndAlert("none", "打印(客户用)");
+    tapButtonAndAlert(RETURN, OK);
 
     tapMenu("销售开单", "按批次查");
     var qr = getQR();
@@ -2709,6 +2716,7 @@ function test170175() {
 
     tapButtonAndAlert("挂 单", OK);
     delay();
+    tapButtonAndAlert("none", OK,true);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "本单不允许执行挂单操作"));
@@ -2735,7 +2743,7 @@ function test170176() {
     tapMenu("销售开单", "按挂单");
     tapFirstText();
 
-    var json = { "客户" : "lc", "日期" : "2015-11-01", "刷卡" : [ 596, "交" ],
+    var json = { "客户" : "lx", "日期" : "2015-11-01", "刷卡" : [ 596, "交" ],
         "备注" : "bz" };
     editSalesBillNoColorSize(json);
     debugArray(alertMsgs);
