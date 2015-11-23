@@ -920,3 +920,36 @@ function goodsCustomerField(key,show) {
 	}
 	return f;
 }
+
+
+//超储统计，缺货统计
+function goodsStatisticFields(keys,show) {
+    return getTFields("goodsStatisticField", keys,show);
+}
+function goodsStatisticField(key,show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "a",-1,0);
+        if(show){
+            f.value="5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "a");
+        break;
+    case "market1":
+    case "上架从":
+        f = new TField("上架从", TF_DT, 2, getToday());
+        break;
+    case "market2":
+    case "到":
+        f = new TField("到", TF_DT, 3, getToday());
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
