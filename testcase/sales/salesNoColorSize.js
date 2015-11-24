@@ -177,11 +177,11 @@ function testSalesNoColorSizeAll() {
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ], "授权码" : [] };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -189,11 +189,11 @@ function setIgnorecolorsize_1Params() {
 function setPayMethod_9Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ], "授权码" : [] };
+    o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -201,7 +201,7 @@ function setPayMethod_9Params() {
 function setPayMethod_2Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ], "授权码" : [] };
+    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -209,11 +209,11 @@ function setPayMethod_2Params() {
 function setSales_comb_repeated_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "1", "数值" : [ "默认合并合并", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认合并合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -221,11 +221,11 @@ function setSales_comb_repeated_0Params() {
 function setSales_comb_repeated_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "1", "数值" : [ "默认合并合并", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认合并合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -233,7 +233,7 @@ function setSales_comb_repeated_1Params() {
 function setSales_checkbacknum_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单保存退货数和上次购买数的对比验证" };
-    o = { "新值" : "1", "数值" : [ "1,开启,会减慢开单速度", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "1,开启,会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -241,7 +241,7 @@ function setSales_checkbacknum_1Params() {
 function setPricedec_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单价小数位" };
-    o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -249,11 +249,11 @@ function setPricedec_0Params() {
 function setPayMethod_6Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ], "授权码" : [] };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -261,7 +261,7 @@ function setPayMethod_6Params() {
 function setPayMethod_5Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ], "授权码" : [] };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -269,7 +269,7 @@ function setPayMethod_5Params() {
 function setPayMethod_7Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ], "授权码" : [] };
+    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -277,7 +277,7 @@ function setPayMethod_7Params() {
 function setPayMethod_8Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "8", "数值" : [ "适用于童装", "in" ], "授权码" : [] };
+    o = { "新值" : "8", "数值" : [ "适用于童装", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -285,11 +285,11 @@ function setPayMethod_8Params() {
 function setSales_use_lastsaleprice_1_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否启用上次价作为本次开单单价" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -297,11 +297,11 @@ function setSales_use_lastsaleprice_1_1Params() {
 function setSales_use_lastsaleprice_1_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否启用上次价作为本次开单单价" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -309,15 +309,15 @@ function setSales_use_lastsaleprice_1_0Params() {
 function setSales_invnum_1_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示库存", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "显示库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单时是否显示所有门店的当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示所有门店库存", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "显示所有门店库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -325,15 +325,15 @@ function setSales_invnum_1_1Params() {
 function setSales_invnum_1_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示库存", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "显示库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单时是否显示所有门店的当前库存" };
-    o = { "新值" : "0", "数值" : [ "默认显示本门店的库存", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "默认显示本门店的库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -341,7 +341,7 @@ function setSales_invnum_1_0Params() {
 function setInvinout_checknum_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -349,7 +349,7 @@ function setInvinout_checknum_0Params() {
 function setSales_invnum_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "0", "数值" : [ "不显示库存", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "不显示库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -357,11 +357,11 @@ function setSales_invnum_0Params() {
 function setInvinout_checknum_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -369,11 +369,11 @@ function setInvinout_checknum_1Params() {
 function setPayMethod_15Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ], "授权码" : [] };
+    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -381,11 +381,11 @@ function setPayMethod_15Params() {
 function sales_orderwhensales_1() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -393,7 +393,7 @@ function sales_orderwhensales_1() {
 function sales_invalidate_days_3() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单允许作废和修改天数" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -401,7 +401,7 @@ function sales_invalidate_days_3() {
 function invalidate_sales_invalidate_0() {
     var qo, o, ret = true;
     qo = { "备注" : "是否显示待作废按钮功能" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -409,7 +409,7 @@ function invalidate_sales_invalidate_0() {
 function sales_client_score_share_1() {
     var qo, o, ret = true;
     qo = { "备注" : "积分是否跨门店共享" };
-    o = { "新值" : "1", "数值" : [ "共享", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "共享" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -417,7 +417,7 @@ function sales_client_score_share_1() {
 function sales_client_score_share_0() {
     var qo, o, ret = true;
     qo = { "备注" : "积分是否跨门店共享" };
-    o = { "新值" : "0", "数值" : [ " 不共享", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ " 不共享"] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -425,7 +425,7 @@ function sales_client_score_share_0() {
 function sales_need_roundoff_1() {
     var qo, o, ret = true;
     qo = { "备注" : "总计是否需要四舍五入" };
-    o = { "新值" : "1", "数值" : [ " 需要", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "需要" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -433,11 +433,11 @@ function sales_need_roundoff_1() {
 function sales_pricecheck_1() {
     var qo, o, ret = true;
     qo = { "备注" : "销售价格允许改高不允许改低" };
-    o = { "新值" : "1", "数值" : [ " 销售价不能低于零批价", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ " 销售价不能低于零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
@@ -447,11 +447,11 @@ function sales_pricecheck_1() {
 function setPayMethod_5_And_pricedec_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ], "授权码" : [] };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "单价小数位" };
-    o = { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -459,11 +459,11 @@ function setPayMethod_5_And_pricedec_1Params() {
 function setPayMethod_5_And_pricedec_3Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ], "授权码" : [] };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "单价小数位" };
-    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ], "授权码" : [] };
+    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -471,7 +471,7 @@ function setPayMethod_5_And_pricedec_3Params() {
 function setCannotmodifyafterprint_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据打印后不允许修改" };
-    o = { "新值" : "0", "数值" : [ "不限制", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆

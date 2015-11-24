@@ -169,8 +169,8 @@ function salesOrderCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
-	case "发生日期从":
-		f = new TField("发生日期从", TF_DT, 0, "2015-9-11");
+	case "日期从":
+		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
 	case "到":
@@ -194,6 +194,10 @@ function salesOrderCodeField(key, show) {
 			f.value = "aa";
 		}
 		break;
+	case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
