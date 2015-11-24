@@ -41,15 +41,19 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
     // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     // run("【销售开单－开单】挂单保存", "test170169");
-//    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-
-//     run("【销售开单－开单】挂单转销售单", "test170171");
-//     run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
-     run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
-
+    // run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+    // run("【销售开单－开单】挂单转销售单", "test170171");
+    // run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
+    // run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
     // run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
     // run("【销售开单－开单】设置已配货", "test170180");
     // run("【销售开单-开单】客户不允许退货", "test170181");
+
+     run("【销售开单－开单】积分兑换", "test170186");
+     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
+     run("【销售开单－开单】兑换记录", "test170189");
+     run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
     // }
     // if (setPayMethod_9Params()) {
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -125,15 +129,14 @@ function testSalesNoColorSizeAll() {
     // if (invalidate_sales_invalidate_0()) {
     // run("【销售开单－开单】二次挂单功能检查", "test170173");
     // }
-
-    // run("【销售开单-开单】积分跨门店共享", "test170183");
-    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");/
+    // if(sales_client_score_share_0()){
+    run("【销售开单-开单】积分跨门店共享", "test170183");
     // run("【销售开单-开单】积分是否跨门店共享 －开启", "test170185");
-    // run("【销售开单－开单】积分兑换", "test170186");
-    // run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-    // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
-    // run("【销售开单－开单】兑换记录", "test170189");
-    // run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
+    // }
+    // if (sales_client_score_share_0()) {
+    // run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");/
+    // }
+
     // run("【销售开单-开单】总计四舍五入", "test170191");
     // run("【销售开单-开单】开单员销售价允许改高，不允许改低 【使用开单员角色】", "test170192");
     // run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
@@ -385,6 +388,22 @@ function invalidate_sales_invalidate_0() {
     var qo, o, ret = true;
     qo = { "备注" : "是否显示待作废按钮功能" };
     o = { "新值" : "0", "数值" : [ "不显示", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function sales_client_score_share_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "积分是否跨门店共享" };
+    o = { "新值" : "1", "数值" : [ "共享", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function sales_client_score_share_0() {
+    var qo, o, ret = true;
+    qo = { "备注" : "积分是否跨门店共享" };
+    o = { "新值" : "0", "数值" : [ " 不共享", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -2571,7 +2590,7 @@ function test170170() {
     saveAndAlertOk();
     tapButtonAndAlert("打 印", "取 消");
     delay();
-    tapButtonAndAlert(RETURN,OK);
+    tapButtonAndAlert(RETURN, OK);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
@@ -2716,7 +2735,7 @@ function test170175() {
 
     tapButtonAndAlert("挂 单", OK);
     delay();
-    tapButtonAndAlert("none", OK,true);
+    tapButtonAndAlert("none", OK, true);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "本单不允许执行挂单操作"));
@@ -2743,12 +2762,12 @@ function test170176() {
     tapMenu("销售开单", "按挂单");
     tapFirstText();
 
-    var json = { "客户" : "lx", "日期" : "2015-11-01", "刷卡" : [ 596, "交" ],
-        "备注" : "bz" };
-    editSalesBillNoColorSize(json);
+    var json1 = { "客户" : "lx", "店员" : "2003", "刷卡" : [ 596, "交" ], "备注" : "bz" };
+    editSalesBillNoColorSize(json1);
+
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "保存成功"));
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = (isIn(alertMsg1, "保存成功，是否打印"));
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
@@ -2830,18 +2849,18 @@ function test170181() {
     tapButton(window, RETURN);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "-1" } ] };
+    var json = {
+        "客户" : r,
+        "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "3035", "数量" : "-1" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var alertMsg1 = getArray1(alertMsgs, -3);
-    var ret = (isIn(alertMsg1, "不允许退货"));
-
+    var ret = isIn(alertMsg, "不允许退货");
     tapPrompt();
-    delay();
     tapButtonAndAlert(RETURN, OK);
 
-    logDebug("alertMsg1=" + alertMsg1 + " ret=" + ret);
+    logDebug("alertMsg=" + alertMsg + " ret=" + ret);
     return ret;
 }
 function test170183() {
