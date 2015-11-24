@@ -18,7 +18,7 @@ function purchaseQueryBatchField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -50,7 +50,7 @@ function purchaseQueryBatchField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 7, "000", 1, 0);
+		f = new TField("店员", TF_AC, 7, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -83,14 +83,14 @@ function purchaseQueryParticularField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 1, "a", 1, 0);
+        f = new TField("厂商", TF_AC, 1, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -124,10 +124,10 @@ function testPurchasePriceFields() {
 	return true;
 }
 
-function purchasePriceFields() {
-	return getTFields("purchasePriceField", arguments);
+function purchasePriceFields(keys, show) {
+	return getTFields("purchasePriceField", keys, show);
 }
-function purchasePriceField(key) {
+function purchasePriceField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
@@ -161,30 +161,30 @@ function purchaseCodeField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "b", 1, 0);
+		f = new TField("款号", TF_AC, 0, "b", -1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
 		break;
 	case "day1":
-	case "发生日期从":
+	case "日期从":
 		f = new TField("发生日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
-	case "发生日期到":
+	case "日期到":
 		f = new TField("到", TF_DT, 2, "2015-9-15");
 		break;
 	case "market1":
-	case "上架日期从":
+	case "上架从":
 		f = new TField("上架日期从", TF_DT, 3, "2015-8-11");
 		break;
 	case "market2":
-	case "上架日期到":
+	case "上架到":
 		f = new TField("到", TF_DT, 4, "2015-8-15");
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 5, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 5, "a", -1, 0);
 		if (show) {
 			f.value = "A.k";
 		}
@@ -212,7 +212,7 @@ function purchaseProviderReturnField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "b", 1, 0);
+		f = new TField("款号", TF_AC, 0, "b", -1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
@@ -227,7 +227,7 @@ function purchaseProviderReturnField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 3, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 3, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -263,7 +263,7 @@ function purchaseProviderField(key, show) {
 		break;
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 2, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -328,7 +328,7 @@ function purchaseQueryProviderField(key, show) {
 	case "provider":
 	case "供应商":
 		var tableViewIndex = getTableViews().length - 1;
-		f = new TField("供应商", TF_AC, l - 1, "a", tableViewIndex, 0);
+		f = new TField("供应商", TF_AC, l-1, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -388,14 +388,14 @@ function purchaseEditField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 4, "000");
+		f = new TField("店员", TF_AC, 4, "000",-1,0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -440,14 +440,14 @@ function purchaseOrderField(key, show) {
 		break;
 	case "provider":
 	case "供应商":
-		f = new TField("供应商", TF_AC, 2, "a", 1, 0);
+		f = new TField("供应商", TF_AC, 2, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
 		break;
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 3, "b", 1, 0);
+		f = new TField("款号", TF_AC, 3, "b", -1, 0);
 		if (show) {
 			f.value = "741,Abc,44元";
 		}
@@ -503,7 +503,7 @@ function purchaseProviderAccountField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}
@@ -531,7 +531,7 @@ function purchaseShopAccountField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}

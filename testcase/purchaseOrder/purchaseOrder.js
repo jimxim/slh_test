@@ -2,9 +2,9 @@
 
 function testPurchaseOrderAll() {
     // run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
-//    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
-     run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
-//     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
+    // run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
+    // run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
+    // run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
     // run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
     // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
     // run("按【采购订货-按批次查】", "test130001_3");
@@ -24,7 +24,7 @@ function test130001_1() {
     query(fields);
     // 点击翻页
     var ret = goPageCheckField("批次");
-    
+
     ret = ret && sortByTitle("批次", IS_NUM);
     // ret = ret && sortByTitle("日期");
     // ret = ret && sortByTitle("厂商");
@@ -69,9 +69,10 @@ function test130001_1() {
 // 条件查询，清除按钮,下拉框
 function test130001_2() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx"};
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
+        "备注" : "xx" };
     editSalesBillNoColorSize(json);
-    
+
     tapMenu("采购订货", "按批次查");
     var i;
     var ret1 = false;
@@ -155,7 +156,7 @@ function test130002_1() {
     var ret1 = isAnd(isEqual(sum1, qr.counts["数量"]), isEqual(sum2,
             qr.counts["金额"]), isEqual(sum3, qr.counts["已入库"]));
 
-    logDebug("ret=" + ret + "ret1=" + ret1 );
+    logDebug("ret=" + ret + "ret1=" + ret1);
     return ret && ret1;
 }
 // 下拉框,条件查询，清除按钮

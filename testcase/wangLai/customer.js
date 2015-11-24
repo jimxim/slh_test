@@ -1,8 +1,8 @@
 //JinXinhua <79202792 at qq.com> 20150901
 
 function testWanLaiCustomerAll() {
-    // run("【往来管理-客户查询】翻页_排序", "test110001_1");
-    // run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
+//     run("【往来管理-客户查询】翻页_排序", "test110001_1");
+//     run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
     // run("【往来管理-客户查询】客户查询->消费明细", "test110002");
     // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
     // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
@@ -26,21 +26,21 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】店长查看客户门店帐", "test110031");
     // run("【往来管理】开单员查看客户门店帐", "test110032");
 
-    // run("【往来管理-客户活跃度】客户活跃度", "test110033");
+//     run("【往来管理-客户活跃度】客户活跃度", "test110033");
     // run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
     // run("【往来管理】未拿货天数", "test110035");
-    // run("【往来管理-积分查询】积分查询", "test110036");
+//     run("【往来管理-积分查询】积分查询", "test110036");
     // run("【往来管理-积分查询】积分数值对比", "test110037");
-    // run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
+//     run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
     // run("【往来管理-新增厂商】新增厂商", "test110038");
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
-    // run("【往来管理-厂商账款】厂商门店账", "test110041");
-    // run("【往来管理-厂商账款】厂商总账", "test110042");
+//     run("【往来管理-厂商账款】厂商门店账", "test110041");
+//     run("【往来管理-厂商账款】厂商总账", "test110042");
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
-    // run("【往来管理-物流商查询】物流商查询", "test110044");
+//     run("【往来管理-物流商查询】物流商查询", "test110044");
     // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
     // run("【往来管理-更多】新增回访", "test110047");
-    // run("【往来管理-更多】客户回访", "test110048");
+//     run("【往来管理-更多】客户回访", "test110048");
     // run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
     // 中洲店店长或店员登陆
@@ -58,7 +58,7 @@ function test110001_1() {
     var fields = queryCustomerFields(keys);
     query(fields);
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("生日", "date");
+    ret = ret && sortByTitle("生日",IS_DATE2 );
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("地址");
@@ -67,7 +67,7 @@ function test110001_1() {
     ret = ret && sortByTitle("上级客户");
     ret = ret && sortByTitle("备注");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_OPTIME);
 
     return ret;
 }

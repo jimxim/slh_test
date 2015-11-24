@@ -761,7 +761,7 @@ function queryCustomerBackField(key, show) {
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 5, "000", 1, 0);
+        f = new TField("经办人", TF_AC, 5, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
