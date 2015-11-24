@@ -1,9 +1,10 @@
 #!/bin/bash
+D=`dirname $0`
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 JAVASCRIPT_TEST_FILES_DIRECTORY="$HOME/Documents/slh_test/run/suite/"
 TEST_APP_NAME="slh_new"
-AUTOMATION_RUNNER_SCRIPT_PATH="./ui_automation_runner.sh"
+AUTOMATION_RUNNER_SCRIPT_PATH="$D/ui_automation_runner.sh"
 TEST_RESULTS_OUTPUT_PATH="$HOME/Documents/autotest_trace/"
 
 run1 () {
