@@ -9,7 +9,7 @@ function testCheckMenuAll() {
 //    run("往来管理", "testCheckWangLai");
 //    run("采购入库", "testCheckPurchase");
 //    run("采购订货", "testCheckPurchaseOrder");
-//    run("门店调入", "testCheckShopIn");
+    run("门店调入", "testCheckShopIn");
     run("门店调出", "testCheckShopOut");
 //    run("销售订货", "testCheckSalesOrder");
 //    run("销售开单", "testCheckSales");
