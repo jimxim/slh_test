@@ -1,8 +1,17 @@
+target.frontMostApp().navigationBar().tapWithOptions({tapOffset:{x:0.41, y:0.39}});
+target.frontMostApp().mainWindow().scrollViews()[0].buttons()["常青店"].tap();
+
+iPad 2 (9.1) [11EE0D84-64C1-45A3-87AF-ABE773A1496C]
+iPad 2 (8.4) [FDFD79F3-4D01-4B92-9143-52BD98F1C316]
+
+本地设置-开单界面，保存后是否显示打印确认窗口-设为0，不显示
+
 #import "/Users/dlsoft/Documents/slh_test/suite.js"
 
 test000All();
 
-百世汇通 610008200820
+
+ac 不够强壮
 
 onAlert 提示信息 alertMsg=操作失败，[会话已过期,请重新登录!] 
 

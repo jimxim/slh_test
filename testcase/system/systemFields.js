@@ -92,7 +92,7 @@ function editSystemGlobalField(key, show) {
     switch (key) {
     case "number":
     case "数值":
-        f = new TField("数值", BTN_SC, 0, 0);
+        f = new TField("数值", BTN_SC, 0, 0, "in");
         break;
     case "authcode":
     case "授权码":
