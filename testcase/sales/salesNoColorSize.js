@@ -53,8 +53,8 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     // run("【销售开单－开单】兑换记录", "test170189");
     // run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
-
     // run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
+    run("【销售开单】单价输入负数检查", "test170239");
     // }
     // if (setPayMethod_9Params()) {
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -156,12 +156,12 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单】单据打印后不允许修改--不限制", "test170236");// 非总经理账号登陆
     // }
     // if( setCannotmodifyafterprint_1Params()){
-//    run("【销售开单】单据打印后不允许修改--明细不允许修改", "test170237");// 非总经理账号登陆
+    // run("【销售开单】单据打印后不允许修改--明细不允许修改", "test170237");// 非总经理账号登陆
     // }
-    if (setCannotmodifyafterprint_2Params()) {
-        // run("【销售开单】单据打印后不允许修改--都不允许修改", "test170238");// 非总经理账号登陆
-    }
-    // run("【销售开单】单价输入负数检查", "test170239");
+    // if (setCannotmodifyafterprint_2Params()) {
+    // run("【销售开单】单据打印后不允许修改--都不允许修改", "test170238");// 非总经理账号登陆
+    // }
+
     // run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240");
     // run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241");
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");/
@@ -482,6 +482,16 @@ function setCannotmodifyafterprint_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据打印后不允许修改" };
     o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 非总经理账号登陆
+
+    return ret;
+}
+function setCannotmodifyafterprint_2Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "单据打印后不允许修改" };
+    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
@@ -3483,7 +3493,6 @@ function test170238() {
 
     logDebug("ret=" + ret);
     return ret;
-
 }
 function test170239() {
     tapMenu("销售开单", "开  单+");

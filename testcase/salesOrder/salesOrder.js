@@ -26,14 +26,15 @@ function testSalesOrderAll() {
     // run("【销售订货—按批次查】翻页", "test160015");
     // run("【销售订货—按批次查】排序", "test160016");
     // run("【销售订货—按批次查】清除按钮", "test160017");
-//    run("【销售订货—按明细查】翻页_排序_汇总", "test160019_1");
-//     run("【销售订货—按明细查】条件查询，清除按钮,下拉框", "test160019_2");
+    // run("【销售订货—按明细查】翻页_排序_汇总", "test160019_1");
+    // run("【销售订货—按明细查】条件查询，清除按钮,下拉框", "test160019_2");
     // run("【销售订货—按明细查】查询条件单项查询", "test160019");
     // run("【销售订货—按明细查】查询条件组合查询", "test160020");
     // run("【销售订货-按明细查】作废订单后内容检查", "test160021");
     // run("【销售订货—按明细查】清除", "test160022");
     // run("【销售订货—按明细查】翻页", "test160023");
     // run("【销售订货—按明细查】排序", "test160024");
+    run("【销售订货—订货汇总】翻页_排序_汇总", "test160031_1");
     // run("【销售订货—订货汇总】按款号-查询", "test160031");
     // run("【销售订货—订货汇总】统计具体某一款的颜色尺码订货数量", "test160032");
     // run("【销售订货—订货汇总】按款号-底部数据检查", "test160033");
@@ -1094,7 +1095,47 @@ function test160024() {
 
     return ret;
 }
+function test160031_1() {
+    tapMenu("销售订货", "按汇总", "按款号");
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday() };
+    var fields = salesOrderQueryParticularFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("批次");
 
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("已发数", IS_NUM);
+    ret = ret && sortByTitle("未发数", IS_NUM);
+    ret = ret && sortByTitle("差异数", IS_NUM);
+    ret = ret && sortByTitle("小计", IS_NUM);
+
+    logDebug("ret=" + ret);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["数量"]);
+            sum2 += Number(qr.data[i]["已发数"]);
+            sum3 += Number(qr.data[i]["未发数"]);
+            sum4 += Number(qr.data[i]["差异数"]);
+            sum5 += Number(qr.data[i]["小计"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发数"],
+            sum2), isEqual(qr.counts["未发数"], sum3), isEqual(qr.counts["差异数"],
+            sum4), isEqual(qr.counts["小计"], sum5));
+    return ret && ret1;
+}
 function test160031() {
     tapMenu("销售订货", "按明细查");
     var keys = { "日期从" : getToday(), "款号" : "3035" };

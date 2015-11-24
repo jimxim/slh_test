@@ -16,9 +16,9 @@ function test000All() {
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopOutAll();
-//	 testSalesOrderAll();
+	 testSalesOrderAll();
 // testCheckAll();
- testSalesNoColorSizeAll();
+// testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // logout();
 // run("test", "testGoodsBrandFields");
