@@ -5,13 +5,14 @@
 
 
 // 总经理
-function test000All() {
+function test000() {
 	debug = true;
- var ok = login("000","000000");
- if( ok ) {
+// var p1 = {"角色":"总经理"};
+// var ok = login("000","000000",p1);
+// if( ok ) {
 // testParamAll();
-// testWanLaiCustomerAll();
-// testGoodsGoodsAll();
+ testWanLaiCustomerAll();
+ testGoodsGoodsAll();
 // testPurchaseAll();
 // testPurchaseOrderAll();
 // testShopInAll();
@@ -25,12 +26,102 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testTemp();
 	
-	
-	
-	
-	
-	
-	
+// testWanLaiProviderAll();
+// testGoodsAll();
+// logout();
+// }
+}
+
+
+/**
+ * @param 均色均码
+ * @param 省代价格模式
+ * @param 不支持自动生成款号
+ * @param 新增界面格式——老模式
+ */
+function setNoColorPriceParams(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        setGoodsNoColorPriceParams();
+       logout();
+    }
+}
+
+function test000GoodsNoColorPriceAll() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoodsNoColorPriceAll();
+     logout();
+  }
+}
+
+function test001All() {
+    var p1 = {"角色":"财务员","门店":"常青店"};
+    var ok = login("001","000000",p1);
+    if( ok ) {
+       
+        logout();
+    }
+}
+
+function test002All() {
+    var p1 = {"角色":"仓管员"};
+  var ok = login("002","000000",p1);
+  if( ok ) {
+    
+     logout();
+  }
+}
+
+function test003All() {
+    var p1 = {"角色":"采购员"};
+  var ok = login("003","000000",p1);
+  if( ok ) {
+    
+     logout();
+  }
+}
+
+function test004All() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+     testCheckMenuAll();
+     logout();
+  }
+}
+
+function test005All() {
+    var p1 = {"角色":"开单员"};
+  var ok = login("005","000000",p1);
+  if( ok ) {
+    
+     logout();
+  }
+}
+
+function test006All() {
+    var p1 = {"角色":"营业员"};
+  var ok = login("006","000000",p1);
+  if( ok ) {
+    
+     logout();
+  }
+}
+
+function test007All() {
+    var p1 = {"角色":"配货员"};
+  var ok = login("007","000000",p1);
+  if( ok ) {
+
+     logout();
+  }
+}
+
+
+
 // run("查询客户清除按钮", "testQueryCustomerClear");
 // run("客户新增", "testEditCustomerFields");
 // run("客户分店", "testCustomerBranchFields");
@@ -169,22 +260,3 @@ function test000All() {
 // run("修改密码", "testEditSystemPasswordFields");
 // 用户帮助
 // run("新增反馈", "testEditHelpFeedbackFields");
-	
-// testWanLaiProviderAll();
-// testGoodsAll();
- logout();
- }
-// var ok = login("200","000000");
-// if( ok ) {
-//	 
-// }
-}
-
-function test004All() {
-    var p1 = {"角色":"店长"};
-  var ok = login("004","000000",p1);
-  if( ok ) {
-     testCheckMenuAll();
-     logout();
-  }
-}

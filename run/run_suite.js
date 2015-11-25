@@ -1,3 +1,3 @@
-#import "/Users/dlsoft/Documents/slh_test/menuSuite.js"
+#import "/Users/sunway/Documents/slh_test/suite1.js"
 
-test004All();
+test000GoodsNoColorPriceAll();

@@ -1,15 +1,14 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
-function testGoodsGoodsAll() {
-    // if(setGoodsNoColorPriceParams()){
-    // run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
-    // run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
-    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
-    // run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
-    // run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
-    // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
-    // run("【货品管理-库存分布】库存分布", "test100006");
-    // run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
+function testGoodsNoColorPriceAll() {
+    run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
+    run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
+    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
+    run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
+    run("【货品管理-款号库存】款号库存_详细", "test100005_3");
+    run("【货品管理-库存分布】库存分布", "test100006");
+    run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
     // run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
     // run("【货品管理-货品进销存】货品进销存", "test100008");
@@ -41,11 +40,17 @@ function testGoodsGoodsAll() {
     // run("【货品管理-基本设置】货品类别", "test10_type");
     // run("【货品管理-基本设置】所有颜色", "test10_color");
     // run("【货品管理-基本设置】所有尺码", "test10_size");
-    run("【货品管理-基本设置】所有品牌", "test10_brand");
+    // run("【货品管理-基本设置】所有品牌", "test10_brand");
     // run("【货品管理-基本设置】所有尺码组", "test10_size_group");
     // run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
     // run("【货品管理-当前库存】库存调整", "test100090");
     // run("【货品管理-更多-库存调整单】查询", "test100104");
+
+}
+
+function testGoodsGoodsAll() {
+    // if(setGoodsNoColorPriceParams()){
+
     // }
 
     // if(setGoodsNoColorDefaultPriceParams()){
@@ -84,6 +89,12 @@ function testGoodsGoodsAll() {
 
 }
 
+/**
+ * @param 均色均码
+ * @param 省代价格模式
+ * @param 不支持自动生成款号
+ * @param 新增界面格式——老模式
+ */
 function setGoodsNoColorPriceParams() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -2596,7 +2607,8 @@ function test10_brand() {
         }
     }
 
-    keys = { "名称" : "1010pp", "是否停用" : "否 " };
+    keys = { "名称" : "1010pp", "是否停用" : "否" };
+    fields = goodsBrandFields(keys);
     query(fields);
     qr = getQR();
     ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
