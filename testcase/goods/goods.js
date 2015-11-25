@@ -41,10 +41,10 @@ function testGoodsGoodsAll() {
     // run("【货品管理-基本设置】货品类别", "test10_type");
     // run("【货品管理-基本设置】所有颜色", "test10_color");
     // run("【货品管理-基本设置】所有尺码", "test10_size");
-    // run("【货品管理-基本设置】所有品牌", "test10_brand");
+    run("【货品管理-基本设置】所有品牌", "test10_brand");
     // run("【货品管理-基本设置】所有尺码组", "test10_size_group");
     // run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
-    run("【货品管理-当前库存】库存调整", "test100090");
+    // run("【货品管理-当前库存】库存调整", "test100090");
     // run("【货品管理-更多-库存调整单】查询", "test100104");
     // }
 
@@ -371,6 +371,7 @@ function test100001_3() {
     // 新增货品时没有返回
     tapMenu("货品管理");
     tapButton(window, RETURN);
+
     tapMenu("货品管理", "当前库存");
     keys = { "门店" : "常青店" };
     fields = queryGoodsStockFields(keys);
@@ -518,9 +519,6 @@ function test100005_2() {
 function test100005_3() {
     tapMenu("货品管理", "新增货品+");
     var r = "g" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r, "进货价" : "200", "厂商" : "Vell" }
-    var fields = editGoodsFields(keys, false, 0, 0);
-    setTFieldsValue(getScrollView(), fields);
     // 改成昨天上架
     tapButton(getScrollView(), "减量");
     var day = getTextFieldValue(getScrollView(), 5);// 上架日期
@@ -528,6 +526,9 @@ function test100005_3() {
         tapButton(getScrollView(), "减量");
         tapButton(getScrollView(), "减量");
     }
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200", "厂商" : "Vell" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     delay();
     tapButton(window, RETURN);
@@ -2595,8 +2596,15 @@ function test10_brand() {
         }
     }
 
+    keys = { "名称" : "1010pp", "是否停用" : "否 " };
+    query(fields);
+    qr = getQR();
+    ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
+            && isEqual("1", qr.totalPageNo);
+
     tapButton(window, CLEAR);
-    ret = ret && isEqual("", getTextFieldValue(window, 0));
+    ret = ret && isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1));
 
     return ret;
 }
@@ -2666,9 +2674,18 @@ function test100090() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
+    // tapMenu1("货品管理");
+    // if (isDefined("当前库存")) {
+    // tapMenu2("当前库存");
+    // } else {
+    // tapButton(winodw, RETURN);
+    // tapMenu2("当前库存");
+    // }
+
+    // 新增货品时没有返回
     tapMenu("货品管理");
-    tapButton(winodw,RETURN);
-    
+    tapButton(window, RETURN);
+
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : r };
     var fields = queryGoodsStockFields(keys);
@@ -2682,10 +2699,15 @@ function test100090() {
             && isEqual("均码", getTextFieldValue(window, 14));// 尺码
 
     tapNaviRightButton();
-    tapButtonAndAlert("none",OK,true);
+    delay();
+    tap(app.alert().buttons()["确 定"]);
+    // tapButtonAndAlert(SAVE,OK)
+    // tapButtonAndAlert("none", OK, true);
     var ret = (isIn(alertMsg, "调整后库存不能为空"));
-    
-    return ret;
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    // return ret;
 }
 
 function test100104() {
