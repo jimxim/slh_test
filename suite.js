@@ -6,7 +6,7 @@
 
 // 总经理
 function test000All() {
- debug = true;
+// debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
 // testSASynthesisAll();
@@ -29,7 +29,8 @@ function test000All() {
 // logout();
 //    testSalesNoColorSizeElseAll();
 //    testCheckMenuAll();
-    sales_need_roundoff_1();
+//    sales_need_roundoff_1();
+ testParamAll();
 // }
 }
 
