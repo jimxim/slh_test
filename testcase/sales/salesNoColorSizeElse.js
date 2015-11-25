@@ -1,7 +1,16 @@
 // Zhangy <15068165765 at 139.com>  11.5
-function testSalesNoColorSizeElseAll() {
+
+function testSalesNoColorSizeElse001All() {
     // run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1");
     // run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
+    // run("【销售开单－按明细查】翻页_排序_汇总", "test170028_1");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_1");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_3");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_4");
+    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_5");
+}
+function testSalesNoColorSizeElseAll() {
     // run("【销售开单－按批次查】查询条件单独查询", "test170001");
     // run("【销售开单－按批次查】按时间段查询", "test170002");
     // run("【销售开单－按批次查】查询条件组合查询", "test170003");
@@ -18,13 +27,6 @@ function testSalesNoColorSizeElseAll() {
     // run("【销售开单－按批次查】清除按钮", "test170020");
     // run("【销售开单－按批次查】修改代收内容", "test170024");
     // run("【销售开单-按批次查】打印作废单", "test170025");
-
-    // run("【销售开单－按明细查】翻页_排序_汇总", "test170028_1");
-    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_1");
-    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2");
-    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_3");
-    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_4");
-    // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_5");
 
     // run("【销售开单－按明细查】查询条件单独查询", "test170028_170029");
     // run("【销售开单-按明细查】作废开单后内容检查", "test170030");
@@ -844,14 +846,13 @@ function test170028_2_5() {
     query(fields);
 
     tapButton(window, CLEAR);
-    var ret = true;
-    for (var i = 0; i < 9; i++) {
-        if (i != 6 || i != 7) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        }
-    }
+    var ret = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)), isEqual("", getTextFieldValue(window, 3)), isEqual("",
+            getTextFieldValue(window, 4)), isEqual("", getTextFieldValue(
+            window, 5)), isEqual(getToday(), getTextFieldValue(window, 6)),
+            isEqual(getToday(), getTextFieldValue(window, 7)), isEqual("",
+                    getTextFieldValue(window, 8)));
 
     return ret;
 }

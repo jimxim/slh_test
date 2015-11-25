@@ -12,13 +12,13 @@ function test000() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
- testPurchaseAll();
+// testPurchaseAll();
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopOutAll();
 // testSalesOrderAll();
 // testCheckAll();
-// testSalesNoColorSizeAll();
+ testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // logout();
 // run("test", "testGoodsBrandFields");
@@ -26,15 +26,23 @@ function test000() {
 }
 
 
-function test000All() {
+function testSalesNoColorSizeElse001Param() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        setIgnorecolorsize_1Params();
+        run("均色均码/开单模式2", "setIgnorecolorsize_1Params");
         logout();
     }
 }
-
+function testSalesNoColorSizeElse001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElse001All();
+        
+        logout();
+    }
+}
 function test001All() {
     var p1 = {"角色":"财务员","门店":"常青店"};
     var ok = login("001","000000",p1);

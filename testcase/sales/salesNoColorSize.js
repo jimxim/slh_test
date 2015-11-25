@@ -54,7 +54,12 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】兑换记录", "test170189");
     // run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
     // run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
-    run("【销售开单】单价输入负数检查", "test170239");
+    // run("【销售开单】单价输入负数检查", "test170239");
+
+    // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
+    // run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
+    // run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     // }
     // if (setPayMethod_9Params()) {
     // run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -143,10 +148,12 @@ function testSalesNoColorSizeAll() {
     // if (sales_pricecheck_1()) {
     // run("【销售开单-开单】开单员销售价允许改高，不允许改低 【使用开单员角色】", "test170192");// 非总经理账号登陆
     // }
-
+    // if (setSales_show_printdialog_1Params()) {
     // run("【销售开单】开单后是否显示打印确认窗口-显示", "test170199");
+    // }
+    // if (setSales_show_printdialog_0Params()) {
     // run("【销售开单】开单后是否显示打印确认窗口-不显示", "test170200");
-
+    // }
     // if(setPayMethod_5_And_pricedec_3Params()){
     // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+颜色尺码", "test170228");
     // run("【销售开单】折扣三位小数时销售开单", "test170231");
@@ -162,17 +169,28 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单】单据打印后不允许修改--都不允许修改", "test170238");// 非总经理账号登陆
     // }
 
+    // if(setSales_acstaff_byshop_1Params()){
     // run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240");
+    // }
+    // if(setSales_acstaff_byshop_0Params()){
     // run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241");
+    // }
+    // if(setDres_style_pricemode_0Params()){
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");/
+    // }
+    // if(setDres_style_pricemode_1Params()){
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
+    // }
+    // if(setSales_acmat_showbrand_1Params()) {
     // run("【销售开单】开单货品列表是否显示品牌信息", "test170245");
-    // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
-    // run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-    // run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    // }
+
+    // if ( setSales_diff_client_byinvid_1Params()){
     // run("【销售开单－开单】按门店区分客户--区分", "test170249");
+    // }
+    // if ( setSales_diff_client_byinvid_0Params()){
     // run("【销售开单－开单】按门店区分客户--不区分", "test170250");
-    // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    // }
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -417,7 +435,7 @@ function sales_client_score_share_1() {
 function sales_client_score_share_0() {
     var qo, o, ret = true;
     qo = { "备注" : "积分是否跨门店共享" };
-    o = { "新值" : "0", "数值" : [ " 不共享"] };
+    o = { "新值" : "0", "数值" : [ " 不共享" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -505,6 +523,90 @@ function setCannotmodifyafterprint_2Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
+
+    return ret;
+}
+function setSales_show_printdialog_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
+
+    return ret;
+}
+function setSales_show_printdialog_0Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
+
+    return ret;
+}
+function setSales_acstaff_byshop_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setSales_acstaff_byshop_0Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setDres_style_pricemode_0Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "价格模式" };
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setDres_style_pricemode_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "价格模式" };
+    o = { "新值" : "1", "数值" : [ "不同门店不同的价格体系", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "货品建款的价格模式" };
+    o = { "新值" : "0", "数值" : [ "默认价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setSales_acmat_showbrand_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单货品列表是否销售品牌信息" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setSales_acmat_showbrand_0Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单货品列表是否销售品牌信息" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setSales_diff_client_byinvid_0Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时是否按门店区分客户" };
+    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setSales_diff_client_byinvid_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时是否按门店区分客户" };
+    o = { "新值" : "1", "数值" : [ "只显示本门店客户", "in" ], "授权码" : [] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -3592,6 +3694,7 @@ function test170242() {
     editSalesBillNoColorSize(json);
 
     var b = getTextFieldValue(getScrollView(), 4);
+    s
     var ret1 = isEqual("250", b);
 
     logDebug("ret=" + ret + "ret1=" + ret1);
