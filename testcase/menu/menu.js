@@ -5,19 +5,19 @@
 
 function testCheckMenuAll() {
     alertMsgExKeys = [ "确定返回", "确定操作", "成功" ];
-//     run("货品管理", "testCheckGoods");
-//    run("往来管理", "testCheckWangLai");
-//    run("采购入库", "testCheckPurchase");
-//    run("采购订货", "testCheckPurchaseOrder");
+    run("货品管理", "testCheckGoods");
+    run("往来管理", "testCheckWangLai");
+    run("采购入库", "testCheckPurchase");
+    run("采购订货", "testCheckPurchaseOrder");
     run("门店调入", "testCheckShopIn");
     run("门店调出", "testCheckShopOut");
-//    run("销售订货", "testCheckSalesOrder");
-//    run("销售开单", "testCheckSales");
-//    run("盘点管理", "testCheckCheck");
-//    run("统计分析", "testCheckStatisticAnalysis");
-//    run("统计图表", "testCheckStatisticPicture");
-//    run("系统设置", "testCheckSystem");
-//    run("用户帮助", "testCheckHelp");
+    run("销售订货", "testCheckSalesOrder");
+    run("销售开单", "testCheckSales");
+    run("盘点管理", "testCheckCheck");
+    run("统计分析", "testCheckStatisticAnalysis");
+    run("统计图表", "testCheckStatisticPicture");
+    run("系统设置", "testCheckSystem");
+    run("用户帮助", "testCheckHelp");
 }
 
 function testCheckGoods() {
