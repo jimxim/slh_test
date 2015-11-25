@@ -1,3 +1,11 @@
+a=(`who am i`);USER=${a[0]};
+
+sed -i .js "s/USER/$USER/" ./run_suite
+
+dlsofts-iMac:run dlsoft$ echo ${a[0]}
+dlsoft
+dlsofts-iMac:run dlsoft$ USER=${a[0]}
+
 target.frontMostApp().navigationBar().tapWithOptions({tapOffset:{x:0.41, y:0.39}});
 target.frontMostApp().mainWindow().scrollViews()[0].buttons()["常青店"].tap();
 

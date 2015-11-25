@@ -7,12 +7,12 @@
 // 总经理
 function test000All() {
 	debug = true;
-// var ok = login("000","000000");
-// if( ok ) {
+ var ok = login("000","000000");
+ if( ok ) {
 // testParamAll();
- testWanLaiCustomerAll();
- testGoodsGoodsAll();
- testPurchaseAll();
+// testWanLaiCustomerAll();
+// testGoodsGoodsAll();
+// testPurchaseAll();
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopOutAll();
@@ -172,19 +172,19 @@ function test000All() {
 	
 // testWanLaiProviderAll();
 // testGoodsAll();
-// logout();
-// }
+ logout();
+ }
 // var ok = login("200","000000");
 // if( ok ) {
 //	 
 // }
 }
 
-function debugElemnets() {
-	// debugAddGoods();
-	debugGlobalParamPopValue();
-}
-
-function testTemp() {
-
+function test004All() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+     testCheckMenuAll();
+     logout();
+  }
 }
