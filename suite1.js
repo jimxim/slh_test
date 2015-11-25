@@ -7,52 +7,37 @@
 // 总经理
 function test000() {
 	debug = true;
-// var p1 = {"角色":"总经理"};
-// var ok = login("000","000000",p1);
-// if( ok ) {
-// testParamAll();
- testWanLaiCustomerAll();
- testGoodsGoodsAll();
-// testPurchaseAll();
-// testPurchaseOrderAll();
-// testShopInAll();
-// testShopOutAll();
-// testSalesOrderAll();
-// testSalesNoColorSizeAll();
-// testSalesNoColorSizeElseAll();
-// testSalesColorSizeAll();
-// testSalesBillAll();
-// testCheckAll();
-// testStatisticAnalysisAll();
-// testTemp();
+    run("【往来管理-客户查询】翻页_排序", "test110001_1");
 	
-// testWanLaiProviderAll();
-// testGoodsAll();
-// logout();
-// }
 }
 
-
-/**
- * @param 均色均码
- * @param 省代价格模式
- * @param 不支持自动生成款号
- * @param 新增界面格式——老模式
- */
-function setNoColorPriceParams(){
+//货品管理
+function setGoodsParams001(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        setGoodsNoColorPriceParams();
+        run("均色均码/省代价格模式/不支持自动生成款号/新增界面格式—老模式", "goodsParams001");
        logout();
     }
 }
 
-function test000GoodsNoColorPriceAll() {
+//翻页/排序/汇总/条件查询/清除/下拉框
+function test000Goods001() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
-      testGoodsNoColorPriceAll();
+      testGoods001();
+     logout();
+  }
+}
+
+//往来管理
+//翻页/排序/汇总/条件查询/清除/下拉框
+function test000Customer001() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testCustomer001();
      logout();
   }
 }

@@ -1,20 +1,40 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
-function testGoodsNoColorPriceAll() {
+/**
+ * 翻页/排序/汇总/条件查询/清除/下拉框
+ */
+function testGoods001() {
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
-    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
-    run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理-库存分布】库存分布", "test100006");
     run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
+    run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
+    run("【货品管理-货品进销存】货品进销存", "test100008");
+    run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
+    run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
+    run("【货品管理-基本设置】价格名称", "test10_price");
+    run("【货品管理-基本设置】货品类别", "test10_type");
+    run("【货品管理-基本设置】所有颜色", "test10_color");
+    run("【货品管理-基本设置】所有尺码", "test10_size");
+    run("【货品管理-基本设置】所有品牌", "test10_brand");
+    run("【货品管理-基本设置】所有尺码组", "test10_size_group");
+    run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
+    // run("【货品管理-当前库存】库存调整", "test100090");//未完成
+
+}
+
+function testGoodsGoodsAll() {
+    // if(setGoodsNoColorPriceParams()){
+    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+
+    // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
+
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
-    // run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
-    // run("【货品管理-货品进销存】货品进销存", "test100008");
+
     // run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
-    // run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
-    // run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
+
     // run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
@@ -36,20 +56,8 @@ function testGoodsNoColorPriceAll() {
     // "test100075_100076_100077_100078");
     // run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
     // "test100082_100083_100084_100085");
-    // run("【货品管理-基本设置】价格名称", "test10_price");
-    // run("【货品管理-基本设置】货品类别", "test10_type");
-    // run("【货品管理-基本设置】所有颜色", "test10_color");
-    // run("【货品管理-基本设置】所有尺码", "test10_size");
-    // run("【货品管理-基本设置】所有品牌", "test10_brand");
-    // run("【货品管理-基本设置】所有尺码组", "test10_size_group");
-    // run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
-    // run("【货品管理-当前库存】库存调整", "test100090");
+
     // run("【货品管理-更多-库存调整单】查询", "test100104");
-
-}
-
-function testGoodsGoodsAll() {
-    // if(setGoodsNoColorPriceParams()){
 
     // }
 
@@ -90,12 +98,9 @@ function testGoodsGoodsAll() {
 }
 
 /**
- * @param 均色均码
- * @param 省代价格模式
- * @param 不支持自动生成款号
- * @param 新增界面格式——老模式
+ * 均色均码 省代价格模式 不支持自动生成款号 新增界面格式——老模式
  */
-function setGoodsNoColorPriceParams() {
+function goodsParams001() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -587,6 +592,7 @@ function test100006() {
     if (isDefined(qr.data[0]["中洲店"])) {
         ret = ret && isEqual(qr.data[0]["中洲店"], qr.counts["中洲店"]);
     }
+    logDebug("ret=" + ret);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
@@ -602,12 +608,13 @@ function test100006() {
     var de1 = { "序号" : 0, "名称" : 0, "库存" : 0, "价值" : 0, "仓库店" : 0, "常青店" : 0,
         "中洲店" : 0 };
     var expected = mixObject(de1, expectedObj1);
-    var ret = isEqualObject(expected, actual);
+    ret = ret && isEqualObject(expected, actual);
+    logDebug("ret=" + ret);
 
     tapFirstText(getScrollView(), "序号", 7);
-    var qr1 = getQR2(getScrollView(-1, 0), "名称", "款号");// 有个不可见的款号
+    var qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
     var a1 = qr1.data[0]["库存"];
-    // logDebug("a1="+a1);
+    logDebug("a1=" + a1);
 
     tapFirstText(getScrollView(-1, 0), "名称", 8);// 点击进入款号明细,8是有个不可见的款号
     var qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
@@ -632,12 +639,12 @@ function test100006() {
             qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
         }
     }
-    // logDebug("sum2=" + sum2+" ret="+ret);
     ret = ret && isEqual(sum2, a1);
+    logDebug("sum2=" + sum2);
     tapNaviLeftButton();
-    // delay();
+    delay();
 
-    qr1 = getQR2(getScrollView(-1, 0), "名称", "款号");// 有个不可见的款号
+    qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
     var sum1 = 0;
     for (j = 1; j <= qr1.totalPageNo; j++) {
         for (i = 0; i < qr1.curPageTotal; i++) {
@@ -660,8 +667,8 @@ function test100006() {
         }
     }
 
-    // logDebug("sum1=" + sum1);
     ret = ret && isEqual(sum1, a);
+    logDebug("sum1=" + sum1);
     tapNaviLeftButton();
 
     tapButton(window, CLEAR);
@@ -676,14 +683,12 @@ function test100006_1() {
     query();
     var ret = goPageCheckField("名称");
 
-    ret = ret && sortByTitle("厂商");
-    ret = ret && sortByTitle("仓库/门店");
-    ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
-    ret = ret && sortByTitle("上架日期", IS_DATE2);
-    ret = ret && sortByTitle("累计进", IS_NUM);
-    ret = ret && sortByTitle("在途数", IS_NUM);
+    ret = ret && sortByTitle("价值", IS_NUM);
+    ret = ret && sortByTitle("仓库店", IS_NUM);
+    ret = ret && sortByTitle("常青店", IS_NUM);
+    ret = ret && sortByTitle("中洲店", IS_NUM);
 
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0;// 库存 价值 仓库店 常青店 中洲店
@@ -818,10 +823,14 @@ function test100008() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual("3035", qr.data[0]["款号"]);
+    var ret = isEqual("Vell", qr.data[0]["厂商"])
+            && isEqual("3035", qr.data[0]["款号"])
+            && isEqual("jkk", qr.data[0]["名称"])
+            && isEqual("15-10-13", qr.data[0]["上架日期"]);
     var a = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
+    delay();
 
-    tapFirstText();
+    tapFirstText(getScrollView(), "序号", 9);
     var oStockNum = getColorSizeStockNum();
     var b = Number(oStockNum["均色-均码-常青店"]);
     // +Number(oStockNum["均色-均码-中洲店"])+Number(oStockNum["均色-均码-仓库店"])
@@ -882,10 +891,12 @@ function test100009() {
 
 // 照片无法验证
 function test100010_100011_100013() {
-
     var r = "g" + getTimestamp(8);
     addGoodsByCodeName(r);
 
+    tapMenu("货品管理");
+    tapButton(window,RETURN);
+    
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : r };
     var qFields = queryGoodsFields(qKeys);
@@ -2478,6 +2489,13 @@ function test10_price() {
     ret = ret && sortByTitle("启用");
     ret = ret && sortByTitle("进货价比例", IS_NUM);
 
+    if(ret==false){
+        ret = true; 
+        ret = ret && sortByTitle("名称");
+        ret = ret && sortByTitle("启用");
+        ret = ret && sortByTitle("进货价比例", IS_NUM);
+    }
+    
     return ret;
 }
 
@@ -2661,10 +2679,11 @@ function test10_discount() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("进货价折扣", IS_NUM);
-    ret = ret && sortByTitle("零批价", IS_NUM);
-    ret = ret && sortByTitle("打包价", IS_NUM);
-    ret = ret && sortByTitle("大客户价", IS_NUM);
-    ret = ret && sortByTitle("Vip价格", IS_NUM);
+//    ret = ret && sortByTitle("零批价", IS_NUM);
+//    ret = ret && sortByTitle("打包价", IS_NUM);
+//    ret = ret && sortByTitle("大客户价", IS_NUM);
+//    ret = ret && sortByTitle("Vip价格", IS_NUM);
+    logDebug("ret="+ret);
 
     var keys = { "品牌" : "1010pp" };
     var fields = goodsBrandDiscountFields(keys);
