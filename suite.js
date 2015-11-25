@@ -11,7 +11,7 @@ function test000All() {
 // if( ok ) {
 // testSASynthesisAll();
 // testSalesBillAll();
-// testEditSalesBillAll();
+ testEditSalesBillAll();
 	
 // testTemp();
 // testPurchaseAll();
@@ -29,7 +29,7 @@ function test000All() {
 // logout();
 //    testSalesNoColorSizeElseAll();
 //    testCheckMenuAll();
-    sales_need_roundoff_1();
+
 // }
 }
 
