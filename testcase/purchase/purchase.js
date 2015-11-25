@@ -12,8 +12,11 @@ function testPurchaseAll() {
     // run("【采购入库-按批次查】按批次查->作废", "test120003");
     // run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
     // run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
+    // run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120007_1");
     // run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
-    // run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
+    // run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120008_1");
+     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
+//    run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009_1");
     // run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");
     // run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011");
     // run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查","test120013_120031_120032");
@@ -241,7 +244,26 @@ function test120007() {
 
     return ret;
 }
+function test120007_1() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
 
+    tapMenu("采购入库", "按汇总", "按金额汇总");
+    var keys = { "日期从" : getDay(-3), "到" : getToday() }
+    var fields = purchasePriceFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["日期"];
+
+    var ret = isEqual(getToday("yy"), a);
+
+    tapButton(window, CLEAR);
+    var ret1 = isAnd(isEqual(getDay(-3), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)));
+
+    return ret && ret1;
+}
 function test120008() {
     tapMenu("采购入库", "按汇总", "按款号汇总");
     var keys = { "日期从" : getDay(-30), "日期到" : getToDay() };
@@ -286,23 +308,136 @@ function test120008() {
 
     return ret && ret1;
 }
+function test120008_1() {
+    // tapMenu("采购入库", "新增入库+");
+    // var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    // editSalesBillNoColorSize(json);
 
-function test120009() {
-    tapMenu("采购入库", "采购汇总", "按厂商返货");
+    // tapButton(window,RETURN);
 
-    var keys = [ "款号", "日期从" ];
-    var fields = purchaseProviderReturnFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
-    changeTFieldValue(fields["日期从"], "2015-10-08");
+    tapMenu("采购入库", "按汇总", "按款号汇总");
+    var i;
+    var ret1 = false;
+    var f = new TField("款号", TF_AC, 4, "303", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "3035,jkk")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    query();
+
+    tapMenu("采购入库", "按汇总", "按款号汇总");
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday(), "上架从" : "2015-10-1",
+        "上架到" : getToday(), "款号" : "3035", "厂商" : "vell", "门店" : "常青店" }
+    var fields = purchaseCodeFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = false;
-    if (qr.data[0]["数量"] == qr.counts["数量"]) {
-        ret = true;
-    }
-    return ret && isEqualQRData1ByTitle(qr, "名称", "jkk");
-}
+    var a = qr.data[0]["款号"];
+    var a1 = qr.data[0]["名称"];
+    var a2 = qr.data[0]["厂商"];
+    var a3 = qr.data[0]["上架日期"];
+    var a4 = qr.data[0]["颜色"];
+    var a5 = qr.data[0]["尺码"];
 
+    var ret = isAnd(isEqual("3035", a), isEqual("jkk", a1),
+            isEqual("Vell", a2), isEqual("15-10-13", a3), isEqual("均色", a4),
+            isEqual("均码", a5));
+
+    tapButton(window, CLEAR);
+    var ret1 = isAnd(isEqual(getDay(-3), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)), isEqual(getToday(),
+                    getTextFieldValue(window, 3)), isEqual("",
+                    getTextFieldValue(window, 4)), isEqual("",
+                    getTextFieldValue(window, 5)));
+
+    return ret && ret1;
+}
+function test120009() {
+    tapMenu("采购入库", "采购汇总", "按厂商返货");
+    var keys = { "日期从" : getDay(-3), "到" : getToday() };
+    var fields = purchaseProviderReturnFields(keys);
+    query(fields);
+    var ret = goPageCheckField("款号");
+
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("上架日期", IS_DATE2);
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("数量", IS_NUM);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["数量"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = ret && isAnd(isEqual(qr.counts["数量"], sum1));
+
+    return ret && ret1;
+}
+function test120009_1() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-2" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, RETURN);
+
+    tapMenu("采购入库", "按汇总", "按厂商返货");
+    var i;
+    var ret1 = false;
+    var f = new TField("款号", TF_AC, 0, "303", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "3035,jkk")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    query();
+
+    tapMenu("采购入库", "按汇总", "按厂商返货");
+    var keys = { "款号" : "3035", "日期从" : getDay(-3), "到" : getToday(),
+        "厂商" : "vell" }
+    var fields = purchaseProviderReturnFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["款号"];
+    var a1 = qr.data[0]["名称"];
+    var a2 = qr.data[0]["厂商"];
+    var a3 = qr.data[0]["上架日期"];
+    var a4 = qr.data[0]["颜色"];
+    var a5 = qr.data[0]["尺码"];
+
+    var ret = isAnd(isEqual("3035", a), isEqual("jkk", a1),
+            isEqual("Vell", a2), isEqual("15-10-13", a3), isEqual("均色", a4),
+            isEqual("均码", a5));
+
+    tapButton(window, CLEAR);
+    var ret1 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual(
+            getDay(-3), getTextFieldValue(window, 1)), isEqual(getToday(),
+            getTextFieldValue(window, 2)));
+
+    return ret && ret1;
+}
 function test120010() {
     tapMenu("采购入库", "采购汇总", "按厂商汇总");
 
