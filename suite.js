@@ -11,9 +11,9 @@ function test000All() {
 // if( ok ) {
 // testSASynthesisAll();
 // testSalesBillAll();
- testEditSalesBillAll();
+// testEditSalesBillAll();
 	
-// testTemp();
+ testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -51,13 +51,13 @@ function testTemp() {
 // testPushToFixArray();
 // testScroll();
 // testGoPage() ;
-// testGetDay24();
+ testGetDay24();
 //    testSortByTitle();
 //    testIn2();
 //    testQR2();
 //    testStatistics1();
 //    testQR();
-    testTextfieldDate();
+//    testTextfieldDate();
 }
 function testTextfieldDate() {
     tapMenu("销售开单", "收款单");
@@ -151,6 +151,10 @@ function testGetDay24() {
     day1="30-11-18";
     logDebug(getDay24(day1));
     day1="31-11-18";
+    logDebug(getDay24(day1));
+    day1="";
+    logDebug(getDay24(day1));
+    day1=undefined;
     logDebug(getDay24(day1));
 }
 function testGoPage() {
