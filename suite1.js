@@ -7,11 +7,9 @@
 // 总经理
 function test000All() {
 	debug = true;
-	
 
-    run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
-
-	
+	   
+	    run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "test150001_4");
 }
 
 //货品管理
@@ -54,6 +52,15 @@ if( ok ) {
     testPurchaseOrder001();
    logout();
 }
+}
+
+function test000ShopOut001(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testShopOut001();
+       logout();
+    }   
 }
 
 function test001All() {
