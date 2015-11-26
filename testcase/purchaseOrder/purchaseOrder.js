@@ -1,10 +1,15 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
-function testPurchaseOrderAll() {
+function testPurchaseOrder001(){
     // run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
     // run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
     // run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
     // run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
+    
+}
+
+function testPurchaseOrderAll() {
+   
     // run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
     // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
     // run("按【采购订货-按批次查】", "test130001_3");
@@ -19,16 +24,16 @@ function testPurchaseOrderAll() {
 // 翻页_排序_汇总
 function test130001_1() {
     tapMenu("采购订货", "按批次查");
-    var keys = { "日期从" : getDay(-100), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-100), "日期到" : getToday(),"门店":"常青店" };
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     // 点击翻页
     var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
-    // ret = ret && sortByTitle("日期");
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("门店");
+     ret = ret && sortByTitle("日期",IS_DATE2);
+     ret = ret && sortByTitle("厂商");
+     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
@@ -36,9 +41,9 @@ function test130001_1() {
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
-    // ret = ret && sortByTitle("操作日期");
-    // ret = ret && sortByTitle("操作人");
-    // ret = ret && sortByTitle("备注");
+     ret = ret && sortByTitle("操作日期",IS_OPTIME);
+     ret = ret && sortByTitle("操作人");
+     ret = ret && sortByTitle("备注");
 
     logDebug("ret=" + ret);
 
@@ -99,7 +104,7 @@ function test130001_2() {
     var a = qr.data[0]["厂商"];
     var b = qr.data[0]["总数"];
 
-    var ret = isAnd(isEqual("Rt", a), isEqual("20", b));
+    var ret = isAnd(isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("Rt", qr.data[0]["厂商"]), isEqual("20", b));
 
     tapButton(window, CLEAR);
     for (i = 0; i < 7; i++) {

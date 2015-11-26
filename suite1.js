@@ -12,7 +12,7 @@ function test000All() {
 }
 
 //货品管理
-function setGoodsParams001(){
+function setGoods001Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
@@ -40,6 +40,17 @@ function test000Customer001() {
       testCustomer001();
      logout();
   }
+}
+
+//采购订货
+//翻页/排序/汇总/条件查询/清除/下拉框
+function test000PurchaseOrder001() {
+  var p1 = {"角色":"总经理"};
+var ok = login("000","000000",p1);
+if( ok ) {
+    testPurchaseOrder001();
+   logout();
+}
 }
 
 function test001All() {
