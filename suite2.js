@@ -5,7 +5,7 @@
 
 
 // 总经理
-function test000All() {
+function test000() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
@@ -16,43 +16,47 @@ function test000All() {
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopOutAll();
-	 testSalesOrderAll();
+// testSalesOrderAll();
 // testCheckAll();
-// testSalesNoColorSizeAll();
+ testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
 }
 
-function debugElements() {
-	// debugAddGoods();
-	debugGlobalParamPopValue();
+
+function testSalesNoColorSizeElse001Param() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("均色均码/开单模式2", "setIgnorecolorsize_1Params");
+        logout();
+    }
+}
+function testSalesNoColorSizeElse001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElse001All();
+        
+        logout();
+    }
+}
+function test001All() {
+    var p1 = {"角色":"财务员","门店":"常青店"};
+    var ok = login("001","000000",p1);
+    if( ok ) {
+// testCheckMenuAll();
+        logout();
+    }
 }
 
-function testTemp() {
-// tapMenu("货品管理","货品查询");
-// debugElementTree(getScrollView());
-// debugElementTree(window);
-// tapChoose(getScrollView(), [0,1,2]);
-// tapButton(window,ALL);
-// tapButton(window,NONE);
-// getTimestamp(0);
-// getTimestamp(5);
-// getTimestamp(11);
-// getTimestamp(13);
-// getTimestamp(15);
-// var key = [ "品牌", "吊牌价", "季节", "厂商", "备注" ];
-// var fields1 = editGoodsFields(key, false, 0);
-// setTFieldsValue(getScrollView(), fields1);
-// tap(window.buttons['查 询']);
-// tapButton(window, '查 询');
-// logDebug("ok="+isUIAButton(window.buttons()['查 询']));
-// logDebug("ok="+isUIAButton(window.buttons()["查 询"]));
-// debugElementTree(window);
-// var qr = getQResult();
-// debugQResult(qr);
-    var keys = [ "店员" ];
-    var fields = purchaseBatchEditFields(keys);
-    setTFieldsValue(window, fields);
+function test004All() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+// testCheckMenuAll();
+     logout();
+  }
 }

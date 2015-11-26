@@ -1,5 +1,6 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
+
 /**
  * 翻页/排序/汇总/条件查询/清除/下拉框
  */
@@ -31,6 +32,7 @@ function testGoodsGoodsAll() {
 
     // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
 
+
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
 
     // run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
@@ -57,7 +59,9 @@ function testGoodsGoodsAll() {
     // run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
     // "test100082_100083_100084_100085");
 
+
     // run("【货品管理-更多-库存调整单】查询", "test100104");
+
 
     // }
 
@@ -97,10 +101,12 @@ function testGoodsGoodsAll() {
 
 }
 
+
 /**
  * 均色均码 省代价格模式 不支持自动生成款号 新增界面格式——老模式
  */
 function goodsParams001() {
+
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -2625,8 +2631,7 @@ function test10_brand() {
         }
     }
 
-    keys = { "名称" : "1010pp", "是否停用" : "否" };
-    fields = goodsBrandFields(keys);
+    keys = { "名称" : "1010pp", "是否停用" : "否 " };
     query(fields);
     qr = getQR();
     ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)

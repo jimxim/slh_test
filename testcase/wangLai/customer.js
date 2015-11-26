@@ -18,7 +18,7 @@ function testCustomer001(){
 
 
 function testWanLaiCustomerAll() {
-   
+
     // run("【往来管理-客户查询】客户查询->消费明细", "test110002");
     // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
     // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
