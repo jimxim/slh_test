@@ -1,23 +1,25 @@
 //luxingxin <52619481 at qq.com> 20151014
 
 function testCheck001() {
-    run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_1");
-    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2");
-    run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");
-    run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2");
+    // run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_1");
+    // run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2");
+    // run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");
+    // run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2");
+    // run("【盘点管理—处理记录】翻页_排序_汇总", "test180031_1");
+    run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180031_2");
+//     run("【盘点管理—处理记录】翻页_排序_汇总", "test180037_1");
+//     run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180037_2");
 }
 function testCheckAll() {
     // run("【盘点管理—新增盘点】", "test180019");
     // run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
     // run("【盘点管理—新增盘点】返回", "test180023");
     // run("【盘点管理—新增盘点】删除按钮", "test180024");
-
     // run("【盘点管理—按批次查】查询条件单项查询／【盘点管理—按批次查】底部统计数据检查", "test180001_180005");
     // run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
     // run("【盘点管理—按批次查】查询条件组合查询/【盘点管理—按批次查】清除功能", "test180003_180004");
     // run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
     // run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
-
     // run("【盘点管理—按明细查】查询条件单项查询", "test180013");
     // run("【盘点管理—按明细查】查询条件组合查询", "test180014");
     // run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
@@ -27,6 +29,7 @@ function testCheckAll() {
     // run("【盘点管理—处理记录】查询", "test180029");
     // run("【盘点管理—处理记录】查询", "test180030");
     // run("【盘点管理—处理记录】清除", "test180031");
+
     // run("【盘点管理—盘点撤销】", "test180033");
     // run("【盘点管理—盈亏表】查询", "test180034");
     // run("【盘点管理—盈亏表】清除", "test180035");
@@ -218,10 +221,10 @@ function test180001_2() {
     tapButton(window, CLEAR);
     var ret2 = true;
     for (var i = 0; i < 7; i++) {
-        if (i == 2 || i == 3 || i == 6) {
-            ret2 = ret2 && isEqual("", getTextFieldValue(window, i));
-        } else {
+        if (i == 0 || i == 1) {
             ret2 = ret2 && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret2 = ret2 && isEqual("", getTextFieldValue(window, i));
         }
     }
 
@@ -253,7 +256,6 @@ function test180001_180005() {
     logDebug(" ret=" + ret);
     return ret;
 }
-
 function test180002() {
     tapMenu("盘点管理", "按批次查");
     var keys = [ "批次从", "批次到" ];
@@ -462,9 +464,9 @@ function test180013_2() {
     var a3 = qr.data[0]["品牌"];
     var a4 = qr.data[0]["颜色"];
     var a5 = qr.data[0]["尺码"];
-    var a6 = qr.data[0]["盘点数量"];
+    var a6 = qr.data[0]["盘点数量", IS_NUM];
     var a7 = qr.data[0]["操作人"];
-    var a8 = qr.data[0]["操作日期"];
+    var a8 = qr.data[0]["操作日期", IS_OPTIME];
 
     var ret2 = isAnd(isEqual("3035", a), isEqual("jkk", a1),
             isEqual("登山服", a2), isEqual("Adidas", a3), isEqual("均色", a4),
@@ -812,7 +814,74 @@ function test180031() {
 
     return ret;
 }
+function test180031_1() {
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday() };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("批次");
+    //
+    ret = ret && sortByTitle("选择");
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("盘点日期");
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("备注");
 
+    query();
+
+    return ret;
+}
+function test180031_2() {
+    tapMenu("盘点管理", "处理记录");
+    var ret = false;
+    tap(getTextField(window, 2));
+    var texts = getStaticTexts(getPopView());
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        if (isIn("常青店", v)) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    target.frontMostApp().mainWindow().popover().dismiss();
+    query();
+
+    return ret;
+
+        
+     tapMenu("盘点管理", "处理记录");
+    query();
+    var keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店",
+        "批次从" : "1", "批次到" : "10000", "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var a = qr.data[0]["盘点日期"];
+    var a1 = qr.data[0]["门店"];
+    var a2 = qr.data[0]["操作人"];
+    var a3 = qr.data[0]["操作日期"];
+    var a4 = qr.data[0]["备注"];
+
+    var ret1 = isAnd(isEqual(getToday("yy"), a), isEqual("常青店", a1), isEqual(
+            "总经理", a2), isIn(a3, getDay(0, "")), isEqual("部分盘点", a4));
+
+    tapButton(window, CLEAR);
+    var ret2 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)), isEqual("",
+                    getTextFieldValue(window, 3)), isEqual("",
+                    getTextFieldValue(window, 4)), isEqual("",
+                    getTextFieldValue(window, 5)));
+
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
 function test180033() {
     tapMenu("盘点管理", "盘点撤销");
     tapButtonAndAlert("只能撤销最近一次的盘点处理记录(红色)");
@@ -908,4 +977,82 @@ function test180037() {
     }
     logDebug(" ret=" + ret);
     return ret;
+}
+function test180037_1() {
+    tapMenu("盘点管理", "盈亏表");
+    var keys = { "日期从" : getDay(-3), "到" : getToday() };
+    var fields = checkProfitAndLossFields(keys);
+    query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("批次");
+    //
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    // ret = ret && sortByTitle("盘前", IS_NUM);
+    ret = ret && sortByTitle("盘后", IS_NUM);
+    ret = ret && sortByTitle("盈亏", IS_NUM);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["盈亏"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    var ret1 = isEqual(sum1, qr.counts["盈亏"]);
+
+    return ret && ret1;
+
+    return ret;
+}
+function test180037_2() {
+    tapMenu("盘点管理", "盈亏表");
+    var ret = false;
+    tap(getTextField(window, 0));
+    var texts = getStaticTexts(getPopView());
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        if (isIn("常青店", v)) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    query();
+
+    tapMenu("盘点管理", "盈亏表");
+    query();
+    var keys = { "门店" : "常青店", "款号" : "3035", "日期从" : getToday(),
+        "到" : getToday() };
+    var fields = checkProfitAndLossFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var a = qr.data[0]["款号"];
+    var a1 = qr.data[0]["名称"];
+    var a2 = qr.data[0]["颜色"];
+    var a3 = qr.data[0]["尺码"];
+    var a4 = qr.data[0]["操作日期"];
+
+    var ret1 = isAnd(isEqual("3035", a), isEqual("jkk", a1), isEqual(
+            "均色", a2), isIn("均码",a3),isIn(a4,getDay(0, "")));
+
+    tapButton(window, CLEAR);
+    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)),
+            isEqual("", getTextFieldValue(window, 1)), isEqual(getToday(),
+                    getTextFieldValue(window, 2)), isEqual(getToday(),
+                    getTextFieldValue(window, 3)));
+
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

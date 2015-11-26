@@ -18,7 +18,7 @@ function test000() {
 // testShopOutAll();
 // testSalesOrderAll();
 // testCheckAll();
- testCheck001();
+	 testCheck001();
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // logout();
