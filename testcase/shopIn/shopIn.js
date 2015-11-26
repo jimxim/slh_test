@@ -1,12 +1,22 @@
 //luxingxin <52619481 at qq.com> 20151013
+
+/**
+ * 中洲店总经理验证
+ */
+function testShopIn001(){
+    run("【门店调入-在途调拨】翻页_排序_汇总_条件查询，清除按钮", "test140001_1");
+    run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
+    run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
+    run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
+    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
+}
+
 function testShopInAll() {
     // run("【门店调入-在途调拨】在途调拨", "test140001");
     // run("【门店调出-按批次查】作废", "test150002");
-//    run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
-    // run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
+
     // run("【门店调入-按批次查】按批次查/【门店调入-按明细查】按明细查", "test140002_140003");
-//    run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
-//    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
+
     // run("【门店调出】门店调拨-在途调拨，默认日期检查", "test150005");
 }
 
@@ -130,21 +140,78 @@ function test150002() {
     logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
     return ret1 && ret2 && ret3;
 }
-// 需要现在B店做一个调出单
+
+function test140001_1(){
+    tapMenu("门店调入", "在途调拨");
+    var keys = {"日期从":getDay(-30),"日期到":getToday()};
+    var fields = shopInFlitFields(keys);
+    query(fields);
+    var ret=goPageCheckField("批次");
+    
+//    ret = ret && sortByTitle("批次", IS_NUM);
+//    ret = ret && sortByTitle("门店");
+//    ret = ret && sortByTitle("数量", IS_NUM);
+//    ret = ret && sortByTitle("送货人");
+//    ret = ret && sortByTitle("操作日期",IS_OPTIME);
+//    ret = ret && sortByTitle("操作人");
+//    ret = ret && sortByTitle("备注");
+    
+    query();
+    var qr=getQR();
+    var sum=0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["数量"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret=ret&&isEqual(sum,qr.counts["数量"]);
+    
+    keys = {"日期从":getToday(),"日期到":getToday(), "门店":"常青店","批次从":"1","批次到":"10000"};
+    fields = shopInFlitFields(keys);
+    query(fields);
+    qr=getQR();
+    ret=ret&&isEqual("常青店",qr.data[0]["门店"]);
+    
+    tapButton(window,CLEAR);
+    ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));
+    ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
+    ret = ret && isEqual("", getTextFieldValue(window, 2));
+    ret = ret && isEqual("", getTextFieldValue(window, 3));
+    ret = ret && isEqual("", getTextFieldValue(window, 4));
+    
+    return ret;
+}
+
+ /**
+  * 做调入单
+  */
+function editShopInFlitting(){
+    var f = new TField("操作人密码", TF_S, 0, "000000");
+    var fields=[f];
+    setTFieldsValue(window, fields);
+    
+    tapButtonAndAlert("调 入", OK);
+    delay();
+    tapPrompt();
+    
+}
+
 function test140002_1() {
     tapMenu("门店调入", "在途调拨");
-    var keys = [ "门店" ];
+    var keys = {"门店":"常青店" };
     var fields = shopInFlitFields(keys);
-    changeTFieldValue(fields["门店"], "中洲店");
     query(fields);
 
     tapFirstText();
-    tapButtonAndAlert("调 入", OK);
-    tapPrompt();
+    editShopInFlitting();
 
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "调出门店" : "中洲店",
-        "调入门店" : "常青店" };
+    var keys = { "日期从" : getToday(), "日期到" : getToday(), "调出门店" : "常青店",
+        "调入门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
@@ -157,7 +224,7 @@ function test140002_1() {
     ret = ret && sortByTitle("送货人");
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
@@ -196,7 +263,7 @@ function test140002_2() {
 
     tapMenu("门店调入", "按批次查");
     var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : "1",
-        "批次到" : "100000", "调出门店" : "中洲店", "调入门店" : "常青店" }
+        "批次到" : "100000", "调出门店" : "常青店", "调入门店" : "中洲店" }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -208,10 +275,10 @@ function test140002_2() {
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
-        if (i != 0 || i != 1) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
+        if (i == 0 || i == 1) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));         
         } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            ret = ret && isEqual("", getTextFieldValue(window, i));
         }
     }
 
