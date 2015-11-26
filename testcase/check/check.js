@@ -1,6 +1,6 @@
 //luxingxin <52619481 at qq.com> 20151014
 
-function testCheck001All() {
+function testCheck001() {
     run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_1");
     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2");
     run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");

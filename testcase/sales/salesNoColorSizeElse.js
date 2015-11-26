@@ -1,6 +1,6 @@
 // Zhangy <15068165765 at 139.com>  11.5
 
-function testSalesNoColorSizeElse001All() {
+function testSalesNoColorSizeElse001() {
     // run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1");
     // run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
     // run("【销售开单－按明细查】翻页_排序_汇总", "test170028_1");
