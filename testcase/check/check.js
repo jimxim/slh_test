@@ -6,9 +6,9 @@ function testCheck001() {
     // run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");
     // run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2");
     // run("【盘点管理—处理记录】翻页_排序_汇总", "test180031_1");
-    run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180031_2");
-//     run("【盘点管理—处理记录】翻页_排序_汇总", "test180037_1");
-//     run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180037_2");
+    // run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180031_2");
+    // run("【盘点管理—处理记录】翻页_排序_汇总", "test180037_1");
+    // run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180037_2");
 }
 function testCheckAll() {
     // run("【盘点管理—新增盘点】", "test180019");
@@ -853,8 +853,7 @@ function test180031_2() {
 
     return ret;
 
-        
-     tapMenu("盘点管理", "处理记录");
+    tapMenu("盘点管理", "处理记录");
     query();
     var keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店",
         "批次从" : "1", "批次到" : "10000", "是否撤销" : "否" };
@@ -1044,14 +1043,14 @@ function test180037_2() {
     var a3 = qr.data[0]["尺码"];
     var a4 = qr.data[0]["操作日期"];
 
-    var ret1 = isAnd(isEqual("3035", a), isEqual("jkk", a1), isEqual(
-            "均色", a2), isIn("均码",a3),isIn(a4,getDay(0, "")));
+    var ret1 = isAnd(isEqual("3035", a), isEqual("jkk", a1), isEqual("均色", a2),
+            isIn("均码", a3), isIn(a4, getDay(0, "")));
 
     tapButton(window, CLEAR);
-    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)),
-            isEqual("", getTextFieldValue(window, 1)), isEqual(getToday(),
-                    getTextFieldValue(window, 2)), isEqual(getToday(),
-                    getTextFieldValue(window, 3)));
+    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)), isEqual(getToday(),
+            getTextFieldValue(window, 2)), isEqual(getToday(),
+            getTextFieldValue(window, 3)));
 
     logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
     return ret && ret1 && ret2;
