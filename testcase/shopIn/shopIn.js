@@ -3,7 +3,7 @@
 /**
  * 中洲店总经理验证
  */
-function testShopIn001(){
+function testShopIn001() {
     run("【门店调入-在途调拨】翻页_排序_汇总_条件查询，清除按钮", "test140001_1");
     run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
     run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
@@ -141,24 +141,24 @@ function test150002() {
     return ret1 && ret2 && ret3;
 }
 
-function test140001_1(){
+function test140001_1() {
     tapMenu("门店调入", "在途调拨");
-    var keys = {"日期从":getDay(-30),"日期到":getToday()};
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
     var fields = shopInFlitFields(keys);
     query(fields);
-    var ret=goPageCheckField("批次");
-    
-//    ret = ret && sortByTitle("批次", IS_NUM);
-//    ret = ret && sortByTitle("门店");
-//    ret = ret && sortByTitle("数量", IS_NUM);
-//    ret = ret && sortByTitle("送货人");
-//    ret = ret && sortByTitle("操作日期",IS_OPTIME);
-//    ret = ret && sortByTitle("操作人");
-//    ret = ret && sortByTitle("备注");
-    
+    var ret = goPageCheckField("批次");
+
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("送货人");
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("备注");
+
     query();
-    var qr=getQR();
-    var sum=0;
+    var qr = getQR();
+    var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["数量"]);
@@ -168,41 +168,42 @@ function test140001_1(){
             qr = getQR();
         }
     }
-    ret=ret&&isEqual(sum,qr.counts["数量"]);
-    
-    keys = {"日期从":getToday(),"日期到":getToday(), "门店":"常青店","批次从":"1","批次到":"10000"};
+    ret = ret && isEqual(sum, qr.counts["数量"]);
+
+    keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店", "批次从" : "1",
+        "批次到" : "10000" };
     fields = shopInFlitFields(keys);
     query(fields);
-    qr=getQR();
-    ret=ret&&isEqual("常青店",qr.data[0]["门店"]);
-    
-    tapButton(window,CLEAR);
+    qr = getQR();
+    ret = ret && isEqual("常青店", qr.data[0]["门店"]);
+
+    tapButton(window, CLEAR);
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
     ret = ret && isEqual("", getTextFieldValue(window, 2));
     ret = ret && isEqual("", getTextFieldValue(window, 3));
     ret = ret && isEqual("", getTextFieldValue(window, 4));
-    
+
     return ret;
 }
 
- /**
-  * 做调入单
-  */
-function editShopInFlitting(){
+/**
+ * 做调入单
+ */
+function editShopInFlitting() {
     var f = new TField("操作人密码", TF_S, 0, "000000");
-    var fields=[f];
+    var fields = [ f ];
     setTFieldsValue(window, fields);
-    
+
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
-    
+
 }
 
 function test140002_1() {
     tapMenu("门店调入", "在途调拨");
-    var keys = {"门店":"常青店" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = shopInFlitFields(keys);
     query(fields);
 
@@ -224,7 +225,7 @@ function test140002_1() {
     ret = ret && sortByTitle("送货人");
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
-    ret = ret && sortByTitle("操作日期",IS_OPTIME);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
@@ -267,16 +268,13 @@ function test140002_2() {
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-    var a = qr.data[0]["调出门店"];
-    var a1 = qr.data[0]["调入门店"];
-    var a2 = qr.data[0]["数量"];
-
-    var ret1 = isAnd(isEqual("中洲店", a), isEqual("常青店", a1), isEqual("2", a2));
+    var ret1 = isAnd(isEqual("常青店", qr.data[0]["调出门店"]), isEqual("中洲店",
+            qr.data[0]["调入门店"]));
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
         if (i == 0 || i == 1) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));         
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         }
@@ -347,9 +345,9 @@ function test140002_140003() {
 }
 function test140003_1() {
     tapMenu("门店调入", "按明细查");
-    var keys = { "日期从" : getToday(), "到" : getToday(), "调出门店" : "中洲店",
-        "调入门店" : "常青店" };
-    var fields = shopOutQueryParticularFields(keys);
+    var keys = { "日期从" : getDay(-30), "到" : getToday(), "调出门店" : "常青店",
+        "调入门店" : "中洲店" };
+    var fields = shopInQueryParticularFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
@@ -366,7 +364,7 @@ function test140003_1() {
     ret = ret && sortByTitle("单价", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_OPTIME);
 
     logDebug("ret=" + ret);
 
@@ -399,26 +397,24 @@ function test140003_2() {
             break;
         }
     }
+    target.frontMostApp().mainWindow().popover().dismiss();
     query();
 
-    tapMenu("门店调出", "按明细查");
-    var keys = { "款号" : "3035", "名称" : "jkk", "日期从" : getToday(),
-        "到" : getToday(), "调出门店" : "中洲店", "调入门店" : "常青店"}
-    var fields = shopOutQueryParticularFields(keys);
+    tapMenu("门店调入", "按明细查");
+    var keys = { "款号" : "3035", "款号名称" : "jkk", "日期从" : getToday(),
+        "到" : getToday(), "调出门店" : "常青店", "调入门店" : "中洲店" }
+    var fields = shopInQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
-    var a = qr.data[0]["调出门店"];
-    var a1 = qr.data[0]["调入门店"];
-    var a2 = qr.data[0]["数量"];
-
-    var ret1 = isAnd(isEqual("中洲店", a), isEqual("常青店", a1), isEqual("2", a2));
+    var ret1 = isAnd(isEqual("常青店", qr.data[0]["调出门店"]), isEqual("中洲店",
+            qr.data[0]["调入门店"]));
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
-        if (i != 3 || i != 4) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
+        if (i == 3 || i == 4) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));       
         } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            ret = ret && isEqual("", getTextFieldValue(window, i));
         }
     }
 

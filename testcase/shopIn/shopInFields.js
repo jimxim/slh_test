@@ -109,7 +109,7 @@ function shopInQueryParticularField(key, show) {
 		}
 		break;
 	case "name":
-	case "名称":
+	case "款号名称":
 		f = new TField("名称", TF, 1, "a");
 		break;
 	case "shop-out":
