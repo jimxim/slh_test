@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
- testTemp();
+// testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -31,6 +31,7 @@ function test000All() {
 //    testCheckMenuAll();
 
 // }
+ testSalesNoColorSizeElse001();
 }
 
 function debugElements() {
@@ -39,7 +40,7 @@ function debugElements() {
 }
 
 function testTemp() {
-// testDate();
+ testDate();
 // testGetOpTime();
 // testTapKeyboardHide();
 // getStaffTFindex() ;
@@ -51,7 +52,7 @@ function testTemp() {
 // testPushToFixArray();
 // testScroll();
 // testGoPage() ;
- testGetDay24();
+// testGetDay24();
 //    testSortByTitle();
 //    testIn2();
 //    testQR2();
@@ -179,11 +180,11 @@ function testPinyin() {
 function testDate() {
     var d = getToday("");
     logDebug("today="+d);
-    d = getDay(365,"");
+    d = getDay(365,"yyyy-MM-dd hh:mm");
     logDebug("today+365="+d);
     d = getDay(-365);
     logDebug("today-365="+d);
-    d = getDay(30);
+    d = getDay(30,"");
     logDebug("today+30="+d);
     d = getDay(-30);
     logDebug("today-30="+d);

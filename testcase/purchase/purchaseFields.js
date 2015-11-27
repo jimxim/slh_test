@@ -359,8 +359,8 @@ function purchaseTypeField(key) {
     var f;
     switch (key) {
     case "day1":
-    case "发生日期从":
-        f = new TField("发生日期从", TF_DT, 0, "2015-9-11");
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
     case "到":
@@ -444,8 +444,8 @@ function purchaseOrderField(key, show) {
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     case "provider":
-    case "供应商":
-        f = new TField("供应商", TF_AC, 2, "a", -1, 0);
+    case "厂商":
+        f = new TField("厂商", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
