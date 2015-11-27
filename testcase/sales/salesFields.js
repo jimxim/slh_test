@@ -156,7 +156,7 @@ function salesQueryParticularField(key, show) {
 }
 // 按挂单
 function salesQueryGuaDanFields(keys, show) {
-    return getTFields("salesQueryGuaDanFields", keys, show);
+    return getTFields("salesQueryGuaDanField", keys, show);
 }
 function salesQueryGuaDanField(key, show) {
     var f;
@@ -180,8 +180,8 @@ function salesQueryGuaDanField(key, show) {
         f = new TField("日期从", TF_DT, 2, "2015-9-11");
         break;
     case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 3, getToday());
+    case "日期到":
+        f = new TField("日期到", TF_DT, 3, getToday());
         break;
     case "shop":
     case "门店":

@@ -21,7 +21,7 @@ function test000() {
 // testCheckAll();
 //	 testCheck001();
 // testSalesNoColorSizeAll();
-// testSalesNoColorSizeElseAll();
+ testSalesNoColorSizeElseAll();
 	testSalesNoColorSizeElse001();
 // logout();
 // run("test", "testGoodsBrandFields");
