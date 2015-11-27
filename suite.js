@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
- testTemp();
+// testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -31,7 +31,7 @@ function test000All() {
 //    testCheckMenuAll();
 
 // }
-// testSalesNoColorSizeElse001();
+ testSalesNoColorSizeElse001();
 }
 
 function debugElements() {
