@@ -662,6 +662,7 @@ function editSalesBillField(key, show) {
 	var l = getTableViews().length;
 	var f, staffTFindex = getValueFromCacheF1("getStaffTFindex");
 	var cardTFindex = getValueFromCacheF1("getCardTFindex");
+	var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
 	switch (key) {
 	case "customer":
 	case "客户":
@@ -700,7 +701,7 @@ function editSalesBillField(key, show) {
 		f = new TField("备注", TF, cardTFindex+3, "123"); // 10
 		break;
     case "汇款":
-        f = new TField("汇款", TF, cardTFindex+5, 0,"NoNeedReturn"); // 12
+        f = new TField("汇款", TF, totalNumTFindex+2, 0,"NoNeedReturn"); // 12
         break;
 	case "code":
 	case "款号":
@@ -724,6 +725,9 @@ function getStaffTFindex() {
 }
 function getCardTFindex() {
     return getEditSalesTFindex("客户,厂商","刷卡");
+}
+function getTotalNumTFindex() {
+    return getEditSalesTFindex("客户,厂商","总数");
 }
 function getEditSalesTFindex(title1,title2) {
     var stCustomerIndex =-1, stStaffIndex = 0,ret=0;
