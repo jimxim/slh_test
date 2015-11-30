@@ -11,9 +11,10 @@ function testSalesNoColorSizeElse001() {
     // run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_5");
     // run("【销售开单】按挂单--正常功能检查", "test170303_1");
     // run("【销售开单】按挂单--正常功能检查", "test170303_2");
-    // run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");／／
+     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");
     // run("【销售开单－销售汇总-按金额汇总】清除功能", "test170307");
-    run("【销售开单－销售汇总-按金额汇总】翻页_排序_汇总", "test170307_1");
+//    run("【销售开单－销售汇总-按金额汇总】翻页_排序_汇总", "test170307_1");
+    
 
 }
 function testSalesNoColorSizeElseAll() {
@@ -2588,20 +2589,20 @@ function test170305() {
     return ret1 && ret2 && ret3;
 }
 function test170306() {
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-    // "现金" : "1500" };
-    // editSalesBillNoColorSize(json);
+    tapMenu("销售开单", "开  单+");
+     var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+     "现金" : "1500" };
+     editSalesBillNoColorSize(json);
 
-    // tapMenu("销售开单", "按汇总", "按金额汇总");
-    // var keys = { "day1" : getToday(), "day2" : getToday() };
-    // var fields = salesCodeFields(keys);
-    // query(fields);
-    // var qr = getQR();
-    // var a = Number(qr.data[0]["现金"]);
-    // var a1 = Number(qr.data[0]["刷卡"]);
-    // var a2 = Number(qr.data[0]["汇款"]);
-    // var a3 = Number(qr.data[0]["代收"]);
+     tapMenu("销售开单", "按汇总", "按金额汇总");
+     var keys = { "day1" : getToday(), "day2" : getToday() };
+     var fields = salesCodeFields(keys);
+     query(fields);
+     var qr = getQR();
+     var a = Number(qr.data[0]["现金"]);
+     var a1 = Number(qr.data[0]["刷卡"]);
+     var a2 = Number(qr.data[0]["汇款"]);
+     var a3 = Number(qr.data[0]["代收"]);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
@@ -2609,22 +2610,22 @@ function test170306() {
         "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
     editSalesBillNoColorSize(json);
 
-    // tapMenu("销售开单", "按汇总", "按金额汇总");
-    // var keys1 = { "day1" : getToday(), "day2" : getToday() };
-    // var fields1 = salesCodeFields(keys1);
-    // query(fields1);
-    // var qr1 = getQR();
-    // var b = Number(qr1.data[0]["现金"]);
-    // var b1 = Number(qr1.data[0]["刷卡"]);
-    // var b2 = Number(qr1.data[0]["汇款"]);
-    // var b3 = Number(qr1.data[0]["代收"]);
-    // var b4 = Number(qr1.data[0]["日期"]);
-    //
-    // var ret = isAnd(isEqual("500", sub(b, a)), isEqual("500", sub(b1, a1)),
-    // isEqual("400", sub(b2, a2)), isEqual("100", sub(b3, a3)), isEqual(
-    // getToday(""), b4));
-    //
-    // return ret;
+     tapMenu("销售开单", "按汇总", "按金额汇总");
+     var keys1 = { "day1" : getToday(), "day2" : getToday() };
+     var fields1 = salesCodeFields(keys1);
+     query(fields1);
+     var qr1 = getQR();
+     var b = Number(qr1.data[0]["现金"]);
+     var b1 = Number(qr1.data[0]["刷卡"]);
+     var b2 = Number(qr1.data[0]["汇款"]);
+     var b3 = Number(qr1.data[0]["代收"]);
+     var b4 = Number(qr1.data[0]["日期"]);
+    
+     var ret = isAnd(isEqual("500", sub(b, a)), isEqual("500", sub(b1, a1)),
+     isEqual("400", sub(b2, a2)), isEqual("100", sub(b3, a3)), isEqual(
+     getToday(""), b4));
+    
+     return ret;
 }
 function test170307() {
     // tapMenu("销售开单", "开 单+");
