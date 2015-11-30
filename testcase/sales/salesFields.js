@@ -610,7 +610,7 @@ function salesTypeField(key, show) {
 	return f;
 }
 
-// 按供应商汇总
+// 按厂商汇总
 function testSalesProviderFields() {
 	var keys = [ "provider", "day1", "day2" ];
 	var fields = salesProviderFields(keys);
