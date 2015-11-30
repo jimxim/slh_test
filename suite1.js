@@ -7,9 +7,7 @@
 // 总经理
 function test000All() {
 	debug = true;
-
-
-    run("【销售订货—按缺货查】查询_清除", "test16_Stockout_2");
+	run("下拉框","testGoods002");
 }
 
 // 货品管理
@@ -17,12 +15,22 @@ function setGoods001Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/省代价格模式/不支持自动生成款号/新增界面格式—老模式", "goodsParams001");
+        run("均色均码/省代价格模式/价格模式2/不支持自动生成款号/新增界面格式—老模式", "goodsParams001");
        logout();
     }
 }
 
-// 翻页/排序/汇总/条件查询/清除/下拉框
+
+// 中洲店总经理登陆，为test000Goods001准备数据
+function test000Goods001Prepare(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testGoods001Prepare();
+       logout();
+    }
+  }
+// 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Goods001() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
@@ -31,6 +39,7 @@ function test000Goods001() {
      logout();
   }
 }
+
 
 // 往来管理
 // 翻页/排序/汇总/条件查询/清除/下拉框
@@ -85,6 +94,24 @@ function test000SalesOrder001() {
   }
 }
 
+// 货品管理
+function setGoods002Params(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("均色均码/省代价格模式/价格模式5/不支持自动生成款号/新增界面格式—老模式", "goodsParams002");
+       logout();
+    }
+}
+// 款号名称模糊查询、款号下拉列表验证产品折扣
+function test000Goods002() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoods002();
+     logout();
+  }
+}
 
 
 

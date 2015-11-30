@@ -738,6 +738,10 @@ function goodsBrandField(key, show) {
 	case "名称":
 		f = new TField("名称", TF, 0, "a");
 		break;
+	  case "stop":
+	    case "是否停用":
+	        f = new TField("是否停用", TF_SC, 1, "是");
+	        break;
 	default:
 		logWarn("未知key＝" + key);
 	}

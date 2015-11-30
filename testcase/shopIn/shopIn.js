@@ -191,7 +191,7 @@ function test140001_1() {
  * 做调入单
  */
 function editShopInFlitting() {
-    var f = new TField("操作人密码", TF_S, 0, "000000");
+    var f = new TField("接收人密码", TF_S, 0, "000000");
     var fields = [ f ];
     setTFieldsValue(window, fields);
 

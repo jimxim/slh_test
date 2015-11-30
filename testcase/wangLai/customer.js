@@ -82,7 +82,7 @@ function test110001_1() {
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("地址");
-    ret = ret && sortByTitle("传真号");// 有问题
+    ret = ret && sortByTitle("传真号");
     ret = ret && sortByTitle("当前积分", IS_NUM);
     ret = ret && sortByTitle("上级客户");
     ret = ret && sortByTitle("备注");
@@ -853,7 +853,8 @@ function test110032() {
 function test110033() {
     tapMenu("往来管理", "客户活跃度");
     query();
-    var ret = true;
+    var ret = goPageCheckField("名称");
+
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -973,7 +974,7 @@ function test110036() {
     ret1 = ret1 && sortByTitle("名称");
     ret1 = ret1 && sortByTitle("电话");
     ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
-    ret1 = ret1 && sortByTitle("最近兑换日期");
+    ret1 = ret1 && sortByTitle("最近兑换日期",IS_DATE2);
 
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
@@ -1190,14 +1191,12 @@ function test110041() {
 // 翻页，查询，清除，排序，汇总
 function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
-    var keys = { "厂商" : "vell" };
-    var fields = queryProviderShopAccountFields(keys);
-    query(fields);
+    query();
     // 翻页
     var ret = goPageCheckField("名称");
 
-    keys = { "厂商" : "vell" };
-    fields = queryCustomerProviderAccountFields(keys);
+    var keys = { "厂商" : "vell" };
+    var fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     var qr = getQR();
     ret = ret && isEqual("Vell", qr.data[0]["名称"]) && isEqual(1, qr.total)

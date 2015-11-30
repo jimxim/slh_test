@@ -1,12 +1,11 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
-
 /**
- * 翻页/排序/汇总/条件查询/清除/下拉框
+ * 翻页/排序/汇总/条件查询/清除/数据
  */
 function testGoods001() {
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
-    run("【货品管理-当前库存】当前库存_条件查询_清除按钮_下拉框", "test100001_2");
+    run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
     run("【货品管理-库存分布】库存分布", "test100006");
@@ -22,8 +21,33 @@ function testGoods001() {
     run("【货品管理-基本设置】所有品牌", "test10_brand");
     run("【货品管理-基本设置】所有尺码组", "test10_size_group");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
+    run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
     // run("【货品管理-当前库存】库存调整", "test100090");//未完成
+    run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
+            "test100075_100076_100077_100078");
+    run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
+            "test100082_100083_100084_100085");
 
+}
+
+/**
+ * 款号名称模糊查询 款号下拉列表验证产品折扣
+ */
+function testGoods002() {
+    tapMenu("货品管理", "当前库存");
+    var ret = isAnd(dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(1,"名称","30"));
+    
+    tapMenu("货品管理", "款号库存");
+    ret = isAnd(ret , dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(1,"名称","30"));
+
+    tapMenu("货品管理", "货品进销存");
+    ret =isAnd(ret , dropDownListCheckField(1, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(2,"名称","30"));
+
+    tapMenu("货品管理", "货品查询");
+    ret = isAnd(ret,fuzzyQueryCheckField(1,"名称","30"));
+
+
+    return ret;
 }
 
 function testGoodsGoodsAll() {
@@ -31,7 +55,6 @@ function testGoodsGoodsAll() {
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
 
     // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
-
 
     // run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
 
@@ -54,14 +77,8 @@ function testGoodsGoodsAll() {
     // run("【货品管理-更多-缺货统计】最小库存为0不计入缺货统计", "test100086");
     // run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
     // "test100087_100088_100089");
-    // run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-    // "test100075_100076_100077_100078");
-    // run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-    // "test100082_100083_100084_100085");
-
 
     // run("【货品管理-更多-库存调整单】查询", "test100104");
-
 
     // }
 
@@ -101,9 +118,8 @@ function testGoodsGoodsAll() {
 
 }
 
-
 /**
- * 均色均码 省代价格模式 不支持自动生成款号 新增界面格式——老模式
+ * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式
  */
 function goodsParams001() {
 
@@ -114,6 +130,39 @@ function goodsParams001() {
 
     qo = { "备注" : "货品建款的价格模式" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "新增界面格式" };
+    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+
+/**
+ * 均色均码 省代价格模式 价格模式5 不支持自动生成款号 新增界面格式——老模式
+ */
+function goodsParams002() {
+
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "货品建款的价格模式" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "自动生成款号" };
@@ -216,7 +265,7 @@ function setTagprice_invperson_1() {
     return ret;
 }
 
-// 翻页检验，检验序号和title的内容和第2页有没有相同的内容，
+// 翻页检验，检验序号和title的内容和第2页有没有重复
 // 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
 function goPageCheckField(title) {
     var qr = getQR();
@@ -268,11 +317,100 @@ function goPageCheckField(title) {
         scrollPrevPage();
 
     } else {
-        ret = true;
-        logDebug("总页码数=" + totalPageNo + "   跳过翻页验证");
+        tapButton(window, CLEAR);
+        qr = getQR();
+        totalPageNo = qr.totalPageNo;
+        if (totalPageNo > 1) {
+            goPage(2, qr);
+            qr = getQR();
+            ret = ret && isEqual("16", qr.data[0]["序号"])
+                    && isEqual("2", qr.curPageNo);
+
+            scrollPrevPage();
+            delay();
+            qr = getQR();
+            ret = ret && isEqual("1", qr.data[0]["序号"])
+                    && isEqual("1", qr.curPageNo);
+
+            scrollNextPage();
+            delay();
+            qr = getQR();
+            ret = ret && isEqual("16", qr.data[0]["序号"])
+                    && isEqual("2", qr.curPageNo);
+
+            scrollPrevPage();
+
+        } else {
+            logDebug("数据不足,翻页验证跳过")
+        }
+
     }
 
     return ret;
+}
+
+/**
+ * 下拉列表验证
+ * @param index 静态文本下标
+ * @param value 输入值
+ * @param expected 希望显示的内容
+ */
+function dropDownListCheckField(index, value, expected) {
+    var ret = false;
+    var f = new TField("款号", TF_AC, index, value, -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, expected)) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    return ret;
+}
+
+/**
+ * 模糊查询验证
+ * @param index 静态文本下标
+ * @param title
+ * @param value 输入值
+ */
+function fuzzyQueryCheckField(index,title, value) {
+    var f = new TField("名称", TF, 1, value);
+    var fields = [ f ];
+    query(fields);
+    var qr=getQR();
+    var ret=true;
+    var value1=value.toUpperCase();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if ((!isIn(qr.data[i][title], value)) || (!isIn(qr.data[i][title],value1))){
+              ret=false;
+              break;
+          }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return ret;
+}
+
+/**
+ * 中洲店总经理登陆，为test000Goods001准备其他店的数据
+ */
+function testGoods001Prepare() {
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "常青店", "操作人密码" : "000000",
+        "明细" : [ { "货品" : "jkk", "数量" : "50" } ] };
+    editShopOutDecruitIn(json);
+
 }
 
 // 翻页_排序_汇总
@@ -376,6 +514,7 @@ function test100001_3() {
     saveAndAlertOk();
     delay();
     tapButton(window, RETURN, 10);
+    tapReturn();
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
@@ -390,9 +529,10 @@ function test100001_3() {
         "明细" : [ { "货品" : r, "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
-    // 新增货品时没有返回
-    tapMenu("货品管理");
-    tapButton(window, RETURN);
+    // tapMenu("门店调入", "在途调拨");
+    // query();
+    // tapFirstText();
+    // editShopInFlitting();
 
     tapMenu("货品管理", "当前库存");
     keys = { "门店" : "常青店" };
@@ -440,6 +580,47 @@ function test100001_3() {
 
     logDebug("   ret1=" + ret1 + "   ret2=" + ret2);
     return ret1 && ret2 && ret3;
+}
+
+/**
+ * 名称模糊查询 款号下拉列表验证
+ * @param n1为款号的下标
+ * @param n2为名称的下标
+ */
+function testGoods002Field(n1, n2) {
+    var i, j;
+    var ret = false;
+    var f = new TField("款号", TF_AC, n1, "303", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "3035,jkk,200元,1,Adidas")) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    f = new TField("款号名称", TF, n2, "303");
+    var fields = [ f ];
+    query(fields);
+    var qr = getQR();
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "303")) {
+                ret = false;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return ret;
 }
 
 function test100004() {
@@ -554,13 +735,12 @@ function test100005_3() {
     saveAndAlertOk();
     delay();
     tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("货品管理");
-    tapButton(window, RETURN);
     tapMenu("货品管理", "款号库存");
     keys = { "款号" : r, "门店" : "常青店" };
     fields = queryGoodsCodeStockFields(keys);
@@ -900,9 +1080,6 @@ function test100010_100011_100013() {
     var r = "g" + getTimestamp(8);
     addGoodsByCodeName(r);
 
-    tapMenu("货品管理");
-    tapButton(window,RETURN);
-    
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : r };
     var qFields = queryGoodsFields(qKeys);
@@ -1611,7 +1788,7 @@ function addGoodsByCodeName(r) {
     saveAndAlertOk();
 
     delay(2);
-    tapButton(window, RETURN);
+    tapReturn();
 }
 
 function test100054_1() {
@@ -2485,7 +2662,6 @@ function test100082_100083_100084_100085() {
     return ret;
 }
 
-// 第一次跑也许会报错
 function test10_price() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var ret = true;
@@ -2493,15 +2669,17 @@ function test10_price() {
     // debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
+    delay();
     ret = ret && sortByTitle("进货价比例", IS_NUM);
-
-    if(ret==false){
-        ret = true; 
+    // 第一次跑也许会报错
+    if (ret == false) {
+        ret = true;
         ret = ret && sortByTitle("名称");
         ret = ret && sortByTitle("启用");
+        delay();
         ret = ret && sortByTitle("进货价比例", IS_NUM);
     }
-    
+
     return ret;
 }
 
@@ -2631,7 +2809,24 @@ function test10_brand() {
         }
     }
 
-    keys = { "名称" : "1010pp", "是否停用" : "否 " };
+    keys = { "名称" : "1010pp" };
+    fields = goodsBrandFields(keys);
+    query(fields);
+    tapFirstText();
+    tapButtonAndAlert(STOP);
+
+    keys = { "名称" : "1010pp", "是否停用" : "是" };
+    fields = goodsBrandFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
+            && isEqual("1", qr.totalPageNo);
+
+    tapFirstText();
+    tapButtonAndAlert(START);
+
+    keys = { "名称" : "1010pp", "是否停用" : "否" };
+    fields = goodsBrandFields(keys);
     query(fields);
     qr = getQR();
     ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
@@ -2684,11 +2879,11 @@ function test10_discount() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("进货价折扣", IS_NUM);
-//    ret = ret && sortByTitle("零批价", IS_NUM);
-//    ret = ret && sortByTitle("打包价", IS_NUM);
-//    ret = ret && sortByTitle("大客户价", IS_NUM);
-//    ret = ret && sortByTitle("Vip价格", IS_NUM);
-    logDebug("ret="+ret);
+    // ret = ret && sortByTitle("零批价", IS_NUM);
+    // ret = ret && sortByTitle("打包价", IS_NUM);
+    // ret = ret && sortByTitle("大客户价", IS_NUM);
+    // ret = ret && sortByTitle("Vip价格", IS_NUM);
+    logDebug("ret=" + ret);
 
     var keys = { "品牌" : "1010pp" };
     var fields = goodsBrandDiscountFields(keys);
@@ -2717,10 +2912,6 @@ function test100090() {
     // tapButton(winodw, RETURN);
     // tapMenu2("当前库存");
     // }
-
-    // 新增货品时没有返回
-    tapMenu("货品管理");
-    tapButton(window, RETURN);
 
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : r };
