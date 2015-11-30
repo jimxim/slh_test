@@ -2655,48 +2655,47 @@ function test170307_1() {
         "特殊货品" : { "抹零" : 100, "打包费" : 100 } };
     editSalesBillNoColorSize(json);
 
-//    tapMenu("销售开单", "按汇总", "按金额汇总");
-//    var keys = { "日期从" : getDay(-1), "到" : getToday() };
-//    var fields = salesPriceFields(keys);
-//    setTFieldsValue(window, fields);
-//    query(fields);
-//    // 点击翻页
-//    var ret = goPageCheckField("日期");
-//
-//    var ret = ret && sortByTitle("日期");
-//    ret = ret && sortByTitle("现金", IS_NUM);
-//    ret = ret && sortByTitle("刷卡", IS_NUM);
-//    ret = ret && sortByTitle("汇款", IS_NUM);
-//    ret = ret && sortByTitle("代收", IS_NUM);
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    var keys = { "日期从" : getDay(-1), "到" : getToday() };
+    var fields = salesPriceFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+    // 点击翻页
+    var ret = goPageCheckField("日期");
+
+    var ret = ret && sortByTitle("日期");
+    ret = ret && sortByTitle("现金", IS_NUM);
+    ret = ret && sortByTitle("刷卡", IS_NUM);
+    ret = ret && sortByTitle("汇款", IS_NUM);
+    ret = ret && sortByTitle("代收", IS_NUM);
 //
 //    logDebug("ret=" + ret);
-//
-//    query();
-//    var qr = getQR();
-//    var sum1 = 0;
-//    var sum2 = 0;
-//    var sum3 = 0;
-//    var sum4 = 0;
-//
-//    var qr = getQR(window, getScrollView(), "序号", 20);
-//    var totalPageNo = qr.totalPageNo;
-//    for (var j = 1; j <= totalPageNo; j++) {
-//        for (var i = 0; i < qr.curPageTotal; i++) {
-//            sum1 += Number(qr.data[i]["现金"]);
-//            sum2 += Number(qr.data[i]["刷卡"]);
-//            sum3 += Number(qr.data[i]["汇款"]);
-//            sum4 += Number(qr.data[i]["代收"]);
-//        }
-//        if (j < totalPageNo) {
-//            scrollNextPage();
-//            qr = getQR();
-//        }
-//    }
-//    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-//            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"]));
-//
+
+    query();
+    var qr = getQR();
+    var sum1 = 0;
+    var sum2 = 0;
+    var sum3 = 0;
+    var sum4 = 0;
+    
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["现金"]);
+            sum2 += Number(qr.data[i]["刷卡"]);
+            sum3 += Number(qr.data[i]["汇款"]);
+            sum4 += Number(qr.data[i]["代收"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
+            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],sum4));
+
 //    logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3 + "sum4=" + sum4);
-//    return ret && ret1;
+    return ret && ret1;
 }
 
 function test170308() {
