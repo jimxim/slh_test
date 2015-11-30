@@ -255,12 +255,12 @@ function salesCodeField(key, show) {
 	var f;
 	switch (key) {
 	case "day1":
-	case "发生日期从":
+	case "日期从":
 		f = new TField("日期从", TF_DT, 0, "2015-9-11");
 		break;
 	case "day2":
 	case "日期到":
-		f = new TField("到", TF_DT, 1, getToday());
+		f = new TField("日期到", TF_DT, 1, getToday());
 		break;
 	case "shop":
     case "门店":
@@ -274,12 +274,12 @@ function salesCodeField(key, show) {
         }
         break;
 	case "market1":
-	case "上架日期从":
-		f = new TField("上架日期从", TF_DT, 4, "2015-8-11");
+	case "上架从":
+		f = new TField("上架从", TF_DT, 4, "2015-8-11");
 		break;
 	case "market2":
-	case "上架日期到":
-		f = new TField("到", TF_DT, 5, "2015-8-16");
+	case "上架到":
+		f = new TField("上架到", TF_DT, 5, "2015-8-16");
 		break;
 	case "color":
 	case "颜色":
