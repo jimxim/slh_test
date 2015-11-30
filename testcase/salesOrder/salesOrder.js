@@ -896,7 +896,7 @@ function test160020_160022() {
     var ret = isEqualQRData1Object(qr, expected);
 
     tapButton(window, CLEAR);
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 7; i++) {
         if (i == 1 || i == 2) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -941,7 +941,7 @@ function test160033() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("款号");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1291,7 +1291,7 @@ function test160044() {
                     qr.data[0]["小计"]));
 
     tapButton(window, CLEAR);
-    ret = isAnd(ret, isEqual(getDay(-3), getTextFieldValue(window, 0)),
+    ret = isAnd(ret, isEqual(getDay(-30), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)));
 
@@ -1553,8 +1553,8 @@ function test16_Stockout_2() {
 
     tapMenu("销售订货", "按缺货查");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "订货日期从" : getToday(),
-        "订货日期到" : getToday(), "厂商" : "Vell", "上架从" : getday(-700), "上架到" : getToday(),
-        "门店" : "常青店", "品牌" : "Adidas", "季节" : "春节" };
+        "订货日期到" : getToday(), "厂商" : "Vell", "上架从" : getDay(-700), "上架到" : getToday(),
+        "门店" : "常青店", "品牌" : "Adidas", "季节" : "春季" };
     var fields = salesOrderQueryByStockoutFields(keys);
     query(fields);
     var qr = getQR();

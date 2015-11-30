@@ -13,7 +13,7 @@ function test000All() {
 // testSalesBillAll();
 // testEditSalesBillAll();
 	
-// testTemp();
+ testTemp();
 // testPurchaseAll();
 
 // testWanLaiCustomerAll();
@@ -27,11 +27,12 @@ function test000All() {
 // testStatisticAnalysisAll();
 // testGoodsGoodsAll();
 // logout();
-//    testSalesNoColorSizeElseAll();
-//    testCheckMenuAll();
+// testSalesNoColorSizeElseAll();
+// testCheckMenuAll();
 
 // }
- testSalesNoColorSizeElse001();
+// testSalesNoColorSizeElse001();
+
 }
 
 function debugElements() {
@@ -40,7 +41,7 @@ function debugElements() {
 }
 
 function testTemp() {
- testDate();
+// testDate();
 // testGetOpTime();
 // testTapKeyboardHide();
 // getStaffTFindex() ;
@@ -53,45 +54,56 @@ function testTemp() {
 // testScroll();
 // testGoPage() ;
 // testGetDay24();
-//    testSortByTitle();
-//    testIn2();
-//    testQR2();
-//    testStatistics1();
-//    testQR();
-//    testTextfieldDate();
+// testSortByTitle();
+// testIn2();
+// testQR2();
+// testStatistics1();
+// testQR();
+// testTextfieldDate();
+// testPay();
+ testPay();
+}
+function testPay() {
+    tapMenu("销售开单", "开  单+");
+    var o = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+            "代收" : { "物流商" : "yt", "运单号" : "1234", "代收金额" : "100" }, "现金" : "500",
+            "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
+//    o = { "客户" : "ls",  "onlytest":"yes" };
+    editSalesBillNoColorSize(o);
+
 }
 function testTextfieldDate() {
     tapMenu("销售开单", "收款单");
     var value = "2015-10-12";
     var tf = window.textFields()[0].textFields()[0];
-//    tap(tf);
+// tap(tf);
     tf.setValue(value);
 
     tap(window.popover().navigationBar().rightButton());
-//    tapNaviRightButton();
-//    debugElementTree(window);
+// tapNaviRightButton();
+// debugElementTree(window);
 }
 function testQR() {
     var qr = getQResult();
     debugQResult(qr);
 }
 function testStatistics1() {
-//    tapMenu("统计图表", "按门店");
-//    delay();
-//    debugElementTree(window);
-//    delay();
-//    debugElementTree(window);
-//    sortByTitle("客户") ;
-//    var qr = getQResult();
-//    var view1 = getScrollView(-1, 0);
-//    debugElementTree(view1);
-//    var qr = getQResult2(view1, "批次", "操作人");
-//    debugQResult(qr);
+// tapMenu("统计图表", "按门店");
+// delay();
+// debugElementTree(window);
+// delay();
+// debugElementTree(window);
+// sortByTitle("客户") ;
+// var qr = getQResult();
+// var view1 = getScrollView(-1, 0);
+// debugElementTree(view1);
+// var qr = getQResult2(view1, "批次", "操作人");
+// debugQResult(qr);
     var t1 = getTimestamp();
     var xa1 = [];
     var data = {};
-//    logDebug("xa1="+xa1);
-//    debugObject(data);
+// logDebug("xa1="+xa1);
+// debugObject(data);
     var texts = getStaticTexts(getScrollView());
     for(var i=0;i<texts.length;i++) {
         var text1 = texts[i];
@@ -109,16 +121,16 @@ function testStatistics1() {
     for(var i in data) {
         debugObject(data[i],i);
     }
-//    logDebug("xa1="+xa1);
-//    debugObject(data);
-//    debugElementTree(window);
+// logDebug("xa1="+xa1);
+// debugObject(data);
+// debugElementTree(window);
     var t2 = getTimestamp();
     logDebug("t2-t1="+(t2-t1));
 }
 function testSortByTitle() {
     tapMenu("货品管理", "当前库存");
     var ok = sortByTitle("颜色");
-//    var ok = CC2PY("货品管理");
+// var ok = CC2PY("货品管理");
     logDebug("ok="+ok);
     ok = CC2PY("002夹克");
     logDebug("ok="+ok);
@@ -131,7 +143,7 @@ function testIn2() {
     var key = "补货退货,继续开单保存";
     var ok = isIn2(txt,key);
     logDebug("ok="+ok);
-//    debugElementTree(window);
+// debugElementTree(window);
 
 }
 function testQR2() {

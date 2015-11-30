@@ -4,7 +4,7 @@
  */
 
 function testCheckMenuAll() {
-    alertMsgExKeys = [ "确定返回", "确定操作", "成功" ];
+    alertMsgExKeys = [ "确定返回", "确定操作", "成功", "只有总经理才能汇总", "该模块未开通" ];
     run("货品管理", "testCheckGoods");
     run("往来管理", "testCheckWangLai");
     run("采购入库", "testCheckPurchase");
@@ -80,7 +80,7 @@ function testCheckPurchase() {
     tapMenu1("采购入库");
     menus2 = { "按批次查" : {}, "按明细查" : {}, "新增入库+" : {}, "批量入库+" : {},
         "按订货入库" : {} };
-    // ret = isAnd(ret, checkMenus(menus2));
+    ret = isAnd(ret, checkMenus(menus2));
 
     tapButtonAndAlert("刷新入库+", OK);
     delay();
@@ -180,9 +180,9 @@ function testCheckSales() {
     ret = isAnd(ret, checkMenus(menus2));
 
     menu2 = "按汇总";
-    menus3 = { "按金额汇总" : {}, "按款号汇总" : {}, "按退货汇总" : {}, "按客户汇总" : {},
+    menus3 = { "按金额汇总" : {}, "按款号汇总" : {}, "按退货汇总" : {}, "按店员汇总" : {},
         "按客户销售" : {}, "按客户未结" : {}, "按客户上货" : {}, "按款号上货" : {}, "客户对账单" : {},
-        "按类别汇总" : {}, "按供应商汇总" : {} };
+        "按类别汇总" : {}, "按厂商汇总" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
     menu2 = "更多.";
@@ -300,6 +300,9 @@ function hasAlerts() {
 }
 
 function checkMenus(menus, menu2) {
+    // 财务员只有采购新增入库时，会直接进入开单界面，导致一个二级菜单也点不到，所以这儿先尝试返回
+    tapReturn();
+
     var msg = gMenu1;
     var ret = true;
     for ( var i in menus) {
@@ -321,11 +324,7 @@ function checkMenus(menus, menu2) {
                 tapNaviLeftButton();
             }
             tapButton(window, QUERY);
-            var btn = window.buttons()[RETURN];
-            if (isUIAButton(btn)) {
-                tapButtonAndAlert(RETURN, OK);
-                delay();
-            }
+            tapReturn();
         }
     }
 
