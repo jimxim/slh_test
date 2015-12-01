@@ -921,22 +921,22 @@ function salesQueryLogisticsField(key,show) {
 	case "日期到":
 		f = new TField("到", TF_DT, 2, getToday());
 		break;
+	case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 3, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("到", TF, 4, "20");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 5, "常青店");
+        break;
 	case "logistics":
 	case "物流商":
-		f = new TField("物流商", TF_SC, 3, "顺丰快递");
-		break;
-	case "batch1":
-	case "批次从":
-		f = new TField("批次从", TF, 4, "1");
-		break;
-	case "batch2":
-	case "批次到":
-		f = new TField("到", TF, 5, "20");
-		break;
-	case "shop":
-	case "门店":
-		f = new TField("门店", TF_SC, 6, "常青店");
-		break;
+		f = new TField("物流商", TF_SC, 6, "顺丰快递");
+		break;	
 	case "shipno":
 	case "运单号":
 		f = new TField("运单号", TF, 7, "12345678");
@@ -945,6 +945,10 @@ function salesQueryLogisticsField(key,show) {
 	case "是否收款":
 		f = new TField("是否收款", TF_SC, 8, "否");
 		break;
+	case "invalid":
+    case "是否作废":
+        f = new TField("是否作废", TF_SC, 9, "正常");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -974,18 +978,26 @@ function salesCollectionField(key,show) {
 	case "批次到":
 		f = new TField("到", TF, 1, "20");
 		break;
+	case "logistics":
+    case "物流商":
+        f = new TField("物流商", TF_SC, 2, "顺丰快递");
+        break;  	
 	case "shop":
 	case "门店":
-		f = new TField("门店", TF_SC, 2, "常青店");
+		f = new TField("门店", TF_SC, 3, "常青店");
 		break;
 	case "day1":
 	case "日期从":
-		f = new TField("日期从", TF_DT, 3, "2015-9-11");
+		f = new TField("日期从", TF_DT, 4, "2015-9-11");
 		break;
 	case "day2":
 	case "日期到":
-		f = new TField("到", TF_DT, 4, getToday());
+		f = new TField("到", TF_DT, 5, getToday());
 		break;
+	case "invalid":
+    case "是否作废":
+        f = new TField("是否作废", TF_SC, 6, "否");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
