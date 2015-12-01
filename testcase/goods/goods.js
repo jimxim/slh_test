@@ -477,24 +477,9 @@ function test100001_1() {
     return ret;
 }
 
-// 条件查询，清除按钮,下拉框
+// 条件查询，清除按钮
 function test100001_2() {
     tapMenu("货品管理", "当前库存");
-    var i;
-    var ret1 = false;
-    var f = new TField("款号", TF_AC, 0, "303", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "3035,jkk,200元,Adidas")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
         "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
         "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否" };
@@ -507,7 +492,7 @@ function test100001_2() {
             && isEqual(qr.data[0]["核算金额"], qr.counts["核算金额"]);
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 11; i++) {
+    for (var i = 0; i < 11; i++) {
         if (i != 9) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -515,7 +500,7 @@ function test100001_2() {
         }
     }
 
-    return ret && ret1;
+    return ret ;
 }
 
 // 单据类型判定，还缺门店调入单
@@ -701,24 +686,9 @@ function test100005_1() {
     return ret;
 }
 
-// 条件查询，清除按钮,下拉框
+// 条件查询，清除按钮
 function test100005_2() {
     tapMenu("货品管理", "款号库存");
-    var i;
-    var ret1 = false;
-    var f = new TField("款号", TF_AC, 0, "303", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isEqual("3035,jkk,200元,Adidas", v)) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
         "季节" : "春季", "上架从" : "2015-01-01", "到" : getToday() }
     var fields = queryGoodsCodeStockFields(keys);
@@ -728,7 +698,7 @@ function test100005_2() {
             && isEqual(qr.data[0]["库存"], qr.counts["库存"]);
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 7; i++) {
+    for (var i = 0; i < 7; i++) {
         if (i != 6) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -736,7 +706,7 @@ function test100005_2() {
         }
     }
 
-    return ret && ret1;
+    return ret;
 }
 
 // 均色均码
@@ -1009,21 +979,6 @@ function test100008_1() {
 // 点击详细100009
 function test100008() {
     tapMenu("货品管理", "货品进销存");
-    var i;
-    var ret1 = false;
-    var f = new TField("款号", TF_AC, 1, "303", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "3035,jkk,200元,Adidas")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-
     var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "厂商" : "Vell",
         "上架从" : "2015-01-01", "到" : getToday(), "季节" : "春季", "品牌" : "Adidas" }
     var fields = queryGoodsInOutFields(keys);
@@ -1044,7 +999,7 @@ function test100008() {
     tapNaviLeftButton();
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 8; i++) {
+    for (var i = 0; i < 8; i++) {
         if (i != 5) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -1052,7 +1007,7 @@ function test100008() {
         }
     }
 
-    return ret && ret1;
+    return ret;
 }
 
 function test100009() {

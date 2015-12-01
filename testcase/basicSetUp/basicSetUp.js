@@ -24,8 +24,8 @@ function editCustomerBasicSetUp(name, keys) {
         tapMenu("往来管理", "新增客户+");
         setTFieldsValue(getScrollView(), fields);
         saveAndAlertOk();
-        delay(2);
-        tapButton(window, RETURN);
+        delay();
+        tapReturn();
     }
 
     query(qFields);
