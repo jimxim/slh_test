@@ -12,8 +12,8 @@ function test000() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
-// testPurchaseAll();
-//	testPurchase001();
+ testPurchaseAll();
+	testPurchase001();
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopOutAll();
@@ -21,8 +21,8 @@ function test000() {
 // testCheckAll();
 //	 testCheck001();
 // testSalesNoColorSizeAll();
- testSalesNoColorSizeElseAll();
-	testSalesNoColorSizeElse001();
+// testSalesNoColorSizeElseAll();
+//	testSalesNoColorSizeElse001();
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
