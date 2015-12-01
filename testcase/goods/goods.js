@@ -35,17 +35,21 @@ function testGoods001() {
  */
 function testGoods002() {
     tapMenu("货品管理", "当前库存");
-    var ret = isAnd(dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(1,"名称","30"));
-    
+    var ret = isAnd(dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),
+            fuzzyQueryCheckField(1, "款号", "30", "名称"));
+
     tapMenu("货品管理", "款号库存");
-    ret = isAnd(ret , dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(1,"名称","30"));
+    ret = isAnd(ret,
+            dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),
+            fuzzyQueryCheckField(1, "款号", "30", "名称"));
 
     tapMenu("货品管理", "货品进销存");
-    ret =isAnd(ret , dropDownListCheckField(1, "303", "3035,jkk,200元,1,Adidas"),fuzzyQueryCheckField(2,"名称","30"));
+    ret = isAnd(ret,
+            dropDownListCheckField(1, "303", "3035,jkk,200元,1,Adidas"),
+            fuzzyQueryCheckField(2, "款号", "30", "名称"));
 
     tapMenu("货品管理", "货品查询");
-    ret = isAnd(ret,fuzzyQueryCheckField(1,"名称","30"));
-
+    var ret = isAnd(ret, fuzzyQueryCheckField(1, "款号", "z", "名称"));
 
     return ret;
 }
@@ -379,27 +383,45 @@ function dropDownListCheckField(index, value, expected) {
  * @param index 静态文本下标
  * @param title
  * @param value 输入值
+ * @param title1 查询条件为款号名称时，对应标题为款号或名称
  */
-function fuzzyQueryCheckField(index,title, value) {
-    var f = new TField("名称", TF, 1, value);
+function fuzzyQueryCheckField(index, title, value, title1) {
+    var f = new TField("名称", TF, index, value);
     var fields = [ f ];
     query(fields);
-    var qr=getQR();
-    var ret=true;
-    var value1=value.toUpperCase();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if ((!isIn(qr.data[i][title], value)) || (!isIn(qr.data[i][title],value1))){
-              ret=false;
-              break;
-          }
+    var i, j;
+    var qr = getQR();
+    var ret1 = true;
+    var ret2 = true;
+    var value1 = value.toUpperCase();
+
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i][title], value)
+                    && !isIn(qr.data[i][title], value1)) {
+                ret1 = false;
+                break;
+            }
+            if (ret1 == false && isDefined(title1)) {
+                if (!isIn(qr.data[i][title1], value)
+                        && !isIn(qr.data[i][title1], value1)) {
+                    ret2 = false;
+                    break;
+                }
+                if (ret2 == true) {
+                    ret1 = true;
+                }
+            }
+            logDebug("ret=" + ret1);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
         }
     }
-    return ret;
+
+    tapButton(window, CLEAR);
+    return ret1;
 }
 
 /**
@@ -1885,7 +1907,6 @@ function test100058() {
     return ret;
 }
 
-// n为统一加减的值 m为统一乘的值
 function testGoodsPriceChangeField(keys, expected, All) {
     tapMenu("货品管理", "批量调价");
     var fields = goodsPricingFields(keys);
@@ -2563,6 +2584,8 @@ function test100075_100076_100077_100078() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
     var ret = goPageCheckField("款号");
+    //默认按超储数降序排序
+    ret = ret && compareQR("超储数", IS_NUM,"desc");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -2622,6 +2645,8 @@ function test100082_100083_100084_100085() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
     var ret = goPageCheckField("款号");
+    //默认按缺货数降序排序
+    ret = ret && compareQR("缺货数", IS_NUM,"desc");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");

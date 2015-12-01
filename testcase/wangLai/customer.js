@@ -8,6 +8,7 @@ function testCustomer001(){
     run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
     run("【往来管理-客户活跃度】客户活跃度", "test110033");
     run("【往来管理-积分查询】积分查询", "test110036");
+    run("【往来管理-积分查询】数据验证", "test110036_1");
     run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
     run("【往来管理-厂商账款】厂商门店账", "test110041");
     run("【往来管理-厂商账款】厂商总账", "test110042");
@@ -981,6 +982,17 @@ function test110036() {
     ret = ret && goPageCheckField("名称")
 
     return ret && ret1;
+}
+
+//数据验证
+function test110036_1(){
+    tapMenu("往来管理", "积分查询");
+    var key = { "客户" : "xw" };
+    var fields = queryCustomerScoreFields(key);
+    query(fields);
+    var qr=getQR();
+    
+    
 }
 
 function test110037() {
