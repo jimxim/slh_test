@@ -7,8 +7,7 @@
 // 总经理
 function test000All() {
 	debug = true;
-
-	run("积分查询数据验证","test110036_1");
+	run("挂单", "test120052");
 }
 
 /**

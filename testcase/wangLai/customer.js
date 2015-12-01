@@ -1445,21 +1445,9 @@ function test110047() {
 
 function test110048() {
     tapMenu("往来管理", "更多.", "客户回访");
-    var ret = true;
     query();
     var qr = getQR();
-    if (qr.totalPageNo > 1) {
-        goPage(2, qr);
-        qr = getQR();
-        ret = ret && isEqual("2", qr.curPageNo)
-                && isEqual("16", qr.data[0]["序号"]);
-
-        scrollPrevPage();
-        delay();
-        qr = getQR();
-        ret = ret && isEqual("1", qr.data[0]["序号"])
-                && isEqual("1", qr.curPageNo);
-    }
+    var ret=goPageCheckField("序号");
 
     // debugElementTree(getScrollView());
     ret = ret && sortByTitle("回访日期", IS_DATE2);
