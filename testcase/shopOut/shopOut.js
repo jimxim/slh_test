@@ -480,6 +480,7 @@ function editShopOutDecruitSave(o) {
         tapKeyboardHide();
     } else {
         // tapButton(window, RETURN);
-        tapButtonAndAlert(RETURN);
+//        tapButtonAndAlert(RETURN);
+        tapReturn();
     }
 }

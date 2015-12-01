@@ -535,7 +535,6 @@ function test100001_3() {
 
     saveAndAlertOk();
     delay();
-    tapButton(window, RETURN, 10);
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -756,7 +755,6 @@ function test100005_3() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     delay();
-    tapButton(window, RETURN);
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -1809,7 +1807,7 @@ function addGoodsByCodeName(r) {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
 
-    delay(2);
+    delay();
     tapReturn();
 }
 

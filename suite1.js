@@ -7,17 +7,15 @@
 // 总经理
 function test000All() {
 	debug = true;
-    run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-    "test100075_100076_100077_100078");
-run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-    "test100082_100083_100084_100085");
-// run("下拉框/模糊查询","testGoods002");
+
+	run("积分查询数据验证","test110036_1");
 }
 
-// 翻页/排序/汇总/条件查询/清除/下拉框/数据验证
-// setGoods001Params test000Goods001Prepare test000Goods001 test000Customer001
-// test000PurchaseOrder001 test000ShopOut001 test200ShopOut001
-// test000SalesOrder001
+/**
+ * 参数 setGoods001Params
+ * 准备数据 test000Goods001Prepare
+ * 用例 test000Goods001 test000Customer001 test000PurchaseOrder001 test000ShopOut001 test200ShopOut001 test000SalesOrder001
+ */
 function setGoods001Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -28,7 +26,7 @@ function setGoods001Params(){
 }
 
 
-// 中洲店总经理登陆，为test000Goods001准备数据
+// 中洲店总经理登陆，为常青店准备数据
 function test000Goods001Prepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
@@ -37,6 +35,7 @@ function test000Goods001Prepare(){
        logout();
     }
   }
+// 货品管理
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Goods001() {
     var p1 = {"角色":"总经理"};
@@ -48,7 +47,7 @@ function test000Goods001() {
 }
 
 // 往来管理
-// 翻页/排序/汇总/条件查询/清除/下拉框
+// 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Customer001() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
@@ -59,7 +58,7 @@ function test000Customer001() {
 }
 
 // 采购订货
-// 翻页/排序/汇总/条件查询/清除/下拉框
+// 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function  test000PurchaseOrder001() {
   var p1 = {"角色":"总经理"};
  var ok = login("000","000000",p1);
@@ -85,6 +84,7 @@ function test200ShopOut001(){
     var ok = login("200","000000",p1);
     if( ok ) {
         testShopIn001();
+        run("【往来管理-积分查询】数据验证", "test110036_2");
        logout();
     }   
 }
@@ -100,7 +100,11 @@ function test000SalesOrder001() {
   }
 }
 
-// 货品管理
+/**
+ * 参数 setGoods002Params
+ * 准备数据 
+ * 用例 test000Goods002 
+ */
 function setGoods002Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);

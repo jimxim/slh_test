@@ -984,15 +984,76 @@ function test110036() {
     return ret && ret1;
 }
 
-//数据验证
+//常青店积分查询数据验证
 function test110036_1(){
     tapMenu("往来管理", "积分查询");
+    var i,a,a1;
     var key = { "客户" : "xw" };
     var fields = queryCustomerScoreFields(key);
     query(fields);
     var qr=getQR();
+    var counts=Number(qr.counts["当前积分"]);
+    for (i = 0; i < qr.curPageTotal; i++) {
+      if(qr.data[i]["门店"]=="常青店"){
+          a=Number(qr.data[i]["当前积分"]);
+          break;
+      }else{
+          a=0;
+      }
+    }
     
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
     
+    tapMenu("往来管理", "积分查询");
+    query(fields);
+    qr=getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if(qr.data[i]["门店"]=="常青店"){
+            a1=Number(qr.data[i]["当前积分"]);
+            break;
+        }
+      }
+    var ret=isAnd(isEqual(counts+2000,qr.counts["当前积分"]),isEqual(a+2000,a1));
+    return ret;
+}
+
+//中洲店积分查询数据验证
+function test110036_2(){
+    tapMenu("往来管理", "积分查询");
+    var i,a,a1;
+    var key = { "客户" : "xw" };
+    var fields = queryCustomerScoreFields(key);
+    query(fields);
+    var qr=getQR();
+    var counts=Number(qr.counts["当前积分"]);
+    for (i = 0; i < qr.curPageTotal; i++) {
+      if(qr.data[i]["门店"]=="中洲店"){
+          a=Number(qr.data[i]["当前积分"]);
+          break;
+      }else{
+          a=0;
+      }
+    }
+    
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+    
+    tapMenu("往来管理", "积分查询");
+    query(fields);
+    qr=getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if(qr.data[i]["门店"]=="中洲店"){
+            a1=Number(qr.data[i]["当前积分"]);
+            break;
+        }
+      }
+    var ret=isAnd(isEqual(counts+2000,qr.counts["当前积分"]),isEqual(a+2000,a1));
+    return ret;
 }
 
 function test110037() {
