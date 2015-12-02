@@ -7,7 +7,9 @@
 // 总经理
 function test000All() {
 	debug = true;
-	run("挂单", "test120052");
+
+	testBasicSetUpAll();
+
 }
 
 /**

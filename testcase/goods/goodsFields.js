@@ -570,10 +570,10 @@ function testEditGoodsTypeFields() {
 	return true;
 }
 
-function editGoodsTypeFields() {
-	return getTFields("editGoodsTypeField", arguments);
+function editGoodsTypeFields(keys, show) {
+	return getTFields("editGoodsTypeField", keys, show);
 }
-function editGoodsTypeField(key) {
+function editGoodsTypeField(key, show) {
 	var f;
 	switch (key) {
 	case "name":

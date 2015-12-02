@@ -1506,6 +1506,7 @@ function test160071() {
     return ret;
 }
 
+//翻页/排序/汇总
 function test16_Stockout_1() {
     tapMenu("销售订货", "按缺货查");
     var keys = { "订货日期从" : getDay(-30), "订货日期到" : getToday() };
@@ -1546,24 +1547,44 @@ function test16_Stockout_1() {
     return ret && ret1;
 }
 
+// 条件查询/数据验证/清除
+// 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
 function test16_Stockout_2() {
+    var r = "g" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
+        "季节" : "春季", "厂商" : "vell" };
+    addGoods(keys);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按缺货查");
-    var keys = { "款号" : "3035", "款号名称" : "jkk", "订货日期从" : getToday(),
-        "订货日期到" : getToday(), "厂商" : "Vell", "上架从" : getDay(-700), "上架到" : getToday(),
-        "门店" : "常青店", "品牌" : "Adidas", "季节" : "春季" };
+    keys = { "款号" : r, "款号名称" : r, "订货日期从" : getToday(), "订货日期到" : getToday(),
+        "厂商" : "Vell", "上架从" : getToday(), "上架到" : getToday(), "门店" : "常青店",
+        "品牌" : "1010pp", "季节" : "春季" };
     var fields = salesOrderQueryByStockoutFields(keys);
     query(fields);
     var qr = getQR();
-    var expected = { "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码" };
+    var expected = { "款号" : r, "名称" : r, "颜色" : "均色", "尺码" : "均码",
+        "订货未发数" : "50", "库存(含在途)" : "10", "采购未到数" : "20", "缺货数" : "20" };
     var ret = isEqualQRData1Object(qr, expected);
+    ret = isAnd(ret, isEqual(qr.data[0]["订货未发数"], qr.counts["订货未发数"]), isEqual(
+            qr.data[0]["库存(含在途)"], qr.counts["库存(含在途)"]), isEqual(
+            qr.data[0]["采购未到数"], qr.counts["采购未到数"]), isEqual(
+            qr.data[0]["缺货数"], qr.counts["缺货数"]))
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 10; i++) {
-        if (i == 2 || i == 3|| i == 6) {
+        if (i == 2 || i == 3 || i == 6) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));

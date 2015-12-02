@@ -3,7 +3,7 @@
 /**
  * 翻页/排序/汇总/条件查询/清除/下拉框
  */
-function testCustomer001(){
+function testCustomer001() {
     run("【往来管理-客户查询】翻页_排序", "test110001_1");
     run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
     run("【往来管理-客户活跃度】客户活跃度", "test110033");
@@ -15,8 +15,6 @@ function testCustomer001(){
     run("【往来管理-物流商查询】物流商查询", "test110044");
     run("【往来管理-更多】客户回访", "test110048");
 }
-
-
 
 function testWanLaiCustomerAll() {
 
@@ -43,7 +41,6 @@ function testWanLaiCustomerAll() {
     // run("【往来管理】店长查看客户门店帐", "test110031");
     // run("【往来管理】开单员查看客户门店帐", "test110032");
 
-
     // run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
     // run("【往来管理】未拿货天数", "test110035");
 
@@ -63,11 +60,6 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
 }
 
-
-
-
-
-
 // 翻页_排序
 function test110001_1() {
     tapMenu("往来管理", "客户查询");
@@ -79,7 +71,7 @@ function test110001_1() {
     var fields = queryCustomerFields(keys);
     query(fields);
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("生日",IS_DATE2 );
+    ret = ret && sortByTitle("生日", IS_DATE2);
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("地址");
@@ -88,7 +80,7 @@ function test110001_1() {
     ret = ret && sortByTitle("上级客户");
     ret = ret && sortByTitle("备注");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期",IS_OPTIME);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
 
     return ret;
 }
@@ -124,7 +116,7 @@ function test110001() {
     }
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
-        "客户类别" : "VIP客户", "店员" : "2002" };
+        "客户类别" : "VIP客户", "店员" : "000" };
     qFields = queryCustomerFields(keys);
     query(qFields);
     qr = getQR();
@@ -142,21 +134,29 @@ function test110001() {
     return ret;
 }
 
+/**
+ * 新增客户
+ * @param keys
+ */
+function addCustomer(keys){
+    tapMenu("往来管理", "新增客户+");
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    
+    delay();
+    tapReturn();
+}
+
 // 店员TF_AC不会触发，待测试
 function test110004() {
     var r = "c" + getTimestamp(6);
-    tapMenu("往来管理", "新增客户+");
     var keys = [ "名称" ];
-    var fields = editCustomerFields(keys);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
+    addCustomer(keys);
 
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r };
-    fields = queryCustomerFields(keys);
+    var fields = queryCustomerFields(keys);
     query(fields);
 
     tapFirstText();
@@ -853,19 +853,21 @@ function test110032() {
 
 function test110033() {
     tapMenu("往来管理", "客户活跃度");
-    query();
+    var keys = { "门店" : "常青店" };
+    var fields = queryCustomerActiveFields(keys);
+    query(fields);
     var ret = goPageCheckField("名称");
+    logDebug("ret=" + ret);
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("店员");
-    ret = ret && sortByTitle("最后一次拿货");
+    ret = ret && sortByTitle("最后一次拿货", IS_DATE2);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
-    logDebug("ret=" + ret);
 
-    var keys = { "客户" : "xw", "门店" : "常青店" };
-    var fields = queryCustomerActiveFields(keys);
+    keys = { "客户" : "xw", "门店" : "常青店" };
+    fields = queryCustomerActiveFields(keys);
     query(fields);
     var qr = getQR();
     // 确定结果只有一条
@@ -873,8 +875,11 @@ function test110033() {
             && isEqual("小王", qr.data[0]["名称"]) && isEqual(1, qr.total)
             && isEqual(1, qr.totalPageNo);
 
-    // 不开单客户
-    keys = { "客户" : "bkdkh", "门店" : "常青店" };
+    var r = "c" + getTimestamp(6);
+    keys = [ "名称" ];
+    addCustomer(keys);
+    
+    keys = { "客户" : r, "门店" : "常青店" };
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();
@@ -975,7 +980,7 @@ function test110036() {
     ret1 = ret1 && sortByTitle("名称");
     ret1 = ret1 && sortByTitle("电话");
     ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
-    ret1 = ret1 && sortByTitle("最近兑换日期",IS_DATE2);
+    ret1 = ret1 && sortByTitle("最近兑换日期", IS_DATE2);
 
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
@@ -984,75 +989,77 @@ function test110036() {
     return ret && ret1;
 }
 
-//常青店积分查询数据验证
-function test110036_1(){
+// 常青店积分查询数据验证
+function test110036_1() {
     tapMenu("往来管理", "积分查询");
-    var i,a,a1;
+    var i, a, a1;
     var key = { "客户" : "xw" };
     var fields = queryCustomerScoreFields(key);
     query(fields);
-    var qr=getQR();
-    var counts=Number(qr.counts["当前积分"]);
+    var qr = getQR();
+    var counts = Number(qr.counts["当前积分"]);
     for (i = 0; i < qr.curPageTotal; i++) {
-      if(qr.data[i]["门店"]=="常青店"){
-          a=Number(qr.data[i]["当前积分"]);
-          break;
-      }else{
-          a=0;
-      }
+        if (qr.data[i]["门店"] == "常青店") {
+            a = Number(qr.data[i]["当前积分"]);
+            break;
+        } else {
+            a = 0;
+        }
     }
-    
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
-    
+
     tapMenu("往来管理", "积分查询");
     query(fields);
-    qr=getQR();
+    qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
-        if(qr.data[i]["门店"]=="常青店"){
-            a1=Number(qr.data[i]["当前积分"]);
+        if (qr.data[i]["门店"] == "常青店") {
+            a1 = Number(qr.data[i]["当前积分"]);
             break;
         }
-      }
-    var ret=isAnd(isEqual(counts+2000,qr.counts["当前积分"]),isEqual(a+2000,a1));
+    }
+    var ret = isAnd(isEqual(counts + 2000, qr.counts["当前积分"]), isEqual(
+            a + 2000, a1));
     return ret;
 }
 
-//中洲店积分查询数据验证
-function test110036_2(){
+// 中洲店积分查询数据验证
+function test110036_2() {
     tapMenu("往来管理", "积分查询");
-    var i,a,a1;
+    var i, a, a1;
     var key = { "客户" : "xw" };
     var fields = queryCustomerScoreFields(key);
     query(fields);
-    var qr=getQR();
-    var counts=Number(qr.counts["当前积分"]);
+    var qr = getQR();
+    var counts = Number(qr.counts["当前积分"]);
     for (i = 0; i < qr.curPageTotal; i++) {
-      if(qr.data[i]["门店"]=="中洲店"){
-          a=Number(qr.data[i]["当前积分"]);
-          break;
-      }else{
-          a=0;
-      }
+        if (qr.data[i]["门店"] == "中洲店") {
+            a = Number(qr.data[i]["当前积分"]);
+            break;
+        } else {
+            a = 0;
+        }
     }
-    
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
-    
+
     tapMenu("往来管理", "积分查询");
     query(fields);
-    qr=getQR();
+    qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
-        if(qr.data[i]["门店"]=="中洲店"){
-            a1=Number(qr.data[i]["当前积分"]);
+        if (qr.data[i]["门店"] == "中洲店") {
+            a1 = Number(qr.data[i]["当前积分"]);
             break;
         }
-      }
-    var ret=isAnd(isEqual(counts+2000,qr.counts["当前积分"]),isEqual(a+2000,a1));
+    }
+    var ret = isAnd(isEqual(counts + 2000, qr.counts["当前积分"]), isEqual(
+            a + 2000, a1));
     return ret;
 }
 
@@ -1444,10 +1451,20 @@ function test110047() {
 }
 
 function test110048() {
+    tapMenu("往来管理", "更多.", "新增回访+");
+    var r = "主题" + getTimestamp(6);
+    var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
+        "反馈及建议" : r };
+    var fields = editCustomerBackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(SAVE);
+    delay();
+    tapButton(window, RETURN);
+
     tapMenu("往来管理", "更多.", "客户回访");
     query();
     var qr = getQR();
-    var ret=goPageCheckField("序号");
+    var ret = goPageCheckField("序号");
 
     // debugElementTree(getScrollView());
     ret = ret && sortByTitle("回访日期", IS_DATE2);
@@ -1457,8 +1474,8 @@ function test110048() {
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("反馈及建议");
 
-    var keys = { "回访日期从" : "2015-11-01", "客户" : "xw", "主题" : "主题",
-        "反馈及建议" : "123456", "经办人" : "000" };
+    var keys = { "回访日期从" : getToday(), "到" : getToday(), "客户" : "xw", "主题" : r,
+        "反馈及建议" : r, "经办人" : "000" };
     var fields = queryCustomerBackFields(keys);
     query(fields);
     ret = ret && isEqual("小王", qr.data[0]["名称"]);
