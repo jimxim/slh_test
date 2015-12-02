@@ -147,6 +147,10 @@ function goodsParams001() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -176,6 +180,10 @@ function goodsParams002() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -196,6 +204,10 @@ function setGoodsNoColorDefaultPriceParams() {
 
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -1053,7 +1065,8 @@ function test100009() {
 // 照片无法验证
 function test100010_100011_100013() {
     var r = "g" + getTimestamp(8);
-    addGoodsByCodeName(r);
+    var keys={"款号":r,"名称":r};
+    addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : r };
@@ -1752,12 +1765,11 @@ function test100042_100045Field() {
 }
 
 /**
- * 新增货品(只输入款号名称)
- * @param r 新增货品的款号/名称
+ * 新增货品(均+省)
+ * @param keys
  */
-function addGoodsByCodeName(r) {
+function addGoods(keys) {
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : r };
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1767,9 +1779,10 @@ function addGoodsByCodeName(r) {
 }
 
 function test100054_1() {
-    var r = getTimestamp(8);
+    var r = "g"+getTimestamp(8);
     var ret = false;
-    addGoodsByCodeName(r);
+    var keys={"款号":r,"名称":r};
+    addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : r };
@@ -1782,13 +1795,8 @@ function test100054_1() {
     tapButtonAndAlert("none", OK);
 
     // 新增相同款号, 名称不同
-    tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "a" + r };
-    var fields = editGoodsFields(keys, false, 0, 0);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    delay(2);
-    tapButton(window, RETURN);
+    keys = { "款号" : r, "名称" : "a" + r };
+    addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
     tapChoose(getScrollView(), [ 0 ]);
@@ -1844,7 +1852,8 @@ function test100054_2() {
 
 function test100058() {
     var r = "g" + getTimestamp(8);
-    addGoodsByCodeName(r);
+    var keys={"款号":r,"名称":r};
+    addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
     query();
@@ -2643,7 +2652,7 @@ function test100082_100083_100084_100085() {
 function test10_price() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var ret = true;
-    // var qr = getQResult();
+     var qr = getQR();
     // debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
@@ -2877,7 +2886,8 @@ function test10_discount() {
 
 function test100090() {
     var r = "g" + getTimestamp(6);
-    addGoodsByCodeName(r);
+    var keys={"款号":r,"名称":r};
+    addGoods(keys);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
@@ -2892,7 +2902,7 @@ function test100090() {
     // }
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r };
+    keys = { "款号" : r };
     var fields = queryGoodsStockFields(keys);
     query(fields);
 

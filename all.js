@@ -7,6 +7,8 @@
 #import "lib/sales.js"
 #import "lib/param.js"
 
+#import "testcase/basicSetUp/basicSetUp.js"
+
 #import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
 

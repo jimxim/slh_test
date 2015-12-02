@@ -116,7 +116,7 @@ function test110001() {
     }
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
-        "客户类别" : "VIP客户", "店员" : "2002" };
+        "客户类别" : "VIP客户", "店员" : "000" };
     qFields = queryCustomerFields(keys);
     query(qFields);
     qr = getQR();
@@ -134,21 +134,29 @@ function test110001() {
     return ret;
 }
 
+/**
+ * 新增客户
+ * @param keys
+ */
+function addCustomer(keys){
+    tapMenu("往来管理", "新增客户+");
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    
+    delay();
+    tapReturn();
+}
+
 // 店员TF_AC不会触发，待测试
 function test110004() {
     var r = "c" + getTimestamp(6);
-    tapMenu("往来管理", "新增客户+");
     var keys = [ "名称" ];
-    var fields = editCustomerFields(keys);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
+    addCustomer(keys);
 
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r };
-    fields = queryCustomerFields(keys);
+    var fields = queryCustomerFields(keys);
     query(fields);
 
     tapFirstText();
@@ -867,8 +875,11 @@ function test110033() {
             && isEqual("小王", qr.data[0]["名称"]) && isEqual(1, qr.total)
             && isEqual(1, qr.totalPageNo);
 
-    // 不开单客户
-    keys = { "客户" : "bkdkh", "门店" : "常青店" };
+    var r = "c" + getTimestamp(6);
+    keys = [ "名称" ];
+    addCustomer(keys);
+    
+    keys = { "客户" : r, "门店" : "常青店" };
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();
