@@ -133,7 +133,7 @@ function shopOutDecruitField(key, show) {
         break;
     case "password":
     case "操作人密码":
-        f = new TField("操作人密码", TF_S, 0, "000000");
+        f = new TField("操作人密码", TF_S, 4, "000000");
         break;
     default:
         logWarn("未知key＝" + key);
