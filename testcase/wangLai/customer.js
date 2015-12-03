@@ -1354,7 +1354,7 @@ function test110044() {
     keys = [ "名称", "店员", "手机", "门店", "是否停用" ];
     fields = queryCustomerLogisticsFields(keys);
     changeTFieldValue(fields["名称"], "天天物流");
-    changeTFieldValue(fields["店员"], "yun");
+    changeTFieldValue(fields["店员"], "000");
     changeTFieldValue(fields["手机"], "13833331112");
     query(fields);
     qr = getQR();

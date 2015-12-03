@@ -7,7 +7,7 @@
 // 总经理
 function test000All() {
 	debug = true;
-
+    
 	testBasicSetUpAll();
 
 }

@@ -1,25 +1,28 @@
 //LuXingXin <52619481 at qq.com> 20151127
 
 function testBasicSetUpAll() {
-    run("小王","setXiaoWang");
-    run("赵本山","setZhaoBenShan");
-    run("上级客户1","setCustomer001");
-    run("下级客户1","setCustomer002");
+    run("小王", "setXiaoWang");
+    run("赵本山", "setZhaoBenShan");
+    run("上级客户1", "setCustomer001");
+    run("下级客户1", "setCustomer002");
 
-    run("Vell","setProvider001");
-    run("Adidas公司","setProvider002");
-      
-    run("登山服","setGoodsType001");
-    run("跑步鞋","setGoodsType002");
+    run("Vell", "setProvider001");
+    run("Adidas公司", "setProvider002");
 
-    run("1010pp","setGoodsBrand001");
-    run("Adidas","setGoodsBrand002");
+    run("登山服", "setGoodsType001");
+    run("鞋", "setGoodsType002");
 
-    run("1010pp折扣","setGoodsBrandDiscount001");
+    run("1010pp", "setGoodsBrand001");
+    run("Adidas", "setGoodsBrand002");
 
-    run("3035","setGoods001");
-    run("4562","setGoods002");
-    run("k300","setGoods003");
+    run("1010pp折扣", "setGoodsBrandDiscount001");
+
+    run("天天物流", "setLogistics001");
+    run("顺丰快递", "setLogistics002");
+
+    run("3035", "setGoods001");
+    run("4562", "setGoods002");
+    run("k300", "setGoods003");
 
 }
 
@@ -87,7 +90,7 @@ function setCustomer001() {
  * 下级客户1
  */
 function setCustomer002() {
-    var keys = { "名称" : "下级客户1", "门店" : "常青店", "店员" : "000", "上级客户" : "上级客户1",
+    var keys = { "名称" : "下级客户1", "门店" : "常青店", "店员" : "000", "上级客户" : "sjkh1",
         "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价", "信用额度" : "0",
         "欠款报警" : "0" };
     var ret = editCustomerBasicSetUp("下级客户1", keys);
@@ -114,8 +117,8 @@ function editProviderBasicSetUp(name, keys) {
         tapMenu("往来管理", "新增厂商+");
         fields = editCustomerProviderFields(keys);
         setTFieldsValue(getScrollView(), fields);
-        tapButton(window,SAVE);
-        tapButton(window,RETURN);
+        tapButton(window, SAVE);
+        tapButton(window, RETURN);
     }
 
     query();
@@ -125,14 +128,14 @@ function editProviderBasicSetUp(name, keys) {
 }
 
 function setProvider001() {
-    var keys = { "名称":"Vell","适用价格":"进货价" };
-    var ret = editCustomerBasicSetUp("Vell", keys);
+    var keys = { "名称" : "Vell", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("Vell", keys);
     return ret;
 }
 
 function setProvider002() {
-    var keys = { "名称":"Adidas公司","适用价格":"进货价" };
-    var ret = editCustomerBasicSetUp("Adidas公司", keys);
+    var keys = { "名称" : "Adidas公司", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("Adidas公司", keys);
     return ret;
 }
 
@@ -170,8 +173,8 @@ function setGoodsType001() {
 }
 
 function setGoodsType002() {
-    var keys = { "名称" : "跑步鞋" };
-    var ret = basicSetUpByType("跑步鞋", keys);
+    var keys = { "名称" : "鞋" };
+    var ret = basicSetUpByType("鞋", keys);
     return ret;
 }
 
@@ -217,7 +220,7 @@ function setGoodsBrand002() {
 function basicSetUpByBrandDiscount(name, keys) {
     tapMenu("货品管理", "基本设置", "所有品牌折扣");
     var qKeys = { "品牌" : name };
-    var qFields = goodsBrandFields(qKeys);
+    var qFields = goodsBrandDiscountFields(qKeys);
     query(qFields);
 
     var qr = getQR();
@@ -229,8 +232,9 @@ function basicSetUpByBrandDiscount(name, keys) {
     }
     var fields = editGoodsBrandDiscountFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    tapButton(window, RETURN);
+    tapButtonAndAlert(SAVE);
+    delay();
+    tapReturn();
 
     query(qFields);
     qr = getQR();
@@ -245,18 +249,57 @@ function setGoodsBrandDiscount001() {
     return ret;
 }
 
+function setLogisticsBasicSetUp(name, keys) {
+    tapMenu("往来管理", "更多.", "物流商查询");
+    var qKeys = { "名称" : name };
+    var qFields = queryCustomerLogisticsFields(qKeys);
+    query(qFields);
+
+    var qr = getQR();
+    if (qr.total == 0) {
+        tapMenu("货品管理", "基本设置", "新增物流商+");
+    }
+    if (qr.total > 0) {
+        tapFirstText();
+    }
+    var fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    query(qFields);
+    qr = getQR();
+    var ret = isEqual(name, qr.data[0]["名称"]);
+    return ret;
+
+}
+
+function setLogistics001() {
+    var keys = { "名称" : "天天物流", "店员" : "000", "电话" : "13833331112",
+        "门店" : "常青店" };
+    var ret = setLogisticsBasicSetUp("天天物流", keys);
+    return ret;
+}
+
+function setLogistics002() {
+    var keys = { "名称" : "顺丰快递", "店员" : "000", "门店" : "常青店" };
+    var ret = setLogisticsBasicSetUp("顺丰快递", keys);
+    return ret;
+}
+
 /**
  * 新增/修改货品
  */
 function editGoodsBasicSetUp(code, name, keys) {
     tapMenu("货品管理", "货品查询");
-    var qKeys = { "款号名称" : code + name, "是否停用" : "否" };
+    var qKeys = { "款号名称" : code + name };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
     var qr = getQR();
 
     delay();
-    var fields = editGoodsFields(keys);
+    var fields = editGoodsFields(keys, false, 0, 0);
     if (qr.total == "1") {
         tapFirstText();
         setTFieldsValue(getScrollView(), fields);
@@ -277,31 +320,32 @@ function editGoodsBasicSetUp(code, name, keys) {
     return ret1;
 }
 
+// "上架日期" : "2015-10-13",
 function setGoods001() {
-    var keys = { "品牌" : "3035", "名称" : "jkk", "品牌" : "Adidas",
-        "上架日期" : "2015-10-13", "吊牌价" : "200", "进货价" : "100", "零批价" : "200",
-        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140", "产品折扣" : "1",
-        "季节" : "春季", "类别" : "登山服", "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认",
-        "最小库存" : "0", "最大库存" : "0" };
+    var keys = { "款号" : "3035", "名称" : "jkk", "品牌" : "Adidas", "吊牌价" : "200",
+        "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
+        "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
+        "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
     var ret = editGoodsBasicSetUp("3035", "jkk", keys);
     return ret;
 }
 
+// "上架日期" : "2014-03-14",
 function setGoods002() {
-    var keys = { "品牌" : "4562", "名称" : "Story", "品牌" : "1010pp",
-        "上架日期" : "2014-03-14", "吊牌价" : "200", "进货价" : "100", "零批价" : "200",
-        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140", "产品折扣" : "0.9",
-        "季节" : "春季", "类别" : "跑步鞋", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
-        "最小库存" : "0", "最大库存" : "0" };
+    var keys = { "款号" : "4562", "名称" : "Story", "品牌" : "1010pp", "吊牌价" : "200",
+        "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
+        "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
+        "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
     var ret = editGoodsBasicSetUp("4562", "Story", keys);
     return ret;
 }
 
+// "上架日期" : "2015-10-13",
 function setGoods003() {
-    var keys = { "品牌" : "k300", "名称" : "铅笔裤", "品牌" : "Adidas",
-        "上架日期" : "2015-10-13", "吊牌价" : "300", "进货价" : "200", "零批价" : "300",
-        "打包价" : "300", "大客户价" : "0", "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季",
-        "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
+    var keys = { "款号" : "k300", "名称" : "铅笔裤", "品牌" : "Adidas", "吊牌价" : "300",
+        "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
+        "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "计量单位" : "件", "仓位" : "默认",
+        "最小库存" : "0", "最大库存" : "0" };
     var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys);
     return ret;
 }

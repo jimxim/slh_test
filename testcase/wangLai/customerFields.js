@@ -673,8 +673,8 @@ function editCustomerLogisticsField(key, show) {
         f = new TField("名称", TF, 0, "a");
         break;
     case "staff":
-    case "经办人":
-        f = new TField("经办人", TF_AC, 1, "000", l - 1, 0);
+    case "店员":
+        f = new TField("店员", TF_AC, 1, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
