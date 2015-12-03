@@ -1128,7 +1128,7 @@ function test100010_100011_100013() {
 
     tapButton(window, CLEAR);
     for (i = 0; i < 10; i++) {
-        if (i != 4) {
+        if (i != 3) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));

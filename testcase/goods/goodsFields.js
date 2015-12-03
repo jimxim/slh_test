@@ -48,13 +48,13 @@ function queryGoodsStockField(key, show) {
     case "尺码":
         f = new TField("尺码", TF_SC, 5, "XL");
         break;
-    case "brand":
-    case "品牌":
-        f = new TField("品牌", TF_SC, 6, "1010pp");
-        break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 7, "春季新");
+        f = new TField("季节", TF_SC, 6, "春季");
+        break;
+    case "stop":
+    case "是否停用":
+        f = new TField("是否停用", TF_SC, 7, "否");
         break;
     case "market1":
     case "上架从":
@@ -64,9 +64,12 @@ function queryGoodsStockField(key, show) {
     case "到":
         f = new TField("到", TF_DT, 9, "2015-9-14");
         break;
-    case "stop":
-    case "是否停用":
-        f = new TField("是否停用", TF_SC, 10, "否");
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 10, "1010pp", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
         break;
     default:
         logWarn("未知key＝" + key);
@@ -217,7 +220,10 @@ function queryGoodsInOutField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 7, "1010pp");
+        f = new TField("品牌", TF_AC, 7, "1010pp", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
         break;
     default:
         logWarn("未知key＝" + key);
@@ -253,28 +259,29 @@ function queryGoodsField(key, show) {
     case "款号名称":
         f = new TField("款号名称", TF, 1, "a");
         break;
-    case "brand":
-    case "品牌":
-        f = new TField("品牌", TF_SC, 2, "1010pp");
-        break;
+ 
     case "market1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 3, "2015-9-11");
+        f = new TField("上架从", TF_DT, 2, "2015-9-11");
         break;
     case "market2":
     case "到":
-        f = new TField("到", TF_DT, 4, "2015-9-14");
+        f = new TField("到", TF_DT, 3, "2015-9-14");
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF_SC, 5, "花色");
+        f = new TField("颜色", TF_SC, 4, "花色");
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 6, "000", -1, 0);
+        f = new TField("经办人", TF_AC, 5, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 6, "1010pp");
         break;
     case "stop":
     case "是否停用":

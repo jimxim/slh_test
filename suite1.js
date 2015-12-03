@@ -7,8 +7,8 @@
 // 总经理
 function test000All() {
 	debug = true;
-    
-	testBasicSetUpAll();
+    run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
+    run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
 
 }
 
