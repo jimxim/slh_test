@@ -64,7 +64,7 @@ function testSalesNoColorSizeElse001() {
     // run("【销售开单－更多-代收收款查询】组合查询", "test170296");
     // run("【销售开单－更多-代收收款查询】清除", "test170297");
     // run("【销售开单－更多-代收收款查询】底部数据汇总检查", "test170298");
-    run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
+//    run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
 
 }
 function testSalesNoColorSizeElseAll() {
@@ -164,7 +164,7 @@ function test170001_1() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-1), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-2), "日期到" : getToday() };
     var fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
