@@ -219,9 +219,10 @@ function test130002_2() {
     return ret && ret1;
 }
 
-function test130004() {
-    tapMenu("采购订货", "按汇总", "按款号");
-    var keys = { "日期从" : getDay(-60) };
+function test130004() {  
+
+        tapMenu("采购订货", "按汇总", "按款号");
+    var keys = { "日期从" : getDay(-60), "到" : getToday() };
     var fields = purchaseOrderCodeFields(keys);
     query(fields);
     var ret = goPageCheckField("款号");

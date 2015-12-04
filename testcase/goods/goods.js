@@ -35,18 +35,19 @@ function testGoods001() {
  */
 function testGoods002() {
     tapMenu("货品管理", "当前库存");
-    var ret = isAnd(dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),
-            fuzzyQueryCheckField(1, "款号", "30", "名称"));
+    var ret = isAnd(dropDownListCheckField(0, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
+            "名称"));
 
     tapMenu("货品管理", "款号库存");
-    ret = isAnd(ret,
-            dropDownListCheckField(0, "303", "3035,jkk,200元,1,Adidas"),
-            fuzzyQueryCheckField(1, "款号", "30", "名称"));
+    ret = isAnd(ret, dropDownListCheckField(0, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
+            "名称"));
 
     tapMenu("货品管理", "货品进销存");
-    ret = isAnd(ret,
-            dropDownListCheckField(1, "303", "3035,jkk,200元,1,Adidas"),
-            fuzzyQueryCheckField(2, "款号", "30", "名称"));
+    ret = isAnd(ret, dropDownListCheckField(1, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号", "3",
+            "名称"));
 
     tapMenu("货品管理", "货品查询");
     var ret = isAnd(ret, fuzzyQueryCheckField(1, "款号", "z", "名称"));
@@ -123,7 +124,7 @@ function testGoodsGoodsAll() {
 }
 
 /**
- * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式
+ * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式 调拨启用密码验证
  */
 function goodsParams001() {
 
@@ -147,9 +148,13 @@ function goodsParams001() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "调拨是否启用密码验证" };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -180,7 +185,7 @@ function goodsParams002() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -205,7 +210,7 @@ function setGoodsNoColorDefaultPriceParams() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -283,7 +288,12 @@ function setTagprice_invperson_1() {
 
 // 翻页检验，检验序号和title的内容和第2页有没有重复
 // 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
-function goPageCheckField(title) {
+/**
+ * 翻页检验，检验序号和title的内容和第2页有没有重复
+ * @param title
+ * @param index 限制条件的下标
+ */
+function goPageCheckField(title, index) {
     var qr = getQR();
     // 当前页为1
     var ret = isEqual("1", qr.data[0]["序号"]);
@@ -333,7 +343,18 @@ function goPageCheckField(title) {
         scrollPrevPage();
 
     } else {
-        tapButton(window, CLEAR);
+        if(isDefined(index)){
+            tap(window.textFields()[index]);
+            var ok = tap(window.textFields()[index].buttons()["清除文本"]);
+            if (!ok) {
+                tap(window.textFields()[index].buttons()["Clear text"]);
+            }
+        }
+
+        tapButton(window, QUERY);
+        //清除会将日期变成今天
+        // tapButton(window, CLEAR);
+
         qr = getQR();
         totalPageNo = qr.totalPageNo;
         if (totalPageNo > 1) {
@@ -454,7 +475,7 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheckField("款号",2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -512,7 +533,7 @@ function test100001_2() {
         }
     }
 
-    return ret ;
+    return ret;
 }
 
 // 单据类型判定，还缺门店调入单
@@ -671,7 +692,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheckField("款号",2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -955,7 +976,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheckField("款号",0);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1065,7 +1086,7 @@ function test100009() {
 // 照片无法验证
 function test100010_100011_100013() {
     var r = "g" + getTimestamp(8);
-    var keys={"款号":r,"名称":r};
+    var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
@@ -1779,9 +1800,9 @@ function addGoods(keys) {
 }
 
 function test100054_1() {
-    var r = "g"+getTimestamp(8);
+    var r = "g" + getTimestamp(8);
     var ret = false;
-    var keys={"款号":r,"名称":r};
+    var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
@@ -1852,7 +1873,7 @@ function test100054_2() {
 
 function test100058() {
     var r = "g" + getTimestamp(8);
-    var keys={"款号":r,"名称":r};
+    var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
@@ -2546,8 +2567,8 @@ function test100075_100076_100077_100078() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
     var ret = goPageCheckField("款号");
-    //默认按超储数降序排序
-    ret = ret && compareQR("超储数", IS_NUM,"desc");
+    // 默认按超储数降序排序
+    ret = ret && compareQR("超储数", IS_NUM, "desc");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -2607,8 +2628,8 @@ function test100082_100083_100084_100085() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
     var ret = goPageCheckField("款号");
-    //默认按缺货数降序排序
-    ret = ret && compareQR("缺货数", IS_NUM,"desc");
+    // 默认按缺货数降序排序
+    ret = ret && compareQR("缺货数", IS_NUM, "desc");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -2652,7 +2673,7 @@ function test100082_100083_100084_100085() {
 function test10_price() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var ret = true;
-     var qr = getQR();
+    var qr = getQR();
     // debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
@@ -2886,7 +2907,7 @@ function test10_discount() {
 
 function test100090() {
     var r = "g" + getTimestamp(6);
-    var keys={"款号":r,"名称":r};
+    var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
     tapMenu("采购入库", "新增入库+");
