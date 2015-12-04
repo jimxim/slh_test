@@ -1,5 +1,6 @@
 //LuXingXin <52619481 at qq.com> 20151127
 
+//均色均码省代模式
 function testBasicSetUpAll() {
     run("小王", "setXiaoWang");
     run("赵本山", "setZhaoBenShan");

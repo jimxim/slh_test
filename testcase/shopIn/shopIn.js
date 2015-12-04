@@ -5,10 +5,10 @@
  */
 function testShopIn001() {
     run("【门店调入-在途调拨】翻页_排序_汇总_条件查询，清除按钮", "test140001_1");
-    run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
-    run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
-    run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
-    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
+//    run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
+//    run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
+//    run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
+//    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
 }
 
 function testShopInAll() {
@@ -149,7 +149,7 @@ function test140001_1() {
     var ret = goPageCheckField("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("送货人");
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
@@ -175,7 +175,7 @@ function test140001_1() {
     fields = shopInFlitFields(keys);
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("常青店", qr.data[0]["门店"]);
+    ret = ret && isEqual("常青店", qr.data[0]["调出门店"]);
 
     tapButton(window, CLEAR);
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));

@@ -12,11 +12,13 @@ function test000() {
 // testParamAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
- testPurchaseAll();
-	testPurchase001();
+// testPurchaseAll();
+//	testPurchase001();
 // testPurchaseOrderAll();
-// testShopInAll();
-// testShopOutAll();
+ testShopInAll();
+ testShopIn001();
+ testShopOutAll();
+ testShopOut001();
 // testSalesOrderAll();
 // testCheckAll();
 //	 testCheck001();
