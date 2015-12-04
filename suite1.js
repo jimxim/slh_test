@@ -79,7 +79,7 @@ function test000ShopOut001(){
 }
 
 // 中洲店总经理验证门店调入
-function test200ShopOut001(){
+function test200ShopIn001(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
