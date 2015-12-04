@@ -2515,6 +2515,7 @@ function test120047_2() {
 }
 
 function test120052() {
+    tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -2526,13 +2527,7 @@ function test120052() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    alertRet = true;
-
-    tapMenu2("更多.");
-    tapMenu3("挂 单");
-
-    tapAlertButton(OK);
-    alertRet = false;
+    runAndAlert("test120052Hang", alertButtonIndex);
 
     delay();
     tapButton(window, RETURN);
@@ -2561,4 +2556,8 @@ function test120052() {
     query();
 
     return ret && ret1;
+}
+function test120052Hang() {
+    tapMenu2("更多.");
+    tapMenu3("挂 单");
 }
