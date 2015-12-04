@@ -32,7 +32,7 @@ function test130001_1() {
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",3);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);

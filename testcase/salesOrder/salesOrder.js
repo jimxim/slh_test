@@ -502,7 +502,7 @@ function test160005_160015_160016() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",6);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);

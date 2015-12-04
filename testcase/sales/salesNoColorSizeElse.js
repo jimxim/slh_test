@@ -3630,7 +3630,7 @@ function test170334_70335_170336() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按客户未结");
-    var keys = { "到" : getToday(), "客户" : "ls" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
 
@@ -3740,22 +3740,20 @@ function test170340() {
     return ret && ret1;
 }
 function test170341_70342_170343_170346() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
-
     tapMenu("销售开单", "按汇总", "按客户上货");
-    var keys = { "上架日期到" : getToday(), "客户" : "ls", "款号" : "k300",
-        "品牌" : "Adidas" };
+    var keys = { "日期从" : getDay(-30), "客户" : "xw" };
     var fields = salesCustomerSupplyFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheckField("款号",3);
 
+    query();
+    ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("实销数", IS_NUM);
+    ret = ret && sortByTitle("实销额", IS_NUM);
     ret = ret && sortByTitle("最后一次拿货", IS_DATE2);
     ret = ret && sortByTitle("拿货次数", IS_NUM);
 
@@ -3925,7 +3923,7 @@ function test170358_170359_170360() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按类别汇总");
-    var keys = { "类别" : "登山服" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = salesTypeFields(keys);
     query(fields);
 
@@ -4025,13 +4023,14 @@ function test170363_1() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按厂商汇总");
-    var keys = { "厂商" : "Vell" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = salesProviderFields(keys);
     query(fields);
 
     var ret = goPageCheckField("厂商");
 
     var ret = true;
+    ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("销售数", IS_NUM);
     ret = ret && sortByTitle("退货数", IS_NUM);
     ret = ret && sortByTitle("实销数", IS_NUM);

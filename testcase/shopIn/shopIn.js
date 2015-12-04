@@ -211,7 +211,7 @@ function test140002_1() {
     editShopInFlitting();
 
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "调出门店" : "常青店",
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店",
         "调入门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     setTFieldsValue(window, fields);

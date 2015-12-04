@@ -2073,9 +2073,7 @@ function test120029_1() {
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "厂商账款", "厂商总账");
-    var keys = { "厂商" : "Vell" }
-    var fields = purchaseProviderAccountFields(keys);
-    query(fields);
+    query();
 
     // 翻页
     var ret = goPageCheckField("名称");
@@ -2201,12 +2199,12 @@ function test120030_1() {
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
-    var keys = { "厂商" : "Vell" }
+    var keys = { "门店" : "常青店" }
     var fields = purchaseShopAccountFields(keys);
     query(fields);
 
     // 翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheckField("名称",1);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2528,9 +2526,10 @@ function test120052() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var alertRet = true;
+    alertRet = true;
 
-    tapMenu("采购入库", "更多.", "挂 单");
+    tapMenu2("更多.");
+    tapMenu3("挂 单");
 
     tapAlertButton(OK);
     alertRet = false;
