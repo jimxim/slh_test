@@ -211,13 +211,13 @@ function test140002_1() {
     editShopInFlitting();
 
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店",
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(),
         "调入门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",5);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -345,13 +345,13 @@ function test140002_140003() {
 }
 function test140003_1() {
     tapMenu("门店调入", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "调出门店" : "常青店",
+    var keys = { "日期从" : getDay(-30), "到" : getToday(),
         "调入门店" : "中洲店" };
     var fields = shopInQueryParticularFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",5);
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

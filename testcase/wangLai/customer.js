@@ -856,7 +856,7 @@ function test110033() {
     var keys = { "门店" : "常青店" };
     var fields = queryCustomerActiveFields(keys);
     query(fields);
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheckField("名称",1);
     logDebug("ret=" + ret);
 
     ret = ret && sortByTitle("门店");
@@ -946,8 +946,9 @@ function test110036() {
     var key = { "门店" : "常青店" };
     var fields = queryCustomerScoreFields(key);
     query(fields);
-    // 翻页
-    var ret = goPageCheckField("名称");
+    // 验证点击"最近兑换日期"标题后，记录重复的BUG
+    tapTitle(getScrollView(), "最近兑换日期");
+    var ret = goPageCheckField("名称",0);
 
     var qr = getQR();
     var sum = 0;
@@ -982,9 +983,6 @@ function test110036() {
     ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
     ret1 = ret1 && sortByTitle("最近兑换日期", IS_DATE2);
 
-    // 验证点击"最近兑换日期"标题后，记录重复的BUG
-    tapTitle(getScrollView(), "最近兑换日期");
-    ret = ret && goPageCheckField("名称")
 
     return ret && ret1;
 }
@@ -1234,7 +1232,7 @@ function test110041() {
     var fields = queryProviderShopAccountFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheckField("名称",1);
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
