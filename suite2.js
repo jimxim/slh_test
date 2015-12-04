@@ -9,8 +9,9 @@ function test000() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
+	
 // testParamAll();
-	testBasicSetUpAll();
+//	testBasicSetUpAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();

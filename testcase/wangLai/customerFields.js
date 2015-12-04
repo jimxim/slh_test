@@ -99,7 +99,7 @@ function editCustomerField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 7, "000", -1, "000,总经理");
+        f = new TField("店员", TF_AC, 7, "000", -1,0);
         if (show) {
             f.value = f.p2;
         }
@@ -154,11 +154,11 @@ function editCustomerField(key, show) {
         break;
     case "credit":
     case "信用额度":
-        f = new TField("信用额度", TF, 19, "10000");
+        f = new TField("信用额度", TF, 20, "10000");
         break;
     case "alarm":
     case "欠款报警":
-        f = new TField("欠款报警", TF, 20, "5000");
+        f = new TField("欠款报警", TF, 21, "5000");
         break;
     default:
         logWarn("未知key＝" + key);

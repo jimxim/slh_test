@@ -30,7 +30,7 @@ function testPurchase001() {
     // run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");
     // run("【采购入库-按明细查】界面功能检查", "test120047_1");
     // run("【采购入库-按明细查】界面功能检查", "test120047_2");
-    // run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
+//     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
 }
 function testPurchaseAll() {
     // 清除数据后，要先手动新增入库3035，并未付款
@@ -396,7 +396,6 @@ function test120008() {
     var ret1 = isAnd(isEqual("4", sub(b, a)), isEqual("5", sub(b1, a1)),
             isEqual("1", sub(b2, a2)));
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0;
     var ret2 = true;
@@ -591,7 +590,6 @@ function test120009() {
     ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("数量", IS_NUM);
 
-    query();
     var qr = getQR();
     var sum1 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2081,7 +2079,6 @@ function test120029_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    query();
     var qr = getQR();
     var sum1 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2460,7 +2457,6 @@ function test120047_1() {
     ret = ret && sortByTitle("小计", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2527,10 +2523,10 @@ function test120052() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    runAndAlert("test120052Hang", alertButtonIndex);
+    runAndAlert("test120052Hang", OK);
 
     delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("采购入库", "按批次查");
     query(fields);

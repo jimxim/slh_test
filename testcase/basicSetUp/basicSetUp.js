@@ -2,34 +2,41 @@
 
 //均色均码省代模式
 function testBasicSetUpAll() {
-    // run("小王", "setXiaoWang");
-    // run("赵本山", "setZhaoBenShan");
-    // run("上级客户1", "setCustomer001");
-    // run("下级客户1", "setCustomer002");
-    // run("李四", "setCustomer003");
-    // run("李响", "setCustomer004");
+    run("小王", "setXiaoWang");
+    run("赵本山", "setZhaoBenShan");
+    run("上级客户1", "setCustomer001");
+    run("下级客户1", "setCustomer002");
+    run("李四", "setCustomer003");
+    run("李响", "setCustomer004");
     run("李天", "setCustomer005");
     run("李六", "setCustomer006");
     run("韩红", "setCustomer007");
 
-    // run("Vell", "setProvider001");
-    // run("Adidas公司", "setProvider002");
+    run("Vell", "setProvider001");
+    run("Adidas公司", "setProvider002");
     run("Rt", "setProvider003");
 
-    // run("登山服", "setGoodsType001");
-    // run("鞋", "setGoodsType002");
+    run("登山服", "setGoodsType001");
+    run("鞋", "setGoodsType002");
+
+    run("1010pp", "setGoodsBrand001");
+    run("Adidas", "setGoodsBrand002");
+
+    run("1010pp折扣", "setGoodsBrandDiscount001");
+
+    run("天天物流", "setLogistics001");
+    run("顺丰快递", "setLogistics002");
+    run("圆通速递", "setLogistics003");
+    run("汇通快递", "setLogistics004");
     //
-    // run("1010pp", "setGoodsBrand001");
-    // run("Adidas", "setGoodsBrand002");
-    //
-    // run("1010pp折扣", "setGoodsBrandDiscount001");
-    //
-    // run("天天物流", "setLogistics001");
-    // run("顺丰快递", "setLogistics002");
-    //
-    // run("3035", "setGoods001");
-    // run("4562", "setGoods002");
-    // run("k300", "setGoods003");
+    run("3035", "setGoods001");
+    run("4562", "setGoods002");
+    run("k300", "setGoods003");
+    run("k200", "setGoods004");
+    run("8989", "setGoods005");
+    run("plczcs1", "setGoods006");
+    run("plczcs2", "setGoods007");
+    run("plczcs3", "setGoods008");
 
 }
 
@@ -129,7 +136,7 @@ function setCustomer004() {
  */
 function setCustomer005() {
     var keys = { "名称" : "李天", "手机" : "13911112224", "微信" : "13911112224",
-        "上级客户" : "", "门店" : "常青店", "生日" : "2000-12-30", "店员" : "002,仓管员",
+        "上级客户" : "", "门店" : "常青店", "生日" : "2000-12-30", "店员" : "002,",
         "客户类别" : "零批客户", "允许退货" : "否", "适用价格" : "零批价", "传真号" : "13911112224",
         "备注" : "客户备注", "地址" : "浙江省杭州市上城区", "拿货折扣" : "0.5", "信用额度" : "500",
         "欠款报警" : "0" };
@@ -151,7 +158,7 @@ function setCustomer006() {
  */
 function setCustomer007() {
     var keys = { "名称" : "韩红", "手机" : "13822221113", "微信" : "13822221113",
-        "门店" : "中洲店", "生日" : "2000-12-30", "店员" : "002,仓管员", "上级客户" : "",
+        "门店" : "中洲店", "生日" : "2000-12-30", "店员" : "002,", "上级客户" : "",
         "客户类别" : "打包客户", "允许退货" : "是", "适用价格" : "打包价", "传真号" : "13822221113",
         "拿货折扣" : "0.5", "信用额度" : "500", "欠款报警" : "0" };
     var ret = editCustomerBasicSetUp("韩红", keys);
@@ -200,7 +207,7 @@ function setProvider002() {
 }
 function setProvider003() {
     var keys = { "名称" : "Rt", "适用价格" : "进货价" };
-    var ret = editProviderBasicSetUp("Adidas公司", keys);
+    var ret = editProviderBasicSetUp("Rt", keys);
     return ret;
 }
 
@@ -352,6 +359,16 @@ function setLogistics002() {
     var ret = setLogisticsBasicSetUp("顺丰快递", keys);
     return ret;
 }
+function setLogistics003() {
+    var keys = { "名称" : "圆通速递", "门店" : "常青店" };
+    var ret = setLogisticsBasicSetUp("圆通速递", keys);
+    return ret;
+}
+function setLogistics004() {
+    var keys = { "名称" : "汇通快递", "门店" : "常青店" };
+    var ret = setLogisticsBasicSetUp("汇通快递", keys);
+    return ret;
+}
 
 /**
  * 新增/修改货品
@@ -412,5 +429,38 @@ function setGoods003() {
         "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
     var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys);
+    return ret;
+}
+// "上架日期" : "2015-10-13",
+function setGoods004() {
+    var keys = { "款号" : "k200", "名称" : "范范", "吊牌价" : "200", "进货价" : "150",
+        "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
+        "产品折扣" : "1", "季节" : "春季", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "0" };
+    var ret = editGoodsBasicSetUp("k200", "范范", keys);
+    return ret;
+}
+// "上架日期" : "2015-03-17",
+function setGoods005() {
+    var keys = { "款号" : "8989", "名称" : "我们", "吊牌价" : "0", "进货价" : "0",
+        "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
+        "产品折扣" : "0.985", "季节" : "春季", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "0" };
+    var ret = editGoodsBasicSetUp("8989", "我们", keys);
+    return ret;
+}
+function setGoods006() {
+    var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1" };
+    var ret = editGoodsBasicSetUp("plczcs1", "批量操作测试1", keys);
+    return ret;
+}
+function setGoods007() {
+    var keys = { "款号" : "plczcs2", "名称" : "批量操作测试2" };
+    var ret = editGoodsBasicSetUp("plczcs2", "批量操作测试2", keys);
+    return ret;
+}
+function setGoods008() {
+    var keys = { "款号" : "plczcs3", "名称" : "批量操作测试3" };
+    var ret = editGoodsBasicSetUp("plczcs3", "批量操作测试3", keys);
     return ret;
 }
