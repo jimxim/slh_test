@@ -133,23 +133,23 @@ function goodsParams001() {
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "货品建款的价格模式" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+//    qo = { "备注" : "货品建款的价格模式" };
+//    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+//
+//    qo = { "备注" : "开单模式" };
+//    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+//
+//    qo = { "备注" : "自动生成款号" };
+//    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+//
+//    qo = { "备注" : "新增界面格式" };
+//    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "自动生成款号" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
+    qo = { "备注" : "颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

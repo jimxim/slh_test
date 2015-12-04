@@ -9,9 +9,9 @@ function test000() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-	
+	goodsParams001();
 // testParamAll();
-//	testBasicSetUpAll();
+// testBasicSetUpAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
@@ -59,15 +59,16 @@ function test000Check001() {
         logout();
     }
 }
-// function test000Purchase001() {
-// var p1 = {"角色":"总经理"};
-// var ok = login("000","000000",p1);
-// if( ok ) {
-// testPurchase001();
-//        
-// logout();
-// }
-// }
+// 采购入库
+ function test000Purchase001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+         testPurchase001();
+        
+        logout();
+    }
+ }
 function test001All() {
     var p1 = {"角色":"财务员","门店":"常青店"};
     var ok = login("001","000000",p1);
