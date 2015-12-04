@@ -40,6 +40,58 @@ function testBasicSetUpAll() {
 
 }
 
+function subTime(day1,day2){
+    var arr1 = day1.split("-");
+    var arr2 = day2.split("-");
+    var date1 = new Date(arr1[0], arr1[1], arr1[2]);
+    var date2 = new Date(arr2[0], arr2[1], arr2[2]);
+    var ret = (date1-date2)/(24*60*60*1000);
+    logDebug("ret="+ret);
+    return ret;
+}
+
+function test000(){
+    var day1 = getTextFieldValue(getScrollView(), 5);
+    var day2="2015-10-13";
+    var num=subTime(day1,day2);
+    logDebug("num="+num);
+    
+
+    window.scrollViews()[0].switches()[0].setValue(1);
+    tapButton(getScrollView(), "减量");
+
+//    if(num>0){
+//        tapButton(getScrollView(), "减量");
+//        var day = getTextFieldValue(getScrollView(), 5);
+//        if (day != getDay(-1)) {
+//            tapButton(getScrollView(), "减量");
+//            tapButton(getScrollView(), "减量");
+//        }
+//        for(var i=0;i<num-1;i++){
+//            tapButton(getScrollView(), "减量");
+//        }
+//    }
+//    
+//    if(num<0){
+//        tapButton(getScrollView(), "增量");
+//        var day = getTextFieldValue(getScrollView(), 5);
+//        if (day != getDay(+1)) {
+//            tapButton(getScrollView(), "增量");
+//            tapButton(getScrollView(), "增量");
+//        }
+//        for(var i=0;i<num-1;i++){
+//            tapButton(getScrollView(), "增量");
+//        }
+//    }
+//    
+//    var ret=false;
+//    day = getTextFieldValue(getScrollView(), 5);
+//    if(day==day2){
+//        ret=true;
+//    }
+    return ret;
+}
+
 /**
  * 新增/修改客户
  */

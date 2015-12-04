@@ -3,12 +3,12 @@
 
 #import "all.js"
 
-
 // 总经理
 function test000All() {
 	debug = true;
 
-	 run("采购订货", "test130005_1");
+	 run("text", "test000");
+//	 run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");
 }
 
 /**
@@ -24,7 +24,6 @@ function setGoods001Params(){
        logout();
     }
 }
-
 
 // 中洲店总经理登陆，为常青店准备数据
 function test000Goods001Prepare(){

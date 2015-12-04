@@ -7,7 +7,9 @@ function testPurchaseOrder001() {
     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
     run("【采购订货-订货汇总】订货汇总->按款号", "test130004");
     run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
+    run("【采购订货-订货汇总】订货汇总->按厂商数据验证", "test130005_1");
     run("【采购订货-订货汇总】订货汇总->按门店", "test130006");
+    run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");
     run("【采购订货-订货汇总】订货汇总->按款号_按厂商_按门店_明细检查", "test130004_130005_130006");
 }
 
@@ -313,6 +315,7 @@ function test130005() {
     return ret && ret1;
 }
 
+// 均色均码
 function test130005_1() {
     tapMenu("采购订货", "按汇总", "按厂商");
     var keys = { "日期从" : getDay(-30), "厂商" : "vell" };
@@ -320,24 +323,42 @@ function test130005_1() {
     query(fields);
     tapFirstText();
     var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
+    var i, j;
     var arr1 = new Array();
-    var i,j;
-   
-       
-    logDebug("arr1="+arr1);
-    
-    var arr2 = new Array();
+    var curPageTotal = qr.curPageTotal;
+    var ret1 = true;
+    for (i = 0; i < curPageTotal; i++) {
+        arr1[i] = new Array();
+        arr1[i][0] = qr.data[i]["款号"];
+        arr1[i][1] = qr.data[i]["名称"];
+        arr1[i][2] = qr.data[i]["数量"];
+        arr1[i][3] = qr.data[i]["已发"];
+        ret1 = isAnd(ret1, isEqual("均色", qr.data[i]["颜色"]), isEqual("均码",
+                qr.data[i]["尺码"]));
+    }
+    tapNaviLeftButton();
 
-    
-    logDebug("arr1="+arr1);
-    logDebug("arr2="+arr2);
+    tapMenu("采购订货", "按明细查");
+    keys = { "厂商" : "vell", "日期从" : getDay(-30) };
+    fields = purchaseOrderQueryParticularFields(keys);
+    query(fields);
 
-}
+    var ret = true;
+    for (i = 0; i < arr1.length; i++) {
+        keys = { "款号" : arr1[i][0] };
+        fields = purchaseOrderQueryParticularFields(keys);
+        setTFieldsValue(window, fields);
+        tapButton(window, QUERY);
 
-function test130005Field() {
-    var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
-    var data = new Array(6);
-
+        qr = getQR();
+        ret = isAnd(ret, isEqual(arr1[i][0], qr.data[0]["款号"]), isEqual(
+                arr1[i][1], qr.data[0]["名称"]), isEqual(arr1[i][2],
+                qr.counts["数量"]), isEqual(arr1[i][3], qr.counts["已入库"]));
+        if (ret == false) {
+            break;
+        }
+    }
+    return ret && ret1;
 }
 
 function test130006() {
@@ -382,6 +403,51 @@ function test130006() {
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
     ret = ret && isEqual("", getTextFieldValue(window, 2));
 
+    return ret && ret1;
+}
+
+// 均色均码
+function test130006_1() {
+    tapMenu("采购订货", "按汇总", "按门店");
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    var fields = purchaseOrderShopFields(keys);
+    query(fields);
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
+    var i, j;
+    var arr1 = new Array();
+    var ret1 = true;
+    for (i = 0; i < qr.curPageTotal; i++) {
+        arr1[i] = new Array();
+        arr1[i][0] = qr.data[i]["款号"];
+        arr1[i][1] = qr.data[i]["名称"];
+        arr1[i][2] = qr.data[i]["数量"];
+        arr1[i][3] = qr.data[i]["已发"];
+        ret1 = isAnd(ret1, isEqual("均色", qr.data[i]["颜色"]), isEqual("均码",
+                qr.data[i]["尺码"]));
+    }
+    tapNaviLeftButton();
+
+    tapMenu("采购订货", "按明细查");
+    keys = { "门店" : "常青店", "日期从" : getDay(-30) };
+    fields = purchaseOrderQueryParticularFields(keys);
+    query(fields);
+
+    var ret = true;
+    for (i = 0; i < arr1.length; i++) {
+        keys = { "款号" : arr1[i][0] };
+        fields = purchaseOrderQueryParticularFields(keys);
+        setTFieldsValue(window, fields);
+        tapButton(window, QUERY);
+
+        qr = getQR();
+        ret = isAnd(ret, isEqual(arr1[i][0], qr.data[0]["款号"]), isEqual(
+                arr1[i][1], qr.data[0]["名称"]), isEqual(arr1[i][2],
+                qr.counts["数量"]), isEqual(arr1[i][3], qr.counts["已入库"]));
+        if (ret == false) {
+            break;
+        }
+    }
     return ret && ret1;
 }
 
