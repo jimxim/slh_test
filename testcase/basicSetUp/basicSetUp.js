@@ -2,28 +2,34 @@
 
 //均色均码省代模式
 function testBasicSetUpAll() {
-    run("小王", "setXiaoWang");
-    run("赵本山", "setZhaoBenShan");
-    run("上级客户1", "setCustomer001");
-    run("下级客户1", "setCustomer002");
+    // run("小王", "setXiaoWang");
+    // run("赵本山", "setZhaoBenShan");
+    // run("上级客户1", "setCustomer001");
+    // run("下级客户1", "setCustomer002");
+    // run("李四", "setCustomer003");
+//    run("李响", "setCustomer004");
+    run("李天", "setCustomer005");
+    run("李六", "setCustomer006");
+    run("韩红", "setCustomer007");
 
-    run("Vell", "setProvider001");
-    run("Adidas公司", "setProvider002");
+    // run("Vell", "setProvider001");
+    // run("Adidas公司", "setProvider002");
+    run("Rt", "setProvider003");
 
-    run("登山服", "setGoodsType001");
-    run("鞋", "setGoodsType002");
-
-    run("1010pp", "setGoodsBrand001");
-    run("Adidas", "setGoodsBrand002");
-
-    run("1010pp折扣", "setGoodsBrandDiscount001");
-
-    run("天天物流", "setLogistics001");
-    run("顺丰快递", "setLogistics002");
-
-    run("3035", "setGoods001");
-    run("4562", "setGoods002");
-    run("k300", "setGoods003");
+    // run("登山服", "setGoodsType001");
+    // run("鞋", "setGoodsType002");
+    //
+    // run("1010pp", "setGoodsBrand001");
+    // run("Adidas", "setGoodsBrand002");
+    //
+    // run("1010pp折扣", "setGoodsBrandDiscount001");
+    //
+    // run("天天物流", "setLogistics001");
+    // run("顺丰快递", "setLogistics002");
+    //
+    // run("3035", "setGoods001");
+    // run("4562", "setGoods002");
+    // run("k300", "setGoods003");
 
 }
 
@@ -80,7 +86,7 @@ function setZhaoBenShan() {
  * 上级客户1
  */
 function setCustomer001() {
-    var keys = { "名称" : "上级客户1", "门店" : "常青店", "店员" : "000", "上级客户" : "",
+    var keys = { "名称" : "上级客户1", "门店" : "常青店", "店员" : "000", "生日" : "2000-12-30", "店员" : "002,仓管员",
         "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价", "信用额度" : "0",
         "欠款报警" : "0" };
     var ret = editCustomerBasicSetUp("上级客户1", keys);
@@ -97,7 +103,56 @@ function setCustomer002() {
     var ret = editCustomerBasicSetUp("下级客户1", keys);
     return ret;
 }
-
+/**
+ * 李四
+ */
+function setCustomer003() {
+    var keys = { "名称" : "李四", "手机" : "52148899635963", "门店" : "常青店",
+        "店员" : "000", "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价",
+        "地址" : "杭州东灵", "拿货折扣" : "0.76", "信用额度" : "0", "欠款报警" : "0" };
+    var ret = editCustomerBasicSetUp("李四", keys);
+    return ret;
+}
+/**
+ * 李响
+ */
+function setCustomer004() {
+    var keys = { "名称" : "李响", "手机" : "13844115460", "门店" : "常青店",
+        "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价", "拿货折扣" : "0.5",
+        "信用额度" : "0", "欠款报警" : "0" };
+    var ret = editCustomerBasicSetUp("李响", keys);
+    return ret;
+}
+/**
+ * 李天
+ */
+function setCustomer005() {
+    var keys = { "名称" : "李天", "手机" : "13911112224","微信":"13911112224", "门店" : "常青店",
+        "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价", "拿货折扣" : "0.5",
+        "信用额度" : "0", "欠款报警" : "0" };
+    var ret = editCustomerBasicSetUp("李天", keys);
+    return ret;
+}
+/**
+ * 李六
+ */
+function setCustomer006() {
+    var keys = { "名称" : "李六", "手机" : "13844115460", "门店" : "常青店",
+        "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价", "拿货折扣" : "0.5",
+        "信用额度" : "0", "欠款报警" : "0" };
+    var ret = editCustomerBasicSetUp("李六", keys);
+    return ret;
+}
+/**
+ * 韩红
+ */
+function setCustomer007() {
+    var keys = { "名称" : "韩红", "手机" : "13844115460", "门店" : "常青店",
+        "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价", "拿货折扣" : "0.5",
+        "信用额度" : "0", "欠款报警" : "0" };
+    var ret = editCustomerBasicSetUp("韩红", keys);
+    return ret;
+}
 /**
  * 新增/修改厂商
  */
@@ -136,6 +191,11 @@ function setProvider001() {
 
 function setProvider002() {
     var keys = { "名称" : "Adidas公司", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("Adidas公司", keys);
+    return ret;
+}
+function setProvider003() {
+    var keys = { "名称" : "Rt", "适用价格" : "进货价" };
     var ret = editProviderBasicSetUp("Adidas公司", keys);
     return ret;
 }

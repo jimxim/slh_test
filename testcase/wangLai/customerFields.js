@@ -138,19 +138,19 @@ function editCustomerField(key, show) {
         break;
     case "fax":
     case "传真号":
-        f = new TField("传真号", TF, 14, "55555");
+        f = new TField("传真号", TF, 15, "55555");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 15, "123");
+        f = new TField("备注", TF, 16, "123");
         break;
     case "address":
     case "地址":
-        f = new TField("地址", TF, 16, "地址");
+        f = new TField("地址", TF, 17, "地址");
         break;
     case "discount":
     case "拿货折扣":
-        f = new TField("拿货折扣", TF, 17, "0.9");
+        f = new TField("拿货折扣", TF, 18, "0.9");
         break;
     case "credit":
     case "信用额度":

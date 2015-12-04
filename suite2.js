@@ -10,15 +10,16 @@ function test000() {
 // var ok = login("000","000000");
 // if( ok ) {
 // testParamAll();
+	testBasicSetUpAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
 //	testPurchase001();
 // testPurchaseOrderAll();
- testShopInAll();
- testShopIn001();
- testShopOutAll();
- testShopOut001();
+// testShopInAll();
+// testShopIn001();
+// testShopOutAll();
+// testShopOut001();
 // testSalesOrderAll();
 // testCheckAll();
 //	 testCheck001();
