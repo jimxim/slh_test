@@ -7,8 +7,8 @@
 // 总经理
 function test000All() {
 	debug = true;
- 
-	 run("【采购订货-订货汇总】订货汇总->按款号", "test130004");
+
+	 run("采购订货", "test130005_1");
 }
 
 /**

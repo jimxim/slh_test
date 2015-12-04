@@ -32,7 +32,7 @@ function test130001_1() {
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次",3);
+    var ret = goPageCheckField("批次", 3);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -51,7 +51,6 @@ function test130001_1() {
 
     logDebug("ret=" + ret);
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -82,7 +81,7 @@ function test130001_2() {
     var keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店" };
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
-    var qr=getQR();
+    var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("采购订货", "新增订货+");
@@ -155,7 +154,6 @@ function test130002_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -219,9 +217,9 @@ function test130002_2() {
     return ret && ret1;
 }
 
-function test130004() {  
+function test130004() {
 
-        tapMenu("采购订货", "按汇总", "按款号");
+    tapMenu("采购订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-60), "到" : getToday() };
     var fields = purchaseOrderCodeFields(keys);
     query(fields);
@@ -234,7 +232,6 @@ function test130004() {
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -276,12 +273,12 @@ function test130005() {
     query(fields);
     var ret = goPageCheckField("名称");
 
-//    ret = ret && sortByTitle("名称");
-//    ret = ret && sortByTitle("数量", IS_NUM);
-//    ret = ret && sortByTitle("已发", IS_NUM);
-//    ret = ret && sortByTitle("差异数", IS_NUM);
-//    ret = ret && sortByTitle("小计", IS_NUM);
-//    logDebug("ret="+ret);
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle("差异数", IS_NUM);
+    ret = ret && sortByTitle("小计", IS_NUM);
+    logDebug("ret=" + ret);
 
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
@@ -316,6 +313,33 @@ function test130005() {
     return ret && ret1;
 }
 
+function test130005_1() {
+    tapMenu("采购订货", "按汇总", "按厂商");
+    var keys = { "日期从" : getDay(-30), "厂商" : "vell" };
+    var fields = purchaseOrderProviderFields(keys);
+    query(fields);
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
+    var arr1 = new Array();
+    var i,j;
+   
+       
+    logDebug("arr1="+arr1);
+    
+    var arr2 = new Array();
+
+    
+    logDebug("arr1="+arr1);
+    logDebug("arr2="+arr2);
+
+}
+
+function test130005Field() {
+    var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
+    var data = new Array(6);
+
+}
+
 function test130006() {
     tapMenu("采购订货", "按汇总", "按门店");
     var keys = { "日期从" : getDay(-60) };
@@ -329,7 +353,6 @@ function test130006() {
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -373,7 +396,7 @@ function test130004_130005_130006() {
     var c1 = qr.data[0]["差异数"];
     var d1 = qr.data[0]["小计"];
     var ret = isEqual(sub(a1, b1), c1);
-    
+
     var sum1 = 0, sum2 = 0, sum3 = 0;
     var i, j;
     tapFirstText();
@@ -403,7 +426,7 @@ function test130004_130005_130006() {
     var c2 = qr.data[0]["差异数"];
     var d2 = qr.data[0]["小计"];
     ret = isAnd(ret, isEqual(sub(a2, b2), c2));
-    
+
     sum1 = 0, sum2 = 0, sum3 = 0;
     tapFirstText();
     delay();
@@ -432,7 +455,7 @@ function test130004_130005_130006() {
     var c3 = qr.data[0]["差异数"];
     var d3 = qr.data[0]["小计"];
     ret = isAnd(ret, isEqual(sub(a3, b3), c3));
-    
+
     sum1 = 0, sum2 = 0, sum3 = 0;
     tapFirstText();
     delay();

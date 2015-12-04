@@ -22,13 +22,12 @@ function test150001_1() {
     editShopOutDecruitIn(json);
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店",
-        "调入门店" : "中洲店" };
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店" };
     var fields = shopOutQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",2);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -101,13 +100,12 @@ function test150001_2() {
 }
 function test150001_3() {
     tapMenu("门店调出", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "调出门店" : "常青店",
-        "调入门店" : "中洲店" };
+    var keys = { "日期从" : getDay(-30), "到" : getToday(), "调出门店" : "常青店" };
     var fields = shopOutQueryParticularFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("批次",2);
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");
