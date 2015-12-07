@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
-	 run("text", "test000");
-//	 run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");
+	 run("text", "changeMarketTime");
+//	 run("【采购订货-订货汇", "test120003");
 }
 
 /**

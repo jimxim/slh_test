@@ -40,56 +40,96 @@ function testBasicSetUpAll() {
 
 }
 
-function subTime(day1,day2){
+function subTime(day1, day2) {
     var arr1 = day1.split("-");
     var arr2 = day2.split("-");
     var date1 = new Date(arr1[0], arr1[1], arr1[2]);
     var date2 = new Date(arr2[0], arr2[1], arr2[2]);
-    var ret = (date1-date2)/(24*60*60*1000);
-    logDebug("ret="+ret);
+    var ret = (date1 - date2) / (24 * 60 * 60 * 1000);
+    logDebug("ret=" + ret);
     return ret;
 }
 
-function test000(){
+function changeMarketTime(day2) {
+    var i, day, arr1;
     var day1 = getTextFieldValue(getScrollView(), 5);
-    var day2="2015-10-13";
-    var num=subTime(day1,day2);
-    logDebug("num="+num);
-    
+    var num = subTime(day1, day2);
+    var num1 = Math.round(num / 30);
+    var arr = day1.split("-");
+    logDebug("arr[1]=" + arr[1]);
+    logDebug("num1=" + num1);
 
-    window.scrollViews()[0].switches()[0].setValue(1);
-    tapButton(getScrollView(), "减量");
+    // 第一次点击减量或增量按钮，有时会按另外一个按钮
+    if (num1 > 0) {
+        window.scrollViews()[0].switches()[0].setValue(1);
+        tapButton(getScrollView(), "减量");
+        day = getTextFieldValue(getScrollView(), 5);
+        arr1 = day.split("-");
+        logDebug("arr1[1]=" + arr1[1]);
+        if (arr[1] == "12") {
+            if (arr1[1] == "1") {
+                tapButton(getScrollView(), "减量");
+                tapButton(getScrollView(), "减量");
+            }
+        } else {
+            if (arr1[1] != Number(arr[1]) - 1) {
+                tapButton(getScrollView(), "减量");
+                tapButton(getScrollView(), "减量");
+            }
+        }
+        for (i = 1; i < num1; i++) {
+            tapButton(getScrollView(), "减量");
 
-//    if(num>0){
-//        tapButton(getScrollView(), "减量");
-//        var day = getTextFieldValue(getScrollView(), 5);
-//        if (day != getDay(-1)) {
-//            tapButton(getScrollView(), "减量");
-//            tapButton(getScrollView(), "减量");
-//        }
-//        for(var i=0;i<num-1;i++){
-//            tapButton(getScrollView(), "减量");
-//        }
-//    }
-//    
-//    if(num<0){
-//        tapButton(getScrollView(), "增量");
-//        var day = getTextFieldValue(getScrollView(), 5);
-//        if (day != getDay(+1)) {
-//            tapButton(getScrollView(), "增量");
-//            tapButton(getScrollView(), "增量");
-//        }
-//        for(var i=0;i<num-1;i++){
-//            tapButton(getScrollView(), "增量");
-//        }
-//    }
-//    
-//    var ret=false;
+        }
+        window.scrollViews()[0].switches()[0].setValue(0);
+
+    }
+
+    if (num1 < 0) {
+        window.scrollViews()[0].switches()[0].setValue(1);
+        tapButton(getScrollView(), "增量");
+        day = getTextFieldValue(getScrollView(), 5);
+        arr1 = day.split("-");
+        logDebug("arr1[1]=" + arr1[1]);
+        if (arr[1] == "1") {
+            if (arr1[1] == "12") {
+                tapButton(getScrollView(), "增量");
+                tapButton(getScrollView(), "增量");
+            }
+        } else {
+            if (arr1[1] == Number(arr[1]) - 1) {
+                tapButton(getScrollView(), "增量");
+                tapButton(getScrollView(), "增量");
+            }
+        }
+        for (i = Number(num1)+1; i < 0; i++) {
+            tapButton(getScrollView(), "增量");
+
+        }
+        window.scrollViews()[0].switches()[0].setValue(0);
+    }
+
+    day1 = getTextFieldValue(getScrollView(), 5);
+    num = subTime(day1, day2);
+
+    if (num > 0) {
+        for (i = 0; i < num; i++) {
+            tapButton(getScrollView(), "减量");
+        }
+    }
+
+    if (num < 0) {
+        for (i = num; i < 0; i++) {
+            tapButton(getScrollView(), "增量");
+        }
+    }
+
+//    var ret = false;
 //    day = getTextFieldValue(getScrollView(), 5);
-//    if(day==day2){
-//        ret=true;
+//    if (day == day2) {
+//        ret = true;
 //    }
-    return ret;
+//    return ret;
 }
 
 /**
@@ -146,8 +186,8 @@ function setZhaoBenShan() {
  */
 function setCustomer001() {
     var keys = { "名称" : "上级客户1", "门店" : "常青店", "店员" : "000",
-        "生日" : "2000-12-30", "客户类别" : "零批客户", "允许退货" : "是",
-        "适用价格" : "零批价", "信用额度" : "0", "欠款报警" : "0" };
+        "生日" : "2000-12-30", "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价",
+        "信用额度" : "0", "欠款报警" : "0" };
     var ret = editCustomerBasicSetUp("上级客户1", keys);
     return ret;
 }
@@ -424,8 +464,9 @@ function setLogistics004() {
 
 /**
  * 新增/修改货品
+ * day2 上架日期
  */
-function editGoodsBasicSetUp(code, name, keys) {
+function editGoodsBasicSetUp(code, name, keys,day2) {
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : code + name };
     var qFields = queryGoodsFields(qKeys);
@@ -436,11 +477,17 @@ function editGoodsBasicSetUp(code, name, keys) {
     var fields = editGoodsFields(keys, false, 0, 0);
     if (qr.total == "1") {
         tapFirstText();
+        if(isDefined(day2)){
+            changeMarketTime(day2);
+        }
         setTFieldsValue(getScrollView(), fields);
         tapButtonAndAlert(EDIT_SAVE);
     }
     if (qr.total == "0") {
         tapMenu("货品管理", "新增货品+");
+        if(isDefined(day2)){
+            changeMarketTime(day2);
+        }
         setTFieldsValue(getScrollView(), fields);
         saveAndAlertOk();
         delay();
@@ -460,7 +507,7 @@ function setGoods001() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
         "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("3035", "jkk", keys);
+    var ret = editGoodsBasicSetUp("3035", "jkk", keys,"2015-10-13");
     return ret;
 }
 
@@ -470,7 +517,7 @@ function setGoods002() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
         "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("4562", "Story", keys);
+    var ret = editGoodsBasicSetUp("4562", "Story", keys,"2014-03-14");
     return ret;
 }
 
@@ -480,7 +527,7 @@ function setGoods003() {
         "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
         "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys);
+    var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys,"2015-10-13");
     return ret;
 }
 // "上架日期" : "2015-10-13",
@@ -489,7 +536,7 @@ function setGoods004() {
         "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
         "产品折扣" : "1", "季节" : "春季", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
         "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k200", "范范", keys);
+    var ret = editGoodsBasicSetUp("k200", "范范", keys,"2015-10-13");
     return ret;
 }
 // "上架日期" : "2015-03-17",
@@ -498,7 +545,7 @@ function setGoods005() {
         "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
         "产品折扣" : "0.985", "季节" : "春季", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
         "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("8989", "我们", keys);
+    var ret = editGoodsBasicSetUp("8989", "我们", keys,"2015-03-17");
     return ret;
 }
 function setGoods006() {
