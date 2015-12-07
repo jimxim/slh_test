@@ -1,35 +1,39 @@
 //LuXingXin <52619481 at qq.com> 20150930
 
 function testPurchase001() {
-//     run("【采购入库】翻页_排序_汇总", "test120001_1");
-//     run("【采购入库】条件查询，清除按钮,下拉框", "test120001_2");
-//     run("【采购入库-按批次查】按批次查->作废", "test120003");//
-//     run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
-//     run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120007_1");
-//     run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
-//     run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_1");
-//     run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_2");
-//     run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120008_3");
-//     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
-//     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009_1");
-//     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");//(商路花程序改变)
-//     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010_1");
-//     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011");
-     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_1");
-//     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_2");
-//    run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_3");
-//     run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_1");
-//     run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_2");
-//     run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_3");
-//     run("【采购入库-按订货入库】翻页_排序_汇总", "test120025_1");
-//     run("【采购入库-按订货入库】条件查询，清除按钮,下拉框", "test120025_2");
-//     run("【采购入库-厂商账款】厂商账款->厂商总账_翻页_排序_汇总", "test120029_1");
-//     run("【采购入库-厂商账款】厂商账款->厂商总账_条件查询，清除按钮,下拉框", "test120029_2");
-//     run("【采购入库-厂商账款】厂商账款->厂商门店账_翻页_排序_汇总", "test120030_1");
-//     run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");
-//     run("【采购入库-按明细查】界面功能检查", "test120047_1");
-//     run("【采购入库-按明细查】界面功能检查", "test120047_2");
-//     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
+    // run("【采购入库】翻页_排序_汇总", "test120001_1");
+    // run("【采购入库】条件查询，清除按钮,下拉框", "test120001_2");
+
+    // run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
+    // run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120007_1");
+    // run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
+    // run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_1");
+    // run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_2");
+    // run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120008_3");
+    // run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
+    // run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009_1");
+    // run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");//(商路花程序改变)
+    // run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010_1");
+    // run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011");
+// run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_1");//涉及底部数据汇总，不能有作废
+// run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_2");
+    // run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_1");//
+    // run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_2");
+    // run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_3");
+    // run("【采购入库-按订货入库】翻页_排序_汇总", "test120025_1");
+    // run("【采购入库-按订货入库】条件查询，清除按钮,下拉框", "test120025_2");
+    // run("【采购入库-厂商账款】厂商账款->厂商总账_翻页_排序_汇总", "test120029_1");
+    // run("【采购入库-厂商账款】厂商账款->厂商总账_条件查询，清除按钮,下拉框", "test120029_2");
+     run("【采购入库-厂商账款】厂商账款->厂商门店账_翻页_排序_汇总", "test120030_1");
+// run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");
+    // run("【采购入库-按明细查】界面功能检查", "test120047_1");
+     run("【采购入库-按明细查】界面功能检查", "test120047_2");
+    // run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
+
+}
+function testPurchase002() {
+    // 换帐套跑作废单据相关用例
+    // run("【采购入库-按批次查】按批次查->作废", "test120003");
 }
 function testPurchaseAll() {
     // 清除数据后，要先手动新增入库3035，并未付款
@@ -171,7 +175,7 @@ function test120003() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
-    
+
     tapMenu1("往来管理");
     delay();
     tapMenu2("厂商账款");
@@ -527,9 +531,9 @@ function test120008_2() {
 }
 
 function test120008_3() {
-     tapMenu("采购入库", "新增入库+");
-     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-     editSalesBillNoColorSize(json);
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
 
     // tapButton(window,RETURN);
 
@@ -813,7 +817,7 @@ function test120010_1() {
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
     ret = ret && sortByTitle("进货数", IS_NUM);
-//    ret = ret && sortByTitle("退货数", IS_NUM);
+    // ret = ret && sortByTitle("退货数", IS_NUM);
     ret = ret && sortByTitle("实进数");
     ret = ret && sortByTitle("实进额", IS_NUM);
 
@@ -2182,22 +2186,20 @@ function test120030() {
     return ret && ret1 && ret2;
 }
 function test120030_1() {
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+// tapMenu("采购入库", "新增入库+");
+// var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+// editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
-    var keys = { "门店" : "常青店" }
-    var fields = purchaseShopAccountFields(keys);
-    query(fields);
+    query();
 
     // 翻页
-    var ret = goPageCheckField("名称",1);
+    var ret = goPageCheckField("名称", 1);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    query(fields);
+    query();
     var qr = getQR();
     var sum1 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2490,13 +2492,11 @@ function test120047_2() {
     var ret = isEqual("3035", qr.data[0]["款号"]);
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 6; i++) {
-        if (i != 3 || i != 4) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        }
-    }
+    var ret1 = isAnd(isEqual("", getTextFieldValue(window, 0)),
+            isEqual("", getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)),isEqual(getToday(), getTextFieldValue(window, 3)),
+                    isEqual(getToday(), getTextFieldValue(window, 4)),isEqual("", getTextFieldValue(window, 5)));
+
 
     return ret && ret1;
 }
