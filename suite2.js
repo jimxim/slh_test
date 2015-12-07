@@ -9,13 +9,12 @@ function test000() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
-	goodsParams001();
 // testParamAll();
 // testBasicSetUpAll();
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
-// testPurchase001();
+ testPurchase001();
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopIn001();

@@ -50,14 +50,13 @@ function subTime(day1, day2) {
     return ret;
 }
 
+
 function changeMarketTime(day2) {
     var i, day, arr1;
     var day1 = getTextFieldValue(getScrollView(), 5);
     var num = subTime(day1, day2);
     var num1 = Math.round(num / 30);
     var arr = day1.split("-");
-    logDebug("arr[1]=" + arr[1]);
-    logDebug("num1=" + num1);
 
     // 第一次点击减量或增量按钮，有时会按另外一个按钮
     if (num1 > 0) {
