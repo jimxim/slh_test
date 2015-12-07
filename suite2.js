@@ -15,6 +15,7 @@ function test000() {
 // testGoodsGoodsAll();
 // testPurchaseAll();
  testPurchase001();
+ testPurchaseOrder001();
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopIn001();

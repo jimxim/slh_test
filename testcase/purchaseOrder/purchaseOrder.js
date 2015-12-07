@@ -1,16 +1,16 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrder001() {
-    run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
-    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
-    run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
-    run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
-    run("【采购订货-订货汇总】订货汇总->按款号", "test130004");
-    run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
-    run("【采购订货-订货汇总】订货汇总->按厂商数据验证", "test130005_1");
-    run("【采购订货-订货汇总】订货汇总->按门店", "test130006");
-    run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");
-    run("【采购订货-订货汇总】订货汇总->按款号_按厂商_按门店_明细检查", "test130004_130005_130006");
+    // run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
+    // run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
+    // run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
+    // run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
+    // run("【采购订货-订货汇总】订货汇总->按款号", "test130004");
+    // run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
+    // run("【采购订货-订货汇总】订货汇总->按厂商数据验证", "test130005_1");
+    // run("【采购订货-订货汇总】订货汇总->按门店", "test130006");
+//    run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");//
+    // run("【采购订货-订货汇总】订货汇总->按款号_按厂商_按门店_明细检查", "test130004_130005_130006");//
 }
 
 function testPurchaseOrderAll() {
@@ -434,13 +434,18 @@ function test130006_1() {
     query(fields);
 
     var ret = true;
+    
+        // keys = { "款号" : arr1[i][0] };
+        // fields = purchaseOrderQueryParticularFields(keys);
     for (i = 0; i < arr1.length; i++) {
-        keys = { "款号" : arr1[i][0] };
-        fields = purchaseOrderQueryParticularFields(keys);
+        var f = new TField("款号", TF_AC, 1,arr1[i][0]);
+        var feilds = [ f ];
         setTFieldsValue(window, fields);
         tapButton(window, QUERY);
+        
 
         qr = getQR();
+  
         ret = isAnd(ret, isEqual(arr1[i][0], qr.data[0]["款号"]), isEqual(
                 arr1[i][1], qr.data[0]["名称"]), isEqual(arr1[i][2],
                 qr.counts["数量"]), isEqual(arr1[i][3], qr.counts["已入库"]));
@@ -448,6 +453,7 @@ function test130006_1() {
             break;
         }
     }
+    logDebug(" arr1[i][0] =" + arr1[i][0]);
     return ret && ret1;
 }
 

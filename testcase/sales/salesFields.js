@@ -666,7 +666,7 @@ function editSalesBillField(key, show) {
 	switch (key) {
 	case "customer":
 	case "客户":
-		f = new TField("客户", TF_AC, 0, "a",  - 1, 0);
+		f = new TField("客户", TF_AC, 0, "a",  -1, 0);
 		if (show) {
 			f.value = "Qaq";
 		}
