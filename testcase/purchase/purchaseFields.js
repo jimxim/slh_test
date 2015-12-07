@@ -286,10 +286,10 @@ function testPurchaseInOutFields() {
     return true;
 }
 
-function purchaseInOutFields() {
-    return getTFields("purchaseInOutField", arguments);
+function purchaseInOutFields(keys,show) {
+    return getTFields("purchaseInOutField", keys,show);
 }
-function purchaseInOutField(key) {
+function purchaseInOutField(key,show) {
     var f;
     switch (key) {
     case "day1":

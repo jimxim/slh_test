@@ -3,7 +3,7 @@
 function testPurchase001() {
 //     run("【采购入库】翻页_排序_汇总", "test120001_1");
 //     run("【采购入库】条件查询，清除按钮,下拉框", "test120001_2");
-//     run("【采购入库-按批次查】按批次查->作废", "test120003");//( 第一遍可能出错)
+//     run("【采购入库-按批次查】按批次查->作废", "test120003");//
 //     run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
 //     run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120007_1");
 //     run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
@@ -12,10 +12,10 @@ function testPurchase001() {
 //     run("【采购入库-采购汇总】条件查询，清除按钮,下拉框", "test120008_3");
 //     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009");
 //     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009_1");
-     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");
+//     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");//(商路花程序改变)
 //     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010_1");
 //     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011");
-//     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_1");
+     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_1");
 //     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_2");
 //    run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_3");
 //     run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_1");
@@ -799,15 +799,6 @@ function test120010_1() {
     tapKeyboardHide();
     query();
 
-    // tapMenu("采购入库", "按汇总", "按厂商汇总");
-    // var keys = { "日期从" : getDay(-3), "到" : getToday(), "厂商" : "vell" }
-    // var fields = purchaseProviderFields(keys);
-    // query(fields);
-    // var qr = getQR();
-    // var a1 = qr.data[0]["名称"];
-    //
-    // var ret = isAnd(isEqual("Vell", a1));
-
     tapButton(window, CLEAR);
     var ret2 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
@@ -822,8 +813,8 @@ function test120010_1() {
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
     ret = ret && sortByTitle("进货数", IS_NUM);
-    ret = ret && sortByTitle("退货数", IS_NUM);
-    ret = ret && sortByTitle("实进数", IS_NUM);
+//    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实进数");
     ret = ret && sortByTitle("实进额", IS_NUM);
 
     return ret && ret1 && ret2;
@@ -869,8 +860,6 @@ function test120011_1() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "2" } ] };
     editSalesBillNoColorSize(json);
-    delay();
-    tapButton(window, RETURN);
 
     tapMenu("采购入库", "按汇总", "出入库汇总");
     var keys = { "日期从" : getDay(-3), "到" : getToday() }
