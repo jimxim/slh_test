@@ -50,7 +50,7 @@ function subTime(day1,day2){
     return ret;
 }
 
-function test000(){
+function test000a(){
     var day1 = getTextFieldValue(getScrollView(), 5);
     var day2="2015-10-13";
     var num=subTime(day1,day2);
