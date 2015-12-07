@@ -7,7 +7,7 @@
 function test000All() {
 	debug = true;
 
-	 run("text", "changeMarketTime");
+	 run("text", "test110048");
 //	 run("【采购订货-订货汇", "test120003");
 }
 

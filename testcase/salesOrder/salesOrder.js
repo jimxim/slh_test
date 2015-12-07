@@ -612,17 +612,24 @@ function test160001() {
 }
 
 function test160002_160017() {
+    tapMenu("销售订货", "按批次查");
+    var keys = {  "日期从" : getDay(-30),"门店" : "常青店"};
+    var fields = salesOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var batch=Number(qr.data[0]["批次"]);
+    
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
-    var keys = { "客户" : "xw", "日期从" : getToday(), "日期到" : getToday(),
-        "店员" : "000", "批次从" : "1", "批次到" : "100000", "门店" : "常青店",
+    keys = { "客户" : "xw", "日期从" : getToday(), "日期到" : getToday(),
+        "店员" : "000", "批次从" : batch, "批次到" : batch+1, "门店" : "常青店",
         "发货状态" : "未发货" };
-    var fields = salesOrderQueryBatchFields(keys);
+    fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
     var expected = { "门店" : "常青店", "店员" : "总经理", "客户" : "小王", "数量" : "10",
         "已发数" : "0", "差异数" : "10", "发货状态" : "未发货" };
     var ret = isEqualQRData1Object(qr, expected);

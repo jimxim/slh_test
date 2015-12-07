@@ -119,12 +119,16 @@ function editCustomerField(key, show) {
             f.index = 9;
         }
         break;
+    case "code":
+    case "客户代码":
+        f = new TField("客户代码", TF, 11, "1234567890");
+        break;
     case "return":
     case "允许退货":
         f = new TField("允许退货", BTN_SC, 4, "是");
         if (show) {
             f.type = TF;
-            f.index = 10;
+            f.index = 12;
         }
         break;
 
@@ -133,7 +137,7 @@ function editCustomerField(key, show) {
         f = new TField("适用价格", BTN_SC, 5, "零批价");
         if (show) {
             f.type = TF;
-            f.index = 11;
+            f.index = 14;
         }
         break;
     case "fax":

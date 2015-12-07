@@ -67,15 +67,16 @@ function test110001_1() {
 
     var ret = goPageCheckField("名称");
 
-    var keys = { "客户类别" : "VIP客户" };
-    var fields = queryCustomerFields(keys);
-    query(fields);
+    // var keys = { "客户类别" : "VIP客户" };
+    // var fields = queryCustomerFields(keys);
+    // query(fields);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("生日", IS_DATE2);
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("地址");
     ret = ret && sortByTitle("传真号");
+    ret = ret && sortByTitle("客户代码");
     ret = ret && sortByTitle("当前积分", IS_NUM);
     ret = ret && sortByTitle("上级客户");
     ret = ret && sortByTitle("备注");
@@ -138,12 +139,12 @@ function test110001() {
  * 新增客户
  * @param keys
  */
-function addCustomer(keys){
+function addCustomer(keys) {
     tapMenu("往来管理", "新增客户+");
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    
+
     delay();
     tapReturn();
 }
@@ -851,12 +852,13 @@ function test110032() {
     return ret;
 }
 
+// 翻页，排序，查询，清除,验证
 function test110033() {
     tapMenu("往来管理", "客户活跃度");
     var keys = { "门店" : "常青店" };
     var fields = queryCustomerActiveFields(keys);
     query(fields);
-    var ret = goPageCheckField("名称",1);
+    var ret = goPageCheckField("名称", 1, "SC");
     logDebug("ret=" + ret);
 
     ret = ret && sortByTitle("门店");
@@ -874,11 +876,15 @@ function test110033() {
     var ret1 = isEqual("常青店", qr.data[0]["门店"])
             && isEqual("小王", qr.data[0]["名称"]) && isEqual(1, qr.total)
             && isEqual(1, qr.totalPageNo);
+    tapButton(window, CLEAR);
+    ret1 = isAnd(ret1, isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)));
 
     var r = "c" + getTimestamp(6);
-    keys = [ "名称" ];
+    keys = { "名称" : r };
     addCustomer(keys);
-    
+
+    tapMenu("往来管理", "客户活跃度");
     keys = { "客户" : r, "门店" : "常青店" };
     fields = queryCustomerActiveFields(keys);
     query(fields);
@@ -948,7 +954,7 @@ function test110036() {
     query(fields);
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
-    var ret = goPageCheckField("名称",0);
+    var ret = goPageCheckField("名称", 0,"SC");
 
     var qr = getQR();
     var sum = 0;
@@ -982,7 +988,6 @@ function test110036() {
     ret1 = ret1 && sortByTitle("电话");
     ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
     ret1 = ret1 && sortByTitle("最近兑换日期", IS_DATE2);
-
 
     return ret && ret1;
 }
@@ -1232,7 +1237,7 @@ function test110041() {
     var fields = queryProviderShopAccountFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("名称",1);
+    var ret = goPageCheckField("名称", 1,"SC");
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -1336,15 +1341,14 @@ function test110044() {
     ret = ret && sortByTitle("区域");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("门店");
-    ret = ret && sortByTitle("经办人");
+    ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("电话");
     ret = ret && sortByTitle("地址");
     ret = ret && sortByTitle("账号");
     ret = ret && sortByTitle("备注");
 
-    var keys = [ "名称" ];
+    var keys = {"名称":"顺丰快递"};
     var fields = queryCustomerLogisticsFields(keys);
-    changeTFieldValue(fields["名称"], "顺丰快递");
     query(fields);
     var qr = getQR();
     var ret = isEqual("顺丰快递", qr.data[0]["名称"]);

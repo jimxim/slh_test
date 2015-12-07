@@ -292,9 +292,10 @@ function setTagprice_invperson_1() {
 /**
  * 翻页检验，检验序号和title的内容和第2页有没有重复
  * @param title
+ * @param type 限制条件的文本框类型
  * @param index 限制条件的下标
  */
-function goPageCheckField(title, index) {
+function goPageCheckField(title, index,type) {
     var qr = getQR();
     // 当前页为1
     var ret = isEqual("1", qr.data[0]["序号"]);
@@ -344,8 +345,11 @@ function goPageCheckField(title, index) {
         scrollPrevPage();
 
     } else {
-        if(isDefined(index)){
+        if (isDefined(index)) {
             tap(window.textFields()[index]);
+            if (isDefined(type)) {
+                window.popover().dismiss();
+            }
             var ok = tap(window.textFields()[index].buttons()["清除文本"]);
             if (!ok) {
                 tap(window.textFields()[index].buttons()["Clear text"]);
@@ -353,7 +357,7 @@ function goPageCheckField(title, index) {
         }
 
         tapButton(window, QUERY);
-        //清除会将日期变成今天
+        // 清除会将日期变成今天
         // tapButton(window, CLEAR);
 
         qr = getQR();
@@ -476,7 +480,7 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号",2);
+    var ret = goPageCheckField("款号", 2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -693,7 +697,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号",2);
+    var ret = goPageCheckField("款号", 2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -977,7 +981,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号",0);
+    var ret = goPageCheckField("款号", 0);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1054,15 +1058,14 @@ function test100009() {
     var a = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
 
     tapFirstText();
-    // 测试数据一般只有常青店和中洲店的
     var oStockNum = getColorSizeStockNum();
-    if (oStockNum["均色-均码-仓库店"] == undefined) {
-        var b = Number(oStockNum["均色-均码-常青店"]) + Number(oStockNum["均色-均码-中洲店"]);
-    } else {
-        b = Number(oStockNum["均色-均码-常青店"])
-                + Number(oStockNum["均色-均码-中洲店"]
-                        + Number(oStockNum["均色-均码-仓库店"]));
+    if (isDefined(oStockNum["均色-均码-中洲店"])) {
+        var b1 = Number(oStockNum["均色-均码-中洲店"]);
     }
+    if (isDefined(oStockNum["均色-均码-仓库店"])) {
+        var b2 = Number(oStockNum["均色-均码-仓库店"]);
+    }
+    var b = oStockNum["均色-均码-常青店"] + b1 + b2;
     ret = ret && isEqual(a, b);
     tapNaviLeftButton();
 
