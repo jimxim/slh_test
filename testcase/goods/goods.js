@@ -156,6 +156,10 @@ function goodsParams001() {
     qo = { "备注" : "调拨是否启用密码验证" };
     o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "库存核算价格" };
+    o = { "新值" : "1", "数值" : [ "1.库存按销价1核算", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -480,7 +484,7 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号", 2);
+    var ret = goPageCheckField("款号", 2,"SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -697,7 +701,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号", 2);
+    var ret = goPageCheckField("款号", 2,"SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -818,7 +822,7 @@ function test100006() {
     var a = qr.data[0]["库存"];
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expectedObj1 = { "名称" : "登山服", "库存" : 50, "价值" : 5000, "常青店" : 50 }
+    var expectedObj1 = { "名称" : "登山服", "库存" : 50, "价值" : 10000, "常青店" : 50 }
     var de1 = { "序号" : 0, "名称" : 0, "库存" : 0, "价值" : 0, "仓库店" : 0, "常青店" : 0,
         "中洲店" : 0 };
     var expected = mixObject(de1, expectedObj1);
@@ -981,7 +985,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号", 0);
+    var ret = goPageCheckField("款号", 0,"SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1156,7 +1160,10 @@ function test100010_100011_100013() {
         if (i != 3) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            //是否停用无法删除
+            if (i != 7){
+                ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            }         
         }
     }
 
