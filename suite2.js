@@ -14,13 +14,9 @@ function test000() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
+    
 // testPurchase001();
 // testPurchaseOrder001();
-	    
-//    run("【采购入库-采购汇总】采购汇总->按款号汇总", "test120008");
-    run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_2");
-    run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_2");
-	    
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopIn001();
@@ -70,6 +66,26 @@ function test000Check001() {
     var ok = login("000","000000",p1);
     if( ok ) {
          testPurchase001();
+        
+        logout();
+    }
+ }
+//销售开单
+ function test000Purchase001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElse001();
+        
+        logout();
+    }
+ }
+//盘点管理
+ function test000Purchase001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testCheck001();
         
         logout();
     }

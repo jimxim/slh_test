@@ -23,8 +23,8 @@ function testPurchase001() {
     run("【采购入库-按订货入库】条件查询，清除按钮,下拉框", "test120025_2");
     run("【采购入库-厂商账款】厂商账款->厂商总账_翻页_排序_汇总", "test120029_1");
     run("【采购入库-厂商账款】厂商账款->厂商总账_条件查询，清除按钮,下拉框", "test120029_2");
-    run("【采购入库-厂商账款】厂商账款->厂商门店账_翻页_排序_汇总", "test120030_1");//
-    run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");//
+    run("【采购入库-厂商账款】厂商账款->厂商门店账_翻页_排序_汇总", "test120030_1");
+    run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");
     run("【采购入库-按明细查】界面功能检查", "test120047_1");
     run("【采购入库-按明细查】界面功能检查", "test120047_2");
     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
@@ -32,31 +32,29 @@ function testPurchase001() {
 }
 function testPurchase002() {
     // 换帐套跑作废单据相关用例
-    // run("【采购入库-按批次查】按批次查->作废", "test120003");
+    run("【采购入库-按批次查】按批次查->作废", "test120003");
 }
 function testPurchaseAll() {
     // 清除数据后，要先手动新增入库3035，并未付款
-
     // run("【采购入库-新增入库】新增入库+付款", "test120019");
     // run("【采购入库-新增入库】新增入库+不付款", "test120023");
     // run("【采购入库-新增入库】退货+退款", "test120020");
     // run("【采购入库-新增入库】退货+不退款", "test120021");
     // run("【采购入库-新增入库】检查核销", "test120022");
-    // run("【采购入库-按批次查】按批次查->作废", "test120003");
     // run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
     // run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查","test120013_120031_120032");
     // run("【采购入库-批量入库】均色均码+批量入库", "test120024");
     // run("【采购入库-按订货入库】按订货入库", "test120025");
     // run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
-    // run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
+    // run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");//
     // run("【采购入库-按订货入库】修改供应商名称", "test120028");
-    // run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
-    // run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");
+    // run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");//
+    // run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");//
     // run("【采购入库】新增入库单修改保存", "test120033");
     // run("【采购入库】客户或供应商信息不允许修改", "test120034");
     // run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
-    // run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
-    // run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
+    // run("【采购入库】批量入库实现进货功能+均色均码", "test120042");//
+    // run("【采购入库】批量入库实现退货功能+均色均码", "test120043");//
 
 }
 // 翻页_排序_汇总
@@ -364,19 +362,19 @@ function test120008() {
     query(fields);
     var ret = goPageCheckField("款号");
 
-    ret = ret && sortByTitle("款号");
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("厂商");
-    ret = ret && sortByTitle("上架日期", IS_DATE2);
-    ret = ret && sortByTitle("颜色");
-    ret = ret && sortByTitle("尺码");
-    ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("拿货数", IS_NUM);
-    ret = ret && sortByTitle("退货数", IS_NUM);
+//    ret = ret && sortByTitle("款号");
+//    ret = ret && sortByTitle("名称");
+//    ret = ret && sortByTitle("厂商");
+//    ret = ret && sortByTitle("上架日期", IS_DATE2);
+//    ret = ret && sortByTitle("颜色");
+//    ret = ret && sortByTitle("尺码");
+//    ret = ret && sortByTitle("数量", IS_NUM);
+//    ret = ret && sortByTitle("拿货数", IS_NUM);
+//    ret = ret && sortByTitle("退货数", IS_NUM);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys = { "day1" : getToday(), "day2" : getToday() };
-    var fields = purchasePriceFields(keys);
+    var keys = { "day1" : getToday(), "day2" : getToday(),"款号":"3035" };
+    var fields = purchaseCodeFields(keys);
     query(fields);
     var qr = getQR();
     var a = Number(qr.data[0]["数量"]);
@@ -390,8 +388,8 @@ function test120008() {
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys1 = { "day1" : getToday(), "day2" : getToday() };
-    var fields1 = purchasePriceFields(keys1);
+    var keys1 = { "day1" : getToday(), "day2" : getToday() ,"款号":"3035" };
+    var fields1 = purchaseCodeFields(keys1);
     query(fields1);
     var qr1 = getQR();
     var b = Number(qr1.data[0]["数量"]);
@@ -400,10 +398,10 @@ function test120008() {
 
     var ret1 = isAnd(isEqual("4", sub(b, a)), isEqual("5", sub(b1, a1)),
             isEqual("1", sub(b2, a2)));
-    
+
     return ret1;
 
-    var qr = getQR();
+    qr = getQR();
     var sum1 = 0, sum2 = 0, sum3 = 0;
     var ret2 = true;
     var totalPageNo = qr.totalPageNo;
@@ -1892,8 +1890,7 @@ function test120025() {
     tapMenu("采购入库", "按订货入库");
     tapFirstText();
     saveAndAlertOk();
-    delay();
-    tapButton(window, RETURN);
+    delay(3);
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -1965,19 +1962,17 @@ function test120027() {
     query();
     tapFirstText();
     var a = getTextFieldValue(getScrollView(), 6);
-    if (a == "") {
-        var ret = true;
-    }
-    tapButton(window, RETURN);
+    var ret = isEqual("", a);
+    delay();
 
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
     var b = getTextFieldValue(getScrollView(), 0);
     var c = getTextFieldValue(getScrollView(), 7);
-    if (b == "k300,铅笔裤" && c == "3035,jkk") {
-        var ret1 = true;
-    }
+    var ret1 = isAnd(isEqual("k300,铅笔裤", b), isEqual("3035,jkk", c));
+    delay();
+
     tapButton(window, RETURN);
 
     logDebug("ret=" + ret + "   ret1=" + ret1)
@@ -2018,9 +2013,9 @@ function test120029() {
     tapButton(window, CLEAR);
     tapButton(window, QUERY);
 
-    var ret = true;
-    // ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("余额", IS_NUM);
+    // var ret = true;
+    // // ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("余额", IS_NUM);
 
     var keys = [ "厂商" ];
     var fields = purchaseProviderAccountFields(keys);
@@ -2030,19 +2025,19 @@ function test120029() {
     var a = qr.data[0]["余额"];
 
     tapFirstText();
-    qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
-    var b = qr.data[0]["累计未结"];
+    qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
     var sum = 0;
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["未结"]);
+            sum += Number(qr.data[i]["累计未结"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
-            qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
+            qr = getQResult2(getScrollView(-1, 0), "日期", "累计未结");
         }
     }
+    var b = qr.data[0]["累计未结"];
 
     var ret1 = true;
     if (a != b) {
@@ -2053,9 +2048,11 @@ function test120029() {
         ret2 = false;
     }
     tapNaviLeftButton();
+    query();
 
     logDebug("ret1=" + ret1 + " ret2=" + ret2);
-    return ret && ret1 && ret2;
+    return ret1 && ret2;
+    // return ret;
 }
 function test120029_1() {
     tapMenu("采购入库", "新增入库+");
@@ -2146,7 +2143,7 @@ function test120030() {
     logDebug("a=" + a);
 
     tapFirstText();
-    qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
+    qr = getQResult2(getScrollView(-1, 0), "日期", "累计未结");
     debugQResult(qr);
     var b = qr.data[0]["累计未结"];
     logDebug("b=" + b);
@@ -2160,7 +2157,7 @@ function test120030() {
         if (j < totalPageNo) {
             scrollNextPage();
             delay();
-            qr = getQResult2(getScrollView(1), "操作日期", "累计未结");
+            qr = getQResult2(getScrollView(-1, 0), "日期", "累计未结");
             // debugQResult(qr);
             // debugElementTree(getScrollView(1));
             // var texts = getStaticTexts(getScrollView(1));
@@ -2178,6 +2175,7 @@ function test120030() {
         ret2 = false;
     }
     tapNaviLeftButton();
+    query();
 
     logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -2383,6 +2381,7 @@ function test120042() {
     var ret5 = isIn(getTextFieldValue(getScrollView(), 0), "4562");
     var ret6 = isEqual("20", getTextFieldValue(getScrollView(), 3));
     var ret7 = isEqual("", getTextFieldValue(getScrollView(), 7));
+    delay();
     tapButton(window, RETURN);
 
     logDebug("ret=" + ret + "   ret1=" + ret1 + "   ret2=" + ret2 + "   ret3="
@@ -2436,14 +2435,14 @@ function test120043() {
 
 function test120047_1() {
     tapMenu("采购入库", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday() };
+    var keys = { "日期从" : getToday(), "到" : getToday() };// getDay(-30)
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     // 点击翻页
     var ret = goPageCheckField("序号");
-
-    // ret = ret && sortByTitle("批次");
-    ret = ret && sortByTitle("厂商");
+    //
+//     ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("颜色");
@@ -2465,9 +2464,10 @@ function test120047_1() {
             qr = getQR();
         }
     }
-    ret = isAnd(ret, isEqual(sum1, qr.counts["数量"]), isEqual(sum2,
+    var ret1 = isAnd(isEqual(sum1, qr.counts["数量"]), isEqual(sum2,
             qr.counts["小计"]));
-    return ret;
+
+    return ret && ret1;
 }
 
 function test120047_2() {
