@@ -6,7 +6,7 @@
 // 总经理
 function test000All() {
 	debug = true;
-
+	testSalesOrder001();
 //	 run("text", "test130004_130005_130006");
 //	 run("text", "test130006_1");
 }

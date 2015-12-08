@@ -426,7 +426,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 8, "1010PP");
+        f = new TField("品牌", TF_AC, 8, -1,0);
         break;
     case "season":
     case "季节":
