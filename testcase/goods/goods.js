@@ -2692,16 +2692,16 @@ function test10_price() {
     // debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
-    delay();
-    ret = ret && sortByTitle("进货价比例", IS_NUM);
+//    delay();
+    ret = ret && sortByTitle("进货价比例", IS_NUM, window, getScrollView(), TITLE_SEQ, 4);
     // 第一次跑也许会报错
-    if (ret == false) {
-        ret = true;
-        ret = ret && sortByTitle("名称");
-        ret = ret && sortByTitle("启用");
-        delay();
-        ret = ret && sortByTitle("进货价比例", IS_NUM);
-    }
+//    if (ret == false) {
+//        ret = true;
+//        ret = ret && sortByTitle("名称");
+//        ret = ret && sortByTitle("启用");
+//        delay();
+//        ret = ret && sortByTitle("进货价比例", IS_NUM);
+//    }
 
     return ret;
 }
