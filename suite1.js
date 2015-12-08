@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
-	 run("text", "test10_brand");
-//	 run("【采购订货-订货汇", "test120003");
+	 run("text", "test130004_130005_130006");
+//	 run("text", "test130006_1");
 }
 
 /**

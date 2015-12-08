@@ -9,7 +9,7 @@ function testPurchaseOrder001() {
     // run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
     // run("【采购订货-订货汇总】订货汇总->按厂商数据验证", "test130005_1");
     // run("【采购订货-订货汇总】订货汇总->按门店", "test130006");
-//    run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");//
+    // run("【采购订货-订货汇总】订货汇总->按门店数据验证", "test130006_1");//
     // run("【采购订货-订货汇总】订货汇总->按款号_按厂商_按门店_明细检查", "test130004_130005_130006");//
 }
 
@@ -345,9 +345,10 @@ function test130005_1() {
 
     var ret = true;
     for (i = 0; i < arr1.length; i++) {
-        keys = { "款号" : arr1[i][0] };
-        fields = purchaseOrderQueryParticularFields(keys);
+        var f = new TField("款号", TF, 1, arr1[i][0]+arr1[i][1]);
+        fields = [ f ];
         setTFieldsValue(window, fields);
+        delay();
         tapButton(window, QUERY);
 
         qr = getQR();
@@ -434,18 +435,17 @@ function test130006_1() {
     query(fields);
 
     var ret = true;
-    
-        // keys = { "款号" : arr1[i][0] };
-        // fields = purchaseOrderQueryParticularFields(keys);
+
+    // keys = { "款号" : arr1[i][0] };
+    // fields = purchaseOrderQueryParticularFields(keys);
     for (i = 0; i < arr1.length; i++) {
-        var f = new TField("款号", TF_AC, 1,arr1[i][0]);
-        var feilds = [ f ];
+        var f = new TField("款号", TF, 1, arr1[i][0]+arr1[i][1]);
+        fields = [ f ];
         setTFieldsValue(window, fields);
         tapButton(window, QUERY);
-        
 
         qr = getQR();
-  
+
         ret = isAnd(ret, isEqual(arr1[i][0], qr.data[0]["款号"]), isEqual(
                 arr1[i][1], qr.data[0]["名称"]), isEqual(arr1[i][2],
                 qr.counts["数量"]), isEqual(arr1[i][3], qr.counts["已入库"]));
@@ -453,13 +453,13 @@ function test130006_1() {
             break;
         }
     }
-    logDebug(" arr1[i][0] =" + arr1[i][0]);
+  
     return ret && ret1;
 }
 
 function test130004_130005_130006() {
     tapMenu("采购订货", "按汇总", "按款号");
-    var keys1 = { "日期从" : getToday(), "到" : getToday(), "款号" : "3035" };
+    var keys1 = { "日期从" : getDay(-30), "到" : getToday(), "款号" : "3035" };
     var fields1 = purchaseOrderCodeFields(keys1);
     query(fields1);
     var qr = getQR();
@@ -489,7 +489,7 @@ function test130004_130005_130006() {
     ret = isAnd(ret, isEqual(a1, sum1), isEqual(b1, sum2), isEqual(c1, sum3));
 
     tapMenu("采购订货", "按汇总", "按厂商");
-    var keys2 = { "日期从" : getToday(), "到" : getToday(), "厂商" : "vell" };
+    var keys2 = { "日期从" : getDay(-30), "到" : getToday(), "厂商" : "vell" };
     var fields2 = purchaseOrderProviderFields(keys2);
     query(fields2);
     qr = getQR();
@@ -518,7 +518,7 @@ function test130004_130005_130006() {
     ret = isAnd(ret, isEqual(a2, sum1), isEqual(b2, sum2), isEqual(c2, sum3));
 
     tapMenu("采购订货", "按汇总", "按门店");
-    var keys3 = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" };
+    var keys3 = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields3 = purchaseOrderShopFields(keys3);
     query(fields3);
     qr = getQR();
@@ -547,21 +547,21 @@ function test130004_130005_130006() {
     ret = isAnd(ret, isEqual(a3, sum1), isEqual(b3, sum2), isEqual(c3, sum3));
 
     tapMenu("采购订货", "按明细查");
-    var keys = { "款号" : "3035", "日期从" : getToday(), "到" : getToday() }
+    var keys = { "款号" : "3035", "日期从" : getDay(-30), "到" : getToday() }
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
     ret = isAnd(ret, isEqual(a1, qr.counts["数量"]),
             isEqual(b1, qr.counts["已入库"]), isEqual(d1, qr.counts["金额"]));
 
-    keys = { "厂商" : "Vell" }
+    keys = { "厂商" : "Vell","日期从" : getDay(-30) }
     fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
     ret = isAnd(ret, isEqual(a2, qr.counts["数量"]),
             isEqual(b2, qr.counts["已入库"]), isEqual(d2, qr.counts["金额"]));
 
-    keys = { "门店" : "常青店" }
+    keys = { "门店" : "常青店","日期从" : getDay(-30) }
     fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
