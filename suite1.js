@@ -25,6 +25,16 @@ function setGoods001Params(){
     }
 }
 
+//基础数据的准备
+function setBasicSetUpAll(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testBasicSetUpAll();
+       logout();
+    }
+}
+
 // 中洲店总经理登陆，为常青店准备数据
 function test000Goods001Prepare(){
     var p1 = {"角色":"总经理"};
