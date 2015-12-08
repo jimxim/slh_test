@@ -7,10 +7,10 @@
 function test000All() {
 	debug = true;
 
-
-	 
- run("text", "test10_price");
-// run("text", "test130006_1");
+ run("text", "test10_size_group");
+ run("text", "test100082_100083_100084_100085");
+ run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+ 
 }
 
 /**
@@ -48,7 +48,7 @@ function test000Goods001Prepare(){
        logout();
     }
   }
-// 货品管理
+
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Goods001() {
     var p1 = {"角色":"总经理"};
@@ -59,7 +59,16 @@ function test000Goods001() {
   }
 }
 
-// 往来管理
+function test000Goods003() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoods003();
+     logout();
+  }
+}
+
+
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Customer001() {
     var p1 = {"角色":"总经理"};
@@ -70,7 +79,7 @@ function test000Customer001() {
   }
 }
 
-// 采购入库
+
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Purchase001() {
    var p1 = {"角色":"总经理"};
@@ -82,7 +91,7 @@ function test000Purchase001() {
    }
 }
 
-// 采购订货
+
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function  test000PurchaseOrder001() {
   var p1 = {"角色":"总经理"};
@@ -114,7 +123,7 @@ function test200ShopIn001(){
     }   
 }
 
-// 销售订货
+
 // 翻页/排序/汇总/条件查询/清除/下拉框
 function test000SalesOrder001() {
   var p1 = {"角色":"总经理"};
@@ -134,7 +143,7 @@ function setGoods002Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/省代价格模式/价格模式5/不支持自动生成款号/新增界面格式—老模式", "goodsParams002");
+        run("均色均码/省代价格模式/价格模式5", "goodsParams002");
        logout();
     }
 }
@@ -143,7 +152,7 @@ function test000Goods002() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
-      run("下拉框/模糊查询", "testGoods002");
+      testGoods002();
      logout();
   }
 }

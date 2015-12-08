@@ -1,6 +1,51 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 /**
+ * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式 调拨启用密码验证
+ */
+function goodsParams001() {
+
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "货品建款的价格模式" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "新增界面格式" };
+    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "颜色尺码模式开单更便捷" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "调拨是否启用密码验证" };
+    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "库存核算价格" };
+    o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单是否合并重复的款号" };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+
+/**
  * 翻页/排序/汇总/条件查询/清除/数据
  */
 function testGoods001() {
@@ -30,34 +75,12 @@ function testGoods001() {
 
 }
 
-/**
- * 款号名称模糊查询 款号下拉列表验证产品折扣
- */
-function testGoods002() {
-    tapMenu("货品管理", "当前库存");
-    var ret = isAnd(dropDownListCheckField(0, "456",
-            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
-            "名称"));
-
-    tapMenu("货品管理", "款号库存");
-    ret = isAnd(ret, dropDownListCheckField(0, "456",
-            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
-            "名称"));
-
-    tapMenu("货品管理", "货品进销存");
-    ret = isAnd(ret, dropDownListCheckField(1, "456",
-            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号", "3",
-            "名称"));
-
-    tapMenu("货品管理", "货品查询");
-    var ret = isAnd(ret, fuzzyQueryCheckField(1, "款号", "z", "名称"));
-
-    return ret;
+function testGoods003(){
+    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
 }
 
 function testGoodsGoodsAll() {
     // if(setGoodsNoColorPriceParams()){
-    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
 
     // run("【货品管理-款号库存】款号库存_详细", "test100005_3");
 
@@ -123,50 +146,6 @@ function testGoodsGoodsAll() {
 
 }
 
-/**
- * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式 调拨启用密码验证
- */
-function goodsParams001() {
-
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "货品建款的价格模式" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "自动生成款号" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "颜色尺码模式开单更便捷" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "调拨是否启用密码验证" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "库存核算价格" };
-    o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
-}
 
 /**
  * 均色均码 省代价格模式 价格模式5 不支持自动生成款号 新增界面格式——老模式
@@ -200,6 +179,16 @@ function goodsParams002() {
 
     return ret;
 }
+
+function testGoods002() {
+    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证", "test10_fuzzyQueryAndDropDownListCheck");
+
+}
+
+
+
+
+
 
 function setGoodsNoColorDefaultPriceParams() {
     var qo, o, ret = true;
@@ -689,6 +678,31 @@ function testGoods002Field(n1, n2) {
     return ret;
 }
 
+/**
+ * 款号名称模糊查询 款号下拉列表验证产品折扣
+ */
+function test10_fuzzyQueryAndDropDownListCheck(){
+    tapMenu("货品管理", "当前库存");
+    var ret = isAnd(dropDownListCheckField(0, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
+            "名称"));
+
+    tapMenu("货品管理", "款号库存");
+    ret = isAnd(ret, dropDownListCheckField(0, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
+            "名称"));
+
+    tapMenu("货品管理", "货品进销存");
+    ret = isAnd(ret, dropDownListCheckField(1, "456",
+            "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号", "3",
+            "名称"));
+
+    tapMenu("货品管理", "货品查询");
+    var ret = isAnd(ret, fuzzyQueryCheckField(1, "款号", "z", "名称"));
+
+    return ret; 
+}
+
 function test100004() {
     tapMenu("货品管理", "当前库存");
     var keys = [ "款号" ];
@@ -1051,7 +1065,8 @@ function test100008() {
     var a = Number(qr.data[0]["在途数"]) + Number(qr.data[0]["库存"]);
     delay();
 
-    tapFirstText(getScrollView(), "序号", 9);
+    tapFirstText();
+    //getScrollView(), "序号", 9
     var oStockNum = getColorSizeStockNum();
     var b = Number(oStockNum["均色-均码-常青店"]);
     // +Number(oStockNum["均色-均码-中洲店"])+Number(oStockNum["均色-均码-仓库店"])

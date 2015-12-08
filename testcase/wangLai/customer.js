@@ -152,7 +152,7 @@ function addCustomer(keys) {
 // 店员TF_AC不会触发，待测试
 function test110004() {
     var r = "c" + getTimestamp(6);
-    var keys = {"名称":r,"适用价格":"零批价"};
+    var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
     tapMenu("往来管理", "客户查询");
@@ -881,7 +881,7 @@ function test110033() {
             getTextFieldValue(window, 1)));
 
     var r = "c" + getTimestamp(6);
-    keys = { "名称" : r,"适用价格":"零批价" };
+    keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
     tapMenu("往来管理", "客户活跃度");
@@ -896,7 +896,7 @@ function test110033() {
 
 function test110034() {
     var r = "c" + getTimestamp(6);
-    var keys = { "名称" : r,"适用价格":"零批价" };
+    var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
@@ -943,13 +943,18 @@ function test110035() {
 
 // 翻页，汇总，条件查询，清除，排序
 function test110036() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "zbs", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
     tapMenu("往来管理", "积分查询");
     var key = { "门店" : "常青店" };
     var fields = queryCustomerScoreFields(key);
     query(fields);
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
-    var ret = goPageCheckField("名称", 0,"SC");
+    var ret = goPageCheckField("名称", 0, "SC");
 
     var qr = getQR();
     var sum = 0;
@@ -1232,7 +1237,7 @@ function test110041() {
     var fields = queryProviderShopAccountFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("名称", 1,"SC");
+    var ret = goPageCheckField("名称", 1, "SC");
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -1342,7 +1347,7 @@ function test110044() {
     ret = ret && sortByTitle("账号");
     ret = ret && sortByTitle("备注");
 
-    var keys = {"名称":"顺丰快递"};
+    var keys = { "名称" : "顺丰快递" };
     var fields = queryCustomerLogisticsFields(keys);
     query(fields);
     var qr = getQR();
