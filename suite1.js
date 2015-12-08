@@ -7,7 +7,7 @@
 function test000All() {
 	debug = true;
 
-	 run("text", "test130004_130005_130006");
+//	 run("text", "test130004_130005_130006");
 //	 run("text", "test130006_1");
 }
 
@@ -54,6 +54,18 @@ function test000Customer001() {
       testCustomer001();
      logout();
   }
+}
+
+//采购入库
+//翻页/排序/汇总/条件查询/清除/下拉框/数据
+function test000Purchase001() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+        testPurchase001();
+       
+       logout();
+   }
 }
 
 // 采购订货

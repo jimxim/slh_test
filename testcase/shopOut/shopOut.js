@@ -1,10 +1,10 @@
 //ZhangY <15068165765 at 139.com> 20151013
 
 function testShopOut001() {
-//    run("【门店调出-按批次查】翻页_排序_汇总", "test150001_1");
-//    run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
-//    run("【门店调出-按明细查】翻页_排序_汇总", "test150001_3");
-//    run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "test150001_4");
+    run("【门店调出-按批次查】翻页_排序_汇总", "test150001_1");
+    run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
+    run("【门店调出-按明细查】翻页_排序_汇总", "test150001_3");
+    run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "test150001_4");
 }
 
 function testShopOutAll() {
@@ -24,10 +24,9 @@ function test150001_1() {
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店" };
     var fields = shopOutQueryBatchFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次",2);
+    var ret = goPageCheckField("批次", 2, "SC");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -60,6 +59,13 @@ function test150001_1() {
     return ret && ret1;
 }
 function test150001_2() {
+    tapMenu("门店调出", "按批次查");
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店" }
+    var fields = shopOutQueryBatchFields(keys);
+    query(fields);
+    var qr=getQR();
+    var batch=Number(qr.data[0]["批次"]);
+
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店", "操作人密码" : "000000",
         "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
@@ -76,11 +82,11 @@ function test150001_2() {
             break;
         }
     }
-    query();
+    window.popover().dismiss();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : "1",
-        "批次到" : "100000", "调出门店" : "常青店", "调入门店" : "中洲店" }
+    var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : batch,
+        "批次到" : batch+1, "调出门店" : "常青店", "调入门店" : "中洲店" }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -102,10 +108,9 @@ function test150001_3() {
     tapMenu("门店调出", "按明细查");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "调出门店" : "常青店" };
     var fields = shopOutQueryParticularFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次",2);
+    var ret = goPageCheckField("批次", 2, "SC");
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");
@@ -151,7 +156,7 @@ function test150001_4() {
             break;
         }
     }
-    target.frontMostApp().mainWindow().popover().dismiss();
+    window.popover().dismiss();
 
     tapMenu("门店调出", "按明细查");
     var keys = { "款号" : "3035", "名称" : "jkk", "日期从" : getToday(),
@@ -160,16 +165,17 @@ function test150001_4() {
     query(fields);
     var qr = getQR();
     var ret1 = isAnd(isEqual("常青店", qr.data[0]["调出门店"]), isEqual("中洲店",
-            qr.data[0]["调入门店"]), isEqual("3035", qr.data[0]["款号"]), isEqual("jkk", qr.data[0]["名称"]));
+            qr.data[0]["调入门店"]), isEqual("3035", qr.data[0]["款号"]), isEqual(
+            "jkk", qr.data[0]["名称"]));
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
         if (i == 3 || i == 4) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-            logDebug("ret="+ret);
+            // logDebug("ret="+ret);
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
-            logDebug("ret="+ret);
+            // logDebug("ret="+ret);
         }
     }
 
@@ -478,7 +484,7 @@ function editShopOutDecruitSave(o) {
         tapKeyboardHide();
     } else {
         // tapButton(window, RETURN);
-//        tapButtonAndAlert(RETURN);
+        // tapButtonAndAlert(RETURN);
         tapReturn();
     }
 }
