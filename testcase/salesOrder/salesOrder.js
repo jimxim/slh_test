@@ -1581,7 +1581,7 @@ function test16_Stockout_1() {
 // 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
 function test16_Stockout_2() {
     var r = "g" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
+    var keys = { "款号" : r, "名称" : "a"+r, "品牌" : "1010pp", "吊牌价" : "200",
         "季节" : "春季", "厂商" : "vell" };
     addGoods(keys);
 
@@ -1598,13 +1598,13 @@ function test16_Stockout_2() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按缺货查");
-    keys = { "款号" : r, "款号名称" : r, "订货日期从" : getToday(), "订货日期到" : getToday(),
+    keys = { "款号" : r, "款号名称" : "a"+r, "订货日期从" : getToday(), "订货日期到" : getToday(),
         "厂商" : "Vell", "上架从" : getToday(), "上架到" : getToday(), "门店" : "常青店",
         "品牌" : "1010pp", "季节" : "春季" };
     var fields = salesOrderQueryByStockoutFields(keys);
     query(fields);
     var qr = getQR();
-    var expected = { "款号" : r, "名称" : r, "颜色" : "均色", "尺码" : "均码",
+    var expected = { "款号" : r, "名称" : "a"+r, "颜色" : "均色", "尺码" : "均码",
         "订货未发数" : "50", "库存(含在途)" : "10", "采购未到数" : "20", "缺货数" : "20" };
     var ret = isEqualQRData1Object(qr, expected);
     ret = isAnd(ret, isEqual(qr.data[0]["订货未发数"], qr.counts["订货未发数"]), isEqual(

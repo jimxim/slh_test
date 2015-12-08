@@ -6,27 +6,30 @@
 // 总经理
 function test000All() {
 	debug = true;
-    run("【往来管理-客户活跃度】客户活跃度", "test110033");
 
-//	 run("text", "goodsParams001");
-//	 run("text", "test130006_1");
+
+	 
+ run("text", "test10_price");
+// run("text", "test130006_1");
 }
 
 /**
- * 参数 setGoods001Params
- * 准备数据 test000Goods001Prepare
- * 用例 test000Goods001 test000Customer001 test000PurchaseOrder001 test000ShopOut001 test200ShopOut001 test000SalesOrder001
+ * 参数 setGoods001Params 
+ * 准备数据 test000Goods001Prepare 
+ * 该参数下可运行用例 test000Goods001
+ * test000Customer001 test000Purchase001 test000PurchaseOrder001
+ * test000ShopOut001 test200ShopOut001 test000SalesOrder001
  */
 function setGoods001Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/省代价格模式/价格模式2/不支持自动生成款号/新增界面格式—老模式/调拨启用密码验证", "goodsParams001");
+        run("均色均码/省代价格模式/价格模式2", "goodsParams001");
        logout();
     }
 }
 
-//基础数据的准备
+// 基础数据的准备
 function setBasicSetUpAll(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -67,8 +70,8 @@ function test000Customer001() {
   }
 }
 
-//采购入库
-//翻页/排序/汇总/条件查询/清除/下拉框/数据
+// 采购入库
+// 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Purchase001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
@@ -123,9 +126,9 @@ function test000SalesOrder001() {
 }
 
 /**
- * 参数 setGoods002Params
+ * 参数 setGoods002Params 
  * 准备数据 
- * 用例 test000Goods002 
+ * 用例 test000Goods002
  */
 function setGoods002Params(){
     var p1 = {"角色":"总经理"};

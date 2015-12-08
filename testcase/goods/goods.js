@@ -156,9 +156,13 @@ function goodsParams001() {
     qo = { "备注" : "调拨是否启用密码验证" };
     o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "库存核算价格" };
     o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单是否合并重复的款号" };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -299,7 +303,7 @@ function setTagprice_invperson_1() {
  * @param type 限制条件的文本框类型
  * @param index 限制条件的下标
  */
-function goPageCheckField(title, index,type) {
+function goPageCheckField(title, index, type) {
     var qr = getQR();
     // 当前页为1
     var ret = isEqual("1", qr.data[0]["序号"]);
@@ -467,6 +471,20 @@ function fuzzyQueryCheckField(index, title, value, title1) {
 }
 
 /**
+ * 新增货品(均+省)
+ * @param keys
+ */
+function addGoods(keys) {
+    tapMenu("货品管理", "新增货品+");
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    delay();
+    tapReturn();
+}
+
+/**
  * 中洲店总经理登陆，为test000Goods001准备其他店的数据
  */
 function testGoods001Prepare() {
@@ -484,7 +502,7 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号", 2,"SC");
+    var ret = goPageCheckField("款号", 2, "SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -701,7 +719,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("款号", 2,"SC");
+    var ret = goPageCheckField("款号", 2, "SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -834,7 +852,7 @@ function test100006() {
     var a1 = qr1.data[0]["库存"];
     logDebug("a1=" + a1);
 
-    tapFirstText(getScrollView(-1, 0), "名称", 8);// 点击进入款号明细,8是有个不可见的款号
+    tapFirstText(getScrollView(-1, 0), "名称", 7);
     var qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
     var sum2 = 0;
     for (j = 1; j <= qr2.totalPageNo; j++) {
@@ -985,7 +1003,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号", 0,"SC");
+    var ret = goPageCheckField("款号", 0, "SC");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1158,12 +1176,12 @@ function test100010_100011_100013() {
     tapButton(window, CLEAR);
     for (i = 0; i < 10; i++) {
         if (i != 3) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
+            // 是否停用无法删除
+            if (i != 7) {
+                ret = ret && isEqual("", getTextFieldValue(window, i));
+            }
         } else {
-            //是否停用无法删除
-            if (i != 7){
-                ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-            }         
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         }
     }
 
@@ -1794,20 +1812,6 @@ function test100042_100045Field() {
 
     return ret;
 
-}
-
-/**
- * 新增货品(均+省)
- * @param keys
- */
-function addGoods(keys) {
-    tapMenu("货品管理", "新增货品+");
-    var fields = editGoodsFields(keys, false, 0, 0);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-
-    delay();
-    tapReturn();
 }
 
 function test100054_1() {
