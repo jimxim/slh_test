@@ -2185,7 +2185,9 @@ function test120030_1() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "厂商账款", "厂商门店账");
+    tapMenu1("往来管理");
+    tapMenu2("厂商账款");
+    tapMenu3("厂商门店账");
     var keys = { "门店" : "常青店" };
     var feilds = purchaseShopAccountFields(keys);
     query(feilds);
@@ -2230,9 +2232,11 @@ function test120030_2() {
     tapKeyboardHide();
     query();
 
-    tapMenu("往来管理", "厂商账款", "厂商总账");
-    var keys1 = { "厂商" : "Rt" }
-    var fields1 = queryCustomerProviderAccountFields(keys1);
+    tapMenu1("往来管理");
+    tapMenu2("厂商账款");
+    tapMenu3("厂商门店账");
+    var keys1 = { "厂商" : "Rt", "门店" : "常青店" }
+    var fields1 = queryProviderShopAccountFields(keys1);
     query(fields1);
     var qr1 = getQR();
     var b = qr1.data[0]["余额"];

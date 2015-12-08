@@ -21,10 +21,10 @@ function shopInFlitField(key, show) {
 		break;
 	case "day2":
 	case "日期到":
-		f = new TField("到", TF_DT, 1, "2015-9-15");
+		f = new TField("日期到", TF_DT, 1, "2015-9-15");
 		break;
-	case "shop":
-	case "门店":
+	case "shopOut":
+	case "调出门店":
 		f = new TField("门店", TF_SC, 2, "常青店");
 		break;
 	case "batch1":
@@ -33,7 +33,7 @@ function shopInFlitField(key, show) {
 		break;
 	case "batch2":
 	case "批次到":
-		f = new TField("到", TF, 4, "20");
+		f = new TField("批次到", TF, 4, "20");
 		break;
 	default:
 		logWarn("未知key＝" + key);
@@ -68,18 +68,27 @@ function shopInQueryBatchField(key, show) {
 	case "调出门店":
 		f = new TField("调出门店", TF_SC, 2, "常青店");
 		break;
+	case "shop-in":
+    case "调入门店":
+        f = new TField("调入门店", TF_SC, 3, "仓库店");
+        break;
 	case "batch1":
 	case "批次从":
-		f = new TField("批次从", TF, 3, "1");
+		f = new TField("批次从", TF, 4, "1");
 		break;
 	case "batch2":
 	case "批次到":
-		f = new TField("到", TF, 4, "20");
+		f = new TField("到", TF, 5, "20");
 		break;
-	case "shop-in":
-	case "调入门店":
-		f = new TField("调入门店", TF_SC, 5, "仓库店");
-		break;
+	case "batch1":
+    case "调出批次从":
+        f = new TField("调出批次从", TF, 6, "1");
+        break;
+    case "batch2":
+    case "调出批次到":
+        f = new TField("调出批次到", TF, 7, "20");
+        break;
+	
 	default:
 		logWarn("未知key＝" + key);
 	}

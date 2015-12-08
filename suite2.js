@@ -14,8 +14,15 @@ function test000() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
- testPurchase001();
- testPurchaseOrder001();
+// testPurchase001();
+// testPurchaseOrder001();
+	    
+//	    run("【门店调入-在途调拨】翻页_排序_汇总_条件查询，清除按钮", "test140001_1");
+//	    run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
+//	    run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
+	    run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
+//	    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
+	    
 // testPurchaseOrderAll();
 // testShopInAll();
 // testShopIn001();
