@@ -158,7 +158,7 @@ function goodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
     
     qo = { "备注" : "库存核算价格" };
-    o = { "新值" : "1", "数值" : [ "1.库存按销价1核算", "in" ] };
+    o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;

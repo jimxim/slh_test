@@ -6,8 +6,9 @@
 // 总经理
 function test000All() {
 	debug = true;
-	testSalesOrder001();
-//	 run("text", "test130004_130005_130006");
+    run("【往来管理-客户活跃度】客户活跃度", "test110033");
+
+//	 run("text", "goodsParams001");
 //	 run("text", "test130006_1");
 }
 

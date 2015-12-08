@@ -152,7 +152,7 @@ function addCustomer(keys) {
 // 店员TF_AC不会触发，待测试
 function test110004() {
     var r = "c" + getTimestamp(6);
-    var keys = [ "名称" ];
+    var keys = {"名称":r,"适用价格":"零批价"};
     addCustomer(keys);
 
     tapMenu("往来管理", "客户查询");
@@ -881,7 +881,7 @@ function test110033() {
             getTextFieldValue(window, 1)));
 
     var r = "c" + getTimestamp(6);
-    keys = { "名称" : r };
+    keys = { "名称" : r,"适用价格":"零批价" };
     addCustomer(keys);
 
     tapMenu("往来管理", "客户活跃度");
@@ -896,13 +896,8 @@ function test110033() {
 
 function test110034() {
     var r = "c" + getTimestamp(6);
-    tapMenu("往来管理", "新增客户+");
-    var keys = { "名称" : r };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
+    var keys = { "名称" : r,"适用价格":"零批价" };
+    addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
@@ -910,7 +905,7 @@ function test110034() {
 
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r };
-    fields = queryCustomerFields(keys);
+    var fields = queryCustomerFields(keys);
     query(fields);
     tapFirstText();
     tapButtonAndAlert(STOP);

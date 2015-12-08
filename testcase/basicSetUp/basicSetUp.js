@@ -11,6 +11,7 @@ function testBasicSetUpAll() {
     run("李天", "setCustomer005");
     run("李六", "setCustomer006");
     run("韩红", "setCustomer007");
+    run("综合汇总1", "setCustomer008");
 
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
@@ -255,6 +256,16 @@ function setCustomer007() {
     var ret = editCustomerBasicSetUp("韩红", keys);
     return ret;
 }
+/**
+ * 综合汇总1
+ */
+function setCustomer008() {
+    var keys = { "名称" : "综合汇总1", 
+        "门店" : "常青店", "适用价格" : "零批价" };
+    var ret = editCustomerBasicSetUp("综合汇总1", keys);
+    return ret;
+}
+
 /**
  * 新增/修改厂商
  */
