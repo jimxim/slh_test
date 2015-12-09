@@ -7,9 +7,9 @@
 function test000All() {
 	debug = true;
 
-// run("text", "test10_size_group");
+ run("text", "test160020_160022");
 // run("text", "test100082_100083_100084_100085");
- run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+
  
 }
 
