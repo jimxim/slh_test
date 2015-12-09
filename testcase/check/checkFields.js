@@ -74,7 +74,7 @@ function queryCheckParticularField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 2, "a", 1, 0);
+        f = new TField("款号", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
@@ -85,11 +85,15 @@ function queryCheckParticularField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 4, "1010pp");
+        f = new TField("品牌", TF_AC, 4, "1010pp", -1, 0);
         break;
     case "type":
     case "类别":
         f = new TField("类别", TF_SC, 5, "登山服");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 6, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -248,7 +252,7 @@ function checkProfitAndLossField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 1, "a", 1, 0);
+        f = new TField("款号", TF_AC, 1, "a",-1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }

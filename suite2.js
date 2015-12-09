@@ -24,7 +24,7 @@ function test000() {
 // testShopOut001();
 // testSalesOrderAll();
 // testCheckAll();
-// testCheck001();
+ testCheck001();
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
