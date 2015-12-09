@@ -48,7 +48,7 @@ function salesQueryBatchField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 6, "000", 1, 0);
+		f = new TField("店员", TF_AC, 6, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -73,6 +73,10 @@ function salesQueryBatchField(key, show) {
 	case "配货":
 		f = new TField("配货", TF_SC, 11, "否");
 		break;
+	case "customerType":
+    case "客户类别":
+        f = new TField("客户类别", TF_SC, 12, "零批客户");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -193,7 +197,7 @@ function salesQueryGuaDanField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 6, "000", 1, 0);
+        f = new TField("店员", TF_AC, 6, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -266,29 +270,40 @@ function salesCodeField(key, show) {
     case "门店":
         f = new TField("门店", TF_SC, 2, "常青店");
         break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 3, "a", -1, 0);
+        if (show) {
+            f.value = "aa";
+        }
+        break;   
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 3, "b", -1, 0);
+        f = new TField("款号", TF_AC, 4, "b", -1, 0);
         if (show) { 
             f.value = "741,Abc,44元";
         }
         break;
 	case "market1":
 	case "上架从":
-		f = new TField("上架从", TF_DT, 4, "2015-8-11");
+		f = new TField("上架从", TF_DT, 5, "2015-8-11");
 		break;
 	case "market2":
 	case "上架到":
-		f = new TField("上架到", TF_DT, 5, "2015-8-16");
+		f = new TField("上架到", TF_DT, 6, "2015-8-16");
 		break;
 	case "color":
 	case "颜色":
-		f = new TField("颜色", TF_SC, 6, "花色");
+		f = new TField("颜色", TF_SC, 7, "花色");
 		break;
 	case "size":
 	case "尺码":
-		f = new TField("尺码", TF_SC, 7, "S");
+		f = new TField("尺码", TF_SC, 8, "S");
 		break;
+	case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 9, "1010pp",-1,0);
+        break;
 	
 
 	default:
@@ -312,21 +327,28 @@ function salesReturnFields(keys, show) {
 function salesReturnField(key, show) {
 	var f;
 	switch (key) {
+	case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "z", -1, 0);
+        if (show) {
+            f.value = "zz";
+        }
+        break;
 	case "day1":
 	case "日期从":
-		f = new TField("日期从", TF_DT, 0, "2015-9-11");
+		f = new TField("日期从", TF_DT, 1, "2015-9-11");
 		break;
 	case "day2":
 	case "到":
-		f = new TField("到", TF_DT, 1, getToday());
+		f = new TField("到", TF_DT, 2, getToday());
 		break;
 	case "shop":
 	case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");
+        f = new TField("门店", TF_SC, 3, "常青店");
         break;	
 	case "type":
 	case "类型":
-		f = new TField("类型", TF_SC, 3, "退货");
+		f = new TField("类型", TF_SC, 4, "退货");
 		break;	
 	default:
 		logWarn("未知key＝" + key);
@@ -359,7 +381,7 @@ function salesStaffField(key, show) {
 		break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 2, "000", 1, 0);
+		f = new TField("店员", TF_AC, 2, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -480,12 +502,12 @@ function salesCustomerSupplyField(key, show) {
 		}
 		break;
 	case "market1":
-	case "上架日期从":
-		f = new TField("上架日期从", TF_DT, 1, "2014-9-11");
+	case "上架从":
+		f = new TField("上架从", TF_DT, 1, "2014-9-11");
 		break;
 	case "market2":
-	case "上架日期到":
-		f = new TField("到", TF_DT, 2, "2014-9-17");
+	case "上架到":
+		f = new TField("上架到", TF_DT, 2, "2014-9-17");
 		break;
 	case "code":
 	case "款号":
@@ -496,7 +518,7 @@ function salesCustomerSupplyField(key, show) {
 		break;
 	case "brand":
 	case "品牌":
-		f = new TField("品牌", TF_SC, 4, "1010pp");
+		f = new TField("品牌", TF_AC, 4, "1010pp");
 		break;
 	case "day1":
 	case "日期从":

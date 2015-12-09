@@ -24,10 +24,13 @@ function test000() {
 // testShopOut001();
 // testSalesOrderAll();
 // testCheckAll();
- testCheck001();
+// testCheck001();
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
+	run("【销售开单－销售汇总-按客户上货】清除功能", "test170340");
+
+	
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
@@ -70,7 +73,7 @@ function test000Check001() {
         logout();
     }
  }
-//销售开单
+// 销售开单
  function test000SalesNoColorSizeElse001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -80,7 +83,7 @@ function test000Check001() {
         logout();
     }
  }
-//盘点管理
+// 盘点管理
  function test000Check001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);

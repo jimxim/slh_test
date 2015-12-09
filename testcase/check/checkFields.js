@@ -211,7 +211,7 @@ function checkMaterialField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 3, "1010pp");
+        f = new TField("品牌", TF_AC, 3, "1010pp");
         break;
     case "season":
     case "季节":
