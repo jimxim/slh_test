@@ -1,7 +1,7 @@
 //LuXingXin <52619481 at qq.com> 20150928
 
 /**
- * 均色均码 省代价格模式 价格模式2 不支持自动生成款号 新增界面格式——老模式 调拨启用密码验证
+ * 均色均码 省代价格模式 价格模式2 不支持自动生成款号
  */
 function goodsParams001() {
 
@@ -31,7 +31,7 @@ function goodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "调拨是否启用密码验证" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "库存核算价格" };
@@ -475,7 +475,7 @@ function testGoods001Prepare() {
     var i;
     for (i = 0; i < 2; i++) {
         tapMenu("门店调出", "批量调出+");
-        var json = { "调出人" : "200", "接收店" : "常青店", "操作人密码" : "000000",
+        var json = { "调出人" : "200", "接收店" : "常青店",
             "明细" : [ { "货品" : "jkk", "数量" : "50" } ] };
         editShopOutDecruitIn(json);
     }
@@ -565,15 +565,19 @@ function test100001_3() {
     var num2 = Number(qr.data[0]["累计销"]);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "12" } ] };
     editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "批量入库+");
+    json = { "店员" : "000", "明细" : [ { "货品" : "3035", "数量" : "18" } ] };
+    editPurchaseBatch(json);
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "批量调出+");
-    json = { "调出人" : "000", "接收店" : "中洲店", "操作人密码" : "000000",
+    json = { "调出人" : "000", "接收店" : "中洲店",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
@@ -592,25 +596,23 @@ function test100001_3() {
     var price = Number(qr.data[0]["单价"]);
     var day1 = getToday();
     var day2 = "2015-10-13";
-    var num = subTime(day1, day2);// 上架天数
-    var ret1 = isEqual(num, qr.data[0]["上架天数"])
+    var market = subTime(day1, day2);// 上架天数
+    var ret1 = isEqual(market, qr.data[0]["上架天数"])
             && isEqual(num1 - 50, qr.data[0]["在途数"])
             && isEqual(num2 + 5, qr.data[0]["累计销"]) && isEqual("200", price)// 单价
             && isEqual(stock1 * price, qr.data[0]["核算金额"]);
 
     tapFirstText();
     delay();
-    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
-    var name0 = qr.data[0]["名称"];
-    var num0 = qr.data[0]["数量"];
-    var name1 = qr.data[1]["名称"];
-    var num1 = qr.data[1]["数量"];
-    var name2 = qr.data[2]["名称"];
-    var num2 = qr.data[2]["数量"];
-    var name3 = qr.data[3]["名称"];
-    var num3 = qr.data[3]["数量"];
-    var sum = 0;
     var i, j;
+    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    var name = new Array();
+    var num = new Array();
+    for (i = 0; i < 5; i++) {
+        name[i] = qr.data[i]["名称"];
+        num[i] = qr.data[i]["数量"]
+    }
+    var sum = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["数量"]);
@@ -622,16 +624,17 @@ function test100001_3() {
     }
 
     tapNaviButton("历史库存");
-    var view2 = getScrollView(-1);
-    view2 = view2.scrollViews()[0];
-    qr = getQResult2(view2, "操作日期", "数量");
+    // var view2 = getScrollView(-1);
+    // view2 = view2.scrollViews()[0];
+    qr = getQResult2(getScrollView(-1, 0), "操作日期", "数量");
     var stock2 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
     var ret2 = isAnd(isEqual(stock1, stock2), isEqual(stock1, sum));
-    var ret3 = isAnd(isEqual("调拨入库", name0), isEqual("50", num0), isEqual(
-            "调拨出库", name1), isEqual("-10", num1), isEqual("销售出货", name2),
-            isEqual("-5", num2), isEqual("采购进货", name3), isEqual("30", num3));
+    var ret3 = isAnd(isEqual("调拨入库", name[0]), isEqual("50", num[0]), isEqual(
+            "调拨出库", name[1]), isEqual("-10", num[1]), isEqual("销售出货", name[2]),
+            isEqual("-5", num[2]), isEqual("采购进货", name[3]), isEqual("18",
+                    num[3]), isEqual("采购进货", name[4]), isEqual("12", num[4]));
 
     logDebug("   ret1=" + ret1 + "   ret2=" + ret2);
     return ret1 && ret2 && ret3;

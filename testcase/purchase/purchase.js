@@ -2551,3 +2551,58 @@ function test120052Hang() {
     tapMenu2("更多.");
     tapMenu3("挂 单");
 }
+
+function editPurchaseBatch(o){
+    editPurchaseBatchStaff(o);
+    editPurchaseBatchDet(o);
+    
+    editPurchaseBatchSave(o)
+}
+
+function editPurchaseBatchStaff(o) {
+    var oc = o["店员"];
+    if (isDefined(oc)) {
+        var keys = [ "店员" ];
+        var fields = purchaseBatchEditFields(keys);
+        changeTFieldValue(fields["店员"], oc);
+        setTFieldsValue(window, fields);
+    }
+}
+
+function editPurchaseBatchDet(o) {
+    var details = o["明细"];
+    for ( var i in details) {
+       
+        var tfNum = getSalesBillDetTfNum(o);
+        var start = tfNum * i ;
+        var d = details[i];
+
+        var f0 = new TField("货品", TF_AC, start+1, d["货品"], -1, 0);
+        setTFieldsValue(getScrollView(), [ f0 ]);
+
+        var f1 = new TField("数量", TF, start+4, d["数量"]);
+        setTFieldsValue(getScrollView(), [ f1 ]);
+
+        var fields = [];
+        if (isDefined(d["单价"])) {
+            fields.push(new TField("单价", TF, start+5, d["备注"]));
+        }
+        setTFieldsValue(getScrollView(), fields);
+    }
+}
+
+function editPurchaseBatchSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+
+    tapButtonAndAlert(SAVE, OK);
+    o["操作日期"] = getOpTime();
+    delay();
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+    }
+}

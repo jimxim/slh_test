@@ -482,7 +482,7 @@ function purchaseBatchEditField(key, show) {
     case "店员":
         f = new TField("店员", TF_AC, 0, "000", -1, 0);
         if (show) {
-            f.value = "000,管理员";
+            f.value = "000,总经理";
         }
         break;
     default:
