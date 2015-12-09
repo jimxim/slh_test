@@ -25,22 +25,22 @@ function testShopInAll() {
 /**
  * 做调入单
  */
-function editShopInFlitting() {
-    var f = new TField("接收人密码", TF_S, 0, "000000");
-    var fields = [ f ];
-    setTFieldsValue(window, fields);
-
+function editShopInFlitting(secure) {
+    if(isDefined(secure)){
+        var f = new TField("接收人密码", TF_S, 0, secure);
+        var fields = [ f ];
+        setTFieldsValue(window, fields);
+    }
+    
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
-
 }
+
 function test140001() {
     tapMenu("货品管理", "当前库存");
-    var keys = [ "款号", "门店" ];
+    var keys = { "款号":"3035", "门店":"常青店" };
     var fields = queryGoodsStockFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
-    changeTFieldValue(fields["门店"], "常青店");
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
@@ -163,7 +163,7 @@ function test140001_1() {
     fields = shopInFlitFields(keys);
     query(fields);
     qr = getQR();
-    ret2 = isEqual("常青店", qr.data[0]["调出门店"]);
+    var ret2 = isEqual("常青店", qr.data[0]["调出门店"]);
 
     tapButton(window, CLEAR);
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));

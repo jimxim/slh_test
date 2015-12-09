@@ -1034,21 +1034,14 @@ function test160031_160034() {
     return ret && ret1;
 }
 
-function test160035() {
-    tapMenu("货品管理", "新增货品+");
-    var r = "g" + getTimestamp(6);
-    var keys = [ "款号", "名称", "进货价" ];
-    var fields = editGoodsFields(keys, false, 0, 0);// 均色均码，省代模式
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+function test160035() { 
+    var r= getTimestamp(6);
+    var code="g"+r;
+    var keys={"款号":code, "名称":"货品"+r, "进货价":"200"};
+    addGoods(keys);
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "20" } ] };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
@@ -1061,7 +1054,7 @@ function test160035() {
     delay();
 
     tapMenu("销售订货", "按汇总", "按款号");
-    var keys = { "发生日期从" : getToday(), "款号" : r };
+    var keys = { "发生日期从" : getToday(), "款号" : code };
     var fields = salesOrderCodeFields(keys);
     query(fields);
     var qr = getQR();
