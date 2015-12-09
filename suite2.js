@@ -71,7 +71,7 @@ function test000Check001() {
     }
  }
 //销售开单
- function test000Purchase001() {
+ function test000SalesNoColorSizeElse001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
@@ -81,7 +81,7 @@ function test000Check001() {
     }
  }
 //盘点管理
- function test000Purchase001() {
+ function test000Check001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
