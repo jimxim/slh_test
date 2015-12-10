@@ -46,8 +46,7 @@ function testSalesNoColorSizeElse001() {
 
     run("【销售开单－按订货开单】单据查询", "test170252");// 不要启用异地仓库
     run("【销售开单－按订货开单】清除按钮/下拉列表", "test170253");
-    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");
-    (Bug)
+    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");// (Bug)
     run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170257_1");
     run("【销售开单-收款记录】查询", "test170275");
 
@@ -1062,7 +1061,7 @@ function test170255_170256_170257() {
     ret = ret && sortByTitle("已发数", IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("订货额", IS_NUM);
-    ret = ret && sortByTitle("已付", IS_NUM);
+//    ret = ret && sortByTitle("已付", IS_NUM);
     ret = ret && sortByTitle("未付", IS_NUM);
     ret = ret && sortByTitle("发货状态");
     ret = ret && sortByTitle("客户分店");
@@ -1799,7 +1798,9 @@ function test170284() {
 }
 function test170285() {
     tapMenu("销售开单", "物流单");
-    query();
+    var keys = { "是否收款" : "否", "是否作废" : "否" };
+    var fields = salesQueryLogisticsFields(keys);
+    query(fields);
     var q = getQR();
     var num = Number(q.data[0]["批次"]);
 

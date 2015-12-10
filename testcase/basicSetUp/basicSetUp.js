@@ -16,9 +16,11 @@ function testBasicSetUpAll() {
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
     run("Rt", "setProvider003");
+    run("联想", "setProvider004");
 
     run("登山服", "setGoodsType001");
     run("鞋", "setGoodsType002");
+    run("铅笔裤", "setGoodsType003");
 
     run("1010pp", "setGoodsBrand001");
     run("Adidas", "setGoodsBrand002");
@@ -312,6 +314,11 @@ function setProvider003() {
     var ret = editProviderBasicSetUp("Rt", keys);
     return ret;
 }
+function setProvider004() {
+    var keys = { "名称" : "联想", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("联想", keys);
+    return ret;
+}
 
 function basicSetUpByType(name, keys) {
     tapMenu("货品管理", "基本设置", "货品类别");
@@ -349,6 +356,11 @@ function setGoodsType001() {
 function setGoodsType002() {
     var keys = { "名称" : "鞋" };
     var ret = basicSetUpByType("鞋", keys);
+    return ret;
+}
+function setGoodsType003() {
+    var keys = { "名称" : "铅笔裤" };
+    var ret = basicSetUpByType("铅笔裤", keys);
     return ret;
 }
 

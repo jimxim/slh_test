@@ -35,26 +35,27 @@ function testPurchase002() {
     run("【采购入库-按批次查】按批次查->作废", "test120003");
 }
 function testPurchaseAll() {
-    // 清除数据后，要先手动新增入库3035，并未付款
-    // run("【采购入库-新增入库】新增入库+付款", "test120019");
-    // run("【采购入库-新增入库】新增入库+不付款", "test120023");
-    // run("【采购入库-新增入库】退货+退款", "test120020");
-    // run("【采购入库-新增入库】退货+不退款", "test120021");
-    // run("【采购入库-新增入库】检查核销", "test120022");
-    // run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
-    // run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查","test120013_120031_120032");
-    // run("【采购入库-批量入库】均色均码+批量入库", "test120024");
-    // run("【采购入库-按订货入库】按订货入库", "test120025");
-    // run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
-    // run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");//
-    // run("【采购入库-按订货入库】修改供应商名称", "test120028");
-    // run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");//
-    // run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");//
-    // run("【采购入库】新增入库单修改保存", "test120033");
-    // run("【采购入库】客户或供应商信息不允许修改", "test120034");
-    // run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
-    // run("【采购入库】批量入库实现进货功能+均色均码", "test120042");//
-    // run("【采购入库】批量入库实现退货功能+均色均码", "test120043");//
+//     清除数据后，要先手动新增入库3035，并未付款
+     run("【采购入库-新增入库】新增入库+付款", "test120019");
+     run("【采购入库-新增入库】新增货品+新增入库+付款", "test120019_1");
+     run("【采购入库-新增入库】新增入库+不付款", "test120023");
+     run("【采购入库-新增入库】退货+退款", "test120020");
+     run("【采购入库-新增入库】退货+不退款", "test120021");
+     run("【采购入库-新增入库】检查核销", "test120022");
+     run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
+     run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查","test120013_120031_120032");
+     run("【采购入库-批量入库】均色均码+批量入库", "test120024");
+     run("【采购入库-按订货入库】按订货入库", "test120025");
+     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
+     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");//
+     run("【采购入库-按订货入库】修改供应商名称", "test120028");
+     run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");//
+     run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");//
+     run("【采购入库】新增入库单修改保存", "test120033");
+     run("【采购入库】客户或供应商信息不允许修改", "test120034");
+     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
+     run("【采购入库】批量入库实现进货功能+均色均码", "test120042");//
+     run("【采购入库】批量入库实现退货功能+均色均码", "test120043");//
 
 }
 // 翻页_排序_汇总
@@ -1354,7 +1355,77 @@ function test120019() {
     return ret1 && ret2 && ret3 && ret4;
 
 }
+function test120019_1() {
+    var r = getTimestamp(8);
+    var keys = { "款号" : "g"+r, "名称" :"货品"+r,"进货价":"100","类别":"登山服","厂商":"Vell"};
+    addGoods(keys);
+ 
+//    tapMenu("采购入库", "新增入库+");
+//    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "180" } , { "货品" : r, "数量" : "-12" }]};
+//    editSalesBillNoColorSize(json);
+//    
+//    tapMenu("货品管理", "当前库存");
+//    delay();
+//    keys = [ "款号", "门店" ];
+//    var fields = queryGoodsStockFields(keys);
+//    changeTFieldValue(fields["款号"], r);
+//    changeTFieldValue(fields["门店"], "常青店");
+//    query(fields);
+//    var qr = getQR();
+//    var a = qr.data[0]["库存"];
+//    // logDebug("a="+a);
+//
+//    tapMenu("货品管理", "款号库存");
+//    var keys1 = [ "款号", "门店" ];
+//    var fields1 = queryGoodsCodeStockFields(keys1);
+//    changeTFieldValue(fields1["款号"], r);
+//    changeTFieldValue(fields1["门店"], "常青店");
+//    query(fields1);
+//    qr = getQR();
+//    var b1 = qr.data[0]["库存"];
+//    var b2 = qr.data[0]["累计进"];
+//
+//    tapMenu("货品管理", "库存分布");
+//    var keys2 = [ "类别", "厂商" ];
+//    var fields2 = queryGoodsDistributionFields(keys2);
+//    changeTFieldValue(fields2["类别"], "登山服");
+//    changeTFieldValue(fields2["厂商"], "vell");
+//    query(fields2);
+//    qr = getQR();
+//    var c1 = qr.data[0]["库存"];
+//    var c2 = qr.data[0]["常青店"];
+//
+//    tapMenu("采购入库", "新增入库+");
+//    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } , { "货品" : r, "数量" : "-10" }]};
+//    editSalesBillNoColorSize(json);
+//
+//    tapMenu("货品管理", "当前库存");
+//    tapButton(window, QUERY);
+//    qr = getQR();
+//    var a1 = qr.data[0]["库存"];
+//    // logDebug("a1="+a1);
+//    var ret1=isEqual("40",sub(a1,a));
+//
+//    tapMenu("货品管理", "款号库存");
+//    tapButton(window, QUERY);
+//    qr = getQR();
+//    var ret2=isAnd(isEqual("40",sub(qr.data[0]["库存"],b1)),isEqual("40",sub(qr.data[0]["累计进"],b2)));
+//
+//    tapMenu("货品管理", "库存分布");
+//    tapButton(window, QUERY);
+//    qr = getQR();
+//    var ret3=isAnd(isEqual("40",sub(qr.data[0]["库存"],c1)),isEqual("40",sub(qr.data[0]["常青店"],c2)));
+//
+//    tapMenu("统计分析", "收支流水");
+//    tapButton(window, QUERY);
+//    qr = getQR();
+//    var ret4=isEqual("-4000",qr.data[0]["金额"]);
+//
+//    logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3 + " ret4="
+//            + ret4);
+//    return ret1 && ret2 && ret3 && ret4;
 
+}
 function test120023() {
     tapMenu("货品管理", "当前库存");
     var keys = [ "款号", "门店" ];
@@ -1439,7 +1510,6 @@ function test120023() {
     return ret1 && ret2 && ret3 && ret4;
 
 }
-
 function test120020() {
     tapMenu("货品管理", "当前库存");
     var keys = [ "款号", "门店" ];
