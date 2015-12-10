@@ -969,7 +969,7 @@ function test160020_160022() {
     var fields = salesOrderQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
-    var batch = Nmuber(qr.data[0]["批次"]);
+    var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };

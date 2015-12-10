@@ -67,7 +67,6 @@ function testGoods001() {
     run("【货品管理-基本设置】所有尺码组", "test10_size_group");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
     run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
-    // run("【货品管理-当前库存】库存调整", "test100090");//未完成
     run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
             "test100075_100076_100077_100078");
     run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
@@ -77,6 +76,9 @@ function testGoods001() {
 
 function testGoods003() {
     run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    run("【货品管理】品牌查询条件可以自动完成", "test100060");
+    run("【货品管理-当前库存】库存调整", "test100090");
+
 }
 
 function testGoodsGoodsAll() {
@@ -141,7 +143,7 @@ function testGoodsGoodsAll() {
     // run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "test100035");//先跳过
     // run("批量调价全选",
     // "test100047_100048_100049_100050_100051_100052All");//不能点全选再批量调价
-    // run("【货品管理】品牌查询条件可以自动完成", "test100060");//现在是TF_SC,跳过
+
     // run("【货品管理-更多-新增仓位】新增仓位", "test100074");
 
 }
@@ -2156,10 +2158,9 @@ function test100060() {
     var i, f, cells, cell, v;
     var ret1 = false, ret4 = false, ret5 = false;
     var ret2 = false;
-    var ret3 = false;
 
     tapMenu("货品管理", "当前库存");
-    f = new TField("品牌", TF_AC, 6, "z", -1);
+    f = new TField("品牌", TF_AC, 10, "z", -1);
     cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         cell = cells[i];
@@ -2174,19 +2175,19 @@ function test100060() {
     var keys = { "品牌" : "zws" };
     var fields = queryGoodsStockFields(keys);
     setTFieldsValue(window, fields);
-    ret2 = isEqual("真维斯", getTextFieldValue(window, 6));
+    ret2 = isEqual("真维斯", getTextFieldValue(window, 10));
     delay();
     tapButton(window, CLEAR);
 
-    fields = queryGoodsStockFields(keys);
-    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
-    setTFieldsValue(window, fields);
-    ret3 = isEqual("真维斯", getTextFieldValue(window, 6));
-    tapButton(window, CLEAR);
+    // fields = queryGoodsStockFields(keys);
+    // fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
+    // setTFieldsValue(window, fields);
+    // var ret3 = isEqual("真维斯", getTextFieldValue(window, 10));
+    // tapButton(window, CLEAR);
 
     //
     tapMenu("货品管理", "货品查询");
-    f = new TField("品牌", TF_AC, 2, "z", -1);
+    f = new TField("品牌", TF_AC, 6, "z", -1);
     cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         cell = cells[i];
@@ -2201,15 +2202,15 @@ function test100060() {
     keys = { "品牌" : "zws" };
     fields = queryGoodsFields(keys);
     setTFieldsValue(window, fields);
-    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 2));
+    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 6));
     delay();
     tapButton(window, CLEAR);
 
-    fields = queryGoodsFields(keys);
-    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
-    setTFieldsValue(window, fields);
-    ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 2));
-    tapButton(window, CLEAR);
+    // fields = queryGoodsFields(keys);
+    // fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
+    // setTFieldsValue(window, fields);
+    // ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 6));
+    // tapButton(window, CLEAR);
 
     //
     tapMenu("货品管理", "货品进销存");
@@ -2232,15 +2233,15 @@ function test100060() {
     delay();
     tapButton(window, CLEAR);
 
-    fields = queryGoodsInOutFields(keys);
-    fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
-    setTFieldsValue(window, fields);
-    ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 7));
-    tapButton(window, CLEAR);
+    // fields = queryGoodsInOutFields(keys);
+    // fields["品牌"].p3 = { "键盘" : "简体拼音", "拼音" : [ "zhen" ], "汉字" : [ "真" ] };
+    // setTFieldsValue(window, fields);
+    // ret3 = ret3 && isEqual("真维斯", getTextFieldValue(window, 7));
+    // tapButton(window, CLEAR);
 
-    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret3" + ret3 + "   ret4="
-            + ret4 + "   ret5=" + ret5);
-    return ret1 && ret2 && ret3 && ret4 && ret5;
+    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret4=" + ret4
+            + "   ret5=" + ret5);
+    return ret1 && ret2 && ret4 && ret5;// &ret3
 }
 
 function test100074() {
@@ -2941,44 +2942,94 @@ function test10_discount() {
 }
 
 function test100090() {
-    var r = "g" + getTimestamp(6);
-    var keys = { "款号" : r, "名称" : r };
+    var r = getTimestamp(6);
+    var code = "g" + r;
+    var keys = { "款号" : code, "名称" : "货品" + r, "进货价" : "200" };
     addGoods(keys);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
-    // tapMenu1("货品管理");
-    // if (isDefined("当前库存")) {
-    // tapMenu2("当前库存");
-    // } else {
-    // tapButton(winodw, RETURN);
-    // tapMenu2("当前库存");
-    // }
-
     tapMenu("货品管理", "当前库存");
-    keys = { "款号" : r };
+    keys = { "款号" : code };
     var fields = queryGoodsStockFields(keys);
     query(fields);
+    var qr = getQR();
+    var stock = qr.data[0]["库存"];
 
     tapFirstText();
     tapNaviButton("库存调整");
-    var ret = isEqual(r, getTextFieldValue(window, 11))// 款号
-            && isEqual("50", getTextFieldValue(window, 12))// 当前库存
+    var ret = isEqual(code, getTextFieldValue(window, 11))// 款号
+            && isEqual(stock, getTextFieldValue(window, 12))// 当前库存
             && isEqual("均色", getTextFieldValue(window, 13))// 颜色
             && isEqual("均码", getTextFieldValue(window, 14));// 尺码
 
-    tapNaviRightButton();
+    runAndAlert("test100090Field", OK)
     delay();
-    tap(app.alert().buttons()["确 定"]);
-    // tapButtonAndAlert(SAVE,OK)
-    // tapButtonAndAlert("none", OK, true);
-    var ret = (isIn(alertMsg, "调整后库存不能为空"));
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    var ret1 = (isIn(alertMsg, "调整后库存不能为空"));
+    tapPrompt();
 
-    // return ret;
+    keys = "a";
+    test100090Field1(keys);
+    runAndAlert("test100090Field", OK);
+    delay();
+    ret1 = isAnd(ret1, isIn(alertMsg, "请输入数字来调整"));
+    tapPrompt();
+
+    keys = "!";
+    test100090Field1(keys);
+    runAndAlert("test100090Field", OK);
+    delay();
+    ret1 = isAnd(ret1, isIn(alertMsg, "请输入数字来调整"));
+    tapPrompt();
+
+    keys = "-50";
+    test100090Field1(keys);
+    runAndAlert("test100090Field", OK);
+    delay();
+    var qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("-100",
+            qr.data[0]["数量"]));
+
+    tapNaviButton("库存调整");
+    ret = isAnd(ret, isEqual("-50", getTextFieldValue(window, 12)));// 当前库存
+
+    keys = "0";
+    test100090Field1(keys);
+    runAndAlert("test100090Field", OK);
+    delay();
+    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("50",
+            qr.data[0]["数量"]));
+
+    tapNaviButton("库存调整");
+    ret = isAnd(ret, isEqual("0", getTextFieldValue(window, 12)));// 当前库存
+
+    keys = "25";
+    test100090Field1(keys);
+    runAndAlert("test100090Field", OK);
+    delay();
+    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("25",
+            qr.data[0]["数量"]));
+
+    tapNaviLeftButton();
+    query();
+    qr = getQR();
+    ret = isAnd(ret, isEqual("25", qr.data[0]["库存"]));
+
+    logDebug("ret1=" + ret1);
+    return ret && ret1;
+}
+
+function test100090Field() {
+    tapNaviRightButton();
+}
+
+function test100090Field1(keys) {
+    var f = new TField("调整后库存", TF, 15, keys);
+    setTFieldsValue(window, [ f ]);
 }
 
 function test100104() {

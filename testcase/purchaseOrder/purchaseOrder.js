@@ -196,9 +196,7 @@ function test130002_2() {
             break;
         }
     }
-    delay();
     tapKeyboardHide();
-    query();
 
     var keys = { "门店" : "常青店", "款号" : "3035", "厂商" : "Vell",
         "日期从" : getToday(), "到" : getToday(), "备注" : "xx" }

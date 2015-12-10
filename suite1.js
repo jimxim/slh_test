@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
- run("text", "test160020_160022");
-// run("text", "test100082_100083_100084_100085");
+ run("text", "test100090");
+// run("text", "test130006_1");
 
  
 }
