@@ -28,7 +28,7 @@ function test000() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-	run("【销售开单－销售汇总-按客户上货】清除功能", "test170340");
+	 run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
 
 	
 // logout();

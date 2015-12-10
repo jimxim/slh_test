@@ -297,7 +297,7 @@ function test170001_2() {
     var ret1 = isAnd(isEqual(getToday(""), a1), isEqual("常青店", a2), isEqual(
             "李响", a3), isEqual("总经理", a4), isEqual("180", a5),
             isEqual("1", a6), isEqual("0", a7), isEqual("否", a8), isEqual(
-                    "zdbz", a9), isEqual(opt, a10));
+                    "zdbz", a9), isAqualOptime(opt, a10,2));
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 13; i++) {
