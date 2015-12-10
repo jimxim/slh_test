@@ -807,7 +807,8 @@ function test170028_2_2() {
     var json = { "客户" : "lx",
         "明细" : [ { "货品" : "3035", "数量" : "10", "备注" : "mxbz" } ] };
     editSalesBillNoColorSize(json);
-    tapButton(window, RETURN);
+//    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("销售开单", "按明细查");
     query();
@@ -1799,12 +1800,12 @@ function test170285() {
     tapMenu("销售开单", "物流单");
     query();
     var q = getQR();
-    var num =Number(q.data[0]["批次"]);
+    var num = Number(q.data[0]["批次"]);
 
     tapMenu("销售开单", "物流单");
     var keys = { "客户" : "ls", "日期从" : getDay(-60), "日期到" : getToday(),
-        "物流商" : "圆通速递", "批次从" : num-1, "批次到" : num, "门店" : "常青店", "运单号" : "123",
-        "是否收款" : "否", "是否作废" : "否" };
+        "物流商" : "圆通速递", "批次从" : num - 1, "批次到" : num, "门店" : "常青店",
+        "运单号" : "123", "是否收款" : "否", "是否作废" : "否" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
 
@@ -1934,7 +1935,7 @@ function test170285_3() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "物流单");
-    var keys = { "客户" : "ls", "日期从" : getDay(-60), "日期到" : getToday()};
+    var keys = { "客户" : "ls", "日期从" : getDay(-60), "日期到" : getToday() };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     // 点击翻页
@@ -2380,7 +2381,7 @@ function test170295() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "核销+");
-    var f = new TField("物流", TF_AC, 0, "ht",-1,0);
+    var f = new TField("物流", TF_AC, 0, "ht", -1, 0);
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
@@ -2419,7 +2420,7 @@ function test170295() {
     tapMenu("销售开单", "更多.", "代收收款查询");
     query();
     var q = getQR();
-    var num =Number(q.data[0]["物流核销批次"]);
+    var num = Number(q.data[0]["物流核销批次"]);
 
     tapMenu("销售开单", "更多.", "代收收款查询");
     var keys3 = { "批次从" : num, "批次到" : num }
@@ -2443,8 +2444,8 @@ function test170296() {
     var num = q.data[0]["物流核销批次"];
 
     tapMenu("销售开单", "更多.", "代收收款查询");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : num,
-        "批次到" : num, "门店" : "常青店" };
+    var keys = { "日期从" : getToday(), "日期到" : getToday(), "物流商" : "汇通快递",
+        "批次从" : num, "批次到" : num, "门店" : "常青店", "是否作废" : "否" };
     var fields = salesCollectionFields(keys);
     query(fields);
 
@@ -2655,7 +2656,7 @@ function test170303_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheckField("序号");
 
     var ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -3751,7 +3752,7 @@ function test170340() {
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, "3035jkk")) {
+        if (isIn(v, "3035,jkk")) {
             ret = true;
             break;
         }

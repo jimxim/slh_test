@@ -1,3 +1,3 @@
 #import "/Users/hzdlmac/Documents/slh_test/suite2.js"
 
-testSalesNoColorSizeElse001();
+test000Check001();

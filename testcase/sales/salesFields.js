@@ -651,7 +651,7 @@ function salesProviderField(key, show) {
 	switch (key) {
 	case "provider":
 	case "厂商":
-		f = new TField("厂商", TF_AC, 0, "a", 1, 0);
+		f = new TField("厂商", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "aa";
 		}

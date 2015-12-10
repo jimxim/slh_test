@@ -28,9 +28,11 @@ function test000() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-
-    run("【销售开单－更多-代收收款查询】单项查询", "test170295");
-    run("【销售开单－更多-代收收款查询】组合查询", "test170296");
+//	run("【销售开单】按挂单--正常功能检查", "test170303_1");
+//	run("【销售开单－销售汇总-按客户上货】清除功能", "test170340");
+	run("【销售开单－销售汇总-按供应商汇总】按供应商汇总", "test170361");
+//	 run("【销售开单－按订货开单】单据查询", "test170252");// 不要启用异地仓库
+	 
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
