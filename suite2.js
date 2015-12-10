@@ -28,9 +28,9 @@ function test000() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-	 run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
 
-	
+    run("【销售开单－更多-代收收款查询】单项查询", "test170295");
+    run("【销售开单－更多-代收收款查询】组合查询", "test170296");
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");

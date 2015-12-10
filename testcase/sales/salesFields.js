@@ -101,7 +101,7 @@ function salesQueryParticularField(key, show) {
 	switch (key) {
 	case "code":
 	case "款号":
-		f = new TField("款号", TF_AC, 0, "a", 1, 0);
+		f = new TField("款号", TF_AC, 0, "a", -1, 0);
 		if (show) {
 			f.value = "5880,kha,210元";
 		}
@@ -126,7 +126,7 @@ function salesQueryParticularField(key, show) {
 // break;
 	case "staff":
 	case "店员":
-		f = new TField("店员", TF_AC, 3, "000", 1, 0);
+		f = new TField("店员", TF_AC, 3, "000", -1, 0);
 		if (show) {
 			f.value = "000,管理员";
 		}
@@ -147,12 +147,14 @@ function salesQueryParticularField(key, show) {
 	case "到":
 		f = new TField("到", TF_DT, 7, getToday());
 		break;
-	
-	
 	case "remarks":
 	case "备注":
 		f = new TField("备注", TF,8, "备注");
 		break;
+	case "pricetype":
+    case "适用价格":
+        f = new TField("适用价格", TF_SC, 9, "打包价");
+        break;      
 	default:
 		logWarn("未知key＝" + key);
 	}
