@@ -28,10 +28,10 @@ function test000() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-//	run("【销售开单】按挂单--正常功能检查", "test170303_1");
-//	run("【销售开单－销售汇总-按客户上货】清除功能", "test170340");
-	run("【销售开单－销售汇总-按供应商汇总】按供应商汇总", "test170361");
-//	 run("【销售开单－按订货开单】单据查询", "test170252");// 不要启用异地仓库
+	  run("【采购入库-新增入库】新增入库+付款", "test120019");
+//     run("【采购入库-新增入库】新增入库+不付款", "test120023");
+//     run("【采购入库-新增入库】退货+退款", "test120020");
+//     run("【采购入库-新增入库】退货+不退款", "test120021");
 	 
 // logout();
 // run("test", "testGoodsBrandFields");

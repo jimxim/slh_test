@@ -1324,9 +1324,7 @@ function test120019() {
     var c2 = qr.data[0]["常青店"];
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ]
-    // "现金" : "5000"
-    };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ]};
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "当前库存");
@@ -1334,34 +1332,22 @@ function test120019() {
     qr = getQR();
     var a1 = qr.data[0]["库存"];
     // logDebug("a1="+a1);
-    var ret1 = true;
-    if (a1 - a != 50) {
-        ret1 = false;
-    }
+    var ret1=isEqual("50",sub(a1,a));
 
     tapMenu("货品管理", "款号库存");
     tapButton(window, QUERY);
     qr = getQR();
-    var ret2 = true;
-    if ((qr.data[0]["库存"] - b1 != 50) || (qr.data[0]["累计进"] - b2 != 50)) {
-        ret2 = false;
-    }
+    var ret2=isAnd(isEqual("50",sub(qr.data[0]["库存"],b1)),isEqual("50",sub(qr.data[0]["累计进"],b2)));
 
     tapMenu("货品管理", "库存分布");
     tapButton(window, QUERY);
     qr = getQR();
-    var ret3 = true;
-    if ((qr.data[0]["库存"] - c1 != 50) || (qr.data[0]["常青店"] - c2 != 50)) {
-        ret3 = false;
-    }
+    var ret3=isAnd(isEqual("50",sub(qr.data[0]["库存"],c1)),isEqual("50",sub(qr.data[0]["常青店"],c2)));
 
     tapMenu("统计分析", "收支流水");
     tapButton(window, QUERY);
     qr = getQR();
-    var ret4 = true;
-    if (qr.data[0]["金额"] != -5000) {
-        ret4 = false;
-    }
+    var ret4=isEqual("-5000",qr.data[0]["金额"]);
 
     logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3 + " ret4="
             + ret4);

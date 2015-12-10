@@ -46,7 +46,8 @@ function testSalesNoColorSizeElse001() {
 
     run("【销售开单－按订货开单】单据查询", "test170252");// 不要启用异地仓库
     run("【销售开单－按订货开单】清除按钮/下拉列表", "test170253");
-    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");(Bug)
+    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");
+    (Bug)
     run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170257_1");
     run("【销售开单-收款记录】查询", "test170275");
 
@@ -807,7 +808,7 @@ function test170028_2_2() {
     var json = { "客户" : "lx",
         "明细" : [ { "货品" : "3035", "数量" : "10", "备注" : "mxbz" } ] };
     editSalesBillNoColorSize(json);
-//    tapButton(window, RETURN);
+    // tapButton(window, RETURN);
     tapReturn();
 
     tapMenu("销售开单", "按明细查");
@@ -3981,10 +3982,10 @@ function test170358_170359_170360() {
     return ret;
 }
 function test170361() {
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-    // "现金" : "1500" };
-    // editSalesBillNoColorSize(json);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "现金" : "1500" };
+    editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按厂商汇总");
     var keys = { "厂商" : "Vell", "日期从" : getToday(), "到" : getToday() };
