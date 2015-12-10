@@ -421,7 +421,7 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "measure":
     case "计量单位":
-        f = new TField("计量单位", BTN_SC, colorSizeStartIndex + 9, "件");
+        f = new TField("计量单位", BTN_SC, colorSizeStartIndex + 9, "双");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 17;
@@ -930,6 +930,39 @@ function goodsCustomerField(key, show) {
         if (show) {
             f.value = "5880,kha,210元";
         }
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+//库存调整单
+function goodsStockAdjustmentFields(keys, show) {
+    return getTFields("goodsStockAdjustmentField", keys, show);
+}
+function goodsStockAdjustmentField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0,getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("到", TF_DT, 1, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 2, "常青店");
+        break;
+    case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 3, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("到", TF, 4, "10000");
         break;
     default:
         logWarn("未知key＝" + key);

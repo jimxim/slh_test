@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
- run("text", "test100090");
-// run("text", "test130006_1");
+ run("text", "test100070");
+// run("text", "test100010_100011_100013");
 
  
 }
@@ -59,6 +59,7 @@ function test000Goods001() {
   }
 }
 
+//
 function test000Goods003() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
