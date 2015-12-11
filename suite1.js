@@ -7,7 +7,7 @@
 function test000All() {
 	debug = true;
 
- run("text", "test100070");
+ run("text", "test1000111");
 // run("text", "test100010_100011_100013");
 
  
