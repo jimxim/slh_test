@@ -15,7 +15,9 @@ function test000() {
 // testGoodsGoodsAll();
 // testPurchaseAll();
 //	testPurchase002();  
-	 run("【采购入库】批量入库实现进货功能+均色均码", "test120043");//
+//	  run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "test130009");
+//     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
+     run("【采购订货】客户或供应商信息不允许修改", "test130011");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
