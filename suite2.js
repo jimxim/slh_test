@@ -14,7 +14,8 @@ function test000() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
-    
+//	testPurchase002();  
+	 run("【采购入库】批量入库实现进货功能+均色均码", "test120043");//
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
@@ -27,15 +28,7 @@ function test000() {
 // testCheck001();
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
-// testSalesNoColorSizeElse001();
-//	  run("【采购入库-新增入库】新增货品+新增入库+付款", "test120019_1");／／
-//	run("【采购入库-新增入库】检查核销", "test120022");
-//    run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
-//    run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查","test120013_120031_120032");
-//    run("【采购入库-批量入库】均色均码+批量入库", "test120024");
-    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");//(Bug)
-//    run("【销售开单－物流单查询】查询条件组合查询", "test170285");
-	 
+// testSalesNoColorSizeElse001();	 
 // logout();
 // run("test", "testGoodsBrandFields");
 // run("客户新增", "testEditCustomerFields");
