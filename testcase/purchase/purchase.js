@@ -418,15 +418,15 @@ function test120008() {
     query(fields);
     var ret = goPageCheckField("款号");
 
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("上架日期", IS_DATE2);
-    // ret = ret && sortByTitle("颜色");
-    // ret = ret && sortByTitle("尺码");
-    // ret = ret && sortByTitle("数量", IS_NUM);
-    // ret = ret && sortByTitle("拿货数", IS_NUM);
-    // ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("上架日期", IS_DATE2);
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("拿货数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
     var keys = { "day1" : getToday(), "day2" : getToday(), "款号" : "3035" };
@@ -2127,15 +2127,13 @@ function test120028() {
 
 }
 
-// 若在不同门店有账款，则外面的余额与明细中的累计未结会对不上
 function test120029() {
     tapMenu("采购入库", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" }
     var fields = purchaseShopAccountFields(keys);
     query(fields);
     var qr = getQR();
-    var a1 = qr.data[0]["名称"];
-    var a2 = qr.data[0]["余额"];
+    var counts = qr.data[0]["余额"];
 
     var ret = isAnd(isEqual("Vell", a1));
 
@@ -2152,28 +2150,30 @@ function test120029() {
     tapNaviLeftButton();
     query();
 
-    // var keys = [ "厂商" ];
-    // var fields = purchaseProviderAccountFields(keys);
-    // changeTFieldValue(fields["厂商"], "rt");
-    // query(fields);
-    // var qr = getQR();
-    // var a = qr.data[0]["余额"];
-    //
-    // tapFirstText();
-    // qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-    // var sum = 0;
-    // var totalPageNo = qr.totalPageNo;
-    // for (var j = 1; j <= totalPageNo; j++) {
-    // for (var i = 0; i < qr.curPageTotal; i++) {
-    // sum += Number(qr.data[i][" 金额"]);
-    // }
-    // if (j < totalPageNo) {
-    // scrollNextPage();
-    // qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
-    // }
-    // }
-    // var b = qr.data[0]["累计未结"];
+<<<<<<< HEAD
+     var keys = [ "厂商" ];
+     var fields = purchaseProviderAccountFields(keys);
+     changeTFieldValue(fields["厂商"], "rt");
+     query(fields);
+     var qr = getQR();
+     var a = qr.data[0]["余额"];
+    
+     tapFirstText();
+     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+     var sum = 0;
+     var totalPageNo = qr.totalPageNo;
+     for (var j = 1; j <= totalPageNo; j++) {
+     for (var i = 0; i < qr.curPageTotal; i++) {
+     sum += Number(qr.data[i][" 金额"]);
+     }
+     if (j < totalPageNo) {
+     scrollNextPage();
+     qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
+     }
+     }
+     var b = qr.data[0]["累计未结"];
 
+>>>>>>> origin/master
     return ret && ret1 && ret2;
 }
 function test120029_1() {
