@@ -12,6 +12,7 @@
 #import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
 
+#import "testcase/goods/goodsInc.js"
 #import "testcase/goods/goods.js"
 #import "testcase/goods/goodsFields.js"
 

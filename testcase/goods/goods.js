@@ -57,6 +57,7 @@ function testGoods001Prepare() {
         editShopOutDecruitIn(json);
     }
 
+    // 库存调整单，test100007验证
     tapMenu("货品管理", "当前库存");
     query();
     var r = getRandomInt(100);
@@ -67,6 +68,8 @@ function testGoods001Prepare() {
  * 翻页/排序/汇总/条件查询/清除/数据
  */
 function testGoods001() {
+    // 需要先跑testGoods001Prepare
+    run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100007");
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -94,7 +97,8 @@ function testGoods001() {
 
 }
 
-function testGoods003() {
+function testGoods001Else() {
+    // 均色均码
     run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】货品管理-当前库存-导出-单价和金额值正确性", "test100101");
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
@@ -123,26 +127,23 @@ function testGoods003() {
     run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
             "test100087_100088_100089");
 
+    // 颜色尺码
+    run("颜色尺码模式", "setGoodsColorParams");
+    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
+    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
+
+}
+
+function setGoodsColorParams() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
 }
 
 function testGoodsGoodsAll() {
-    // if(setGoodsNoColorPriceParams()){
-
-    // }
-
-    // if(setGoodsNoColorDefaultPriceParams()){
-    // run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100025");
-    // }
-
-    // if(setGoodsColorPriceParams()){
-    // run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
-    // run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
-    // }
-
-    // if(setGoodsColorDefaultPriceParams()){
-    // run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
-    // run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
-    // }
 
     // login004
     // run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
@@ -159,10 +160,6 @@ function testGoodsGoodsAll() {
     // 跳过部分
     // run("【货品管理-当前库存】进货价（总额、单据、小计 ）权限控制", "test100004");//未完成
     // run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "test100035");//先跳过
-    // run("批量调价全选",
-    // "test100047_100048_100049_100050_100051_100052All");//不能点全选再批量调价
-
-    // run("【货品管理-更多-新增仓位】新增仓位", "test100074");
 
 }
 
@@ -197,7 +194,7 @@ function testGoods002() {
 
 }
 
-function setGoodsNoColorDefaultPriceParams() {
+function goodsParams003() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -206,13 +203,13 @@ function setGoodsNoColorDefaultPriceParams() {
     qo = { "备注" : "货品建款的价格模式" };
     o = { "新值" : "0", "数值" : [ "默认价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "自动生成款号" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
@@ -222,22 +219,21 @@ function setGoodsNoColorDefaultPriceParams() {
     return ret;
 }
 
-function setGoodsColorPriceParams() {
+function testGoods003() {
+    // 均色均码
+    run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100025");
+    run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100046");
+    // 颜色尺码
+    run("颜色尺码模式", "setGoodsColorParams");
+    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
+    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
+
+}
+
+function setGoodsColorParams() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "货品建款的价格模式" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "自动生成款号" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -290,194 +286,22 @@ function setTagprice_invperson_1() {
     return ret;
 }
 
-// 翻页检验，检验序号和title的内容和第2页有没有重复
-// 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
-// 若数据只有1页，删除限制条件的index，重新查询，验证序号
-/**
- * 翻页检验，检验序号和title的内容和第2页有没有重复
- * @param title
- * @param type 限制条件的文本框类型
- * @param index 限制条件的下标
- */
-function goPageCheckField(title, index, type) {
+function test100007() {
+    tapMenu("货品管理", "当前库存");
+    query();
     var qr = getQR();
-    // 当前页为1
-    var ret = isEqual("1", qr.data[0]["序号"]);
-    var i, j;
-    var totalPageNo = qr.totalPageNo;
-    if (totalPageNo > 1) {
-        var page1 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page1[i] = qr.data[i][title];
-        }
+    var code = qr.data[0]["款号"];
+    var name = qr.data[0]["名称"];
+    var shop = qr.data[0]["仓库/门店"];
+    var stock = qr.data[0]["库存"];
 
-        // 翻到第二页
-        goPage(2, qr);
-        qr = getQR();
-        ret = ret && isEqual("16", qr.data[0]["序号"])
-                && isEqual("2", qr.curPageNo);
-        var page2 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page2[i] = qr.data[i][title];
-        }
-
-        for (i = 0; i < page1.length; i++) {
-            for (j = 0; j < page2.length; j++) {
-                if (page1[i] == page2[j]) {
-                    ret = false;
-                    logDebug("page1=" + page1[i] + "   page2=" + page2[j]
-                            + "  存在相同数据");
-                    break;
-                }
-            }
-        }
-
-        // 向上翻页验证
-        scrollPrevPage();
-        delay();
-        qr = getQR();
-        ret = ret && isEqual("1", qr.data[0]["序号"])
-                && isEqual("1", qr.curPageNo);
-
-        // 向下翻页验证
-        scrollNextPage();
-        delay();
-        qr = getQR();
-        ret = ret && isEqual("16", qr.data[0]["序号"])
-                && isEqual("2", qr.curPageNo);
-
-        scrollPrevPage();
-
-    } else {
-        if (isDefined(index)) {
-            tap(window.textFields()[index]);
-            if (isDefined(type)) {
-                window.popover().dismiss();
-            }
-            var ok = tap(window.textFields()[index].buttons()["清除文本"]);
-            if (!ok) {
-                tap(window.textFields()[index].buttons()["Clear text"]);
-            }
-        }
-
-        tapButton(window, QUERY);
-        // 清除会将日期变成今天
-        // tapButton(window, CLEAR);
-
-        qr = getQR();
-        totalPageNo = qr.totalPageNo;
-        if (totalPageNo > 1) {
-            goPage(2, qr);
-            qr = getQR();
-            ret = ret && isEqual("16", qr.data[0]["序号"])
-                    && isEqual("2", qr.curPageNo);
-
-            scrollPrevPage();
-            delay();
-            qr = getQR();
-            ret = ret && isEqual("1", qr.data[0]["序号"])
-                    && isEqual("1", qr.curPageNo);
-
-            scrollNextPage();
-            delay();
-            qr = getQR();
-            ret = ret && isEqual("16", qr.data[0]["序号"])
-                    && isEqual("2", qr.curPageNo);
-
-            scrollPrevPage();
-
-        } else {
-            logDebug("数据不足,翻页验证跳过")
-        }
-
-    }
-
+    tapMenu("货品管理", "更多", "库存调整单");
+    query();
+    qr = getQR();
+    var ret = isAnd(isEqual(shop, qr.data[0]["门店"]), isEqual(getToday("yy"),
+            qr.data[0]["日期"]), isEqual(code, qr.data[0]["款号"]), isEqual(name,
+            qr.data[0]["名称"]), isEqual(stock, qr.data[0]["调整后数量"]));
     return ret;
-}
-
-/**
- * 下拉列表验证
- * @param index 静态文本下标
- * @param value 输入值
- * @param expected 希望显示的内容
- */
-function dropDownListCheckField(index, value, expected) {
-    var ret = false;
-    var f = new TField("款号", TF_AC, index, value, -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, expected)) {
-            ret = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    tapButton(window, CLEAR);
-
-    return ret;
-}
-
-/**
- * 模糊查询验证
- * @param index 静态文本下标
- * @param title
- * @param value 输入值
- * @param title1 查询条件为款号名称时，对应标题为款号或名称
- */
-function fuzzyQueryCheckField(index, title, value, title1) {
-    var f = new TField("名称", TF, index, value);
-    var fields = [ f ];
-    query(fields);
-    var i, j;
-    var qr = getQR();
-    var ret1 = true;
-    var ret2 = true;
-    var value1 = value.toUpperCase();
-
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i][title], value)
-                    && !isIn(qr.data[i][title], value1)) {
-                ret1 = false;
-                break;
-            }
-            if (ret1 == false && isDefined(title1)) {
-                if (!isIn(qr.data[i][title1], value)
-                        && !isIn(qr.data[i][title1], value1)) {
-                    ret2 = false;
-                    break;
-                }
-                if (ret2 == true) {
-                    ret1 = true;
-                }
-            }
-            logDebug("ret=" + ret1);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-
-    tapButton(window, CLEAR);
-    return ret1;
-}
-
-/**
- * 新增货品(均+省)
- * @param keys
- */
-function addGoods(keys) {
-    tapMenu("货品管理", "新增货品+");
-    var fields = editGoodsFields(keys, false, 0, 0);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-
-    delay();
-    tapReturn();
 }
 
 // 翻页_排序_汇总
@@ -1446,268 +1270,157 @@ function test100021() {
 }
 
 function test100025() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "进货价", "季节", "类别", "厂商", "仓位", "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 0, -1);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "进货价" : "100",
+        "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "Adida公司",
+        "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
+        "经办人" : "000", "备注" : "123" };
+    addGoods(keys, "no", "yes");
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
-    delay();
+    var expected = new Array(code, name, "1010pp", "", "", getToday(), 100,
+            130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司", "双", "默认", 0,
+            1000, "000,总经理", "", 123);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 0))
-            && isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("100", getTextFieldValue(getScrollView(), 7))
-            && isEqual("夏季", getTextFieldValue(getScrollView(), 13))
-            && isEqual("登山服", getTextFieldValue(getScrollView(), 14))
-            && isEqual("Adida公司", getTextFieldValue(getScrollView(), 15))
-            && isEqual("默认", getTextFieldValue(getScrollView(), 17))
-            && isEqual("000,总经理", getTextFieldValue(getScrollView(), 20))
-            && isEqual("123", getTextFieldValue(getScrollView(), 22));
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
+
+    return ret;
+}
+
+function test100046() {
+    var r = getTimestamp(8);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "进货价" : "100" };
+    addGoods(keys, "no", "yes");
+
+    var expected = new Array(code, name, "1010pp", "", "", getToday(), 100,
+            130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "", "",
+            "");
+    var ret = test100033Field(name, expected);
 
     return ret;
 }
 
 function test100033() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "吊牌价" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
-    changeTFieldValue(fields["款号"], "g" + r);
-    changeTFieldValue(fields["名称"], "货品" + r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "吊牌价" : "200" };
+    addGoods(keys);
 
+    var expected = new Array(code, name, "1010pp", "", "", getToday(), 200,
+            100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0", "",
+            "", "");
+    var ret = test100033Field(name, expected);
+
+    return ret;
+}
+
+function test100033Field(name, expected) {
     tapMenu("货品管理", "货品查询");
-    var qKeys = { "款号名称" : r, "品牌" : "1010pp" };
+    var qKeys = { "款号名称" : name };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
 
     delay();
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual("g" + r, getTextFieldValue(getScrollView(), 0))
-            && isEqual("货品" + r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("200", getTextFieldValue(getScrollView(), 7))
-            && isEqual("100", getTextFieldValue(getScrollView(), 8))
-            && isEqual("200", getTextFieldValue(getScrollView(), 9))
-            && isEqual("180", getTextFieldValue(getScrollView(), 10))
-            && isEqual("160", getTextFieldValue(getScrollView(), 11))
-            && isEqual("140", getTextFieldValue(getScrollView(), 12));
+    var actual = getEditGoodsValue();
     tapButton(window, RETURN);
+    var ret = isEqualObject(expected, actual);
 
-    tapButton(window, CLEAR);
+    query();
     return ret;
 }
 
 function test100034() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "吊牌价", "产品折扣", "季节", "类别", "厂商", "计量单位",
-            "仓位", "最小库存", "最大库存", "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(getScrollView(), "减量");
-    var day = getTextFieldValue(getScrollView(), 5);// 上架日期
-    if (day != getDay(-1)) {
-        tapButton(getScrollView(), "减量");
-        tapButton(getScrollView(), "减量");
-    }
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "吊牌价" : "200",
+        "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "Adida公司",
+        "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
+        "经办人" : "000", "备注" : "123" };
+    addGoods(keys);
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = { "厂商" : "adida", "款号名称" : r, "品牌" : "1010pp",
-        "上架从" : "2015-11-1", "到" : getToday(), "颜色" : "均色", "经办人" : "000",
-        "是否停用" : "否", "类别" : "登山服", "季节" : "夏季" };
-    var qFields = queryGoodsFields(qKeys);
-    query(qFields);
-    var qr = getQR();
-    var ret = isEqual(r, qr.data[0]["款号"]);
+    var expected = new Array(code, name, "1010pp", "", "", getToday(), 200,
+            100, 200, 180, 160, 140, 0.85, "夏季", "登山服", "Adida公司", "双", "默认",
+            0, 1000, "000,总经理", "", 123);
 
-    delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var expected1 = new Array(r, r, "1010pp", "", "", getDay(-1), 200, 100,
-            200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "件", "默认", 1,
-            200, "000,总经理", "", 123);
-    for (var i = 0; i < expected1.length; i++) {
-        var j = i;
-        if (i >= 6) {
-            j = i + 1;
-        }
-        ret = ret
-                && isEqual(expected1[i], getTextFieldValue(getScrollView(), j));
-    }
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
 
-    tapButton(window, CLEAR);
     return ret;
 }
 
 function test100023() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "颜色", "尺码", "进货价" ];
-    var fields = editGoodsFields(keys, false, 4, -1);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "颜色" : "0,1",
+        "尺码" : "0", "进货价" : "100" };
+    addGoods(keys, "yes", "yes");
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
+    var expected = new Array(code, name, "","花色,黑色,", "box(3b),",
+            getToday(), 100, 130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "",
+            "", "");
 
-    delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 0))
-            && isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual("花色,黑色,", getTextFieldValue(getScrollView(), 3))
-            && isEqual("box(3b),", getTextFieldValue(getScrollView(), 4))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("100", getTextFieldValue(getScrollView(), 7))
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
 
     return ret;
 }
 
 function test100024() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "颜色", "尺码", "进货价", "季节", "类别", "厂商", "仓位",
-            "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 4, -1);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
+        "尺码" : "0", "进货价" : "100", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
+        "厂商" : "Adida公司", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "1000", "经办人" : "000", "备注" : "123" };
+    addGoods(keys, "yes", "yes");
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
-    delay();
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+            getToday(), 100, 130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司",
+            "双", "默认", 0, 1000, "000,总经理", "", 123);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 0))
-            && isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual("花色,黑色,", getTextFieldValue(getScrollView(), 3))
-            && isEqual("box(3b),", getTextFieldValue(getScrollView(), 4))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("100", getTextFieldValue(getScrollView(), 7))
-            && isEqual("夏季", getTextFieldValue(getScrollView(), 13))
-            && isEqual("登山服", getTextFieldValue(getScrollView(), 14))
-            && isEqual("Adida公司", getTextFieldValue(getScrollView(), 15))
-            && isEqual("默认", getTextFieldValue(getScrollView(), 17))
-            && isEqual("000,总经理", getTextFieldValue(getScrollView(), 20))
-            && isEqual("123", getTextFieldValue(getScrollView(), 22));
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
 
     return ret;
 }
 
 function test100029() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "颜色", "尺码", "吊牌价", "季节", "类别", "厂商", "仓位",
-            "经办人", "备注" ];
-    var fields = editGoodsFields(keys, false, 4, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
+        "尺码" : "0", "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
+        "厂商" : "Adida公司", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "1000", "经办人" : "000", "备注" : "123" };
+    addGoods(keys, "yes");
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
-    delay();
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+            getToday(), 200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服",
+            "Adida公司", "双", "默认", "0", "1000", "000,总经理", "", "123");
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 0))
-            && isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual("花色,黑色,", getTextFieldValue(getScrollView(), 3))
-            && isEqual("box(3b),", getTextFieldValue(getScrollView(), 4))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("200", getTextFieldValue(getScrollView(), 7))
-            && isEqual("夏季", getTextFieldValue(getScrollView(), 14))
-            && isEqual("登山服", getTextFieldValue(getScrollView(), 15))
-            && isEqual("Adida公司", getTextFieldValue(getScrollView(), 16))
-            && isEqual("默认", getTextFieldValue(getScrollView(), 18))
-            && isEqual("000,总经理", getTextFieldValue(getScrollView(), 21))
-            && isEqual("123", getTextFieldValue(getScrollView(), 23));
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
 
     return ret;
 }
 
 function test100031() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "颜色", "尺码", "吊牌价" ];
-    var fields = editGoodsFields(keys, false, 4, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    var code = "g" + r;
+    var name = "货品" + r;
+    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
+        "尺码" : "0", "吊牌价" : "200" };
+    addGoods(keys, "yes");
 
-    tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+            getToday(), 200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件",
+            "默认", "0", "0", "", "", "");
 
-    delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 0))
-            && isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("1010pp", getTextFieldValue(getScrollView(), 2))
-            && isEqual("花色,黑色,", getTextFieldValue(getScrollView(), 3))
-            && isEqual("box(3b),", getTextFieldValue(getScrollView(), 4))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 5))
-            && isEqual("200", getTextFieldValue(getScrollView(), 7))
-    tapButton(window, RETURN);
+    var ret = test100033Field(name, expected);
 
     return ret;
 }
@@ -3223,7 +2936,7 @@ function test100104_100105() {
 }
 
 /**
- * 库存调整单 r 调整后库存
+ * 库存调整单 r:调整后库存
  */
 function addGoodsStockAdjustment(r) {
     tapFirstText();

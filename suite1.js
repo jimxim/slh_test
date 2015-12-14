@@ -7,7 +7,7 @@
 function test000All() {
 	debug = true;
 
- run("text", "test1000111");
+ run("text", "test100031");
 // run("text", "test100010_100011_100013");
 
  
@@ -18,7 +18,7 @@ function test000All() {
  * 准备数据 test000Goods001Prepare 
  * 该参数下可运行用例 test000Goods001
  * test000Customer001 test000Purchase001 test000PurchaseOrder001
- * test000ShopOut001 test200ShopOut001 test000SalesOrder001
+ * test000ShopOut001 test200ShopIn001 test000SalesOrder001
  */
 function setGoods001Params(){
     var p1 = {"角色":"总经理"};
@@ -60,11 +60,11 @@ function test000Goods001() {
 }
 
 //
-function test000Goods003() {
+function test000Goods001Else() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
-      testGoods003();
+      testGoods001Else();
      logout();
   }
 }
@@ -135,6 +135,28 @@ function test000SalesOrder001() {
   }
 }
 
+//销售开单 翻页/排序/汇总/条件查询/清除/下拉框
+function test000SalesNoColorSizeElse001() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+       testSalesNoColorSizeElse001();
+       
+       logout();
+   }
+}
+
+//盘点管理 翻页/排序/汇总/条件查询/清除/下拉框
+function test000Check001() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+       testCheck001();
+       
+       logout();
+   }
+}
+
 /**
  * 参数 setGoods002Params 
  * 准备数据 
@@ -154,6 +176,29 @@ function test000Goods002() {
   var ok = login("000","000000",p1);
   if( ok ) {
       testGoods002();
+     logout();
+  }
+}
+
+/**
+ * 参数 setGoods003Params 
+ * 准备数据 
+ * 用例 test000Goods003
+ */
+function setGoods003Params(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("均色均码/默认价格模式/价格模式2", "goodsParams003");
+       logout();
+    }
+}
+// 默认价格模式新增货品检验
+function test000Goods003() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoods003();
      logout();
   }
 }
