@@ -1370,7 +1370,7 @@ function test100023() {
         "尺码" : "0", "进货价" : "100" };
     addGoods(keys, "yes", "yes");
 
-    var expected = new Array(code, name, "","花色,黑色,", "box(3b),",
+    var expected = new Array(code, name, "","花色,黑色,", "s,",
             getToday(), 100, 130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "",
             "", "");
 
@@ -1389,7 +1389,7 @@ function test100024() {
         "最大库存" : "1000", "经办人" : "000", "备注" : "123" };
     addGoods(keys, "yes", "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,",
             getToday(), 100, 130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司",
             "双", "默认", 0, 1000, "000,总经理", "", 123);
 
@@ -1408,7 +1408,7 @@ function test100029() {
         "最大库存" : "1000", "经办人" : "000", "备注" : "123" };
     addGoods(keys, "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,",
             getToday(), 200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服",
             "Adida公司", "双", "默认", "0", "1000", "000,总经理", "", "123");
 
@@ -1425,7 +1425,7 @@ function test100031() {
         "尺码" : "0", "吊牌价" : "200" };
     addGoods(keys, "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "box(3b),",
+    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,",
             getToday(), 200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件",
             "默认", "0", "0", "", "", "");
 
