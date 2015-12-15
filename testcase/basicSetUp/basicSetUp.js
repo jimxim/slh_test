@@ -2,6 +2,7 @@
 
 //均色均码省代模式
 function testBasicSetUpAll() {
+    // 客户
     run("小王", "setXiaoWang");
     run("赵本山", "setZhaoBenShan");
     run("上级客户1", "setCustomer001");
@@ -12,26 +13,36 @@ function testBasicSetUpAll() {
     run("李六", "setCustomer006");
     run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");
-
+    // 厂商
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
     run("Rt", "setProvider003");
     run("联想", "setProvider004");
 
+    run("特步生产商", "setProvider005");
+    run("新百伦生产商", "setProvider006");
+    // 类别
     run("登山服", "setGoodsType001");
     run("鞋", "setGoodsType002");
     run("铅笔裤", "setGoodsType003");
 
+    run("夹克", "setGoodsType004");
+    run("跑步鞋", "setGoodsType005");
+    run("围巾", "setGoodsType006");
+    // 品牌
     run("1010pp", "setGoodsBrand001");
     run("Adidas", "setGoodsBrand002");
 
+    run("特步", "setGoodsBrand003");
+    run("新百伦", "setGoodsBrand004");
+    // 品牌折扣
     run("1010pp折扣", "setGoodsBrandDiscount001");
-
+    // 物流商
     run("天天物流", "setLogistics001");
     run("顺丰快递", "setLogistics002");
     run("圆通速递", "setLogistics003");
     run("汇通快递", "setLogistics004");
-    //
+    // 款号
     run("3035", "setGoods001");
     run("4562", "setGoods002");
     run("k300", "setGoods003");
@@ -40,6 +51,11 @@ function testBasicSetUpAll() {
     run("plczcs1", "setGoods006");
     run("plczcs2", "setGoods007");
     run("plczcs3", "setGoods008");
+
+    run("x001", "setGoods009");// 颜色尺码
+    run("x003", "setGoods010");// 颜色尺码
+    run("nb001", "setGoods011");// 颜色尺码
+    run("nb003", "setGoods012");// 颜色尺码
 
 }
 
@@ -52,7 +68,6 @@ function subTime(day1, day2) {
     logDebug("ret=" + ret);
     return ret;
 }
-
 
 function changeMarketTime(day2) {
     var i, day, arr1;
@@ -104,7 +119,7 @@ function changeMarketTime(day2) {
                 tapButton(getScrollView(), "增量");
             }
         }
-        for (i = Number(num1)+1; i < 0; i++) {
+        for (i = Number(num1) + 1; i < 0; i++) {
             tapButton(getScrollView(), "增量");
 
         }
@@ -126,12 +141,12 @@ function changeMarketTime(day2) {
         }
     }
 
-//    var ret = false;
-//    day = getTextFieldValue(getScrollView(), 5);
-//    if (day == day2) {
-//        ret = true;
-//    }
-//    return ret;
+    // var ret = false;
+    // day = getTextFieldValue(getScrollView(), 5);
+    // if (day == day2) {
+    // ret = true;
+    // }
+    // return ret;
 }
 
 /**
@@ -262,8 +277,7 @@ function setCustomer007() {
  * 综合汇总1
  */
 function setCustomer008() {
-    var keys = { "名称" : "综合汇总1", 
-        "门店" : "常青店", "适用价格" : "零批价" };
+    var keys = { "名称" : "综合汇总1", "门店" : "常青店", "适用价格" : "零批价" };
     var ret = editCustomerBasicSetUp("综合汇总1", keys);
     return ret;
 }
@@ -319,6 +333,16 @@ function setProvider004() {
     var ret = editProviderBasicSetUp("联想", keys);
     return ret;
 }
+function setProvider005() {
+    var keys = { "名称" : "特步生产商", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("特步生产商", keys);
+    return ret;
+}
+function setProvider006() {
+    var keys = { "名称" : "新百伦生产商", "适用价格" : "进货价" };
+    var ret = editProviderBasicSetUp("新百伦生产商", keys);
+    return ret;
+}
 
 function basicSetUpByType(name, keys) {
     tapMenu("货品管理", "基本设置", "货品类别");
@@ -363,7 +387,21 @@ function setGoodsType003() {
     var ret = basicSetUpByType("铅笔裤", keys);
     return ret;
 }
-
+function setGoodsType004() {
+    var keys = { "名称" : "夹克" };
+    var ret = basicSetUpByType("夹克", keys);
+    return ret;
+}
+function setGoodsType005() {
+    var keys = { "名称" : "跑步鞋" };
+    var ret = basicSetUpByType("跑步鞋", keys);
+    return ret;
+}
+function setGoodsType006() {
+    var keys = { "名称" : "围巾" };
+    var ret = basicSetUpByType("围巾", keys);
+    return ret;
+}
 function basicSetUpByBrand(name, keys) {
     tapMenu("货品管理", "基本设置", "所有品牌");
     var fields = goodsBrandFields(keys);
@@ -400,6 +438,16 @@ function setGoodsBrand001() {
 function setGoodsBrand002() {
     var keys = { "名称" : "Adidas" };
     var ret = basicSetUpByBrand("Adidas", keys);
+    return ret;
+}
+function setGoodsBrand003() {
+    var keys = { "名称" : "特步" };
+    var ret = basicSetUpByBrand("特步", keys);
+    return ret;
+}
+function setGoodsBrand004() {
+    var keys = { "名称" : "新百伦" };
+    var ret = basicSetUpByBrand("新百伦", keys);
     return ret;
 }
 
@@ -485,10 +533,9 @@ function setLogistics004() {
 }
 
 /**
- * 新增/修改货品
- * day2 上架日期
+ * 新增/修改货品 day2 上架日期
  */
-function editGoodsBasicSetUp(code, name, keys,day2) {
+function editGoodsBasicSetUp(code, name, keys, day2) {
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : code + name };
     var qFields = queryGoodsFields(qKeys);
@@ -499,7 +546,7 @@ function editGoodsBasicSetUp(code, name, keys,day2) {
     var fields = editGoodsFields(keys, false, 0, 0);
     if (qr.total == "1") {
         tapFirstText();
-        if(isDefined(day2)){
+        if (isDefined(day2)) {
             changeMarketTime(day2);
         }
         setTFieldsValue(getScrollView(), fields);
@@ -507,7 +554,7 @@ function editGoodsBasicSetUp(code, name, keys,day2) {
     }
     if (qr.total == "0") {
         tapMenu("货品管理", "新增货品+");
-        if(isDefined(day2)){
+        if (isDefined(day2)) {
             changeMarketTime(day2);
         }
         setTFieldsValue(getScrollView(), fields);
@@ -529,7 +576,7 @@ function setGoods001() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
         "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("3035", "jkk", keys,"2015-10-13");
+    var ret = editGoodsBasicSetUp("3035", "jkk", keys, "2015-10-13");
     return ret;
 }
 
@@ -539,7 +586,7 @@ function setGoods002() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
         "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("4562", "Story", keys,"2014-03-14");
+    var ret = editGoodsBasicSetUp("4562", "Story", keys, "2014-03-14");
     return ret;
 }
 
@@ -547,27 +594,27 @@ function setGoods002() {
 function setGoods003() {
     var keys = { "款号" : "k300", "名称" : "铅笔裤", "品牌" : "Adidas", "吊牌价" : "300",
         "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
-        "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
-        "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys,"2015-10-13");
+        "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件",
+        "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
+    var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys, "2015-10-13");
     return ret;
 }
 // "上架日期" : "2015-10-13",
 function setGoods004() {
     var keys = { "款号" : "k200", "名称" : "范范", "吊牌价" : "200", "进货价" : "150",
         "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
-        "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
-        "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k200", "范范", keys,"2015-10-13");
+        "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
+        "最小库存" : "0", "最大库存" : "0" };
+    var ret = editGoodsBasicSetUp("k200", "范范", keys, "2015-10-13");
     return ret;
 }
 // "上架日期" : "2015-03-17",
 function setGoods005() {
     var keys = { "款号" : "8989", "名称" : "我们", "吊牌价" : "0", "进货价" : "0",
         "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
-        "产品折扣" : "0.985", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
-        "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("8989", "我们", keys,"2015-03-17");
+        "产品折扣" : "0.985", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
+        "最小库存" : "0", "最大库存" : "0" };
+    var ret = editGoodsBasicSetUp("8989", "我们", keys, "2015-03-17");
     return ret;
 }
 function setGoods006() {
@@ -583,5 +630,50 @@ function setGoods007() {
 function setGoods008() {
     var keys = { "款号" : "plczcs3", "名称" : "批量操作测试3" };
     var ret = editGoodsBasicSetUp("plczcs3", "批量操作测试3", keys);
+    return ret;
+}
+function setGoods009() {
+    var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "特步",
+    // "颜色":{"红色","铁锈红"},"尺码":{"L,XL,2XL"},
+    "吊牌价" : "500", "进货价" : "150", "零批价" : "490", "打包价" : "440", "大客户价" : "390",
+        "Vip价格" : "190", "产品折扣" : "0.8", "季节" : "春季", "类别" : "夹克",
+        "厂商" : "特步生产商", "计量单位" : "件",
+        "仓位" : "A座六层", 
+        "最小库存" : "0", 
+//        "最大库存" : "0"　 
+//            ,"yes"
+            };
+    var ret = editGoodsBasicSetUp("x001", "特步夹克", keys, "2015-03-04");
+    return ret;
+}
+function setGoods010() {
+    var keys = { "款号" : "x003", "名称" : "特步登山服", "品牌" : "特步",
+            // "颜色":{"黄色","淡黄"},"尺码":{"L,XL,2XL"},
+            "吊牌价" : "0", "进货价" : "100", "零批价" : "390", "打包价" : "370", "大客户价" : "350",
+                "Vip价格" : "190", "产品折扣" : "0.8", "季节" : "春季", "类别" : "登山服",
+                "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0","经办人":"005" 
+//                    ,"yes"
+                    };
+    var ret = editGoodsBasicSetUp("x003", "特步夹克", keys,"2015-03-09");
+    return ret;
+}
+function setGoods011() {
+    var keys = { "款号" : "nb001", "名称" : "新百伦运动鞋", "品牌" : "新百伦",
+            // "颜色":{"黑色","玫红","桃红","酒红"},"尺码":{"X1,X2,X3,X4"},
+            "吊牌价" : "400", "进货价" : "100", "零批价" : "390", "打包价" : "370", "大客户价" : "350",
+                "Vip价格" : "190", "产品折扣" : "0.8", "季节" : "春季", "类别" : "跑步鞋",
+                "厂商" : "新百伦生产商", "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0","经办人":"001" 
+//                    ,"yes"
+                    };
+    var ret = editGoodsBasicSetUp("nb001", "新百伦运动鞋", keys,"2015-02-12");
+    return ret;
+}
+function setGoods012() {
+    var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "新百伦",
+            // "颜色":{"红色","玫红"},"尺码":{"X1,X2,X3,X4"},
+            "吊牌价" : "400", "进货价" : "120", "零批价" : "430", "打包价" : "390", "大客户价" : "350",
+                "Vip价格" : "190", "产品折扣" : "0.8", "季节" : "春季", "类别" : "围巾",
+                "厂商" : "新百伦生产商", "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0","经办人":"001" 
+    var ret = editGoodsBasicSetUp("nb003", "新百伦围巾", keys,"2015-02-13");
     return ret;
 }

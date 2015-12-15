@@ -51,24 +51,24 @@ function testPurchase002() {
     run("【采购入库】客户或供应商信息不允许修改", "test120034");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
     run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
-    run("【采购入库】批量入库实现退货功能+均色均码", "test120043"); 
+    run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
     run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
     // }
     run("颜色尺码模式", "setIgnorecolorsize_0Params");
     run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//
- // if(setPurchase_type_2Params()){
-    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_1");//
- // }
     // if(setPurchase_type_2Params()){
+    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_1");//
+    // }
+    // if(setPurchase_type_1Params()){
     run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_2");//
     // }
     // if(setDwxx_not_allow_edit_0Params()){单据是否允许修改客户或厂商
     run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
     // }
-   
+
 }
 function testPurchase003() {
     // 作废单据换帐套跑相关用例
@@ -2169,7 +2169,6 @@ function test120029() {
     tapNaviLeftButton();
     query();
 
-
     // var keys = [ "厂商" ];
     // var fields = purchaseProviderAccountFields(keys);
     // changeTFieldValue(fields["厂商"], "rt");
@@ -2191,7 +2190,6 @@ function test120029() {
     // }
     // }
     // var b = qr.data[0]["累计未结"];
-
 
     return ret && ret1 && ret2;
 }
@@ -3060,7 +3058,8 @@ function test120018() {
         "现金" : 100,
         "刷卡" : [ 600, "交" ],
         "汇款" : [ 4000, "建" ],
-        "明细" : [ { "货品" : "3035", "数量" : "24" }, { "货品" : "k300", "数量" : "11","备注":"xbz" } ],
+        "明细" : [ { "货品" : "3035", "数量" : "24" },
+                { "货品" : "k300", "数量" : "11", "备注" : "xbz" } ],
         "特殊货品" : { "抹零" : 50, "打包费" : 150 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -3086,20 +3085,26 @@ function test120018() {
             getTextFieldValue(getScrollView(), 8)));
 
     tapReturn();
-    
+
     query(fields);
     tapFirstText();
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
-    
+
     tapMenu("采购入库", "按批次查");
     query();
 
     return ret && ret1;
 }
 function test120059() {
-   var value= window.segmentedControls()[2].buttons()["进货价"].value;
-   logDebug("value="+value);
+    var json = {
+        "客户" : "rt",
+        "店员" : "005",
+        "价格" : "打包价",
+        "明细" : [ { "货品" : "14L595", "数量" : [ 5, 6, 7 ] },
+                { "货品" : "150921", "数量" : [ 1, 2, 3 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 0, "刷卡" : [ 100, "工" ],
+        "汇款" : [ 100, "交" ], "备注" : "xx", "未付" : "yes", "onlytest" : "yes" };
 }
 function editPurchaseBatch(o) {
     editPurchaseBatchStaff(o);
