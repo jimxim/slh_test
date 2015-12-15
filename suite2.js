@@ -16,7 +16,9 @@ function test000() {
 // testPurchaseAll();
 //	testPurchase002();  
 
-	run("【采购订货-按订货入库】检查备注", "test120051");
+	 run("【采购订货-按批次查】单据修改界面检查付款方式", "test130015");
+//	 run("【采购订货-按批次查】单据修改界面检查付款方式", "test130016_1");
+//	 run("【采购订货-按批次查】单据修改界面检查付款方式", "test130016_2");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
