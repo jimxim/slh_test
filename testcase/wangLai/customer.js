@@ -16,13 +16,17 @@ function testCustomer001() {
     run("【往来管理-更多】客户回访", "test110048");
 }
 
+function testCustomer001Else() {
+    run("【往来管理-客户查询】客户查询->消费明细", "test110002");
+    
+}
+
 function testWanLaiCustomerAll() {
 
-    // run("【往来管理-客户查询】客户查询->消费明细", "test110002");
+   
     // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
     // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
-    // run("【往来管理-客户查询】客户修改界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110006");
-    // run("【往来管理-客户查询】客户新增界面，点到文本框时，文本框自动向上滚动，以防止被键盘挡住", "test110007");
+
     // run("【往来管理】允许退货－－是", "test110008");
     // run("【往来管理】允许退货－－否", "test110009");
     // run("【往来管理】往来管理-客户查询/厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
@@ -67,9 +71,6 @@ function test110001_1() {
 
     var ret = goPageCheckField("名称");
 
-    // var keys = { "客户类别" : "VIP客户" };
-    // var fields = queryCustomerFields(keys);
-    // query(fields);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("生日", IS_DATE2);
     ret = ret && sortByTitle("店员");
@@ -92,29 +93,16 @@ function test110001() {
     var qr = getQR();
     var total = qr.total;
 
-    var keys = [ "客户" ];
+    var keys = {"客户":"zbs" };
     var qFields = queryCustomerFields(keys);
-    changeTFieldValue(qFields["客户"], "zbs");
     query(qFields);
     qr = getQR();
     var ret = isEqual("赵本山", qr.data[0]["名称"]);
 
-    keys = { "客户名称" : "z" };
-    qFields = queryCustomerFields(keys);
-    query(qFields);
-    qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!(isIn(qr.data[i]["名称"], "z") || isIn(qr.data[i]["名称"], "Z"))) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    //客户名称模糊查询 
+    ret=ret&&fuzzyQueryCheckField(1, "名称", "z");
+    ret=ret&&fuzzyQueryCheckField(1, "名称", "小");
+    
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
         "客户类别" : "VIP客户", "店员" : "000" };
@@ -126,9 +114,10 @@ function test110001() {
             && isEqual(1, qr.totalPageNo);
 
     query();
-    for (i = 0; i < 6; i++) {
+    for (var i = 0; i < 6; i++) {
         ret = ret && isEqual("", getTextFieldValue(window, i));
     }
+    //清除后显示所有客户
     qr = getQR();
     ret = ret && isEqual(total, qr.total);
 

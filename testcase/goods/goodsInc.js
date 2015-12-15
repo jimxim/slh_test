@@ -75,6 +75,17 @@ function addGoods(keys, colorSize, price) {
     tapReturn();
 }
 
+/**
+ * 库存调整单 r:调整后库存
+ */
+function addGoodsStockAdjustment(r) {
+    tapFirstText();
+    tapNaviButton("库存调整");
+    test100090Field1(r);
+    runAndAlert("test100090Field", OK);
+    tapNaviLeftButton();
+}
+
 // 翻页检验，检验序号和title的内容和第2页有没有重复
 // 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
 // 若数据只有1页，删除限制条件的index，重新查询，验证序号

@@ -7,7 +7,7 @@
 function test000All() {
 	debug = true;
 
- run("text", "test100031");
+ run("text", "test110001");
 // run("text", "test100010_100011_100013");
 
  
@@ -80,6 +80,15 @@ function test000Customer001() {
   }
 }
 
+//
+function test000Customer001Else() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testCustomer001Else();
+     logout();
+  }
+}
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Purchase001() {

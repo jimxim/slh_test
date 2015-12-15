@@ -239,6 +239,15 @@ function setGoodsColorParams() {
     return ret;
 }
 
+function setGoodsNoColorParams() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+
 function setGoodsColorDefaultPriceParams() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -2681,6 +2690,13 @@ function test10_size() {
 
 }
 
+function test100095(){
+    tapMenu("货品管理", "基本设置", "所有尺码");
+    query();
+    tapFirstText();
+    
+}
+
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");
     query();
@@ -2933,17 +2949,6 @@ function test100104_100105() {
             && isEqual("", getTextFieldValue(window, 4));
 
     return ret;
-}
-
-/**
- * 库存调整单 r:调整后库存
- */
-function addGoodsStockAdjustment(r) {
-    tapFirstText();
-    tapNaviButton("库存调整");
-    test100090Field1(r);
-    runAndAlert("test100090Field", OK);
-    tapNaviLeftButton();
 }
 
 // 翻页_排序_汇总

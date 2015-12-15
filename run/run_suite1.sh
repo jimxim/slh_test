@@ -15,7 +15,9 @@ js_func="setGoods001Params"
 #js_func="$js_func test000SalesOrder001 test000SalesNoColorSizeElse001"
 #js_func="$js_func test000Check001"
 //其他用例
-#js_func="$js_func test000Goods001Else "
+#js_func="$js_func test000Goods001Else testCustomer001Else"
+
+
 //货品管理的下拉框，模糊查询
 #js_func="$js_func setGoods002Params test000Goods002 "
 //货品管理的默认价格模式
