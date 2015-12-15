@@ -19,8 +19,8 @@ function testBasicSetUpAll() {
     run("Rt", "setProvider003");
     run("联想", "setProvider004");
 
-    run("特步生产商", "setProvider005");
-    run("新百伦生产商", "setProvider006");
+    run("特步生产商", "setProvider005");//适用价：零批价
+    run("新百伦生产商", "setProvider006");//适用价：打包价
     // 类别
     run("登山服", "setGoodsType001");
     run("鞋", "setGoodsType002");
@@ -337,12 +337,12 @@ function setProvider004() {
     return ret;
 }
 function setProvider005() {
-    var keys = { "名称" : "特步生产商", "适用价格" : "进货价" };
+    var keys = { "名称" : "特步生产商", "适用价格" : "零批价" };
     var ret = editProviderBasicSetUp("特步生产商", keys);
     return ret;
 }
 function setProvider006() {
-    var keys = { "名称" : "新百伦生产商", "适用价格" : "进货价" };
+    var keys = { "名称" : "新百伦生产商", "适用价格" : "打包价" };
     var ret = editProviderBasicSetUp("新百伦生产商", keys);
     return ret;
 }

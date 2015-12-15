@@ -3054,7 +3054,7 @@ function test120018() {
 
     json = {
         "客户" : "rt",
-        "店员" : "2001",
+        "店员" : "005",
         "现金" : 100,
         "刷卡" : [ 600, "交" ],
         "汇款" : [ 4000, "建" ],
@@ -3097,14 +3097,26 @@ function test120018() {
     return ret && ret1;
 }
 function test120059() {
+    tapMenu("采购入库", "新增入库+");
     var json = {
-        "客户" : "rt",
-        "店员" : "005",
-        "价格" : "打包价",
-        "明细" : [ { "货品" : "14L595", "数量" : [ 5, 6, 7 ] },
-                { "货品" : "150921", "数量" : [ 1, 2, 3 ] } ],
-        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 0, "刷卡" : [ 100, "工" ],
+        "明细" : [ { "货品" : "x001", "数量" : [ 5, 6, 7 ] },
+                { "货品" : "nb003", "数量" : [ 1, 2, 3 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 0, "刷卡" : [ 29, "工" ],
         "汇款" : [ 100, "交" ], "备注" : "xx", "未付" : "yes", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    
+    var a=getTextFieldValue(getScrollView(), 4);
+    var a1=getTextFieldValue(getScrollView(), 12);
+    
+    var f8 = new TField("货品", TF_AC, 8, "4562", -1, 0);
+    var f11 = new TField("数量", TF, 11, "8");
+    var f16 = new TField("货品", TF_AC, 16, "k300", -1, 0);
+    var f19 = new TField("数量", TF, 19, "7");
+    var fields = [ f8, f11, f16, f19 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    
+
 }
 function editPurchaseBatch(o) {
     editPurchaseBatchStaff(o);
