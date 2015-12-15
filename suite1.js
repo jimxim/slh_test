@@ -7,10 +7,14 @@
 function test000All() {
 	debug = true;
 
- run("text", "test110001");
+ run("text", "test110043");
 // run("text", "test100010_100011_100013");
 
  
+}
+
+function onlyTest(){
+    clearTFieldsByIndex(window, 1);
 }
 
 /**

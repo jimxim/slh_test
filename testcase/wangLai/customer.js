@@ -18,22 +18,21 @@ function testCustomer001() {
 
 function testCustomer001Else() {
     run("【往来管理-客户查询】客户查询->消费明细", "test110002");
-    
+    run("【往来管理-客户查询】客户查询->修改保存", "test110004");
+    run("【往来管理-客户查询】客户查询->客户停用", "test110005");
+    run("【往来管理】允许退货－－是", "test110008");
+    run("【往来管理】允许退货－－否", "test110009");
+    run("【往来管理】往来管理-客户查询/厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
+    run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
+    run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
+
+    run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
+    run("【往来管理-更多】新增回访", "test110047");
+    run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 }
 
 function testWanLaiCustomerAll() {
 
-   
-    // run("【往来管理-客户查询】客户查询->修改保存", "test110004");
-    // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
-
-    // run("【往来管理】允许退货－－是", "test110008");
-    // run("【往来管理】允许退货－－否", "test110009");
-    // run("【往来管理】往来管理-客户查询/厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
-    // run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
-    // run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
-
-    // 先跳过
     // run("【往来管理-客户账款】客户门店账", "test1100015");
     // run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test1100017");
     // run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110018_110019");
@@ -54,11 +53,6 @@ function testWanLaiCustomerAll() {
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
 
     // run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
-
-    // run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
-    // run("【往来管理-更多】新增回访", "test110047");
-
-    // run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
     // 中洲店店长或店员登陆
     // run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
@@ -93,16 +87,15 @@ function test110001() {
     var qr = getQR();
     var total = qr.total;
 
-    var keys = {"客户":"zbs" };
+    var keys = { "客户" : "zbs" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
     qr = getQR();
     var ret = isEqual("赵本山", qr.data[0]["名称"]);
 
-    //客户名称模糊查询 
-    ret=ret&&fuzzyQueryCheckField(1, "名称", "z");
-    ret=ret&&fuzzyQueryCheckField(1, "名称", "小");
-    
+    // 客户名称模糊查询
+    ret = ret && fuzzyQueryCheckField(1, "名称", "z");
+    ret = ret && fuzzyQueryCheckField(1, "名称", "小");
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
         "客户类别" : "VIP客户", "店员" : "000" };
@@ -117,7 +110,7 @@ function test110001() {
     for (var i = 0; i < 6; i++) {
         ret = ret && isEqual("", getTextFieldValue(window, i));
     }
-    //清除后显示所有客户
+    // 清除后显示所有客户
     qr = getQR();
     ret = ret && isEqual(total, qr.total);
 
@@ -171,13 +164,13 @@ function test110004() {
             && isEqual("000,总经理", getTextFieldValue(getScrollView(), 7))
             && isEqual("Yvb", getTextFieldValue(getScrollView(), 8))
             && isEqual("零批客户", getTextFieldValue(getScrollView(), 9))
-            && isEqual("否", getTextFieldValue(getScrollView(), 11))
-            && isEqual("零批价", getTextFieldValue(getScrollView(), 13))
-            && isEqual("55555", getTextFieldValue(getScrollView(), 14))
-            && isEqual("123", getTextFieldValue(getScrollView(), 15))
-            && isEqual("地址", getTextFieldValue(getScrollView(), 16))
-            && isEqual("10000", getTextFieldValue(getScrollView(), 19))
-            && isEqual("5000", getTextFieldValue(getScrollView(), 20));
+            && isEqual("否", getTextFieldValue(getScrollView(), 12))// 允许退货
+            && isEqual("零批价", getTextFieldValue(getScrollView(), 14))// 适用价格
+            && isEqual("55555", getTextFieldValue(getScrollView(), 15))
+            && isEqual("123", getTextFieldValue(getScrollView(), 16))
+            && isEqual("地址", getTextFieldValue(getScrollView(), 17))
+            && isEqual("10000", getTextFieldValue(getScrollView(), 20))// 信用额度
+            && isEqual("5000", getTextFieldValue(getScrollView(), 21));
     tapButton(window, RETURN);
 
     return ret;
@@ -245,8 +238,9 @@ function test110007() {
 }
 
 function test110002() {
+    var num = getRandomInt(100);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : num } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
@@ -264,7 +258,24 @@ function test110002() {
             && isEqual("jkk", qr.data[0]["名称"])
             && isEqual("均色", qr.data[0]["颜色"])
             && isEqual("均码", qr.data[0]["尺码"])
-            && isEqual("20", qr.data[0]["数量"]);
+            && isEqual(num, qr.data[0]["数量"]);
+    var price, sum, discount;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            price = Number(qr.data[i]["单价"]);
+            num = Number(qr.data[i]["数量"]);
+            discount = Number(qr.data[i]["折扣"]);
+            sum = qr.data[i]["小计"];
+            ret = ret && isAqualNum(price * num * discount, sum);
+            if (ret == false) {
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
+        }
+    }
     tapNaviLeftButton();
     tapButton(window, RETURN);
 
@@ -272,7 +283,6 @@ function test110002() {
 }
 
 // 中洲店店长或者店员登陆
-// 还未测试
 function test110002_1() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
@@ -1267,6 +1277,9 @@ function test110042() {
     // 翻页
     var ret = goPageCheckField("名称");
 
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("余额", IS_NUM);
+
     var keys = { "厂商" : "vell" };
     var fields = queryCustomerProviderAccountFields(keys);
     query(fields);
@@ -1277,9 +1290,6 @@ function test110042() {
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0));
-
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("余额", IS_NUM);
 
     var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -1303,24 +1313,45 @@ function test110043() {
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
+    var ret=true;
     tapFirstText();
-    qr = getQResult2(getScrollView(1), "门店", "累计未结");
-    var b = qr.data[0]["累计未结"];
-    var ret = isEqual(b, a);
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["未结"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQResult2(getScrollView(1), "门店", "累计未结");
-        }
-    }
-    ret = ret && isEqual(b, sum);
+    qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
+//    var b = qr.data[0]["累计未结"];
+//    ret =ret&& isEqual(b, a);
+
+    ret=ret&&test110043Field(qr,"常青店");
+    ret=ret&&test110043Field(qr,"中洲店");
+    ret=ret&&test110043Field(qr,"仓库店");
+
+
     tapNaviLeftButton();
 
     return ret;
+}
+
+function test110043Field(qr, shop) {
+    var expected, actual, startIndex, i, x, y, z;
+    var ret = true;
+    for (i = 0; i < qr.curPageTotal-1; i++) {
+        if (isDefined(shop)&&qr.data[i]["门店"] == shop) {
+            startIndex = i;
+            x = Number(qr.data[i]["付款"]);
+            y = Number(qr.data[i]["金额"]);
+            z = Number(qr.data[i]["异地核销"]);
+            for (i = startIndex + 1; i < qr.curPageTotal; i++) {
+                if (qr.data[i]["门店"] == shop) {                
+                    actual = qr.data[i]["累计未结"]+x-y+z;
+                    break;
+                }
+            }
+            ret = ret && isEqual(expected, actual);
+            if(ret==false){
+                break;
+            }
+        }
+        
+    }
+   return ret;
 }
 
 function test110044() {
@@ -1520,7 +1551,7 @@ function test110049() {
         ret1 = false;
     }
 
-    return ret;
+    return ret && ret1;
 }
 
 function testQueryCustomerByType() {

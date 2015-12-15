@@ -364,6 +364,8 @@ function basicSetUpByType(name, keys) {
         if (isEqual("是", qr.data[0]["是否停用"])) {
             tapFirstText();
             tapButtonAndAlert(START);
+            delay();
+            clearTFieldsByIndex(window, 1,"SC");
         }
     }
 

@@ -12,7 +12,6 @@
 //    var ret = mixObject(oldKeys, newKeys);
 //    return ret;
 //}
-
 /**
  * 获取新增货品界面输入框的值
  * @returns {Array}
@@ -84,6 +83,28 @@ function addGoodsStockAdjustment(r) {
     test100090Field1(r);
     runAndAlert("test100090Field", OK);
     tapNaviLeftButton();
+}
+
+/**
+ * 清除指定下标的文本框的内容
+ * @param view
+ * @param index
+ * @param type "SC":TF_SC一类的文本框
+ */
+function clearTFieldsByIndex(view, index, type) {
+    var tf = view.textFields()[index];
+    tap(tf.textFields()[0]);
+
+    if (isDefined(type) && type == "SC") {
+        view.popover().dismiss();
+    }
+
+    var ok = tap(tf.buttons()["清除文本"]);
+    if (!ok) {
+        tap(tf.buttons()["Clear text"]);
+    }
+
+    tapKeyboardHide();
 }
 
 // 翻页检验，检验序号和title的内容和第2页有没有重复
