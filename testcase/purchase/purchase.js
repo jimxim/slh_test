@@ -51,17 +51,20 @@ function testPurchase002() {
     run("【采购入库】客户或供应商信息不允许修改", "test120034");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
     run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
-    run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
-    
+    run("【采购入库】批量入库实现退货功能+均色均码", "test120043"); 
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
     run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
     // }
-    // if(setIgnorecolorsize_0Params()){
-    run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");
+    run("颜色尺码模式", "setIgnorecolorsize_0Params");
+    run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//
+ // if(setPurchase_type_2Params()){
+    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_1");//
+ // }
+    // if(setPurchase_type_2Params()){
+    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_2");//
     // }
-
-    // if(setDwxx_not_allow_edit_0Params()){
+    // if(setDwxx_not_allow_edit_0Params()){单据是否允许修改客户或厂商
     run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
     // }
@@ -100,6 +103,22 @@ function setDwxx_not_allow_edit_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据是否允许修改客户或厂商" };
     o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setPurchase_type_2Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "采购入库模式" };
+    o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function setPurchase_type_1Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "采购入库模式" };
+    o = { "新值" : "1", "数值" : [ "默认简单模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -2150,30 +2169,30 @@ function test120029() {
     tapNaviLeftButton();
     query();
 
-<<<<<<< HEAD
-     var keys = [ "厂商" ];
-     var fields = purchaseProviderAccountFields(keys);
-     changeTFieldValue(fields["厂商"], "rt");
-     query(fields);
-     var qr = getQR();
-     var a = qr.data[0]["余额"];
-    
-     tapFirstText();
-     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-     var sum = 0;
-     var totalPageNo = qr.totalPageNo;
-     for (var j = 1; j <= totalPageNo; j++) {
-     for (var i = 0; i < qr.curPageTotal; i++) {
-     sum += Number(qr.data[i][" 金额"]);
-     }
-     if (j < totalPageNo) {
-     scrollNextPage();
-     qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
-     }
-     }
-     var b = qr.data[0]["累计未结"];
 
->>>>>>> origin/master
+    // var keys = [ "厂商" ];
+    // var fields = purchaseProviderAccountFields(keys);
+    // changeTFieldValue(fields["厂商"], "rt");
+    // query(fields);
+    // var qr = getQR();
+    // var a = qr.data[0]["余额"];
+    //
+    // tapFirstText();
+    // qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+    // var sum = 0;
+    // var totalPageNo = qr.totalPageNo;
+    // for (var j = 1; j <= totalPageNo; j++) {
+    // for (var i = 0; i < qr.curPageTotal; i++) {
+    // sum += Number(qr.data[i][" 金额"]);
+    // }
+    // if (j < totalPageNo) {
+    // scrollNextPage();
+    // qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
+    // }
+    // }
+    // var b = qr.data[0]["累计未结"];
+
+
     return ret && ret1 && ret2;
 }
 function test120029_1() {
@@ -3079,7 +3098,8 @@ function test120018() {
     return ret && ret1;
 }
 function test120059() {
-    
+   var value= window.segmentedControls()[2].buttons()["进货价"].value;
+   logDebug("value="+value);
 }
 function editPurchaseBatch(o) {
     editPurchaseBatchStaff(o);
