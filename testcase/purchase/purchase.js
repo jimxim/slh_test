@@ -3095,7 +3095,7 @@ function test120018() {
 }
 function test120059() {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "tbscs", "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ],
+    var json = { "客户" : "tbscs", "goodsFieldIndex" : -2,"明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ],
         "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 0, "刷卡" : [ 29, "工" ],
         "汇款" : [ 100, "交" ], "备注" : "xx", "未付" : "yes", "onlytest" : "yes" };
     editSalesBillColorSize(json);
