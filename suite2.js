@@ -16,7 +16,7 @@ function test000() {
 // testPurchaseAll();
 //	testPurchase002();  
 
-	run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120059");
+	run("【采购订货-按订货入库】检查备注", "test120051");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();

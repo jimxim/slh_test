@@ -1566,7 +1566,7 @@ function test170084() {
 function test170085() {
     // 设置开单模式为整单折扣模式
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x001", "数量" : "1" } ],
         "onlytest" : "yes", "明细输入框个数" : 8 };
     delay;
     editSalesBillNoColorSize(json);
@@ -1595,7 +1595,7 @@ function test170085() {
 function test170087() {
     // 在颜色尺码模式下，设置开单模式为8童装模式并且批发与零售不分开（本地设置），实行按组开单
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "xxx", "数量" : [ 0, 1 ] } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ],
         "明细输入框个数" : 8 };
     editSalesBillColorSize(json);
 
@@ -1766,7 +1766,7 @@ function test170097() {
     // 款号不合并
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "123",
-        "明细" : [ { "货品" : "xxx", "数量" : "2" }, { "货品" : "xxx", "数量" : "-1" } ],
+        "明细" : [ { "货品" : "nb001", "数量" : "2" }, { "货品" : "nb001", "数量" : "-1" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1816,8 +1816,8 @@ function test170101() {
     var json = {
         "客户" : "ls",
         "店员" : "000",
-        "明细" : [ { "货品" : "8989", "数量" : [ 2 ] },
-                { "货品" : "8989", "数量" : [ 1 ] } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "x001", "数量" : [ 2 ] },
+                { "货品" : "x003", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
     var a = getTextFieldValue(getScrollView(), 3);
@@ -1839,8 +1839,8 @@ function test170102() {
     var json = {
         "客户" : "ls",
         "店员" : "000",
-        "明细" : [ { "货品" : "8989", "数量" : [ 2 ] },
-                { "货品" : "8989", "数量" : [ -1 ] } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "x001", "数量" : [ 2 ] },
+                { "货品" : "x003", "数量" : [ -1 ] } ], "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
     var a = getTextFieldValue(getScrollView(), 3);
@@ -1861,7 +1861,7 @@ function test170103() {
     var json = {
         "客户" : "ls",
         "店员" : "000",
-        "明细" : [ { "货品" : "8989", "数量" : "2" }, { "货品" : "8989", "数量" : "1" } ],
+        "明细" : [ { "货品" : "x001", "数量" : "2" }, { "货品" : "x003", "数量" : "1" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 

@@ -58,19 +58,16 @@ function testPurchase002() {
     // }
     run("颜色尺码模式", "setIgnorecolorsize_0Params");
     run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//
-    // if(setPurchase_type_2Params()){
-    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_1");//
-    // }
-    // if(setPurchase_type_1Params()){
-    run("【采购入库-新增入库】采购员使用不同采购入库模式开单并打印", "test120039_2");//
-    // }
+
     // if(setDwxx_not_allow_edit_0Params()){单据是否允许修改客户或厂商
     run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
     // }
-
+    run("【采购入库-批量入库】批量入库实现退货功能+颜色尺码 (开单尺码头部暂不支持)", "test120041");
+    run("【采购入库-批量入库】批量入库后店员检查", "test120048");
+    run("【采购订货-按订货入库】检查备注", "test120051");
 }
-function testPurchase003() {
+function testPurchase005() {
     // 作废单据换帐套跑相关用例
     run("【采购入库-按批次查】按批次查->作废", "test120003");
     run("【采购入库-按批次查】按批次查->作废操作和查询", "test120044");
@@ -3098,25 +3095,122 @@ function test120018() {
 }
 function test120059() {
     tapMenu("采购入库", "新增入库+");
-    var json = {
-        "明细" : [ { "货品" : "x001", "数量" : [ 5, 6, 7 ] },
-                { "货品" : "nb003", "数量" : [ 1, 2, 3 ] } ],
+    var json = { "客户" : "tbscs", "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ],
         "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 0, "刷卡" : [ 29, "工" ],
         "汇款" : [ 100, "交" ], "备注" : "xx", "未付" : "yes", "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var a = getTextFieldValue(getScrollView(), 4);
+    var a1 = getTextFieldValue(getScrollView(), 12);
+
+    var f0 = new TField("厂商", TF_AC, 0, "tbscs", -1, 0);
+    var f4 = new TField("店员", TF, 4, "007");
+    var fields = [ f0, f4 ];
+    setTFieldsValue(window, fields);
+
+    var b = getTextFieldValue(getScrollView(), 4);
+    var b1 = getTextFieldValue(getScrollView(), 12);
+    var ret = isAnd(isEqual(a, b), isEqual(a1, b1));
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+    tapReturn();
+
+    return ret;
+}
+function test120041() {
+    tapMenu("采购入库", "批量入库+");
+    var f1 = new TField("货品", TF_AC, 1, "3035", -1, 0);
+    var f4 = new TField("数量", TF, 4, "10");
+    var fields3 = [ f1, f4 ];
+    setTFieldsValue(getScrollView(), fields3);
+
+    var a = getTextFieldValue(getScrollView(), 0);
+    var a1 = getTextFieldValue(getScrollView(), 1);
+    var ret = isAnd(isEqual("Vell", a), isEqual("3035,jkk", a1));
+
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购入库", "按批次查");
+    var keys = { "厂商" : "vell" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var b = qr.data[0]["厂商"];
+    var ret1 = isEqual("Vell", b);
+
+    tapFirstText();
+    var c = getTextFieldValue(window, 0);
+    var c1 = getTextFieldValue(getScrollView(), 0);
+    var ret2 = isAnd(isEqual("Vell", c), isEqual("3035,jkk", c1));
+
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test120048() {
+    tapMenu("采购入库", "批量入库+");
+    var f1 = new TField("货品", TF_AC, 1, "4562", -1, 0);
+    var f4 = new TField("数量", TF, 4, "17");
+    var fields3 = [ f1, f4 ];
+    setTFieldsValue(getScrollView(), fields3);
+
+    var a = getTextFieldValue(window, 0);
+
+    var ret = isEqual("", a);
+
+    tapButtonAndAlert(SAVE, OK);
+    delay();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购入库", "按批次查");
+    var keys = { "店员" : "000" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var b = qr.data[0]["店员"];
+    var ret1 = isEqual("总经理", b);
+
+    tapFirstText();
+    var c = getTextFieldValue(window, 4);
+    var c1 = getTextFieldValue(getScrollView(), 0);
+    var c2 = getTextFieldValue(getScrollView(), 3);
+    var ret2 = isAnd(isEqual("000,总经理", c), isEqual("4562,Story", c1), isEqual(
+            "17", c2));
+
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test120051() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
-    
-    var a=getTextFieldValue(getScrollView(), 4);
-    var a1=getTextFieldValue(getScrollView(), 12);
-    
-    var f8 = new TField("货品", TF_AC, 8, "4562", -1, 0);
-    var f11 = new TField("数量", TF, 11, "8");
-    var f16 = new TField("货品", TF_AC, 16, "k300", -1, 0);
-    var f19 = new TField("数量", TF, 19, "7");
-    var fields = [ f8, f11, f16, f19 ];
-    setTFieldsValue(getScrollView(), fields);
 
-    
+    tapMenu("采购入库", "按订货入库");
+    query();
 
+    var qr = getQR();
+    var bz = qr.data[0]["备注"];
+    var ret = isEqual("zdbz", bz);
+
+    tapFirstText();
+    var bz1 = getTextFieldValue(window, 9);
+    var ret1 = isEqual("zdbz", bz1);
+
+    saveAndAlertOk();
+    delay();
+    tapReturn();
+
+    return ret && ret1;
 }
 function editPurchaseBatch(o) {
     editPurchaseBatchStaff(o);
