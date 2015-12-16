@@ -5,7 +5,7 @@
 
 
 // 总经理
-function test000() {
+function test000All() {
 	debug = true;
 // var ok = login("000","000000");
 // if( ok ) {
@@ -16,7 +16,7 @@ function test000() {
 // testPurchaseAll();
 //	testPurchase002();  
 
-	run("【系统设置—打印机】保存", "test210007");
+	    run("【系统设置—小票信息】保存", "test210028");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
@@ -31,8 +31,7 @@ function test000() {
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();	 
 // logout();
-// run("test", "testGoodsBrandFields");
-// run("客户新增", "testEditCustomerFields");
+//	    testSystem001();
 }
 
 

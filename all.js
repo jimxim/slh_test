@@ -47,7 +47,7 @@
 
 #import "testcase/statisticPicture/statisticPictureFields.js"
 
-#import "testcase/system/param.js"
+#import "testcase/system/system.js"
 #import "testcase/system/systemFields.js"
 
 #import "testcase/wangLai/customer.js"
