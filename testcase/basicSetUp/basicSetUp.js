@@ -33,8 +33,8 @@ function testBasicSetUpAll() {
     run("1010pp", "setGoodsBrand001");
     run("Adidas", "setGoodsBrand002");
 
-    run("特步", "setGoodsBrand003");
-    run("新百伦", "setGoodsBrand004");
+    run("Ck公司", "setGoodsBrand003");
+    run("0309pp", "setGoodsBrand004");
     // 品牌折扣
     run("1010pp折扣", "setGoodsBrandDiscount001");
     // 物流商
@@ -446,13 +446,13 @@ function setGoodsBrand002() {
     return ret;
 }
 function setGoodsBrand003() {
-    var keys = { "名称" : "特步" };
-    var ret = basicSetUpByBrand("特步", keys);
+    var keys = { "名称" : "Ck公司" };
+    var ret = basicSetUpByBrand("Ck公司", keys);
     return ret;
 }
 function setGoodsBrand004() {
-    var keys = { "名称" : "新百伦" };
-    var ret = basicSetUpByBrand("新百伦", keys);
+    var keys = { "名称" : "0309pp" };
+    var ret = basicSetUpByBrand("0309pp", keys);
     return ret;
 }
 
@@ -538,7 +538,8 @@ function setLogistics004() {
 }
 
 /**
- * 新增/修改货品 day2 上架日期
+ * 新增/修改货品 
+ * @day2 上架日期
  * @color "yes":颜色尺码模式
  */
 function editGoodsBasicSetUp(code, name, keys, day2, color) {
@@ -647,7 +648,7 @@ function setGoods008() {
 }
 
 function setGoods009() {
-    var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "特步", "颜色" : "0,1,",
+    var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "Ck公司", "颜色" : "0,1,",
         "尺码" : "3,4,5,", "吊牌价" : "500", "进货价" : "150", "零批价" : "490",
         "打包价" : "440", "大客户价" : "390", "Vip价格" : "190", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "夹克", "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层",
@@ -656,7 +657,7 @@ function setGoods009() {
     return ret;
 }
 function setGoods010() {
-    var keys = { "款号" : "x003", "名称" : "特步登山服", "品牌" : "特步", "颜色" : "0,1,2",
+    var keys = { "款号" : "x003", "名称" : "特步登山服", "品牌" : "Ck公司", "颜色" : "0,1,2",
         "尺码" : "3,4,5", "吊牌价" : "0", "进货价" : "100", "零批价" : "390",
         "打包价" : "370", "大客户价" : "350", "Vip价格" : "190", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "登山服", "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层",
@@ -665,7 +666,7 @@ function setGoods010() {
     return ret;
 }
 function setGoods011() {
-    var keys = { "款号" : "nb001", "名称" : "新百伦运动鞋", "品牌" : "新百伦",
+    var keys = { "款号" : "nb001", "名称" : "新百伦运动鞋", "品牌" : "0309pp",
         "颜色" : "0,1,2,3,", "尺码" : "6,7,8,9", "吊牌价" : "400", "进货价" : "100",
         "零批价" : "390", "打包价" : "370", "大客户价" : "350", "Vip价格" : "190",
         "产品折扣" : "0.8", "季节" : "春季", "类别" : "跑步鞋", "厂商" : "新百伦生产商",
@@ -674,7 +675,7 @@ function setGoods011() {
     return ret;
 }
 function setGoods012() {
-    var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "新百伦", "颜色" : "0,1,2",
+    var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "0309pp", "颜色" : "0,1,2",
         "尺码" : "1,3,4", "吊牌价" : "400", "进货价" : "120", "零批价" : "430",
         "打包价" : "390", "大客户价" : "350", "Vip价格" : "190", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "围巾", "厂商" : "新百伦生产商", "计量单位" : "件", "仓位" : "A座六层",

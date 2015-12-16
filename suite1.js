@@ -7,23 +7,20 @@
 function test000All() {
 	debug = true;
 
- run("text", "test110043");
-// run("text", "test100010_100011_100013");
+//    run("test", "onlyTest");
+ run("test", "test1100015");
+// run("test", "test130017");
 
  
 }
 
 function onlyTest(){
-    clearTFieldsByIndex(window, 1);
+   var keys={"品牌":"特步"};
+   addGoods(keys);
+   debugElementTree(window);
 }
 
-/**
- * 参数 setGoods001Params 
- * 准备数据 test000Goods001Prepare 
- * 该参数下可运行用例 test000Goods001
- * test000Customer001 test000Purchase001 test000PurchaseOrder001
- * test000ShopOut001 test200ShopIn001 test000SalesOrder001
- */
+//
 function setGoods001Params(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -73,6 +70,15 @@ function test000Goods001Else() {
   }
 }
 
+//中洲店总经理登陆，为常青店准备数据
+function test000Customer001Prepare(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testCustomer001Prepare();
+       logout();
+    }
+  }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Customer001() {

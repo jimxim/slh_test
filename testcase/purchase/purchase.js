@@ -46,6 +46,7 @@ function testPurchase002() {
     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
     run("【采购入库-按订货入库】修改供应商名称", "test120028");
+    run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
     run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");
     run("【采购入库】新增入库单修改保存", "test120033");
     run("【采购入库】客户或供应商信息不允许修改", "test120034");
@@ -2143,53 +2144,12 @@ function test120028() {
 
 }
 
-function test120029() {
+function test120029(){
     tapMenu("采购入库", "厂商账款", "厂商总账");
-    var keys = { "厂商" : "vell" }
-    var fields = purchaseShopAccountFields(keys);
-    query(fields);
-    var qr = getQR();
-    var counts = qr.data[0]["余额"];
-
-    var ret = isAnd(isEqual("Vell", a1));
-
-    tapFirstText();
-    qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-    for (var i = 0; i <= 13; i++) {
-        var ret1 = isEqual(Number(qr.data[i + 1]["累计未结"])
-                + Number(qr.data[i]["付款"]) - Number(qr.data[i]["金额"])
-                + Number(qr.data[i]["异地核销"]), Number(qr.data[i]["累计未结"]));
-    }
-    var ret2 = isEqual(Number(qr.data[0]["累计未结"]), a2);
-
-    delay();
-    tapNaviLeftButton();
-    query();
-
-    // var keys = [ "厂商" ];
-    // var fields = purchaseProviderAccountFields(keys);
-    // changeTFieldValue(fields["厂商"], "rt");
-    // query(fields);
-    // var qr = getQR();
-    // var a = qr.data[0]["余额"];
-    //
-    // tapFirstText();
-    // qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-    // var sum = 0;
-    // var totalPageNo = qr.totalPageNo;
-    // for (var j = 1; j <= totalPageNo; j++) {
-    // for (var i = 0; i < qr.curPageTotal; i++) {
-    // sum += Number(qr.data[i][" 金额"]);
-    // }
-    // if (j < totalPageNo) {
-    // scrollNextPage();
-    // qr = getQResult2(getScrollView(-1, 0), "门店", "异地核销");
-    // }
-    // }
-    // var b = qr.data[0]["累计未结"];
-
-    return ret && ret1 && ret2;
+    var ret=test110043Check();
+    return ret;
 }
+
 function test120029_1() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
