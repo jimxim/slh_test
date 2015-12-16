@@ -16,7 +16,8 @@ function test000All() {
 // testPurchaseAll();
 //	testPurchase002();  
 
-	    run("【系统设置—小票信息】保存", "test210028");
+	    run("【系统设置—小票信息】保存", "test210041");
+//	    run("【系统设置—小票信息】保存", "test210031");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();

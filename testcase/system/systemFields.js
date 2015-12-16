@@ -254,7 +254,7 @@ function EditSystemStaffField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", BTN_SC, 0, "东灵店");
+        f = new TField("门店", BTN_SC, 0, "常青店");
         if (show) {
             f.type = TF;
             f.index = 2;

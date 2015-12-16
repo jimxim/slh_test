@@ -13,6 +13,13 @@ function testSystem001() {
     run("【系统设置—人员列表】清除", "test210025");
     run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");
     run("【系统设置—人员列表】详细-启用/停用", "test210028_210029");
+    run("【系统设置—人员列表】详细-密码重置", "test210030");
+    run("【系统设置—人员列表】详细-返回", "test210031");
+    run("【系统设置—新增人员】新增人员", "test210032_120033");
+    run("【系统设置—新增人员】新增工号为0的员工", "test210034");
+    run("【系统设置—改密码】修改", "test210035");
+    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
+    run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     
 }
 
@@ -226,26 +233,273 @@ function test210028_210029() {
     query(fields);
 
     tapFirstText();
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual("财务员",
-            getTextFieldValue(getScrollView(), 1)));
-    
+    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "财务员", getTextFieldValue(getScrollView(), 1)));
+
     tapButtonAndAlert("启 用", CANCEL);
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual("财务员",
-            getTextFieldValue(getScrollView(), 1)));
-    
+    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "财务员", getTextFieldValue(getScrollView(), 1)));
+
     tapButtonAndAlert("启 用", OK);
-    
+
     keys = { "是否停用" : "否" };
     fields = querySystemStaffFields(keys);
     query(fields);
     tapFirstText();
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual("财务员",
-            getTextFieldValue(getScrollView(), 1))); 
-    
+    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "财务员", getTextFieldValue(getScrollView(), 1)));
+
     tapReturn();
 
     return ret;
 }
 function test210030() {
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "001", "是否停用" : "否" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapButtonAndAlert("密码重置", OK);
+
+    var ret = false;
+    if (isIn(alertMsg, "密码会重置为000000")) {
+        ret = true;
+    }
+
+    return ret;
+}
+function test210031() {
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "001", "是否停用" : "否" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    tapReturn();
+
+    query();
+    var qr = getQR();
+    var total = qr.total;
+
+    var ret = isAnd(isEqual("52", total), isEqual("1", qr.data[0]["序号"]));
+
+    return ret;
+}
+function test210032_210033() {
+    tapMenu("系统设置", "新增人员");
+    var f0 = new TField("工号", TF, 0, "001");
+    var f1 = new TField("姓名", TF, 1, "财务员");
+    var f2 = new TField("门店", BTN_SC, 0, "常青店");
+    var f3 = new TField("岗位", BTN_SC, 1, "财务员");
+    var fields = [ f0, f1, f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "工号已存在")) {
+        ret = true;
+    }
+
+    var r = getTimestamp(4);
+    f0 = new TField("工号", TF, 0, "y" + r);
+    f1 = new TField("姓名", TF, 1, "财务员");
+    f2 = new TField("门店", BTN_SC, 0, "常青店");
+    f3 = new TField("岗位", BTN_SC, 1, "财务员");
+    fields = [ f0, f1, f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "y" + r, "是否停用" : "否" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = qr.data[0]["工号"];
+    var a1 = qr.data[0]["姓名"];
+    var a2 = qr.data[0]["门店"];
+    var a3 = qr.data[0]["岗位"];
+
+    ret = isAnd(isEqual("y" + r, a), isEqual("财务员", a1), isEqual("常青店", a2),
+            isEqual("财务员", a3));
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "y" + r, "是否停用" : "否" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapButtonAndAlert("停 用", OK);
+
+    dalay();
+    query(fields);
+
+    return ret;
+}
+function test210034() {
+    tapMenu("系统设置", "新增人员");
+    var f0 = new TField("工号", TF, 0, "0");
+    var f1 = new TField("姓名", TF, 1, "财务员");
+    var f2 = new TField("门店", BTN_SC, 0, "常青店");
+    var f3 = new TField("岗位", BTN_SC, 1, "财务员");
+    var fields = [ f0, f1, f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "工号不能为0")) {
+        ret = true;
+    }
+
+    tapReturn();
+
+    return ret;
+}
+function test210035() {
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "111");
+    var f2 = new TField("确认密码", TF_S, 2, "111");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "密码必须为6位")) {
+        ret = true;
+    }
+
+    tapButton(window, "关 闭");
+    delay();
+
+    tapMenu("系统设置", "改密码");
+    f0 = new TField("原密码", TF_S, 0, "000000");
+    f1 = new TField("新密码", TF_S, 1, "");
+    f2 = new TField("确认密码", TF_S, 2, "");
+    fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    if (isIn(alertMsg, "密码必须为6位")) {
+        ret = true;
+    }
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000001");
+    var f1 = new TField("新密码", TF_S, 1, "111111");
+    var f2 = new TField("确认密码", TF_S, 2, "111111");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    if (isIn(alertMsg, "请确认原密码是否正确")) {
+        ret = true;
+    }
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "111111");
+    var f2 = new TField("确认密码", TF_S, 2, "111112");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    if (isIn(alertMsg, "再次输入都密码不同")) {
+        ret = true;
+    }
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "222222");
+    var f2 = new TField("确认密码", TF_S, 2, "222222");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    if (isIn(alertMsg, "操作成功")) {
+        ret = true;
+    }
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapButtonAndAlert("密码重置", OK);
+
+    return ret;
+}
+function test210039() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "店员" : "000",
+        "明细" : [ { "货品" : "8989", "数量" : "1", "备注" : "mxbz" },
+                { "货品" : "3035", "数量" : "1", "备注" : "mxbz1" } ], "备注" : "zdbz" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "日期从" : getToday(), "日期到" : getToday() };
+    var fields = salesQueryBatchFields(keys);
+
+    tapFirstText();
+    var ret = isAnd(isEqual("",getTextFieldValue(getScrollView(), 1)),
+            isEqual("",getTextFieldValue(getScrollView(), 2)),
+            isEqual("",getTextFieldValue(getScrollView(), 9)),
+            isEqual("",getTextFieldValue(getScrollView(), 10)));
     
+    tapButtonAndAlert(RETURN, OK);
+    
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function test210041() {
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "002", "是否停用" : "否" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+    
+    var qr=getQR();
+    var a=qr.data[0]["岗位"];
+    var a1=qr.data[1]["岗位"];
+    
+    var ret=false;
+    if (a!=a1){
+        ret=true;
+    }
+    
+    return ret;
 }
