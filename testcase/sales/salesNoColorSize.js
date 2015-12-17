@@ -1616,7 +1616,7 @@ function test170090() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "代收" : { "物流商" : "yt", "运单号" : "1234" } };
-    delay;
+    delay();
     editSalesBillNoColorSize(json);
 
     var money = json["代收"]["代收金额"];

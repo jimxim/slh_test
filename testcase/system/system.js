@@ -20,6 +20,7 @@ function testSystem001() {
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
+    run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     
 }
 
@@ -500,6 +501,32 @@ function test210041() {
     if (a!=a1){
         ret=true;
     }
+    
+    return ret;
+}
+function test210045() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否验证一定要选择物流商" };
+    o = { "新值" : "1", "数值" : [ "默认验证", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],"onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    
+    tapStaticText(window, "代收");
+    delay();
+    
+    tapNaviRightButton();
+    tapPrompt();
+
+    var ret=false;
+    if (isIn(alertMsg, "必须选择物流商")) {
+        ret = true;
+    }
+    
+    tapNaviLeftButton();
+    tapButtonAndAlert(RETURN, OK);
     
     return ret;
 }
