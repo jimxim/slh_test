@@ -29,7 +29,7 @@ function pictureShopField(key, show) {
 	return f;
 }
 
-// 按门店
+// 按门店汇总
 function testPictureShopSummaryFields() {
 	var keys = [ "day1", "day2" ];
 	var fields = pictureShopSummaryFields(keys);
@@ -127,7 +127,7 @@ function pictureCodeField(key, show) {
 		break;
 	case "day2":
 	case "日期到":
-		f = new TField("到", TF_DT, 2, getToday());
+		f = new TField("日期到", TF_DT, 2, getToday());
 		break;
 	case "name":
 	case "款号名称":
@@ -160,6 +160,10 @@ function pictureCodeField(key, show) {
 	case "季节":
 		f = new TField("季节", TF_SC, 9, "秋季");
 		break;
+	case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 10, "1010pp");
+        break;
 	default:
 		logWarn("未知key＝" + key);
 	}
@@ -284,6 +288,31 @@ function pictureTrendField(key, show) {
 		logWarn("未知key＝" + key);
 	}
 	return f;
+}
+
+//按欠款
+function testPictureOutstandingFields() {
+    var keys = ["shop" ];
+    var fields = pictureOutstandingFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = pictureOutstandingFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function pictureOutstandingFields(keys, show) {
+    return getTFields("pictureOutstandingField", keys, show);
+}
+function pictureOutstandingField(key, show) {
+    var f;
+    switch (key) {
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 0, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
 }
 
 // 按单笔
