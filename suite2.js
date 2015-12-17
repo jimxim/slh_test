@@ -28,7 +28,10 @@ function test000All() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-	    testStatisticPictureAll();
+//	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+//	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170044");
+	   testSalesColorSizeAll();
+//	    testStatisticPictureAll();
 //	     testSystem001();
 // logout();
 

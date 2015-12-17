@@ -1,8 +1,7 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
     // if(setIgnorecolorsize_1Params()){
-    // run("【销售开单－开单】客户输入检查【字母】", "test170040");
-    // run("【销售开单－开单】客户输入检查【汉字】", "test170041");
+    // run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
     // run("【销售开单－开单】客户新增按钮", "test170043");
     // run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
     // run("【销售开单－开单】客户输入框清除功能", "test170045");
@@ -612,26 +611,27 @@ function setSales_diff_client_byinvid_1Params() {
 }
 function test170040_170041() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "ls" };
-    var fields = editSalesBillFields(keys);
-    // setTFieldsValue(window, fields);
-
-    var ret1 = false;
-    var f = new TField("客户", TF_AC, 0, "ls", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        // debugElementTree(cell);
-        var v = cell.name();
-        if (isEqual("李四  52148899635963", v)) {
-            var ret = true;
-            break;
-        }
-    }
+//    var keys = { "客户" : "ls" };
+//    var fields = editSalesBillFields(keys);
+//    // setTFieldsValue(window, fields);
+//
+//    var ret1 = false;
+//    var f = new TField("客户", TF_AC, 0, "ls", -1);
+//    var cells = getTableViewCells(window, f);
+//    for (var i = 0; i < cells.length; i++) {
+//        var cell = cells[i];
+//        // debugElementTree(cell);
+//        var v = cell.name();
+//        if (isEqual("李四  52148899635963", v)) {
+//            var ret = true;
+//            break;
+//        }
+//    }
 
     tapMenu("销售开单", "开  单+");
     var ret1 = false;
-    var f = new TField("客户", TF, 0, "李", -1);
+    var f = new TField("客户", TF_AC, 0, "李", -1);
+    f.p3 = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -643,17 +643,17 @@ function test170040_170041() {
         }
     }
 
-    tapMenu("销售开单", "开  单+");
-    var keys = [ "客户" ];
-    var fields = editSalesBillFields(keys);
-    fields["客户"].p3 = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-    setTFieldsValue(window, fields);
-
-    var a = getTextFieldValue(window(), 0);
-    var ret2 = isEqual("李四", a);
-
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    return ret && ret1 && ret2;
+//    tapMenu("销售开单", "开  单+");
+//    var keys = [ "客户" ];
+//    var fields = editSalesBillFields(keys);
+//    fields["客户"].p3 = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+//    setTFieldsValue(window, fields);
+//
+//    var a = getTextFieldValue(window(), 0);
+//    var ret2 = isEqual("李四", a);
+//
+//    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+//    return ret && ret1 && ret2;
 }
 
 function test170043() {

@@ -28,6 +28,7 @@
 
 #import "testcase/sales/sales.js"
 #import "testcase/sales/salesColorSize.js"
+#import "testcase/sales/salesColorSizeHead.js"
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/salesNoColorSize.js"
 #import "testcase/sales/salesNoColorSizeElse.js"
