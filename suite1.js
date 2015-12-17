@@ -7,10 +7,10 @@
 function test000All() {
 	debug = true;
 
-//    run("test", "testCustomer001Prepare");
+    run("test", "test170040_170041");
 // run("test", "test110015");
 // run("test", "setCustomer008");
-	testSASynthesisAll();
+
 //	run(caseName, "test190056");
 //	run(caseName, "test190063");
 
