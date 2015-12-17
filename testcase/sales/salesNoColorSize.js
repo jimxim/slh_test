@@ -610,63 +610,52 @@ function setSales_diff_client_byinvid_1Params() {
     return ret;
 }
 function test170040_170041() {
-    // tapMenu("销售开单", "开 单+");
-    // var keys = { "客户" : "ls" };
-    // var fields = editSalesBillFields(keys);
-    // // setTFieldsValue(window, fields);
-    //
-    // var ret1 = false;
-    // var f = new TField("客户", TF_AC, 0, "ls", -1);
-    // var cells = getTableViewCells(window, f);
-    // for (var i = 0; i < cells.length; i++) {
-    // var cell = cells[i];
-    // // debugElementTree(cell);
-    // var v = cell.name();
-    // if (isEqual("李四 52148899635963", v)) {
-    // var ret = true;
-    // break;
-    // }
-    // }
+    tapMenu("销售开单", "开 单+");
+    var keys = { "客户" : "ls" };
+    var fields = editSalesBillFields(keys);
+    // setTFieldsValue(window, fields);
 
-    tapMenu("销售开单", "开  单+");
     var ret1 = false;
-    var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-    f = new TField("客户", TF_AC, 0, "li", -1, 0, o);
-    var cells = getTableViewCells(window,f,o);
+    var f = new TField("客户", TF_AC, 0, "ls", -1);
+    var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isIn( v,"李四")) {
+        if (isEqual("李四 52148899635963", v)) {
+            var ret = true;
+            break;
+        }
+    }
+
+    tapMenu("销售开单", "开  单+");
+    var ret1 = false;
+    var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+    var f = new TField("客户", TF_AC, 0, "li", -1, 0, o);
+    var cells = getTableViewCells(window, f, o);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        // debugElementTree(cell);
+        var v = cell.name();
+        if (isIn(v, "李四")) {
             ret1 = true;
             break;
         }
     }
     return ret1;
 
-    // tapMenu("销售开单", "开 单+");
-    // var keys = [ "客户" ];
-    // var fields = editSalesBillFields(keys);
-    // fields["客户"].p3 = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-    // setTFieldsValue(window, fields);
-    //
-    // var a = getTextFieldValue(window(), 0);
-    // var ret2 = isEqual("李四", a);
-    //
-    // logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    // return ret && ret1 && ret2;
+//     tapMenu("销售开单", "开 单+");
+//     var keys = [ "客户" ];
+//     var fields = editSalesBillFields(keys);
+//     fields["客户"].p3 = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+//     setTFieldsValue(window, fields);
+//    
+//     var a = getTextFieldValue(window(), 0);
+//     var ret2 = isEqual("李四", a);
+    
+    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
-
-function getTableViewCellsByPinYin(view1, i, o) {
-    var tf = view1.textFields()[i].textFields()[0];
-    setTextFieldValueByPinyin(tf, o);
-
-    var tableViewIndex = getTableViews().length + tableViewIndex;
-    var ret = window.tableViews()[tableViewIndex].cells();
-    logDebug("ret="+ret);
-    return ret;
-}
-
 function test170043() {
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
@@ -3787,7 +3776,7 @@ function test170247() {
     var r1 = getTimestamp(6);
     var g0 = new TField("名称", TF, 0, r);
     var g1 = new TField("手机", TF, 1, r1);
-    var g2 = new TField("店员", TF_AC, 2, "000");
+    var g2 = new TField("店员", TF_AC, 2, "000,",-1,0);
     var g4 = new TField("地址", TF, 4, r);
     var fields = [ g0, g1, g2, g4 ];
     setTFieldsValue(getPopView(), fields);
@@ -3807,7 +3796,7 @@ function test170247() {
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "", a3), isEqual(r, a4));
 
-    tapNaviRightButton();
+    tapButton(window,RETURN);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "1" } ],
@@ -3831,7 +3820,7 @@ function test170248() {
     var r1 = getTimestamp(6);
     var g0 = new TField("名称", TF, 0, r);
     var g1 = new TField("手机", TF, 1, r1);
-    var g2 = new TField("店员", TF_AC, 2, "000");
+    var g2 = new TField("店员", TF_AC, 2, "000,",-1,0);
     var g3 = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
     var g4 = new TField("地址", TF, 4, r);
     var fields = [ g0, g1, g2, g3, g4 ];
@@ -3852,7 +3841,7 @@ function test170248() {
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "零批价", a3), isEqual(r, a4));
 
-    tapNaviRightButton();
+    tapButton(window,RETURN);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "1" } ],

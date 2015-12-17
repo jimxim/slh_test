@@ -30,7 +30,12 @@ function test000All() {
 // testSalesNoColorSizeElse001();
 //	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
 //	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170044");
-	   testSalesColorSizeAll();
+//	testSalesColorSizeAll();
+//	testSalesColorSize001();
+//	testSalesColorSize002();
+
+	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170247");
+//    run("【销售开单－开单】客户新增（适用价格检查）", "testCs170248");
 //	    testStatisticPictureAll();
 //	     testSystem001();
 // logout();
