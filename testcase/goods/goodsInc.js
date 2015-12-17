@@ -12,6 +12,7 @@
 //    var ret = mixObject(oldKeys, newKeys);
 //    return ret;
 //}
+
 /**
  * 获取新增货品界面输入框的值
  * @returns {Array}
@@ -83,6 +84,23 @@ function addGoodsStockAdjustment(r) {
     test100090Field1(r);
     runAndAlert("test100090Field", OK);
     tapNaviLeftButton();
+}
+
+/**
+ * 根据第一个标题，点击静态文本，默认为序号1
+ * @param name 第一个标题的内容
+ * @param view1
+ */
+function tapTextByFirstWithName(name, view1) {
+    if (isUndefined(name)) {
+        name = "1";
+    }
+    if (isUndefined(view1)) {
+        view1 = getScrollView();
+    }
+    var texts = getStaticTexts(view1);
+    var ok = tap(texts.firstWithName(name));
+    delay();
 }
 
 /**

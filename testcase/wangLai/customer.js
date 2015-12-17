@@ -17,23 +17,23 @@ function testCustomer001() {
     run("【往来管理-更多】客户回访", "test110048");
 }
 
-function testCustomer001Prepare(){
-    //厂商总账检查数据正确性
-    //欠款
+function testCustomer001Prepare() {
+    // 厂商总账检查数据正确性
+    // 欠款
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" }],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
-    
-    //余款
+
+    // 余款
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "现金" : "10000" };
     editSalesBillNoColorSize(json);
-    
+
     // 没有结余
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ]};
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
     editSalesBillNoColorSize(json);
 }
 
@@ -48,6 +48,7 @@ function testCustomer001Else() {
     run("【往来管理-新增客户】客户编码", "test110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
+    run("【往来管理-客户账款-客户门店账/客户总账】所有未结", "test110055");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -509,11 +510,12 @@ function test1100015() {
     var qr = getQR();
     var ret1 = isEqualQRData1ByTitle(qr, "名称", "赵本山");
 
-    keys = { "客户" : "sjkh1" }; // 上级客户1
+    keys = { "门店" : "常青店", "客户" : "sjkh1" }; // 上级客户1
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
     qr = getQR();
-    ret1 = ret1 && isEqual(0, qr.totalPageNo);
+    ret1 = ret1 && isEqual("上级客户1", qr.data[0]["名称"])
+            && isEqual(1, qr.curPageTotal);
 
     tapMenu("往来管理", "新增客户+");
     var r = "a" + getTimestamp(6);
@@ -525,18 +527,70 @@ function test1100015() {
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
     qr = getQR();
-    ret1 = ret1 && isEqual(0, qr.curPageTotal);
+    ret1 = ret1 && isEqual(0, qr.totalPageNo) && isEqual(0, qr.total);
 
     logDebug("ret=" + ret + "   ret1=" + ret1);
     return ret && ret1;
 }
 
-function test110055(){
+function test110055() {
+    // 欠款
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
-    
+
+    // 余款
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "现金" : "10000" };
+    editSalesBillNoColorSize(json);
+
+    // 没有结余
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
+    editSalesBillNoColorSize(json);
+
+    var ret = test110055Field("常青店");
+    ret = isAnd(ret, test110055Field("中洲店"));
+    return ret;
+}
+
+function test110055Field(shop) {
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "xw", "门店" : shop };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+    var arr1 = new Array(qr.data[1]["批次"], qr.data[1]["金额"], qr.data[1]["未结"]);
+    var arr2 = new Array(qr.data[2]["批次"], qr.data[2]["金额"], qr.data[2]["未结"]);
+
+    logDebug("arr1=" + arr1);
+    logDebug("arr2=" + arr2);
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    keys = { "客户" : "xw", "门店" : shop };
+    fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+    qr = getQR();
+    tapFirstText();
+    tapNaviButton("所有未结");
+    qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    var ret = true;
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["批次"] == batch) {
+            ret = false;
+            break;
+        }
+    }
+    ret = isAnd(ret, isEqual(arr1[0], qr.data[0]["批次"]), isEqual(arr1[1],
+            qr.data[0]["金额"]), isEqual(arr1[2], qr.data[0]["未结"]), isEqual(
+            arr2[0], qr.data[1]["批次"]), isEqual(arr2[1], qr.data[1]["金额"]),
+            isEqual(arr2[2], qr.data[1]["未结"]));
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    return ret;
 }
 
 function test110017() {

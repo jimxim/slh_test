@@ -2,11 +2,13 @@
 D=`dirname $0`
 
 SUITE=suite1
-#均色均码，省代，开单2
+#主要参数为均色均码，省代，开单2
 js_func="setGoods001Params"
 #基础数据设置
 #js_func="$js_func setBasicSetUpAll"
-#业务数据准备
+#新综合汇总接口
+js_func="$js_func testSASynthesisAll000"
+#查询用例的业务数据准备
 #js_func="$js_func test000Goods001Prepare "
 #翻页，排序，汇总，查询，清除
 #js_func="$js_func test000Goods001 test000Customer001  "

@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
-//    run("test", "onlyTest");
- run("test", "test1100015");
+//    run("test", "testCustomer001Prepare");
+ run("test", "test110055");
 // run("test", "test130017");
 
  
@@ -19,6 +19,7 @@ function onlyTest(){
    addGoods(keys);
    debugElementTree(window);
 }
+
 
 //
 function setGoods001Params(){
@@ -38,6 +39,26 @@ function setBasicSetUpAll(){
         testBasicSetUpAll();
        logout();
     }
+}
+
+//新综合汇总接口
+//可用setGoods001Params
+function testSASynthesisAll000Params(){
+  var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      run("新综合汇总接口参数设置", "setSASynthesisParams");
+     logout();
+  }
+}
+
+function testSASynthesisAll000() {
+  var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testSASynthesisAll();
+     logout();
+  }
 }
 
 // 中洲店总经理登陆，为常青店准备数据
