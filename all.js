@@ -46,6 +46,8 @@
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
 
 #import "testcase/statisticPicture/statisticPictureFields.js"
+#import "testcase/statisticPicture/statisticPicture.js"
+
 
 #import "testcase/system/system.js"
 #import "testcase/system/systemFields.js"

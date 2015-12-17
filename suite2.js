@@ -15,9 +15,6 @@ function test000All() {
 // testGoodsGoodsAll();
 // testPurchaseAll();
 //	testPurchase002();  
-
-	    run("【系统设置—小票信息】保存", "test210045");
-//	    run("【系统设置—小票信息】保存", "test210031");
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
@@ -30,9 +27,11 @@ function test000All() {
 // testCheck001();
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
-// testSalesNoColorSizeElse001();	 
+// testSalesNoColorSizeElse001();
+	    testStatisticPictureAll();
+//	     testSystem001();
 // logout();
-//	    testSystem001();
+
 }
 
 
