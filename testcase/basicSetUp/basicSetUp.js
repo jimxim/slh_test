@@ -48,6 +48,7 @@ function testBasicSetUpAll() {
     run("k300", "setGoods003");
     run("k200", "setGoods004");
     run("8989", "setGoods005");
+    //批量操作测试1，2，3，不要做开单等操作
     run("plczcs1", "setGoods006");
     run("plczcs2", "setGoods007");
     run("plczcs3", "setGoods008");
@@ -542,7 +543,7 @@ function setLogistics004() {
  * @day2 上架日期
  * @color "yes":颜色尺码模式
  */
-function editGoodsBasicSetUp(code, name, keys, day2, color) {
+function editGoodsBasicSetUp(code, name, keys, day, color) {
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : code + name };
     var qFields = queryGoodsFields(qKeys);
@@ -560,16 +561,16 @@ function editGoodsBasicSetUp(code, name, keys, day2, color) {
     var fields = editGoodsFields(keys, false, colorSizeStartIndex, 0);
     if (qr.total == "1") {
         tapFirstText();
-        if (isDefined(day2)) {
-            changeMarketTime(day2);
+        if (isDefined(day)) {
+            changeMarketTime(day);
         }
         setTFieldsValue(getScrollView(), fields);
         tapButtonAndAlert(EDIT_SAVE);
     }
     if (qr.total == "0") {
         tapMenu("货品管理", "新增货品+");
-        if (isDefined(day2)) {
-            changeMarketTime(day2);
+        if (isDefined(day)) {
+            changeMarketTime(day);
         }
         setTFieldsValue(getScrollView(), fields);
         saveAndAlertOk();
@@ -632,7 +633,7 @@ function setGoods005() {
     return ret;
 }
 function setGoods006() {
-    var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1" };
+    var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1","品牌":"1010pp","吊牌价":"300"};
     var ret = editGoodsBasicSetUp("plczcs1", "批量操作测试1", keys);
     return ret;
 }

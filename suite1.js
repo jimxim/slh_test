@@ -7,11 +7,13 @@
 function test000All() {
 	debug = true;
 
-    run("test", "test170040_170041");
-// run("test", "test110015");
-// run("test", "setCustomer008");
 
-//	run(caseName, "test190056");
+    run("test", "test120011_2");
+
+// run("test", "setCustomer008");
+	
+
+
 //	run(caseName, "test190063");
 
  

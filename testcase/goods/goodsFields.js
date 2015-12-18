@@ -128,6 +128,10 @@ function queryGoodsCodeStockField(key, show) {
     case "到":
         f = new TField("到", TF_DT, 6, "2015-9-11");
         break;
+    case "stop":
+    case "是否停用":
+        f = new TField("是否停用", TF_SC, 7, "否");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -199,25 +203,26 @@ function queryGoodsInOutField(key, show) {
     case "款号名称":
         f = new TField("款号名称", TF, 2, "a");
         break;
+    case "season":
+    case "季节":
+        f = new TField("季节", TF_SC, 3, "春季");
+        break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 3, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 4, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
         break;
     case "market1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 4, "2015-9-11");
+        f = new TField("上架从", TF_DT, 5, "2015-9-11");
         break;
     case "market2":
     case "到":
-        f = new TField("到", TF_DT, 5, "2015-9-11");
+        f = new TField("到", TF_DT, 6, "2015-9-11");
         break;
-    case "season":
-    case "季节":
-        f = new TField("季节", TF_SC, 6, "春季");
-        break;
+
     case "brand":
     case "品牌":
         f = new TField("品牌", TF_AC, 7, "1010pp", -1, 0);
@@ -259,7 +264,7 @@ function queryGoodsField(key, show) {
     case "款号名称":
         f = new TField("款号名称", TF, 1, "a");
         break;
- 
+
     case "market1":
     case "上架从":
         f = new TField("上架从", TF_DT, 2, "2015-9-11");
@@ -849,7 +854,7 @@ function goodsBrandDiscountField(key, show) {
     switch (key) {
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 0, "1010pp",-1,0);
+        f = new TField("品牌", TF_AC, 0, "1010pp", -1, 0);
         if (show) {
             f.value = "1010pp";
         }
@@ -937,7 +942,7 @@ function goodsCustomerField(key, show) {
     return f;
 }
 
-//库存调整单
+// 库存调整单
 function goodsStockAdjustmentFields(keys, show) {
     return getTFields("goodsStockAdjustmentField", keys, show);
 }
@@ -946,7 +951,7 @@ function goodsStockAdjustmentField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0,getToday());
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "日期到":

@@ -12,7 +12,6 @@
 //    var ret = mixObject(oldKeys, newKeys);
 //    return ret;
 //}
-
 /**
  * 获取新增货品界面输入框的值
  * @returns {Array}
@@ -41,8 +40,9 @@ function getEditGoodsValue() {
  * @param keys
  * @param colorSize "yes":颜色尺码 "no":均色均码
  * @param price "yes":默认价格模式 "no":省代价格模式
+ * @param day 上架日期
  */
-function addGoods(keys, colorSize, price) {
+function addGoods(keys, colorSize, price, day) {
     var colorSizeStartIndex, priceStartIndex;
 
     if (isUndefined(colorSize) || colorSize == "no") {
@@ -66,6 +66,9 @@ function addGoods(keys, colorSize, price) {
     }
 
     tapMenu("货品管理", "新增货品+");
+    if (isDefined(day)) {
+        changeMarketTime(day);
+    }
     var fields = editGoodsFields(keys, false, colorSizeStartIndex,
             priceStartIndex);
     setTFieldsValue(getScrollView(), fields);
@@ -125,6 +128,24 @@ function clearTFieldsByIndex(view, index, type) {
     tapKeyboardHide();
 }
 
+/**
+ * 总数据条数和总页码数的验证
+ * @param qr
+ * @returns
+ */
+function totalAndPageCheck(qr) {
+    var total = Number(qr.total);
+    var totalPageNo = Number(qr.totalPageNo);
+    var expected = Math.ceil(total / 15);
+    var ret = isEqual(expected, totalPageNo);
+    goPage(totalPageNo, qr);
+    qr = getQR();
+    var curPageTotal = qr.curPageTotal;
+    ret = isAnd(ret, isEqual(qr.data[curPageTotal]["序号"]), total);
+    goPage(1, qr);
+    return ret;
+}
+
 // 翻页检验，检验序号和title的内容和第2页有没有重复
 // 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
 // 若数据只有1页，删除限制条件的index，重新查询，验证序号
@@ -135,11 +156,13 @@ function clearTFieldsByIndex(view, index, type) {
  * @param index 限制条件的下标
  */
 function goPageCheckField(title, index, type) {
+    // 验证总数据条数和总页码数的准确性
     var qr = getQR();
+
     // 当前页为1
     var ret = isEqual("1", qr.data[0]["序号"]);
-    var i, j;
     var totalPageNo = qr.totalPageNo;
+    var i, j;
     if (totalPageNo > 1) {
         var page1 = new Array();
         for (i = 0; i < qr.curPageTotal; i++) {

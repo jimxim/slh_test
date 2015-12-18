@@ -48,7 +48,7 @@ function testCustomer001Else() {
     run("【往来管理-新增客户】客户编码", "test110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
-    run("【往来管理-客户账款-客户门店账/客户总账】所有未结", "test110055");
+
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -498,11 +498,11 @@ function test110015() {
     query(fields);
     var ret = goPageCheckField("名称", 2, "SC");
 
-    ret = ret && sortByTitle("门店");
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("手机");
-    ret = ret && sortByTitle("余额", IS_NUM);
-    ret = ret && sortByTitle("未拿货天数", IS_NUM);
+//    ret = ret && sortByTitle("门店");
+//    ret = ret && sortByTitle("名称");
+//    ret = ret && sortByTitle("手机");
+//    ret = ret && sortByTitle("余额", IS_NUM);
+//    ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
     keys = { "客户" : "zbs" };
     var fields = queryCustomerShopAccountFields(keys);
@@ -527,7 +527,8 @@ function test110015() {
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
     qr = getQR();
-    ret1 = ret1 && isEqual(0, qr.totalPageNo) && isEqual(0, qr.total);
+    //总页码数为1
+    ret1 = ret1 && isEqual(1, qr.totalPageNo) && isEqual(0, qr.total);
 
     logDebug("ret=" + ret + "   ret1=" + ret1);
     return ret && ret1;
@@ -573,8 +574,8 @@ function test110055Field(shop) {
     var arr1 = new Array(qr.data[1]["批次"], qr.data[1]["金额"], qr.data[1]["未结"]);
     var arr2 = new Array(qr.data[2]["批次"], qr.data[2]["金额"], qr.data[2]["未结"]);
 
-//    logDebug("arr1=" + arr1);
-//    logDebug("arr2=" + arr2);
+    // logDebug("arr1=" + arr1);
+    // logDebug("arr2=" + arr2);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     keys = { "客户" : "xw", "门店" : shop };
@@ -610,12 +611,21 @@ function test110055Field(shop) {
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret1 = true;
     for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["批次"] == batch&&qr.data[i]["门店"]==shop ) {
+        if (qr.data[i]["批次"] == batch && qr.data[i]["门店"] == shop) {
+            ret = false;
+            break;
+        }
+
+        if (qr.data[i]["批次"] == arr1[0] && qr.data[i]["门店"] == shop) {
+            ret = isAnd(ret, isEqual(arr1[1], qr.data[i]["金额"]), isEqual(
+                    arr1[2], qr.data[i]["未结"]), isEqual(getToday("yy"),
+                    qr.data[i]["操作日期"]), isEqual("总经理", qr.data[i]["店员"]))
+        }
+        if (qr.data[i]["批次"] == batch && qr.data[i]["门店"] == shop) {
             ret = false;
             break;
         }
     }
-    
 
     return ret && ret1;
 }

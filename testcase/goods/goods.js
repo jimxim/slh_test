@@ -637,7 +637,7 @@ function test100005_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
     ret = ret && sortByTitle("上架日期", IS_DATE2);
-    ret = ret && sortByTitle("累计进", IS_NUM);
+    ret = ret && sortByTitle("累计进");//提示暂不支持排序
     ret = ret && sortByTitle("在途数", IS_NUM);
 
     query();
@@ -660,7 +660,7 @@ function test100005_1() {
 function test100005_2() {
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
-        "季节" : "春季", "上架从" : "2015-01-01", "到" : getToday() }
+        "季节" : "春季", "上架从" : "2015-01-01", "到" : getToday() ,"是否停用":"否"}
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -668,7 +668,7 @@ function test100005_2() {
             && isEqual(qr.data[0]["库存"], qr.counts["库存"]);
 
     tapButton(window, CLEAR);
-    for (var i = 0; i < 7; i++) {
+    for (var i = 0; i < 8; i++) {
         if (i != 6) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -681,10 +681,12 @@ function test100005_2() {
 
 // 均色均码
 function test100005_3() {
-    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var num = getRandomInt(100);
     var code = "g" + r;
+//    var keys={"款号":code,"名称":"货品"+r, "进货价" : "200", "厂商" : "Vell"};
+//    addGoods(keys,"no","no",getDay(-60));
+    tapMenu("货品管理", "新增货品+");
     // 改成昨天上架
     tapButton(getScrollView(), "减量");
     var day = getTextFieldValue(getScrollView(), 5);// 上架日期
@@ -705,7 +707,7 @@ function test100005_3() {
 
     tapMenu("货品管理", "款号库存");
     keys = { "款号" : code, "门店" : "常青店" };
-    fields = queryGoodsCodeStockFields(keys);
+    var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
@@ -717,6 +719,19 @@ function test100005_3() {
     ret = isAnd(isEqual(a, qr.data[0]["库存"]), isEqual("均色", qr.data[0]["颜色"]),
             isEqual("均码", qr.data[0]["尺码"]));
     tapNaviLeftButton();
+    
+    tapMenu("货品管理", "货品查询");
+    query();
+    tapFirstText();
+    tapButtonAndAlert(STOP);
+    tapPrompt();
+    
+    tapMenu("货品管理", "款号库存");
+    keys = { "款号" : code, "门店" : "常青店","是否停用":"是" };
+    fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    ret=isAnd(ret,isEqual(code,qr.data[0]["款号"]));
 
     return ret;
 }
@@ -972,7 +987,7 @@ function test100008() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 8; i++) {
-        if (i != 5) {
+        if (i != 6) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
@@ -1094,9 +1109,9 @@ function test100010_100011_100013() {
     for (i = 0; i < 10; i++) {
         if (i != 3) {
             // 是否停用无法删除
-            if (i != 7) {
+//            if (i != 7) {
                 ret = ret && isEqual("", getTextFieldValue(window, i));
-            }
+//            }
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         }
@@ -2904,9 +2919,12 @@ function test100090Field1(r) {
     setTFieldsValue(window, [ f ]);
 }
 
-function test100104_100105() {
+function test100104_100105() {  
     tapMenu("货品管理", "当前库存");
-    query();
+    var keys={"款号名称":"g"};
+    var fields=queryGoodsStockFields(keys);
+    query(fields);
+    //库存调整
     var r = getRandomInt(100);
     addGoodsStockAdjustment(r);
 
