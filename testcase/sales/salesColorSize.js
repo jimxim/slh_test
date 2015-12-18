@@ -11,8 +11,8 @@ function testSalesColorSizeAll() {
     run("【销售开单－开单】收款方式汇总检查-单一", "testCs170050");
 //     run("【销售开单－开单】收款方式汇总检查-组合", "testCs170051");//
      run("【销售开单－开单】核销（客户余款）", "testCs170054");//
-//    run("【销售开单－开单】核销（客户欠款）", "testCs170055");//
-//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170057");//
+    run("【销售开单－开单】核销（客户欠款）", "testCs170055");//
+    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170057");//
     
 
 }
@@ -344,10 +344,24 @@ function testCs170051() {
     tapFirstText();
 
     var k1 = getTextFieldValue(window, 2);
-    var f28 = new TField("货品", TF_AC, 28, "x003", -1, 0);
-    var f31 = new TField("数量", TF, 31, "5");
-    var fields = [ f28, f31 ];
-    setTFieldsValue(getScrollView(), fields);
+    
+//    tapStaticText(getScrollView(0),28);
+    var f1= new TField("货品", TF_AC, 0, "x003", -1, 0);
+    
+//    var num = d["数量"];
+//    if (num && num.length > 0) {
+//        fields = [];
+//        for (var ni = 0; ni < num.length; ni++) {
+//            f = new TField("数量", TF, ni, num[ni]);
+//            fields.push(f);
+//        }
+//        var view1 = getScrollView(-1);
+//        setTFieldsValue(view1, fields);
+//        tapButton(window, OK);
+    
+    var f2 = new TField("数量", TF, 1, "5");
+    var fields = [ f1, f2];
+    setTFieldsValue(window, fields);
 
     var ret1 = isAnd(isEqual("2500", getTextFieldValue(window, 2)), isEqual(
             "0", getTextFieldValue(window, 7)), isEqual("0", getTextFieldValue(
@@ -369,7 +383,7 @@ function testCs170054() {
     tapButton(getPop(), "关 闭");
 //
     var json = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 4, 1, 1, 1, 1 ] } ],
-        "现金" : "1000000","goodsFieldIndex" : -4 };
+        "现金" : "1000000","goodsFieldIndex" : -3 };
 //    // : r,
     editSalesBillColorSize(json);
 

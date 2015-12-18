@@ -34,8 +34,11 @@ function test000All() {
 //	testSalesColorSize001();
 //	testSalesColorSize002();
 
-	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170054");
-//    run("【销售开单－开单】客户新增（适用价格检查）", "testCs170248");
+	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170051");
+//    run("【销售开单－开单】客户新增（适用价格检查）", "testCs170254");
+//    run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170055");
+//    run("【销售开单－开单】客户新增（适用价格检查）", "testCs170257");
+    
 //	    testStatisticPictureAll();
 //	     testSystem001();
 // logout();
