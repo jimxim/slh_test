@@ -34,7 +34,7 @@ function test000All() {
 //	testSalesColorSize001();
 //	testSalesColorSize002();
 
-	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170046");
+	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170054");
 //    run("【销售开单－开单】客户新增（适用价格检查）", "testCs170248");
 //	    testStatisticPictureAll();
 //	     testSystem001();

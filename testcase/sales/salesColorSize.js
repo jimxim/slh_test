@@ -9,10 +9,11 @@ function testSalesColorSizeAll() {
     run("【销售开单－开单】刷卡按钮", "testCs170048");
     run("【销售开单－开单】汇款按钮", "testCs170049");
     run("【销售开单－开单】收款方式汇总检查-单一", "testCs170050");
-    // run("【销售开单－开单】收款方式汇总检查-组合", "testCs170051");//
-    // run("【销售开单－开单】核销（客户余款）", "testCs170054");//
+//     run("【销售开单－开单】收款方式汇总检查-组合", "testCs170051");//
+     run("【销售开单－开单】核销（客户余款）", "testCs170054");//
 //    run("【销售开单－开单】核销（客户欠款）", "testCs170055");//
-    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170057");//
+//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170057");//
+    
 
 }
 function testSalesColorSize001() {
@@ -366,14 +367,15 @@ function testCs170054() {
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
-
+//
     var json = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 4, 1, 1, 1, 1 ] } ],
-        "现金" : "1000000" };// "客户"
-    // : r,
+        "现金" : "1000000","goodsFieldIndex" : -4 };
+//    // : r,
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "核销" : [ 5 ], "特殊货品" : { "抹零" : 100 }, "现金" : "0" };
+    var json = { "客户" : "anewkh931105", "核销" : [ 5 ], "特殊货品" : { "抹零" : 100 },
+        "现金" : "0" };
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "按批次查");
