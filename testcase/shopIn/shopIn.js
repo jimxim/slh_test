@@ -133,7 +133,7 @@ function test140001_1() {
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
     var fields = shopInFlitFields(keys);
     query(fields);
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -190,7 +190,7 @@ function test140002_1() {
     setTFieldsValue(window, fields);
     query(fields);
     //点击翻页
-    var ret = goPageCheckField("批次", 3, "SC");
+    var ret = goPageCheck("批次", 3, "SC");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出批次", IS_NUM);
@@ -334,7 +334,7 @@ function test140003_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 5, "SC");
+    var ret = goPageCheck("批次", 5, "SC");
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

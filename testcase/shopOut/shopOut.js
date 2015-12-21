@@ -26,7 +26,7 @@ function test150001_1() {
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2, "SC");
+    var ret = goPageCheck("批次", 2, "SC");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -110,7 +110,7 @@ function test150001_3() {
     var fields = shopOutQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 2, "SC");
+    var ret = goPageCheck("批次", 2, "SC");
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

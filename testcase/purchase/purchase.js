@@ -14,7 +14,7 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按厂商返货", "test120009_1");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010");// (商路花程序改变Bug)
     run("【采购入库-采购汇总】采购汇总->按厂商汇总", "test120010_1");
-    run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011");
+
     run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/汇总", "test120011_1");// 涉及底部数据汇总，有作废会报错
     run("【采购入库-采购汇总】采购汇总->出入库汇总", "test120011_2");
     run("【采购入库-采购汇总】采购汇总->按类别汇总", "test120032_1");
@@ -140,7 +140,7 @@ function test120001_1() {
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     // 翻页
-    ret = goPageCheckField("批次");
+    ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -327,7 +327,7 @@ function test120007() {
     var keys = { "日期从" : getDay(-30) };
     var fields = purchasePriceFields(keys);
     query(fields);
-    var ret = goPageCheckField("日期");
+    var ret = goPageCheck("日期");
 
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -416,7 +416,7 @@ function test120008() {
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
     var fields = purchaseCodeFields(keys);
     query(fields);
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -571,7 +571,7 @@ function test120009() {
     var keys = { "日期从" : getDay(-3), "到" : getToday() };
     var fields = purchaseProviderReturnFields(keys);
     query(fields);
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -795,7 +795,7 @@ function test120010_1() {
 
     query(fields);
     // 翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -808,43 +808,7 @@ function test120010_1() {
 
     return ret && ret1 && ret2;
 }
-function test120011() {
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-        "现金" : "0" };
-    editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "按汇总", "出入库汇总");
-    delay();
-    query();
-
-    var qr = getQR();
-    var a = qr.data[0]["总数"];
-    if (a == 5) {
-        var ret = true;
-    }
-
-    // 无法判定作废单据，汇总信息不能验证
-    qr = getQR();
-    var actual1 = 0, actual2 = 0;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual1 += Number(qr.data[i]["金额"]);
-            actual2 += Number(qr.data[i]["总数"]);
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    logDebug("actual1=" + actual1 + " actual2=" + actual2);
-    var ret1 = false;
-    if (actual1 == qr.counts["金额"] && actual2 == qr.counts["总数"]) {
-        ret1 = true;
-    }
-    return ret;
-}
 function test120011_1() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "2" } ] };
@@ -855,7 +819,7 @@ function test120011_1() {
     var fields = purchaseInOutFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("类型");
@@ -866,9 +830,8 @@ function test120011_1() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
 
-    query(fields);
     tapButton(window, CLEAR);
-    var ret1 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
+   ret = isAnd(ret,isEqual(getToday(), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)));
 
     query(fields);
@@ -1179,7 +1142,7 @@ function test120032_1() {
     query(fields);
 
     // 翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -1827,7 +1790,7 @@ function test120025_1() {
     query(fields);
 
     // 翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("厂商");
@@ -2072,7 +2035,7 @@ function test120029_1() {
     query();
 
     // 翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2198,7 +2161,7 @@ function test120030_1() {
     query(feilds);
 
     // 翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2665,7 +2628,7 @@ function test120047_1() {
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
     //
     // ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("批次", IS_NUM);

@@ -8,21 +8,19 @@ function test000All() {
 	debug = true;
 
 
-    run("test", "test120011_2");
+//    run("test", "test120011_2");
 
 // run("test", "setCustomer008");
 	
 
 
-//	run(caseName, "test190063");
+	run("test", "test100001_1");
 
  
 }
 
 function onlyTest(){
-   var keys={"品牌":"特步"};
-   addGoods(keys);
-   debugElementTree(window);
+   return totalAndPageCheck();
 }
 
 

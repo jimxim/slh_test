@@ -35,7 +35,7 @@ function test210004_210005_210006() {
 function test210007_210008() {
     tapMenu("系统设置", "本地设置");
 
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
 
     return ret;
 }
@@ -79,7 +79,7 @@ function test210012_210013_210014() {
 function test210015_210016() {
     tapMenu("系统设置", "全局设置");
 
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
 
     return ret;
 }

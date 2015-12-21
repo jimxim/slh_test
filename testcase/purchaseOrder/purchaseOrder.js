@@ -70,7 +70,7 @@ function test130001_1() {
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 3);
+    var ret = goPageCheck("批次", 3);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -178,7 +178,7 @@ function test130002_1() {
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("厂商");
@@ -268,7 +268,7 @@ function test130003_1() {
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("厂商");
@@ -352,7 +352,7 @@ function test130004() {
     var keys = { "日期从" : getDay(-60), "到" : getToday() };
     var fields = purchaseOrderCodeFields(keys);
     query(fields);
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -400,7 +400,7 @@ function test130005() {
     var keys = { "日期从" : getDay(-30) };
     var fields = purchaseOrderProviderFields(keys);
     query(fields);
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -494,7 +494,7 @@ function test130006() {
     var keys = { "日期从" : getDay(-60) };
     var fields = purchaseOrderShopFields(keys);
     query(fields);
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);

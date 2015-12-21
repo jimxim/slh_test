@@ -191,7 +191,7 @@ function test170001_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     var ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -745,7 +745,7 @@ function test170028_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -1051,7 +1051,7 @@ function test170255_170256_170257() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -1723,7 +1723,7 @@ function test170280_170281_170282() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -1941,7 +1941,7 @@ function test170285_3() {
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期");
@@ -2549,7 +2549,7 @@ function test170298_1() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheckField("物流核销批次");
+    var ret = goPageCheck("物流核销批次");
 
     ret = ret && sortByTitle("物流商");
     ret = ret && sortByTitle("物流核销批次", IS_NUM);
@@ -2658,7 +2658,7 @@ function test170303_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("序号");
+    var ret = goPageCheck("序号");
 
     var ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -2974,7 +2974,7 @@ function test170307_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("日期");
+    var ret = goPageCheck("日期");
 
     var ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3119,7 +3119,7 @@ function test170310_170311_170312() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     var ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -3225,7 +3225,7 @@ function test170315_170316_170317() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("门店");
+    var ret = goPageCheck("门店");
 
     var ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -3405,7 +3405,7 @@ function test170321_170322_170323() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheckField("门店");
+    var ret = goPageCheck("门店");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("门店");
@@ -3521,7 +3521,7 @@ function test170327_170328_170329_170330() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3675,7 +3675,7 @@ function test170334_70335_170336() {
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3790,7 +3790,7 @@ function test170341_70342_170343_170346() {
     var fields = salesCustomerSupplyFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("款号", 3);
+    var ret = goPageCheck("款号", 3);
 
     query();
     ret = ret && sortByTitle("客户");
@@ -3972,7 +3972,7 @@ function test170358_170359_170360() {
     var fields = salesTypeFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("类别");
+    var ret = goPageCheck("类别");
 
     var ret = true;
     ret = ret && sortByTitle("销售数", IS_NUM);
@@ -4072,7 +4072,7 @@ function test170363_1() {
     var fields = salesProviderFields(keys);
     query(fields);
 
-    var ret = goPageCheckField("厂商");
+    var ret = goPageCheck("厂商");
 
     var ret = true;
     ret = ret && sortByTitle("厂商");

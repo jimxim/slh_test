@@ -133,80 +133,40 @@ function clearTFieldsByIndex(view, index, type) {
  * @param qr
  * @returns
  */
-function totalAndPageCheck(qr) {
-    var total = Number(qr.total);
-    var totalPageNo = Number(qr.totalPageNo);
+function totalAndPageCheck() {
+    var qr = getQR();
+    var total = qr.total;
+    var totalPageNo = qr.totalPageNo;
     var expected = Math.ceil(total / 15);
     var ret = isEqual(expected, totalPageNo);
+
     goPage(totalPageNo, qr);
+    delay();
     qr = getQR();
-    var curPageTotal = qr.curPageTotal;
-    ret = isAnd(ret, isEqual(qr.data[curPageTotal]["序号"]), total);
+    var i = qr.curPageTotal - 1;
+    expected = qr.data[i]["序号"];
+    ret = isAnd(ret, isEqual(expected, total));
+
     goPage(1, qr);
+    delay();
     return ret;
 }
 
-// 翻页检验，检验序号和title的内容和第2页有没有重复
-// 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
-// 若数据只有1页，删除限制条件的index，重新查询，验证序号
 /**
  * 翻页检验，检验序号和title的内容和第2页有没有重复
- * @param title
+ * @param title 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
+ * @param index 限制条件的下标 若数据只有1页，删除限制条件，重新查询，只验证序号
  * @param type 限制条件的文本框类型
- * @param index 限制条件的下标
  */
-function goPageCheckField(title, index, type) {
-    // 验证总数据条数和总页码数的准确性
-    var qr = getQR();
-
+function goPageCheck(title, index, type) {
     // 当前页为1
-    var ret = isEqual("1", qr.data[0]["序号"]);
+    var qr = getQR();
+    var ret = isAnd(totalAndPageCheck(), isEqual("1", qr.data[0]["序号"]));
     var totalPageNo = qr.totalPageNo;
     var i, j;
-    if (totalPageNo > 1) {
-        var page1 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page1[i] = qr.data[i][title];
-        }
 
-        // 翻到第二页
-        goPage(2, qr);
-        qr = getQR();
-        ret = ret && isEqual("16", qr.data[0]["序号"])
-                && isEqual("2", qr.curPageNo);
-        var page2 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page2[i] = qr.data[i][title];
-        }
-
-        for (i = 0; i < page1.length; i++) {
-            for (j = 0; j < page2.length; j++) {
-                if (page1[i] == page2[j]) {
-                    ret = false;
-                    logDebug("page1=" + page1[i] + "   page2=" + page2[j]
-                            + "  存在相同数据");
-                    break;
-                }
-            }
-        }
-
-        // 向上翻页验证
-        scrollPrevPage();
-        delay();
-        qr = getQR();
-        ret = ret && isEqual("1", qr.data[0]["序号"])
-                && isEqual("1", qr.curPageNo);
-
-        // 向下翻页验证
-        scrollNextPage();
-        delay();
-        qr = getQR();
-        ret = ret && isEqual("16", qr.data[0]["序号"])
-                && isEqual("2", qr.curPageNo);
-
-        scrollPrevPage();
-
-    } else {
+    if (totalPageNo <= 1) {
+        title = "序号";
         if (isDefined(index)) {
             tap(window.textFields()[index]);
             if (isDefined(type)) {
@@ -217,38 +177,93 @@ function goPageCheckField(title, index, type) {
                 tap(window.textFields()[index].buttons()["Clear text"]);
             }
         }
-
         tapButton(window, QUERY);
-        // 清除会将日期变成今天
-        // tapButton(window, CLEAR);
+    }
 
-        qr = getQR();
-        totalPageNo = qr.totalPageNo;
-        if (totalPageNo > 1) {
-            goPage(2, qr);
-            qr = getQR();
-            ret = ret && isEqual("16", qr.data[0]["序号"])
-                    && isEqual("2", qr.curPageNo);
-
-            scrollPrevPage();
-            delay();
-            qr = getQR();
-            ret = ret && isEqual("1", qr.data[0]["序号"])
-                    && isEqual("1", qr.curPageNo);
-
-            scrollNextPage();
-            delay();
-            qr = getQR();
-            ret = ret && isEqual("16", qr.data[0]["序号"])
-                    && isEqual("2", qr.curPageNo);
-
-            scrollPrevPage();
-
-        } else {
-            logDebug("数据不足,翻页验证跳过")
+    qr = getQR();
+    if (totalPageNo > 1) {
+        var page1 = new Array();
+        for (i = 0; i < qr.curPageTotal; i++) {
+            page1[i] = qr.data[i][title];
         }
 
+        // 第二页验证
+        goPage(2, qr);
+        qr = getQR();
+        var page2 = new Array();
+        for (i = 0; i < qr.curPageTotal; i++) {
+            page2[i] = qr.data[i][title];
+        }
+        ret = isAnd(ret, isEqual("16", qr.data[0]["序号"]), isEqual("2",
+                qr.curPageNo), isHasSame(page1, page2), scrollPrevPageCheck());
+
+        if (totalPageNo > 2) {
+            // 最后一页验证
+            goPage(totalPageNo, qr);
+            qr = getQR();
+            var curPageNo = qr.curPageNo;
+            var firstSeq = (curPageNo - 1) * 15 + 1;
+            var page3 = new Array();
+            for (i = 0; i < qr.curPageTotal; i++) {
+                page3[i] = qr.data[i][title];
+            }
+            ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
+                    totalPageNo, qr.curPageNo), scrollPrevPageCheck(),
+                    isHasSame(page1, page3), isHasSame(page2, page3));
+        }
+
+        goPage(1, qr);
+    } else {
+        logDebug("数据不足,翻页验证跳过");
     }
+
+    return ret;
+}
+
+/**
+ * 判断2个数组是否有相同数据
+ */
+function isHasSame(arr1, arr2) {
+    var ret = true;
+    for (var i = 0; i < arr1.length; i++) {
+        for (var j = 0; j < arr2.length; j++) {
+            if (arr1[i] == arr2[j]) {
+                ret = false;
+                logDebug("arr1=" + arr1[i] + "   arr2=" + arr2[j] + "  存在相同数据");
+                break;
+            }
+        }
+    }
+    return ret;
+}
+
+/**
+ * 滑动翻页验证 先向上翻，再向下翻
+ */
+function scrollPrevPageCheck() {
+    var qr = getQR();
+    var pageNo = qr.curPageNo;
+
+    // 向上翻页验证
+    scrollPrevPage();
+    delay();
+    qr = getQR();
+    var prevPageNo = qr.curPageNo;
+    var firstSeq = (prevPageNo - 1) * 15 + 1;
+    var ret = isAnd(isEqual(firstSeq, qr.data[0]["序号"]), isEqual(pageNo - 1,
+            qr.curPageNo));
+
+    // 向下翻页验证
+    scrollNextPage();
+    delay();
+    qr = getQR();
+    var curPageNo = qr.curPageNo;
+    firstSeq = (curPageNo - 1) * 15 + 1;
+
+    ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(pageNo,
+            curPageNo));
+
+    // scrollPrevPage();
 
     return ret;
 }

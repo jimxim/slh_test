@@ -502,7 +502,7 @@ function test160005_160015_160016() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次", 6);
+    var ret = goPageCheck("批次", 6);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -861,7 +861,7 @@ function test160023_160024() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -1031,7 +1031,7 @@ function test160033() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1272,7 +1272,7 @@ function test160041() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1329,7 +1329,7 @@ function test160043() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("名称");
+    var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1388,7 +1388,7 @@ function test160045() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("门店");
+    var ret = goPageCheck("门店");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1581,7 +1581,7 @@ function test160071() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("厂商");
+    var ret = goPageCheck("厂商");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("总数", IS_NUM);
@@ -1597,7 +1597,7 @@ function test16_Stockout_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheckField("款号");
+    var ret = goPageCheck("款号");
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
