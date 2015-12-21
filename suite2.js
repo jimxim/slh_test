@@ -14,7 +14,7 @@ function test000All() {
 // testWanLaiCustomerAll();
 // testGoodsGoodsAll();
 // testPurchaseAll();
-//	testPurchase002();  
+// testPurchase002();
 // testPurchase001();
 // testPurchaseOrder001();
 // testPurchaseOrderAll();
@@ -28,26 +28,29 @@ function test000All() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-//	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-//	run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170044");
-//	testSalesColorSizeAll();
-//	testSalesColorSize001();
-//	testSalesColorSize002();
-
-//	  run("【销售开单－开单】收款方式汇总检查-组合", "testCs170051");//
-//    run("【销售开单－开单】核销（客户余款）", "testCs170054");//
-//    run("【销售开单－开单】核销（客户欠款）", "testCs170055");//
-//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170057");//
+// run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+// run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170044");
+// testSalesColorSizeAll();
+// testSalesColorSize001();
+// testSalesColorSize002();
 	
-//	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170063");
-//    run("【销售开单-开单】检查核销", "testCs170065_1");
-//    run("【销售开单-开单】检查核销", "testCs170065_2");
-    run("【销售开单-开单】检查核销", "testCs170065_3");//
-//    run("【销售开单-开单】检查核销", "testCs170065_4");
-//    run("【销售开单-开单】检查核销", "testCs170065_5");
+//	run("【销售开单-开单】检查核销", "testCs170091_170092");
+	
+//	  run("【销售开单－开单】收款方式汇总检查-组合", "testCs170093");
+//    run("【销售开单－开单】核销（客户余款）", "testCs170094");
+//    run("【销售开单－开单】核销（客户欠款）", "testCs170095");//
+    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "testCs170096");
+//	
+//	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170097");
+//	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170101");
+	
+//	run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170102);
+// run("【销售开单-开单】检查核销", "testCs170065_1");
+// run("【销售开单-开单】检查核销", "testCs170065_2");
+// run("【销售开单-开单】检查核销", "testCs170065_3");
     
-//	    testStatisticPictureAll();
-//	     testSystem001();
+// testStatisticPictureAll();
+// testSystem001();
 // logout();
 
 }

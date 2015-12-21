@@ -250,7 +250,7 @@ function setSales_comb_repeated_1Params() {
 }
 function setSales_checkbacknum_1Params() {
     var qo, o, ret = true;
-    qo = { "备注" : "开单保存退货数和上次购买数的对比验证" };
+    qo = { "备注" : "退货数" };
     o = { "新值" : "1", "数值" : [ "1,开启,会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -297,6 +297,10 @@ function setPayMethod_8Params() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "8", "数值" : [ "适用于童装", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "童装模式是否批发零售分开" };
+    o = { "新值" : "0", "数值" : [ "0", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
 
     return ret;
 }
