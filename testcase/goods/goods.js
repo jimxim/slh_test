@@ -324,36 +324,36 @@ function test100001_1() {
     // 翻页
     var ret = goPageCheck("款号", 2, "SC");
 
-//    ret = ret && sortByTitle("厂商");
-//    ret = ret && sortByTitle("仓库/门店");
-//    ret = ret && sortByTitle("款号");
-//    ret = ret && sortByTitle("名称");
-//    ret = ret && sortByTitle("颜色");
-//    ret = ret && sortByTitle("尺码");
-//    ret = ret && sortByTitle("库存", IS_NUM);
-//    ret = ret && sortByTitle("在途数", IS_NUM);
-//    ret = ret && sortByTitle("品牌");
-//    ret = ret && sortByTitle("上架天数", IS_NUM);
-//    ret = ret && sortByTitle("累计销", IS_NUM);
-//    ret = ret && sortByTitle("单价", IS_NUM);
-//    ret = ret && sortByTitle("核算金额", IS_NUM);
-//
-//    query();
-//    var qr = getQR();
-//    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
-//    for (var j = 1; j <= qr.totalPageNo; j++) {
-//        for (var i = 0; i < qr.curPageTotal; i++) {
-//            sum1 += Number(qr.data[i]["库存"]);
-//            sum2 += Number(qr.data[i]["在途数"]);
-//            sum3 += Number(qr.data[i]["核算金额"]);
-//        }
-//        if (j < qr.totalPageNo) {
-//            scrollNextPage();
-//            qr = getQR();
-//        }
-//    }
-//    ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
-//            qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("仓库/门店");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("库存", IS_NUM);
+    ret = ret && sortByTitle("在途数", IS_NUM);
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("上架天数", IS_NUM);
+    ret = ret && sortByTitle("累计销", IS_NUM);
+    ret = ret && sortByTitle("单价", IS_NUM);
+    ret = ret && sortByTitle("核算金额", IS_NUM);
+
+    query();
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["库存"]);
+            sum2 += Number(qr.data[i]["在途数"]);
+            sum3 += Number(qr.data[i]["核算金额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = isAnd(ret, isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
+            qr.counts["在途数"]), isEqual(sum3, qr.counts["核算金额"]));
     return ret;
 }
 

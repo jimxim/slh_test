@@ -169,7 +169,7 @@ function goPageCheck(title, index, type) {
         title = "序号";
         if (isDefined(index)) {
             tap(window.textFields()[index]);
-            if (isDefined(type)) {
+            if (isDefined(type) && type == "SC") {
                 window.popover().dismiss();
             }
             var ok = tap(window.textFields()[index].buttons()["清除文本"]);
@@ -338,3 +338,4 @@ function fuzzyQueryCheckField(index, title, value, title1) {
     tapButton(window, CLEAR);
     return ret1;
 }
+
