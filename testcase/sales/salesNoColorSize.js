@@ -307,7 +307,7 @@ function setPayMethod_8Params() {
 function setSales_use_lastsaleprice_1_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否启用上次价作为本次开单单价" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
@@ -319,7 +319,7 @@ function setSales_use_lastsaleprice_1_1Params() {
 function setSales_use_lastsaleprice_1_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否启用上次价作为本次开单单价" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
@@ -347,10 +347,10 @@ function setSales_invnum_1_1Params() {
 function setSales_invnum_1_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示库存", "in" ] };
+    o = { "新值" : "1", "数值" : [ "显示库存" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单时是否显示所有门店的当前库存" };
+    qo = { "备注" : "所有门店" };
     o = { "新值" : "0", "数值" : [ "默认显示本门店的库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

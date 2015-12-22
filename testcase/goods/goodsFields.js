@@ -101,37 +101,37 @@ function queryGoodsCodeStockField(key, show) {
             f.value = "5880,kha,210元";
         }
         break;
-    case "name":
-    case "款号名称":
-        f = new TField("款号名称", TF, 1, "a");
-        break;
+//    case "name":
+//    case "款号名称":
+//        f = new TField("款号名称", TF, 1, "a");
+//        break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "仓库店");
+        f = new TField("门店", TF_SC, 1, "仓库店");
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 3, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
         break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 4, "春季新");
+        f = new TField("季节", TF_SC, 3, "春季新");
         break;
     case "market1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 5, "2015-9-11");
+        f = new TField("上架从", TF_DT, 4, "2015-9-11");
         break;
     case "market2":
     case "到":
-        f = new TField("到", TF_DT, 6, "2015-9-11");
+        f = new TField("到", TF_DT, 5, "2015-9-11");
         break;
-    case "stop":
-    case "是否停用":
-        f = new TField("是否停用", TF_SC, 7, "否");
-        break;
+//    case "stop":
+//    case "是否停用":
+//        f = new TField("是否停用", TF_SC, 6, "否");
+//        break;
     default:
         logWarn("未知key＝" + key);
     }
