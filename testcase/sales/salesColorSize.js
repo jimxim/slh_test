@@ -53,6 +53,10 @@ function testSalesColorSizeAll() {
     run("【销售开单－开单】异地发货－－配货员可查看内容", "testCs170119");//
     run("【销售开单－开单】开单的同时订货", "testCs170125");// 需重新登录
     run("【销售开单－开单】特殊货品", "testCs170128");// 需重新登录
+    run("【销售开单－开单】新增货品", "testCs170129");
+    run("【销售开单－开单】连续新增货品", "testCs170131");
+    run("【销售开单－开单】新增货品后再输入别的款号", "testCs170132");
+    run("【销售开单－开单】开单保存后再增删款号", "testCs170133");
 
 }
 function testSalesColorSize001() {
@@ -1872,10 +1876,10 @@ function testCs170128() {
     return ret;
 }
 function testCs170129() {
-     var qo, o, ret = true;
-     qo = { "备注" : "是否允许负库存" };
-     o = { "新值" : "0", "数值" : [ "", "in" ] };
-     ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewkhao" + getTimestamp(3);
     var r1 = "1" + getTimestamp(3);
@@ -1894,8 +1898,8 @@ function testCs170129() {
     var f4 = new TField("数量", TF, 10, "2");
     var fields = [ f4 ];
     setTFieldsValue(getScrollView(), fields);
-    
-    tapButtonAndAlert(SAVE,OK);
+
+    tapButtonAndAlert(SAVE, OK);
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -1995,4 +1999,96 @@ function testCs170131() {
     logDebug("款号=" + a + "名称=" + b);
     // logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function testCs170132() {
+    tapMenu("销售开单", "开  单+");
+    // var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
+    // editSalesBillColorSize(json);
+
+    var r = "anewkhao" + getTimestamp(3);
+    var c = "1" + getTimestamp(3);
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g3 = new TField("零批价", TF, 3, c);
+    var g4 = new TField("打包价", TF, 4, c);
+    var fields = [ g0, g1, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    delay();
+
+    var f11 = new TField("数量", TF, 10, "2");
+    var fields = [ f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var json = { "明细" : [ { "货品" : "x003", "数量" : [ 2, 3, 4, 5 ] } ] };
+    editSalesBillDetColorSize(json);
+
+    // var f24 = new TField("货品", TF_AC, 24, "nb001", -1, 0);
+    // var f27 = new TField("数量", TF, 27, "4");
+    // var fields = [ f24, f27 ];
+    // setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapReturn();
+
+//    tapMenu("销售开单", "按批次查");
+//    query();
+//    tapFirstText();
+//
+//    var ret = isAnd(isIn(getTextFieldValue(getScrollView(), 0), r), isEqual(
+//            "均色", getTextFieldValue(getScrollView(), 1)), isEqual("均码",
+//            getTextFieldValue(getScrollView(), 2)));
+//    tapReturn();
+//
+//    tapMenu("货品管理", "货品查询");
+//    var qKeys = [ "款号名称" ];
+//    var qFields = queryGoodsFields(qKeys);
+//    changeTFieldValue(qFields["款号名称"], r);
+//    query(qFields);
+//    var qr = getQR();
+//    var a = qr.data[0]["款号"];
+//    var b = qr.data[0]["名称"];
+//
+//    var ret1 = isAnd(isEqual(r, a), isEqual(r, b));
+//
+//    return ret && ret1;
+}
+function testCs170133() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "店员" : "000",
+        "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] },
+                { "货品" : "x003", "数量" : [ 1, 3 ] },
+                { "货品" : "nb001", "数量" : [ 1, 4 ] },
+                { "货品" : "nb003", "数量" : [ 1, 5 ] } ] };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "ls" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+
+    tapButton(getScrollView(), 3);
+
+    var f21 = new TField("货品", TF_AC, 21, "x001", -1, 0);
+    var f24 = new TField("货品", TF, 24, "4");
+    var fields = [ f21, f24 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapButtonAndAlert(RETURN, OK);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "保存成功"));
+
+    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
+    return ret;
 }
