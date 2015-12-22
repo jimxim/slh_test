@@ -90,6 +90,35 @@ function addGoodsStockAdjustment(r) {
 }
 
 /**
+ * 新增客户
+ * @param keys
+ */
+function addCustomer(keys) {
+    tapMenu("往来管理", "新增客户+");
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+
+    delay();
+    tapReturn();
+}
+
+/**
+ * 新增厂商
+ * @param keys
+ */
+function addProvider(keys) {
+    tapMenu("往来管理", "新增厂商+");
+    var fields = editCustomerProviderFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+
+    delay();
+    tapReturn();
+}
+
+
+/**
  * 根据第一个标题，点击静态文本，默认为序号1
  * @param name 第一个标题的内容
  * @param view1
@@ -104,6 +133,37 @@ function tapTextByFirstWithName(name, view1) {
     var texts = getStaticTexts(view1);
     var ok = tap(texts.firstWithName(name));
     delay();
+}
+/**
+ * 点击标题内容为value的静态文本
+ * @param title
+ * @param value
+ * @param view1
+ */
+function tapTextByTitle(title, value, view1) {
+    if (isUndefined(view1)) {
+        view1 = getScrollView();
+    }
+    var a;
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (qr.data[i][title] == value) {
+                a = i;
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    if (isUndefined(a)) {
+        logDebug("没有找到" + title + "的内容为" + value);
+    }
+
+    var name = qr.data[a]["序号"];
+    tapTextByFirstWithName(name, view1);
 }
 
 /**
@@ -159,6 +219,9 @@ function totalAndPageCheck() {
  * @param type 限制条件的文本框类型
  */
 function goPageCheck(title, index, type) {
+    if (isUndefined(title)) {
+        title = "序号";
+    }
     // 当前页为1
     var qr = getQR();
     var ret = isAnd(totalAndPageCheck(), isEqual("1", qr.data[0]["序号"]));
@@ -178,9 +241,11 @@ function goPageCheck(title, index, type) {
             }
         }
         tapButton(window, QUERY);
+        qr = getQR();
+        totalPageNo = qr.totalPageNo;
     }
 
-    qr = getQR();
+    // qr = getQR();
     if (totalPageNo > 1) {
         var page1 = new Array();
         for (i = 0; i < qr.curPageTotal; i++) {
@@ -222,6 +287,9 @@ function goPageCheck(title, index, type) {
 
 /**
  * 判断2个数组是否有相同数据
+ * @param arr1
+ * @param arr2
+ * @returns {Boolean}
  */
 function isHasSame(arr1, arr2) {
     var ret = true;
@@ -229,9 +297,28 @@ function isHasSame(arr1, arr2) {
         for (var j = 0; j < arr2.length; j++) {
             if (arr1[i] == arr2[j]) {
                 ret = false;
-                logDebug("arr1=" + arr1[i] + "   arr2=" + arr2[j] + "  存在相同数据");
+                logDebug("i=" + i + " arr1=" + arr1[i] + "   j=" + j
+                        + "   arr2=" + arr2[j] + "  存在相同数据");
                 break;
             }
+        }
+    }
+    return ret;
+}
+
+/**
+ * 如果expected里的内容包含查询结果数据中一行数据的内容 ，返回真
+ * @param qr QResult对象
+ * @param expected 期望行数据对象
+ * @returns {Boolean}
+ */
+function isInQRData1Object(qr, expected) {
+    var ret = false;
+    for (var i = 0; i < qr.data.length; i++) {
+        var data1 = qr.data[i];     
+        ret = isEqualObject(data1,expected);     
+        if (ret) {
+            break;
         }
     }
     return ret;

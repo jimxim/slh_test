@@ -10,11 +10,9 @@ function test000All() {
 
 //    run("test", "test120011_2");
 
-// run("test", "setCustomer008");
+ run("test", "test110022");
 	
-
-
-	run("test", "test110015_1");
+//	run("test", "test110021");
 
  
 }

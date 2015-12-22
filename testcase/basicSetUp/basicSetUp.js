@@ -303,11 +303,7 @@ function editProviderBasicSetUp(name, keys) {
         setTFieldsValue(getScrollView(), fields);
         tapButton(window, EDIT_SAVE);
     } else {
-        tapMenu("往来管理", "新增厂商+");
-        fields = editCustomerProviderFields(keys);
-        setTFieldsValue(getScrollView(), fields);
-        tapButton(window, SAVE);
-        tapButton(window, RETURN);
+        addProvider(keys);
     }
 
     query();
