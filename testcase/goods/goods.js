@@ -136,15 +136,6 @@ function testGoods001Else() {
 
 }
 
-function setGoodsColorParams() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
-}
-
 function testGoodsGoodsAll() {
 
     // login004
@@ -237,7 +228,7 @@ function setGoodsColorParams() {
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
+    tapRefresh();
     return ret;
 }
 
@@ -246,7 +237,7 @@ function setGoodsNoColorParams() {
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
+    tapRefresh();
     return ret;
 }
 

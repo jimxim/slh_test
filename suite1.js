@@ -8,17 +8,18 @@ function test000All() {
 	debug = true;
 
 
-//    run("test", "test120011_2");
+    run("test", "test110051");
 
- run("test", "test110022");
+
 	
-//	run("test", "test110021");
+//	run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-   return totalAndPageCheck();
+//    var ret= window.segmentedControls()[2].buttons()["零批价"].isVisible();
+   return window.segmentedControls()[2].buttons()["进货价"].isVisible();
 }
 
 
@@ -121,6 +122,24 @@ function test000Customer001Else() {
      logout();
   }
 }
+//店长
+function test004Customer() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+      test004CustomerAll();
+     logout();
+  }
+}
+//开单员
+function test005Customer() {
+    var p1 = {"角色":"开单员"};
+  var ok = login("005","000000",p1);
+  if( ok ) {
+      test005CustomerAll();
+     logout();
+  }
+}
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Purchase001() {
@@ -132,7 +151,6 @@ function test000Purchase001() {
        logout();
    }
 }
-
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function  test000PurchaseOrder001() {

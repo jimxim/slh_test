@@ -18,7 +18,7 @@ js_func="$js_func testSASynthesisAll000"
 #js_func="$js_func test000Check001"
 #其他用例
 #js_func="$js_func test000Goods001Else "
-#js_func="$js_func test000Customer001Prepare testCustomer001Else"
+#js_func="$js_func test000Customer001Prepare testCustomer001Else test004Customer test005Customer"
 
 
 
