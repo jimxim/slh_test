@@ -1,10 +1,9 @@
 //LuXingXin <52619481 at qq.com> 20150930
 
 function testPurchase001() {
-    // if(setIgnorecolorsize_1Params()){
+
     run("【采购入库】翻页_排序_汇总", "test120001_1");
-    run("【采购入库】条件查询，清除按钮,下拉框", "test120001_2");
-    run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
+    run("【采购入库】条件查询，清除按钮", "test120001_2");
     run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
     run("【采购入库-采购汇总】采购汇总->按金额汇总,条件查询/清除/下拉框", "test120007_1");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,翻页/排序/汇总", "test120008");
@@ -29,10 +28,15 @@ function testPurchase001() {
     run("【采购入库-按明细查】界面功能检查", "test120047_1");
     run("【采购入库-按明细查】界面功能检查", "test120047_2");
     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
-    // }
+
 }
 function testPurchase002() {
-    // if(setIgnorecolorsize_1Params()){
+    run("【采购入库-按批次查】按批次查->作废", "test120003");
+    run("【采购入库-按批次查】按批次查->作废操作和查询", "test120044");
+    run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
+    run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
+    run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
+
     run("【采购入库-新增入库】新增入库+付款", "test120019");
     run("【采购入库-新增入库】新增货品+新增入库+付款", "test120019_1");
     run("【采购入库-新增入库】新增入库+不付款", "test120023");
@@ -55,23 +59,15 @@ function testPurchase002() {
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
     run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
-    // }
+
     run("颜色尺码模式", "setIgnorecolorsize_0Params");
     run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//
 
-    // if(setDwxx_not_allow_edit_0Params()){单据是否允许修改客户或厂商
-    run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
-    run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
-    // }
     run("【采购入库-批量入库】批量入库实现退货功能+颜色尺码 (开单尺码头部暂不支持)", "test120041");
     run("【采购入库-批量入库】批量入库后店员检查", "test120048");
     run("【采购订货-按订货入库】检查备注", "test120051");
 }
-function testPurchase005() {
-    // 作废单据换帐套跑相关用例
-    run("【采购入库-按批次查】按批次查->作废", "test120003");
-    run("【采购入库-按批次查】按批次查->作废操作和查询", "test120044");
-}
+
 function testPurchaseAll() {
     // 清除数据后，要先手动新增入库3035，并未付款
     run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");//      
@@ -122,25 +118,12 @@ function setPurchase_type_1Params() {
 }
 // 翻页_排序_汇总
 function test120001_1() {
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购入库", "按批次查");
-    var keys = { "厂商" : "vell" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
-    var qr = getQR();
-    var a = qr.data[0]["厂商"];
-    var ret = isEqual("Vell", a);
-
     tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     // 翻页
-    ret = goPageCheck("批次");
+    var ret = goPageCheck("批次");
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -172,71 +155,46 @@ function test120001_1() {
             qr = getQR();
         }
     }
-    var ret = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
+    ret = isAnd(ret, isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
             sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["总数"],
             sum4), isEqual(qr.counts["金额"], sum5));
     return ret;
 }
 
-// 条件查询，清除按钮,下拉框
+// 条件查询，清除按钮
 // 查询条件忽略了订货号
 function test120001_2() {
     tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
-    var i;
-    var ret = false;
-    var f = new TField("厂商", TF_AC, 0, "v", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "Tv")) {
-            ret = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    query();
-
-    query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
-    tapMenu("采购订货", "新增订货+");
+    tapMenu("采购订货", "新增入库+");
     var json = { "客户" : "Rt", "店员" : "000",
         "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "按订货入库");
-    query();
-
-    tapFirstText();
-    saveAndAlertOk();
-    delay();
-    tapButton(window, RETURN);
-
     tapMenu("采购入库", "按批次查");
     keys = { "厂商" : "Rt", "日期从" : getToday(), "日期到" : getToday(),
-        "批次从" : batch, "批次到" : batch + 1, "门店" : "常青店", "店员" : "000,总经理",
+        "批次从" : batch, "批次到" : batch + 1, "门店" : "常青店", "店员" : "000",
         "作废挂单" : "正常" }
     fields = purchaseQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
-    var ret1 = isEqual("Rt", qr.data[0]["厂商"]);
+    qr = getQR();
+    var ret = isEqual("Rt", qr.data[0]["厂商"]);
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 9; i++) {
         if (i != 1 && i != 2) {
-            var ret2 = isEqual("", getTextFieldValue(window, i));
+            ret = isAnd(ret, isEqual("", getTextFieldValue(window, i)));
         } else {
-            ret2 = ret2 && isEqual(getToday(), getTextFieldValue(window, i));
+            ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, i)));
         }
     }
 
-    return ret && ret1 && ret2;
+    return ret;
 }
 function test120003() {
     // 做欠款入库单
@@ -250,15 +208,15 @@ function test120003() {
     tapMenu2("厂商账款");
     tapMenu3("厂商总账");
     var keys = { "厂商" : "vell" };
-    var fields1 = queryCustomerProviderAccountFields(keys);
-    query(fields1);
+    var fields = queryCustomerProviderAccountFields(keys);
+    query(fields);
     var qr = getQR();
     var a = Number(qr.data[0]["余额"]);
 
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "3035" };
-    var fields2 = queryGoodsStockFields(keys);
-    query(fields2);
+    fields = queryGoodsStockFields(keys);
+    query(fields);
     qr = getQR();
     var b = Number(qr.counts["库存"]);
 
@@ -271,10 +229,10 @@ function test120003() {
     tapButton(window, RETURN);
 
     keys = { "作废挂单" : "作废" };
-    var fields = purchaseQueryBatchFields(keys);
+    fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    var ret1 = isAnd(isEqual(getToday(""), qr.data[0]["日期"]), isEqual("Vell",
+    var ret = isAnd(isEqual(getToday(""), qr.data[0]["日期"]), isEqual("Vell",
             qr.data[0]["厂商"]), isEqual("10", qr.data[0]["总数"]));
 
     query();
@@ -282,20 +240,27 @@ function test120003() {
     tapMenu("采购入库", "厂商账款", "厂商总账");
     query();
     qr = getQR();
-    var ret = isEqual(a + 1000, qr.data[0]["余额"]);
+    ret = isAnd(ret, isEqual(a + 1000, qr.data[0]["余额"]));
 
     tapMenu("货品管理", "当前库存");
-    query(fields2);
-    qr = getQR();
+    tapButton(window, QUERY);
     ret = ret && isEqual(b - 10, qr.counts["库存"]);
 
-    return ret && ret1;
+    return ret;
 }
 
 function test120005() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
     tapMenu("采购入库", "按批次查");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ);
+    var qr = getQR();
+    var a = qr.data[0]["总数"];
+
+    tapFirstText();
     var r = getTimestamp(6);
     var ret = false;
     var f8 = new TField("货品", TF, 8, "不存在货品" + r);
@@ -317,6 +282,10 @@ function test120005() {
     delay();
     tapPrompt();
     tapButton(window, RETURN);
+
+    query();
+    qr = getQR();
+    ret = isAnd(ret, isEqual(30, sub(qr.data[0]["总数"], a)));
 
     return ret;
 }
@@ -514,9 +483,10 @@ function test120008_1() {
 
     tapMenu("采购入库", "按明细查");
     query();
-    qr=getQR();
-    ret=isAnd(ret,isEqual(qr.data[1]["数量"],num1),isEqual(qr.data[0]["数量"],-retNum1));
-    
+    qr = getQR();
+    ret = isAnd(ret, isEqual(qr.data[1]["数量"], num1), isEqual(qr.data[0]["数量"],
+            -retNum1));
+
     return ret;
 }
 
@@ -831,7 +801,7 @@ function test120011_1() {
     ret = ret && sortByTitle("操作人");
 
     tapButton(window, CLEAR);
-   ret = isAnd(ret,isEqual(getToday(), getTextFieldValue(window, 0)),
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)));
 
     query(fields);
@@ -2553,15 +2523,14 @@ function test120045() {
 
     return ret;
 }
+
 function test120046() {
-    // 设定全局参数: 单据是否允许修改客户或厂商 设为 不允许
     tapMenu("采购入库", "新增入库+");
     var json = { "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     query();
-
     tapFirstText();
 
     var f0 = new TField("厂商", TF_AC, 0, "vell", -1, 0);
@@ -2581,47 +2550,40 @@ function test120046() {
 
     return ret;
 }
+// 单据是否允许修改客户或厂商--不允许
 function test120060() {
-    // 设定全局参数: 单据是否允许修改客户或厂商 设为 不允许
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     query();
-
     tapFirstText();
 
     var f0 = new TField("厂商", TF_AC, 0, "", -1, 0);
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
-
     saveAndAlertOk();
     delay();
     tapPrompt();
-
-    var ret = false;
-    if (isIn(alertMsg, "不允许修改")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "不允许修改");
 
     var f0 = new TField("厂商", TF_AC, 0, "vell", -1, 0);
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
-
     saveAndAlertOk();
     delay();
     tapPrompt();
-
-    var ret1 = false;
-    if (isIn(alertMsg, "不允许修改")) {
-        ret1 = true;
-    }
-
+    ret = isAnd(ret, isIn(alertMsg, "不允许修改"));
     tapReturn();
 
-    return ret && ret1;
+    return ret;
 }
+
+function test120052(){
+    
+}
+
 function test120047_1() {
     tapMenu("采购入库", "按明细查");
     var keys = { "日期从" : getToday(), "到" : getToday() };// getDay(-30)

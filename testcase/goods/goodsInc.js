@@ -135,12 +135,12 @@ function tapTextByFirstWithName(name, view1) {
     delay();
 }
 /**
- * 点击标题内容为value的静态文本
+ * 点击第一个标题内容为value的静态文本
  * @param title
  * @param value
  * @param view1
  */
-function tapTextByTitle(title, value, view1) {
+function tapFirstTextByTitle(title, value, view1) {
     if (isUndefined(view1)) {
         view1 = getScrollView();
     }

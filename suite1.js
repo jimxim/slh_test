@@ -8,7 +8,7 @@ function test000All() {
 	debug = true;
 
 
-    run("test", "test110051");
+    run("test", "test120060");
 
 
 	
@@ -18,8 +18,10 @@ function test000All() {
 }
 
 function onlyTest(){
-//    var ret= window.segmentedControls()[2].buttons()["零批价"].isVisible();
-   return window.segmentedControls()[2].buttons()["进货价"].isVisible();
+    tapFirstText();
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+            "现金" : "0" };
+    editSalesBillNoColorSize(json);
 }
 
 

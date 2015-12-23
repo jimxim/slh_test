@@ -900,14 +900,14 @@ function test110022() {
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
 
-    tapTextByTitle("门店", "常青店");
+    tapFirstTextByTitle("门店", "常青店");
     var qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret = isAnd(!isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3));
     tapNaviLeftButton();
 
     delay();
-    tapTextByTitle("门店", "中洲店");
+    tapFirstTextByTitle("门店", "中洲店");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, b1), isInQRData1Object(qr, b2),
             isInQRData1Object(qr, b3));
@@ -932,7 +932,7 @@ function test110022() {
     fields = queryCustomerAccountFields(keys);
     query(fields);
 
-    tapTextByTitle("名称", "上级客户1");
+    tapFirstTextByTitle("名称", "上级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
@@ -943,7 +943,7 @@ function test110022() {
     tapNaviLeftButton();
 
     delay();
-    tapTextByTitle("名称", "下级客户1");
+    tapFirstTextByTitle("名称", "下级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
