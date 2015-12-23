@@ -38,6 +38,7 @@ function testSalesNoColorSizeAll() {
     // run("【销售开单－开单】待作废", "test170138");
     // run("【销售开单－开单】复制-粘贴", "test170139");
     // run("【销售开单－开单】收款（新增界面）", "test170163");
+    // run("【销售开单－开单】收款（修改界面）", "test170164");
     // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
     // run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     // run("【销售开单－开单】挂单保存", "test170169");
@@ -135,7 +136,7 @@ function testSalesNoColorSizeAll() {
     // if (invalidate_sales_invalidate_0()) {
     // run("【销售开单－开单】二次挂单功能检查", "test170173");
     // }
-    // if(sales_client_score_share_0()){
+    // if(sales_client_score_share_1()){
     // run("【销售开单-开单】积分跨门店共享", "test170183");
     // run("【销售开单-开单】积分是否跨门店共享 －开启", "test170185");
     // }
@@ -297,7 +298,7 @@ function setPayMethod_8Params() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "8", "数值" : [ "适用于童装", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "童装模式是否批发零售分开" };
     o = { "新值" : "0", "数值" : [ "0", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
@@ -909,7 +910,7 @@ function test170051() {
     var ret1 = isAnd(isEqual("2500", getTextFieldValue(window, 2)), isEqual(
             "0", getTextFieldValue(window, 7)), isEqual("0", getTextFieldValue(
             window, 13)));
-//    delay();
+    // delay();
 
     tapButtonAndAlert(RETURN, OK);
 
@@ -2782,7 +2783,7 @@ function test170173() {
     return ret;
 }
 function test170174() {
-    开单模式选择代收模式2
+    //开单模式选择代收模式2
     tapMenu("销售开单", "开 单+");
     var json = {
         "客户" : "ls",
@@ -3241,6 +3242,7 @@ function test170190() {
     tapButton(window, "核销");
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
     tapNaviLeftButton();
+    tapReturn();
 
     var ret = isIn(b, a);
     logDebug(" a=" + a + " b=" + b);
