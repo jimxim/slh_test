@@ -396,7 +396,7 @@ function setPayMethod_15Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -404,7 +404,7 @@ function setPayMethod_15Params() {
 function sales_orderwhensales_1() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否需要颜色尺码" };
@@ -3648,27 +3648,39 @@ function test170245() {
     return ret;
 }
 function test170246() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    tapRefresh();
+    
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
+    query();
     tapFirstText();
 
     tapButtonAndAlert("待作废", OK);
-    tapButtonAndAlert(OK);
-    tapButton(window, RETURN);
+    tapPrompt();
 
-    tapMenu("销售开单", "开  单+");
-    tapMenu("销售开单", "更多.", "收 款");
-    tapButtonAndAlert(OK);
-    delay(3);
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    
+    runAndAlert("test170246Get", OK);
+    tapPrompt();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "存在待作废的销售单"));
+    
+    tapReturn();
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
+}
+function test170246Get() {
+    tapMenu2("更多.");
+    tapMenu3("收 款");
 }
 function test170247() {
     tapMenu("销售开单", "开  单+");
