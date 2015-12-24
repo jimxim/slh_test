@@ -3737,8 +3737,8 @@ function test170248() {
     var a = getTextFieldValue(getScrollView(), 1);
     var a1 = getTextFieldValue(getScrollView(), 3);
     var a2 = getTextFieldValue(getScrollView(), 7);
-    var a3 = getTextFieldValue(getScrollView(), 13);
-    var a4 = getTextFieldValue(getScrollView(), 16);
+    var a3 = getTextFieldValue(getScrollView(), 14);
+    var a4 = getTextFieldValue(getScrollView(), 17);
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "零批价", a3), isEqual(r, a4));
 
