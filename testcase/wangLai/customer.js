@@ -58,7 +58,6 @@ function testCustomer001Else() {
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
-   
 }
 // 店长
 function test004CustomerAll() {
@@ -72,10 +71,10 @@ function test005CustomerAll() {
 }
 
 function testWanLaiCustomerAll() {
-//    run("不体现颜色尺码，相同款号合并显示——是", "setAccountcheck_detail_showstyleParams1");
-//    run("【往来管理-客户账款】客户对账单中不体现颜色尺码,相同款号合并", "test110050");
-//    run("【往来管理-客户账款】按上级单位对账单中不体现颜色尺码,相同款号合并", "test110051");
-//    run("不体现颜色尺码，相同款号合并显示——否", "setAccountcheck_detail_showstyleParams2");
+    // run("不体现颜色尺码，相同款号合并显示——是", "setAccountcheck_detail_showstyleParams1");
+    // run("【往来管理-客户账款】客户对账单中不体现颜色尺码,相同款号合并", "test110050");
+    // run("【往来管理-客户账款】按上级单位对账单中不体现颜色尺码,相同款号合并", "test110051");
+    // run("不体现颜色尺码，相同款号合并显示——否", "setAccountcheck_detail_showstyleParams2");
 }
 
 // 翻页_排序
@@ -895,6 +894,13 @@ function test110022() {
     var d2 = test110022Field(1);
     var d3 = test110022Field(2);
 
+    // 上下级模式
+    // 1.客户门店账：显示上级客户和下级客户。此处上级客户只统计自己的账款，
+    // 不统计下级客户的账款。
+    // 2.按上级单位：只显示上级客户。 此处账款包含上级客户和下级客户的账款
+    // 3.客户总账：显示上级客户和下级客户。此处，上级客户只统计自己在各个门店的账款，
+    // 不统计下级客户的账款。下级客户也只统计自己在各个门店的账款
+
     tapMenu("往来管理", "客户账款", "客户门店账");
     keys = { "客户名称" : "下级客户1" };
     var fields = queryCustomerShopAccountFields(keys);
@@ -911,6 +917,25 @@ function test110022() {
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, b1), isInQRData1Object(qr, b2),
             isInQRData1Object(qr, b3));
+    tapNaviLeftButton();
+
+    keys = { "客户名称" : "上级客户1" };
+    fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+
+    tapFirstTextByTitle("门店", "常青店");
+    qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    ret = isAnd(ret, !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
+            !isInQRData1Object(qr, a3), !isInQRData1Object(qr, c1),
+            isInQRData1Object(qr, c2), isInQRData1Object(qr, c3));
+    tapNaviLeftButton();
+
+    delay();
+    tapFirstTextByTitle("门店", "中洲店");
+    qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    ret = isAnd(ret, !isInQRData1Object(qr, b1), !isInQRData1Object(qr, b2),
+            !isInQRData1Object(qr, b3), !isInQRData1Object(qr, d1),
+            isInQRData1Object(qr, d2), isInQRData1Object(qr, d3));
     tapNaviLeftButton();
 
     tapMenu("往来管理", "客户账款", "按上级单位");
@@ -934,9 +959,9 @@ function test110022() {
 
     tapFirstTextByTitle("名称", "上级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
-    ret = isAnd(ret, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
-            isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
-            isInQRData1Object(qr, b2), isInQRData1Object(qr, b3),
+    ret = isAnd(ret, !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
+            !isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
+            !isInQRData1Object(qr, b2), !isInQRData1Object(qr, b3),
             !isInQRData1Object(qr, c1), isInQRData1Object(qr, c2),
             isInQRData1Object(qr, c3), !isInQRData1Object(qr, d1),
             isInQRData1Object(qr, d2), isInQRData1Object(qr, d3));
@@ -2071,14 +2096,14 @@ function setAccountcheck_detail_showstyleParams2() {
 function test110050() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw",
-        "明细" : [ { "货品" : "x001", "数量" : [ 1, 2,3,4,5,6 ] } ]};
+        "明细" : [ { "货品" : "x001", "数量" : [ 1, 2, 3, 4, 5, 6 ] } ] };
     editSalesBillColorSize(json);
 }
 
 function test110051() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh1",
-        "明细" : [ { "货品" : "x001", "数量" : [ 1, 2,3,4,5,6 ] } ]};
+        "明细" : [ { "货品" : "x001", "数量" : [ 1, 2, 3, 4, 5, 6 ] } ] };
     editSalesBillColorSize(json);
 }
 

@@ -21,6 +21,7 @@
 #import "testcase/menu/menu.js"
 
 #import "testcase/purchase/purchase.js"
+#import "testcase/purchase/purchaseColor.js"
 #import "testcase/purchase/purchaseFields.js"
 
 #import "testcase/purchaseOrder/purchaseOrder.js"

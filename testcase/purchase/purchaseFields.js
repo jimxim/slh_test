@@ -90,14 +90,14 @@ function purchaseQueryParticularField(key, show) {
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 1, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
         break;
     case "name":
     case "款号名称":
-        f = new TField("款号名称", TF, 2, "aaa");
+        f = new TField("款号名称", TF, 1, "aaa");
         break;
     case "day1":
     case "日期从":

@@ -117,7 +117,6 @@ function addProvider(keys) {
     tapReturn();
 }
 
-
 /**
  * 根据第一个标题，点击静态文本，默认为序号1
  * @param name 第一个标题的内容
@@ -146,6 +145,7 @@ function tapFirstTextByTitle(title, value, view1) {
     }
     var a;
     var qr = getQR();
+
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i][title] == value) {
@@ -153,7 +153,7 @@ function tapFirstTextByTitle(title, value, view1) {
                 break;
             }
         }
-        if (j < qr.totalPageNo) {
+        if (isUndefined(a) && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
         }
@@ -315,8 +315,8 @@ function isHasSame(arr1, arr2) {
 function isInQRData1Object(qr, expected) {
     var ret = false;
     for (var i = 0; i < qr.data.length; i++) {
-        var data1 = qr.data[i];     
-        ret = isEqualObject(data1,expected);     
+        var data1 = qr.data[i];
+        ret = isEqualObject(data1, expected);
         if (ret) {
             break;
         }
@@ -425,4 +425,3 @@ function fuzzyQueryCheckField(index, title, value, title1) {
     tapButton(window, CLEAR);
     return ret1;
 }
-

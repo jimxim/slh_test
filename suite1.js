@@ -8,21 +8,33 @@ function test000All() {
 	debug = true;
 
 
-    run("test", "test120060");
+// run("test", "test120007_1");
 
 
 	
-//	run("test", "onlyTest");
+	run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    tapFirstText();
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-            "现金" : "0" };
-    editSalesBillNoColorSize(json);
+    var EDIT_COLOR={
+            "花色":0,
+            "黑色":1,
+            "白色":2,
+            "灰色":3
+      };
+    var a=getTextFieldValue(getScrollView(), 3);
+    var b = a.split(",");
+    var expected=["花色","白色"];
+    for(var j=0;j<b.length;j++) {
+        for(var i=0;i<expected.length;i++){
+            if()
+        }
+    }
+    
 }
+
 
 
 //
@@ -45,8 +57,8 @@ function setBasicSetUpAll(){
     }
 }
 
-//新综合汇总接口
-//可用setGoods001Params
+// 新综合汇总接口
+// 可用setGoods001Params
 function testSASynthesisAll000Params(){
   var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
@@ -95,7 +107,7 @@ function test000Goods001Else() {
   }
 }
 
-//中洲店总经理登陆，为常青店准备数据
+// 中洲店总经理登陆，为常青店准备数据
 function test000Customer001Prepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
@@ -124,7 +136,7 @@ function test000Customer001Else() {
      logout();
   }
 }
-//店长
+// 店长
 function test004Customer() {
     var p1 = {"角色":"店长"};
   var ok = login("004","000000",p1);
@@ -133,7 +145,7 @@ function test004Customer() {
      logout();
   }
 }
-//开单员
+// 开单员
 function test005Customer() {
     var p1 = {"角色":"开单员"};
   var ok = login("005","000000",p1);
@@ -196,7 +208,7 @@ function test000SalesOrder001() {
   }
 }
 
-//销售开单 翻页/排序/汇总/条件查询/清除/下拉框
+// 销售开单 翻页/排序/汇总/条件查询/清除/下拉框
 function test000SalesNoColorSizeElse001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
@@ -207,7 +219,7 @@ function test000SalesNoColorSizeElse001() {
    }
 }
 
-//盘点管理 翻页/排序/汇总/条件查询/清除/下拉框
+// 盘点管理 翻页/排序/汇总/条件查询/清除/下拉框
 function test000Check001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
@@ -219,9 +231,7 @@ function test000Check001() {
 }
 
 /**
- * 参数 setGoods002Params 
- * 准备数据 
- * 用例 test000Goods002
+ * 参数 setGoods002Params 准备数据 用例 test000Goods002
  */
 function setGoods002Params(){
     var p1 = {"角色":"总经理"};
@@ -242,9 +252,7 @@ function test000Goods002() {
 }
 
 /**
- * 参数 setGoods003Params 
- * 准备数据 
- * 用例 test000Goods003
+ * 参数 setGoods003Params 准备数据 用例 test000Goods003
  */
 function setGoods003Params(){
     var p1 = {"角色":"总经理"};
