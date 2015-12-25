@@ -92,7 +92,7 @@ function testSalesColorSizeAll() {
     run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "testCs170242");
     run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "testCs170244");//
     run("【销售开单】开单货品列表是否显示品牌信息", "testCs170245");
-    run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170247");//
+    run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "testCs170248");
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "testCs170251");
 
@@ -119,6 +119,7 @@ function testSalesColorSize001() {
     run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
     run("【销售开单－开单】按门店区分客户--区分", "test170249");
     run("【销售开单－开单】按门店区分客户--不区分", "test170250");
+    run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
 }
 function setIgnorecolorsize_0Params() {
     var qo, o, ret = true;
@@ -1336,9 +1337,7 @@ function testCs170095() {
 }
 function testCs170096() {
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "x001", "数量" : [ 2, -1 ] } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x001", "数量" : [ 2, -1 ] } ] };
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -3354,10 +3353,20 @@ function testCs170247() {
 
     var b = getTextFieldValue(getScrollView(), 4);
     var ret1 = isEqual("490", b);
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
-    logDebug("ret=" + ret + "ret1" + ret1);
-    return ret && ret1;
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "x001", "数量" : [ 2, 1, 2, 3 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var c = getTextFieldValue(getScrollView(), 4);
+    delay();
+    var ret2 = isEqual("490", c);
+    tapReturn();
+
+    logDebug("ret=" + ret + "ret1" + ret1 + "ret2" + ret2);
+    return ret && ret1 && ret2;
 }
 function testCs170248() {
     var i, v;
@@ -3402,8 +3411,19 @@ function testCs170248() {
     var ret1 = isEqual("390", b);
     tapReturn();
 
-    logDebug("ret=" + ret + "ret1" + ret1);
-    return ret && ret1;
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r,
+        "明细" : [ { "货品" : "x003", "数量" : [ 4, 5, 6, 7, 0, 8 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var c = getTextFieldValue(getScrollView(), 4);
+    delay();
+    var ret2 = isEqual("390", c);
+    tapReturn();
+
+    logDebug("ret=" + ret + "ret1" + ret1 + "ret2" + ret2);
+    return ret && ret1 && ret2;
 }
 function testCs170251() {
     tapMenu("销售开单", "开  单+");
