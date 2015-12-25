@@ -14,7 +14,7 @@ function testPurchaseColor001() {
 
 function testPurchaseColor002() {
     run("【采购入库-按批次查】按批次查->作废", "testCS120003");
-   
+
 }
 
 function testCS120001_2() {
@@ -102,4 +102,8 @@ function testCS120003() {
     return ret;
     
 }
+
+
+
+
 

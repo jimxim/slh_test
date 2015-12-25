@@ -8,7 +8,7 @@ function test000All() {
 	debug = true;
 
 
- run("test", "test120011_2");
+ run("test", "test120017");
 	
 //	run("test", "onlyTest");
 
