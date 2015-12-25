@@ -7,7 +7,7 @@ js_func="setGoods001Params"
 #基础数据设置
 #js_func="$js_func setBasicSetUpAll"
 #新综合汇总接口
-js_func="$js_func testSASynthesisAll000"
+#js_func="$js_func testSASynthesisAll000"
 #查询用例的业务数据准备
 #js_func="$js_func test000Goods001Prepare "
 #翻页，排序，汇总，查询，清除
@@ -19,6 +19,7 @@ js_func="$js_func testSASynthesisAll000"
 #其他用例
 #js_func="$js_func test000Goods001Else "
 #js_func="$js_func test000Customer001Prepare testCustomer001Else test004Customer test005Customer"
+#js_func="$js_func test000Purchase002Prepare test000Purchase002 "
 
 
 

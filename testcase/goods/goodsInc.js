@@ -188,6 +188,11 @@ function clearTFieldsByIndex(view, index, type) {
     tapKeyboardHide();
 }
 
+function toDate(day){
+    var day1=day.split("-");
+    return new Date(day1[0],day1[1],day1[2]);
+}
+
 /**
  * 总数据条数和总页码数的验证
  * @param qr

@@ -8,30 +8,15 @@ function test000All() {
 	debug = true;
 
 
-// run("test", "test120007_1");
-
-
+ run("test", "test120011_2");
 	
-	run("test", "onlyTest");
+//	run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    var EDIT_COLOR={
-            "花色":0,
-            "黑色":1,
-            "白色":2,
-            "灰色":3
-      };
-    var a=getTextFieldValue(getScrollView(), 3);
-    var b = a.split(",");
-    var expected=["花色","白色"];
-    for(var j=0;j<b.length;j++) {
-        for(var i=0;i<expected.length;i++){
-            if()
-        }
-    }
+
     
 }
 
@@ -160,8 +145,27 @@ function test000Purchase001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
    if( ok ) {
-        testPurchase001();
-       
+        testPurchase001();      
+       logout();
+   }
+}
+
+//中洲店总经理登陆，为常青店准备数据
+function test000Purchase002Prepare(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testPurchase002Prepare();
+       logout();
+    }
+  }
+
+//
+function test000Purchase002() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+       testPurchase002();    
        logout();
    }
 }
