@@ -61,6 +61,23 @@ function test000SalesNoColorSizeElse001() {
         logout();
     }
 }
+function setSales002Params() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("颜色尺码/开单模式2", "setIgnorecolorsize_0Params");
+        logout();
+    }
+}
+function test000SalesColorSize001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesColorSizeAll();
+        
+        logout();
+    }
+}
 function test000Check001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
