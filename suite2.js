@@ -28,18 +28,14 @@ function test000All() {
 // testSalesNoColorSizeAll();
 // testSalesNoColorSizeElseAll();
 // testSalesNoColorSizeElse001();
-// run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-// run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170044");
 // testSalesColorSizeAll();
 // testSalesColorSize001();
 // testSalesColorSize002();
 	
 // run("【销售开单-开单】检查核销", "testCs170132"); //添加款号 覆盖了,商路花程序Bug
-// run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170097");//验证退货list
 // run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170104");//备注不对
 //	    run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "testCs170242");//
 //	    run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "testCs170244");//
-	    run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170247");//
  
 // testStatisticPictureAll();
 // testSystem001();

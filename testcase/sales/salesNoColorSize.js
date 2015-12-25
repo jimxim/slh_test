@@ -504,7 +504,7 @@ function setCannotmodifyafterprint_0Params() {
 function setCannotmodifyafterprint_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据打印后不允许修改" };
-    o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
@@ -514,7 +514,7 @@ function setCannotmodifyafterprint_1Params() {
 function setCannotmodifyafterprint_2Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据打印后不允许修改" };
-    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ], "授权码" : [] };
+    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
@@ -524,7 +524,7 @@ function setCannotmodifyafterprint_2Params() {
 function setCannotmodifyafterprint_2Params() {
     var qo, o, ret = true;
     qo = { "备注" : "单据打印后不允许修改" };
-    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ], "授权码" : [] };
+    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 非总经理账号登陆
@@ -550,7 +550,7 @@ function setSales_show_printdialog_0Params() {
 function setSales_acstaff_byshop_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
-    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -558,7 +558,7 @@ function setSales_acstaff_byshop_1Params() {
 function setSales_acstaff_byshop_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -566,7 +566,7 @@ function setSales_acstaff_byshop_0Params() {
 function setDres_style_pricemode_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "价格模式" };
-    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -586,7 +586,7 @@ function setDres_style_pricemode_1Params() {
 function setSales_acmat_showbrand_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单货品列表是否销售品牌信息" };
-    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -594,7 +594,7 @@ function setSales_acmat_showbrand_1Params() {
 function setSales_acmat_showbrand_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "开单货品列表是否销售品牌信息" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -602,7 +602,7 @@ function setSales_acmat_showbrand_0Params() {
 function setSales_diff_client_byinvid_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单时是否按门店区分客户" };
-    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ], "授权码" : [] };
+    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -610,7 +610,7 @@ function setSales_diff_client_byinvid_0Params() {
 function setSales_diff_client_byinvid_1Params() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单时是否按门店区分客户" };
-    o = { "新值" : "1", "数值" : [ "只显示本门店客户", "in" ], "授权码" : [] };
+    o = { "新值" : "1", "数值" : [ "只显示本门店客户", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -3704,8 +3704,8 @@ function test170247() {
     var a = getTextFieldValue(getScrollView(), 1);
     var a1 = getTextFieldValue(getScrollView(), 3);
     var a2 = getTextFieldValue(getScrollView(), 7);
-    var a3 = getTextFieldValue(getScrollView(), 13);
-    var a4 = getTextFieldValue(getScrollView(), 16);
+    var a3 = getTextFieldValue(getScrollView(), 14);
+    var a4 = getTextFieldValue(getScrollView(), 17);
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "", a3), isEqual(r, a4));
 

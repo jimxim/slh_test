@@ -129,7 +129,7 @@ function test210018() {
     return ret && ret1;
 }
 function test210020_210021() {
-    runAndAlert("test210020Tap", OK);
+    runAndAlert("test210020Clear", OK);
     delay(5);
     tapPrompt();
 
@@ -140,7 +140,7 @@ function test210020_210021() {
 
     return ret;
 }
-function test210020Tap() {
+function test210020Clear() {
     tapMenu("系统设置", "清理本地");
 }
 function test210022() {
