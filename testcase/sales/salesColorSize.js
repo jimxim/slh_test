@@ -513,6 +513,13 @@ function testCs170051() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     tapReturn();
+    
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    ret = ret
+            && isAnd(isEqual("17780", qr.data[0]["现金"]), isEqual("0",
+                    qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]));
 
     return ret && ret1;
 }

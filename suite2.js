@@ -38,7 +38,7 @@ function test000All() {
 //	    run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "testCs170244");//
 	
 //	run("【销售开单－开单】", "testCs170047");
-	run("【销售开单－开单】", "test170051");
+	run("【销售开单－开单】", "test170054_2");
 //	run("【销售开单－开单】", "testCs170048");
 //	run("【销售开单－开单】", "testCs170050");
 // testStatisticPictureAll();
