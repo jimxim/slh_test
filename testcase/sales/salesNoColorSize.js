@@ -796,50 +796,75 @@ function test170045() {
 }
 function test170046() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    
+    //有欠款的客户
+    var json = {  "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
 
-    var keys = { "客户" : "xjkh" };
+    tapMenu("销售开单", "开  单+");
+    var keys = { "客户" : r };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     var k0 = getTextFieldValue(window, 1);
     if (k0 <= 0) {
         var ret = true;
     }
-    // logDebug("ret" + ret);
-    // return ret;
-
-    tapMenu("销售开单", "开  单+");
-    var json1 = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : 100000000 };
-    editSalesBillNoColorSize(json);
-
-    var keys1 = { "客户" : "xjkh" };
-    var fields1 = editSalesBillFields(keys1);
-    setTFieldsValue(window, fields1);
-    var k1 = getTextFieldValue(window, 1);
-    if (k1 >= 0) {
-        var ret1 = true;
-    }
-    // logDebug("ret1" + ret1);
-    // return ret1;
-
-    tapMenu("销售开单", "开  单+");
-    var json2 = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : 300 };
-    editSalesBillNoColorSize(json);
-
-    var keys2 = { "客户" : "xjkh" };
-    var fields2 = editSalesBillFields(keys2);
-    setTFieldsValue(window, fields2);
-    var k2 = getTextFieldValue(window, 1);
-    if (k2 == 0) {
-        var ret2 = true;
-    }
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    return ret && ret1 && ret2;
-
+    
+//    tapMenu("销售开单", "开  单+");
+//    tapButton(window, "新增+");
+//    var r = "anewkh" + getTimestamp(6);
+//    var g0 = new TField("名称", TF, 0, r);
+//    var fields = [ g0 ];
+//    setTFieldsValue(getPopView(), fields);
+//    tapButton(getPop(), OK);
+//    tapButton(getPop(), "关 闭");
+//    
+//    //有余款的客户
+//    var json = {  "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+//        "现金" : "100000" };
+//    editSalesBillNoColorSize(json);
+//
+//    tapMenu("销售开单", "开  单+");
+//    var keys1 = { "客户" : r };
+//    var fields1 = editSalesBillFields(keys1);
+//    setTFieldsValue(window, fields1);
+//    var k1 = getTextFieldValue(window, 1);
+//    if (k1 >= 0) {
+//        var ret1 = true;
+//    }
+//    
+//    //无欠款无余款
+//    tapMenu("销售开单", "开  单+");
+//    tapButton(window, "新增+");
+//    var r = "anewkh" + getTimestamp(6);
+//    var g0 = new TField("名称", TF, 0, r);
+//    var fields = [ g0 ];
+//    setTFieldsValue(getPopView(), fields);
+//    tapButton(getPop(), OK);
+//    tapButton(getPop(), "关 闭");
+//
+////    tapMenu("销售开单", "开  单+");
+//    var json2 = { "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+//        "现金" : 300 };
+//    editSalesBillNoColorSize(json);
+//    
+//    tapMenu("销售开单", "开  单+");
+//    var keys2 = { "客户" :r };
+//    var fields2 = editSalesBillFields(keys2);
+//    setTFieldsValue(window, fields2);
+//    
+//    var ret2=isEqual("0",getTextFieldValue(window, 1));
+//    
+//    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+//    return ret && ret1 && ret2;
 }
 function test170047() {
     tapMenu("销售开单", "开  单+");
@@ -978,6 +1003,21 @@ function test170052() {
         var v = cell.name();
         if (isEqual("2001, 总经理2001", v)) {
             ret = true;
+            break;
+        }
+    }
+    tapReturn();
+    
+    tapMenu("销售开单", "开  单+");
+    var ret =true ;
+    var f = new TField("店员", TF_AC, 5, "l", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        // debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("李四", v)) {
+            ret = false;
             break;
         }
     }
