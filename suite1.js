@@ -7,8 +7,8 @@
 function test000All() {
 	debug = true;
 
-
- run("test", "test120021");
+	run("test", "test190013");
+// run("test", "test120037");
 	
 //	run("test", "onlyTest");
 
@@ -229,6 +229,17 @@ function test000Check001() {
    var ok = login("000","000000",p1);
    if( ok ) {
        testCheck001();
+       
+       logout();
+   }
+}
+
+//统计分析 
+function test000StatisticAnalysisAll() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+       testStatisticAnalysisAll();
        
        logout();
    }

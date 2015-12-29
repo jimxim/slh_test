@@ -1,40 +1,37 @@
 //LuXingXin <52619481 at qq.com> 20151109
 
 function testStatisticAnalysisAll() {
-    // run("【统计分析—新增收入】新增类别", "test190012");
-    // run("【统计分析—新增收入】保存", "test190013");
-    // run("【统计分析—新增收入】返回", "test190014");
-    // run("【统计分析—新增收入】删除", "test190015");
-    // run("【统计分析—新增支出】新增类别", "test190016");
-    // run("【统计分析—新增支出】保存", "test190017");
-    // run("【统计分析—新增支出】返回", "test190018");
-    // run("【统计分析—新增支出】删除", "test190019");
-
-    // 全局设置单价小数位，精确到元
-    // run("【统计分析-新增收入】金额支持2位小数", "test190020");
-    // run("【统计分析-新增支出】金额支持2位小数", "test190021");
-
-    // run("【统计分析—收支表】", "test190001");
-    // run("【统计分析—收支表】查询/底部数据检查", "test190002_190008");
-    // run("【统计分析—收支表】清除", "test190003");
-    // run("【统计分析—收支表】详细信息", "test190004");
-    // run("【统计分析—收支表】详细信息-返回", "test190006");
-    // run("【统计分析—收支汇总】收入或支出查询", "test190009");
-    // run("【统计分析—收支汇总】进入详细", "test190010");
-    // run("【统计分析—收支汇总】检查底部数据", "test190011");
-    // run("【统计分析—收支流水】查询", "test190022");
-    // run("【统计分析—收支流水】清除", "test190023");
-    // run("【统计分析—收支流水】流水检查/金额正负检查", "test190024_190025");
-    // run("【统计分析—收支流水】底部数据检查", "test190026");
-    // run("【统计分析—收支类别】保存", "test190028");
-    // run("【统计分析—收支类别】返回", "test190029");
+    run("【统计分析—新增收入】新增类别", "test190012");
+    run("【统计分析—新增收入】保存", "test190013");
+    run("【统计分析—新增收入】返回", "test190014");
+    run("【统计分析—新增收入】删除", "test190015");
+    run("【统计分析—新增支出】新增类别", "test190016");
+    run("【统计分析—新增支出】保存", "test190017");
+    run("【统计分析—新增支出】返回", "test190018");
+    run("【统计分析—新增支出】删除", "test190019");
+    run("【统计分析-新增收入】金额支持2位小数", "test190020");
+    run("【统计分析-新增支出】金额支持2位小数", "test190021");
+    run("【统计分析—收支表】", "test190001");
+    run("【统计分析—收支表】查询/底部数据检查", "test190002_190008");
+    run("【统计分析—收支表】清除", "test190003");
+    run("【统计分析—收支表】详细信息", "test190004");
+    run("【统计分析—收支表】详细信息-返回", "test190006");
+    run("【统计分析—收支汇总】收入或支出查询", "test190009");
+    run("【统计分析—收支汇总】进入详细", "test190010");
+    run("【统计分析—收支汇总】检查底部数据", "test190011");
+    run("【统计分析—收支流水】查询", "test190022");
+    run("【统计分析—收支流水】清除", "test190023");
+    run("【统计分析—收支流水】流水检查/金额正负检查", "test190024_190025");
+    run("【统计分析—收支流水】底部数据检查", "test190026");
+    run("【统计分析—收支类别】保存", "test190028");
+    run("【统计分析—收支类别】返回", "test190029");
     // run("【统计分析—综合汇总】排序", "test190031");
     // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     // run("【统计分析—综合汇总】检查底部数据", "test190036");
     // run("【统计分析—综合汇总】清除", "test190032");
 
     // run("【新综合汇总】详细-余款", "test190042");
-    run("【新综合汇总】详细-抵扣", "test190043");
+    // run("【新综合汇总】详细-抵扣", "test190043");
 
     // run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
     // run("【统计分析—汇总表-退货表】排序", "test190069");
@@ -51,15 +48,23 @@ function testStatisticAnalysisAll() {
 }
 
 function test190012() {
-    var r = "收入" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     tapButton(window, "新增类别");
-    var f0 = new TField("数量", TF, 0, r);
-    var fields = [ f0 ];
-    setTFieldsValue(getPopOrView(), fields);
+    test190012Field("订金");
+    tapButton(getPop(), OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "名称重复");
+
+    test190012Field("物业");
+    tapButton(getPop(), OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "名称重复");
+
+    var r = "收入" + getTimestamp(6);
+    test190012Field(r);
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("统计分析", "收支类别");
     var qr = getQR(window, getScrollView(), "序号", 3);
@@ -68,28 +73,56 @@ function test190012() {
     return ret;
 }
 
+function test190012Field(r) {
+    var f0 = new TField("数量", TF, 0, r);
+    var fields = [ f0 ];
+    setTFieldsValue(getPopOrView(), fields);
+}
+
 function test190013() {
     tapMenu("统计分析", "收支汇总");
-    var key = { "日期从" : "2015-11-09" }
+    var key = { "日期从" : getDay(-30), "收支类别" : "收入" };
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
     var qr = getQR();
     var counts = Number(qr.counts["金额"]);
 
-    var r = getTimestamp(6);// 不输入备注会提示提交重复数据
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
     tapMenu("统计分析", "新增收入");
-    var json = { "账户" : "现",
-        "明细" : [ { "收入类别" : "订金", "金额" : "888", "备注" : r } ] };
+    var json = { "账户" : "现","收支备注":r, "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
     qr = getQR();
-    var ret = isEqual("现", qr.data[0]["简称"])
-            && isEqual("888", qr.data[0]["金额"]);
+    var batch = qr.data[0]["批次"];
+    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+        "金额" : rm, "备注" : r, "操作人" : "总经理" };
+    var ret = isEqualQRData1Object(qr, expected);
 
     tapMenu("统计分析", "收支汇总");
+    tapButton(window, QUERY);
     qr = getQR(window, getScrollView(), "序号", 3);
-    ret = ret && isEqual(counts + 888, qr.counts["金额"]);
+    ret = isAnd(ret, isEqual(counts + rm, qr.counts["金额"]));
+
+    tapFirstTextByTitle("收支类别", "订金");
+    qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
+    expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : rm,
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    tapNaviLeftButton();
+
+//    tapMenu("统计分析", "综合汇总");
+//    qr = getQRverify(getStaticTexts(getScrollView(-1)), "名称", 5);
+    
+  
+
+    tapMenu("统计分析", "收支流水");
+    query();
+    qr=getQR();
+    expected = { "批次" : batch, "类型" : "收入单", "账户名称" : "东灵测试-现金账户", "金额" : rm,
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     return ret;
 }
@@ -136,7 +169,7 @@ function test190016() {
     setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("统计分析", "收支类别");
     var qr = getQR(window, getScrollView(), "序号", 3);

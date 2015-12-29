@@ -45,6 +45,10 @@ function goodsParams001() {
     qo = { "备注" : "单据是否允许修改客户或厂商" };
     o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -574,17 +578,17 @@ function testGoods002Field(n1, n2) {
  */
 function test10_fuzzyQueryAndDropDownListCheck() {
     tapMenu("货品管理", "当前库存");
-    var ret = isAnd(dropDownListCheckField(0, "456",
+    var ret = isAnd(dropDownListCheck(0, "456",
             "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
             "名称"));
 
     tapMenu("货品管理", "款号库存");
-    ret = isAnd(ret, dropDownListCheckField(0, "456",
+    ret = isAnd(ret, dropDownListCheck(0, "456",
             "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号", "3",
             "名称"));
 
     tapMenu("货品管理", "货品进销存");
-    ret = isAnd(ret, dropDownListCheckField(1, "456",
+    ret = isAnd(ret, dropDownListCheck(1, "456",
             "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号", "3",
             "名称"));
 

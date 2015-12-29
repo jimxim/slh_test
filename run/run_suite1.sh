@@ -20,6 +20,7 @@ js_func="setGoods001Params"
 #js_func="$js_func test000Goods001Else "
 #js_func="$js_func test000Customer001Prepare testCustomer001Else test004Customer test005Customer"
 #js_func="$js_func test000Purchase002Prepare test000Purchase002 "
+#js_func="$js_func test000StatisticAnalysisAll "
 
 
 

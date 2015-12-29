@@ -188,9 +188,9 @@ function clearTFieldsByIndex(view, index, type) {
     tapKeyboardHide();
 }
 
-function toDate(day){
-    var day1=day.split("-");
-    return new Date(day1[0],day1[1],day1[2]);
+function toDate(day) {
+    var day1 = day.split("-");
+    return new Date(day1[0], day1[1], day1[2]);
 }
 
 /**
@@ -361,15 +361,15 @@ function scrollPrevPageCheck() {
 }
 
 /**
- * 下拉列表验证
+ * 下拉列表验证,有一个符合就返回true
  * @param index 静态文本下标
  * @param value 输入值
  * @param expected 希望显示的内容
  */
-function dropDownListCheckField(index, value, expected) {
+function dropDownListCheck(index, value, expected, o) {
     var ret = false;
     var f = new TField("款号", TF_AC, index, value, -1);
-    var cells = getTableViewCells(window, f);
+    var cells = getTableViewCells(window, f, o);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
@@ -380,7 +380,39 @@ function dropDownListCheckField(index, value, expected) {
     }
     delay();
     tapKeyboardHide();
-    tapButton(window, CLEAR);
+    if (window.buttons()[CLEAR].isVisible) {
+        tapButton(window, CLEAR);
+    }
+
+    return ret;
+}
+
+
+/**
+ * 下拉列表验证,有一个不符合就返回false
+ * @param index
+ * @param value
+ * @param expected
+ * @param o  eg:o= {"键盘":"简体拼音", "拼音":["lian"],"汉字":["联"]};
+ * @returns {Boolean}
+ */
+function dropDownListCheck2(index, value, expected, o) {
+    var ret = true;
+    var f = new TField("款号", TF_AC, index, value, -1);
+    var cells = getTableViewCells(window, f, o);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (!isIn(v, expected)) {
+            ret = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    if (window.buttons()[CLEAR].isVisible) {
+        tapButton(window, CLEAR);
+    }
 
     return ret;
 }
