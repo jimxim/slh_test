@@ -513,7 +513,7 @@ function testCs170051() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     tapReturn();
-    
+
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
@@ -523,7 +523,7 @@ function testCs170051() {
 
     return ret && ret1;
 }
-function testCs170054() {
+function testCs170054_1() {
     // 核销（客户余款）
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
@@ -533,22 +533,89 @@ function testCs170054() {
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
-    //
-    var json = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 4, 1, 1, 1, 1 ] } ],
-        "现金" : "1000000", "goodsFieldIndex" : -3 };
-    // // : r,
+
+    var json = { "明细" : [ { "货品" : "x003", "数量" : [ 1, 2 ] } ], "现金" : "1600" };
     editSalesBillColorSize(json);
 
+    // 总计金额大于抵扣金额
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "anewkh931105", "核销" : [ 5 ], "特殊货品" : { "抹零" : 100 },
-        "现金" : "0" };
+    var json = { "客户" : r, "核销" : [ 5 ],
+        "明细" : [ { "货品" : "x001", "数量" : [ 2, 3, 2, 3, 5 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
+
+    var totalMoney = getTextFieldValue(window, 3);
+    var dikou = getTextFieldValue(window, 6);
+
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "余款");
+    var index1 = getArrayIndexIn(texts, "抵扣");
+    var value = getStaticTextValue(window, index);
+    var value1 = getStaticTextValue(window, index1);
+
+    var ret = isAnd(isEqual("余款", value), isEqual("抵扣", value1), isEqual("430",
+            getTextFieldValue(window, 1)), isEqual("430", getTextFieldValue(
+            window, 6)), isEqual(getTextFieldValue(window, 2), sub(
+            getTextFieldValue(window, 12), getTextFieldValue(window, 6))));
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret1 = isAnd(isEqual(add(totalMoney, dikou), qr.data[0]["金额"]),
+            isEqual(totalMoney, qr.data[0]["现金"]), isEqual(-dikou,
+                    qr.data[0]["还款/抵扣"]));
+
+    return ret && ret1;
+}
+function testCs170054_2() {
+    // 核销（客户余款）
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 1 ] } ], "现金" : "6000" };
+    editSalesBillColorSize(json);
+
+    // 总计金额小于抵扣金额
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "核销" : [ 5 ],
+        "明细" : [ { "货品" : "x003", "数量" : [ 0, 1, 2, 1 ] } ], "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var k1 = getTextFieldValue(window, 1);
+    var k2 = getTextFieldValue(window, 6);
+
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "余款");
+    var index1 = getArrayIndexIn(texts, "抵扣");
+    var value = getStaticTextValue(window, index);
+    var value1 = getStaticTextValue(window, index1);
+
+    var ret = isAnd(isEqual("余款", value), isEqual("抵扣", value1), isEqual(
+            "5020", k1), isEqual("5020", k2), isEqual("", getTextFieldValue(
+            window, 2)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     var qr = getQR();
-    var ret = isEqual(-100, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
+    var ret1 = isAnd(isEqual(qr.data[0]["金额"], -qr.data[0]["还款/抵扣"]), isEqual(
+            "0", qr.data[0]["现金"]));
 
-    return ret;
+    return ret && ret1;
 }
 function testCs170055() {
     // 核销（客户欠款）
@@ -566,12 +633,13 @@ function testCs170055() {
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "核销" : [ 5 ], "特殊货品" : { "抹零" : 100 }, "现金" : "0" };
+    var json = { "客户" : r, "核销" : [ 5 ], "特殊货品" : { "抹零" : 100 } };
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     var qr = getQR();
-    var ret = isEqual(-100, qr.data[0]["金额"]) && isEqual(0, qr.data[0]["现金"]);
+    var ret = isEqual(-100, qr.data[0]["金额"])
+            && isEqual("17050", qr.data[0]["现金"]);
 
     return ret;
 }
@@ -586,7 +654,7 @@ function testCs170057() {
     tapButton(window, "核销");
     tapNaviLeftButton();
 
-    var a = getStaticTextValue(getScrollView(1), 0);
+    var a = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (a = "下级客户1 其他店总欠: 0.0") {
         var ret = true;
@@ -598,7 +666,7 @@ function testCs170057() {
     tapButton(window, "核销");
     tapNaviLeftButton();
 
-    var b = getStaticTextValue(getScrollView(1), 0);
+    var b = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (b = "下级客户1 其他店总欠: 0.0") {
         var ret1 = true;
@@ -612,7 +680,7 @@ function testCs170057() {
     tapButton(getPop(), "关 闭");
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var c = getStaticTextValue(getScrollView(1), 0);
+    var c = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (c = "下级客户1 其他店总欠: 0.0") {
         var ret2 = true;
@@ -621,7 +689,7 @@ function testCs170057() {
     tapMenu("销售开单", "更多.", "查补货");
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var d = getStaticTextValue(getScrollView(1), 0);
+    var d = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (d = "下级客户1 其他店总欠: 0.0") {
         var ret3 = true;
@@ -632,7 +700,7 @@ function testCs170057() {
     tapButton(getPop(), "关 闭");
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var e = getStaticTextValue(getScrollView(1), 0);
+    var e = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (e = "下级客户1 其他店总欠: 0.0") {
         var ret4 = true;
@@ -647,7 +715,7 @@ function testCs170057() {
     tapButton(getPop(), "关 闭");
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var f = getStaticTextValue(getScrollView(1), 0);
+    var f = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     var bt5 = app.navigationBar().leftButton();
     if (bt5 = isUIAButton) {
@@ -657,7 +725,7 @@ function testCs170057() {
     tapButton(window, CLEAR);
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var h = getStaticTextValue(getScrollView(1), 0);
+    var h = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     var bt6 = app.navigationBar().leftButton();
     if (bt6 = isUIAButton) {
@@ -669,7 +737,7 @@ function testCs170057() {
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var i = getStaticTextValue(getScrollView(1), 0);
+    var i = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     var bt7 = app.navigationBar().leftButton();
     if (bt7 = isUIAButton) {
@@ -679,7 +747,7 @@ function testCs170057() {
     tapButton(window, CLEAR);
     tapButton(window, "核销");
     tapNaviLeftButton();
-    var j = getStaticTextValue(getScrollView(1), 0);
+    var j = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     var bt8 = app.navigationBar().leftButton();
     if (bt8 = isUIAButton) {
@@ -714,9 +782,8 @@ function testCs170058() {
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
 
-    // tapMenu("销售开单", "开 单+");
     var json = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 5 ] } ],
-        "现金" : "1000000" };// "客户" : r,
+        "现金" : "1000000" };
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "开  单+");

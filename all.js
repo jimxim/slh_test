@@ -33,6 +33,7 @@
 #import "testcase/sales/salesFields.js"
 #import "testcase/sales/salesNoColorSize.js"
 #import "testcase/sales/salesNoColorSizeElse.js"
+#import "testcase/sales/salesInc.js"
 
 #import "testcase/salesOrder/salesOrder.js"
 #import "testcase/salesOrder/salesOrderFields.js"
