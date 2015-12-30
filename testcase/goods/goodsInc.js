@@ -387,13 +387,12 @@ function dropDownListCheck(index, value, expected, o) {
     return ret;
 }
 
-
 /**
  * 下拉列表验证,有一个不符合就返回false
  * @param index
  * @param value
  * @param expected
- * @param o  eg:o= {"键盘":"简体拼音", "拼音":["lian"],"汉字":["联"]};
+ * @param o eg:o= {"键盘":"简体拼音", "拼音":["lian"],"汉字":["联"]};
  * @returns {Boolean}
  */
 function dropDownListCheck2(index, value, expected, o) {
@@ -462,3 +461,73 @@ function fuzzyQueryCheckField(index, title, value, title1) {
     tapButton(window, CLEAR);
     return ret1;
 }
+/**
+ * 积分兑换
+ * @param customer
+ * @param points
+ * @param money
+ */
+function addRedeemPoints(customer, points, money) {
+    tapMenu("销售开单", "开 单+");
+    var json = { "客户" : customer };
+    editSalesBillCustomer(json);
+
+    tapButton(window, "核销");
+    tapButton(getScrollView(-1, 0), "积分兑换");
+    var g0 = new TField("兑换积分", TF, 0, points);
+    var g1 = new TField("兑换金额", TF, 1, money);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    // tapButton(getPop(), CLOSE);
+    tapNaviLeftButton();
+
+    tapReturn();
+}
+
+function addLogisticsVerify(o) {
+    tapMenu("销售开单", "核销+");
+    logisticsVerifySetField(o, "物流");
+    logisticsVerifySetField(o, "店员");
+    logisticsVerifySetField(o, "日期");
+    logisticsVerifySetField(o, "备");
+    
+    editLogisticsVerify(o);
+
+    logisticsVerifySetField(o, "现金");
+    editSalesBillCard(o);
+    editSalesBillRemit(o);
+    editSalesBillSave(o);
+    return o;
+}
+
+function logisticsVerifySetField(o) {
+    var v = o[key];
+    var msg = "key=" + key + " v=" + v;
+    if (isDefined(v)) {
+        var keys = {};
+        keys[key] = v;
+        var fields = logisticsVerifyFields(keys);
+        setTFieldsValue(window, fields);
+    } else {
+        msg += " do nothing"
+    }
+    logDebug(msg);
+}
+
+function editLogisticsVerify(o) {
+    if (isDefined(o["核销"])) {
+        tapButton(window, "核销");
+        var qr=getQR2(getTableView(window,-1),"批次","代收金额");      
+        var a1 = o["核销"];
+        var qr=getQRtable1(window);
+        var batch;
+        for (var i = 0; i < a1.length; i++) {
+            batch=qr.data[i]["批次"];     
+            getTableView(window,-1).cells().firstWithName(batch).tap();
+        }
+        tapNaviRightButton();
+    }
+}
+
+

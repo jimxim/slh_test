@@ -978,6 +978,33 @@ function salesQueryLogisticsField(key,show) {
 	}
 	return f;
 }
+// 销售开单——核销
+function logisticsVerifyFields(keys,show) {
+    return getTFields("logisticsVerifyField", keys,show);
+}
+function logisticsVerifyField(key,show) {
+    var f;
+    switch (key) {
+    case "物流":
+        f = new TField("物流", TF_AC, 0, "sf",-1,0);
+        break;
+    case "现金":
+        f = new TField("现金", TF, 2, "0");
+        break;
+    case "店员":
+        f = new TField("店员", TF_AC, 4, "000",-1,0);
+        break;   
+    case "日期":
+        f = new TField("日期", TF_DT, 8, getToday());
+        break;
+    case "备":
+        f = new TField("备", TF, 9, "a");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 
 // 代收收款／代收收款查询
 function testSalesCollectionFields() {

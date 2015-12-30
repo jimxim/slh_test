@@ -49,6 +49,10 @@ function goodsParams001() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "账户余额允许为负" };
+    o = { "新值" : "0", "数值" : [ "默认允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }

@@ -1,6 +1,10 @@
 //LuXingXin <52619481 at qq.com> 20151109
 
+//收入类别  订金 业务回扣1
+//支出类别  物业 物损
 function testStatisticAnalysisAll() {
+    run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
+
     run("【统计分析—新增收入】新增类别", "test190012");
     run("【统计分析—新增收入】保存", "test190013");
     run("【统计分析—新增收入】返回", "test190014");
@@ -11,20 +15,20 @@ function testStatisticAnalysisAll() {
     run("【统计分析—新增支出】删除", "test190019");
     run("【统计分析-新增收入】金额支持2位小数", "test190020");
     run("【统计分析-新增支出】金额支持2位小数", "test190021");
-    run("【统计分析—收支表】", "test190001");
-    run("【统计分析—收支表】查询/底部数据检查", "test190002_190008");
-    run("【统计分析—收支表】清除", "test190003");
+    run("【统计分析—收支表】_翻页排序", "test190001");
+    run("【统计分析—收支表】查询汇总清除", "test190002_190003_190008");
     run("【统计分析—收支表】详细信息", "test190004");
     run("【统计分析—收支表】详细信息-返回", "test190006");
     run("【统计分析—收支汇总】收入或支出查询", "test190009");
     run("【统计分析—收支汇总】进入详细", "test190010");
     run("【统计分析—收支汇总】检查底部数据", "test190011");
-    run("【统计分析—收支流水】查询", "test190022");
-    run("【统计分析—收支流水】清除", "test190023");
+    run("【统计分析—收支流水】查询清除", "test190022");
+    run("【统计分析—收支流水】翻页排序", "test190023");
     run("【统计分析—收支流水】流水检查/金额正负检查", "test190024_190025");
     run("【统计分析—收支流水】底部数据检查", "test190026");
     run("【统计分析—收支类别】保存", "test190028");
     run("【统计分析—收支类别】返回", "test190029");
+    run("【统计分析—收支流水】帐户余额允许为负", "test190090");
     // run("【统计分析—综合汇总】排序", "test190031");
     // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     // run("【统计分析—综合汇总】检查底部数据", "test190036");
@@ -47,6 +51,22 @@ function testStatisticAnalysisAll() {
     // run("【统计分析—利润表】底部数据检查", "test190086");
 }
 
+function testStatisticAnalysisPrepare() {
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
+
+    tapMenu("统计分析", "新增收入");
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    return true;
+}
+
 function test190012() {
     tapMenu("统计分析", "新增收入");
     tapButton(window, "新增类别");
@@ -58,7 +78,7 @@ function test190012() {
     test190012Field("物业");
     tapButton(getPop(), OK);
     tapPrompt();
-    var ret = isIn(alertMsg, "名称重复");
+    ret = isAnd(ret, isIn(alertMsg, "名称重复"));
 
     var r = "收入" + getTimestamp(6);
     test190012Field(r);
@@ -68,7 +88,12 @@ function test190012() {
 
     tapMenu("统计分析", "收支类别");
     var qr = getQR(window, getScrollView(), "序号", 3);
-    var ret = isEqual("收入", qr.data[0]["出入类别"]) && isEqual(r, qr.data[0]["名称"])
+    if (qr.curPageNo != "1") {
+        goPage(1, qr);
+        qr = getQR(window, getScrollView(), "序号", 3);
+    }
+    ret = isAnd(ret, isEqual("收入", qr.data[0]["出入类别"]), isEqual(r,
+            qr.data[0]["名称"]));
 
     return ret;
 }
@@ -87,10 +112,24 @@ function test190013() {
     var qr = getQR();
     var counts = Number(qr.counts["金额"]);
 
+    var a1, a2, i;
+    tapMenu("统计分析", "综合汇总");
+    tapFirstText(getScrollView(), "序号", 20);
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    qr = getQRverify(texts, "名称", 5);
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["收入"] == "订金") {
+            a1 = Number(qr.data[i]["金额"]);
+            break;
+        }
+    }
+    tapNaviLeftButton();
+
     var rm = getRandomInt(100000) / 100;
     var r = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
     tapMenu("统计分析", "新增收入");
-    var json = { "账户" : "现","收支备注":r, "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
@@ -103,7 +142,7 @@ function test190013() {
     tapMenu("统计分析", "收支汇总");
     tapButton(window, QUERY);
     qr = getQR(window, getScrollView(), "序号", 3);
-    ret = isAnd(ret, isEqual(counts + rm, qr.counts["金额"]));
+    ret = isAnd(ret, isAqualNum(counts + rm, qr.counts["金额"], 0.01));
 
     tapFirstTextByTitle("收支类别", "订金");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
@@ -112,15 +151,25 @@ function test190013() {
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
     tapNaviLeftButton();
 
-//    tapMenu("统计分析", "综合汇总");
-//    qr = getQRverify(getStaticTexts(getScrollView(-1)), "名称", 5);
-    
-  
+    tapMenu("统计分析", "综合汇总");
+    tapFirstText(getScrollView(), "序号", 20);
+    texts = getStaticTexts(getScrollView(-1, 0));
+    qr = getQRverify(texts, "名称", 5);
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["收入"] == "订金") {
+            a2 = Number(qr.data[i]["金额"]);
+            break;
+        }
+    }
+    tapNaviLeftButton();
+    var result = sub(a2, a1);
+    ret = isAnd(ret, isAqualNum(rm, result, 0.01));
+    // logDebug("a2=" + a2 + " a1=" + a1 + " result=" + result);
 
     tapMenu("统计分析", "收支流水");
     query();
-    qr=getQR();
-    expected = { "批次" : batch, "类型" : "收入单", "账户名称" : "东灵测试-现金账户", "金额" : rm,
+    qr = getQR();
+    expected = { "批次" : batch, "类型" : "收入单", "账户" : "东灵测试-现金账户", "金额" : rm,
         "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
@@ -128,6 +177,10 @@ function test190013() {
 }
 
 function test190014() {
+    tapMenu("统计分析", "收支表");
+    var qr = getQR();
+    var a = qr.data[0];
+
     var r = getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "现", "明细" : [ { "收入类别" : "订金", "金额" : r } ],
@@ -136,11 +189,9 @@ function test190014() {
     tapButtonAndAlert(RETURN);
     delay();
 
-    var qr = getQR();
-    var ret = false;
-    if (qr.data[0]["金额"] != r) {
-        ret = true;
-    }
+    qr = getQR();
+    var b = qr.data[0];
+    var ret = isEqualObject(a, b);
 
     return ret;
 }
@@ -161,45 +212,105 @@ function test190015() {
 }
 
 function test190016() {
-    var r = "支出" + getTimestamp(6);
     tapMenu("统计分析", "新增支出");
     tapButton(window, "新增类别");
-    var f0 = new TField("数量", TF, 0, r);
-    var fields = [ f0 ];
-    setTFieldsValue(getPopOrView(), fields);
+    test190012Field("订金");
+    tapButton(getPop(), OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "名称重复");
+
+    test190012Field("物业");
+    tapButton(getPop(), OK);
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "名称重复"));
+
+    var r = "支出" + getTimestamp(6);
+    test190012Field(r);
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
     tapReturn();
 
     tapMenu("统计分析", "收支类别");
     var qr = getQR(window, getScrollView(), "序号", 3);
-    var ret = isEqual("支出", qr.data[0]["出入类别"]) && isEqual(r, qr.data[0]["名称"])
+    if (qr.curPageNo != "1") {
+        goPage(1, qr);
+        qr = getQR(window, getScrollView(), "序号", 3);
+    }
+    ret = isAnd(ret, isEqual("支出", qr.data[0]["出入类别"]), isEqual(r,
+            qr.data[0]["名称"]));
 
     return ret;
 }
 
 function test190017() {
     tapMenu("统计分析", "收支汇总");
-    var key = { "日期从" : "2015-11-09" }
+    var key = { "日期从" : getDay(-30), "收支类别" : "支出" };
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
     var qr = getQR();
     var counts = Number(qr.counts["金额"]);
 
-    var r = getTimestamp(6);// 不输入备注会提示提交重复数据
+    var a1, a2, i;
+    tapMenu("统计分析", "综合汇总");
+    tapFirstText(getScrollView(), "序号", 20);
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    qr = getQRverify(texts, "名称", 5);
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["支出"] == "物业") {
+            a1 = Number(qr.data[i]["金额2"]);
+            break;
+        }
+    }
+    tapNaviLeftButton();
+
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增支出");
-    var json = { "账户" : "现",
-        "明细" : [ { "收入类别" : "物业", "金额" : "888", "备注" : r } ] };
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
     qr = getQR();
-    var ret = isEqual("现", qr.data[0]["简称"])
-            && isEqual("888", qr.data[0]["金额"]);
+    var batch = qr.data[0]["批次"];
+    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+        "金额" : rm, "备注" : r, "操作人" : "总经理" };
+    var ret = isEqualQRData1Object(qr, expected);
 
     tapMenu("统计分析", "收支汇总");
+    tapButton(window, QUERY);
     qr = getQR(window, getScrollView(), "序号", 3);
-    ret = ret && isEqual(counts - 888, qr.counts["金额"]);
+    ret = isAnd(ret, isAqualNum(counts - rm, qr.counts["金额"], 0.01));
+    // logDebug("counts + rm="+counts +" "+ rm+" 金额= "+qr.counts["金额"]);
+
+    tapFirstTextByTitle("收支类别", "物业");
+    qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
+    expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : rm,
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    tapNaviLeftButton();
+
+    tapMenu("统计分析", "综合汇总");
+    tapFirstText(getScrollView(), "序号", 20);
+    texts = getStaticTexts(getScrollView(-1, 0));
+    qr = getQRverify(texts, "名称", 5);
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["支出"] == "物业") {
+            a2 = Number(qr.data[i]["金额2"]);
+            break;
+        }
+    }
+    tapNaviLeftButton();
+    var result = sub(a2, a1);
+    ret = isAnd(ret, isAqualNum(rm, result, 0.01));
+    // logDebug("a2=" + a2 + " a1=" + a1 + " result=" + result);
+
+    tapMenu("统计分析", "收支流水");
+    query();
+    qr = getQR();
+    expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户", "金额" : -rm,
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     return ret;
 }
@@ -266,77 +377,69 @@ function test190021() {
 }
 
 function test190001() {
-    tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
-    editStatisticAnalysisIn(json);
-
     tapMenu("统计分析", "收支表");
-    var key = { "日期从" : getToday(), "到" : getToday() };
-    var fields = statisticAnalysisInOutFields(key);
+    var keys = { "日期从" : getDay(-15) };
+    var fields = statisticAnalysisInOutFields(keys);
     query(fields);
+    var ret = goPageCheck("序号");
 
-    var qr = getQR();
-    var expected = { "序号" : "1", "日期" : getToday(), "账户名称" : "东灵测试-银行账户",
-        "简称" : "银", "金额" : "6666", "备注" : r, "操作人" : "总经理" };
-    var ret = isEqualQRData1Object(qr, expected);
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            ret = ret && isEqual(getToday(), qr.data[i]["日期"])
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("日期", IS_DATE2);
+    ret = ret && sortByTitle("账户名称");
+    ret = ret && sortByTitle("简称");
+    ret = ret && sortByTitle("金额", IS_NUM);
+    ret = ret && sortByTitle("备注");
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作人");
 
     return ret;
 }
 
-function test190002_190008() {
+function test190002_190003_190008() {
     var i, j;
+    var rm = getRandomInt(100000) / 100;
+    var r1 = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
+
     tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+    var json = { "账户" : "银", "收支备注" : r1,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    var r2 = "备注" + "b" + getTimestamp(6);
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "现", "收支备注" : r2, "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
-    var key = { "日期从" : getToday(), "到" : getToday(), "收支类别" : "收入" };
+    var key = { "日期从" : getDay(-10), "到" : getToday(), "收支类别" : "收入" };
     var fields = statisticAnalysisInOutFields(key);
     query(fields);
 
     var qr = getQR();
-    var expected = { "序号" : "1", "日期" : getToday(), "账户名称" : "东灵测试-银行账户",
-        "简称" : "银", "金额" : "6666", "备注" : r, "操作人" : "总经理" };
+    var expected = { "序号" : "1", "日期" : getToday(""), "账户名称" : "东灵测试-银行账户",
+        "简称" : "银", "金额" : rm, "备注" : r1, "操作人" : "总经理" };
     var ret = isEqualQRData1Object(qr, expected);
     var sum1 = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             sum1 += Number(qr.data[i]["金额"]);
+            logDebug("金额=" + qr.data[i]["金额"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
         }
     }
-    ret = ret && isEqual(qr.counts["金额"], sum1);
 
-    tapMenu("统计分析", "新增支出");
-    json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "物业", "金额" : "1000", "备注" : r } ] };
-    editStatisticAnalysisIn(json);
+    ret = isAnd(ret, isAqualNum(qr.counts["金额"], sum1, 0.1));
 
-    tapMenu("统计分析", "收支表");
-    key = { "收支类别" : "支出" };
+    key = { "日期从" : getDay(-10), "到" : getToday(), "收支类别" : "支出" };
     fields = statisticAnalysisInOutFields(key);
     query(fields);
-
     qr = getQR();
-    expected = { "序号" : "1", "日期" : getToday(), "账户名称" : "东灵测试-银行账户",
-        "简称" : "银", "金额" : "1000", "备注" : r, "操作人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected);
+    expected = { "序号" : "1", "日期" : getToday(""), "账户名称" : "东灵测试-现金账户",
+        "简称" : "现", "金额" : rm, "备注" : r2, "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
     var sum2 = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
@@ -347,43 +450,34 @@ function test190002_190008() {
             qr = getQR();
         }
     }
-    ret = ret && isEqual(qr.counts["金额"], -sum2);// 支出的汇总为负数
+    ret = isAnd(ret, isEqual(qr.counts["金额"], -sum2));// 支出的汇总为负数
 
     query();
     qr = getQR();
-    ret = ret && isAqualNum(qr.counts["金额"], sum1 - sum2, 0);
-
-    return ret;
-}
-
-function test190003() {
-    tapMenu("统计分析", "收支表");
-    var key = { "日期从" : getToday(), "到" : getToday(), "收支类别" : "支出" };
-    var fields = statisticAnalysisInOutFields(key);
-    setTFieldsValue(window, fields);
-    tapButton(window, CLEAR);
-    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual(getToday(), getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2));
+    ret = isAnd(ret, isAqualNum(qr.counts["金额"], sum1 - sum2, 0), isEqual(
+            getToday(), getTextFieldValue(window, 0)), isEqual(getToday(),
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)));
 
     return ret;
 }
 
 function test190004() {
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapFirstText();
     var ret = isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual("银", getTextFieldValue(window, 1))
-            && isEqual("6666", getTextFieldValue(window, 2))// 总额
-            && isEqual(r, getTextFieldValue(window, 3))
+            && isEqual("现", getTextFieldValue(window, 1))
+            && isEqual(rm, getTextFieldValue(window, 2))// 总额
+            && isEqual(r, getTextFieldValue(window, 3))// 收支备注
             && isEqual("订金", getTextFieldValue(getScrollView(), 0))// 收入类别
-            && isEqual("6666", getTextFieldValue(getScrollView(), 1))// 金额
-            && isEqual(r, getTextFieldValue(getScrollView(), 2));
+            && isEqual(rm, getTextFieldValue(getScrollView(), 1))// 金额
+            && isEqual("", getTextFieldValue(getScrollView(), 2));
     tapButton(window, RETURN);
 
     return ret;
@@ -391,32 +485,38 @@ function test190004() {
 
 function test190006() {
     tapMenu("统计分析", "收支表");
+    query();
     var qr = getQR();
-    var a = qr.titles[3];// 账户名称
+    var a = qr.data[0];
 
     tapFirstText();
     tapButton(window, RETURN);
+
     qr = getQR();
-    var ret = isEqual(a, qr.titles[3]);
+    var b = qr.data[0];
+    var ret = isEqualObject(a, b);
 
     return ret;
 }
 
 function test190009() {
     var i, j;
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
     var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+        "明细" : [ { "收入类别" : "业务回扣1", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物损", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支汇总");
-    var key = { "日期从" : getToday(), "到" : getToday(), "收支类别" : "收入" };
+    var key = { "日期从" : getDay(-30), "收支类别" : "收入" };
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
-
     var qr = getQR();
-    var ret = true;
     var sum1 = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
@@ -427,18 +527,11 @@ function test190009() {
             qr = getQR();
         }
     }
-    ret = ret && isEqual(qr.counts["金额"], sum1);
+    var ret = isAqualNum(qr.counts["金额"], sum1, 0.01);
 
-    tapMenu("统计分析", "新增支出");
-    json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "物业", "金额" : "1000", "备注" : r } ] };
-    editStatisticAnalysisIn(json);
-
-    tapMenu("统计分析", "收支汇总");
-    key = { "收支类别" : "支出" };
+    key = { "日期从" : getDay(-30), "收支类别" : "支出" };
     fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
-
     qr = getQR();
     var sum2 = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
@@ -450,40 +543,86 @@ function test190009() {
             qr = getQR();
         }
     }
-    ret = ret && isEqual(qr.counts["金额"], -sum2);// 支出的汇总为负数
+    ret = isAnd(ret, isEqual(qr.counts["金额"], -sum2));// 支出的汇总为负数
 
     return ret;
 }
 
 function test190010() {
+    var i, j;
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支汇总");
-    var key = { "日期从" : getToday(), "到" : getToday(), "收支类别" : "收入" };
+    var key = { "收支类别" : "收入" };
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
+    var qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["收支类别"] == "订金") {
+            var a = qr.data[i]["金额"];
+        }
+    }
 
-    tapFirstText();
-    var qr = getQR2(getScrollView(1), "日期", "操作人");
+    tapFirstTextByTitle("收支类别", "订金");
+    qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     var ret = isEqual(getToday("yy"), qr.data[0]["日期"])
-            && isEqual("东灵测试-银行账户", qr.data[0]["账户"])
-            && isEqual("6666", qr.data[0]["金额"])
+            && isEqual("东灵测试-现金账户", qr.data[0]["账户"])
+            && isEqual(rm, qr.data[0]["金额"])
             && isEqual("总经理", qr.data[0]["操作人"]);
 
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
+    var sum = 0;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             ret = ret && isEqual(getToday("yy"), qr.data[i]["日期"]);
+            sum += Number(qr.data[i]["金额"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
-            qr = getQR2(getScrollView(1), "日期", "操作人");
+            qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
         }
     }
     tapNaviLeftButton();
+    ret = isAnd(ret, isEqual(a, sum));
+
+    key = { "收支类别" : "支出" };
+    fields = statisticAnalysisInOutSummaryFields(key);
+    query(fields);
+    qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["收支类别"] == "物业") {
+            var b = qr.data[i]["金额"];
+        }
+    }
+
+    tapFirstTextByTitle("收支类别", "物业");
+    qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
+    var ret = isEqual(getToday("yy"), qr.data[0]["日期"])
+            && isEqual("东灵测试-现金账户", qr.data[0]["账户"])
+            && isEqual(rm, qr.data[0]["金额"])
+            && isEqual("总经理", qr.data[0]["操作人"]);
+
+    sum = 0;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            ret = ret && isEqual(getToday("yy"), qr.data[i]["日期"]);
+            sum += Number(qr.data[i]["金额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
+        }
+    }
+    tapNaviLeftButton();
+    ret = isAnd(ret, isEqual(b, sum));
 
     return ret;
 }
@@ -510,34 +649,54 @@ function test190011() {
 }
 
 function test190022() {
+    var rm = getRandomInt(100000) / 100;
+    var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+    var json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+    editStatisticAnalysisIn(json);
+
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支流水");
-    query();
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "账户" : "现" };
+    var fields = statisticAnalysisInOutAccountFields(keys);
+    query(fields);
     var qr = getQR();
-    var expected = { "序号" : "1", "门店" : "常青店", "类型" : "收入单", "账户" : "银",
-        "金额" : "6666", "操作人" : "总经理" };
-    var ret = isEqualQRData1Object(qr, expected)
-            && isAqualOptime(json["操作日期"], qr.data[0]["操作日期"]);
+    var expected1 = { "类型" : "收入单", "账户" : "东灵测试-现金账户", "金额" : rm,
+        "操作人" : "总经理" };
+    var expected2 = { "类型" : "支出单", "账户" : "东灵测试-现金账户", "金额" : rm,
+        "操作人" : "总经理" };
+    var ret = isAnd(isEqualQRData1Object(qr, expected1), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]), isEqualQRData1Object(qr,
+            expected2));
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual(getToday(), getTextFieldValue(window, 0))
+            && isEqual(getToday(), getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2))
+            && isEqual("", getTextFieldValue(window, 3));
 
     return ret;
 }
 
 function test190023() {
     tapMenu("统计分析", "收支流水");
-    var keys = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店", "账户" : "现" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = statisticAnalysisInOutAccountFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, CLEAR);
+    query(fields);
+    var ret = goPageCheck("批次");
 
-    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2))
-            && isEqual("", getTextFieldValue(window, 3));
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("类型");
+    ret = ret && sortByTitle("账户");
+    ret = ret && sortByTitle("金额", IS_NUM);
+    ret = ret && sortByTitle("余额", IS_NUM);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作人");
+
     return ret;
 }
 
@@ -550,10 +709,10 @@ function test190024_190025() {
     tapMenu("统计分析", "收支流水");
     var qr = getQR();
     var a = Number(qr.data[0]["余额"]);// 账户:现
-    var expected = { "序号" : "1", "门店" : "常青店", "类型" : "销售单", "账户" : "现",
-        "金额" : "3000", "操作人" : "总经理" };
-    var ret = isEqualQRData1Object(qr, expected)
-            && isAqualOptime(json["操作日期"], qr.data[0]["操作日期"]);
+    var expected = { "序号" : "1", "门店" : "常青店", "类型" : "销售单",
+        "账户" : "东灵测试-现金账户", "金额" : "3000", "操作人" : "总经理" };
+    var ret = isAnd(isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
 
     tapMenu("统计分析", "新增收入");
     var r = getTimestamp(6);
@@ -564,10 +723,10 @@ function test190024_190025() {
     tapMenu("统计分析", "收支流水");
     qr = getQR();
     var b = Number(qr.data[0]["余额"]);// 账户:银
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "收入单", "账户" : "银",
+    expected = { "序号" : "1", "门店" : "常青店", "类型" : "收入单", "账户" : "东灵测试-银行账户",
         "金额" : "6666", "操作人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected)
-            && isAqualOptime(json["操作日期"], qr.data[0]["操作日期"]);
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ], };
@@ -576,10 +735,10 @@ function test190024_190025() {
     tapMenu("统计分析", "收支流水");
     qr = getQR();
     var ret1 = isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], a));// 现余额验证
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "采购单", "账户" : "现",
+    expected = { "序号" : "1", "门店" : "常青店", "类型" : "采购单", "账户" : "东灵测试-现金账户",
         "金额" : "-2000", "操作人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected)
-            && isAqualOptime(json["操作日期"], qr.data[0]["操作日期"]);
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
 
     tapMenu("统计分析", "新增支出");
     json = { "账户" : "银", "收支备注" : r,
@@ -589,17 +748,57 @@ function test190024_190025() {
     tapMenu("统计分析", "收支流水");
     qr = getQR();
     ret1 = ret1 && isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], b));// 银余额验证
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "支出单", "账户" : "银",
+    expected = { "序号" : "1", "门店" : "常青店", "类型" : "支出单", "账户" : "东灵测试-银行账户",
         "金额" : "-1000", "操作人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected)
-            && isAqualOptime(json["操作日期"], qr.data[0]["操作日期"]);
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
+
+    addRedeemPoints("xw", 1000, 1000);
+    tapMenu("统计分析", "收支流水");
+    qr = getQR();
+    expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    
+  
 
     return ret && ret1;
 }
 
+function test190090() {
+    tapMenu("统计分析", "收支流水");
+    var keys = { "账户" : "现", "门店" : "常青店" };
+    var fields = statisticAnalysisInOutAccountFields(keys);
+    query(fields);
+    var qr = getQR();
+    var sum = Number(qr.data[0]["余额"]);
+
+    var ret = false;
+    if (sum > 0) {
+        tapMenu("统计分析", "新增支出");
+        var r = "备注" + "a" + getTimestamp(6);
+        var json = { "账户" : "现", "收支备注" : r,
+            "明细" : [ { "收入类别" : "物业", "金额" : sum + 1 } ] };
+        editStatisticAnalysisIn(json);
+
+        tapMenu("统计分析", "收支流水");
+        tapButton(window, QUERY);
+        qr = getQR();
+        sum = Number(qr.data[0]["余额"]);
+        if (sum < 0) {
+            ret = true;
+        }
+    } else {
+        ret = true;
+    }
+
+    return ret;
+}
+
 function test190026() {
     tapMenu("统计分析", "收支流水");
-    query();
+    var keys = { "日期从" : getDay(-3) };
+    var fields = statisticAnalysisInOutAccountFields(keys);
+    query(fields);
     var sum = 0
     var qr = getQR();
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -634,13 +833,16 @@ function test190028() {
 
 function test190029() {
     tapMenu("统计分析", "收支类别");
+    var qr = getQR();
+    var a = qr.data[0];
+
     tapFirstText();
     tapButton(window, RETURN);
 
     delay();
-    var qr = getQR();
-    var ret = isEqual("序号", qr.titles[0]) && isEqual("出入类别", qr.titles[1])
-            && isEqual("名称", qr.titles[2]);
+    qr = getQR();
+    var b = qr.data[0];
+    var ret = isEqualObject(a, b);
 
     return ret;
 }
