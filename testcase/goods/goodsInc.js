@@ -501,7 +501,7 @@ function addLogisticsVerify(o) {
     return o;
 }
 
-function logisticsVerifySetField(o) {
+function logisticsVerifySetField(o,key) {
     var v = o[key];
     var msg = "key=" + key + " v=" + v;
     if (isDefined(v)) {
@@ -517,8 +517,7 @@ function logisticsVerifySetField(o) {
 
 function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
-        tapButton(window, "核销");
-        var qr=getQR2(getTableView(window,-1),"批次","代收金额");      
+        tapButton(window, "核销");  
         var a1 = o["核销"];
         var qr=getQRtable1(window);
         var batch;

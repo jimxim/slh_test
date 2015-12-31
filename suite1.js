@@ -8,26 +8,21 @@ function test000All() {
 	debug = true;
 
 // run("test", "test190002_190003_190008");
-// run("test", "test190009");
-// run("test", "test190010");
-// run("test", "test190012");
 
-//	      run("test", "test190022");
+// run("test", "test190010");
+// run("test", "test190022");
+
+	      run("test", "test190068_190070");
 
 	
-	run("test", "onlyTest");
+//	run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    var view1= getTableView(window,-1);
-    var qr=getQRtable1(view1);
-//    logDebug("批次="+qr.data[0]["批次"]);
-    logDebug("titles="+qr.titles[0]);
-
-    
-    getTableView(window,-1).cells().firstWithName("510").tap();
+    json={"物流":"sf","核销":[0]};
+    editLogisticsVerify(json);
     
 }
 

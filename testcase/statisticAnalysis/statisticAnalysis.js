@@ -29,6 +29,17 @@ function testStatisticAnalysisAll() {
     run("【统计分析—收支类别】保存", "test190028");
     run("【统计分析—收支类别】返回", "test190029");
     run("【统计分析—收支流水】帐户余额允许为负", "test190090");
+
+    run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
+    run("【统计分析—汇总表-退货表】翻页排序汇总", "test190069_190072");
+    run("【统计分析—汇总表-退货表】款号退货数检查", "test190071");
+    run("【统计分析—汇总表-畅销表】查询/清除/款号畅销数检查", "test190073_190075_190076");
+    run("【统计分析—汇总表-畅销表】排序", "test190074");
+    run("【统计分析—汇总表-滞销表】滞销款号检查", "test190077");// 待完善在途调拨相关验证（需要登入登出）
+    run("【统计分析—汇总表-滞销表】查询", "test190078");
+    run("【统计分析—汇总表-滞销表】排序", "test190079");
+    run("【统计分析—汇总表-滞销表】清除", "test190080");
+
     // run("【统计分析—综合汇总】排序", "test190031");
     // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     // run("【统计分析—综合汇总】检查底部数据", "test190036");
@@ -37,16 +48,6 @@ function testStatisticAnalysisAll() {
     // run("【新综合汇总】详细-余款", "test190042");
     // run("【新综合汇总】详细-抵扣", "test190043");
 
-    // run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
-    // run("【统计分析—汇总表-退货表】排序", "test190069");
-    // run("【统计分析—汇总表-退货表】款号退货数检查", "test190071");
-    // run("【统计分析—汇总表-退货表】底部数据检查", "test190072");
-    // run("【统计分析—汇总表-畅销表】查询/清除/款号畅销数检查", "test190073_190075_190076");
-    // run("【统计分析—汇总表-畅销表】排序", "test190074");
-    // run("【统计分析—汇总表-滞销表】滞销款号检查", "test190077");// 待完善在途调拨相关验证（需要登入登出）
-    // run("【统计分析—汇总表-滞销表】查询", "test190078");
-    // run("【统计分析—汇总表-滞销表】排序", "test190079");
-    // run("【统计分析—汇总表-滞销表】清除", "test190080");
     // run("【统计分析—利润表】明细利润额和按单利润总和一致检查", "test190085");
     // run("【统计分析—利润表】底部数据检查", "test190086");
 }
@@ -687,7 +688,7 @@ function test190023() {
     var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("序号");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("类型");
@@ -758,8 +759,9 @@ function test190024_190025() {
     qr = getQR();
     expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
-    
-  
+
+    json = { "物流" : "sf", "核销" : [ 0 ] };
+    addLogisticsVerify(json);
 
     return ret && ret1;
 }
@@ -1003,64 +1005,43 @@ function test190043() {
 }
 
 function test190068_190070() {
+    var r = getRandomInt(100);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : -r } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "汇总表", "退货表");
-    var keys = { "日期从" : getToday(), "到" : getToday(), "款号" : "3035",
-        "款号名称" : "jkk" };
+    var keys = { "日期从" : getDay(-30), "款号" : "3035", "款号名称" : "jkk",
+        "门店" : "常青店" };
     var fields = statisticAnalysisReturnFields(keys);
     query(fields);
 
     var qr = getQR();
-    var expected = { "序号" : "1", "门店" : "常青店", "款号" : "3035", "名称" : "jkk" };
+    var expected = { "门店" : "常青店", "款号" : "3035", "名称" : "jkk", "退货数" : r };
     var ret = isEqualQRData1Object(qr, expected);
 
     tapButton(window, CLEAR);
     ret = ret && isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual(getToday(), getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2))
-            && isEqual("", getTextFieldValue(window, 3));
+            && isEqual("", getTextFieldValue(window, 3))
+            && isEqual("", getTextFieldValue(window, 4));
 
     return ret;
 }
 
-function test190069() {
+function test190069_190072() {
     tapMenu("统计分析", "汇总表", "退货表");
-    query();
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysisReturnFields(keys);
+    query(fields);
+    var ret = goPageCheck("序号");
 
-    var ret = true;
-    // ret = ret && sortByTitle("门店");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("退货数", IS_NUM);
 
-    return ret;
-}
-
-function test190071() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "门店" : "常青店", "类型" : "退货" };
-    var fields = salesReturnFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["数量"];// 显示为正数
-
-    tapMenu("统计分析", "汇总表", "退货表");
-    qr = getQR();
-    var ret = isEqual(-a, qr.counts["退货数"]);
-
-    return ret;
-}
-
-function test190072() {
-    tapMenu("统计分析", "汇总表", "退货表");
-    query();
     var qr = getQR();
     var sum = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -1072,19 +1053,41 @@ function test190072() {
             qr = getQR();
         }
     }
-    var ret = isEqual(-sum, qr.counts["退货数"]);
+    ret = isAnd(ret, isEqual(sum, qr.counts["退货数"]));
 
     return ret;
+}
 
+function test190071() {
+    tapMenu("销售开单", "按汇总", "按退货汇总");
+    var keys = { "日期从" : getDay(-30), "类型" : "退货" };
+    var fields = salesReturnFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.counts["数量"];// 显示为正数
+
+    tapMenu("统计分析", "汇总表", "退货表");
+    keys = { "日期从" : getDay(-30) };
+    fields = statisticAnalysisReturnFields(keys);
+    query(fields);
+    var ret = isEqual(a, qr.counts["退货数"]);
+
+    return ret;
 }
 
 function test190073_190075_190076() {
+    var r = getRandomInt(100);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : r } ] };
+    editSalesBillNoColorSize(json);
+
     tapMenu("销售开单", "按明细查");
-    var keys = { "款号" : "3035", "发生日期从" : getToday(), "到" : getToday() };
+    var keys = { "款号" : "3035", "发生日期从" : getDay(-30) };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.counts["数量"];
+    var b = qr.counts["小计"];
 
     tapMenu("统计分析", "汇总表", "畅销表");
     keys = { "款号" : "3035", "日期从" : getToday(), "到" : getToday(), "门店" : "常青店",

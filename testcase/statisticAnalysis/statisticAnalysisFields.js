@@ -166,6 +166,10 @@ function statisticAnalysisReturnField(key, show) {
     case "款号名称":
         f = new TField("款号名称", TF, 3, "aaa");
         break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
