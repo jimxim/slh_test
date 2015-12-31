@@ -233,6 +233,7 @@ function goPageCheck(title, index, type) {
     var totalPageNo = qr.totalPageNo;
     var i, j;
 
+    //清除限制的查询条件再查询一次
     if (totalPageNo <= 1) {
         title = "序号";
         if (isDefined(index)) {
@@ -284,6 +285,9 @@ function goPageCheck(title, index, type) {
 
         goPage(1, qr);
     } else {
+        // 只有一页的时候，滑动页面，检测有没有提示错误
+        scrollPrevPage();
+        scrollNextPage();
         logDebug("数据不足,翻页验证跳过");
     }
 
