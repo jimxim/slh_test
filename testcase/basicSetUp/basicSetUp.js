@@ -19,8 +19,8 @@ function testBasicSetUpAll() {
     run("Rt", "setProvider003");
     run("联想", "setProvider004");
 
-    run("特步生产商", "setProvider005");//适用价：零批价
-    run("新百伦生产商", "setProvider006");//适用价：打包价
+    run("特步生产商", "setProvider005");// 适用价：零批价
+    run("新百伦生产商", "setProvider006");// 适用价：打包价
     // 类别
     run("登山服", "setGoodsType001");
     run("鞋", "setGoodsType002");
@@ -48,10 +48,14 @@ function testBasicSetUpAll() {
     run("k300", "setGoods003");
     run("k200", "setGoods004");
     run("8989", "setGoods005");
-    //批量操作测试1，2，3，不要做开单等操作
+
+    // 批量操作测试1，2，3，不要做开单等操作
     run("plczcs1", "setGoods006");
     run("plczcs2", "setGoods007");
     run("plczcs3", "setGoods008");
+
+    // 童装尺码模式开单带款号
+    run("Tz", "setGoods0013");
 
     run("颜色尺码模式", "setGoodsColorParams");
     run("x001", "setGoods009");
@@ -69,7 +73,7 @@ function subTime(day1, day2) {
     var date1 = new Date(arr1[0], arr1[1], arr1[2]);
     var date2 = new Date(arr2[0], arr2[1], arr2[2]);
     var ret = (date1 - date2) / (24 * 60 * 60 * 1000);
-    logDebug("ret=" + ret);
+    logDebug("subTime   date1=" + date1 + "   date2=" + date2 + "   ret=" + ret);
     return ret;
 }
 
@@ -362,7 +366,7 @@ function basicSetUpByType(name, keys) {
             tapFirstText();
             tapButtonAndAlert(START);
             delay();
-            clearTFieldsByIndex(window, 1,"SC");
+            clearTFieldsByIndex(window, 1, "SC");
         }
     }
 
@@ -535,7 +539,7 @@ function setLogistics004() {
 }
 
 /**
- * 新增/修改货品 
+ * 新增/修改货品
  * @day2 上架日期
  * @color "yes":颜色尺码模式
  */
@@ -629,7 +633,8 @@ function setGoods005() {
     return ret;
 }
 function setGoods006() {
-    var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1","品牌":"1010pp","吊牌价":"300"};
+    var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1", "品牌" : "1010pp",
+        "吊牌价" : "300" };
     var ret = editGoodsBasicSetUp("plczcs1", "批量操作测试1", keys);
     return ret;
 }
@@ -643,7 +648,14 @@ function setGoods008() {
     var ret = editGoodsBasicSetUp("plczcs3", "批量操作测试3", keys);
     return ret;
 }
-
+function setGoods013() {
+    var keys = { "款号" : "Tz002", "名称" : "童装2", "品牌" : "0309pp", "颜色" : "0,1,2",
+        "尺码" : "12,13,14,15,16,17,18", "进货价" : "100", "零批价" : "713",
+        "打包价" : "864", "大客户价" : "864", "Vip价格" : "618", "产品折扣" : "0.6",
+        "季节" : "春季", "计量单位" : "件", "最小库存" : "0", "最大库存" : "0" }
+    var ret = editGoodsBasicSetUp("Tz002", "童装2", keys, "2014-06-22", "yes");
+    return ret;
+}
 function setGoods009() {
     var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "Ck公司", "颜色" : "0,1,",
         "尺码" : "3,4,5,", "吊牌价" : "500", "进货价" : "150", "零批价" : "490",
@@ -672,11 +684,11 @@ function setGoods011() {
     return ret;
 }
 function setGoods012() {
-    var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "0309pp", "颜色" : "0,1,2",
-        "尺码" : "1,3,4", "吊牌价" : "400", "进货价" : "120", "零批价" : "430",
-        "打包价" : "390", "大客户价" : "350", "Vip价格" : "190", "产品折扣" : "0.8",
-        "季节" : "春季", "类别" : "围巾", "厂商" : "新百伦生产商", "计量单位" : "件", "仓位" : "A座六层",
-        "最小库存" : "0", "最大库存" : "0", "经办人" : "001" }
+    var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "0309pp",
+        "颜色" : "0,1,2", "尺码" : "1,3,4", "吊牌价" : "400", "进货价" : "120",
+        "零批价" : "430", "打包价" : "390", "大客户价" : "350", "Vip价格" : "190",
+        "产品折扣" : "0.8", "季节" : "春季", "类别" : "围巾", "厂商" : "新百伦生产商",
+        "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0", "经办人" : "001" }
     var ret = editGoodsBasicSetUp("nb003", "新百伦围巾", keys, "2015-02-13", "yes");
     return ret;
 }
