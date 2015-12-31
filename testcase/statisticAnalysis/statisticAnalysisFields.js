@@ -236,8 +236,8 @@ function statisticAnalysisUnsalableField(key, show) {
     var f;
     switch (key) {
     case "day1":
-    case "上架日期从":
-        f = new TField("上架日期从", TF_DT, 0, "2015-9-11");
+    case "上架从":
+        f = new TField("上架从", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
     case "到":

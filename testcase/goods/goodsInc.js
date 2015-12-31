@@ -491,7 +491,7 @@ function addLogisticsVerify(o) {
     logisticsVerifySetField(o, "店员");
     logisticsVerifySetField(o, "日期");
     logisticsVerifySetField(o, "备");
-    
+
     editLogisticsVerify(o);
 
     logisticsVerifySetField(o, "现金");
@@ -501,7 +501,7 @@ function addLogisticsVerify(o) {
     return o;
 }
 
-function logisticsVerifySetField(o,key) {
+function logisticsVerifySetField(o, key) {
     var v = o[key];
     var msg = "key=" + key + " v=" + v;
     if (isDefined(v)) {
@@ -517,16 +517,17 @@ function logisticsVerifySetField(o,key) {
 
 function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
-        tapButton(window, "核销");  
+        tapButton(window, "核销");
         var a1 = o["核销"];
-        var qr=getQRtable1(window);
+        // debugElementTree(window);
+        // 坐标偏移8
+        var qr = getQRtable1(window, 8);
+        // debugQResult(qr);
         var batch;
         for (var i = 0; i < a1.length; i++) {
-            batch=qr.data[i]["批次"];     
-            getTableView(window,-1).cells().firstWithName(batch).tap();
+            batch = qr.data[i]["批次"];
+            getTableView(window, -1).cells().firstWithName(batch).tap();
         }
         tapNaviRightButton();
     }
 }
-
-

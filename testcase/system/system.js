@@ -24,6 +24,10 @@ function testSystem001() {
     
 }
 
+function test210001(){
+    tapMenu("系统设置", "打印机");
+}
+
 function test210004_210005_210006() {
     var qo, o, ret = true;
     qo = { "备注" : "打印份数" };

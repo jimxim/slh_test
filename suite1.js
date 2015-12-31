@@ -12,10 +12,10 @@ function test000All() {
 // run("test", "test190010");
 // run("test", "test190022");
 
-	      run("test", "test190068_190070");
+ run("test", "test190024_190025");
 
 	
-//	run("test", "onlyTest");
+// run("test", "onlyTest");
 
  
 }
@@ -156,7 +156,7 @@ function test000Purchase001() {
    }
 }
 
-//中洲店总经理登陆，为常青店准备数据
+// 中洲店总经理登陆，为常青店准备数据
 function test000Purchase002Prepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
@@ -240,7 +240,7 @@ function test000Check001() {
    }
 }
 
-//统计分析 
+// 统计分析
 function test000StatisticAnalysisAll() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
