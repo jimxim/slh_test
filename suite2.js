@@ -42,7 +42,8 @@ function test000All() {
 
 // run("【销售开单－开单】", "test170395_2");
 // run("【销售开单－开单】", "test170073");
- run("【销售开单－开单】", "test170077_2");
+//	 run("【销售开单－开单】", "test170083_1");//
+// run("【销售开单－开单】", "test170083_2");//
  
 // testStatisticPictureAll();
 // testSystem001();
