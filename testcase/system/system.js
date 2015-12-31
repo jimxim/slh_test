@@ -21,11 +21,47 @@ function testSystem001() {
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
-    
+
 }
 
-function test210001(){
+function test210001() {
     tapMenu("系统设置", "打印机");
+    tapFirstText();
+    var r = getRandomInt(10000);
+    var ip = getRandomInt(100) + ".0.0.1";
+    var f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "IP地址错误");
+
+    f = new TField("数值", TF, 2, ip);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    var qr = getQR();
+    ret = isAnd(ret, isEqual(ip, qr.data[0]["数值"]));
+
+    tapTextByFirstWithName("2");
+    f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(r, qr.data[1]["数值"]));
+
+    return ret;
+}
+
+function test210002() {
+    tapMenu("系统设置", "打印机");
+    var qr = getQR();
+    var jo1 = qr.data[0];
+
+    tapFirstText();
+    tapButton(window, RETURN);
+    qr = getQR();
+    var jo2 = qr.data[0];
+
+    return isEqualObject(jo1, jo2);
 }
 
 function test210004_210005_210006() {
@@ -477,13 +513,13 @@ function test210039() {
     var fields = salesQueryBatchFields(keys);
 
     tapFirstText();
-    var ret = isAnd(isEqual("",getTextFieldValue(getScrollView(), 1)),
-            isEqual("",getTextFieldValue(getScrollView(), 2)),
-            isEqual("",getTextFieldValue(getScrollView(), 9)),
-            isEqual("",getTextFieldValue(getScrollView(), 10)));
-    
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(), 1)),
+            isEqual("", getTextFieldValue(getScrollView(), 2)), isEqual("",
+                    getTextFieldValue(getScrollView(), 9)), isEqual("",
+                    getTextFieldValue(getScrollView(), 10)));
+
     tapButtonAndAlert(RETURN, OK);
-    
+
     var qo, o, ret = true;
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
@@ -496,16 +532,16 @@ function test210041() {
     var keys = { "工号" : "002", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-    
-    var qr=getQR();
-    var a=qr.data[0]["岗位"];
-    var a1=qr.data[1]["岗位"];
-    
-    var ret=false;
-    if (a!=a1){
-        ret=true;
+
+    var qr = getQR();
+    var a = qr.data[0]["岗位"];
+    var a1 = qr.data[1]["岗位"];
+
+    var ret = false;
+    if (a != a1) {
+        ret = true;
     }
-    
+
     return ret;
 }
 function test210045() {
@@ -515,22 +551,23 @@ function test210045() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],"onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    
+
     tapStaticText(window, "代收");
     delay();
-    
+
     tapNaviRightButton();
     tapPrompt();
 
-    var ret=false;
+    var ret = false;
     if (isIn(alertMsg, "必须选择物流商")) {
         ret = true;
     }
-    
+
     tapNaviLeftButton();
     tapButtonAndAlert(RETURN, OK);
-    
+
     return ret;
 }

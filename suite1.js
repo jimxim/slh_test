@@ -12,7 +12,7 @@ function test000All() {
 // run("test", "test190010");
 // run("test", "test190022");
 
- run("test", "test190024_190025");
+ run("test", "test210002");
 
 	
 // run("test", "onlyTest");
