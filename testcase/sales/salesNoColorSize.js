@@ -1624,35 +1624,36 @@ function test170062() {
 }
 function test170475() {
     // 有欠款单客户
-    // tapMenu("销售开单", "开 单+");
-    // tapButton(window, "新增+");
-    // var r = "anewkh" + getTimestamp(6);
-    // var g0 = new TField("名称", TF, 0, r);
-    // var fields = [ g0 ];
-    // setTFieldsValue(getPopView(), fields);
-    // tapButton(getPop(), OK);
-    // tapButton(getPop(), "关 闭");
-    //
-    // var json = { "明细" : [ { "货品" : "k300", "数量" : "2" } ], "现金" : "0",
-    // "不返回" : "yes" };
-    // editSalesBillNoColorSize(json);
-    //
-    // var json = { "客户" : r, "核销" : "[5]", "不返回" : "yes" };
-    // editSalesBillNoColorSize(json);
-    //
-    // var json = { "客户" : r, "onlytest" : "yes" };
-    // editSalesBillNoColorSize(json);
+//     tapMenu("销售开单", "开 单+");
+//     tapButton(window, "新增+");
+//     var r = "anewkh" + getTimestamp(6);
+//     var g0 = new TField("名称", TF, 0, r);
+//     var fields = [ g0 ];
+//     setTFieldsValue(getPopView(), fields);
+//     tapButton(getPop(), OK);
+//     tapButton(getPop(), "关 闭");
+//    
+//     var json = { "明细" : [ { "货品" : "k300", "数量" : "2" } ], "现金" : "0",
+//     "不返回" : "yes" };
+//     editSalesBillNoColorSize(json);
+//    
+//     var json = { "客户" : r, "核销" : "[5]", "不返回" : "yes" };
+//     editSalesBillNoColorSize(json);
+//    
+//     var json = { "客户" : r, "onlytest" : "yes" };
+//     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
     tapButton(app.navigationBar(), "本单已核销");
+//    debugElementTree(window);
     // 本单已核销
-    // var qr = getQR2(getScrollView(-1, 0), "日期", "金额");
-    // debugQResult(qr);
-    // var ret =isEqual(0,qr.data.length);
-
+     var qr = getQR2(getScrollView(-1, 0), "日期", "金额");
+//     debugQResult(qr);
+     var ret =isEqual(0,qr.data.length);
+//
     tapNaviLeftButton();
     tapNaviLeftButton();
-    // tapReturn();
+//     tapReturn();
 
     return ret;
 }
@@ -1862,27 +1863,24 @@ function test170395_1() {
     tapButton(window, "核销");
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var len = qr.data.length;
-    for (var i = len; i > len - 1; i--) {
+    var ret = true;
+    for (var i = len - 1; i >= 0; i--) {
         var s = qr.data[i]["门店"];
-        if (isEqual("常青店", s)) {
-            var ret = true;
+        if (isEqual("仓库店", s) || isEqual("中洲店", s)) {
+            ret = false;
+            break;
         }
-        // if (isEqual("仓库店", s)) {
-        // var ret1 = false;
-        // }
-        // if (isEqual("中洲店", s)) {
-        // var ret2 = false;
-        // }
     }
     app.navigationBar().buttons()["确 认"].tap();
     delay(2);
     // tapReturn();
 
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2 + "s=" + s);
-    return ret && !ret1 && !ret2;
+    logDebug("ret=" + ret + "s=" + s);
+    return ret ;
 }
 function test170395_2() {
     // 设置允许跨门店核销
+    
 }
 function test170070() {
     // 设置开单模式为9-快速标记标记代收的开单模式
@@ -1896,6 +1894,7 @@ function test170070() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
+
     var ret = isAnd(isEqual(1400, qr.data[0]["金额"]), isEqual(-1400,
             qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收"]));
 
