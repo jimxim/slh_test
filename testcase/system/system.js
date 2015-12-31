@@ -1,5 +1,8 @@
 //zhangy <2397655091 at qq.com> 20151215
 function testSystem001() {
+    run("【系统设置—打印机】保存", "test210001");
+    run("【系统设置—打印机】返回", "test210002");
+    run("【系统设置—打印机】远程打印参数", "test210003");
     run("【系统设置—打印机】保存/返回/参数生效", "test210004_210005_210006");
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
     run("【系统设置—本地设置】开单界面,保存后显示是否打印窗口", "test210009");
@@ -18,9 +21,13 @@ function testSystem001() {
     run("【系统设置—新增人员】新增人员", "test210032_120033");
     run("【系统设置—新增人员】新增工号为0的员工", "test210034");
     run("【系统设置—改密码】修改", "test210035");
+    run("【系统设置—改密码】关闭", "test210036");
+    run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
+    run("【系统设置】设置“销售开单中都不能修改单价”，检查店长是否仍可以修改单价", "test210040");//
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
+    run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
 
 }
 
@@ -50,7 +57,6 @@ function test210001() {
 
     return ret;
 }
-
 function test210002() {
     tapMenu("系统设置", "打印机");
     var qr = getQR();
@@ -63,7 +69,29 @@ function test210002() {
 
     return isEqualObject(jo1, jo2);
 }
+function test210003() {
+    var qo, o, ret = true;
+    qo = { "备注" : "远程" };
+    o = { "新值" : "1", "数值" : [ "支持本地和远程同时打印", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
+    tapMenu("系统设置", "打印机");
+    var qr = getQR();
+    var ret1 = isAnd(isEqual(7, qr.total), isEqual(7, qr.data.length), isEqual(
+            "商陆花远程打印iPad地址，保存后请重新登录商陆花", qr.data[6]["备注"]));
+
+    var qo, o, ret = true;
+    qo = { "备注" : "远程" };
+    o = { "新值" : "0", "数值" : [ "默认本地打印", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("系统设置", "打印机");
+    var qr = getQR();
+
+    var ret2 = isAnd(isEqual(6, qr.total), isEqual(6, qr.data.length));
+
+    return ret && ret1 && ret2;
+}
 function test210004_210005_210006() {
     var qo, o, ret = true;
     qo = { "备注" : "打印份数" };
@@ -115,7 +143,6 @@ function test210012_210013_210014() {
 
     return ret;
 }
-
 function test210015_210016() {
     tapMenu("系统设置", "全局设置");
 
@@ -494,6 +521,73 @@ function test210035() {
 
     return ret;
 }
+function test210036() {
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "222222");
+    var f2 = new TField("确认密码", TF_S, 2, "222222");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "222222");
+    var f2 = new TField("确认密码", TF_S, 2, "222222");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "操作成功")) {
+        ret = true;
+    }
+    tapButton(window, "关 闭");
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapButtonAndAlert("密码重置", OK);
+
+    return ret;
+}
+function test210038() {
+    // 店长工号登录,常青店长004
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员", "门店" : "常青店" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var a = qr.data[0]["工号"];
+    var a1 = qr.data[0]["姓名"];
+    var a2 = qr.data[0]["门店"];
+    var a3 = qr.data[0]["岗位"];
+
+    var ret = isAnd(isEqual("001", a), isEqual("财务员", a1), isEqual("常青店", a2),
+            isEqual("财务员", a3));
+
+    query();
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+
+    var qr = getQR();
+
+    var ret1 = isAnd(isEqual(0, qr.total), isEqual(0, qr.data.length));
+
+    query();
+
+    return ret && ret1;
+}
 function test210039() {
     var qo, o, ret = true;
     qo = { "备注" : "是否显示颜色尺码字样" };
@@ -526,6 +620,28 @@ function test210039() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
+}
+function test210040() {
+//    var qo, o, ret = true;
+//    qo = { "备注" : "修改单价" };
+//    o = { "新值" : "0", "数值" : [ "都不能修改单价", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 店长登录
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f3 = new TField("单价", TF, 4, "888");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var a = getTextFieldValue(getScrollView(), 0);
+
+    var ret1 = isEqual("300",a);
+
+    return ret && ret1;
 }
 function test210041() {
     tapMenu("系统设置", "人员列表");
