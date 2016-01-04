@@ -285,8 +285,8 @@ function queryCustomerShopAccountField(key, show) {
         }
         break;
     case "type":
-    case "类别":
-        f = new TField("类别", TF_SC, 4, "零批客户");
+    case "客户类别":
+        f = new TField("客户类别", TF_SC, 4, "零批客户");
         break;
     case "debt":
     case "是否欠款":

@@ -7,32 +7,18 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test190002_190003_190008");
 
-  
+//    run("【往来管理-客户查询】翻页_排序", "test110001_1");
+
+	
+//	   run("test", "test110008");
+    run("test", "test110054");
 
 
-//    run("【统计分析—收支表】查询汇总清除", "test190002_190003_190008");
-//    run("【统计分析—收支表】详细信息", "test190004");
-//    run("【统计分析—收支表】详细信息-返回", "test190006");
-//    run("【统计分析—收支汇总】收入或支出查询", "test190009");
-//    run("【统计分析—收支汇总】进入详细", "test190010");
-//    run("【统计分析—收支汇总】检查底部数据", "test190011");
-//    run("【统计分析—收支流水】查询清除", "test190022");
-//    run("【统计分析—收支流水】翻页排序", "test190023");
 
-// run("【统计分析—收支流水】底部数据检查", "test190026");
-// run("【统计分析—收支类别】保存", "test190028");
-// run("【统计分析—收支类别】返回", "test190029");
-// run("【统计分析—收支流水】帐户余额允许为负", "test190090");
 //
 
 
-
-
- run("【统计分析—汇总表-滞销表】滞销款号检查", "test190077");
-
-// run("【统计分析—汇总表-滞销表】翻页排序", "test190079");
 
 	
 // run("test", "onlyTest");
@@ -41,7 +27,12 @@ function test000All() {
 }
 
 function onlyTest(){
-
+    tapMenu("系统设置", "小票信息");
+    var qr = getQR();
+    var ret = isAnd(isEqualQRData1ByTitle(qr, "门店", "常青店"),
+            isEqualQRData1ByTitle(qr, "门店", "中洲店"), isEqualQRData1ByTitle(qr,
+                    "门店", "仓库店"));
+    return ret;
 }
 
 

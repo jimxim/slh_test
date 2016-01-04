@@ -40,9 +40,10 @@ function testCustomer001Else() {
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
 
-    run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017_110030");
+    run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
     run("【往来管理-客户账款】详细页面", "test110022");
+    run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
     run("【往来管理】是否欠款报警查询", "test110028");
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
@@ -148,11 +149,13 @@ function test110004() {
     query(fields);
 
     tapFirstText();
-    keys = [ "区域", "手机", "微信", "生日", "店员", "上级客户", "客户类别", "允许退货", "适用价格",
-            "传真号", "备注", "地址", "信用额度", "欠款报警" ];
+    keys = [ "区域", "手机", "微信", "门店", "生日", "店员", "上级客户", "客户类别", "客户代码",
+            "允许退货", "适用价格", "传真号", "备注", "地址", "信用额度", "欠款报警" ];
     fields = editCustomerFields(keys);
     changeTFieldValue(fields["手机"], r);
+    changeTFieldValue(fields["门店"], "中洲店");
     changeTFieldValue(fields["生日"], getToday());
+    changeTFieldValue(fields["客户代码"], r);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);
     // delay();
@@ -164,11 +167,12 @@ function test110004() {
             && isEqual("黑龙江", getTextFieldValue(getScrollView(), 2))
             && isEqual(r, getTextFieldValue(getScrollView(), 3))
             && isEqual("x123456", getTextFieldValue(getScrollView(), 4))
-            && isEqual("常青店", getTextFieldValue(getScrollView(), 5))
+            && isEqual("中洲店", getTextFieldValue(getScrollView(), 5))
             && isEqual(getToday(), getTextFieldValue(getScrollView(), 6))
             && isEqual("000,总经理", getTextFieldValue(getScrollView(), 7))
             && isEqual("Yvb", getTextFieldValue(getScrollView(), 8))
             && isEqual("零批客户", getTextFieldValue(getScrollView(), 9))
+            && isEqual(r, getTextFieldValue(getScrollView(), 11))// 客户代码
             && isEqual("否", getTextFieldValue(getScrollView(), 12))// 允许退货
             && isEqual("零批价", getTextFieldValue(getScrollView(), 14))// 适用价格
             && isEqual("55555", getTextFieldValue(getScrollView(), 15))
@@ -201,11 +205,11 @@ function test110005() {
     // 需要刷新
     tapRefresh();
 
-    var qKeys = { "客户" : r, "是否停用" : "是" };
+    var qKeys = { "客户名称" : r, "是否停用" : "是" };
     var qFields = queryCustomerFields(qKeys);
     query(qFields);
     var qr = getQR();
-    var ret1 = isEqual(r, qr.data[0]["名称"]);
+    var ret = isEqual(r, qr.data[0]["名称"]);
 
     tapFirstText();
     tapButtonAndAlert("启 用");
@@ -219,18 +223,16 @@ function test110005() {
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
-    var ret2 = false;
     query();
     tapFirstText();
     tapButtonAndAlert("停 用");
 
     tapButtonAndAlert("none", OK, true);
-    if (isIn(alertMsg, "还存在余额或欠款")) {
-        ret2 = true;
-    }
+    ret = isAnd(ret, isIn(alertMsg, "还存在余额或欠款"));
+
     delay();
     tapButton(window, RETURN);
-    return ret1 && ret2;
+    return ret;
 }
 
 // 在新增修改客户时会自动验证
@@ -271,7 +273,7 @@ function test110002() {
             num = Number(qr.data[i]["数量"]);
             discount = Number(qr.data[i]["折扣"]);
             sum = qr.data[i]["小计"];
-            ret = ret && isAqualNum(price * num * discount, sum);
+            ret = ret && isAqualNum(price * num * discount, sum, 0.01);
             if (ret == false) {
                 break;
             }
@@ -318,13 +320,8 @@ function test110002_1() {
 
 function test110008() {
     var r = "q" + getTimestamp(5);
-    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "允许退货" : "是" };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapButton(window, RETURN);
+    addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
@@ -334,11 +331,8 @@ function test110008() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "-10" } ] };
     editSalesBillNoColorSize(json);
-    var ret = false;
     tapButtonAndAlert("none", OK, true);
-    if (isIn(alertMsg, "保存成功")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "保存成功");
     delay();
     tapButton(window, RETURN);
 
@@ -380,7 +374,7 @@ function test110012() {
         tapButtonAndAlert(STOP);
     }
 
-    keys = { "客户" : r, "是否停用" : "是" };
+    keys = { "客户名称" : r, "是否停用" : "是" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
     var qr = getQR();
@@ -493,6 +487,7 @@ function test110015() {
     query(fields);
     var ret = goPageCheck("名称", 2, "SC");
 
+    query();
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -629,7 +624,7 @@ function test110055Field(shop) {
     return ret && ret1;
 }
 
-function test110017_110030() {
+function test110017() {
     tapMenu("往来管理", "客户账款", "客户门店账");
     query();
     var qr = getQR();
@@ -676,7 +671,7 @@ function test110018() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     query();
     var qr = getQR();
-    logDebug("totalPageNo=" + qr.totalPageNo);
+    // logDebug("totalPageNo=" + qr.totalPageNo);
     var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
@@ -2001,10 +1996,7 @@ function test110054() {
     query(fields);
 
     tapFirstText();
-    keys = { "上级客户" : "" };
-    fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapKeyboardHide();
+    clearTFieldsByIndex(getScrollView(), 8);//上级客户
     tapButton(window, "修改保存");
 
     tapFirstText();
@@ -2020,14 +2012,11 @@ function test110054() {
 
     tapMenu("往来管理", "客户查询");
     tapFirstText();
-    var keys = { "上级客户" : "" };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapKeyboardHide();
+    clearTFieldsByIndex(getScrollView(), 8);
 
     tapButton(window, "修改保存");
-    ret = ret && isIn(alertMsg, "包含特殊字符");
     tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "不允许解除上下级关系"));
     tapButton(window, RETURN);
 
     return ret;
