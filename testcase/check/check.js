@@ -57,7 +57,9 @@ function test180019() {
     query(fields);
     var qr = getQR();
 
-    var ret = isEqual(100, qr.data[0]["数量"]);
+    var ret = isAnd(isEqual(100, qr.data[0]["数量"]), isEqual("常青店",
+            qr.data[0]["门店"]), isEqual("总经理", qr.data[0]["操作人"]), isAqualOptime(
+            qr.data[0]["盘点日期"], getOptime()),1);
 
     return ret;
 }
@@ -362,7 +364,7 @@ function test180007() {
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
-    var f4 = new TField("货品", TF_AC, 4, "k300", -1, 0);
+    var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "-112");
     var fields = [ f0, f3, f4, f7 ];
     setTFieldsValue(getScrollView(), fields);
@@ -509,12 +511,12 @@ function test180010() {
     query();
     tapFirstText();
 
-    tapButton(getScrollView(), 0);
+    tapButtonAndAlert("删 除", "确 定");
     saveAndAlertOk();
     tapPrompt();
-    
+
     delay();
-    if (isIn(alertMsg, "操作失败，[盘点单已处理，不允许更改] ")) {
+    if (isIn(alertMsg, "操作失败，[盘点单已处理，不允许删除] ")) {
         var ret = true;
     }
     delay();
@@ -529,7 +531,7 @@ function test180013_1() {
     query(fields);
     // 点击翻页
     var ret = goPageCheck("批次");
-    //
+
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -541,7 +543,7 @@ function test180013_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("操作日期");
 
-    query();
+    // query();
     var qr = getQR();
     var sum1 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -575,9 +577,37 @@ function test180013_2() {
     tapKeyboardHide();
     query();
 
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "150");
+    var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
+    var f7 = new TField("数量", TF, 7, "-10");
+    var fields = [ f0, f3, f4, f7 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+
     tapMenu("盘点管理", "按明细查");
     var keys = { "日期从" : getDay(-30), "款号" : "3035", "款号名称" : "jkk",
         "品牌" : "Adidas", "类别" : "登山服", "门店" : "常青店" };
+
+    tapMenu("盘点管理", "按明细查");
+    query();
+    qr = getQR();
+    var batch1 = qr.data[0]["批次"];
+    var batch2 = qr.data[1]["批次"];
+    var a1 = qr.data[0]["盘点数量"];
+    var a2 = qr.data[1]["盘点数量"];
+
+    var ret = isAnd(isEqual(batch, batch1), isEqual(batch, batch2), isEqual(
+            "－10", a1), isEqual("150", a2));
 
     var fields = queryCheckParticularFields(keys);
     query(fields);
@@ -588,14 +618,12 @@ function test180013_2() {
     var a3 = qr.data[0]["品牌"];
     var a4 = qr.data[0]["颜色"];
     var a5 = qr.data[0]["尺码"];
-    var a6 = qr.data[0]["盘点数量"];
     var a7 = qr.data[0]["操作人"];
     var a8 = qr.data[0]["操作日期"];
 
     var ret2 = isAnd(isEqual("3035", a), isEqual("jkk", a1),
             isEqual("登山服", a2), isEqual("Adidas", a3), isEqual("均色", a4),
-            isEqual("均码", a5), isEqual("100", a6), isEqual("总经理", a7), isIn(a8,
-                    getToday("")));
+            isEqual("均码", a5), isEqual("总经理", a7), isIn(a8, getToday("")));
 
     tapButton(window, CLEAR);
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
@@ -853,7 +881,7 @@ function test180027() {
     tapButtonAndAlert("部分处理", OK);
     tapPrompt();
 
-    if (isIn(alertMsg, "盘点处理日期最多选到第二天,请重新选择")) {
+    if (isIn(alertMsg, "盘点处理日期最多选到第二天，请重新选择")) {
         var ret = true;
     }
 
