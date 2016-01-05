@@ -2902,7 +2902,7 @@ function test170305() {
 }
 function test170306() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
@@ -2917,7 +2917,7 @@ function test170306() {
     var a3 = Number(qr.data[0]["代收"]);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "代收" : { "物流商" : "yt", "运单号" : "1234", "代收金额" : "100" }, "现金" : "500",
         "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
     editSalesBillNoColorSize(json);
@@ -2941,7 +2941,7 @@ function test170306() {
 }
 function test170307() {
     // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    // var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
     // "现金" : "1500" };
     // editSalesBillNoColorSize(json);
 
@@ -3042,7 +3042,7 @@ function test170308() {
 }
 function test170309() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
@@ -3158,12 +3158,12 @@ function test170310_170311_170312() {
 }
 function test170313() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "客户" : "xjkh", "日期从" : getToday(), "到" : getToday(),
+    var keys = { "客户" : "xjkh1", "日期从" : getToday(), "到" : getToday(),
         "门店" : "常青店", "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
@@ -3176,7 +3176,7 @@ function test170313() {
 }
 function test170314() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
@@ -3195,7 +3195,7 @@ function test170314() {
     query();
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "客户" : "xjkh", "日期从" : getToday(), "到" : getToday(),
+    var keys = { "客户" : "xjkh1", "日期从" : getToday(), "到" : getToday(),
         "门店" : "常青店", "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
@@ -3215,7 +3215,7 @@ function test170314() {
 }
 function test170315_170316_170317() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
@@ -3262,7 +3262,7 @@ function test170315_170316_170317() {
 }
 function test170318() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
@@ -3395,7 +3395,7 @@ function test170320() {
 }
 function test170321_170322_170323() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 

@@ -904,7 +904,7 @@ function test170047() {
 
 function test170048() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -931,7 +931,7 @@ function test170048() {
 }
 function test170049() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "6" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "6" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -958,7 +958,7 @@ function test170049() {
 }
 function test170050() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1005,7 +1005,7 @@ function test170050() {
 }
 function test170051() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "900", "刷卡" : [ 500, "交" ], "汇款" : [ 100, "建" ] };
     editSalesBillNoColorSize(json);
 
@@ -1247,7 +1247,7 @@ function test170055() {
 }
 function test170056() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "xjkh" };
+    var keys = { "客户" : "xjkh1" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
@@ -1273,7 +1273,7 @@ function test170056() {
 }
 function test170057() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "xjkh" };
+    var keys = { "客户" : "xjkh1" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
 
@@ -1555,7 +1555,7 @@ function test170452() {
 }
 function test170061() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "onlytest" : "yes" };
+    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1596,7 +1596,7 @@ function test170061() {
 }
 function test170062() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "xjkh" };
+    var keys = { "客户" : "xjkh1" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
@@ -1658,12 +1658,12 @@ function test170475() {
 }
 function test170063() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "现金" : "1500" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "xjkh" };
+    var keys = { "客户" : "xjkh1" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     delay();
@@ -1689,7 +1689,7 @@ function test170063() {
 }
 function test170064() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "onlytest" : "yes" };
+    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1861,7 +1861,7 @@ function test170395_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "onlytest" : "yes" };
+    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1890,7 +1890,7 @@ function test170395_2() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "onlytest" : "yes" };
+    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1931,12 +1931,12 @@ function test170070() {
 }
 function test170071() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "未付" : "yes", "代收" : "否" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "xjkh" };
+    var keys = { "客户" : "xjkh1" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -1948,7 +1948,7 @@ function test170071() {
 }
 function test170072() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 

@@ -51,28 +51,37 @@ function test180019() {
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
-    var keys = [ "门店" ];
+    var keys = { "门店" : "常青店" };
     var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["门店"], "常青店");
     query(fields);
     var qr = getQR();
 
     var ret = isAnd(isEqual(100, qr.data[0]["数量"]), isEqual("常青店",
-            qr.data[0]["门店"]), isEqual("总经理", qr.data[0]["操作人"]), isAqualOptime(
-            qr.data[0]["盘点日期"], getOptime()),1);
+            qr.data[0]["门店"]), isEqual("总经理", qr.data[0]["操作人"]),
+            isAqualOptime(qr.data[0]["盘点日期"], getOpTime(), 1));
 
-    return ret;
+    tapFirstText();
+
+    var ret1 = isAnd(
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
+            isEqual(100, getTextFieldValue(getScrollView(), 3)));
+
+    tapReturn();
+
+    return ret && ret1;
 }
 
 function test180021() {
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "100");
-    var fields = [ f0, f3 ];
+    var f3 = new TField("数量", TF, 3, "10");
+    var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
+    var f7 = new TField("数量", TF, 7, "-11");
+    var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
+    var f11 = new TField("数量", TF, 11, "0");
+    var fields = [ f0, f3, f4, f7, f8, f11 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
@@ -82,22 +91,24 @@ function test180021() {
     query(fields);
     tapFirstText();
     tapButton(window, "整单复制");
+    delay();
 
     tapMenu("盘点管理", "新增盘点+");
     tapButton(window, "整单粘贴");
     saveAndAlertOk();
-    tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
     query(fields);
     tapFirstText();
 
-    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(), 3)),
-            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)));
+    var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
+            isEqual(10, getTextFieldValue(getScrollView(), 3)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(), 4)), isEqual(
+                    -11, getTextFieldValue(getScrollView(), 7)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 8)),
+            isEqual(0, getTextFieldValue(getScrollView(), 11)));
 
-    delay();
     tapReturn();
 
     return ret;
@@ -281,9 +292,8 @@ function test180001_2() {
 }
 function test180001_180005() {
     tapMenu("盘点管理", "按批次查");
-    var keys = [ "门店" ];
+    var keys = { "门店" : "常青店" };
     var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["门店"], "常青店");
     query(fields);
     var qr = getQR();
     var m = qr.counts["数量"];
@@ -306,31 +316,29 @@ function test180001_180005() {
 }
 function test180002() {
     tapMenu("盘点管理", "按批次查");
-    var keys = [ "批次从", "批次到" ];
+    var keys = { "日期从" : getDay(-60), "批次从" : "54", "批次到" : "61" };
     var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["批次从"], "1");
-    changeTFieldValue(fields["批次到"], "100");
     query(fields);
     var qr = getQR();
-    var m = qr.counts["数量"];
-    var sum = 0;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["数量"]);
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    if (sum == m) {
-        var ret = true;
-    }
-    logDebug(" ret=" + ret);
-    return ret;
-}
 
+    var ret = true;
+    var len = qr.data.length;
+    for (var i = 0; i <= len - 1; i++) {
+        var p = qr.data[i]["批次"];
+        if (isEqual(6, p)) {
+            ret = false;
+            break;
+        }
+    }
+
+    var ret1 = isAnd(isEqual(61, qr.data[0]["批次"]), isEqual(60,
+            qr.data[1]["批次"]), isEqual(59, qr.data[2]["批次"]), isEqual(58,
+            qr.data[3]["批次"]), isEqual(57, qr.data[4]["批次"]), isEqual(56,
+            qr.data[5]["批次"]), isEqual(55, qr.data[6]["批次"]), isEqual(54,
+            qr.data[len - 1]["批次"]));
+
+    return ret && ret1;
+}
 // function test180003_180004() {
 // tapMenu("盘点管理", "按批次查");
 // var keys1 = [ "批次从", "批次到", "门店" ];
@@ -530,7 +538,7 @@ function test180013_1() {
     var fields = queryCheckParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("序号");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");
@@ -543,7 +551,6 @@ function test180013_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("操作日期");
 
-    // query();
     var qr = getQR();
     var sum1 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -737,11 +744,11 @@ function test180028() {
 function test180024() {
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "10");
-    var f4 = new TField("货品", TF_AC, 4, "3035", -1, 0);
-    var f7 = new TField("数量", TF, 7, "11");
-    var f8 = new TField("货品", TF_AC, 8, "3035", -1, 0);
-    var f11 = new TField("数量", TF, 11, "12");
+    var f3 = new TField("数量", TF, 3, "-10");
+    var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
+    var f7 = new TField("数量", TF, 7, "27");
+    var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
+    var f11 = new TField("数量", TF, 11, "0");
     var fields = [ f0, f3, f4, f7, f8, f11 ];
     setTFieldsValue(getScrollView(), fields);
     tapButton(getScrollView(), 2);
@@ -780,7 +787,6 @@ function test180026() {
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理");
     delay();
 
@@ -789,13 +795,15 @@ function test180026() {
     }
 
     tapMenu("货品管理", "处理记录");
-    var keys = [ "门店" ];
-    var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["门店"], "常青店");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessRecordFields(keys);
     query(fields);
     var qr = getQR();
 
-    var ret1 = isEqual("部分处理", qr.data[0]["备注"]);
+    var ret1 = isAnd(isEqual("部分盘点", qr.data[0]["备注"]), isEqual(getToday("yy"),
+            qr.data[0]["盘点日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(
+            "总经理", qr.data[0]["操作人"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"], 1));
 
     tapMenu("货品管理", "当前库存");
     var keys = [ "款号" ];
@@ -812,14 +820,27 @@ function test180026() {
 
 // 程序bug,待检验
 function test180025() {
+    tapMenu("货品管理", "款号库存");
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["库存"];
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "款号" : "3035", "门店" : "中洲店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var b = qr.data[0]["库存"];
+
     tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "10");
+    var f3 = new TField("数量", TF, 3, r);
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");
@@ -827,38 +848,73 @@ function test180025() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    delay(5);
+    delay(3);
 
+    var ret = false;
     if (isIn(alertMsg, "处理完成")) {
         var ret = true;
     }
 
-    tapMenu("货品管理", "处理记录");
-    var keys = [ "门店" ];
-    var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["门店"], "常青店");
-    query(fields);
-    var qr = getQR();
+    tapReturn();
 
-    var ret1 = isEqual("全盘处理", qr.data[0]["备注"]);
-
-    tapMenu("货品管理", "当前库存");
-    var keys = [ "款号" ];
-    var fields = queryGoodsStockFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "门店" : "常青店" };
+    var fields = checkProcessRecordFields(keys);
     query(fields);
     qr = getQR();
-    var b = qr.data[0]["库存"];
-    var c = qr.data[0]["库存"];
-    if (b == 10 && c == 0) {
-        var ret2 = true;
+
+    var ret1 = isAnd(isEqual("全部盘点", qr.data[0]["备注"]), isEqual(getToday("yy"),
+            qr.data[0]["盘点日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(
+            "总经理", qr.data[0]["操作人"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"], 1));
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), isNoEqual(a,
+            qr.data[0]["库存"]));
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "款号" : "3035", "门店" : "中洲店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret3 = isEqual(b, qr.data[0]["库存"]);
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret4 = isAnd(isEqual(0, qr.data[0]["库存"]));
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var m = qr.counts["库存"];
+    var ret5 = false;
+    var sum = 0;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum += Number(qr.data[i]["库存"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
     }
+    if (sum == m) {
+        var ret5 = true;
+    }
+    ret5 = ret5 && isEqual(r, m);
 
-    var ret2 = isAnd(isEqual(10, qr.data[0]["库存"]), isEqual("全盘处理",
-            qr.data["库存"]));
-
-    logDebug(" ret=" + ret);
-    return ret && ret1 && ret2;
+    logDebug(" ret5=" + ret5 + " m=" + m);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 // 6.58上无此功能，6.59版本新增功能，待检验
 function test180027() {
