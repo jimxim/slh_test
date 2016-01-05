@@ -90,7 +90,7 @@ function test210003() {
     var i = getArrayIndexIn(texts, "sc_remote_mac");
     var ok = tap(texts[i]);
 
-    var ip = getRandomInt(100) + ".0.0.1";
+    var ip = "ac:29:3a:9f:22:3b";
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     delay();
@@ -117,7 +117,7 @@ function test210003() {
 
     var ret4 = isAnd(isEqual(6, qr.total), isEqual(6, qr.data.length));
 
-    return ret && ret1 && ret2 && ret3 && ret4;
+    return ret && ret1 && ret2 && ret4;
 }
 function test210004_210005_210006() {
     var qo, o, ret = true;
