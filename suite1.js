@@ -12,27 +12,21 @@ function test000All() {
 
 	
 //	   run("test", "test110008");
-    run("test", "test110054");
-
-
-
-//
+//    run("test", "test110038");
 
 
 
 	
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    tapMenu("系统设置", "小票信息");
-    var qr = getQR();
-    var ret = isAnd(isEqualQRData1ByTitle(qr, "门店", "常青店"),
-            isEqualQRData1ByTitle(qr, "门店", "中洲店"), isEqualQRData1ByTitle(qr,
-                    "门店", "仓库店"));
-    return ret;
+    var view= getScrollView();
+    var a=getTableViews(view,0);
+    logDebug("a="+a);
+
 }
 
 
