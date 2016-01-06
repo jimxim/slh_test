@@ -717,7 +717,7 @@ function editCustomerLogisticsField(key, show) {
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 8, "备注");
+        f = new TField("备注", TF, 8, "备注abc123");
         break;
     default:
         logWarn("未知key＝" + key);

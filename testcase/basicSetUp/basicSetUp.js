@@ -13,6 +13,7 @@ function testBasicSetUpAll() {
     run("李六", "setCustomer006");
     run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");
+    run("不开单客户", "setCustomer009");//不做开单操作，无欠余款
     // 厂商
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
@@ -287,6 +288,14 @@ function setCustomer007() {
 function setCustomer008() {
     var keys = { "名称" : "综合汇总1", "门店" : "常青店", "适用价格" : "零批价" };
     var ret = editCustomerBasicSetUp("综合汇总1", keys);
+    return ret;
+}
+/**
+ * 不开单客户
+ */
+function setCustomer009() {
+    var keys = { "名称" : "不开单客户", "门店" : "常青店", "适用价格" : "零批价" };
+    var ret = editCustomerBasicSetUp("不开单客户", keys);
     return ret;
 }
 

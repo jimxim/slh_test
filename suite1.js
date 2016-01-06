@@ -12,19 +12,19 @@ function test000All() {
 
 	
 //	   run("test", "test110008");
-//    run("test", "test110038");
+    run("test", "test160006");
 
 
 
 	
- run("test", "onlyTest");
+// run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
     var view= getScrollView();
-    var a=getTableViews(view,0);
+    var a=getTextViewValue(getScrollView(),0);
     logDebug("a="+a);
 
 }
@@ -98,6 +98,48 @@ function test000Goods001Else() {
   var ok = login("000","000000",p1);
   if( ok ) {
       testGoods001Else();
+     logout();
+  }
+}
+
+/**
+ * 参数 setGoods002Params 准备数据 用例 test000Goods002
+ */
+function setGoods002Params(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("均色均码/省代价格模式/价格模式5", "goodsParams002");
+       logout();
+    }
+}
+// 款号名称模糊查询、款号下拉列表验证产品折扣
+function test000Goods002() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoods002();
+     logout();
+  }
+}
+
+/**
+ * 参数 setGoods003Params 准备数据 用例 test000Goods003
+ */
+function setGoods003Params(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("均色均码/默认价格模式/价格模式2", "goodsParams003");
+       logout();
+    }
+}
+// 默认价格模式新增货品检验
+function test000Goods003() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testGoods003();
      logout();
   }
 }
@@ -211,6 +253,15 @@ function test200ShopIn001(){
     }   
 }
 
+//中洲店总经理登陆，为常青店准备数据
+function test000SalesOrderPrepare(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testSalesOrderPrepare();
+       logout();
+    }
+  }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框
 function test000SalesOrder001() {
@@ -244,7 +295,16 @@ function test000Check001() {
    }
 }
 
-// 统计分析
+// 统计分析 中洲店数据准备
+function test000StatisticAnalysisPrepare() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testStatisticAnalysisPrepare();    
+        logout();
+    }
+ }
+//统计分析
 function test000StatisticAnalysisAll() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
@@ -255,47 +315,7 @@ function test000StatisticAnalysisAll() {
    }
 }
 
-/**
- * 参数 setGoods002Params 准备数据 用例 test000Goods002
- */
-function setGoods002Params(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        run("均色均码/省代价格模式/价格模式5", "goodsParams002");
-       logout();
-    }
-}
-// 款号名称模糊查询、款号下拉列表验证产品折扣
-function test000Goods002() {
-    var p1 = {"角色":"总经理"};
-  var ok = login("000","000000",p1);
-  if( ok ) {
-      testGoods002();
-     logout();
-  }
-}
 
-/**
- * 参数 setGoods003Params 准备数据 用例 test000Goods003
- */
-function setGoods003Params(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        run("均色均码/默认价格模式/价格模式2", "goodsParams003");
-       logout();
-    }
-}
-// 默认价格模式新增货品检验
-function test000Goods003() {
-    var p1 = {"角色":"总经理"};
-  var ok = login("000","000000",p1);
-  if( ok ) {
-      testGoods003();
-     logout();
-  }
-}
 
 
 

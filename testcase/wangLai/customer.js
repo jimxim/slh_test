@@ -150,12 +150,15 @@ function test110004() {
 
     tapFirstText();
     keys = [ "区域", "手机", "微信", "门店", "生日", "店员", "上级客户", "客户类别", "客户代码",
-            "允许退货", "适用价格", "传真号", "备注", "地址", "信用额度", "欠款报警" ];
+            "允许退货", "适用价格", "传真号", "备注", "地址","拿货折扣", "信用额度", "欠款报警" ];
     fields = editCustomerFields(keys);
     changeTFieldValue(fields["手机"], r);
     changeTFieldValue(fields["门店"], "中洲店");
     changeTFieldValue(fields["生日"], getToday());
+    changeTFieldValue(fields["客户类别"], "打包客户");
     changeTFieldValue(fields["客户代码"], r);
+    changeTFieldValue(fields["允许退货"], "否");
+    changeTFieldValue(fields["拿货折扣"], "0.888");
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);
     // delay();
@@ -171,13 +174,14 @@ function test110004() {
             && isEqual(getToday(), getTextFieldValue(getScrollView(), 6))
             && isEqual("000,总经理", getTextFieldValue(getScrollView(), 7))
             && isEqual("Yvb", getTextFieldValue(getScrollView(), 8))
-            && isEqual("零批客户", getTextFieldValue(getScrollView(), 9))
+            && isEqual("打包客户", getTextFieldValue(getScrollView(), 9))
             && isEqual(r, getTextFieldValue(getScrollView(), 11))// 客户代码
             && isEqual("否", getTextFieldValue(getScrollView(), 12))// 允许退货
             && isEqual("零批价", getTextFieldValue(getScrollView(), 14))// 适用价格
             && isEqual("55555", getTextFieldValue(getScrollView(), 15))
             && isEqual("123", getTextFieldValue(getScrollView(), 16))
             && isEqual("地址", getTextFieldValue(getScrollView(), 17))
+              && isEqual("0.888", getTextFieldValue(getScrollView(), 18))
             && isEqual("10000", getTextFieldValue(getScrollView(), 20))// 信用额度
             && isEqual("5000", getTextFieldValue(getScrollView(), 21));
     tapButton(window, RETURN);
@@ -419,7 +423,7 @@ function test110012() {
     query();
     tapFirstText();
     tapButtonAndAlert(STOP);
-    tapRefresh();
+//    tapRefresh();
 
     keys = { "厂商" : r, "是否停用" : "是" };
     var qFields = queryCustomerProviderFields(keys);
@@ -429,7 +433,7 @@ function test110012() {
     var ret = isEqual(r, qr.data[0]["名称"]);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : r };
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillCustomer(json);
     saveAndAlertOk();
     tapPrompt();
@@ -517,13 +521,8 @@ function test110014() {
 
 // 翻页，排序，查询，清除
 function test110015() {
-    // 新增客户无欠余款
-    var r = "a" + getTimestamp(6);
-    var keys = { "名称" : r };
-    addCustomer(keys);
-
     tapMenu("往来管理", "客户账款", "客户门店账");
-    keys = { "门店" : "常青店" };
+    var keys = { "门店" : "常青店" };
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
     var ret = goPageCheck("名称", 2, "SC");
@@ -557,7 +556,7 @@ function test110015() {
             qr.data[0]["门店"]), isEqual("1", qr.totalPageNo), isEqual("1",
             qr.total), isEqual(qr.counts["余额"], qr.data[0]["余额"]));
 
-    keys = { "客户名称" : r };
+    keys = { "客户名称" : "bkdkh" };//不开单客户，无欠余款
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
     qr = getQR();
@@ -1551,6 +1550,7 @@ function test110038() {
     tapButtonAndAlert(SAVE);
     tapReturn();
 
+    query();
     var qr = getQR();
     var expected = { "名称" : "cs" + r, "手机" : r, "地址" : "地址", "备注" : "备注abc123" }
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
@@ -1560,7 +1560,7 @@ function test110038() {
             isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("地址",
                     getTextFieldValue(getScrollView(), 2)), isEqual("零批价",
                     getTextFieldValue(getScrollView(), 3)), isEqual("备注abc123",
-                    getTextFieldValue(getTableView(getScrollView(),0), 0)));
+                    getTextViewValue(getScrollView(), 0)));
     tapButton(window, RETURN);
 
     return ret;
@@ -1646,27 +1646,43 @@ function test110039() {
 }
 
 function test110040() {
-    var r = "cs" + getTimestamp(5);
-    var keys = { "名称" : r, "适用价格" : "进货价" };
+    var r1 = "p1" + getTimestamp(5);
+    var keys = { "名称" : r1, "适用价格" : "进货价" };
+    addProvider(keys);
+
+    var r2 = "p2" + getTimestamp(5);
+    keys = { "名称" : r2, "适用价格" : "零批价" };
     addProvider(keys);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : r1, "明细" : [ { "货品" : "3035" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     var ret = isAnd(test110040Field("进货价"), isEqual("100", getTextFieldValue(
             getScrollView(-1), 4)));
-    tapButton(window, RETURN);
+
+    json = { "客户" : r2 };
+    editSalesBillCustomer(json);
+    tapButtonAndAlert("none", "刷新价格");
+    delay();
+    ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
+            getScrollView(-1), 4)));
+
+    tapReturn();
 
     tapMenu("采购订货", "新增订货+");
-    json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "onlytest" : "yes" };
+    json = { "客户" : r1, "明细" : [ { "货品" : "3035" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
             getScrollView(-1), 4)));
-    saveAndAlertOk();
-    tapReturn();
 
+    json = { "客户" : r2 };
+    editSalesBillCustomer(json);
+    tapButtonAndAlert("none", "刷新价格");
+    delay();
+    ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
+            getScrollView(-1), 4)));
+
+    tapReturn();
 
     return ret;
 }
@@ -1905,20 +1921,31 @@ function test110044() {
 function test110045_110046() {
     tapMenu("往来管理", "更多.", "新增物流商+");
     var r = "kd" + getTimestamp(6);
-    var keys = [ "名称" ];
+    var keys = { "名称" : "天天物流", "店员" : "004", "电话" : r, "邮编" : "312000",
+        "地址" : "abc", "账号" : "123", "门店" : "中洲店", "备注" : "备注" };
     var fields = editCustomerLogisticsFields(keys);
-    changeTFieldValue(fields["名称"], r);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
+    var ret = isIn(alertMsg, "相同名称已存在");
 
-    tapMenu("往来管理", "更多.", "物流商查询");
-    var qKeys = [ "名称" ];
-    var qFields = queryCustomerLogisticsFields(qKeys);
-    changeTFieldValue(qFields["名称"], r);
-    query(qFields);
-    var qr = getQR();
-    var ret = isEqualQRData1ByTitle(qr, "名称", r);
+    keys = { "名称" : r, "电话" : "13833331112" };
+    fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
+
+    keys = { "电话" : r };
+    fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
     delay();
+    // 保存后自动返回物流商查询页面
+
+    query();
+    var qr = getQR();
+    var expected = { "区域" : "", "名称" : r, "门店" : "中洲店", "店员" : "店长", "电话" : r,
+        "地址" : "abc", "账号" : "123", "备注" : "备注" }
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     // 修改物流商信息并验证
     tapFirstText(getScrollView(), TITLE_SEQ, 9);
@@ -1928,6 +1955,7 @@ function test110045_110046() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     delay();
+
     tapFirstText(getScrollView(), TITLE_SEQ, 9);
     ret = ret && isEqual(r, getTextFieldValue(getScrollView(), 0))
             && isEqual("000,总经理", getTextFieldValue(getScrollView(), 1))
@@ -1937,31 +1965,44 @@ function test110045_110046() {
             && isEqual("地址", getTextFieldValue(getScrollView(), 5))
             && isEqual("abc", getTextFieldValue(getScrollView(), 6))// 账号
             && isEqual("常青店", getTextFieldValue(getScrollView(), 7))
-            && isEqual("备注", getTextFieldValue(getScrollView(), 8));
+            && isEqual("备注abc123", getTextFieldValue(getScrollView(), 8));
 
     // 停用
     tapButtonAndAlert(STOP);
-    qKeys = [ "名称", "是否停用" ];
-    qFields = queryCustomerLogisticsFields(qKeys);
-    changeTFieldValue(qFields["名称"], r);
-    changeTFieldValue(qFields["是否停用"], "是");
-    query(qFields);
+    keys = { "名称" : r, "是否停用" : "是" };
+    fields = queryCustomerLogisticsFields(keys);
+    query(fields);
     var qr = getQR();
-    var ret1 = isEqualQRData1ByTitle(qr, "名称", r);
+    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r));
+    tapRefresh();
+
+    tapMenu("销售开单", "开  单+");
+    var josn = { "代收" : { "物流商" : r, "代收金额" : 90 } };
+    editSalesBillAgency(josn);
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "必须选择物流商"));
+    tapNaviLeftButton();
+    tapReturn();
 
     // 启用
+    tapMenu("往来管理", "更多.", "物流商查询");
     tapFirstText(getScrollView(), TITLE_SEQ, 9);
     tapButtonAndAlert(START);
-    qKeys = [ "名称", "是否停用" ];
-    qFields = queryCustomerLogisticsFields(qKeys);
-    changeTFieldValue(qFields["名称"], r);
-    changeTFieldValue(qFields["是否停用"], "否");
-    query(qFields);
-    var qr = getQR();
-    ret1 = ret1 && isEqualQRData1ByTitle(qr, "名称", r);
+    keys = { "是否停用" : "否" };
+    fields = queryCustomerLogisticsFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r));
+    tapRefresh();
 
-    logDebug("ret=" + ret + "   ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("销售开单", "开  单+");
+    josn = { "代收" : { "物流商" : r, "代收金额" : 90 } };
+    editSalesBillAgency(josn);
+    ret = isAnd(ret, !isIn(alertMsg, "必须选择物流商"));
+    tapReturn();
+
+    return ret;
 }
 
 function test110047() {
@@ -1978,8 +2019,19 @@ function test110047() {
 
     // tapMenu("往来管理", "更多.", "客户回访");
     var qr = getQR();
-    var ret = isEqual("小王", qr.data[0]["客户"]) && isEqual(r, qr.data[0]["主题"]);
+    var expected = { "回访日期" : getToday("yy"), "名称" : "小王", "主题" : r,
+        "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议" };
+    var ret = isEqualQRData1Object(qr, expected);
 
+    tapFirstText();
+    ret = isAnd(ret,
+            isEqual(getToday(), getTextFieldValue(getScrollView(), 0)),
+            isEqual("小王", getTextFieldValue(getScrollView(), 1)), isEqual(
+                    "000,总经理", getTextFieldValue(getScrollView(), 2)), isEqual(
+                    "售后回访", getTextFieldValue(getScrollView(), 3)), isEqual(r,
+                    getTextFieldValue(getScrollView(), 4)), isEqual("反馈及建议",
+                    getTextViewValue(getScrollView(), 0)));
+    tapButton(window, RETURN);
     return ret;
 
 }
@@ -2057,13 +2109,10 @@ function test110049() {
     // 删除
     tapFirstText();
     tapButtonAndAlert("删 除");
-    var ret1 = true;
     qr = getQR();
-    if (isEqual(r + "a", qr.data[0]["主题"])) {
-        ret1 = false;
-    }
+    ret = isAnd(ret, isEqual(r + "a", qr.data[0]["主题"]));
 
-    return ret && ret1;
+    return ret;
 }
 
 function test110053() {
