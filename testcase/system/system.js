@@ -589,13 +589,13 @@ function test210027() {
 }
 function test210028_210029() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "001", "是否停用" : "否" };
+    var keys = { "工号" : "2001", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
 
     tapFirstText();
     tapButtonAndAlert("停 用", CANCEL);
-    var ret = isEqual("001", getTextFieldValue(getScrollView(), 0));
+    var ret = isEqual("2001", getTextFieldValue(getScrollView(), 0));
 
     tapButtonAndAlert("停 用", OK);
 
@@ -604,12 +604,12 @@ function test210028_210029() {
     query(fields);
 
     tapFirstText();
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
-            "财务员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("2001", getTextFieldValue(getScrollView(), 0)),
+            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", CANCEL);
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
-            "财务员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("总经理2001", getTextFieldValue(getScrollView(), 0)),
+            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", OK);
 
@@ -617,8 +617,8 @@ function test210028_210029() {
     fields = querySystemStaffFields(keys);
     query(fields);
     tapFirstText();
-    ret = isAnd(isEqual("001", getTextFieldValue(getScrollView(), 0)), isEqual(
-            "财务员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("2001", getTextFieldValue(getScrollView(), 0)),
+            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
 
     tapReturn();
 
@@ -882,6 +882,20 @@ function test210036() {
 
     return ret;
 }
+function test210037() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("删除所有缩略图");
+
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "操作成功")) {
+        ret = true;
+    }
+
+    return ret;
+}
 function test210038() {
     // 店长工号登录,常青店长004
     tapMenu("系统设置", "人员列表");
@@ -993,25 +1007,24 @@ function test210041() {
     query(fields);
 
     var qr = getQR();
-    
+
     var len = qr.data.length;
     var ret = false;
-    for (var i = 0; i <= len-2; i++) {
+    for (var i = 0; i <= len - 2; i++) {
         var h = qr.data[i]["工号"];
-        var h1 = qr.data[i+1]["工号"];
+        var h1 = qr.data[i + 1]["工号"];
         var g = qr.data[i]["岗位"];
-        var g1 = qr.data[i+1]["岗位"];
-               
-        if (isNoEqual(h1, h) ) {
+        var g1 = qr.data[i + 1]["岗位"];
+
+        if (isNoEqual(h1, h)) {
             ret = true;
-        }       
-        else  {
-            if(isNoEqual(g1, g)){
-            ret = true;
+        } else {
+            if (isNoEqual(g1, g)) {
+                ret = true;
             }
-        }       
+        }
     }
-    
+
     return ret;
 }
 function test210042() {
@@ -1056,19 +1069,27 @@ function test210043() {
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
 
+    tapNaviRightButton();
+    var ret = isEqual(null, getTextViewValue(window, 0));
+
+    
+    var f0 = new TField("服务描述", TV, 0, "数据清理授权aa");
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
     tapKeyboardHide();
-    target.frontMostApp().mainWindow().buttons()["保存"].tap();
+    tapButton(window, "保存");
     tapPrompt();
 
-    var ret = false;
+    var ret1 = false;
     if (isIn(alertMsg, "操作成功")) {
-        ret = true;
+        ret1 = true;
     }
     tapReturn();
 
     tapNaviLeftButton();
 
-    return ret;
+    return ret && ret1;
 }
 function test210043_1() {
     // 财务员001登录
@@ -1485,6 +1506,11 @@ function test210051() {
     return ret && ret1;
 }
 function test210051_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "1", "数值" : [ "限制修改销售单日期", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
@@ -1524,8 +1550,8 @@ function test210051_1() {
     query();
     tapFirstText();
 
-    var f9 = new TField("日期", TF_DT, 9, getDay(-1));
-    var fields = [ f9 ];
+    var f10 = new TField("日期", TF_DT, 10, getDay(-1));
+    var fields = [ f10 ];
     setTFieldsValue(window, fields);
 
     saveAndAlertOk();
@@ -1707,4 +1733,124 @@ function test210052_1() {
     tapReturn();
 
     return ret && ret1 && ret2 && ret3;
+}
+function test210052_2() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "2", "数值" : [ "限制修改所有单据日期", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "发货状态" : "未发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    var f10 = new TField("日期", TF_DT, 10, getDay(-1));
+    var fields = [ f10 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+
+    var f8 = new TField("日期", TF_DT, 8, getDay(-1));
+    var fields = [ f8 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    return ret && ret1;
+}
+function test210052_3() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "2", "数值" : [ "限制修改所有单据日期", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "发货状态" : "未发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+
+    tapFirstText();
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var f9 = new TField("日期", TF_DT, 9, getDay(-1));
+    var fields = [ f9 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    saveAndAlertOk();
+    tapPrompt();
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f8 = new TField("日期", TF_DT, 8, getDay(-1));
+    var fields = [ f8 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    return ret && ret1;
 }
