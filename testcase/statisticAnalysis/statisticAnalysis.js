@@ -55,7 +55,7 @@ function testStatisticAnalysisAll() {
 }
 
 function testStatisticAnalysisPrepare() {
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1) / 100;
     var r = "备注" + "a" + getTimestamp(6);
 
     tapMenu("统计分析", "新增收入");
@@ -133,7 +133,7 @@ function test190013() {
     }
     tapNaviLeftButton();
 
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1)  / 100;
     var r = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -271,7 +271,7 @@ function test190017() {
     }
     tapNaviLeftButton();
 
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1)  / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增支出");
     var json = { "账户" : "现", "收支备注" : r,
@@ -405,7 +405,7 @@ function test190001() {
 
 function test190002_190003_190008() {
     var i, j;
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1)  / 100;
     var r1 = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
 
     tapMenu("统计分析", "新增收入");
@@ -477,7 +477,7 @@ function test190002_190003_190008() {
 }
 
 function test190004() {
-    var rm = getRandomInt(100000) / 100;
+    var rm =(getRandomInt(100000)+1)  / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -515,7 +515,7 @@ function test190006() {
 
 function test190009() {
     var i, j;
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1)  / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "银", "收支备注" : r,
@@ -564,7 +564,7 @@ function test190009() {
 
 function test190010() {
     var i, j;
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1)  / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -663,7 +663,7 @@ function test190011() {
 }
 
 function test190022() {
-    var rm = getRandomInt(100000) / 100;
+    var rm = (getRandomInt(100000)+1) / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -1084,7 +1084,7 @@ function test190068_190070() {
     var qr = getQR();
     var a = Number(qr.counts["退货数"]);
 
-    var r = getRandomInt(100);
+    var r = getRandomInt(100)+1;
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : -r } ] };
     editSalesBillNoColorSize(json);
@@ -1161,7 +1161,7 @@ function test190073_190075_190076() {
     var a1 = Number(qr.data[0]["销售数"]);
     var a2 = Number(qr.data[0]["销售额"]);
 
-    var r = getRandomInt(100);
+    var r = getRandomInt(100)+1;
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : r } ] };
     editSalesBillNoColorSize(json);

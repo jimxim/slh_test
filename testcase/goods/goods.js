@@ -54,6 +54,10 @@ function goodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否允许修改已发货的订单" };
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     return ret;
 }
 
@@ -72,7 +76,7 @@ function testGoods001Prepare() {
     // 库存调整单，test100007验证
     tapMenu("货品管理", "当前库存");
     query();
-    var r = getRandomInt(100);
+    var r = getRandomInt(100)+1;
     addGoodsStockAdjustment(r);
 }
 
@@ -685,7 +689,7 @@ function test100005_2() {
 // 均色均码
 function test100005_3() {
     var r = getTimestamp(8);
-    var num = getRandomInt(100);
+    var num = getRandomInt(100)+1;
     var code = "g" + r;
     // var keys={"款号":code,"名称":"货品"+r, "进货价" : "200", "厂商" : "Vell"};
     // addGoods(keys,"no","no",getDay(-60));
@@ -1833,7 +1837,7 @@ function testGoodsPriceChangeField(keys, expected, All) {
 
 function test100047_100048_100049_100050_100051_100052() {
     tapMenu("货品管理", "货品查询");
-    var r = getRandomInt(1000);
+    var r = getRandomInt(1000)+1;
 
     var qKeys = { "款号名称" : "tjcs1" }; // 调价测试1
     var qFields = queryGoodsFields(qKeys);
@@ -1895,7 +1899,7 @@ function test100047_100048_100049_100050_100051_100052() {
 
 function test100047_100048_100049_100050_100051_100052All() {
     tapMenu("货品管理", "货品查询");
-    var r = getRandomInt(1000);
+    var r = getRandomInt(1000)+1;
     var i, j, l, p;
 
     var qKeys = { "款号名称" : "plczcs" };
@@ -2928,7 +2932,7 @@ function test100104_100105() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 库存调整
-    var r = getRandomInt(100);
+    var r = getRandomInt(100)+1;
     addGoodsStockAdjustment(r);
 
     tapMenu("货品管理", "更多", "库存调整单");
@@ -2947,7 +2951,7 @@ function test100104_100105() {
     arr[3] = qr.data[0]["尺码"];
     arr[4] = qr.data[0]["库存"];// 调整前数量
 
-    r = getRandomInt(100);// 调整后数量
+    r = getRandomInt(100)+1;// 调整后数量
     addGoodsStockAdjustment(r);
 
     tapMenu("货品管理", "更多", "库存调整单");

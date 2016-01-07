@@ -11,8 +11,8 @@ function test000All() {
 //    run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-//	   run("test", "test110008");
-    run("test", "test160006");
+	   run("test", "test160021");
+//    run("test", "test160019");
 
 
 
@@ -23,9 +23,6 @@ function test000All() {
 }
 
 function onlyTest(){
-    var view= getScrollView();
-    var a=getTextViewValue(getScrollView(),0);
-    logDebug("a="+a);
 
 }
 
@@ -173,15 +170,7 @@ function test000Customer001Else() {
      logout();
   }
 }
-// 店长
-function test004Customer() {
-    var p1 = {"角色":"店长"};
-  var ok = login("004","000000",p1);
-  if( ok ) {
-      test004CustomerAll();
-     logout();
-  }
-}
+
 // 开单员
 function test005Customer() {
     var p1 = {"角色":"开单员"};
@@ -313,6 +302,16 @@ function test000StatisticAnalysisAll() {
        
        logout();
    }
+}
+
+//店长登陆的一些用例
+function testShopkeeper004() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+      testShopkeeper004All();
+     logout();
+  }
 }
 
 

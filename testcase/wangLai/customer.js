@@ -61,9 +61,11 @@ function testCustomer001Else() {
 
 }
 // 店长
-function test004CustomerAll() {
+function testShopkeeper004All() {
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
     run("【往来管理】店长查看客户门店帐", "test110031_110032");
+    
+    run("【销售订货—按批次查】更多-查看修改日志", "test160011_1");
 }
 // 开单员
 function test005CustomerAll() {
@@ -2420,7 +2422,7 @@ function testCustomerEditBranch() {
     delay();
 
     tapButton(window, "新增分店+");
-    var r = getRandomInt(1000);
+    var r = getRandomInt(1000)+1;
     var keys = [ "name", "mobile", "weixin", "address", "remarks" ];
     var fields = editCustomerBranchFields(keys);
     changeTFieldsValue(fields, r);

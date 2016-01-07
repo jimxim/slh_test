@@ -450,8 +450,8 @@ function test120008_1() {
     var a1 = qr.data[0]["拿货数"];
     var a2 = qr.data[0]["退货数"];
 
-    var num1 = getRandomInt(100);
-    var retNum1 = getRandomInt(num1);
+    var num1 = getRandomInt(100)+1;
+    var retNum1 = getRandomInt(num1)+1;
     var difNum1 = num1 - retNum1;
     tapMenu("采购入库", "新增入库+");
     var json = {
