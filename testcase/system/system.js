@@ -66,7 +66,17 @@ function test210001() {
     qr = getQR();
     ret = isAnd(ret, isEqual(r, qr.data[1]["数值"]));
 
-    return ret;
+    tapMenu("系统设置", "打印机");
+    tapFirstText();
+    tapButton(getScrollView(), "本 机");
+    var ret1 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapButtonAndAlert(SAVE, OK);
+
+    tapFirstText();
+    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapReturn();
+
+    return ret && ret1 && ret2;
 }
 function test210002() {
     tapMenu("系统设置", "打印机");
@@ -457,6 +467,21 @@ function test210018_7() {
 
     return ret && ret1;
 }
+function test210022() {
+    tapMenu("系统设置", "刷新图像");
+
+    tapButtonAndAlert("刷新缩略图", OK);
+    tapPrompt();
+
+     var cond="isIn(alertMsg, '操作成功')";
+     waitUntil(cond,300);
+     
+     var ret=isIn(alertMsg, "操作成功");
+
+     tapNaviLeftButton();
+
+    return ret;
+}
 function test210020_210021() {
     runAndAlert("test210020Clear", OK);
     delay(5);
@@ -472,42 +497,18 @@ function test210020_210021() {
 function test210020Clear() {
     tapMenu("系统设置", "清理本地");
 }
-function test210022() {
-    tapMenu("系统设置", "刷新图像");
-
-    tapButtonAndAlert("刷新缩略图", OK);
-    tapPrompt();
-    delay(180);
-    tapPrompt();
-
-    // var cond=isIn(alertMsg, "操作成功");
-    // waitUntil(cond,60);
-
-    var ret = false;
-    if (isIn(alertMsg, "操作成功")) {
-        ret = true;
-
-        tapNaviLeftButton();
-    }
-
-    // tapNaviLeftButton();
-
-    return ret;
-}
 function test210023() {
     tapMenu("系统设置", "刷新图像");
 
     tapButtonAndAlert("刷新大图", OK);
     tapPrompt();
-    delay(240);
-    tapPrompt();
+    
+    var cond="isIn(alertMsg, '操作成功')";
+    waitUntil(cond,300);
+    
+    var ret=isIn(alertMsg, "操作成功");
 
-    var ret = false;
-    if (isIn(alertMsg, "操作成功")) {
-        ret = true;
-
-        tapNaviLeftButton();
-    }
+    tapNaviLeftButton();
 
     return ret;
 }
@@ -1072,7 +1073,6 @@ function test210043() {
     tapNaviRightButton();
     var ret = isEqual(null, getTextViewValue(window, 0));
 
-    
     var f0 = new TField("服务描述", TV, 0, "数据清理授权aa");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -1850,6 +1850,72 @@ function test210052_3() {
     if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
         ret1 = true;
     }
+    tapReturn();
+
+    return ret && ret1;
+}
+function test210053() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,启用", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret1 = false;
+    if (isIn(alertMsg, "操作失败，[开启启用上次成交价作为本次开单单价时，必须先开启颜色尺码下，开单显示上次单价] ")) {
+        ret1 = true;
+    }
+
+    tapReturn();
+ 
+    return ret && ret1;
+}
+function test210053_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "默认不启用", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret1 = false;
+    if (isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ")) {
+        ret1 = true;
+    }
+
     tapReturn();
 
     return ret && ret1;

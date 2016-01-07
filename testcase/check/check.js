@@ -316,7 +316,7 @@ function test180001_180005() {
 }
 function test180002() {
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-60), "批次从" : "54", "批次到" : "61" };
+    var keys = { "日期从" : getDay(-360), "批次从" : "54", "批次到" : "61" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -827,7 +827,6 @@ function test180026() {
             qr.data[0]["盘点日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(
             "总经理", qr.data[0]["操作人"]), isAqualOptime(getOpTime(),
             qr.data[0]["操作日期"], 1));
-    return ret && ret1;
 
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "门店" : "常青店" };
@@ -1178,6 +1177,7 @@ function test180033() {
     return ret;
 }
 function test180034() {
+    // 需要为盈亏表造数据
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
@@ -1270,38 +1270,27 @@ function test180034() {
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
-    query();
-//    var keys = { "门店" : [ "常青店", "in" ], "款号" : "3035", "日期从" : getDay(-2),
-//        "到" : getToday() };
-//    var fields = checkProfitAndLossFields(keys);
-//    query(fields);
-//    var qr = getQR();
-//    var a = qr.data[0]["款号"];
-//    var b = qr.data[0]["盘前"];
-//    var c = qr.data[0]["盘后"];
-//    var d = qr.data[0]["盈亏"];
-//
-//    var ret = isAnd(isEqual("3035", a), isEqual(1, c), isEqual(d, sub(c, b)),
-//            isEqual(-99, d));
-//
-//    tapMenu("盘点管理", "盈亏表");
-//    var keys = { "门店" : [ "常青店", "in" ], "款号" : r, "日期从" : getDay(-2),
-//        "到" : getToday() };
-//    var fields = checkProfitAndLossFields(keys);
-//    query(fields);
-//    qr = getQR();
-//    var a = qr.data[0]["款号"];
-//    var b = qr.data[0]["盘前"];
-//    var c = qr.data[0]["盘后"];
-//    var d = qr.data[0]["盈亏"];
-//
-//    var ret = isAnd(isEqual("3035", qr.data[0]["款号"]), isEqual(25,
-//            qr.data[0]["盘后"]), isEqual(20, qr.data[0]["盘前"]), isEqual(5,
-//            data[0]["盈亏"]));
+    var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
+    var fields = checkProfitAndLossFields(keys);
+    query(fields);
+    qr = getQR();
 
-    return ret;
+    var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
+            isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
+            isEqual(0, qr.data[0]["盈亏"]), isEqual(r, qr.data[1]["款号"]),
+            isEqual(25, qr.data[1]["盘后"]), isEqual(20, qr.data[1]["盘前"]),
+            isEqual(5, qr.data[1]["盈亏"]), isEqual("k200", qr.data[2]["款号"]),
+            isEqual(0, qr.data[2]["盘后"]), isEqual(-8, qr.data[2]["盘前"]),
+            isEqual(8, qr.data[2]["盈亏"]), isEqual("k300", qr.data[3]["款号"]),
+            isEqual(-11, qr.data[3]["盘后"]), isEqual(-10, qr.data[3]["盘前"]),
+            isEqual(-1, qr.data[3]["盈亏"]), isEqual("8989", qr.data[4]["款号"]),
+            isEqual(-5, qr.data[4]["盘后"]), isEqual(0, qr.data[4]["盘前"]),
+            isEqual(-5, qr.data[4]["盈亏"]), isEqual("4562", qr.data[5]["款号"]),
+            isEqual(1, qr.data[5]["盘后"]), isEqual(100, qr.data[5]["盘前"]),
+            isEqual(-99, qr.data[5]["盈亏"]));
+
+    return ret && ret1;
 }
-
 function test180035() {
     tapMenu("盘点管理", "盈亏表");
     var keys = { "门店" : [ "常青店", "in" ], "款号" : "k300", "日期从" : getDay(-2),
@@ -1349,8 +1338,8 @@ function test180037_1() {
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次");
-    //
+    var ret = goPageCheck("序号");
+//    var ret=true;
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -1359,23 +1348,26 @@ function test180037_1() {
     ret = ret && sortByTitle("盘前");
     ret = ret && sortByTitle("盘后", IS_NUM);
     ret = ret && sortByTitle("盈亏", IS_NUM);
-    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("盈亏金额", IS_NUM);
+    ret = ret && sortByTitle("操作日期");
 
-    query();
-    var qr = getQR();
-    var sum1 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["盈亏"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isEqual(sum1, qr.counts["盈亏"]);
+    return ret;
 
-    return ret && ret1;
+    // query();
+     var qr = getQR();
+     var sum1 = 0;
+     for (var j = 1; j <= qr.totalPageNo; j++) {
+     for (var i = 0; i < qr.curPageTotal; i++) {
+     sum1 += Number(qr.data[i]["盈亏"]);
+     }
+     if (j < qr.totalPageNo) {
+     scrollNextPage();
+     qr = getQR();
+     }
+     }
+     var ret1 = isEqual(sum1, qr.counts["盈亏"]);
+    
+     return ret && ret1;
 }
 function test180037_2() {
     tapMenu("盘点管理", "盈亏表");
