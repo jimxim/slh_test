@@ -1681,7 +1681,9 @@ function test160072() {
 
 // 均色均码
 function test160087() {
-   
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
     
     
 }

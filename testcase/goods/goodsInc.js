@@ -130,7 +130,7 @@ function tapTextByFirstWithName(name, view1) {
         view1 = getScrollView();
     }
     var texts = getStaticTexts(view1);
-    var ok = tap(texts.firstWithName(name));
+    var ok = tap(texts.firstWithName(name),true);
     delay();
 }
 /**
@@ -418,6 +418,21 @@ function dropDownListCheck2(index, value, expected, o) {
     }
 
     return ret;
+}
+/**
+ * 下拉框内容是否与期望内容相同
+ * @param expected
+ * @param view1
+ * @returns {Boolean}
+ */
+function isEqualDropDownList(expected,view1){
+    var ret=true;
+    for (var i = 0; i < expected.length; i++) {
+        //下拉框奇数行内容为空
+       ret=isAnd(ret,isEqual(expected[i],getStaticTextValue(view1, i*2)));
+    }
+    target.frontMostApp().mainWindow().popover().dismiss();
+   return ret;
 }
 
 /**

@@ -11,7 +11,7 @@ function test000All() {
 //    run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-	   run("test", "test160021");
+	   run("test", "test110045_110046");
 //    run("test", "test160019");
 
 
@@ -23,7 +23,7 @@ function test000All() {
 }
 
 function onlyTest(){
-
+    tapTextByFirstWithName("2");
 }
 
 

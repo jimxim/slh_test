@@ -39,7 +39,7 @@ function goodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
+    o = { "新值" : "1", "数值" : [ "默认合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
     
     qo = { "备注" : "单据是否允许修改客户或厂商" };
