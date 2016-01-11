@@ -49,6 +49,7 @@ function test000All() {
 // run("【销售开单－开单】", "testPictureCodePictureFields");//
 // run("", "test200026");
 	 run("", "test180049_1");
+//	 run("", "test180088");
      
 // testStatisticPictureAll();
 // testSystem001();
@@ -65,20 +66,20 @@ function setSales001Params() {
         logout();
     }
 }
+function setSales002Params() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("颜色尺码/开单模式2", "setIgnorecolorsize_0Params");
+        logout();
+    }
+}
 function test000SalesNoColorSizeElse001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
         testSalesNoColorSizeElse001();
         
-        logout();
-    }
-}
-function setSales002Params() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        run("颜色尺码/开单模式2", "setIgnorecolorsize_0Params");
         logout();
     }
 }
@@ -91,7 +92,6 @@ function test000SalesColorSize001() {
         logout();
     }
 }
-
 // 采购入库
  function test000Purchase001() {
     var p1 = {"角色":"总经理"};

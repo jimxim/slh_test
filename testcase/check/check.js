@@ -1,42 +1,48 @@
 //luxingxin <52619481 at qq.com> 20151014
 
 function testCheck001() {
-    // run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_1");
-    // run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
-    // run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2");
-    // run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");
-    // run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2");
-    // run("【盘点管理—处理记录】翻页_排序_汇总", "test180031_1");
-    // run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180031_2");
-    // run("【盘点管理—盈亏表】翻页_排序_汇总", "test180037_1");
-    // run("【盘点管理—盈亏表】条件查询，清除按钮,下拉框", "test180037_2");
+    run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_1");
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2");
+    run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1");
+    run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2");
+    run("【盘点管理—处理记录】翻页_排序_汇总", "test180031_1");
+    run("【盘点管理—处理记录】条件查询，清除按钮,下拉框", "test180031_2");
+    run("【盘点管理—盈亏表】翻页_排序_汇总", "test180037_1");
+    run("【盘点管理—盈亏表】条件查询，清除按钮,下拉框", "test180037_test180034_180035");
 }
 function testCheckAll() {
-    // run("【盘点管理—新增盘点】", "test180019");
-    // run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
-    // run("【盘点管理—新增盘点】返回", "test180023");
-    // run("【盘点管理—新增盘点】删除按钮", "test180024");
-    // run("【盘点管理—按批次查】查询条件单项查询／【盘点管理—按批次查】底部统计数据检查", "test180001_180005");
-    // run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
-    // run("【盘点管理—按批次查】查询条件组合查询/【盘点管理—按批次查】清除功能", "test180003_180004");
-    // run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
-    // run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
-    // run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
-    // run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
-    // run("【盘点管理—按明细查】查询条件单项查询", "test180013");
-    // run("【盘点管理—按明细查】查询条件组合查询", "test180014");
-    // run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
-    // run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
-    // run("【盘点管理—盘点处理】部分处理", "test180026");
-    // run("【盘点管理—盘点处理】全盘处理", "test180025");
-    // run("【盘点管理—盘点处理】处理日期设置", "test180027");
-    // run("【盘点管理—处理记录】查询", "test180029");
-    // run("【盘点管理—处理记录】查询", "test180030");
-    // run("【盘点管理—处理记录】清除", "test180031");
-    // run("【盘点管理—盘点撤销】", "test180033");
-    // run("【盘点管理—盈亏表】查询", "test180034");
-    // run("【盘点管理—盈亏表】清除", "test180035");
-    // run("【盘点管理—盈亏表】底部盈亏总数数值检查", "test180037");
+    run("【盘点管理—新增盘点】", "test180019");
+    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
+    run("【盘点管理—新增盘点】返回", "test180023");
+    run("【盘点管理—新增盘点】删除按钮", "test180024");
+    run("【盘点管理—按批次查】查询条件单项查询／【盘点管理—按批次查】底部统计数据检查", "test180001_180005");
+    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
+    run("【盘点管理—按批次查】查询条件组合查询/【盘点管理—按批次查】清除功能", "test180003_180004");
+    run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
+    run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
+    run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
+    run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
+    run("【盘点管理—按明细查】查询条件单项查询", "test180013");
+    run("【盘点管理—按明细查】查询条件组合查询", "test180014");
+    run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
+    run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
+    run("【盘点管理—盘点处理】部分处理", "test180026");
+    run("【盘点管理—盘点处理】全盘处理", "test180025");
+    run("【盘点管理—盘点处理】处理日期设置", "test180027");
+    run("【盘点管理—处理记录】查询", "test180029");
+    run("【盘点管理—处理记录】查询", "test180030");
+    run("【盘点管理—处理记录】清除", "test180031");
+    run("【盘点管理—盘点撤销】", "test180033");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
+    run("【盘点管理—按批次查】处理人检查", "test180048");
+    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049");
+    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
+    run("【盘点管理-盈亏表】店长权限", "test180050");
+    run("【盘点管理—按批次查】单据检查", "test180047");
 }
 
 function test180019() {
@@ -1410,7 +1416,7 @@ function test180037_1() {
 
     return ret && ret1;
 }
-function test180037_180035() {
+function test180037_180034_180035() {
     tapMenu("盘点管理", "盈亏表");
     var ret = false;
     tap(getTextField(window, 0));
@@ -1652,19 +1658,6 @@ function test180042_2() {
 
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
     // 部分处理
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
-
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
@@ -1685,12 +1678,21 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
+
     var ret = false;
     if (isIn(alertMsg, "保存成功")) {
         ret = true;
@@ -1699,11 +1701,20 @@ function test180042_2() {
 
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
+
+    tapMenu("门店调出", "按批次查");
+    query();
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
+
     var ret1 = false;
     if (isIn(alertMsg, "保存成功")) {
         ret1 = true;
@@ -1711,9 +1722,17 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1732,20 +1751,7 @@ function test180042_3() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
-    // 部分处理
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
-
+    // 全盘处理
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
@@ -1759,7 +1765,101 @@ function test180042_3() {
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("全盘处理", OK);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "000", "接收店" : "中洲店",
+        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    editShopOutDecruitIn(json);
+
+    tapMenu("门店调出", "按批次查");
+    query();
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret2 = true;
+    }
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test180042_4() {
+    var qo, o, ret = true;
+    qo = { "备注" : "不允许修改盘点之前出入库流水" };
+    o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
+    // 部分处理
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, r);
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
     delay(2);
     tapPrompt();
 
@@ -1800,6 +1900,171 @@ function test180042_3() {
     tapPrompt();
     var ret2 = false;
     if (isIn(alertMsg, "保存成功")) {
+        ret2 = true;
+    }
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test180042_5() {
+    var qo, o, ret = true;
+    qo = { "备注" : "不允许修改盘点之前出入库流水" };
+    o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
+    // 部分处理
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, r);
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "作废");
+    tapPrompt();
+    var ret = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "000", "接收店" : "中洲店",
+        "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
+    editShopOutDecruitIn(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret2 = true;
+    }
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test180042_6() {
+    var qo, o, ret = true;
+    qo = { "备注" : "不允许修改盘点之前出入库流水" };
+    o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
+    // 部分处理
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "000", "接收店" : "中洲店",
+        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    editShopOutDecruitIn(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "20");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+
+    var ret = false;
+    if (isIn(alertMsg, "处理完成")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = false;
+    if (isIn(alertMsg, "盘点之前的流水不允许修改")) {
+        ret = true;
+    }
+    tapReturn();
+
+    tapMenu("门店调出", "按批次查");
+    query();
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = false;
+    if (isIn(alertMsg, "盘点之前的流水不允许修改")) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, "11");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = false;
+    if (isIn(alertMsg, "盘点之前的流水不允许修改")) {
         ret2 = true;
     }
     tapReturn();
@@ -2173,13 +2438,13 @@ function test180049_1() {
 
     var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
             isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
-            isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"],
-                    200 * Number(qr.data[0]["盈亏"])), isEqual(r,
-                    qr.data[1]["款号"]), isEqual(25, qr.data[1]["盘后"]), isEqual(
-                    20, qr.data[1]["盘前"]), isEqual(5, qr.data[1]["盈亏"]),
-            isEqual(qr.data[1]["盈亏金额"], 200 * Number(qr.data[1]["盈亏"])),
-            isEqual("k200", qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]),
-            isEqual(-8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
+            isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"], inprice2
+                    * Number(qr.data[0]["盈亏"])), isEqual(r, qr.data[1]["款号"]),
+            isEqual(25, qr.data[1]["盘后"]), isEqual(20, qr.data[1]["盘前"]),
+            isEqual(5, qr.data[1]["盈亏"]), isEqual(qr.data[1]["盈亏金额"], inprice1
+                    * Number(qr.data[1]["盈亏"])), isEqual("k200",
+                    qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]), isEqual(
+                    -8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
             isEqual(qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
             isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
             isEqual(-10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
@@ -2226,4 +2491,33 @@ function test180047() {
     query(fields);
     var qr = getQR();
     var ret = isEqual(0, qr.data.length);
+}
+function test180088() {
+    tapMenu("盘点管理", "盈亏表");
+    var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
+    var fields = checkProfitAndLossFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
+            isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
+            isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"], inprice2
+                    * Number(qr.data[0]["盈亏"])), isEqual(r, qr.data[1]["款号"]),
+            isEqual(25, qr.data[1]["盘后"]), isEqual(20, qr.data[1]["盘前"]),
+            isEqual(5, qr.data[1]["盈亏"]), isEqual(qr.data[1]["盈亏金额"], inprice1
+                    * Number(qr.data[1]["盈亏"])), isEqual("k200",
+                    qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]), isEqual(
+                    -8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
+            isEqual(qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
+            isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
+            isEqual(-10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
+            isEqual(qr.data[3]["盈亏金额"], inprice3 * Number(qr.data[3]["盈亏"])),
+            isEqual("8989", qr.data[4]["款号"]), isEqual(-5, qr.data[4]["盘后"]),
+            isEqual(0, qr.data[4]["盘前"]), isEqual(-5, qr.data[4]["盈亏"]),
+            isEqual(qr.data[4]["盈亏金额"], inprice5 * Number(qr.data[4]["盈亏"])),
+            isEqual("4562", qr.data[5]["款号"]), isEqual(1, qr.data[5]["盘后"]),
+            isEqual(qr.data[5]["盈亏金额"], inprice * Number(qr.data[5]["盈亏"])),
+            isEqual(100, qr.data[5]["盘前"]), isEqual(-99, qr.data[5]["盈亏"]));
+
+    return ret1
 }

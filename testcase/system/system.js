@@ -30,7 +30,6 @@ function testSystem001() {
     run("【系统设置—改密码】关闭", "test210036");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
-    run("【系统设置】设置“销售开单中都不能修改单价”，检查店长是否仍可以修改单价", "test210040");//
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置】数据清理授权", "test210043");
@@ -913,20 +912,7 @@ function test210038() {
     var ret = isAnd(isEqual("001", a), isEqual("财务员", a1), isEqual("常青店", a2),
             isEqual("财务员", a3));
 
-    query();
-
-    tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
-    var fields = querySystemStaffFields(keys);
-    query(fields);
-
-    var qr = getQR();
-
-    var ret1 = isAnd(isEqual(0, qr.total), isEqual(0, qr.data.length));
-
-    query();
-
-    return ret && ret1;
+    return ret;
 }
 function test210039() {
     var qo, o, ret = true;
@@ -976,28 +962,6 @@ function test210039() {
                     getTextFieldValue(getScrollView(), 9)));
 
     tapReturn();
-
-    return ret && ret1;
-}
-function test210040() {
-    // var qo, o, ret = true;
-    // qo = { "备注" : "修改单价" };
-    // o = { "新值" : "0", "数值" : [ "都不能修改单价", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-
-    // 店长登录
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    var f3 = new TField("单价", TF, 4, "888");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    var a = getTextFieldValue(getScrollView(), 0);
-
-    var ret1 = isEqual("300", a);
 
     return ret && ret1;
 }
