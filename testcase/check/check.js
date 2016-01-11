@@ -1238,7 +1238,8 @@ function test180033() {
     logDebug(" ret=" + ret);
     return ret;
 }
-function test180034() {
+
+function test180037Prepare() {
     // 需先处理掉以前的盘点单
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -1364,69 +1365,28 @@ function test180034() {
 
     return ret && ret1;
 }
-function test180035() {
-    tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "款号" : "k300", "日期从" : getDay(-2),
-        "到" : getToday() }
-    var fields = checkProfitAndLossFields(keys);
-    tapButton(window, CLEAR);
-    var f0 = getTextFieldValue(window, 0);
-    var f1 = getTextFieldValue(window, 1);
-    var f2 = getTextFieldValue(window, 2);
-    var f3 = getTextFieldValue(window, 3);
-    logDebug(" f0=" + f0 + " f1=" + f1 + " f2=" + f2 + " f3=" + f3);
-    if (f0 == "" && f1 == "" && f2 != "" && f3 == "") {
-        var ret = true;
-    }
-    return ret;
-}
-function test180037() {
-    tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "款号" : "k300", "日期从" : getDay(-30),
-        "到" : getToday() }
-    var fields = checkProfitAndLossFields(keys);
-    query(fields);
-    var qr = getQR();
-    var m = qr.counts["盈亏"];
-    var sum = 0;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["盈亏"]);
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    if (sum == m) {
-        var ret = true;
-    }
-    logDebug(" ret=" + ret);
-    return ret;
-}
 function test180037_1() {
+    // 为了数据的多样性和复杂性，跑这部分用例之前需要造一些数据
+    test180037Prepare();
+
     tapMenu("盘点管理", "盈亏表");
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     // 点击翻页
-    // var ret = goPageCheck("序号");
-    // // var ret=true;
-    // ret = ret && sortByTitle("批次", IS_NUM);
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("颜色");
-    // ret = ret && sortByTitle("尺码");
-    // ret = ret && sortByTitle("盘前");
-    // ret = ret && sortByTitle("盘后", IS_NUM);
-    // ret = ret && sortByTitle("盈亏", IS_NUM);
-    // ret = ret && sortByTitle("盈亏金额", IS_NUM);
-    // ret = ret && sortByTitle("操作日期");
-    //
-    // return ret;
+    var ret = goPageCheck("序号");
+    // var ret=true;
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("盘前");
+    ret = ret && sortByTitle("盘后", IS_NUM);
+    ret = ret && sortByTitle("盈亏", IS_NUM);
+    ret = ret && sortByTitle("盈亏金额", IS_NUM);
+    ret = ret && sortByTitle("操作日期");
 
-    // query();
     var qr = getQR();
     var sum1 = 0;
     var sum2 = 0;
@@ -1448,10 +1408,9 @@ function test180037_1() {
             qr.counts["盘后"]), isEqual(sum3, qr.counts["盈亏"]), isEqual(sum4,
             qr.counts["盈亏金额"]));
 
-    return ret1;
-    // ret &&
+    return ret && ret1;
 }
-function test180037_2() {
+function test180037_180035() {
     tapMenu("盘点管理", "盈亏表");
     var ret = false;
     tap(getTextField(window, 0));
@@ -1597,7 +1556,7 @@ function test180042_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
-    // 部分处理
+    // 全盘处理
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
@@ -1719,7 +1678,7 @@ function test180042_2() {
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("全盘处理", OK);
+    tapButtonAndAlert("部分处理", OK);
     delay(2);
     tapPrompt();
 
@@ -1729,8 +1688,6 @@ function test180042_2() {
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    
-    
 
     saveAndAlertOk();
     tapPrompt();
@@ -1886,8 +1843,112 @@ function test180049() {
     o = { "新值" : "0", "数值" : [ "盘点按进货价核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    // 需先处理掉以前的盘点单
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
+
+    tapReturn();
+
+    // 需要为盈亏表造数据
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+    var f3 = new TField("数量", TF, 3, "100");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("全盘处理");
+    delay(3);
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "k300", "数量" : "10" }, { "货品" : "k200", "数量" : "8" } ] };
+    editSalesBillNoColorSize(json);
+    delay();
+
+    tapMenu("货品管理", "新增货品+");
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var inprice1 = getTextFieldValue(getScrollView(), 8);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("货品管理", "新增货品+");
+    var r1 = "khao" + getTimestamp(8);
+    var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var inprice2 = getTextFieldValue(getScrollView(), 8);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : r, "数量" : "20" }, { "货品" : r1, "数量" : 5 } ] };
+    editSalesBillNoColorSize(json);
+    delay();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+    var f3 = new TField("数量", TF, 3, "1");
+    var f4 = new TField("货品", TF_AC, 4, r, -1, 0);
+    var f7 = new TField("数量", TF, 7, "25");
+    var f8 = new TField("货品", TF_AC, 8, r1, -1, 0);
+    var f11 = new TField("数量", TF, 11, "5");
+
+    var f12 = new TField("货品", TF_AC, 12, "k300", -1, 0);
+    var f15 = new TField("数量", TF, 15, "-11");
+    var f16 = new TField("货品", TF_AC, 16, "k200", -1, 0);
+    var f19 = new TField("数量", TF, 19, "0");
+    var f20 = new TField("货品", TF_AC, 20, "8989", -1, 0);
+    var f23 = new TField("数量", TF, 23, "-5");
+    var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+    var ret = isAnd(isEqual(15, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
+            qr.data[0]["盘点日期"], 1));
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("全盘处理");
+    delay(3);
+
+    tapReturn();
+
     tapMenu("货品管理", "货品查询");
-    var keys = { "款号名称" : "k300" };
+    var keys = { "款号名称" : "4562" };
     var fields = queryGoodsFields(keys);
     query(fields);
 
@@ -1896,33 +1957,63 @@ function test180049() {
 
     tapReturn();
 
-    tapMenu("盘点管理", "新增盘点+");
-    var r = "1" + getRandomInt(100);
-    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
-    var f3 = new TField("数量", TF, 3, r);
-    var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice3 = getTextFieldValue(getScrollView(), 8);
+
     tapReturn();
 
-    tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : "常青店" };
-    var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("部分处理", OK);
-    delay(2);
-    tapPrompt();
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k200" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice4 = getTextFieldValue(getScrollView(), 8);
+
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "8989" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice5 = getTextFieldValue(getScrollView(), 8);
+
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
     var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
 
-    var ret = isEqual(qr.data[0]["盈亏金额"], inprice * Number(qr.data[0]["盈亏"]));
+    var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
+            isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
+            isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"],
+                    200 * Number(qr.data[0]["盈亏"])), isEqual(r,
+                    qr.data[1]["款号"]), isEqual(25, qr.data[1]["盘后"]), isEqual(
+                    20, qr.data[1]["盘前"]), isEqual(5, qr.data[1]["盈亏"]),
+            isEqual(qr.data[1]["盈亏金额"], 200 * Number(qr.data[1]["盈亏"])),
+            isEqual("k200", qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]),
+            isEqual(-8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
+            isEqual(qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
+            isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
+            isEqual(-10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
+            isEqual(qr.data[3]["盈亏金额"], inprice3 * Number(qr.data[3]["盈亏"])),
+            isEqual("8989", qr.data[4]["款号"]), isEqual(-5, qr.data[4]["盘后"]),
+            isEqual(0, qr.data[4]["盘前"]), isEqual(-5, qr.data[4]["盈亏"]),
+            isEqual(qr.data[4]["盈亏金额"], inprice5 * Number(qr.data[4]["盈亏"])),
+            isEqual("4562", qr.data[5]["款号"]), isEqual(1, qr.data[5]["盘后"]),
+            isEqual(qr.data[5]["盈亏金额"], inprice * Number(qr.data[5]["盈亏"])),
+            isEqual(100, qr.data[5]["盘前"]), isEqual(-99, qr.data[5]["盈亏"]));
 
-    return ret;
+    return ret && ret1;
 }
 function test180049_1() {
     var qo, o, ret = true;
@@ -1930,20 +2021,21 @@ function test180049_1() {
     o = { "新值" : "1", "数值" : [ "盘点按销价1核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("货品管理", "货品查询");
-    var keys = { "款号名称" : "k300" };
-    var fields = queryGoodsFields(keys);
-    query(fields);
-
-    tapFirstText();
-    var rtprice = getTextFieldValue(getScrollView(), 9);
+    // 需先处理掉以前的盘点单
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
 
     tapReturn();
 
+    // 需要为盈亏表造数据
     tapMenu("盘点管理", "新增盘点+");
-    var r = "1" + getRandomInt(100);
-    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
-    var f3 = new TField("数量", TF, 3, r);
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+    var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1953,20 +2045,153 @@ function test180049_1() {
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("部分处理", OK);
-    delay(2);
+    tapButtonAndAlert("全盘处理");
+    delay(3);
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "k300", "数量" : "10" }, { "货品" : "k200", "数量" : "8" } ] };
+    editSalesBillNoColorSize(json);
+    delay();
+
+    tapMenu("货品管理", "新增货品+");
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var inprice1 = getTextFieldValue(getScrollView(), 9);
+
+    saveAndAlertOk();
     tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("货品管理", "新增货品+");
+    var r1 = "khao" + getTimestamp(8);
+    var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    var inprice2 = getTextFieldValue(getScrollView(), 9);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : r, "数量" : "20" }, { "货品" : r1, "数量" : 5 } ] };
+    editSalesBillNoColorSize(json);
+    delay();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+    var f3 = new TField("数量", TF, 3, "1");
+    var f4 = new TField("货品", TF_AC, 4, r, -1, 0);
+    var f7 = new TField("数量", TF, 7, "25");
+    var f8 = new TField("货品", TF_AC, 8, r1, -1, 0);
+    var f11 = new TField("数量", TF, 11, "5");
+
+    var f12 = new TField("货品", TF_AC, 12, "k300", -1, 0);
+    var f15 = new TField("数量", TF, 15, "-11");
+    var f16 = new TField("货品", TF_AC, 16, "k200", -1, 0);
+    var f19 = new TField("数量", TF, 19, "0");
+    var f20 = new TField("货品", TF_AC, 20, "8989", -1, 0);
+    var f23 = new TField("数量", TF, 23, "-5");
+    var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+    var ret = isAnd(isEqual(15, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
+            qr.data[0]["盘点日期"], 1));
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("全盘处理");
+    delay(3);
+
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "4562" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice3 = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k200" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice4 = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "8989" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var inprice5 = getTextFieldValue(getScrollView(), 9);
+
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
     var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
 
-    var ret = isEqual(qr.data[0]["盈亏金额"], rtprice * Number(qr.data[0]["盈亏"]));
+    var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
+            isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
+            isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"],
+                    200 * Number(qr.data[0]["盈亏"])), isEqual(r,
+                    qr.data[1]["款号"]), isEqual(25, qr.data[1]["盘后"]), isEqual(
+                    20, qr.data[1]["盘前"]), isEqual(5, qr.data[1]["盈亏"]),
+            isEqual(qr.data[1]["盈亏金额"], 200 * Number(qr.data[1]["盈亏"])),
+            isEqual("k200", qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]),
+            isEqual(-8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
+            isEqual(qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
+            isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
+            isEqual(-10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
+            isEqual(qr.data[3]["盈亏金额"], inprice3 * Number(qr.data[3]["盈亏"])),
+            isEqual("8989", qr.data[4]["款号"]), isEqual(-5, qr.data[4]["盘后"]),
+            isEqual(0, qr.data[4]["盘前"]), isEqual(-5, qr.data[4]["盈亏"]),
+            isEqual(qr.data[4]["盈亏金额"], inprice5 * Number(qr.data[4]["盈亏"])),
+            isEqual("4562", qr.data[5]["款号"]), isEqual(1, qr.data[5]["盘后"]),
+            isEqual(qr.data[5]["盈亏金额"], inprice * Number(qr.data[5]["盈亏"])),
+            isEqual(100, qr.data[5]["盘前"]), isEqual(-99, qr.data[5]["盈亏"]));
 
-    return ret;
+    return ret && ret1;
 }
 function test180050() {
     // 店长登录进入盘点管理-盈亏表

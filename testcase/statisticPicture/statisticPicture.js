@@ -1,13 +1,13 @@
 //Zhangy <2397655091 at qq.com> 20151217
 
 function testStatisticPictureAll() {
-     run("【统计图表—按门店】清除", "test200003");
-     run("【统计图表—按门店汇总】查询", "test200017");
-     run("【统计图表—按门店汇总】清除", "test200018");
-     run("【统计图表—按门店汇总】底部数据检查", "test200019");
-     run("【统计图表—按客户】清除", "test200021");
-     run("【统计图表—按客户】清除", "test200024_1");
-     run("【统计图表—按店员】清除", "test200040");
+    run("【统计图表—按门店】清除", "test200003");
+    run("【统计图表—按门店汇总】查询", "test200017");
+    run("【统计图表—按门店汇总】清除", "test200018");
+    run("【统计图表—按门店汇总】底部数据检查", "test200019");
+    run("【统计图表—按客户】清除", "test200021");
+    run("【统计图表—按客户】清除", "test200024_1");
+    run("【统计图表—按店员】清除", "test200040");
     run("【统计图表—按趋势】清除", "test200044");
     run("【统计图表—按欠款】清除", "test200045_1");
     run("【统计图表—按类别】清除", "test200044");
@@ -18,22 +18,27 @@ function test200003() {
     tapMenu("统计图表", "按门店");
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureShopFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    tapButton(window, "本 周");
+    tapButton(window, "本 月");
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             getToday(), getTextFieldValue(window, 1)));
 
-    return ret;
+    return ret && ret1;
 }
 function test200017() {
     tapMenu("统计图表", "按门店汇总");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店",
-        "客户" : "ls" };
+    var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureShopSummaryFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
 
     var qr = getQR();
@@ -85,21 +90,24 @@ function test200018() {
     tapMenu("统计图表", "按门店汇总");
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureShopSummaryFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             getToday(), getTextFieldValue(window, 1)));
 
-    return ret;
+    return ret && ret1;
 }
 function test200019() {
     tapMenu("统计图表", "按门店汇总");
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureShopSummaryFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
 
     var qr = getQR();
@@ -137,17 +145,24 @@ function test200019() {
 }
 function test200021() {
     tapMenu("统计图表", "按客户");
-    var keys = { "日期从" : getDay(-30), "到" : getToday() };
+    var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店",
+        "客户" : "ls" };
     var fields = pictureCustomerFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-            getToday(), getTextFieldValue(window, 1)));
+            getToday(), getTextFieldValue(window, 1)), isEqual("",
+            getTextFieldValue(window, 2)), isEqual("", getTextFieldValue(
+            window, 3)));
 
-    return ret;
+    return ret && ret1;
 }
 function test200024_1() {
     tapMenu("统计图表", "按款号");
@@ -156,8 +171,12 @@ function test200024_1() {
         "market1" : "2015-1-1", "market2" : getToday(), "type" : "登山服",
         "season" : "春季", "品牌" : "Adidas" };
     var fields = pictureCodeFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
@@ -171,14 +190,46 @@ function test200024_1() {
                     getTextFieldValue(window, 9)), isEqual("",
                     getTextFieldValue(window, 10)));
 
+    return ret && ret1;
+}
+function test200026() {
+    tapMenu("统计图表", "按图像");
+    debugElementTree(window);
+    var keys = { "day1" : "2015-1-11", "day2" : getToday, "code" : "3035",
+        "provider" : "vell", "brand" : "Adidas" };
+    var view1;
+    var fields = pictureCodePictureFields(keys);
+    try {
+        view1 = getTableViews()[2].groups()["日期"];
+        setTFieldsValue(view1, fields);
+    } catch (e) {
+        view1 = getTableViews()[1].groups()["日期"];
+        setTFieldsValue(view1, fields);
+    }
+
+    debugElementTree(window);
+
+    var ret = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret = false;
+    }
+    tapNaviLeftButton();
+
     return ret;
 }
 function test200040() {
     tapMenu("统计图表", "按店员");
     var keys = { "店员" : "000", "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureStaffFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    tapButton(window, "本 周");
+    tapButton(window, "本 月");
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
@@ -186,14 +237,18 @@ function test200040() {
             getToday(), getTextFieldValue(window, 1)), isEqual(getToday(),
             getTextFieldValue(window, 2)));
 
-    return ret;
+    return ret && ret1;
 }
 function test200044() {
     tapMenu("统计图表", "按趋势");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureTrendFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
@@ -201,61 +256,107 @@ function test200044() {
             isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)));
 
-    return ret;
+    return ret && ret1;
 }
-function test200045_1() {
+function test200045() {
     tapMenu("统计图表", "按欠款");
     var keys = { "门店" : "常青店" };
     var fields = pictureOutstandingFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
     var ret = isAnd(isEqual("", getTextFieldValue(window, 0)));
 
-    return ret;
+    return ret && ret1;
 }
 function test200048() {
     tapMenu("统计图表", "按类别");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-300), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureTypeFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    tapButton(window, "本 周");
+    tapButton(window, "本 月");
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
-    var ret = isAnd(isEqual(getDay(-30), getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
-                    getTextFieldValue(window, 2)));
-    return ret;
+    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
+            getToday(), getTextFieldValue(window, 1)), isEqual("",
+            getTextFieldValue(window, 2)));
+    return ret && ret1;
 }
 function test200053() {
-    tapMenu1("统计图表", "更多..");
+    tapMenu1("统计图表");
+    tapMenu2("更多..");
+    tapMenu3("按品牌");
     tapMenu2("更多.", "按品牌");
-    var keys = { "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureBrandFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    tapButton(window, "本 周");
+    tapButton(window, "本 月");
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
-    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
-                    getTextFieldValue(window, 2)));
-    return ret;
+    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
+            getToday(), getTextFieldValue(window, 1)), isEqual("",
+            getTextFieldValue(window, 2)));
+    return ret && ret1;
 }
 function test200058() {
-    tapMenu1("统计图表", "更多..");
-    tapMenu2("更多.", "按滞销");
-    var keys = { "上架从" : getToday(), "到" : getToday() };
+    tapMenu1("统计图表");
+    tapMenu2("更多..");
+    tapMenu3("按滞销");
+    var keys = { "上架从" : getDay(-300), "到" : getToday() };
     var fields = pictureUnsalableFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
+
+    var ret1 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret1 = false;
+    }
 
     tapButton(window, CLEAR);
 
-    var ret = isAnd(isEqual("", getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)));
-    return ret;
+    var ret = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual(
+            getToday(), getTextFieldValue(window, 1)));
+
+    tapMenu1("统计图表");
+    tapMenu2("更多..");
+    tapMenu3("按单笔");
+
+    var keys = { "日期从" : getDay(-300), "到" : getToday(), "门店" : "常青店" };
+    var fields = pictureSingleFields(keys);
+    setTFieldsValue(window, fields);
+    query(fields);
+
+    var ret2 = true;
+    if (isIn(alertMsg, "服务端错误")) {
+        ret2 = false;
+    }
+
+    tapButton(window, CLEAR);
+
+    var ret3 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)));
+
+    return ret && ret1 && ret2 && ret3;
 }

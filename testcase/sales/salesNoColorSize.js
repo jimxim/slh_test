@@ -1913,6 +1913,11 @@ function test170395_2() {
 }
 function test170070() {
     // 设置开单模式为9-快速标记标记代收的开单模式
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -1930,6 +1935,11 @@ function test170070() {
     return ret;
 }
 function test170071() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
         "未付" : "yes", "代收" : "否" };
@@ -1966,32 +1976,22 @@ function test170072() {
     if (isIn(alertMsg, "[第1行] 单价或金额不能为负数")) {
         ret1 = true;
     }
+    tapReturn();
+    
     logDebug("ret" + ret + "ret1" + ret1);
 
     return ret && ret1;
 }
 function test170073() {
-    // 开启参数 开单保存开启退货数和上次购买数的比对验证,默认是开启的
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "不返回" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "-20" } ] };
-    editSalesBillNoColorSize(json);
-
-    debugArray(alertMsgs);
-    var ret = false;
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    if (isIn(alertMsg1, "退货数量高于拿货")) {
-        ret = true;
-    }
-    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
-
-    return ret;
+  //重复170074
 }
 function test170074() {
     // 开启参数 开单保存开启退货数和上次购买数的比对验证,默认是开启的
+    var qo, o, ret = true;
+    qo = { "备注" : "退货数" };
+    o = { "新值" : "1", "数值" : [ "1,开启,会减慢开单速度", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "不返回" : "yes" };
@@ -2011,6 +2011,12 @@ function test170074() {
     return ret;
 }
 function test170075() {
+ // 开启参数 开单保存开启退货数和上次购买数的比对验证,默认是开启的
+    var qo, o, ret = true;
+    qo = { "备注" : "退货数" };
+    o = { "新值" : "1", "数值" : [ "1,开启,会减慢开单速度", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = {
         "明细" : [ { "货品" : "3035", "数量" : "6" }, { "货品" : "3035", "数量" : "-5" } ],
@@ -2041,6 +2047,11 @@ function test170075() {
 }
 function test170076() {
     // 设置 单价小数位 精确到元
+    var qo, o, ret = true;
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
         "明细输入框个数" : 8 };
