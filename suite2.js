@@ -91,15 +91,7 @@ function test000SalesColorSize001() {
         logout();
     }
 }
-function test000Check001() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        testCheck001();
-        
-        logout();
-    }
-}
+
 // 采购入库
  function test000Purchase001() {
     var p1 = {"角色":"总经理"};
@@ -126,6 +118,27 @@ function test000Check001() {
     var ok = login("000","000000",p1);
     if( ok ) {
         testCheck001();
+        
+        logout();
+    }
+ }
+ 
+ function test000Check002() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("000","000000",p1);
+     if( ok ) {
+         testCheckAll();
+         
+         logout();
+     }
+ }
+ 
+//系统设置
+ function test000System001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSystem001();
         
         logout();
     }
