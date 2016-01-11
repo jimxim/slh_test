@@ -12,13 +12,16 @@ function testBasicSetUpAll() {
     run("李天", "setCustomer005");
     run("李六", "setCustomer006");
     run("韩红", "setCustomer007");
-    run("综合汇总1", "setCustomer008");
-    run("不开单客户", "setCustomer009");//不做开单操作，无欠余款
+    run("综合汇总1", "setCustomer008");// 新综合汇总
+    run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
+    run("yun客户", "setCustomer010");// 下拉框验证,上级客户
+    run("yun客户下级", "setCustomer011");// 下拉框验证,下级客户
     // 厂商
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
     run("Rt", "setProvider003");
     run("联想", "setProvider004");
+    run("yun厂商", "setProvider007");// 下拉框验证
 
     run("特步生产商", "setProvider005");// 适用价：零批价
     run("新百伦生产商", "setProvider006");// 适用价：打包价
@@ -43,6 +46,7 @@ function testBasicSetUpAll() {
     run("顺丰快递", "setLogistics002");
     run("圆通速递", "setLogistics003");
     run("汇通快递", "setLogistics004");
+    run("yun物流", "setLogistics005");
     // 款号
     run("3035", "setGoods001");
     run("4562", "setGoods002");
@@ -300,6 +304,24 @@ function setCustomer009() {
 }
 
 /**
+ * yun客户
+ */
+function setCustomer010() {
+    var keys = { "名称" : "yun客户", "门店" : "常青店", "适用价格" : "零批价" };
+    var ret = editCustomerBasicSetUp("yun客户", keys);
+    return ret;
+}
+
+/**
+ * yun客户下级
+ */
+function setCustomer011() {
+    var keys = { "名称" : "yun客户下级", "门店" : "常青店","上级客户" : "yun客户", "适用价格" : "零批价" };
+    var ret = editCustomerBasicSetUp("yun客户下级", keys);
+    return ret;
+}
+
+/**
  * 新增/修改厂商
  */
 function editProviderBasicSetUp(name, keys) {
@@ -354,6 +376,11 @@ function setProvider005() {
 function setProvider006() {
     var keys = { "名称" : "新百伦生产商", "适用价格" : "打包价" };
     var ret = editProviderBasicSetUp("新百伦生产商", keys);
+    return ret;
+}
+function setProvider007() {
+    var keys = { "名称" : "yun厂商", "适用价格" : "零批价" };
+    var ret = editProviderBasicSetUp("yun厂商", keys);
     return ret;
 }
 
@@ -544,6 +571,11 @@ function setLogistics003() {
 function setLogistics004() {
     var keys = { "名称" : "汇通快递", "门店" : "常青店" };
     var ret = setLogisticsBasicSetUp("汇通快递", keys);
+    return ret;
+}
+function setLogistics005() {
+    var keys = { "名称" : "yun物流", "门店" : "常青店" };
+    var ret = setLogisticsBasicSetUp("yun物流", keys);
     return ret;
 }
 

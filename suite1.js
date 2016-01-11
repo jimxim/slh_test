@@ -11,19 +11,23 @@ function test000All() {
 //    run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-	   run("test", "test110045_110046");
+//	   run("test", "test110008");
 //    run("test", "test160019");
 
 
 
 	
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    tapTextByFirstWithName("2");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "批次");
+    var batch = getStaticTextValue(window, index).substr(4);
+    logDebug("batch="+batch);
+    
 }
 
 

@@ -58,6 +58,10 @@ function goodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
     
+    qo = { "备注" : "是否允许允许跨门店核销" };
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     return ret;
 }
 
