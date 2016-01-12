@@ -835,7 +835,7 @@ function test110020() {
 
     var a = qr.data[0]["余额"];
     tapFirstText(getScrollView(), TITLE_SEQ, 3);
-    
+
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var totalPageNo = qr.totalPageNo;
     var sum = 0;
@@ -1820,7 +1820,7 @@ function editBillForCustomerAccount3() {
     return json;
 }
 function test110041_1() {
-    var qo, o, ret = true;
+    var qo, o, i, j, ret = true;
     qo = { "备注" : "是否允许允许跨门店核销" };
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1830,6 +1830,9 @@ function test110041_1() {
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+
+    }
     var arr1 = test110041_1Field(0);
 
     qo = { "备注" : "是否允许允许跨门店核销" };
@@ -1838,9 +1841,14 @@ function test110041_1() {
 }
 
 function test110041_1Field(i) {
-    var arr = { "批次" : qr.data[i]["批次"], "日期" : qr.data[i]["门店"],
-        "操作日期" : getToday("yy"), "类型" : qr.data[i]["客户"],
-        "金额" : qr.data[i]["店员"], "付款" : qr.data[i]["金额"] };
+    var arr1 = { "批次" : qr.data[i]["批次"], "日期" : "16-" + qr.data[i]["门店"],
+        "操作日期" : qr.data[i]["操作日期"], "类型" : "进货单", "金额" : qr.data[i]["金额"],
+        "付款" : qr.data[i]["现金"] };
+    var arr2 = { "序号" : "1", "款号" : "3035", "名称" : "jkk", "颜色" : "均色",
+        "尺码" : "尺码", "数量" : "1", "单价" : "1", "小计" : "1" };
+    var arr3 = { "批次" : qr.data[i]["批次"], "日期" : "16-" + qr.data[i]["门店"],
+        "总数" : qr.data[i]["操作日期"], "总额" : "进货单", "类型" : "采购进货",
+        "备注" : "", "操作人" : "200,总经理" };
 
     return arr;
 }

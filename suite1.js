@@ -11,22 +11,23 @@ function test000All() {
 //    run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-//	   run("test", "test110008");
-//    run("test", "test160019");
+//	   run("test", "test110041_1");
+    run("test", "test140002_2");
 
 
 
 	
- run("test", "onlyTest");
+// run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-    var texts = getStaticTexts(window);
-    var index = getArrayIndexIn(texts, "批次");
-    var batch = getStaticTextValue(window, index).substr(4);
-    logDebug("batch="+batch);
+//    var texts = getStaticTexts(window);
+//    var index = getArrayIndexIn(texts, "批次");
+//    var batch = getStaticTextValue(window, index);
+    var ret= window.buttons()["按批次查"].isVisible;
+    logDebug("ret="+ret);
     
 }
 

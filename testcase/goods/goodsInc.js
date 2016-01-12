@@ -167,6 +167,31 @@ function tapFirstTextByTitle(title, value, view1) {
 }
 
 /**
+ * 修改密码
+ * @param oldSecure
+ * @param newSecure
+ */
+
+function changeSecure(oldSecure,newSecure){
+    tapMenu("系统设置", "改密码");
+    tf = window.secureTextFields()[0].secureTextFields()[0];
+    tf.setValue(oldSecure);
+    tf = window.secureTextFields()[1].secureTextFields()[0];
+    tf.setValue(newSecure);
+    tf = window.secureTextFields()[2].secureTextFields()[0];
+    tf.setValue(newSecure);
+    
+    tapButton(window,OK);   
+    tapPrompt();
+    var ret=isIn(alertMsg,"操作成功");
+    tapNaviLeftButton();
+    
+    //刷新，使新密码生效
+    tapRefresh();
+    return ret;
+}
+
+/**
  * 清除指定下标的文本框的内容
  * @param view
  * @param index

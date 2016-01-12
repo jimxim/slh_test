@@ -37,9 +37,13 @@ function goodsParams001() {
     qo = { "备注" : "库存核算价格" };
     o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "调拨核算价格" };
+    o = { "新值" : "3", "数值" : [ "调拨按销价3核算", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "1", "数值" : [ "默认合并", "in" ] };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
     
     qo = { "备注" : "单据是否允许修改客户或厂商" };
