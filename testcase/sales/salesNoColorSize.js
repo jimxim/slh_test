@@ -2749,20 +2749,22 @@ function test170091() {
     return ret && ret1;
 }
 function test170092() {
-    // var qo, o, ret = true;
-    // qo = { "备注" : "开单模式" };
-    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    //
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "店员" : "000",
-    // "明细" : [ { "货品" : "8989", "数量" : "1" } ], "onlytest" : "yes" };
-    // editSalesBillNoColorSize(json);
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "8989", "数量" : "1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var money = getTextFieldValue(window, 3);
 
     tapStaticText(window, "代收");
     debugElementTree(window);
 
-    var texts = getStaticTexts(getPopOrView());
+    var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "物流商*");
     var index1 = getArrayIndexIn(texts, "运单号");
     var index2 = getArrayIndexIn(texts, "备注");
@@ -2775,8 +2777,8 @@ function test170092() {
     var value4 = getStaticTextValue(window, index4);
 
     var ret = isAnd(isEqual("物流商*", value), isEqual("运单号", value1), isEqual(
-            "备注", value2), isEqual("代收金额*", value3), isEqual("应付金额     416",
-            value4));
+            "备注", value2), isEqual("代收金额*", value3), isEqual(money,
+            getTextFieldValue(window, 19)), isEqual("应付金额     "+ money, value4));
 
     var ret1 = false;
     var bt = app.mainWindow().buttons()["新增"];
@@ -2784,8 +2786,32 @@ function test170092() {
         ret1 = true;
     }
 
+    var f0 = new TField("物流商*", TF, 16, "天天物流");
+    var f1 = new TField("运单号", TF, 17, "15068165766");
+    var f2 = new TField("备注", TF, 18, "界面检查");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+    tapNaviRightButton();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = false;
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    if (isIn(alertMsg1, "保存成功")) {
+        ret2 = true;
+    }
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(money,
+            qr.data[0]["金额"]), isEqual(money, qr.data[0]["代收"]), isEqual(
+            getToday(""), qr.data[0]["日期"]));
+
     logDebug("ret" + ret + ",ret1=" + ret1);
-    return ret && ret1;
+    return ret && ret1 && ret2 && ret3;
 }
 function test170093() {
     var qo, o, ret = true;
