@@ -128,7 +128,7 @@ function shopOutDecruitField(key, show) {
         f = new TField("日期", TF_DT, 2, "2015-9-16");
         break;
     case "remarks":
-    case "备":
+    case "备注":
         f = new TField("备", TF, 3, "备注");
         break;
     case "password":

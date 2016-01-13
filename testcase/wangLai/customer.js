@@ -26,7 +26,7 @@ function testCustomer001Prepare() {
     // 客户账款检查数据正确性
     run("上级客户1开单", "editBillForCustomerAccount1");
     run("下级客户1开单", "editBillForCustomerAccount2");
-    run("客户账款数据准备", "editBillForCustomerAccount3");
+    run("厂商账款数据准备", "editBillForCustomerAccount3");
 
 }
 
@@ -56,8 +56,7 @@ function testCustomer001Else() {
     run("【往来管理-新增厂商】新增厂商", "test110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
-    run("【往来管理-厂商账款】厂商门店账异地核销", "test110041_1");
-    run("【往来管理-厂商账款】厂商总账异地核销", "test110043_1");
+    run("【往来管理-厂商账款】异地核销", "test110041_1");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -65,13 +64,7 @@ function testCustomer001Else() {
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
 }
-// 店长
-function testShopkeeper004All() {
-    run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
-    run("【往来管理】店长查看客户门店帐", "test110031_110032");
 
-    run("【销售订货—按批次查】更多-查看修改日志", "test160011_1");
-}
 // 开单员
 function test005CustomerAll() {
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
@@ -1804,26 +1797,26 @@ function editBillForCustomerAccount3() {
     // 欠款
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
-        "现金" : "0" };
+        "现金" : "0" ,"备注":"异地核销"};
     editSalesBillNoColorSize(json);
     // 欠款
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
-        "现金" : "0" };
-    editSalesBillNoColorSize(json);
-    // 余款
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "现金" : "2000" };
+        "现金" : "0" ,"备注":"异地核销"};
     editSalesBillNoColorSize(json);
 
     return json;
 }
 function test110041_1() {
     var qo, o, i, j, ret = true;
-    qo = { "备注" : "是否允许允许跨门店核销" };
+    qo = { "备注" : "是否允许跨门店核销" };
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
+        "现金" : "0" ,"备注":"异地核销"};
+    editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     var keys = { "厂商" : "vell", "门店" : "中洲店" };

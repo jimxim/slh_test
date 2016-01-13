@@ -8,26 +8,27 @@ function test000All() {
 	debug = true;
 
 
-//    run("【往来管理-客户查询】翻页_排序", "test110001_1");
+// run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-//	   run("test", "test110041_1");
-    run("test", "test140002_2");
+// run("test", "test110041_1");
+//    run("test", "editBillForCustomerAccount3");
 
 
 
 	
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
-//    var texts = getStaticTexts(window);
-//    var index = getArrayIndexIn(texts, "批次");
-//    var batch = getStaticTextValue(window, index);
-    var ret= window.buttons()["按批次查"].isVisible;
-    logDebug("ret="+ret);
+ var texts = getStaticTexts(window);
+ var index = isHasStaticTexts(texts, "备注");
+// var batch = getStaticTextValue(window, index);
+// var ret= window.buttons()["按批次查"].isVisible;
+ logDebug("  index="+index);
+   
     
 }
 
@@ -247,7 +248,7 @@ function test200ShopIn001(){
     }   
 }
 
-//中洲店总经理登陆，为常青店准备数据
+// 中洲店总经理登陆，为常青店准备数据
 function test000SalesOrderPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
@@ -298,7 +299,7 @@ function test000StatisticAnalysisPrepare() {
         logout();
     }
  }
-//统计分析
+// 统计分析
 function test000StatisticAnalysisAll() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
@@ -309,7 +310,7 @@ function test000StatisticAnalysisAll() {
    }
 }
 
-//店长登陆的一些用例
+// 店长登陆的一些用例
 function testShopkeeper004() {
     var p1 = {"角色":"店长"};
   var ok = login("004","000000",p1);

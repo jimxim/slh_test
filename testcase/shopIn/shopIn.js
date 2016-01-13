@@ -4,133 +4,290 @@
  * 常青店总经理验证
  */
 function testShopIn001() {
-    run("【门店调入-在途调拨】翻页_排序_汇总_条件查询，清除按钮", "test140001_1");
+    run("【门店调入-在途调拨】在途调拨", "test140001");
+    run("【门店调出-按批次查】作废", "test150002_1");
+    run("【门店调出】门店调拨-在途调拨，默认日期检查", "test150005");
+    run("【门店调入-按批次查/按明细查】", "test140002_140003");
+
+    run("【门店调入-在途调拨】翻页_排序_汇总", "test140001_1");// 汇总
     run("【门店调入-按批次查】翻页_排序_汇总", "test140002_1");
-    run("【门店调入-按批次查】条件查询，清除按钮,下拉框", "test140002_2");
     run("【门店调入-按明细查】翻页_排序_汇总", "test140003_1");
-    run("【门店调入-按明细查】条件查询，清除按钮,下拉框", "test140003_2");
+
 }
-
-function testShopInAll() {
-     run("【门店调入-在途调拨】在途调拨", "test140001");
-     run("【门店调出-按批次查】作废", "test150002");
-
-     run("【门店调入-按批次查】按批次查/【门店调入-按明细查】按明细查", "test140002_140003");
-
-     run("【门店调出】门店调拨-在途调拨，默认日期检查", "test150005");
-}
-
-// 需要先在B店做一个调出单
 
 /**
  * 做调入单
  */
 function editShopInFlitting(secure) {
-    if(isDefined(secure)){
+    if (isDefined(secure)) {
         var f = new TField("接收人密码", TF_S, 0, secure);
         var fields = [ f ];
         setTFieldsValue(window, fields);
     }
-    
+
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
 }
 
 function test140001() {
-    tapMenu("货品管理", "当前库存");
-    var keys = { "款号":"3035", "门店":"常青店" };
-    var fields = queryGoodsStockFields(keys);
+    var i, a1, a2, b1, b2;
+    tapMenu("门店调出", "按批次查");
+    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var fields = shopOutQueryBatchFields(keys);
     query(fields);
+
+    tapTitle(getScrollView(), "备注");
+    tapTitle(getScrollView(), "备注");
+    i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "(0; -5)");
+    // test150007做的调出单
+    var ret = isIn(getTextFieldValue(getScrollView(), 0), "3035");
+    var market1 = getTextFieldValue(window, 3);// 整单备注
+    var num = getTextFieldValue(getScrollView(), 3);// 数量
+    var market2 = getTextFieldValue(getScrollView(), 4);// 明细备注
+    tapReturn();
+
     var qr = getQR();
-    var a = qr.data[0]["库存"];
-    var a1 = qr.data[0]["在途数"];
-    logDebug(" a=" + a + " a1=" + a1);
+    var batch = qr.data[i]["批次"];
+
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : "3035" };
+    fields = queryGoodsStockFields(keys);
+    query(fields);
+    qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (isEqual(qr.data[i]["仓库/门店"], "常青店")) {
+            a1 = qr.data[i]["库存"];
+            a2 = qr.data[i]["在途数"];
+        }
+        if (isEqual(qr.data[i]["仓库/门店"], "中洲店")) {
+            b1 = qr.data[i]["库存"];
+            b2 = qr.data[i]["在途数"];
+        }
+    }
 
     tapMenu("货品管理", "库存分布");
-    var keys1 = [ "类别", "厂商" ];
-    var fields1 = queryGoodsDistributionFields(keys1);
-    changeTFieldValue(fields1["类别"], "登山服");
-    changeTFieldValue(fields1["厂商"], "vell");
-    query(fields1);
+    keys = { "类别" : "登山服", "厂商" : "vell", "是否停用" : "否" };
+    fields = queryGoodsDistributionFields(keys);
+    query(fields);
     qr = getQR();
-    var b = qr.data[0]["库存"];
-    var b1 = qr.data[0]["常青店"];
-    var b2 = qr.data[0]["中洲店"];
-    logDebug(" b=" + b + " b1=" + b1 + " b2=" + b2);
+    // 查询结果唯一
+    var p = qr.data[0]["价值"];
+    var jo1 = qr.data[0];
 
     tapMenu("门店调入", "在途调拨");
-    var keys2 = [ "门店" ];
-    var fields3 = shopInFlitFields(keys2);
-    changeTFieldValue(fields3["门店"], "中洲店");
-    query(fields3);
-    var qr = getQR();
-    var c = qr.data[0]["数量"];
-    logDebug(" c=" + c);
-    tapFirstText();
-    editShopInFlitting();
-    // tapButtonAndAlert("调 入");
-    // delay(10);
-
-    tapMenu("货品管理", "当前库存");
-    var keys = [ "款号", "门店" ];
-    var fields = queryGoodsStockFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
-    changeTFieldValue(fields["门店"], "常青店");
+    keys = { "日期从" : getDay(-365), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
+    fields = shopInFlitFields(keys);
     query(fields);
+    tapFirstText();
+    // 整单备注下标为4
+    ret = isAnd(ret, isEqual(market1, getTextFieldValue(window, 4)), isEqual(
+            num, getTextFieldValue(getScrollView(), 3)), isEqual(market2,
+            getTextFieldValue(getScrollView(), 4)));
+    editShopInFlitting();// 全部调入
+
+    tapButton(window, CLEAR);
+    ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));
+    ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
+    ret = ret && isEqual("", getTextFieldValue(window, 2));
+    ret = ret && isEqual("", getTextFieldValue(window, 3));
+    ret = ret && isEqual("", getTextFieldValue(window, 4));
+
+    tapMenu("门店调出", "按批次查");
+    keys = { "批次从" : batch, "批次到" : batch };
+    fields = shopOutQueryBatchFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
-    logDebug(" 库存=" + qr.data[0]["库存"] + " 在途数=" + qr.data[0]["在途数"]);
-    var ret1 = false;
-    if (qr.data[0]["库存"] - a != 0 && a1 - qr.data[0]["在途数"] == c) {
-        ret1 = true;
+    ret = isAnd(ret, isEqual("全部接收", qr.data[0]["状态"]));
+
+    var a3, a4, b3, b4;
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (isEqual(qr.data[i]["仓库/门店"], "常青店")) {
+            a3 = qr.data[i]["库存"];
+            a4 = qr.data[i]["在途数"];
+        }
+        if (isEqual(qr.data[i]["仓库/门店"], "中洲店")) {
+            b3 = qr.data[i]["库存"];
+            b4 = qr.data[i]["在途数"];
+        }
     }
+    // 常青店 调入后库存-调入前库存，调入前在途-调入后在途==num 中洲店的不变
+    ret = isAnd(ret, isEqual(num, sub(a3, a1)), isEqual(num, sub(a2, a4)),
+            isEqual(b1, b3), isEqual(b2, b4));
 
     tapMenu("货品管理", "库存分布");
-    query(fields1);
+    tapButton(window, QUERY);
     qr = getQR();
-    logDebug(" 库存=" + qr.data[0]["库存"] + " 常青店=" + qr.data[0]["常青店"] + " 中洲店="
-            + qr.data[0]["中洲店"]);
-    var ret2 = false;
-    if ((qr.data[0]["库存"] - b != 0 && b1 - qr.data[0]["常青店"] == c)
-            || (b2 - qr.data[0]["中洲店"] != c)) {
-        ret2 = true;
+    // 库存按销价1核算 3035的零批价为200
+    var change = { "库存" : add(a3, b3), "价值" : add(p, 200 * num), "常青店" : a3 };
+    var expected = mixObject(jo1, change);
+    var jo2 = qr.data[0];
+    ret = isAnd(ret, isEqualObject(jo2, expected));
+
+    return ret;
+}
+
+function test140002_140003() {
+    tapMenu("门店调入", "按批次查");
+    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var fields = shopInQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var batch1 = Number(qr.data[0]["批次"]) + 1;
+
+    // 调入test150003生成的调出单
+    tapMenu("门店调出", "按批次查");
+    keys = { "日期从" : getDay(-30), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    fields = shopOutQueryBatchFields(keys);
+    query(fields);
+
+    tapTitle(getScrollView(), "备注");
+    tapTitle(getScrollView(), "备注");
+    var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注",
+            "shopInCheck");
+    var market = getTextFieldValue(window, 3);// 整单备注
+    var sum = getTextFieldValue(window, 5);// 总数
+    var s1 = getTextFieldValue(getScrollView(), 3);// 3035的数量
+    var s2 = getTextFieldValue(getScrollView(), 8);// 4562的数量
+    tapReturn();
+
+    qr = getQR();
+    var batch = qr.data[i]["批次"];
+    var staff = qr.data[i]["送货人"];// 调出人
+
+    tapMenu("门店调入", "在途调拨");
+    keys = { "日期从" : getDay(-3), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
+    fields = shopInFlitFields(keys);
+    query(fields);
+    qr = getQR();
+    // 操作日期？
+    var expected = { "批次" : batch, "调出门店" : "中洲店", "数量" : sum, "送货人" : staff,
+        "操作人" : "总经理", "备注" : market };
+    var ret = isEqualQRData1Object(qr, expected);
+
+    tapFirstText();
+    editShopInFlitting();// 全部调入
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual("0", qr.data.length));
+
+    tapMenu("门店调入", "按批次查");
+    keys = { "批次从" : batch1, "批次到" : batch1, "调出批次从" : batch, "调出批次到" : batch };
+    fields = shopInQueryBatchFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    // 调拨按销价3核算,3035与4562的销价3都为160
+    expected = { "批次" : batch1, "调出批次" : batch, "调出门店" : "中洲店", "调入门店" : "常青店",
+        "送货人" : staff, "数量" : sum, "金额" : 160 * sum, "操作人" : "总经理",
+        "备注" : market };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    query();
+    tapButton(window, CLEAR);
+    for (i = 0; i < 6; i++) {
+        if (i == 0 || i == 1) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
     }
 
-    logDebug(" ret1=" + ret1 + " ret2=" + ret2);
-    return ret1 && ret2;
+    tapFirstText();
+    ret = isAnd(ret,
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
+            isEqual(s1, getTextFieldValue(getScrollView(), 3)), isEqual(
+                    "4562,Story", getTextFieldValue(getScrollView(), 4)),
+            isEqual(s2, getTextFieldValue(getScrollView(), 7)));
+    tapButton(window, RETURN);
+
+    tapMenu("门店调入", "按明细查");
+    keys = { "款号" : "3035", "款号名称" : "jkk", "日期从" : getDay(-30), "调出门店" : "中洲店",
+        "调入门店" : "常青店" };
+    fields = shopInQueryParticularFields(keys);
+    query(fields);
+    qr = getQR();
+    expected = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : batch1, "款号" : "3035",
+        "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : s1, "单价" : "160",
+        "金额" : 160 * s1, "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    keys = { "款号" : "4562", "款号名称" : "story" };
+    fields = shopInQueryParticularFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : batch1, "款号" : "4562",
+        "名称" : "Story", "颜色" : "均色", "尺码" : "均码", "数量" : s2, "单价" : "160",
+        "金额" : 160 * s2, "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    tapButton(window, CLEAR);
+    for (i = 0; i < 6; i++) {
+        if (i == 3 || i == 4) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
+    }
+
+    return ret;
 }
 
 // 需要现在B店做一个调出单，并作废
-function test150002() {
+function test150002_1() {
+    var batch;
+    tapMenu("门店调出", "按批次查");
+    var keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var fields = shopOutQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (qr.data[i]["状态"] == "未接收" && qr.data[i]["备注"] == "作废") {
+                batch = qr.data[i]["批次"];
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
     tapMenu("门店调入", "在途调拨");
-    var keys = [ "门店" ];
-    var fields = shopInFlitFields(keys);
-    changeTFieldValue(fields["门店"], "中洲店");
+    keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch }
+    fields = shopInFlitFields(keys);
     query(fields);
 
     tapFirstText();
     editShopInFlitting();
-    // tapButtonAndAlert("调 入");
-    var ret1 = false, ret2 = false, ret3 = false;
-    if (isIn(alertMsg, "确定调入吗")) {
-        ret1 = true;
-    }
-    delay();
-    if (isIn(alertMsg, "确定调入吗")) {
-        ret2 = true;
-    }
-    delay();
-    if (isIn(alertMsg, "调入错误，调出方已经作废该批次")) {
-        ret3 = true;
-    }
+    tapButtonAndAlert("调 入");
+    tapPrompt();
+    var ret = isIn(alertMsg, "调入错误，调出方已经作废该批次");
 
-    logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
-    return ret1 && ret2 && ret3;
+    return ret;
+}
+
+function test150005() {
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : getDay(-365), "日期到" : getDay(-1) };
+    var fields = shopInFlitFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var ret = isEqual(getToday(), getTextFieldValue(window, 0));
+    tapButton(window, RETURN);
+
+    return ret;
 }
 
 function test140001_1() {
     tapMenu("门店调入", "在途调拨");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店" };
     var fields = shopInFlitFields(keys);
     query(fields);
     var ret = goPageCheck("批次");
@@ -143,52 +300,31 @@ function test140001_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    query(fields);
-    var qr = getQR();
-    var batch = Number(qr.data[0]["批次"]);
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["数量"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isEqual(sum, qr.counts["数量"]);
+    // 作废数据无法排除
+    // query();
+    // var qr = getQR();
+    // var batch = Number(qr.data[0]["批次"]);
+    // var sum = 0;
+    // for (var j = 1; j <= qr.totalPageNo; j++) {
+    // for (var i = 0; i < qr.curPageTotal; i++) {
+    // sum += Number(qr.data[i]["数量"]);
+    // }
+    // if (j < qr.totalPageNo) {
+    // scrollNextPage();
+    // qr = getQR();
+    // }
+    // }
+    // ret = isAnd(ret,isEqual(sum, qr.counts["数量"]));
 
-    keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "常青店",
-        "批次从" : batch - 1, "批次到" : batch + 1 };
-    fields = shopInFlitFields(keys);
-    query(fields);
-    qr = getQR();
-    var ret2 = isEqual("常青店", qr.data[0]["调出门店"]);
-
-    tapButton(window, CLEAR);
-    ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));
-    ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
-    ret = ret && isEqual("", getTextFieldValue(window, 2));
-    ret = ret && isEqual("", getTextFieldValue(window, 3));
-    ret = ret && isEqual("", getTextFieldValue(window, 4));
-
-    return ret && ret1 && ret2;
+    return ret;
 }
 
 function test140002_1() {
-    tapMenu("门店调入", "在途调拨");
-    var keys = { "日期从" : getDay(-30), "调出门店" : "中洲店" };
-    var fields = shopInFlitFields(keys);
-    query(fields);
-
-    tapFirstText();
-    editShopInFlitting();
-
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调入门店" : "常青店" };
+    var keys = { "日期从" : getDay(-100), "调出门店" : "中洲店" };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
-    //点击翻页
+    // 点击翻页
     var ret = goPageCheck("批次", 3, "SC");
 
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -202,7 +338,6 @@ function test140002_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    query();
     var qr = getQR();
     var sum1 = 0, sum2 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -215,117 +350,12 @@ function test140002_1() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
+    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
             sum2));
-    
-     logDebug("ret=" + ret);
-     return ret && ret1;
+
+    return ret;
 }
-function test140002_2() {
-    tapMenu("门店调入", "按批次查");
-    var ret = false;
-    tap(getTextField(window, 2));
-    var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret = true;
-            break;
-        }
-    }
-    target.frontMostApp().mainWindow().popover().dismiss();
-    query();
 
-    tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "调出门店" : "中洲店",
-        "调入门店" : "常青店" }
-    var fields = shopInQueryBatchFields(keys);
-    query(fields);
-    var qr = getQR();
-    var batch = Number(qr.data[0]["批次"]);
-
-    tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : batch - 1,
-        "批次到" : batch + 1, "调出门店" : "中洲店", "调入门店" : "常青店" }
-    var fields = shopInQueryBatchFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret1 = isAnd(isEqual("中洲店", qr.data[0]["调出门店"]), isEqual("常青店",
-            qr.data[0]["调入门店"]));
-
-    tapButton(window, CLEAR);
-    for (i = 0; i < 6; i++) {
-        if (i == 0 || i == 1) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        } else {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        }
-    }
-
-    return ret && ret1;
-}
-// 需要先在B店做一个调出单
-function test140002_140003() {
-    tapMenu("门店调入", "在途调拨");
-    var keys = [ "门店" ];
-    var fields = shopInFlitFields(keys);
-    changeTFieldValue(fields["门店"], "中洲店");
-    query(fields);
-    var qr = getQR();
-    var batch = qr.data[0]["批次"];
-    var a = qr.data[0]["数量"];
-
-    tapMenu("门店调入", "按批次查");
-    var keys1 = [ "调出门店" ];
-    var fields1 = shopInQueryBatchFields(keys1);
-    changeTFieldValue(fields1["调出门店"], "中洲店");
-    query(fields1);
-    qr = getQR();
-    var ret1 = true;
-    for (var i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["批次"] == batch) {
-            var ret1 = false;
-        }
-    }
-
-    tapMenu("门店调入", "按明细查");
-    var keys2 = [ "调出门店" ];
-    var fields2 = shopInQueryParticularFields(keys2);
-    changeTFieldValue(fields2["调出门店"], "中洲店");
-    query(fields2);
-    qr = getQR();
-    var ret2 = true;
-    for (var i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["批次"] == batch) {
-            var ret2 = false;
-        }
-    }
-
-    tapMenu("门店调入", "在途调拨");
-    tapFirstText();
-    editShopInFlitting();
-    // tapButtonAndAlert("调 入");
-
-    tapMenu("门店调入", "按批次查");
-    query();
-    qr = getQR();
-    var ret3 = false;
-    if (qr.data[0]["数量"] == a) {
-        var ret3 = true;
-    }
-
-    tapMenu("门店调入", "按明细查");
-    query();
-    qr = getQR();
-    var ret4 = false;
-    if (qr.data[0]["数量"] == a) {
-        var ret4 = true;
-    }
-
-    logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3 + " ret4="
-            + ret4);
-    return ret1 && ret2 && ret3 && ret4;
-}
 function test140003_1() {
     tapMenu("门店调入", "按明细查");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "调入门店" : "常青店" };
@@ -361,63 +391,7 @@ function test140003_1() {
     }
     var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
             sum2));
-    
 
     logDebug("ret=" + ret);
     return ret && ret1;
-}
-function test140003_2() {
-    tapMenu("门店调入", "按明细查");
-    var ret = false;
-    tap(getTextField(window, 2));
-    var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret = true;
-            break;
-        }
-    }
-    target.frontMostApp().mainWindow().popover().dismiss();
-    query();
-
-    tapMenu("门店调入", "按明细查");
-    var keys = { "款号" : "3035", "款号名称" : "jkk", "日期从" : getToday(),
-        "到" : getToday(), "调出门店" : "常青店", "调入门店" : "中洲店" }
-    var fields = shopInQueryParticularFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret1 = isAnd(isEqual("常青店", qr.data[0]["调出门店"]), isEqual("中洲店",
-            qr.data[0]["调入门店"]));
-
-    tapButton(window, CLEAR);
-    for (i = 0; i < 6; i++) {
-        if (i == 3 || i == 4) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        } else {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        }
-    }
-
-    return ret && ret1;
-}
-function test150005() {
-    tapMenu("门店调入", "在途调拨");
-    var keys = [ "日期从", "日期到" ];
-    var fields = shopInFlitFields(keys);
-    changeTFieldValue(fields["日期从"], "2015-10-17");
-    changeTFieldValue(fields["日期到"], getToday());
-    query(fields);
-
-    tapFirstText();
-    var ret = false;
-    var a = getTextFieldValue(window, 0);
-    if (a == getToday()) {
-        ret = true;
-    }
-    delay();
-    tapButton(window, RETURN);
-
-    logDebug("ret=" + ret);
-    return ret;
 }

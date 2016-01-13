@@ -207,7 +207,7 @@ function test150001() {
     }
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店",
+    var json = { "调出人" : "200", "接收店" : "常青店","备注":"作废",
         "明细" : [ { "货品" : "3035", "数量" : "200" } ] };
     editShopOutDecruitIn(json);
 
@@ -279,8 +279,8 @@ function test150003() {
 
     tapMenu("门店调出", "批量调出+");
     var json = {
-        "调出人" : "200",
-        "接收店" : "常青店",
+        "调出人" : "204",
+        "接收店" : "常青店","备注":"shopInCheck",
         "明细" : [ { "货品" : "3035", "数量" : "50" }, { "货品" : "4562", "数量" : "25" } ] };
     editShopOutDecruitIn(json);
 
@@ -391,7 +391,7 @@ function editShopOutDecruitIn(o) {
     editShopOutDecruitField1(o, "调出人");
     editShopOutDecruitField1(o, "接收店");
     editShopOutDecruitField1(o, "日期");
-    editShopOutDecruitField1(o, "备");
+    editShopOutDecruitField1(o, "备注");
     editShopOutDecruitField1(o, "操作人密码");
 
     editShopOutDecruitDet(o);

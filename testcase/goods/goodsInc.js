@@ -130,7 +130,7 @@ function tapTextByFirstWithName(name, view1) {
         view1 = getScrollView();
     }
     var texts = getStaticTexts(view1);
-    var ok = tap(texts.firstWithName(name),true);
+    var ok = tap(texts.firstWithName(name), true);
     delay();
 }
 /**
@@ -138,8 +138,10 @@ function tapTextByFirstWithName(name, view1) {
  * @param title
  * @param value
  * @param view1
+ * @param title2
+ * @param value2
  */
-function tapFirstTextByTitle(title, value, view1) {
+function tapFirstTextByTitle(title, value, view1, title2, value2) {
     if (isUndefined(view1)) {
         view1 = getScrollView();
     }
@@ -148,9 +150,16 @@ function tapFirstTextByTitle(title, value, view1) {
 
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            if (qr.data[i][title] == value) {
-                a = i;
-                break;
+            if (isDefined(title2) && isDefined(value2)) {
+                if (qr.data[i][title] == value && qr.data[i][title2] == value2) {
+                    a = i;
+                    break;
+                }
+            } else {
+                if (qr.data[i][title] == value) {
+                    a = i;
+                    break;
+                }
             }
         }
         if (isUndefined(a) && j < qr.totalPageNo) {
@@ -164,6 +173,8 @@ function tapFirstTextByTitle(title, value, view1) {
 
     var name = qr.data[a]["序号"];
     tapTextByFirstWithName(name, view1);
+
+    return a;
 }
 
 /**
@@ -172,21 +183,21 @@ function tapFirstTextByTitle(title, value, view1) {
  * @param newSecure
  */
 
-function changeSecure(oldSecure,newSecure){
+function changeSecure(oldSecure, newSecure) {
     tapMenu("系统设置", "改密码");
-    tf = window.secureTextFields()[0].secureTextFields()[0];
+    var tf = window.secureTextFields()[0].secureTextFields()[0];
     tf.setValue(oldSecure);
     tf = window.secureTextFields()[1].secureTextFields()[0];
     tf.setValue(newSecure);
     tf = window.secureTextFields()[2].secureTextFields()[0];
     tf.setValue(newSecure);
-    
-    tapButton(window,OK);   
+
+    tapButton(window, OK);
     tapPrompt();
-    var ret=isIn(alertMsg,"操作成功");
+    var ret = isIn(alertMsg, "操作成功");
     tapNaviLeftButton();
-    
-    //刷新，使新密码生效
+
+    // 刷新，使新密码生效
     tapRefresh();
     return ret;
 }
@@ -258,7 +269,7 @@ function goPageCheck(title, index, type) {
     var totalPageNo = qr.totalPageNo;
     var i, j;
 
-    //清除限制的查询条件再查询一次
+    // 清除限制的查询条件再查询一次
     if (totalPageNo <= 1) {
         title = "序号";
         if (isDefined(index)) {
@@ -450,14 +461,14 @@ function dropDownListCheck2(index, value, expected, o) {
  * @param view1
  * @returns {Boolean}
  */
-function isEqualDropDownList(expected,view1){
-    var ret=true;
+function isEqualDropDownList(expected, view1) {
+    var ret = true;
     for (var i = 0; i < expected.length; i++) {
-        //下拉框奇数行内容为空
-       ret=isAnd(ret,isEqual(expected[i],getStaticTextValue(view1, i*2)));
+        // 下拉框奇数行内容为空
+        ret = isAnd(ret, isEqual(expected[i], getStaticTextValue(view1, i * 2)));
     }
     target.frontMostApp().mainWindow().popover().dismiss();
-   return ret;
+    return ret;
 }
 
 /**
@@ -574,4 +585,28 @@ function editLogisticsVerify(o) {
         }
         tapNaviRightButton();
     }
+}
+
+function isHasStaticTexts(uiArr1, txt1, f1) {
+    debugArray(uiArr1);
+    if (isUndefined(f1)) {
+        f1 = "name";
+    }
+    var index = -1, v,ret;
+    for (var i = 0; i < uiArr1.length; i++) {
+        var t = uiArr1[i];
+        try {
+            v = eval("t." + f1 + "()");
+        } catch (e) {
+            logError(e);
+        }
+        if (isEqual(v, txt1)) {
+            ret=true;
+            break;
+        }
+    }
+    if(isUndefined(ret)){
+        ret=false;
+    }
+    return ret;
 }

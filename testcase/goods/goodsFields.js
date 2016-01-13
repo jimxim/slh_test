@@ -165,6 +165,10 @@ function queryGoodsDistributionField(key, show) {
             f.value = "aa";
         }
         break;
+    case "stop":
+    case "是否停用":
+        f = new TField("类别", TF_SC, 2, "否");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
