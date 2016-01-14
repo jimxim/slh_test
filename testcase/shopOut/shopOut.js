@@ -28,7 +28,7 @@ function testShopOut002() {
 function testShopOutParams01() {
     var qo, o, ret = true;
     qo = { "备注" : "调拨是否启用密码验证" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 }
 function testShopOutParams02() {

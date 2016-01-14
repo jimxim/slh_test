@@ -12,23 +12,24 @@ function test000All() {
 
 	
 // run("test", "test110041_1");
-//    run("test", "editBillForCustomerAccount3");
-
-
+// run("test", "editBillForCustomerAccount3");
+	  run("test", "test110009");
 
 	
- run("test", "onlyTest");
+// run("test", "onlyTest");
 
  
 }
 
 function onlyTest(){
- var texts = getStaticTexts(window);
- var index = isHasStaticTexts(texts, "备注");
-// var batch = getStaticTextValue(window, index);
+// var texts = getStaticTexts(window);
+// var market="备注: 核销门店[常青店],批次["+524+"],被核销批次["+19+"]";
+// var index = isHasStaticTexts(texts, market);
 // var ret= window.buttons()["按批次查"].isVisible;
- logDebug("  index="+index);
-   
+// logDebug(" index="+index);
+    var a2="4";
+    var a1 = String(sub(a2, 1));
+    tapTextByFirstWithName( a1, getScrollView(-1, 0));
     
 }
 
