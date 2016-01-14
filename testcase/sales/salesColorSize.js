@@ -1549,7 +1549,7 @@ function testCs170101() {
         "客户" : "ls",
         "店员" : "000",
         "明细" : [ { "货品" : "x001", "数量" : [ 2 ] },
-                { "货品" : "x003", "数量" : [ 1 ] } ], "onlytest" : "yes" };
+                { "货品" : "x001", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
     var a = getTextFieldValue(getScrollView(), 3);

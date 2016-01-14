@@ -47,10 +47,8 @@ function test000All() {
 
 // run("【销售开单－开单】", "test170083_1");//
 // run("【销售开单－开单】", "testPictureCodePictureFields");//
-// run("", "test200026");
-//	 run("", "test170083_1");
-//	 run("", "test170083_2");
-	 run("", "test170094");
+    run("【系统设置—人员列表】清除", "test210025");
+    run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");
 
 //	     run("", "test180042_4");
 // run("", "test180042_5");	     

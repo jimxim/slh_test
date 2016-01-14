@@ -20,7 +20,7 @@ function testSystem001() {
     run("【系统设置—小票信息】【系统设置—清理本地】清理", "test210020_210021");
     run("【系统设置—人员列表】查询", "test210024");
     run("【系统设置—人员列表】清除", "test210025");
-    run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");
+    run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");//
     run("【系统设置—人员列表】详细-启用/停用", "test210028_210029");
     run("【系统设置—人员列表】详细-密码重置", "test210030");
     run("【系统设置—人员列表】详细-返回", "test210031");
@@ -483,13 +483,17 @@ function test210022() {
 }
 function test210020_210021() {
     runAndAlert("test210020Clear", OK);
-    delay(5);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "清理和刷新成功")) {
-        ret = true;
-    }
+//    var ret = false;
+//    if (isIn(alertMsg, "清理和刷新成功")) {
+//        ret = true;
+//    }
+    
+    var cond="isIn(alertMsg, '清理和刷新成功')";
+    waitUntil(cond,300);
+    
+    var ret=isIn(alertMsg, "清理和刷新成功");
 
     return ret;
 }
@@ -545,13 +549,13 @@ function test210025() {
 }
 function test210027() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "2001", "是否停用" : "否", "姓名" : "总经理2001", "门店" : "常青店" };
+    var keys = { "工号" : "004", "是否停用" : "否", "姓名" : "店长", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
 
     tapFirstText();
 
-    var f1 = new TField("工号", TF, 0, "100");
+    var f1 = new TField("工号", TF, 0, "004");
     fields = [ f1 ];
     setTFieldsValue(getScrollView(), fields);
 
