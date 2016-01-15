@@ -1,74 +1,87 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-    // if(setIgnorecolorsize_1Params()){
-    run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-    run("【销售开单－开单】客户新增按钮", "test170043");
-    run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
-    run("【销售开单－开单】客户输入框清除功能", "test170045");
-    run("【销售开单－开单】结余文本框检查", "test170046");
-    run("【销售开单－开单】未付按钮", "test170047");
-    run("【销售开单－开单】刷卡按钮", "test170048");
-    run("【销售开单－开单】汇款按钮", "test170049");
-    run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
-    run("【销售开单－开单】收款方式汇总检查-组合", "test170051");
-    run("【销售开单－开单】店员输入检查", "test170052");
-    run("【销售开单－开单】店员输入框清除功能", "test170053");
-    run("【销售开单－开单】核销（客户余款）", "test170054");
-    run("【销售开单－开单】核销（客户欠款）", "test170055");
-    run("【销售开单－开单】客户切换后点核销", "test170056");
-    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
-    run("【销售开单－开单】核销后检查本单已核销", "test170058");
-    run("【销售开单－开单】核销后检查所有已核销", "test170059");
-    run("[销售开单-开单] 核销界面第一条记录选择性勾选检查", "test170452");
-    run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");
-    run("【销售开单－开单】连续核销后核销界面检查", "test170062");
-    run("【销售开单-开单】连续核销+检查本单已核销", "test170475");//
-    run("【销售开单】客户或供应商信息不允许修改", "test170063");
-    run("【销售开单-开单】核销单子排序检查", "test170064");//
-    run("【销售开单-开单】检查核销", "test170065_1");
-    run("【销售开单-开单】检查核销", "test170065_2");
-    run("【销售开单-开单】检查核销", "test170065_3");
-    run("【销售开单-开单】检查核销", "test170065_4");
-    run("【销售开单-开单】检查核销", "test170065_5");
-    run("【销售开单－开单】整单备注和明细备注", "test170095");
-    run("【销售开单－开单】退货时备注显示", "test170096");
-    run("【销售开单－开单】退货时明细备注框操作", "test170097");
-    run("【销售开单－开单】特殊货品", "test170128");//
-    run("【销售开单－开单】新增货品", "test170129");
-    run("【销售开单－开单】连续新增货品", "test170131");
-    run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
-    run("【销售开单－开单】开单保存后再增删款号", "test170133");
-    run("【销售开单－开单】作废", "test170137");
-    run("【销售开单－开单】待作废", "test170138");
+    if (setIgnorecolorsize_1Params()) {
+        run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+        run("【销售开单－开单】客户新增按钮", "test170043");
+        run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
+        run("【销售开单－开单】客户输入框清除功能", "test170045");
+        run("【销售开单－开单】结余文本框检查", "test170046");
+        run("【销售开单－开单】未付按钮", "test170047");
+        run("【销售开单－开单】刷卡按钮", "test170048");
+        run("【销售开单－开单】汇款按钮", "test170049");
+        run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
+        run("【销售开单－开单】收款方式汇总检查-组合", "test170051");
+        run("【销售开单－开单】店员输入检查", "test170052");
+        run("【销售开单－开单】店员输入框清除功能", "test170053");
+        run("【销售开单－开单】核销（客户余款）", "test170054");
+        run("【销售开单－开单】核销（客户欠款）", "test170055");
+        run("【销售开单－开单】客户切换后点核销", "test170056");
+        run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
+        run("【销售开单－开单】核销后检查本单已核销", "test170058");
+        run("【销售开单－开单】核销后检查所有已核销", "test170059");
+        run("【销售开单－开单】 核销界面第一条记录选择性勾选检查", "test170452");
+        run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");
+        run("【销售开单－开单】连续核销后核销界面检查", "test170062");
+        run("【销售开单-开单】连续核销+检查本单已核销", "test170475");
+        run("【销售开单】客户或供应商信息不允许修改", "test170063");
+        run("【销售开单-开单】核销单子排序检查", "test170064");
+        run("【销售开单-开单】检查核销", "test170065_1");
+        run("【销售开单-开单】检查核销", "test170065_2");
+        run("【销售开单-开单】检查核销", "test170065_3");
+        run("【销售开单-开单】检查核销", "test170065_4");
+        run("【销售开单-开单】检查核销", "test170065_5");
+        run("【销售开单-开单】开单模式-代收模式2", "test170090");
+        run("【销售开单－开单】收款方式选择代收", "test170091");
+        run("【销售开单－开单】代收模式2", "test170092");
+        run("【销售开单－开单】代收模式2", "test170093_170092");
+        run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
+        run("【销售开单－开单】整单备注和明细备注", "test170095");
+        run("【销售开单－开单】退货时备注显示", "test170096");
+        run("【销售开单－开单】退货时明细备注框操作", "test170097");
+        run("【销售开单－开单】特殊货品", "test170128");
+        run("【销售开单－开单】新增货品", "test170129");
+        run("【销售开单－开单】连续新增货品", "test170131");
+        run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
+        run("【销售开单－开单】开单保存后再增删款号", "test170133");
+        run("【销售开单－开单】作废", "test170137");
+        run("【销售开单－开单】待作废", "test170138");
+        run("【销售开单－开单】收款（新增界面）", "test170163");
+        run("【销售开单－开单】收款（修改界面）", "test170164");
+        run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
+        run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
+        run("【销售开单－开单】挂单保存", "test170169");
+        run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+        run("【销售开单－开单】挂单转销售单", "test170171");
+        run("【销售开单－开单】二次挂单功能检查", "test170174");
+        run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
+        run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
+        run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
+        run("【销售开单－开单】设置已配货", "test170180");
+        run("【销售开单-开单】客户不允许退货", "test170181");
+        run("【销售开单－开单】积分兑换", "test170186");
+        run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+        run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
+        run("【销售开单－开单】兑换记录", "test170189");
+        run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
+        run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
+        run("【销售开单】单价输入负数检查", "test170239");// 用例已修改，加上新的用例内容
+        run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
+        run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+
+    }
+}
+function testSalesNoColorSize001() {
     run("【销售开单－开单】复制-粘贴", "test170139");
-    run("【销售开单－开单】收款（新增界面）", "test170163");
-    run("【销售开单－开单】收款（修改界面）", "test170164");
-    run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
-    run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
-    run("【销售开单－开单】挂单保存", "test170169");
-    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-    run("【销售开单－开单】挂单转销售单", "test170171");
-    run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
-    run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
-    run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
-    run("【销售开单－开单】设置已配货", "test170180");
-    run("【销售开单-开单】客户不允许退货", "test170181");
-    run("【销售开单－开单】积分兑换", "test170186");
-    run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
-    run("【销售开单－开单】兑换记录", "test170189");
-    run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
-    run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
-    run("【销售开单】单价输入负数检查", "test170239");
-    run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
+
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
-    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
     run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
     run("【销售开单-开单】客户折扣模式下自动取上次折扣值", "test170461");
+}
 
-    // }
+function testSalesNoColorSize002() {
     if (setPayMethod_9Params()) {
         run("【销售开单-开单】开单模式-快速标记代收", "test170070");
         run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
@@ -92,14 +105,7 @@ function testSalesNoColorSizeAll() {
     if (setPayMethod_7Params()) {
         run("【销售开单-开单】开单模式-整单折扣", "test170085");
     }
-    if (setPayMethod_2Params()) {
-        run("【销售开单-开单】开单模式-代收模式2", "test170090");
-        run("【销售开单－开单】收款方式选择代收", "test170091");
-        run("【销售开单－开单】代收模式2", "test170092");
-        run("【销售开单－开单】代收模式2", "test170093_170092");
-        run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
-        run("【销售开单－开单】二次挂单功能检查", "test170174");
-    }
+
     if (setSales_comb_repeated_0Params()) {
         run("【销售开单－开单】款号合并", "test170101");
         run("【销售开单－开单】款号合并（既拿货又退货）", "test170102");
@@ -208,6 +214,18 @@ function setIgnorecolorsize_1Params() {
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "显示颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -714,97 +732,88 @@ function test170040_170041() {
 function test170043() {
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
-//    var g0 = new TField("名称", TF, 0, "李四");
-//    var fields = [ g0 ];
-//    setTFieldsValue(getPopView(), fields);
-//    tapButton(getPop(), OK);
-//
-//    debugArray(alertMsgs);
-//    var alertMsg1 = getArray1(alertMsgs, -1);
-//    var ret = (isIn(alertMsg1, "名称重复"));
-//    tapPrompt();
-//
-//    // 输入厂商，提示名称重复
-//    var g0 = new TField("名称", TF, 0, "联想");
-//    var fields = [ g0 ];
-//    setTFieldsValue(getPopView(), fields);
-//    tapButton(getPop(), OK);
-//
-//    debugArray(alertMsgs);
-//    var alertMsg1 = getArray1(alertMsgs, -1);
-//    ret = ret && (isIn(alertMsg1, "名称重复"));
-//    tapPrompt();
-//    
-//    // 输入客户李四手机号，提示名称重复
-//    var g0 = new TField("名称", TF, 0, "52148899635963");
-//    var fields = [ g0 ];
-//    setTFieldsValue(getPopView(), fields);
-//    tapButton(getPop(), OK);
-//
-//    debugArray(alertMsgs);
-//    var alertMsg1 = getArray1(alertMsgs, -1);
-//    ret = ret && (isIn(alertMsg1, "名称重复"));
-//    tapPrompt();
-//
-//    var r = "anewkh" + getTimestamp(6);
-//    var r1 = getTimestamp(6);
-//    var g0 = new TField("名称", TF, 0, r);
-//    var g1 = new TField("手机", TF, 1, r1);
-//    var g2 = new TField("店员", TF_AC, 2, "000,", -1, 0);
-//    var g3 = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
-//    var g4 = new TField("地址", TF, 4, r);
-//    var fields = [ g0, g1, g2, g3, g4 ];
-//    setTFieldsValue(getPopView(), fields);
-//    tapButton(getPop(), OK);
-//    tapButton(getPop(), "关 闭");
-//    tapReturn();
-//
-//    tapMenu("往来管理", "客户查询");
-//    var keys = { "客户" : r };
-//    var qFields = queryCustomerFields(keys);
-//    query(qFields);
-//    tapFirstText();
-//    var a = getTextFieldValue(getScrollView(), 1);
-//    var a1 = getTextFieldValue(getScrollView(), 3);
-//    var a2 = getTextFieldValue(getScrollView(), 7);
-//    var a3 = getTextFieldValue(getScrollView(), 14);
-//    var a4 = getTextFieldValue(getScrollView(), 17);
-//    var ret1 = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
-//            "零批价", a3), isEqual(r, a4));
-//    tapReturn();
-
-//    tapMenu("销售开单", "开  单+");
-//    tapButton(window, "新增+");
-    
-    var i;
     var ret2 = false;
     var f = new TField("店员", TF_AC, 2, "000", -1);
-    var i = f.index, value=f.value, view1=getPopView();
+    var i = f.index, value = f.value, view1 = getPopView();
     i = getTextFieldIndex(view1, i);
     var tf = view1.textFields()[i].textFields()[0];
     setTextFieldValueByKeyboard(tf, value);
-    
-//    setTFieldsValue(getPopView(), [f]);
+
     var cells = getTableViews(getPop())[0].cells();
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, "总经理")) {
+        if (isIn(v, "000,总经理")) {
             ret2 = true;
             break;
         }
     }
-//    debugElementTree(window);
-    
-//    delay();
-//    tapKeyboardHide();
-//    tapButton(getPop(), "关 闭");
-//
-//    tapReturn();
+    tapKeyboardHide();
+    tapButton(getPop(), "关 闭");
 
-    logDebug("v="+v+", cells="+cells+", cell="+cell);
-    return ret2;
-//    return ret && ret1 && ret2;
+    tapButton(window, "新增+");
+    var g0 = new TField("名称", TF, 0, "李四");
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "名称重复"));
+    tapPrompt();
+
+    // 输入厂商，提示名称重复
+    var g0 = new TField("名称", TF, 0, "联想");
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    ret = ret && (isIn(alertMsg1, "名称重复"));
+    tapPrompt();
+
+    // 输入客户李四手机号，提示名称重复
+    var g0 = new TField("名称", TF, 0, "52148899635963");
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    ret = ret && (isIn(alertMsg1, "名称重复"));
+    tapPrompt();
+
+    var r = "anewkh" + getTimestamp(6);
+    var r1 = getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var g1 = new TField("手机", TF, 1, r1);
+    var g2 = new TField("店员", TF_AC, 2, "000,", -1, 0);
+    var g3 = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
+    var g4 = new TField("地址", TF, 4, r);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : r };
+    var qFields = queryCustomerFields(keys);
+    query(qFields);
+    tapFirstText();
+    var a = getTextFieldValue(getScrollView(), 1);
+    var a1 = getTextFieldValue(getScrollView(), 3);
+    var a2 = getTextFieldValue(getScrollView(), 7);
+    var a3 = getTextFieldValue(getScrollView(), 14);
+    var a4 = getTextFieldValue(getScrollView(), 17);
+    var ret1 = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
+            "零批价", a3), isEqual(r, a4));
+
+    tapReturn();
+
+    logDebug("v=" + v + ", cells=" + cells + ", cell=" + cell);
+    return ret && ret1 && ret2;
 }
 function test170044() {
     tapMenu("销售开单", "开  单+");
@@ -989,8 +998,10 @@ function test170048() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
+
     tapReturn();
+
+    // var a=getButton(mainWindow().segmentedControls()[0],"交");
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2767,18 +2778,18 @@ function test170085() {
 }
 function test170090() {
     // 开单模式-代收模式2
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "上次单价" };
+    // o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "成交价" };
+    // o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
@@ -2801,10 +2812,10 @@ function test170090() {
     return ret && ret1;
 }
 function test170091() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
@@ -2827,10 +2838,10 @@ function test170091() {
     return ret && ret1;
 }
 function test170092() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -2893,10 +2904,10 @@ function test170092() {
     return ret && ret1 && ret2 && ret3;
 }
 function test170093() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
@@ -3715,9 +3726,10 @@ function test170129() {
 
     var g0 = new TField("款号", TF, 0, r);
     var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
     var g3 = new TField("零批价", TF, 3, r1);
     var g4 = new TField("打包价", TF, 4, r1);
-    var fields = [ g0, g1, g3, g4 ];
+    var fields = [ g0, g1, g2, g3, g4 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
@@ -3747,6 +3759,8 @@ function test170129() {
     var qr = getQR();
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
+
+    // tapFirstText();
 
     var ret1 = false;
     if (a == r && b == r) {
@@ -3944,14 +3958,15 @@ function test170136() {
 }
 function test170137() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
     tapFirstText();
 
     tapButtonAndAlert("作 废", OK);
@@ -3962,25 +3977,30 @@ function test170137() {
     changeTFieldValue(fields1["作废挂单"], "作废");
     query(fields1);
     var qr = getQR();
-    var a = qr.data[0]["配货"];
-    var b = qr.data[0]["日期"];
 
-    var ret = isAnd(isEqual("否", a), isEqual(getToday(""), b));
+    var ret = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
+            qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
     logDebug("ret" + ret);
 
     return ret;
 }
 function test170138() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "3" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
     tapFirstText();
 
     tapButtonAndAlert("待作废", OK);
@@ -3989,8 +4009,7 @@ function test170138() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "作废成功"));
-    delay();
-    tapButton(window, RETURN);
+    tapPrompt();
 
     tapMenu("销售开单", "按批次查");
     var keys1 = [ "作废挂单" ];
@@ -3998,10 +4017,9 @@ function test170138() {
     changeTFieldValue(fields1["作废挂单"], "待作废");
     query(fields1);
     var qr = getQR();
-    var a = qr.data[0]["配货"];
-    var b = qr.data[0]["日期"];
 
-    var ret1 = isAnd(isEqual("否", a), isEqual(getToday(""), b));
+    var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
+            qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
     return ret && ret1;
@@ -4009,7 +4027,7 @@ function test170138() {
 function test170139() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -4191,10 +4209,9 @@ function test170169() {
     changeTFieldValue(fields1["作废挂单"], "挂单");
     query(fields1);
     var qr = getQR();
-    var a = qr.data[0]["批次"];
-    var b = qr.data[0]["日期"];
 
-    var ret = isAnd(isEqual("0", a), isEqual(getToday(""), b));
+    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("0",
+            qr.data[0]["批次"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
     logDebug("ret" + ret);
 
@@ -4271,16 +4288,20 @@ function test170171() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var a = qr.data[0]["客户"];
-    var b = qr.data[0]["日期"];
 
-    var ret1 = isAnd(isEqual("李四", a), isEqual(getToday(""), b));
+    var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("2",
+            qr.data[0]["数量"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
     logDebug(" ret" + ret + " ret1" + ret1);
     return ret && ret1;
 }
 function test170173() {
     // 全局参数，不显示待作废按钮
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -4320,10 +4341,14 @@ function test170173() {
 }
 function test170174() {
     // 开单模式选择代收模式2
-    tapMenu("销售开单", "开 单+");
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
-        "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -4361,8 +4386,13 @@ function test170174() {
     return ret;
 }
 function test170175() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
+    var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
@@ -4714,8 +4744,9 @@ function test170188() {
     setTFieldsValue(window, fields);
     query(fields);
     var qr = getQR();
-    var b = qr.data[0]["金额"];
-    var ret1 = isEqual(-r, b);
+
+    var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
+            qr.data[0]["金额"]));
 
     logDebug("金额=" + a + "ret=" + ret + "ret1=" + ret1);
     return ret && ret1;
@@ -4752,12 +4783,15 @@ function test170189() {
     var a = qr.data[0]["兑换积分"];
     var a1 = qr.data[0]["兑换金额"];
     var a2 = qr.data[0]["日期"];
+    var a3 = qr.data[0]["门店"];
+    var a4 = qr.data[0]["操作人"];
 
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapButtonAndAlert(RETURN, OK);
 
-    var ret = isAnd(isEqual(r, a), isEqual(r, a1), isEqual(getToday("yy"), a2));
+    var ret = isAnd(isEqual(r, a), isEqual(r, a1), isEqual(getToday("yy"), a2),
+            isEqual("常青店", a3), isEqual("总经理", a4));
 
     logDebug(" a=" + a + " a1=" + a1 + " a2=" + a2);
     return ret;
@@ -5384,11 +5418,16 @@ function test170250() {
 function test170251() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a", "代收金额" : "200" } };
+        "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a" } };
     editSalesBillNoColorSize(json);
 
+    tapMenu("销售开单", "物流单");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+
     tapMenu("销售开单", "核销+");
-    var f = new TField("物流", TF, 0, "tt");
+    var f = new TField("物流", TF, 0, "tt", -1, 0);
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
@@ -5399,8 +5438,20 @@ function test170251() {
 
     tapNaviRightButton();
     tapButtonAndAlert(SAVE, OK);
-    delay();
-    tapButton(window, RETURN);
+
+    tapReturn();
+
+    tapMenu("销售开单", "物流单");
+    query();
+    var qr = getQR();
+    var a = qr.data[0]["批次"];
+    var a1 = qr.data[0]["物流商"];
+    var a2 = qr.data[0]["运单号"];
+    var a3 = qr.data[0]["物流备注"];
+    var a4 = qr.data[0]["代收货款"];
+
+    var ret = isAnd(isEqual(batch, a), isEqual("天天物流", a1), isEqual("123", a2),
+            isEqual("a", a3), isEqual("是", a4));
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "lx", "门店" : "常青店" };
@@ -5416,11 +5467,13 @@ function test170251() {
     var c = getStaticTextValue(getPopOrView(), index + 3);
     var d = getStaticTextValue(getPopOrView(), index + 5);
 
-    var ret = isAnd(isEqual("总经理", a), isEqual("", c), isEqual("", d));
-    var ret1 = isAqualOptime(getOpTime(), b);
+    var ret1 = isAnd(isEqual("总经理", a), isEqual("", c), isEqual("", d),
+            isAqualOptime(getOpTime(), b));
 
-    logDebug(" ret" + ret);
-    return ret;
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    return ret && ret1;
 }
 function test170464() {
     // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店长：004
