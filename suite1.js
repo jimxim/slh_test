@@ -11,9 +11,9 @@ function test000All() {
 // run("【往来管理-客户查询】翻页_排序", "test110001_1");
 
 	
-// run("test", "test110041_1");
+ run("test", "test110012");
 // run("test", "editBillForCustomerAccount3");
-	  run("test", "test110009");
+//	  run("test", "test110009");
 
 	
 // run("test", "onlyTest");
@@ -228,23 +228,24 @@ function  test000PurchaseOrder001() {
 }
 }
 
-// 常青店总经理验证门店调出
-function test000ShopOut001(){
+// 中洲店总经理验证门店调出
+function test200ShopOut001(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
         testShopOut001();
+        testShopOut002();
+        run("【往来管理-积分查询】数据验证", "test110036_2");
        logout();
     }   
 }
 
-// 中洲店总经理验证门店调入
-function test200ShopIn001(){
+// 常青店总经理验证门店调入
+function test000ShopIn001(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testShopIn001();
-        run("【往来管理-积分查询】数据验证", "test110036_2");
+        testShopIn001();    
        logout();
     }   
 }

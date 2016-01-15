@@ -57,7 +57,7 @@ function testCustomer001Else() {
     run("【往来管理-新增厂商】新增厂商", "test110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
-    run("【往来管理-厂商账款】异地核销", "test110041_1");
+//    run("【往来管理-厂商账款】异地核销", "test110041_1");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -1810,9 +1810,9 @@ function editBillForCustomerAccount3() {
 function test110041_1() {
     // 异地核销中洲店的2笔1500元欠款单，一笔核销750元，一笔全部核销
     var qo, o, i, j, ret = true;
-    qo = { "备注" : "是否允许跨门店核销" };
-    o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+//    qo = { "备注" : "是否允许跨门店核销" };
+//    o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
@@ -1994,9 +1994,6 @@ function test110041_1() {
 
     tapNaviLeftButton();
 
-    // qo = { "备注" : "是否允许允许跨门店核销" };
-    // o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
