@@ -24,7 +24,8 @@ function testSystem001() {
     run("【系统设置—人员列表】详细-启用/停用", "test210028_210029");
     run("【系统设置—人员列表】详细-密码重置", "test210030");
     run("【系统设置—人员列表】详细-返回", "test210031");
-    run("【系统设置—新增人员】新增人员", "test210032_120033");
+    run("【系统设置—新增人员】新增人员", "test210032");
+    run("【系统设置—新增人员】返回", "test210033");
     run("【系统设置—新增人员】新增工号为0的员工", "test210034");
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置—改密码】关闭", "test210036");
@@ -33,6 +34,13 @@ function testSystem001() {
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置】数据清理授权", "test210043");
+    // run("【系统设置】数据清理授权", "test210043_1");
+    // run("【系统设置】数据清理授权", "test210043_2");
+    // run("【系统设置】数据清理授权", "test210043_3");
+    // run("【系统设置】数据清理授权", "test210043_4");
+    // run("【系统设置】数据清理授权", "test210043_5");
+    // run("【系统设置】数据清理授权", "test210043_6");
+    // run("【系统设置】数据清理授权", "test210043_7");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
     run("【系统设置-全局参数】均色均码+打印小票以尺码为头部", "test210049");
@@ -472,12 +480,12 @@ function test210022() {
     tapButtonAndAlert("刷新缩略图", OK);
     tapPrompt();
 
-     var cond="isIn(alertMsg, '操作成功')";
-     waitUntil(cond,300);
-     
-     var ret=isIn(alertMsg, "操作成功");
+    var cond = "isIn(alertMsg, '操作成功')";
+    waitUntil(cond, 300);
 
-     tapNaviLeftButton();
+    var ret = isIn(alertMsg, "操作成功");
+
+    tapNaviLeftButton();
 
     return ret;
 }
@@ -485,15 +493,15 @@ function test210020_210021() {
     runAndAlert("test210020Clear", OK);
     tapPrompt();
 
-//    var ret = false;
-//    if (isIn(alertMsg, "清理和刷新成功")) {
-//        ret = true;
-//    }
-    
-    var cond="isIn(alertMsg, '清理和刷新成功')";
-    waitUntil(cond,300);
-    
-    var ret=isIn(alertMsg, "清理和刷新成功");
+    // var ret = false;
+    // if (isIn(alertMsg, "清理和刷新成功")) {
+    // ret = true;
+    // }
+
+    var cond = "isIn(alertMsg, '清理和刷新成功')";
+    waitUntil(cond, 300);
+
+    var ret = isIn(alertMsg, "清理和刷新成功");
 
     return ret;
 }
@@ -505,11 +513,11 @@ function test210023() {
 
     tapButtonAndAlert("刷新大图", OK);
     tapPrompt();
-    
-    var cond="isIn(alertMsg, '操作成功')";
-    waitUntil(cond,300);
-    
-    var ret=isIn(alertMsg, "操作成功");
+
+    var cond = "isIn(alertMsg, '操作成功')";
+    waitUntil(cond, 300);
+
+    var ret = isIn(alertMsg, "操作成功");
 
     tapNaviLeftButton();
 
@@ -549,7 +557,7 @@ function test210025() {
 }
 function test210027() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "004", "是否停用" : "否", "姓名" : "店长", "门店" : "常青店" };
+    var keys = { "工号" : "005", "是否停用" : "否", "姓名" : "开单员", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
 
@@ -583,7 +591,7 @@ function test210027() {
 
     tapFirstText();
 
-    f1 = new TField("工号", TF, 0, "2001");
+    f1 = new TField("工号", TF, 0, "005");
     fields = [ f1 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -593,13 +601,13 @@ function test210027() {
 }
 function test210028_210029() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "2001", "是否停用" : "否" };
+    var keys = { "工号" : "005", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
 
     tapFirstText();
     tapButtonAndAlert("停 用", CANCEL);
-    var ret = isEqual("2001", getTextFieldValue(getScrollView(), 0));
+    var ret = isEqual("005", getTextFieldValue(getScrollView(), 0));
 
     tapButtonAndAlert("停 用", OK);
 
@@ -608,12 +616,12 @@ function test210028_210029() {
     query(fields);
 
     tapFirstText();
-    ret = isAnd(isEqual("2001", getTextFieldValue(getScrollView(), 0)),
-            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
+            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", CANCEL);
-    ret = isAnd(isEqual("总经理2001", getTextFieldValue(getScrollView(), 0)),
-            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
+            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", OK);
 
@@ -621,8 +629,8 @@ function test210028_210029() {
     fields = querySystemStaffFields(keys);
     query(fields);
     tapFirstText();
-    ret = isAnd(isEqual("2001", getTextFieldValue(getScrollView(), 0)),
-            isEqual("总经理2001", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
+            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapReturn();
 
@@ -646,7 +654,7 @@ function test210030() {
 }
 function test210031() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "001", "是否停用" : "否" };
+    var keys = { "工号" : "005", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
 
@@ -656,8 +664,8 @@ function test210031() {
 
     var qr = getQR();
 
-    var ret = isAnd(isEqual("001", qr.data[0]["工号"]), isEqual("财务员",
-            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("财务员",
+    var ret = isAnd(isEqual("005", qr.data[0]["工号"]), isEqual("开单员",
+            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("开单员",
             qr.data[0]["岗位"]), isEqual("1", qr.data[0]["序号"]));
 
     return ret;
@@ -713,8 +721,8 @@ function test210032() {
     tapFirstText();
     tapButtonAndAlert("停 用", OK);
 
-    dalay();
-    query(fields);
+    delay();
+    query();
 
     return ret;
 }
@@ -1189,6 +1197,11 @@ function test210046() {
     var qo, o, ret = true;
     qo = { "备注" : "物流商" };
     o = { "新值" : "0", "数值" : [ "不验证" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
@@ -1852,7 +1865,7 @@ function test210053() {
     }
 
     tapReturn();
- 
+
     return ret && ret1;
 }
 function test210053_1() {
@@ -1860,7 +1873,7 @@ function test210053_1() {
     qo = { "备注" : "上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
