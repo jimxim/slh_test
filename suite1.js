@@ -9,10 +9,10 @@ function test000All() {
 
 
 // run("【往来管理-客户查询】翻页_排序", "test110001_1");
-
+//	testGoods001Prepare();
 	
- run("test", "test110012");
-// run("test", "editBillForCustomerAccount3");
+	
+ run("test", "test1000111");
 //	  run("test", "test110009");
 
 	

@@ -2003,7 +2003,7 @@ function test120033() {
     saveAndAlertOk();
     tapPrompt();
     delay();
-    tapRetuen();
+    tapReturn();
 
     qr = getQR();
     var ret = isEqual("10", sub(qr.data[0]["总数"], a));
