@@ -30,6 +30,7 @@ function testSalesNoColorSizeElse001() {
 
     run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332");
     run("【销售开单－销售汇总-按客户未结】清除功能", "test170333");
+    run("【销售开单－销售汇总-按客户未结】排序/翻页/快速翻页", "test170334_70335_170336");
 
     run("【销售开单－销售汇总-按客户上货】按客户上货", "test170338");
     run("【销售开单－销售汇总-按客户上货】品牌查询", "test170339");
@@ -131,7 +132,6 @@ function testSalesNoColorSizeElseAll() {
 
     // run("【销售开单－销售汇总-按客户销售】点击查询记录后页面检查", "test170331");//(数据准确性验证)
 
-    // run("【销售开单－销售汇总-按退货汇总】排序/翻页/快速翻页", "test170334_70335_170336");
     // run("【销售开单－销售汇总-按客户未结】点击查询记录后页面检查", "test170337");//
 
     // run("【销售开单－销售汇总-按客户上货】点击查询记录后页面检查", "test170344");//(数据准确性验证)
@@ -1050,7 +1050,7 @@ function test170255_170256_170257() {
     ret = ret && sortByTitle("已发数", IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("订货额", IS_NUM);
-    // ret = ret && sortByTitle("已付", IS_NUM);
+     ret = ret && sortByTitle("已付", IS_NUM);
     ret = ret && sortByTitle("未付", IS_NUM);
     ret = ret && sortByTitle("发货状态");
     ret = ret && sortByTitle("客户分店");
@@ -1719,7 +1719,7 @@ function test170280_170281_170282() {
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("物流商");
-    ret = ret && sortByTitle("运单号", IS_NUM);
+    ret = ret && sortByTitle("运单号");
     ret = ret && sortByTitle("代收货款");
     ret = ret && sortByTitle("代收金额", IS_NUM);
     ret = ret && sortByTitle("货款收讫");
@@ -2542,6 +2542,7 @@ function test170298_1() {
 
     ret = ret && sortByTitle("物流商");
     ret = ret && sortByTitle("物流核销批次", IS_NUM);
+    ret = ret && sortByTitle("日期");
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3616,10 +3617,10 @@ function test170332() {
 function test170333() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : "1500" };
+        "现金" : 200, "刷卡" : [ 100, "交" ], "汇款" : [ 100, "建" ], "备注" : "xx" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "按汇总", "按客户销售");
+    tapMenu("销售开单", "按汇总", "按客户未结");
     var i;
     var ret = false;
     var f = new TField("客户", TF_AC, 2, "ls", -1);
@@ -3637,7 +3638,8 @@ function test170333() {
     query();
 
     tapMenu("销售开单", "按汇总", "按客户未结");
-    var keys = { "到" : getToday(), "客户" : "ls" };
+    var keys = { "到" : getToday(), "客户" : "ls", "日期从" : getDay(-30),
+        "店员" : "000," };
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
 
@@ -3654,7 +3656,8 @@ function test170333() {
 }
 function test170334_70335_170336() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+        "现金" : 200, "刷卡" : [ 1000, "交" ], "汇款" : [ 1000, "建" ], "备注" : "xx" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按客户未结");
@@ -3665,6 +3668,7 @@ function test170334_70335_170336() {
     var ret = goPageCheck("名称");
 
     ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
@@ -3851,7 +3855,7 @@ function test170351() {
     tapButton(window, CLEAR);
 
     tapMenu("销售开单", "按汇总", "客户对账单");
-    var keys = { "到" : getToday(), "客户" : "ls", "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30),"到" : getToday(), "客户" : "ls", "门店" : "常青店" };
     var fields = salesQueryCustomerFields(keys);
     query(fields);
 
@@ -3962,6 +3966,7 @@ function test170358_170359_170360() {
     var ret = goPageCheck("类别");
 
     var ret = true;
+    ret = ret && sortByTitle("类别");
     ret = ret && sortByTitle("销售数", IS_NUM);
     ret = ret && sortByTitle("退货数", IS_NUM);
     ret = ret && sortByTitle("实销数", IS_NUM);
