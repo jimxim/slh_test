@@ -12,8 +12,8 @@ function test000All() {
 //	testGoods001Prepare();
 	
 	
- run("test", "test1000111");
-//	  run("test", "test110009");
+ run("test", "test120011_3");
+//	  run("test", "testPurchase002Prepare");
 
 	
 // run("test", "onlyTest");
@@ -27,9 +27,15 @@ function onlyTest(){
 // var index = isHasStaticTexts(texts, market);
 // var ret= window.buttons()["按批次查"].isVisible;
 // logDebug(" index="+index);
-    var a2="4";
-    var a1 = String(sub(a2, 1));
-    tapTextByFirstWithName( a1, getScrollView(-1, 0));
+    var qr=getQR();
+    var data1=qr.data;
+    scrollNextPage();
+    scrollPrevPage();
+ 
+    qr=getQR();
+    var data2=qr.data;
+    var ret=isEqualDyadicArray(data1,data2);
+    return ret;
     
 }
 

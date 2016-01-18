@@ -261,9 +261,8 @@ function goPageCheck(title, index, type) {
     }
     // 当前页为1
     var qr = getQR();
-    var ret = isAnd(totalAndPageCheck(), isEqual("1", qr.data[0]["序号"]));
     var totalPageNo = qr.totalPageNo;
-    var i, j;
+    var i, j,ret=true;
 
     // 清除限制的查询条件再查询一次
     if (totalPageNo <= 1) {
@@ -283,7 +282,6 @@ function goPageCheck(title, index, type) {
         totalPageNo = qr.totalPageNo;
     }
 
-    // qr = getQR();
     if (totalPageNo > 1) {
         var page1 = new Array();
         for (i = 0; i < qr.curPageTotal; i++) {
@@ -323,6 +321,23 @@ function goPageCheck(title, index, type) {
         logDebug("数据不足,翻页验证跳过");
     }
 
+    return ret;
+}
+
+/**
+ * 二维数组是否相等
+ * @param data1
+ * @param data2
+ * @returns {Boolean}
+ */
+function isEqualDyadicArray(data1,data2){
+    var i,j,ret=true;
+    for(i=0;i<data1.length;i++)
+    {
+     var arr1=data1[i];
+     var arr2=data2[i];
+     ret=isAnd(ret,isEqualObject(arr1,arr2));
+    }
     return ret;
 }
 
