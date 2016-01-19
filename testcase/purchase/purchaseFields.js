@@ -457,6 +457,10 @@ function purchaseOrderField(key, show) {
             f.value = "741,Abc,44元";
         }
         break;
+    case "remark":
+    case "备注":
+        f = new TField("备注", TF, 4, "a");
+        break;
     default:
         logWarn("未知key＝" + key);
     }

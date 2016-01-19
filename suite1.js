@@ -12,8 +12,9 @@ function test000All() {
 //	testGoods001Prepare();
 	
 	
- run("test", "test120011_3");
-//	  run("test", "testPurchase002Prepare");
+
+	  run("test", "test130016_2");
+
 
 	
 // run("test", "onlyTest");
@@ -27,15 +28,10 @@ function onlyTest(){
 // var index = isHasStaticTexts(texts, market);
 // var ret= window.buttons()["按批次查"].isVisible;
 // logDebug(" index="+index);
-    var qr=getQR();
-    var data1=qr.data;
-    scrollNextPage();
-    scrollPrevPage();
- 
-    qr=getQR();
-    var data2=qr.data;
-    var ret=isEqualDyadicArray(data1,data2);
-    return ret;
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+   
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(), fields);
     
 }
 

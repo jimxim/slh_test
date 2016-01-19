@@ -141,7 +141,7 @@ function tapTextByFirstWithName(name, view1) {
  * @param title2
  * @param value2
  */
-function tapFirstTextByTitle(title, value, view1, title2, value2,qr) {
+function tapFirstTextByTitle(title, value, view1, title2, value2, qr) {
     if (isUndefined(view1)) {
         view1 = getScrollView();
     }
@@ -195,6 +195,30 @@ function changeSecure(oldSecure, newSecure) {
 
     // 刷新，使新密码生效
     tapRefresh();
+    return ret;
+}
+
+function checkShowField(view1, fields,expected) {
+    var ret = true;
+    for ( var i in fields) {
+        var f = fields[i];
+        var idx = f.index;
+        var actual;
+        var type2 = f.type.substr(0, 2);
+        switch (type2) {
+        case TF:
+            actual = getTextFieldValue(view1, idx);
+            break;
+        case TV:
+            actual = getTextViewValue(view1, idx);
+            break;
+        default:
+            logWarn("未知type＝" + f.type);
+        }
+
+        var ok = isEqual(expected, actual);
+        ret = ret && ok;
+    }
     return ret;
 }
 
@@ -262,7 +286,7 @@ function goPageCheck(title, index, type) {
     // 当前页为1
     var qr = getQR();
     var totalPageNo = qr.totalPageNo;
-    var i, j,ret=true;
+    var i, j, ret = true;
 
     // 清除限制的查询条件再查询一次
     if (totalPageNo <= 1) {
@@ -330,13 +354,12 @@ function goPageCheck(title, index, type) {
  * @param data2
  * @returns {Boolean}
  */
-function isEqualDyadicArray(data1,data2){
-    var i,j,ret=true;
-    for(i=0;i<data1.length;i++)
-    {
-     var arr1=data1[i];
-     var arr2=data2[i];
-     ret=isAnd(ret,isEqualObject(arr1,arr2));
+function isEqualDyadicArray(data1, data2) {
+    var i, j, ret = true;
+    for (i = 0; i < data1.length; i++) {
+        var arr1 = data1[i];
+        var arr2 = data2[i];
+        ret = isAnd(ret, isEqualObject(arr1, arr2));
     }
     return ret;
 }
