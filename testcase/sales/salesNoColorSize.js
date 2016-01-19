@@ -64,7 +64,7 @@ function testSalesNoColorSizeAll() {
         run("【销售开单－开单】兑换记录", "test170189");
         run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
         run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
-        run("【销售开单】单价输入负数检查", "test170239");// 用例已修改，加上新的用例内容
+        run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");//修改为新用例内容
         run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
         run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
 
@@ -5100,6 +5100,11 @@ function test170134() {
     return ret;
 }
 function test170239() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
@@ -5123,16 +5128,18 @@ function test170239() {
 }
 function test170240() {
     // 设置全局参数 开单是否门店过滤人中为 支持,开启后店员只显示本门店人员
+//    var qo, o, ret = true;
+//    qo = { "备注" : "开单是否门店过滤人员" };
+//    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
 
     var f4 = new TField("店员", TF_AC, 4, "1");
     var fields = [ f4 ];
     setTFieldsValue(window, fields);
 
-    var ret = false;
+    var ret = true;
     var f = new TField("店员", TF_AC, 4, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
@@ -5140,7 +5147,7 @@ function test170240() {
         debugElementTree(cell);
         var v = cell.name();
         if (isEqual("101,财务员", v)) {
-            ret = true;
+            ret = false;
             break;
         }
     }
@@ -5148,14 +5155,11 @@ function test170240() {
     tapButtonAndAlert(RETURN, OK);
 
     logDebug("ret=" + ret);
-    return !ret;
+    return ret;
 }
 function test170241() {
     // 设置全局参数 开单是否门店过滤人中为 默认不支持
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
 
     var f4 = new TField("店员", TF_AC, 4, "1");
     var fields = [ f4 ];
@@ -5183,8 +5187,7 @@ function test170242() {
     // 开启全局参数 价格模式 为不同门店不同价格
     // 常青店总经理000登陆
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    var json = {"明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var a = getTextFieldValue(getScrollView(), 4);
@@ -5192,8 +5195,7 @@ function test170242() {
 
     // 仓库店总经理100登陆
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var b = getTextFieldValue(getScrollView(), 4);
@@ -5224,10 +5226,12 @@ function test170244() {
 }
 function test170245() {
     // 设置全局参数 开单 货品列表是否显示品牌信息 为 支持,部分客户需要
+    var qo, o, ret = true;
+    qo = { "备注" : "开单货品列表是否显示品牌信息" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
 
     var ret = false;
     var f = new TField("货品", TF_AC, 0, "303", -1);
