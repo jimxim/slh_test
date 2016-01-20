@@ -34,13 +34,6 @@ function testSystem001() {
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置】数据清理授权", "test210043");
-    // run("【系统设置】数据清理授权", "test210043_1");
-    // run("【系统设置】数据清理授权", "test210043_2");
-    // run("【系统设置】数据清理授权", "test210043_3");
-    // run("【系统设置】数据清理授权", "test210043_4");
-    // run("【系统设置】数据清理授权", "test210043_5");
-    // run("【系统设置】数据清理授权", "test210043_6");
-    // run("【系统设置】数据清理授权", "test210043_7");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
     run("【系统设置-全局参数】均色均码+打印小票以尺码为头部", "test210049");
@@ -1066,104 +1059,6 @@ function test210043() {
     tapNaviLeftButton();
 
     return ret && ret1;
-}
-function test210043_1() {
-    // 财务员001登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_2() {
-    // 仓管员002登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_3() {
-    // 采购员003登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_4() {
-    // 店长004登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_5() {
-    // 开单员005登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_6() {
-    // 营业员006登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
-}
-function test210043_7() {
-    // 配货员007登录
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()["数据清理授权"];
-    if (isUIAElementNil(bt) || !bt.isVisible()) {
-        ret = true;
-    }
-
-    target.frontMostApp().mainWindow().popover().dismiss();
-    return ret;
 }
 function test210045() {
     var qo, o, ret = true;
