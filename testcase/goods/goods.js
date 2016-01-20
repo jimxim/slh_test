@@ -62,6 +62,10 @@ function goodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否允许跨门店核销" };
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -327,7 +331,7 @@ function test100001_1() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck("款号", 2, "SC");
+    var ret = goPageCheck("序号", 14, "款号", 2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -631,7 +635,7 @@ function test100005_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck("款号", 2, "SC");
+    var ret = goPageCheck("序号", 9, "款号", 2);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");

@@ -9,30 +9,16 @@ function test000All() {
 
 
 // run("【往来管理-客户查询】翻页_排序", "test110001_1");
-//	testGoods001Prepare();
+// testGoods001Prepare();
 	
-	
+ run("test", "onlyTest");
 
-	  run("test", "test130016_2");
-
-
-	
 // run("test", "onlyTest");
-
- 
 }
 
 function onlyTest(){
-// var texts = getStaticTexts(window);
-// var market="备注: 核销门店[常青店],批次["+524+"],被核销批次["+19+"]";
-// var index = isHasStaticTexts(texts, market);
-// var ret= window.buttons()["按批次查"].isVisible;
-// logDebug(" index="+index);
-    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
-   
-    var fields = [ f0 ];
-    setTFieldsValue(getScrollView(), fields);
-    
+   var qr=getQR();
+   goPage2(3,qr);
 }
 
 
