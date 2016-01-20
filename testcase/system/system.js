@@ -2,7 +2,7 @@
 function testSystem001() {
     run("【系统设置—打印机】保存", "test210001");
     run("【系统设置—打印机】返回", "test210002");
-    run("【系统设置—打印机】远程打印参数", "test210003");//
+    run("【系统设置—打印机】远程打印参数", "test210003");
     run("【系统设置—打印机】保存/返回/参数生效", "test210004_210005_210006");
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
     run("【系统设置—本地设置】开单界面,保存后显示是否打印窗口", "test210009");
@@ -17,7 +17,9 @@ function testSystem001() {
     run("【系统设置—小票信息】保存", "test210018_5");
     run("【系统设置—小票信息】保存", "test210018_6");
     run("【系统设置—小票信息】保存", "test210018_7");
+    run("【系统设置—刷新图像】刷新缩略图", "test210022");
     run("【系统设置—小票信息】【系统设置—清理本地】清理", "test210020_210021");
+    run("【系统设置—刷新图像】刷新大图", "test210023");
     run("【系统设置—人员列表】查询", "test210024");
     run("【系统设置—人员列表】清除", "test210025");
     run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");//
@@ -38,7 +40,20 @@ function testSystem001() {
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
     run("【系统设置-全局参数】均色均码+打印小票以尺码为头部", "test210049");
     run("【系统设置-全局参数】是否允许修改单据日期--不限制", "test210050");
-    run("【系统设置-全局参数】是否允许修改单据日期--不限制", "test210051");
+    run("【系统设置-全局参数】是否允许修改单据日期--不限制", "test210050_1");
+    run("【系统设置-全局参数】是否允许修改单据日期--限制修改销售单日期", "test210051");
+    run("【系统设置-全局参数】是否允许修改单据日期--限制修改销售单日期", "test210051_1");
+    run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052");
+    run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_1");
+    run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_2");
+    run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_3");
+    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
+    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
+    run("【系统设置—打印机】条码打印机IP", "test210055");
+    run("【系统设置—打印机】条码打印机端口", "test210056");
+    run("【系统设置—打印机】快递单打印端口", "test210057");
+    run("【系统设置】设置本地参数为默认", "test210062");
+    run("【系统设置-全局参数】异地发货参数互斥", "test210063");
 
 }
 
@@ -59,7 +74,11 @@ function test210001() {
     var qr = getQR();
     ret = isAnd(ret, isEqual(ip, qr.data[0]["数值"]));
 
-    tapTextByFirstWithName("2");
+    var texts = getStaticTexts(getScrollView());
+    var i = getArrayIndexIn(texts, "print_port");
+    var ok = tap(texts[i]);
+
+    // tapTextByFirstWithName("2");
     f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
@@ -105,6 +124,15 @@ function test210003() {
     var i = getArrayIndexIn(texts, "sc_remote_mac");
     var ok = tap(texts[i]);
 
+    // 商路花Bug
+    // var r = "ac:29:3a:9f:22";
+    // var f = new TField("数值", TF, 2, r);
+    // setTFieldsValue(getScrollView(), [ f ]);
+    // delay();
+    // tapButtonAndAlert(SAVE, OK);
+    // tapPrompt();
+    // var ret2 = isIn(alertMsg, "MAC地址非法");
+
     var ip = "ac:29:3a:9f:22:3b";
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
@@ -114,13 +142,7 @@ function test210003() {
 
     tapMenu("系统设置", "打印机");
     var qr = getQR();
-    var ret2 = isEqual(ip, qr.data[6]["数值"]);
-
-    // ok = tap(texts[i]);
-    //
-    // var ret3 = isEqual(ip, getTextFieldValue(getScrollView(), 2));
-    //
-    // tapReturn();
+    var ret3 = isEqual(ip, qr.data[6]["数值"]);
 
     var qo, o, ret = true;
     qo = { "备注" : "远程" };
@@ -132,7 +154,7 @@ function test210003() {
 
     var ret4 = isAnd(isEqual(6, qr.total), isEqual(6, qr.data.length));
 
-    return ret && ret1 && ret2 && ret4;
+    return ret && ret1 && ret3 && ret4;// && ret2
 }
 function test210004_210005_210006() {
     var qo, o, ret = true;
@@ -609,12 +631,12 @@ function test210028_210029() {
     query(fields);
 
     tapFirstText();
-    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
-            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", CANCEL);
-    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
-            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapButtonAndAlert("启 用", OK);
 
@@ -622,8 +644,8 @@ function test210028_210029() {
     fields = querySystemStaffFields(keys);
     query(fields);
     tapFirstText();
-    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)),
-            isEqual("开单员", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)), isEqual(
+            "开单员", getTextFieldValue(getScrollView(), 1)));
 
     tapReturn();
 
@@ -1093,7 +1115,7 @@ function test210046() {
     qo = { "备注" : "物流商" };
     o = { "新值" : "0", "数值" : [ "不验证" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
@@ -1795,4 +1817,110 @@ function test210053_1() {
     tapReturn();
 
     return ret && ret1;
+}
+function test210055() {
+    tapMenu("系统设置", "打印机");
+
+    // "IP地址错误"不显示，slh——Bug
+    //    
+    // tapTextByFirstWithName("4");
+    // var r = getRandomInt(10000);
+    var ip = getRandomInt(100) + ".0.0.1";
+    // var f = new TField("数值", TF, 2, r);
+    // setTFieldsValue(getScrollView(), [ f ]);
+    // tapButtonAndAlert(SAVE, OK);
+    // tapPrompt();
+    // var ret = isIn(alertMsg, "IP地址错误");
+
+    tapFirstText(getScrollView(), "3", 4);
+    var f = new TField("数值", TF, 2, ip);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    var qr = getQR();
+    var ret = isEqual(ip, qr.data[3]["数值"]);
+
+    tapMenu("系统设置", "打印机");
+    tapFirstText(getScrollView(), "3", 4);
+    tapButton(getScrollView(), "本 机");
+    var ret1 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapButtonAndAlert(SAVE, OK);
+
+    tapFirstText(getScrollView(), "3", 4);
+    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapReturn();
+
+    return ret && ret1 && ret2;
+}
+function test210056() {
+    tapMenu("系统设置", "打印机");
+    tapFirstText(getScrollView(), "4", 4);
+
+    var r = getRandomInt(10000);
+    var f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    var qr = getQR();
+    var ret = isEqual(r, qr.data[4]["数值"]);
+
+    tapFirstText(getScrollView(), "4", 4);
+    var ret1 = isEqual(r, getTextFieldValue(getScrollView(), 2));
+    tapReturn();
+
+    return ret && ret1;
+}
+function test210057() {
+    tapMenu("系统设置", "打印机");
+    tapFirstText(getScrollView(), "5", 4);
+
+    var r = getRandomInt(1000000);
+    var f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    var qr = getQR();
+    var ret = isEqual(r, qr.data[5]["数值"]);
+
+    tapFirstText(getScrollView(), "5", 4);
+    var ret1 = isEqual(r, getTextFieldValue(getScrollView(), 2));
+    tapReturn();
+
+    return ret && ret1;
+}
+function test210062() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("设置本地参数为默认");
+
+    var cond = "isIn(alertMsg, '操作成功')";
+    waitUntil(cond, 10);
+    
+    var ret = isIn(alertMsg, "操作成功");
+
+    return ret;
+}
+function test210063() {
+    // 常青店没有绑定仓库
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "15,异地发货开单模式", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
+
+    tapReturn();
+
+    return ret;
 }

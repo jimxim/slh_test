@@ -227,6 +227,11 @@ function setIgnorecolorsize_1Params() {
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "0", "数值" : [ "默认不启用","in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
