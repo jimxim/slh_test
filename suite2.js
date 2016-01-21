@@ -46,17 +46,9 @@ function test000All() {
 	
 	// 运单号取7位随即数
 // run("【销售开单-收款记录】查询", "test170275");
-	
-	
-	run("【系统设置】紧急模式上传异常", "test210061");
-	   
-//	    run("【销售开单－销售汇总-按金额汇总】翻页_排序_汇总", "test170307_1");	    
-//    run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170308");
-//	    run("【销售开单－销售汇总-按款号汇总】排序/翻页/快速翻页", "test170310_170311_170312");
     
-// run("", "test180042_4");
-// run("", "test180042_5");
-// run("", "test180042_6");
+    run("【系统设置-全局参数】是否允许修改单据日期--不限制", "test210050_1");
+
 
 // testStatisticPictureAll();
 // testSystem001();
@@ -145,6 +137,7 @@ function test000SalesColorSize001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
+        testSystemprepare();
         testSystem001();
         
         logout();
