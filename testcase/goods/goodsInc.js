@@ -382,7 +382,7 @@ function goPageCheck(firstTitle, titleTotal, title, index) {
         // 只有一页的时候，滑动页面，检测有没有提示错误
         scrollPrevPage();
         scrollNextPage();
-        logDebug("数据不足,翻页验证跳过");
+        goPage(1,qr);
     }
 
     return ret;
