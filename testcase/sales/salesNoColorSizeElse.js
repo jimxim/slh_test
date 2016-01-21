@@ -3234,20 +3234,29 @@ function test170308() {
     var ret = isAnd(isEqual("jkk", a), isEqual("15-10-13", a1), isEqual("均色",
             a2), isEqual("均码", a3), isEqual(kc, a4));
 
+    tapMenu("销售开单", "按汇总", "按款号汇总");
+    keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店" };
+    fields = salesCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    totalSale = qr.counts["实销数"];
+
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店",
+        "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     qr = getQR();
 
-    var ret1 = isEqual(a5, qr.data[0]["数量"]);
-    
+    var ret1 = isEqual(totalSale, qr.counts["数量"]);
+
     tapMenu("统计分析", "综合汇总");
-    var f2 = new TField("门店", TF_SC, 2, "常青店");
-    var fields = [ f2 ];
-    setTFieldsValue(window, fields);
+    var keys = { "day1" : getDay(-30), "day2" : getToday(), "shop" : "常青店" };
+    var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText();
+    qr = getQR();
+
+    var ret = isEqual(totalSale, qr.counts["实销数"]);
 
     logDebug("ret=" + ret);
     return ret && ret1;

@@ -5,7 +5,6 @@ function testSystem001() {
     run("【系统设置—打印机】远程打印参数", "test210003");
     run("【系统设置—打印机】保存/返回/参数生效", "test210004_210005_210006");
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
-    run("【系统设置—本地设置】开单界面,保存后显示是否打印窗口", "test210009");
     run("【系统设置—全局设置】查询/清除", "test210010_210011");
     run("【系统设置—打印机】保存/返回/参数生效", "test210012_210013_210014");
     run("【系统设置—打印机】翻页/页码切换", "test210015_210016");
@@ -33,6 +32,7 @@ function testSystem001() {
     run("【系统设置—改密码】关闭", "test210036");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
+    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置】数据清理授权", "test210043");
@@ -52,9 +52,9 @@ function testSystem001() {
     run("【系统设置—打印机】条码打印机IP", "test210055");
     run("【系统设置—打印机】条码打印机端口", "test210056");
     run("【系统设置—打印机】快递单打印端口", "test210057");
+    run("【系统设置】紧急模式上传异常", "test210061");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置-全局参数】异地发货参数互斥", "test210063");
-
 }
 
 function test210001() {
@@ -176,7 +176,7 @@ function test210004_210005_210006() {
 function test210007_210008() {
     tapMenu("系统设置", "本地设置");
 
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck("序号",4,"名称");
 
     return ret;
 }
@@ -246,7 +246,7 @@ function test210015_210016() {
 
     query();
 
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck("序号",4,"名称");
 
     return ret;
 }
@@ -989,6 +989,58 @@ function test210039() {
                     getTextFieldValue(getScrollView(), 9)));
 
     tapReturn();
+
+    return ret && ret1;
+}
+function test210039_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "x001", "数量" : [ 5, 6 ] },
+                { "货品" : "x003", "数量" : [ 1, 2 ] } ] };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    var qr = getQR();
+    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(14,
+            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
+            0.5);
+
+    tapFirstText();
+    var ret1 = isAnd(
+            isEqual("X001,特步夹克", getTextFieldValue(getScrollView(), 0)),
+            isEqual("红色", getTextFieldValue(getScrollView(), 1)), isEqual("L",
+                    getTextFieldValue(getScrollView(), 2)), isEqual(5,
+                    getTextFieldValue(getScrollView(), 3)), isEqual(
+                    "X001,特步夹克", getTextFieldValue(getScrollView(), 7)),
+            isEqual("红色", getTextFieldValue(getScrollView(), 8)), isEqual("XL",
+                    getTextFieldValue(getScrollView(), 9)), isEqual(6,
+                    getTextFieldValue(getScrollView(), 10)), isEqual(
+                    "X003,特步登山服", getTextFieldValue(getScrollView(), 14)),
+            isEqual("黄色", getTextFieldValue(getScrollView(), 15)), isEqual("L",
+                    getTextFieldValue(getScrollView(), 16)), isEqual(1,
+                    getTextFieldValue(getScrollView(), 17)), isEqual(
+                    "X003,特步登山服", getTextFieldValue(getScrollView(), 21)),
+            isEqual("黄色", getTextFieldValue(getScrollView(), 22)), isEqual(
+                    "XL", getTextFieldValue(getScrollView(), 23)), isEqual(2,
+                    getTextFieldValue(getScrollView(), 24)));
+
+    tapReturn();
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
 }
@@ -1885,6 +1937,21 @@ function test210057() {
 
     return ret && ret1;
 }
+function test210061() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("紧急模式上传异常");
+    
+    tapButton(getScrollView(1),"删除紧急模式数据");
+    tapPrompt();
+    tapPrompt();
+    
+    var ret = isIn(alertMsg, "操作成功");
+
+    tapNaviLeftButton();
+    
+    return ret;
+}
 function test210062() {
     tapMenu1("系统设置");
     tapMenu2("更多..");
@@ -1892,7 +1959,7 @@ function test210062() {
 
     var cond = "isIn(alertMsg, '操作成功')";
     waitUntil(cond, 10);
-    
+
     var ret = isIn(alertMsg, "操作成功");
 
     return ret;
