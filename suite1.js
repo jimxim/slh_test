@@ -11,14 +11,15 @@ function test000All() {
 // run("【往来管理-客户查询】翻页_排序", "test110001_1");
 // testGoods001Prepare();
 	
- run("test", "onlyTest");
+// run("test", "test100010_100011_100013_1");
 
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
-   var qr=getQR();
-   goPage2(3,qr);
+//   var qr= getQR(window, getScrollView(), "序号", 15);
+//   debugObject(qr.data[0]);
+    return scrollPrevPageCheck();
 }
 
 

@@ -287,8 +287,11 @@ function goPage2(page, qr) {
         delay(); // 为了让跳转页面加载完成
 
         var index = getTextFieldIndex(window, -1);
-        var f = new TField("页码", TF, index, page);
-        setTFieldsValue(window, f);
+        var tf = window.textFields()[index].textFields()[0];
+        tf.setValue(page);
+        tapKeyboardHide();
+        // var f = new TField("", TF, index, page);
+        // setTFieldsValue(window, f);
         tapButton(window, OK);
     } else {
         logDebug("goPage 目标页=" + page + " 总页数=" + total + "，无需换页或失败");
@@ -297,7 +300,7 @@ function goPage2(page, qr) {
 }
 
 /**
- * 翻页检验，检验序号和title的内容和第2页有没有重复
+ * 翻页检验
  * @param title 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
  * @param index 限制条件的下标 若数据只有1页，删除限制条件，重新查询，只验证序号
  * @param firstTitle
@@ -357,7 +360,7 @@ function goPageCheck(firstTitle, titleTotal, title, index) {
             qr = getQR();
             var midPage = Math.ceil(totalPageNo / 2);
             logDebug("midPage=" + midPage);
-            //输入值页面切换
+            // 输入值页面切换
             goPage2(midPage, qr);
             qr = getQR();
             var curPageNo = qr.curPageNo;
@@ -443,6 +446,7 @@ function isInQRData1Object(qr, expected) {
 /**
  * 滑动翻页验证 先向上翻，再向下翻
  */
+//
 function scrollPrevPageCheck(firstTitle, titleTotal) {
     var pageInfoView = window;
     var dataView = getScrollView();

@@ -290,7 +290,7 @@ function test140001_1() {
     var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店" };
     var fields = shopInFlitFields(keys);
     query(fields);
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("序号",8,"批次");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -325,7 +325,7 @@ function test140002_1() {
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次", 3, "SC");
+    var ret = goPageCheck("序号",11,"批次", 3);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出批次", IS_NUM);
@@ -362,7 +362,7 @@ function test140003_1() {
     var fields = shopInQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次", 5, "SC");
+    var ret = goPageCheck("序号",13,"批次", 5);
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

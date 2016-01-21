@@ -850,7 +850,7 @@ function test100006() {
 function test100006_1() {
     tapMenu("货品管理", "库存分布");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 7, "名称");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
@@ -935,7 +935,7 @@ function test100008_1() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
 
-    var ret = goPageCheck("款号", 0, "SC");
+    var ret = goPageCheck("序号", 9, "款号", 0);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1133,7 +1133,7 @@ function test100010_100011_100013() {
 function test100010_100011_100013_1() {
     tapMenu("货品管理", "货品查询");
     query();
-    var ret = goPageCheck("款号");
+    var ret = goPageCheck("序号", 15, "款号");
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("类别");
@@ -2203,7 +2203,7 @@ function test100068_100069() {
 
     tapMenu("货品管理", "更多", "仓位列表");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 2, "名称");
 
     ret = ret && sortByTitle("名称");
 
@@ -2493,7 +2493,7 @@ function test100075_100076_100077_100078() {
     var i, j;
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
-    var ret = goPageCheck("款号");
+    var ret = goPageCheck("序号", 7, "款号");
     // 默认按超储数降序排序
     ret = ret && compareQR("超储数", IS_NUM, "desc");
 
@@ -2561,7 +2561,7 @@ function test100082_100083_100084_100085_100093() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
 
-    var ret = goPageCheck("款号");
+    var ret = goPageCheck("序号", 7, "款号");
     默认按缺货数降序排序
     ret = ret && compareQR("缺货数", IS_NUM, "desc");
 
@@ -2660,7 +2660,7 @@ function test10_price() {
 function test10_type() {
     tapMenu("货品管理", "基本设置", "货品类别");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 3, "名称");
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2692,7 +2692,7 @@ function test10_type() {
 function test10_color() {
     tapMenu("货品管理", "基本设置", "所有颜色");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 4, "名称");
 
     var qr = getQR();
     ret = ret && sortByTitle("类别");
@@ -2726,7 +2726,7 @@ function test10_color() {
 function test10_size() {
     tapMenu("货品管理", "基本设置", "所有尺码");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 3, "名称");
 
     var qr = getQR();
     ret = ret && sortByTitle("类别");
@@ -2767,7 +2767,7 @@ function test100095() {
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 3, "名称");
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2823,7 +2823,7 @@ function test10_brand() {
 function test10_size_group() {
     tapMenu("货品管理", "基本设置", "所有尺码组");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("序号", 3, "名称");
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2854,7 +2854,7 @@ function test10_size_group() {
 function test10_discount() {
     tapMenu("货品管理", "基本设置", "所有品牌折扣");
     query();
-    var ret = goPageCheck("品牌");
+    var ret = goPageCheck("序号", 8, "品牌");
 
     var qr = getQR();
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
@@ -3028,7 +3028,7 @@ function test100106() {
     var fields = goodsStockAdjustmentFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck("批次", 2, "SC");
+    var ret = goPageCheck("序号", 11, "批次", 2);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
