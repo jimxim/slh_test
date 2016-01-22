@@ -300,91 +300,100 @@ function goPage2(page, qr) {
 }
 
 /**
- * 翻页检验
- * @param title 有一些标题需要限制条件，如款号,需要先用查询条件限制门店，防止不同门店的相同款号
- * @param index 限制条件的下标 若数据只有1页，删除限制条件，重新查询，只验证序号
- * @param firstTitle
+ * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比
+ * 正常情况下，应该不存在完全相同的数据吧~
  * @param titleTotal
  */
-function goPageCheck(firstTitle, titleTotal, title, index) {
-    if (isUndefined(title)) {
-        title = "序号";
-    }
-    // 当前页为1
-    var qr = getQR();
-    var totalPageNo = qr.totalPageNo;
-    var i, j, ret = true;
+function goPageCheck(titleTotal) {
+    var pageInfoView = window;
+    var dataView = getScrollView();
+    var  firstTitle = TITLE_SEQ;
 
-    // 清除限制的查询条件再查询一次
-    if (totalPageNo <= 1) {
-        title = "序号";
-        if (isDefined(index)) {
-            tap(window.textFields()[index]);
-            var pop = window.popover();
-            if (!isUIAElementNil(pop)) {
-                pop.dismiss(); // TF_SC
-            }
-            var ok = tap(window.textFields()[index].buttons()["清除文本"]);
-            if (!ok) {
-                tap(window.textFields()[index].buttons()["Clear text"]);
-            }
-        }
-        tapButton(window, QUERY);
-        qr = getQR();
-        totalPageNo = qr.totalPageNo;
+    // 当前页为1
+    var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+    var ok = isEqual(1, qr.curPageNo);
+    if (!ok) {
+        goPage(1, qr);
+        qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
     }
+
+    var totalPageNo = qr.totalPageNo;
+    var i, ret = true;
 
     if (totalPageNo > 1) {
-        var page1 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page1[i] = qr.data[i][title];
-        }
+        var page1 = qr.data;
         // 总页数验证
         ret = isAnd(ret, isEqual(Math.ceil(qr.total / 15), totalPageNo));
 
         // 最后一页验证
         goPage(totalPageNo, qr);
-        qr = getQR();
-        var page2 = new Array();
-        for (i = 0; i < qr.curPageTotal; i++) {
-            page2[i] = qr.data[i][title];
-        }
+        qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+        var page2 = qr.data;
         var finSeq = qr.curPageTotal - 1;
+        var firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
         // 最后的序号应该等于总数据条数
         ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
-                totalPageNo, qr.curPageNo), isHasSame(page1, page2),
-                scrollPrevPageCheck(firstTitle, titleTotal));
+                firstSeq, qr.data[0]["序号"]),
+                isEqual(totalPageNo, qr.curPageNo), isDifferentArray(page1,
+                        page2), scrollPrevPageCheck(firstTitle, titleTotal));
 
         // 当总页数大于2时，追加一页验证
         if (totalPageNo > 2) {
-            qr = getQR();
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
             var midPage = Math.ceil(totalPageNo / 2);
             logDebug("midPage=" + midPage);
             // 输入值页面切换
             goPage2(midPage, qr);
-            qr = getQR();
-            var curPageNo = qr.curPageNo;
-            var firstSeq = (curPageNo - 1) * 15 + 1;
-            var page3 = new Array();
-            for (i = 0; i < qr.curPageTotal; i++) {
-                page3[i] = qr.data[i][title];
-            }
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+            firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
+            finSeq = Number(qr.curPageNo) * 15;
+            var page3 = qr.data;
             ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
-                    midPage, qr.curPageNo), scrollPrevPageCheck(firstTitle,
-                    titleTotal), isHasSame(page1, page3), isHasSame(page2,
-                    page3));
+                    finSeq, qr.data[14]["序号"]), isEqual(midPage, qr.curPageNo),
+                    scrollPrevPageCheck(firstTitle, titleTotal),
+                    isDifferentArray(page1, page2), isDifferentArray(page1,
+                            page3), isDifferentArray(page2, page3));
 
-            qr = getQR();
-            goPage(1, qr);
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+            ret = isAnd(ret, goPageCheckField());
+            goPage2(1, qr);
         }
-
     } else {
         // 只有一页的时候，滑动页面，检测有没有提示错误
         scrollPrevPage();
         scrollNextPage();
-        goPage(1,qr);
+        goPage(1, qr);
+        ret = isAnd(ret, goPageCheckField());
     }
 
+    return ret;
+
+}
+
+/**
+ * 页面切换，输入页码后点取消，验证留在当前页
+ * @param qr
+ */
+function goPageCheckField() {
+    var qr = getQR();
+    var arr1 = qr.data;
+    var total = qr.totalPageNo;
+    var curPageNo = qr.curPageNo;
+    var curPageIndex = curPageNo + "/" + total;
+    window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : { x : 0.08,
+        y : 0.55 } });
+    delay(); // 为了让跳转页面加载完成
+
+    var index = getTextFieldIndex(window, -1);
+    var tf = window.textFields()[index].textFields()[0];
+    tf.setValue("1");
+    tapKeyboardHide();
+    tapButton(window, CANCEL);
+
+    qr = getQR();
+    var arr2 = qr.data;
+    var ret = isAnd(isEqualDyadicArray(arr1, arr2), isEqual(curPageNo,
+            qr.curPageNo));
     return ret;
 }
 
@@ -395,11 +404,61 @@ function goPageCheck(firstTitle, titleTotal, title, index) {
  * @returns {Boolean}
  */
 function isEqualDyadicArray(data1, data2) {
-    var i, j, ret = true;
+    var i, ret = true;
     for (i = 0; i < data1.length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
         ret = isAnd(ret, isEqualObject(arr1, arr2));
+    }
+    return ret;
+}
+
+function arrayToString(data) {
+    var value, ret = "";
+    for ( var i in data) {
+        value = data[i];
+        ret = ret + "," + value;
+    }
+    return ret;
+}
+/**
+ * 数组是否不同
+ * @param data1
+ * @param data2
+ * @returns {Boolean}
+ */
+function isDifferentArray(data1, data2) {
+    var i, j, s1, s2, ret = true;
+    for (j = 0; j < data1.length; j++) {
+        s1 = arrayToString(data1[j]);
+        for (i = 0; i < data2.length; i++) {
+            s2 = arrayToString(data2[i]);
+            if (isEqual(s1, s2)) {
+                ret = false;
+                break;
+            }
+        }
+        if (!ret) {
+            logDebug("内容相同");
+            break;
+        }
+    }
+
+    return ret;
+}
+
+function isDifferentArrayField(arr1, arr2) {
+    // debugObject(arr1, "expected");
+    // debugObject(arr2, "actual");
+    var ret = false;
+    var v1, v2;
+    for ( var i in arr1) {
+        v1 = arr1[i];
+        v2 = arr2[i];
+        if (v1 != v2) {
+            ret = true;
+            break;
+        }
     }
     return ret;
 }
@@ -446,7 +505,6 @@ function isInQRData1Object(qr, expected) {
 /**
  * 滑动翻页验证 先向上翻，再向下翻
  */
-//
 function scrollPrevPageCheck(firstTitle, titleTotal) {
     var pageInfoView = window;
     var dataView = getScrollView();
@@ -603,7 +661,7 @@ function fuzzyQueryCheckField(index, title, value, title1) {
  * @param money
  */
 function addRedeemPoints(customer, points, money) {
-    tapMenu("销售开单", "开 单+");
+    tapMenu("销售开单", "开  单+");
     var json = { "客户" : customer };
     editSalesBillCustomer(json);
 

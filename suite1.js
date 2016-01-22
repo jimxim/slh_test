@@ -5,35 +5,19 @@
 
 // 总经理
 function test000All() {
-//	debug = true;
+	debug = true;
 
-// run("test", "testStatisticAnalysisPrepare");
- run("【统计分析—新增收入】新增类别", "test190012");
-// run("【统计分析—新增收入】保存", "test190013");
-// run("【统计分析—新增收入】返回", "test190014");
-// run("【统计分析—新增收入】删除", "test190015");
-// run("【统计分析—新增支出】新增类别", "test190016");
-// run("【统计分析—新增支出】保存", "test190017");
-// run("【统计分析—新增支出】返回", "test190018");
-// run("【统计分析—新增支出】删除", "test190019");
-// run("【统计分析-新增收入】金额支持2位小数", "test190020");
-// run("【统计分析-新增支出】金额支持2位小数", "test190021");
-// run("test", "onlyTest");
+// run("test", "test190087_190101");
+// run("test", "test190029");
+
+
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
-    var qr=getQR(window,getScrollView(),"序号",6);
-    var data1=qr.data;
-    scrollNextPage();
-    qr=getQR(window,getScrollView(),"序号",6);
-    var data2=qr.data;
-    var ret=isDifferentDyadicArray(data1,data2)
-    return ret;
-    
-  
+   
+  return goPageCheck(6);
 }
-
-
 
 
 //

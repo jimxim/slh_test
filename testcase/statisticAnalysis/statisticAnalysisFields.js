@@ -91,7 +91,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 7, "1010pp");
+        f = new TField("品牌", TF_AC, 7, "1010pp");
         break;
     default:
         logWarn("未知key＝" + key);
