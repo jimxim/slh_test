@@ -1584,48 +1584,20 @@ function test210051() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret = true;
-    }
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "k200", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    var keys = { "发货状态" : "未发货" };
-    var fields = salesBillOrderFields(keys);
-    query(fields);
-
-    tapFirstText();
-
-    var f10 = new TField("日期", TF_DT, 10, getDay(-1));
-    var fields = [ f10 ];
+    var ret = isIn(alertMsg, "系统设定不允许修改开单日期");
+    
+    var f7 = new TField("日期", TF_AC, 7,"k300");
+    var f10 = new TField("日期", TF, 10, 12);
+    var fields = [ f7,f10 ];
+    setTFieldsValue(getScrollView(), fields);
+    
+    var f9 = new TField("日期", TF_DT, 9, getToday());
+    var fields = [ f9 ];
     setTFieldsValue(window, fields);
-
+    
     saveAndAlertOk();
     tapPrompt();
-
-    var ret1 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret1 = true;
-    }
     tapReturn();
-
-    return ret && ret1;
-}
-function test210051_1() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否允许修改单据日期" };
-    o = { "新值" : "1", "数值" : [ "限制修改销售单日期", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
-    editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -1638,10 +1610,7 @@ function test210051_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "系统设定不允许修改开单日期");
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -1655,12 +1624,6 @@ function test210051_1() {
     query(fields);
 
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
-
-    tapMenu("销售开单", "按批次查");
-    query();
-    tapFirstText();
 
     var f10 = new TField("日期", TF_DT, 10, getDay(-1));
     var fields = [ f10 ];
@@ -1669,13 +1632,90 @@ function test210051_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret1 = true;
-    }
+    var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
-    return ret && ret1;
+    return ret && ret1 && ret2;
+}
+function test210051_1() {
+    //检查销售以外的模块修改日期不受此参数控制,采购订货没有“保存成功”提示弹窗，所以在按批次查界面进行查询
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "1", "数值" : [ "限制修改销售单日期", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "5" }],"onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    
+    var f9 = new TField("日期", TF_DT, 9, getDay(-1));
+    var fields = [ f9 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx","onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f9 = new TField("日期", TF_DT, 8, getDay(-1));
+    var fields = [ f9 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+    
+    tapMenu("采购订货", "按批次查");
+    var keys = { "厂商" : "Rt", "日期从" : getDay(-1), "日期到" : getToday(),
+        "门店" : "常青店", "备注" : "xx" }
+    var fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var ret1 = isAnd(isIn(getDay(-1), qr.data[0]["日期"]), isEqual("Rt",
+            qr.data[0]["厂商"]), isEqual(20, qr.data[0]["总数"]), isAqualOptime(
+            getOpTime(), qr.data[0]["操作日期"], 1));
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ],"onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f9 = new TField("日期", TF_DT, 8, getDay(-1));
+    var fields = [ f9 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "保存成功");
+    tapReturn();
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "000", "接收店" : "中洲店",
+        "明细" : [ { "货品" : "jkk", "数量" : "10" } ],"onlytest" : "yes" };
+    editShopOutDecruitIn(json);
+
+    var f2 = new TField("日期", TF_DT, 2, getDay(-1));
+    var fields = [ f2 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret3 = isIn(alertMsg, "保存成功");
+    
+    tapReturn();
+
+    return ret && ret1 && ret2 && ret3;
 }
 function test210052() {
     var qo, o, ret = true;

@@ -45,11 +45,10 @@ function test000All() {
 // run("【销售开单－开单】", "testPictureCodePictureFields");//
 	
 	// 运单号取7位随即数
-// run("【销售开单-收款记录】查询", "test170275");
+
+    run("【盘点管理—盘点处理】部分处理", "test180026");
+    run("【盘点管理—盘点处理】全盘处理", "test180025");
     
-    run("【系统设置-全局参数】是否允许修改单据日期--不限制", "test210050_1");
-
-
 // testStatisticPictureAll();
 // testSystem001();
 // logout();
