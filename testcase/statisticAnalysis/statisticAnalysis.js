@@ -54,6 +54,7 @@ function testStatisticAnalysisAll() {
 
 }
 
+//中洲店店长数据准备
 function testStatisticAnalysisPrepare() {
     var rm = (getRandomInt(100000)+1) / 100;
     var r = "备注" + "a" + getTimestamp(6);

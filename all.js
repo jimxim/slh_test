@@ -27,7 +27,14 @@
 #import "testcase/purchaseOrder/purchaseOrder.js"
 #import "testcase/purchaseOrder/purchaseOrderFields.js"
 
+#import "testcase/role/001.js"
+#import "testcase/role/002.js"
+#import "testcase/role/003.js"
 #import "testcase/role/004.js"
+#import "testcase/role/005.js"
+#import "testcase/role/006.js"
+#import "testcase/role/007.js"
+#import "testcase/role/104.js"
 
 #import "testcase/sales/sales.js"
 #import "testcase/sales/salesColorSize.js"
