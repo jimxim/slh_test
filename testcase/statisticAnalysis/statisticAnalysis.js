@@ -553,6 +553,7 @@ function test190094() {
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
     var qr = getQR();
+    var sum = qr.counts["金额"];
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["收支类别"] == "物损") {
             a1 = qr.data[i]["金额"];
@@ -622,7 +623,6 @@ function test190094() {
 
     query();
     qr = getQR();
-    var sum = qr.counts["金额"];
     // 收入-支出=总值
     ret = isAnd(ret, isAqualNum(sum, sub(sum1, sum2), 0.001), isEqual(
             getToday(), getTextFieldValue(window, 0)), isEqual(getToday(),
@@ -1317,7 +1317,7 @@ function test190073_190075_190076() {
 
 function test190074() {
     tapMenu("统计分析", "汇总表", "畅销表");
-    var keys = { "日期从" : getDay(-30)};
+    var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisGoodMarketFields(keys);
     query(fields);
     var ret = goPageCheck(6);
@@ -1589,7 +1589,7 @@ function test190087_190101() {
         "金额" : 2000, "成本额" : 1000, "利润额" : 1000 };
     var ret = isEqualObject(expected, actual);
 
-    var ret=true;
+    var ret = true;
     tapButton(window, CLEAR);
     for (var i = 0; i < 8; i++) {
         if (i == 0 || i == 1) {
@@ -1599,6 +1599,36 @@ function test190087_190101() {
         }
     }
 
+    return ret;
+}
+
+function test190088() {
+    tapMenu("统计分析", "利润表");
+    var keys = { "日期从" : getDay(-45) };
+    var fields = statisticAnalysisProfitFields(keys);
+    query(fields);
+
+    var ret = goPageCheck(7);
+
+    ret = ret && sortByTitle("日期", IS_DATE2);
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+    ret = ret && sortByTitle("成本额", IS_NUM);
+    ret = ret && sortByTitle("利润额", IS_NUM);
+
+    var sum1=0,sum2=0,sum3=0,sum4=0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    
     return ret;
 }
 

@@ -7,11 +7,11 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test190087_190101");
-// run("test", "test190029");
+ run("test", "test190087_190101");
+// run("test", "test190094");
 
 
- run("test", "onlyTest");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){
