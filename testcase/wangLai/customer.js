@@ -2315,7 +2315,7 @@ function test110047() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
-    tapButton(window, RETURN);
+//    tapButton(window, RETURN);
 
     // tapMenu("往来管理", "更多.", "客户回访");
     var qr = getQR();
@@ -2388,7 +2388,7 @@ function test110049() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
-    tapButton(window, RETURN);
+//    tapButton(window, RETURN);
 
     // tapMenu("往来管理", "更多.", "客户回访");
     var qr = getQR();
@@ -2402,15 +2402,16 @@ function test110049() {
 
     // tapMenu("往来管理", "更多.", "客户回访");
     qr = getQR();
-    var expected = { "回访日期" : getToday("yy"), "客户" : "赵本山", "主题" : r + "a",
+    var expected = { "回访日期" : getToday("yy"), "名称" : "赵本山", "主题" : r + "a",
         "回访类型" : "定期回访", "反馈及建议" : "反馈及建议a" };
     var ret = isEqualQRData1Object(qr, expected);
 
     // 删除
     tapFirstText();
     tapButtonAndAlert("删 除");
+    delay();
     qr = getQR();
-    ret = isAnd(ret, isEqual(r + "a", qr.data[0]["主题"]));
+    ret = isAnd(ret, !isEqual(r + "a", qr.data[0]["主题"]));
 
     return ret;
 }
@@ -2452,7 +2453,7 @@ function test110054() {
     tapButton(window, "修改保存");
 
     tapFirstText();
-    var ret = isEqual("", getStaticText(getScrollView(), 8));// 上级客户
+    var ret = isEqual("", getTextFieldValue(getScrollView(), 8));// 上级客户
     keys = { "上级客户" : "zbs" };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);

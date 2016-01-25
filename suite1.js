@@ -8,12 +8,9 @@ function test000All() {
 	debug = true;
 
 // run("test", "test190014");
-// run("test", "testStatisticAnalysisPrepare");
 
-// run("【统计分析—收支汇总】进入详细", "test190010");
-
-
- run("test", "onlyTest");
+ run("test", "test100001_2");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){

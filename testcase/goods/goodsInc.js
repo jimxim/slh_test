@@ -595,6 +595,7 @@ function scrollPrevPageCheck2(dataView, firstTitle, lastTitle) {
 function dropDownListCheck(index, value, expected, o) {
     var ret = false;
     var f = new TField("款号", TF_AC, index, value, -1);
+//    getTextFieldValue(window, index)==expected
     var cells = getTableViewCells(window, f, o);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];

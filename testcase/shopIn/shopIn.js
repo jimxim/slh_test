@@ -33,7 +33,7 @@ function editShopInFlitting(secure) {
 function test140001() {
     var i, a1, a2, b1, b2;
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "调入门店" : "常青店" };
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -133,7 +133,7 @@ function test140001() {
 
 function test140002_140003() {
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "调入门店" : "常青店" };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -160,7 +160,7 @@ function test140002_140003() {
     var staff = qr.data[i]["送货人"];// 调出人
 
     tapMenu("门店调入", "在途调拨");
-    keys = { "日期从" : getDay(-3), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
+    keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
     fields = shopInFlitFields(keys);
     query(fields);
     qr = getQR();

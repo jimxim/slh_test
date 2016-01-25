@@ -865,10 +865,10 @@ function test190025() {
     query();
     var qr = getQR();
     var a = Number(qr.data[0]["余额"]);// 账户:现
-    var expected = { "序号" : "1", "门店" : "常青店", "类型" : "销售单",
-        "账户" : "东灵测试-现金账户", "金额" : "3000", "操作人" : "总经理" };
+    var expected = { "序号" : "1", "类型" : "销售单", "账户" : "东灵测试-现金账户",
+        "金额" : "3000", "操作人" : "总经理" };
     var ret = isAnd(isEqualQRData1Object(qr, expected), isAqualOptime(
-            json["操作日期"], qr.data[0]["操作日期"]));
+            json["操作日期"], qr.data[0]["操作日期"], 1));
 
     tapMenu("统计分析", "新增收入");
     var r = getTimestamp(6);
@@ -879,8 +879,8 @@ function test190025() {
     tapButton(window, QUERY);
     qr = getQR();
     var b = Number(qr.data[0]["余额"]);// 账户:银
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "收入单", "账户" : "东灵测试-银行账户",
-        "金额" : "6666", "操作人" : "总经理" };
+    expected = { "序号" : "1", "类型" : "收入单", "账户" : "东灵测试-银行账户", "金额" : "6666",
+        "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
             json["操作日期"], qr.data[0]["操作日期"]));
 
@@ -891,8 +891,8 @@ function test190025() {
     tapButton(window, QUERY);
     qr = getQR();
     var ret1 = isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], a));// 现余额验证
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "采购单", "账户" : "东灵测试-现金账户",
-        "金额" : "-2000", "操作人" : "总经理" };
+    expected = { "序号" : "1", "类型" : "采购单", "账户" : "东灵测试-现金账户", "金额" : "-2000",
+        "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
             json["操作日期"], qr.data[0]["操作日期"]));
 
@@ -904,8 +904,8 @@ function test190025() {
     tapButton(window, QUERY);
     qr = getQR();
     ret1 = ret1 && isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], b));// 银余额验证
-    expected = { "序号" : "1", "门店" : "常青店", "类型" : "支出单", "账户" : "东灵测试-银行账户",
-        "金额" : "-1000", "操作人" : "总经理" };
+    expected = { "序号" : "1", "类型" : "支出单", "账户" : "东灵测试-银行账户", "金额" : "-1000",
+        "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
             json["操作日期"], qr.data[0]["操作日期"]));
 

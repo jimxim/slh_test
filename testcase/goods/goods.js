@@ -383,11 +383,14 @@ function test100001_2() {
             && isEqual(qr.data[0]["核算金额"], qr.counts["核算金额"]);
 
     tapButton(window, CLEAR);
+    //是否停用清除不了
     for (var i = 0; i < 11; i++) {
-        if (i != 9) {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        } else {
+        if (i == 9) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            if(i!=7){
+                ret = ret && isEqual("", getTextFieldValue(window, i));
+            }           
         }
     }
 
@@ -670,7 +673,8 @@ function test100005_2() {
             && isEqual(qr.data[0]["库存"], qr.counts["库存"]);
 
     tapButton(window, CLEAR);
-    for (var i = 0; i < 8; i++) {
+    //是否停用清除不了
+    for (var i = 0; i < 7; i++) {
         if (i != 6) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -2556,7 +2560,7 @@ function test100082_100083_100084_100085_100093() {
     query();
 
     var ret = goPageCheck(7);
-    //默认按缺货数降序排序
+    // 默认按缺货数降序排序
     ret = ret && compareQR("缺货数", IS_NUM, "desc");
 
     ret = ret && sortByTitle("款号");

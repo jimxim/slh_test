@@ -3,7 +3,7 @@
 /**
  * 中洲店总经理验证
  */
-//调拨不启用密码验证
+// 调拨不启用密码验证
 function testShopOut001() {
     run("【门店调出-按批次查】翻页_排序_汇总", "test150001_1");
     run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
@@ -20,9 +20,9 @@ function testShopOut001() {
 // 调拨启用密码验证
 function testShopOut002() {
     run("调拨启用密码验证", "testShopOutParams01");
-    
+
     run("【门店调出】 调拨是否启用密码验证", "test150006");
-    
+
     run("调拨关闭密码验证", "testShopOutParams02");
 }
 function testShopOutParams01() {
@@ -108,7 +108,7 @@ function test150001_2() {
     window.popover().dismiss();
 
     var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : batch,
-        "批次到" : batch + 1, "调出门店" : "常青店", "调入门店" : "中洲店" }
+        "批次到" : batch + 1, "调出门店" : "中洲店", "调入门店" : "常青店" }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -128,7 +128,7 @@ function test150001_2() {
 }
 function test150001_3() {
     tapMenu("门店调出", "按明细查");
-    var keys = { "日期从" : getDay(-30)};
+    var keys = { "日期从" : getDay(-30) };
     var fields = shopOutQueryParticularFields(keys);
     query(fields);
     // 点击翻页
@@ -207,7 +207,7 @@ function test150001() {
     }
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店","备注":"作废",
+    var json = { "调出人" : "200", "接收店" : "常青店", "备注" : "作废",
         "明细" : [ { "货品" : "3035", "数量" : "200" } ] };
     editShopOutDecruitIn(json);
 
@@ -280,7 +280,8 @@ function test150003() {
     tapMenu("门店调出", "批量调出+");
     var json = {
         "调出人" : "204",
-        "接收店" : "常青店","备注":"shopInCheck",
+        "接收店" : "常青店",
+        "备注" : "shopInCheck",
         "明细" : [ { "货品" : "3035", "数量" : "50" }, { "货品" : "4562", "数量" : "25" } ] };
     editShopOutDecruitIn(json);
 
@@ -353,7 +354,7 @@ function test150006() {
     tf.setValue("123456");
     tapButton(window, 7);
     delay();
-//    ret = isAnd(ret, window.buttons()["按批次查"].isVisible);
+    // ret = isAnd(ret, window.buttons()["按批次查"].isVisible);
 
     ret = isAnd(ret, changeSecure("123456", "000000"));
 
