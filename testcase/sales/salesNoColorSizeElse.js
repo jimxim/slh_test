@@ -48,7 +48,7 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－按订货开单】单据查询", "test170252");// 不要启用异地仓库
     run("【销售开单－按订货开单】清除按钮/下拉列表", "test170253");
     run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");// (Bug)
-    run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170257_1");
+    run("【销售开单－按订货开单】底部数据统计汇总", "test170257_1");
     run("【销售开单-收款记录】查询", "test170275");
 
     run("【销售开单－物流单查询】正常查询", "test170278");
@@ -177,7 +177,7 @@ function test170001_1() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("20");
 
     var ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -811,17 +811,12 @@ function test1700010_1700011_1700012() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    query();
-    var qr = getQR();
-    scrollNextPage();
-    scrollPrevPage();
-    goPage(1, qr);
-
-    tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getToday(), "日期到" : getToday() };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var ret = true;
+
+    var ret = goPageCheck("11");
 
     var ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -905,23 +900,23 @@ function test170028_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("17");
 
-    ret = ret && sortByTitle("客户");
-    ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("日期");
-    ret = ret && sortByTitle("店员");
-    ret = ret && sortByTitle("款号");
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("颜色");
-    ret = ret && sortByTitle("尺码");
-    ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("单价", IS_NUM);
-    ret = ret && sortByTitle("折扣", IS_NUM);
-    ret = ret && sortByTitle("小计", IS_NUM);
-    ret = ret && sortByTitle("差额", IS_NUM);
-    ret = ret && sortByTitle("客户分店");
-    ret = ret && sortByTitle("备注");
+    // ret = ret && sortByTitle("客户");
+    // ret = ret && sortByTitle("批次", IS_NUM);
+    // ret = ret && sortByTitle("日期");
+    // ret = ret && sortByTitle("店员");
+    // ret = ret && sortByTitle("款号");
+    // ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("颜色");
+    // ret = ret && sortByTitle("尺码");
+    // ret = ret && sortByTitle("数量", IS_NUM);
+    // ret = ret && sortByTitle("单价", IS_NUM);
+    // ret = ret && sortByTitle("折扣", IS_NUM);
+    // ret = ret && sortByTitle("小计", IS_NUM);
+    // ret = ret && sortByTitle("差额", IS_NUM);
+    // ret = ret && sortByTitle("客户分店");
+    // ret = ret && sortByTitle("备注");
     // ret = ret && sortByTitle("操作日期");
 
     logDebug("ret=" + ret);
@@ -1200,7 +1195,7 @@ function test170255_170256_170257() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("14");
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -1933,7 +1928,7 @@ function test170280_170281_170282() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("11");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -2153,7 +2148,7 @@ function test170285_3() {
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("批次");
+    var ret = goPageCheck("11");
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期");
@@ -2760,7 +2755,7 @@ function test170298_1() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheck("物流核销批次");
+    var ret = goPageCheck("10");
 
     ret = ret && sortByTitle("物流商");
     ret = ret && sortByTitle("物流核销批次", IS_NUM);
@@ -2869,7 +2864,7 @@ function test170305_1() {
     var fields = salesQueryGuaDanFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck("20");
 
     var ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -3172,7 +3167,7 @@ function test170307_1() {
     var fields = salesPriceFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("日期");
+    var ret = goPageCheck(6);
 
     var ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3200,12 +3195,11 @@ function test170307_1() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
-            sum4));
+    var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1, 0.001), isEqual(
+            qr.counts["刷卡"], sum2), isEqual(qr.counts["汇款"], sum3), isEqual(
+            qr.counts["代收"], sum4));
 
-    // logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3 + "sum4=" +
-    // sum4);
+    logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3 + "sum4=" + sum4);
     return ret && ret1;
 }
 
@@ -3239,7 +3233,7 @@ function test170308() {
     fields = salesCodeFields(keys);
     query(fields);
     var qr = getQR();
-    totalSale = qr.counts["实销数"];
+    var totalSale = qr.counts["实销数"];
 
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店",
@@ -3446,7 +3440,7 @@ function test170315_170316_170317() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("门店");
+    var ret = goPageCheck("6");
 
     var ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -3626,7 +3620,7 @@ function test170321_170322_170323() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheck("门店");
+    var ret = goPageCheck("16");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("门店");
@@ -3742,7 +3736,7 @@ function test170327_170328_170329_170330() {
     query(fields);
 
     // 点击翻页
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("10");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -3898,7 +3892,7 @@ function test170334_70335_170336() {
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
 
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck("12");
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("店员");
@@ -4014,7 +4008,7 @@ function test170341_70342_170343_170346() {
     var fields = salesCustomerSupplyFields(keys);
     query(fields);
 
-    var ret = goPageCheck("款号", 3);
+    var ret = goPageCheck(9);
 
     query();
     ret = ret && sortByTitle("客户");
@@ -4197,7 +4191,7 @@ function test170358_170359_170360() {
     var fields = salesTypeFields(keys);
     query(fields);
 
-    var ret = goPageCheck("类别");
+    var ret = goPageCheck("6");
 
     var ret = true;
     ret = ret && sortByTitle("类别");
@@ -4298,7 +4292,7 @@ function test170363_1() {
     var fields = salesProviderFields(keys);
     query(fields);
 
-    var ret = goPageCheck("厂商");
+    var ret = goPageCheck("6");
 
     var ret = true;
     ret = ret && sortByTitle("厂商");

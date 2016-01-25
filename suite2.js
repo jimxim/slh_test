@@ -46,8 +46,7 @@ function test000All() {
 	
 	// 运单号取7位随即数
 
-    run("【盘点管理—盘点处理】部分处理", "test180026");
-    run("【盘点管理—盘点处理】全盘处理", "test180025");
+	   run("【系统设置—改密码】修改", "test210035");
     
 // testStatisticPictureAll();
 // testSystem001();
