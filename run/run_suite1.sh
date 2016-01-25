@@ -13,7 +13,7 @@ js_func="$js_func testSASynthesisAll000"
 #往来管理
 js_func="$js_func test000Customer001Prepare test000Customer001 test000Customer001Else"
 #统计分析
-js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
+#js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
 #门店调出、门店调入
 js_func="$js_func test200ShopOut001 test000ShopIn001"
 #店长

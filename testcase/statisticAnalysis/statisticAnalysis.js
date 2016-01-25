@@ -42,10 +42,16 @@ function testStatisticAnalysisAll() {
     run("【统计分析—汇总表-滞销表】查询清除", "test190078_190080");
     run("【统计分析—汇总表-滞销表】翻页排序", "test190079");
 
+    run("【统计分析—利润表】查询清除", "test190087_190101");
+    run("【统计分析—利润表】翻页排序", "test190088");
+    run("【统计分析—利润表】底部数据检查", "test190086");
+    run("【统计分析—利润表】成本额检查-最新进货价", "test190044");
+    run("【统计分析—利润表】详细页面排序翻页", "test190042");
+    run("【统计分析—利润表】按单利润表排序翻页", "test190102");
+    run("【统计分析—利润表】明细利润额和按单利润总和一致检查", "test190085");
+
     run("【统计分析—利润表】查看明细-按单利润表", "test190084");
     run("【统计分析—利润表】明细利润额和按单利润总和一致检查", "test190085");
-    run("【统计分析—利润表】底部数据检查", "test190086");
-    run("【统计分析—利润表】查询清除", "test190087_190101");
 
     // run("【统计分析—综合汇总】排序", "test190031");
     // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
@@ -76,7 +82,7 @@ function testStatisticAnalysisPrepare() {
         "代收" : { "物流商" : "sf" } };
     editSalesBillNoColorSize(json);
 
-    return true;
+    return json;
 }
 
 function test190012() {
@@ -190,7 +196,7 @@ function test190013() {
 
 function test190014() {
     tapMenu("统计分析", "收支表");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), "序号", 9);
     var a = qr.data[0];
 
     var r = getTimestamp(6);
@@ -201,7 +207,7 @@ function test190014() {
     tapButtonAndAlert(RETURN);
     delay();
 
-    qr = getQR();
+    qr = getQR(window, getScrollView(), "序号", 9);
     var b = qr.data[0];
     var ret = isEqualObject(a, b);
 
@@ -535,7 +541,7 @@ function test190009() {
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
 
-    var ret = goPageCheck(20);
+    var ret = goPageCheck(3);
 
     ret = ret && sortByTitle("收支类别");
     ret = ret && sortByTitle("金额", IS_NUM);
@@ -1487,6 +1493,21 @@ function test190084() {
 
 // 先跳过，有分歧
 function test190083() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "dis" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
+        "产品折扣" : "0.9" };
+    addGoods(keys);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "20" } ],
+        "特殊货品" : { "抹零" : 15, "打包费" : 20 } };
+    editSalesBillNoColorSize(json);
+
     tapMenu("统计分析", "利润表");
     query();
     tapFirstText();
@@ -1500,6 +1521,10 @@ function test190083() {
             qr = getQR();
         }
     }
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 }
 
 function test190085() {
@@ -1617,19 +1642,105 @@ function test190088() {
     ret = ret && sortByTitle("成本额", IS_NUM);
     ret = ret && sortByTitle("利润额", IS_NUM);
 
-    var sum1=0,sum2=0,sum3=0,sum4=0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
+    return ret;
+}
 
+function test190044() {
+    var qo, o, ret = true;
+    qo = { "备注" : "财务中货品成本价的核算方法" };
+    o = { "新值" : "0", "数值" : [ "按最新进货价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+}
+
+function test190042() {
+    tapMenu("统计分析", "利润表");
+    query();
+
+    tapFirstText();
+    var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "款号", "利润额");
+
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "款号");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "名称");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "单价", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "折扣", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "进货价", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");// 本列暂不支持排序
+
+    tapNaviLeftButton();
+
+    return ret;
+}
+
+function test190043() {
+    tapMenu("统计分析", "利润表");
+    query();
+
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+
+}
+
+function test190102() {
+    tapMenu("统计分析", "利润表");
+    query();
+
+    tapFirstText();
+    tapNaviRightButton();
+    var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "批次", "利润额");
+
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "批次", IS_NUM);
+    ret = ret
+            && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "日期", IS_DATE2);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "客户");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额", IS_NUM);
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");// 本列暂不支持排序
+
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    return ret;
+}
+
+function test190085() {
+    var i, j, sum1 = 0, sum2 = 0;
+    tapMenu("统计分析", "利润表");
+    query();
+    var qr = getQR();
+    var counts = qr.counts["利润额"];
+
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["利润额"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
-            qr = getQR();
+            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
         }
     }
 
-    
-    return ret;
+    tapNaviRightButton();
+    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum2 += Number(qr.data[i]["利润额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
+        }
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    return isEqual(sum1, sum2) && isEqual(counts, sum2);
 }
 
 function editStatisticAnalysisIn(o) {

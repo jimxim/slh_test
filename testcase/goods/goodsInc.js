@@ -300,14 +300,13 @@ function goPage2(page, qr) {
 }
 
 /**
- * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比
- * 正常情况下，应该不存在完全相同的数据吧~
+ * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~
  * @param titleTotal
  */
 function goPageCheck(titleTotal) {
     var pageInfoView = window;
     var dataView = getScrollView();
-    var  firstTitle = TITLE_SEQ;
+    var firstTitle = TITLE_SEQ;
 
     // 当前页为1
     var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
@@ -539,6 +538,55 @@ function scrollPrevPageCheck(firstTitle, titleTotal) {
 }
 
 /**
+ * 详细页面滑动翻页验证
+ * @param dataView
+ * @param firstTitle
+ * @param titleTotal
+ * @returns {Boolean}
+ */
+function scrollPrevPageCheck2(dataView, firstTitle, lastTitle) {
+    var ret = true;
+
+    var qr = getQR2(dataView, firstTitle, lastTitle);
+    var totalPageNo = qr.totalPageNo;
+    var curPageNo = qr.curPageNo;
+    var curData = qr.data;
+
+    if (totalPageNo > 1) {
+        scrollNextPage();
+        delay();
+        qr = getQR2(dataView, firstTitle, lastTitle);
+        var nextData = qr.data;
+        ret = isAnd(ret, isEqual(1, sub(qr.curPageNo, curPageNo)),
+                !isEqualDyadicArray(nextData, curData));
+
+        scrollPrevPage();
+        delay();
+        qr = getQR2(dataView, firstTitle, lastTitle);
+        var prevData = qr.data;
+        ret = isAnd(ret, isEqual(qr.curPageNo, curPageNo), isEqualDyadicArray(
+                prevData, curData), !isEqualDyadicArray(prevData, nextData));
+
+        scrollNextPage();
+        delay();
+        qr = getQR2(dataView, firstTitle, lastTitle);
+        ret = isAnd(ret, isEqualDyadicArray(qr.data, nextData));
+    } else {
+        scrollNextPage();
+        delay();
+        qr = getQR2(dataView, firstTitle, lastTitle);
+        ret = isAnd(ret, isEqualDyadicArray(qr.data, curData));
+
+        scrollPrevPage();
+        delay();
+        qr = getQR2(dataView, firstTitle, lastTitle);
+        ret = isAnd(ret, isEqualDyadicArray(qr.data, curData));
+    }
+
+    return ret;
+}
+
+/**
  * 下拉列表验证,有一个符合就返回true
  * @param index 静态文本下标
  * @param value 输入值
@@ -754,4 +802,90 @@ function isHasStaticTexts(uiArr1, txt1, f1) {
         ret = false;
     }
     return ret;
+}
+
+/**
+ * 明细详细页面排序验证
+ * @param dataView
+ * @param firstTitle
+ * @param lastTitle
+ * @param title
+ * @param isNum
+ * @returns
+ */
+function sortByTitle2(dataView, firstTitle, lastTitle, title, isNum) {
+
+    var t1 = getTimestamp();
+    tapTitle(dataView, title); // 点击一下后是升序
+    delay();
+    var ret1 = compareQR2(title, isNum, "asc", dataView, firstTitle, lastTitle);
+
+    tapTitle(dataView, title); // 再点击一下后是降序
+    delay();
+    var ret2 = compareQR2(title, isNum, "desc", dataView, firstTitle, lastTitle);
+
+    logDebug(getTakeTimeMsg(t1));
+    return isAnd(ret1, ret2);
+}
+
+function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
+    var t1 = getTimestamp();
+    if (isUndefined(order)) {
+        order = "asc";
+    }
+    if (isUndefined(dataView)) {
+        dataView = getScrollView(-1, 0);
+    }
+
+    var ret = true, value, valuePre;
+    if (isDefined(type)) {
+
+        var qr = getQR2(dataView, firstTitle, lastTitle);
+
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            value = qr.data[i][title];
+            switch (type) {
+            case IS_NUM:
+                value = Number(value);
+                break;
+            case IS_DATE2:
+                value = getDay24(value);
+                break;
+            case IS_OPTIME:
+                break;
+            default:
+                logInfo("未知type=" + type);
+            }
+            if (i > 0) {
+                var b;
+                if (order == "asc") {
+                    b = valuePre <= value;
+                } else {
+                    b = valuePre >= value;
+                }
+                ret = ret && b;
+                // logDebug(valuePre + "<= " + value + "," + b);
+            }
+            valuePre = value;
+        }
+    }
+
+    logDebug(title + "," + type + "," + order + ",ret=" + ret + ","
+            + getTakeTimeMsg(t1));
+    return ret;
+}
+/**
+ * 去除数组重复元素
+ * @param arr
+ * @returns {Array}
+ */
+function getUnique(arr) {
+    var result = [], hash = {};
+    for (var i = 0, elem; (elem = arr[i]) != null; i++) {
+        if (!hash[elem]) {
+            result.push(elem);
+            hash[elem] = true;
+        }
+    }
+    return result;
 }

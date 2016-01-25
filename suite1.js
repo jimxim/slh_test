@@ -7,16 +7,20 @@
 function test000All() {
 	debug = true;
 
- run("test", "test190087_190101");
-// run("test", "test190094");
+// run("test", "test190014");
+// run("test", "testStatisticAnalysisPrepare");
+
+// run("【统计分析—收支汇总】进入详细", "test190010");
 
 
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
-   
-  return goPageCheck(6);
+    tapMenu("销售开单", "开  单+");
+   var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "代收" : { "物流商" : "sf" } };
+    editSalesBillNoColorSize(json);
 }
 
 
