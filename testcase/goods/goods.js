@@ -118,7 +118,7 @@ function testGoods001() {
     run("【货品管理-基本设置】所有尺码", "test10_size");
     run("【货品管理-基本设置】所有品牌", "test10_brand");
     run("【货品管理-基本设置】所有尺码组", "test10_size_group");
-    run("【货品管理-基本设置】所有品牌折扣", "test10_discount");
+    run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序
     run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
     run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
             "test100075_100076_100077_100078");
@@ -327,11 +327,9 @@ function test100107() {
 // 翻页_排序_汇总
 function test100001_1() {
     tapMenu("货品管理", "当前库存");
-    var keys = { "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    query();
     // 翻页
-    var ret = goPageCheck("序号", 14, "款号", 2);
+    var ret = goPageCheck(14);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -631,11 +629,9 @@ function test100004() {
 // 翻页_排序_汇总
 function test100005_1() {
     tapMenu("货品管理", "款号库存");
-    var keys = { "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    query();
     // 翻页
-    var ret = goPageCheck("序号", 9, "款号", 2);
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("仓库/门店");
@@ -850,7 +846,7 @@ function test100006() {
 function test100006_1() {
     tapMenu("货品管理", "库存分布");
     query();
-    var ret = goPageCheck("序号", 7, "名称");
+    var ret = goPageCheck(7);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
@@ -931,11 +927,9 @@ function test100007() {
 
 function test100008_1() {
     tapMenu("货品管理", "货品进销存");
-    var keys = { "门店" : "常青店" };
-    var fields = queryGoodsInOutFields(keys);
-    query(fields);
+    query();
 
-    var ret = goPageCheck("序号", 9, "款号", 0);
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1133,7 +1127,7 @@ function test100010_100011_100013() {
 function test100010_100011_100013_1() {
     tapMenu("货品管理", "货品查询");
     query();
-    var ret = goPageCheck("序号", 15, "款号");
+    var ret = goPageCheck(15);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("类别");
@@ -2203,7 +2197,7 @@ function test100068_100069() {
 
     tapMenu("货品管理", "更多", "仓位列表");
     query();
-    var ret = goPageCheck("序号", 2, "名称");
+    var ret = goPageCheck(2);
 
     ret = ret && sortByTitle("名称");
 
@@ -2493,7 +2487,7 @@ function test100075_100076_100077_100078() {
     var i, j;
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
-    var ret = goPageCheck("序号", 7, "款号");
+    var ret = goPageCheck(7);
     // 默认按超储数降序排序
     ret = ret && compareQR("超储数", IS_NUM, "desc");
 
@@ -2561,8 +2555,8 @@ function test100082_100083_100084_100085_100093() {
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
 
-    var ret = goPageCheck("序号", 7, "款号");
-    默认按缺货数降序排序
+    var ret = goPageCheck(7);
+    //默认按缺货数降序排序
     ret = ret && compareQR("缺货数", IS_NUM, "desc");
 
     ret = ret && sortByTitle("款号");
@@ -2660,7 +2654,7 @@ function test10_price() {
 function test10_type() {
     tapMenu("货品管理", "基本设置", "货品类别");
     query();
-    var ret = goPageCheck("序号", 3, "名称");
+    var ret = goPageCheck(3);
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2692,7 +2686,7 @@ function test10_type() {
 function test10_color() {
     tapMenu("货品管理", "基本设置", "所有颜色");
     query();
-    var ret = goPageCheck("序号", 4, "名称");
+    var ret = goPageCheck(4);
 
     var qr = getQR();
     ret = ret && sortByTitle("类别");
@@ -2726,7 +2720,7 @@ function test10_color() {
 function test10_size() {
     tapMenu("货品管理", "基本设置", "所有尺码");
     query();
-    var ret = goPageCheck("序号", 3, "名称");
+    var ret = goPageCheck(3);
 
     var qr = getQR();
     ret = ret && sortByTitle("类别");
@@ -2767,7 +2761,7 @@ function test100095() {
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");
     query();
-    var ret = goPageCheck("序号", 3, "名称");
+    var ret = goPageCheck(3);
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2823,7 +2817,7 @@ function test10_brand() {
 function test10_size_group() {
     tapMenu("货品管理", "基本设置", "所有尺码组");
     query();
-    var ret = goPageCheck("序号", 3, "名称");
+    var ret = goPageCheck(3);
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
@@ -2854,7 +2848,7 @@ function test10_size_group() {
 function test10_discount() {
     tapMenu("货品管理", "基本设置", "所有品牌折扣");
     query();
-    var ret = goPageCheck("序号", 8, "品牌");
+    var ret = goPageCheck(8);
 
     var qr = getQR();
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
@@ -3024,11 +3018,11 @@ function test100104_100105() {
 // 翻页_排序_汇总
 function test100106() {
     tapMenu("货品管理", "更多", "库存调整单");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = goodsStockAdjustmentFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck("序号", 11, "批次", 2);
+    var ret = goPageCheck(11);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");

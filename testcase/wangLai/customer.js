@@ -57,7 +57,7 @@ function testCustomer001Else() {
     run("【往来管理-新增厂商】新增厂商", "test110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
-//    run("【往来管理-厂商账款】异地核销", "test110041_1");
+    // run("【往来管理-厂商账款】异地核销", "test110041_1");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -84,7 +84,7 @@ function test110001_1() {
     tapMenu("往来管理", "客户查询");
     query();
 
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(13);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("生日", IS_DATE2);
@@ -542,10 +542,8 @@ function test110014() {
 // 翻页，排序，查询，清除
 function test110015() {
     tapMenu("往来管理", "客户账款", "客户门店账");
-    var keys = { "门店" : "常青店" };
-    var fields = queryCustomerShopAccountFields(keys);
-    query(fields);
-    var ret = goPageCheck("名称", 2, "SC");
+    query();
+    var ret = goPageCheck(6);
 
     query();
     ret = ret && sortByTitle("门店");
@@ -567,7 +565,7 @@ function test110015() {
     }
     ret = isAnd(ret, isEqual(qr.counts["余额"], sum));
 
-    keys = { "客户名称" : "赵本山", "客户" : "zbs", "门店" : "常青店", "店员" : "000",
+    var keys = { "客户名称" : "赵本山", "客户" : "zbs", "门店" : "常青店", "店员" : "000",
         "客户类别" : "VIP客户", "是否欠款" : "否", "是否欠款报警" : "否" };
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
@@ -738,7 +736,7 @@ function test110017() {
 function test110018() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(3);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("账户余额");// ,IS_SUM
@@ -793,7 +791,7 @@ function test110020() {
     tapMenu("往来管理", "客户账款", "客户总账");
     var i, j;
     query();
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(3);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -1275,10 +1273,8 @@ function test110033() {
     logDebug(" day1=" + day1);
 
     tapMenu("往来管理", "客户活跃度");
-    var keys = { "门店" : "常青店" };
-    var fields = queryCustomerActiveFields(keys);
-    query(fields);
-    var ret = goPageCheck("名称", 1, "SC");
+    query();
+    var ret = goPageCheck(7);
     // logDebug("ret=" + ret);
 
     ret = ret && sortByTitle("门店");
@@ -1288,8 +1284,8 @@ function test110033() {
     ret = ret && sortByTitle("最后一次拿货", IS_DATE2);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
-    keys = { "客户" : "xw", "门店" : "常青店" };
-    fields = queryCustomerActiveFields(keys);
+    var keys = { "客户" : "xw", "门店" : "常青店" };
+    var fields = queryCustomerActiveFields(keys);
     query(fields);
     var qr = getQR();
     // 确定结果只有一条
@@ -1377,12 +1373,10 @@ function test110036() {
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "积分查询");
-    var key = { "门店" : "常青店" };
-    var fields = queryCustomerScoreFields(key);
-    query(fields);
+    query();
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
-    var ret = goPageCheck("名称", 0, "SC");
+    var ret = goPageCheck(6);
 
     var qr = getQR();
     var sum = 0;
@@ -1397,8 +1391,8 @@ function test110036() {
     }
     ret = ret && isEqual(sum, qr.counts["当前积分"]);
 
-    key = { "门店" : "常青店", "客户" : "zbs", "手机" : "13922211121" };
-    fields = queryCustomerScoreFields(key);
+    var key = { "门店" : "常青店", "客户" : "zbs", "手机" : "13922211121" };
+    var fields = queryCustomerScoreFields(key);
     query(fields);
     qr = getQR();
     ret = ret && isEqual("赵本山", qr.data[0]["名称"])
@@ -1527,7 +1521,7 @@ function test1100_QueryProvider() {
     tapMenu("往来管理", "厂商查询");
     query();
     // 翻页
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(5);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -1755,18 +1749,16 @@ function test110040Field(value) {
 // 翻页，排序，查询，清除，汇总
 function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
-    var keys = { "门店" : "常青店" };
-    var fields = queryProviderShopAccountFields(keys);
-    query(fields);
+    query();
     // 翻页
-    var ret = goPageCheck("名称", 1, "SC");
+    var ret = goPageCheck(4);
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    keys = { "厂商" : "vell", "门店" : "常青店" };
-    fields = queryProviderShopAccountFields(keys);
+    var keys = { "厂商" : "vell", "门店" : "常青店" };
+    var fields = queryProviderShopAccountFields(keys);
     query(fields);
     var qr = getQR();
     ret = ret && isEqual("Vell", qr.data[0]["名称"]) && isEqual(1, qr.total)
@@ -1810,9 +1802,9 @@ function editBillForCustomerAccount3() {
 function test110041_1() {
     // 异地核销中洲店的2笔1500元欠款单，一笔核销750元，一笔全部核销
     var qo, o, i, j, ret = true;
-//    qo = { "备注" : "是否允许跨门店核销" };
-//    o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "是否允许跨门店核销" };
+    // o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
@@ -1994,7 +1986,6 @@ function test110041_1() {
 
     tapNaviLeftButton();
 
-
     return ret;
 }
 
@@ -2045,7 +2036,7 @@ function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     query();
     // 翻页
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(3);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2192,7 +2183,7 @@ function test110043Field(qr, shop) {
 
 function test110044() {
     tapMenu("往来管理", "更多.", "物流商查询");
-    var ret = goPageCheck("名称");
+    var ret = goPageCheck(7);
 
     ret = ret && sortByTitle("区域");
     ret = ret && sortByTitle("名称");
@@ -2359,7 +2350,7 @@ function test110048() {
     tapMenu("往来管理", "更多.", "客户回访");
     query();
     var qr = getQR();
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck(7);
 
     // debugElementTree(getScrollView());
     ret = ret && sortByTitle("回访日期", IS_DATE2);

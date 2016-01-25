@@ -183,7 +183,7 @@ function test180001_180003_180005() {
     setTFieldsValue(window, fields);
     query(fields);
     // // 点击翻页
-    var ret = goPageCheck("序号", 8, "批次");
+    var ret = goPageCheck(8);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -573,7 +573,7 @@ function test180013_1_180055() {
     var fields = queryCheckParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号", 11, "序号");
+    var ret = goPageCheck(11);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");
@@ -1185,7 +1185,7 @@ function test180031_1_180053() {
     var fields = checkProcessRecordFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号", 8, "批次");
+    var ret = goPageCheck(8);
     //
     ret = ret && sortByTitle("选择");
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -1451,7 +1451,7 @@ function test180037_1() {
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号", 11, "序号");
+    var ret = goPageCheck(11);
     // var ret=true;
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("款号");

@@ -516,7 +516,7 @@ function test160015_160016() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号", 16, "批次", 6);
+    var ret = goPageCheck( 16);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -960,7 +960,7 @@ function test160023_160024() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",14,"批次");
+    var ret = goPageCheck(14);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -1126,7 +1126,7 @@ function test160033() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",9,"款号");
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -1367,7 +1367,7 @@ function test160041() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",6,"名称");
+    var ret = goPageCheck(6);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1424,7 +1424,7 @@ function test160043() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",6,"名称");
+    var ret = goPageCheck(6);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1483,7 +1483,7 @@ function test160045() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",6,"门店");
+    var ret = goPageCheck(6);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1676,7 +1676,7 @@ function test160101() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",3,"厂商");
+    var ret = goPageCheck(3);
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("总数", IS_NUM);
@@ -1767,12 +1767,12 @@ function test160089() {
 // 翻页/排序/汇总
 function test16_Stockout_1() {
     tapMenu("销售订货", "按缺货查");
-    var keys = { "订货日期从" : getDay(-30), "订货日期到" : getToday() };
+    var keys = { "订货日期从" : getDay(-30) };
     var fields = salesOrderQueryByStockoutFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",9,"款号");
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");

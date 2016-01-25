@@ -401,7 +401,7 @@ function test190001() {
     var keys = { "日期从" : getDay(-15) };
     var fields = statisticAnalysisInOutFields(keys);
     query(fields);
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -535,7 +535,7 @@ function test190009() {
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
 
-    var ret = goPageCheck("序号", 3);
+    var ret = goPageCheck(20);
 
     ret = ret && sortByTitle("收支类别");
     ret = ret && sortByTitle("金额", IS_NUM);
@@ -809,10 +809,10 @@ function test190022_190023() {
 
 function test190024() {
     tapMenu("统计分析", "收支流水");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck(8);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("类型");
@@ -1233,7 +1233,7 @@ function test190069_190072() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisReturnFields(keys);
     query(fields);
-    var ret = goPageCheck("序号");
+    var ret = goPageCheck(5);
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("款号");
@@ -1317,10 +1317,10 @@ function test190073_190075_190076() {
 
 function test190074() {
     tapMenu("统计分析", "汇总表", "畅销表");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30)};
     var fields = statisticAnalysisGoodMarketFields(keys);
     query(fields);
-    var ret = goPageCheck("款号", 3, "SC");
+    var ret = goPageCheck(6);
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("款号");
@@ -1429,10 +1429,8 @@ function test190078_190080() {
 
 function test190079() {
     tapMenu("统计分析", "汇总表", "滞销表");
-    var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisUnsalableFields(keys);
-    query(fields);
-    var ret = goPageCheck("款号", 3, "SC");
+    query();
+    var ret = goPageCheck(8);
 
     query();
     ret = ret && sortByTitle("门店");

@@ -205,8 +205,8 @@ function test140002_140003() {
     tapButton(window, RETURN);
 
     tapMenu("门店调入", "按明细查");
-    keys = { "款号" : "3035", "款号名称" : "jkk", "日期从" : getDay(-30), "调出门店" : "中洲店",
-        "调入门店" : "常青店" };
+    keys = { "款号" : "3035", "款号名称" : "jkk", "日期从" : getDay(-30),
+        "调出门店" : "中洲店", "调入门店" : "常青店" };
     fields = shopInQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -287,10 +287,10 @@ function test150005() {
 
 function test140001_1() {
     tapMenu("门店调入", "在途调拨");
-    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店" };
+    var keys = { "日期从" : getDay(-365) };
     var fields = shopInFlitFields(keys);
     query(fields);
-    var ret = goPageCheck("序号",8,"批次");
+    var ret = goPageCheck(8);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -321,11 +321,11 @@ function test140001_1() {
 
 function test140002_1() {
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-100), "调出门店" : "中洲店" };
+    var keys = { "日期从" : getDay(-100) };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",11,"批次", 3);
+    var ret = goPageCheck(11);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出批次", IS_NUM);
@@ -358,11 +358,11 @@ function test140002_1() {
 
 function test140003_1() {
     tapMenu("门店调入", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "调入门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = shopInQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck("序号",13,"批次", 5);
+    var ret = goPageCheck(13);
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");
@@ -389,9 +389,8 @@ function test140003_1() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
+    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
             sum2));
 
-    logDebug("ret=" + ret);
-    return ret && ret1;
+    return ret;
 }
