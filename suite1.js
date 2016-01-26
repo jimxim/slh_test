@@ -7,17 +7,19 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test190014");
+// run("test", "test110012");
 
- run("test", "test100001_2");
-// run("test", "onlyTest");
+// run("test", "test190035");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
-    tapMenu("销售开单", "开  单+");
-   var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "代收" : { "物流商" : "sf" } };
-    editSalesBillNoColorSize(json);
+  var qr=getQR();
+  var jo=qr.data[0];
+  for(var i in jo){
+      var 
+  }
+  
 }
 
 

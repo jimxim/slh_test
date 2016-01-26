@@ -53,7 +53,6 @@ function testBasicSetUpAll() {
     run("k300", "setGoods003");
     run("k200", "setGoods004");
     run("8989", "setGoods005");
-    run("wky", "setGoods006");//加工商品
 
     // 批量操作测试1，2，3，不要做开单等操作
     run("plczcs1", "setGoods006");

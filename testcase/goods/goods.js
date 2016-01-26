@@ -69,6 +69,14 @@ function goodsParams001() {
     qo = { "备注" : "是否允许跨门店核销" };
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "颜色尺码下,开单是否显示上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否启用自定义键盘" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
@@ -383,14 +391,14 @@ function test100001_2() {
             && isEqual(qr.data[0]["核算金额"], qr.counts["核算金额"]);
 
     tapButton(window, CLEAR);
-    //是否停用清除不了
+    // 是否停用清除不了
     for (var i = 0; i < 11; i++) {
         if (i == 9) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
-            if(i!=7){
-                ret = ret && isEqual("", getTextFieldValue(window, i));
-            }           
+            // if(i!=7){
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+            // }
         }
     }
 
@@ -673,8 +681,8 @@ function test100005_2() {
             && isEqual(qr.data[0]["库存"], qr.counts["库存"]);
 
     tapButton(window, CLEAR);
-    //是否停用清除不了
-    for (var i = 0; i < 7; i++) {
+    // 是否停用清除不了
+    for (var i = 0; i < 8; i++) {
         if (i != 6) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
@@ -1116,9 +1124,9 @@ function test100010_100011_100013() {
     for (i = 0; i < 10; i++) {
         if (i != 3) {
             // 是否停用无法删除
-            if (i != 7) {
-                ret = ret && isEqual("", getTextFieldValue(window, i));
-            }
+            // if (i != 7) {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+            // }
         } else {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         }

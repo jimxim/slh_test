@@ -595,18 +595,22 @@ function scrollPrevPageCheck2(dataView, firstTitle, lastTitle) {
 function dropDownListCheck(index, value, expected, o) {
     var ret = false;
     var f = new TField("款号", TF_AC, index, value, -1);
-//    getTextFieldValue(window, index)==expected
     var cells = getTableViewCells(window, f, o);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, expected)) {
-            ret = true;
-            break;
+    if (cells.length > 0) {
+        for (var i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var v = cell.name();
+            if (isIn(v, expected)) {
+                ret = true;
+                break;
+            }
         }
+        delay();
+        tapKeyboardHide();
+    } else {
+        ret = isEqual(getTextFieldValue(window, index), expected);
     }
-    delay();
-    tapKeyboardHide();
+
     if (window.buttons()[CLEAR].isVisible) {
         tapButton(window, CLEAR);
     }
@@ -890,3 +894,41 @@ function getUnique(arr) {
     }
     return result;
 }
+
+function isPositiveNumber(n) {
+    var ret = false;
+    if (Number(n) >= 0) {
+        ret = true;
+    }
+    return ret;
+}
+
+function isNegativeNumber(n) {
+    var ret = false;
+    if (Number(n) <= 0) {
+        ret = true;
+    }
+    return ret;
+}
+
+function addObject(jo1,jo2){
+    debugObject(jo2, "jo2");
+    debugObject(jo1, "jo1");
+    var ret = {};
+    for ( var i in jo1) {
+        var v = jo1[i];
+        if (isNaN(v)) {
+            ret[i] = v;
+        } else {
+            var v1 = 0;
+            if (isDefined(jo2) && !isNaN(jo1[i])) {
+                v1 = jo1[i];
+            }
+            ret[i] = v + v1;
+        }
+    }
+    debugObject(ret, "subObject jo2-jo1");
+    return ret;
+}
+
+
