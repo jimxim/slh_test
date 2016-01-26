@@ -1,6 +1,6 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-    if (setIgnorecolorsize_1Params()) {
+//    if (setIgnorecolorsize_1Params()) {
         run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
         run("【销售开单－开单】客户新增按钮", "test170043");
         run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
@@ -68,7 +68,7 @@ function testSalesNoColorSizeAll() {
         run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");
         run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
 
-    }
+//    }
 }
 function testSalesNoColorSize001() {
     run("【销售开单－开单】复制-粘贴", "test170139");

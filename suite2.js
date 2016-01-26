@@ -45,9 +45,18 @@ function test000All() {
 // run("【销售开单－开单】", "testPictureCodePictureFields");//
 	
 	// 运单号取7位随即数
-
-	   run("【系统设置—改密码】修改", "test210035");
+	
+//	 run("【盘点管理—新增盘点】", "test180019");
+//	    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
+//	    run("【盘点管理—新增盘点】返回", "test180023");
+//	    run("【盘点管理—新增盘点】删除按钮", "test180024");
+//	    run("【盘点管理—按批次查】查询条件单项查询／【盘点管理—按批次查】底部统计数据检查", "test180001_180005");
+//	    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
+//	    run("【盘点管理—按批次查】查询条件组合查询/【盘点管理—按批次查】清除功能", "test180003_180004");
     
+	run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_2");
+	
+
 // testStatisticPictureAll();
 // testSystem001();
 // logout();
@@ -104,6 +113,7 @@ function test000SalesColorSize001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
+//        testSalesNoColorSizeAll();
         testSalesNoColorSizeElse001();
         
         logout();
