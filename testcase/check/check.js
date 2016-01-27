@@ -13,22 +13,6 @@ function testCheck001() {
     run("【盘点管理—库存表】清除", "test180054");
 }
 function testCheckAll() {
-    run("【盘点管理—新增盘点】", "test180019");
-    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
-    run("【盘点管理—新增盘点】返回", "test180023");
-    run("【盘点管理—新增盘点】删除按钮", "test180024");
-    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
-    run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
-    run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
-    run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
-    run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
-    run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
-    run("【盘点管理—盘点处理】部分处理", "test180026");
-    run("【盘点管理—盘点处理】全盘处理", "test180025");
-    run("【盘点管理—盘点处理】处理日期设置", "test180027");
-    run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
-    run("【盘点管理—盘点撤销】", "test180033");
-    run("【盘点管理—盈亏表】颜色检查", "test_180036_180037Prepare");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
@@ -37,9 +21,27 @@ function testCheckAll() {
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_6");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
+    run("【盘点管理—新增盘点】", "test180019");
+    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
+    run("【盘点管理—新增盘点】返回", "test180023");
+    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
+    run("【盘点管理—新增盘点】删除按钮", "test180024");
+    run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
+    run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
+    run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
+    run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
+    run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
+    run("【盘点管理—盘点处理】部分处理", "test180026");//
+    run("【盘点管理—盘点处理】部分处理", "test180026_1");//
+    run("【盘点管理—盘点处理】全盘处理", "test180025");//
+    run("【盘点管理—盘点处理】全盘处理", "test180025_1");//
+    run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
+    run("【盘点管理—盘点撤销】", "test180033");
+    run("【盘点管理—盈亏表】颜色检查", "test_180036_180037Prepare");
     run("【盘点管理—按批次查】处理人检查", "test180048");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
+    run("【盘点管理—盘点处理】处理日期设置", "test180027");
 }
 function testCheck002() {
     run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
@@ -361,26 +363,29 @@ function test180001_2() {
 }
 function test180002() {
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-3) };
+    var keys = { "日期从" : "2015-1-1" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-3), "批次从" : Number(batch - 29), "批次到" : batch };
+    var keys = { "日期从" : "2015-1-1", "批次从" : Number(batch - 29), "批次到" : batch };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     qr = getQR();
+
+    var keys = { "日期从" : "2015-1-1" };
+    var fields = queryCheckBatchFields(keys);
+    query(fields);
 
     var ret = true;
     var len = qr.data.length;
     for (var i = 0; i <= len - 1; i++) {
         var p = qr.data[i]["批次"];
-        var p1 = Math.floor(batch % 10);
+        var p1 = Math.floor(batch / 10);
         if (isEqual(p1, p)) {
             ret = false;
-            break;
         }
     }
 
@@ -390,27 +395,13 @@ function test180002() {
     var len = qr.data.length;
     for (var i = 0; i <= len - 1; i++) {
         var p = qr.data[i]["批次"];
-        var p1 = Math.floor(batch % 10);
+        var p1 = Math.floor(batch / 10);
         if (isEqual(p1, p)) {
             ret1 = false;
-            break;
         }
     }
 
-    scrollPrevPage();
-    qr = getQR();
-
-    var ret2 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(
-            Number(batch - 1), qr.data[1]["批次"]), isEqual(Number(batch - 2),
-            qr.data[2]["批次"]), isEqual(Number(batch - 3), qr.data[3]["批次"]),
-            isEqual(Number(batch - 4), qr.data[4]["批次"]), isEqual(
-                    Number(batch - 5), qr.data[5]["批次"]), isEqual(
-                    Number(batch - 6), qr.data[6]["批次"]), isEqual(
-                    Number(batch - 7), qr.data[7]["批次"]), isEqual(
-                    Number(batch - 8), qr.data[8]["批次"]), isEqual(
-                    Number(batch - 9), qr.data[9]["批次"]));
-
-    return ret && ret1 && ret2;
+    return ret && ret1;
 }
 function test180007() {
     tapMenu("盘点管理", "新增盘点+");
@@ -789,8 +780,24 @@ function test180026() {
     delay(2);
     tapPrompt();
 
-    tapReturn();
+    var ret = true;
+    if (isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对") || isIn(alertMsg, "处理完成")) {
 
+        tapReturn();
+        test180026_1();
+
+    } else
+        (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！"))
+    {
+        ret = false;
+
+        tapReturn();
+
+        return ret;
+    }
+}
+function test180026_1() {
+    // 先处理掉以前的盘点单
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
@@ -831,10 +838,7 @@ function test180026() {
     tapButtonAndAlert("部分处理", OK);
     delay(2);
 
-    var ret = false;
-    if (isIn(alertMsg, "处理完成")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "处理完成");
 
     tapReturn();
 
@@ -879,17 +883,41 @@ function test180026() {
     tapButtonAndAlert("部分处理");
     delay(3);
 
-    var ret5 = false;
-    if (isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对")) {
-        ret5 = true;
-    }
+    var ret5 = isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对");
 
     tapReturn();
 
-    logDebug(" ret=" + ret);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180025() {
+    // 先处理掉以前的盘点单
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
+
+    var ret = true;
+    if (isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对") || isIn(alertMsg, "处理完成")) {
+
+        tapReturn();
+        test180025_1();
+
+    } else
+        (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！"))
+    {
+        ret = false;
+
+        tapReturn();
+
+        return ret;
+    }
+}
+function test180025_1() {
     // 先处理掉以前的盘点单
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -1003,6 +1031,7 @@ function test180025() {
     if (sum == m) {
         var ret5 = true;
     }
+    // (r－22)为盘点总数
     ret5 = ret5 && isEqual(Number(r - 22), m);
 
     tapMenu("盘点管理", "盘点处理");
@@ -1023,7 +1052,8 @@ function test180025() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
-    logDebug(" ret5=" + ret5 + " m=" + m);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test180027() {
@@ -1062,7 +1092,39 @@ function test180027() {
     }
     tapReturn();
 
-    logDebug(" ret=" + ret + " ret1=" + ret1);
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : getToday(), "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "20");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : [ "常青店", "in" ] };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理", OK);
+    tapPrompt();
+
+    if (isIn(alertMsg, "处理完成")) {
+        var ret2 = true;
+    }
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
     return ret && ret1;
 }
 function test180030() {
@@ -1178,10 +1240,10 @@ function test180029_180031_180032() {
 }
 function test180033() {
     tapMenu("盘点管理", "处理记录");
-    var keys = {"日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店", "是否撤销" : "否" };
+    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-    var qr = getQR();
 
     tapButton(window, "盘点撤销");
 
@@ -1193,46 +1255,30 @@ function test180033() {
 
     var ret1 = isIn(alertMsg, "请选择一条记录撤销");
 
-    tapMenu("盘点管理", "新增盘点+");
-    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
-    var f3 = new TField("数量", TF, 3, "100");
-    var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapReturn();
-
-    tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : "常青店" };
-    var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("部分处理");
-    delay(3);
-
-    tapReturn();
-
-    tapMenu("盘点管理", "处理记录");
-    var keys = { "门店" : "常青店", "是否撤销" : "否" };
-    var fields = checkProcessRecordFields(keys);
-    query(fields);
     var qr = getQR();
     var batch = qr.data[0]["批次"];
+    var shop = qr.data[0]["门店"];
+    var opStaff = qr.data[0]["操作人"];
+    var ckTime = qr.data[0]["盘点日期"];
+    var opTime = qr.data[0]["操作日期"];
+    var tip = qr.data[0]["备注"];
 
-    query();
     tapButton(getScrollView(), 0);
     tapButton(window, "盘点撤销");
 
     tapMenu("盘点管理", "处理记录");
-    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : batch, "是否撤销" : "是" };
+    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "门店" : "常青店",
+        "批次从" : batch, "批次到" : batch, "是否撤销" : "是" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
     qr = getQR();
 
-    var ret2 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(getToday("yy"),
-            qr.data[0]["盘点日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(
-            "总经理", qr.data[0]["操作人"]), isAqualOptime(getOpTime(),
-            qr.data[0]["操作日期"], 2));
+    var ret2 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(ckTime,
+            qr.data[0]["盘点日期"]), isEqual(shop, qr.data[0]["门店"]), isEqual(
+            opStaff, qr.data[0]["操作人"]), isAqualOptime(opTime,
+            qr.data[0]["操作日期"], 2), isEqual(tip, qr.data[0]["备注"]));
 
-    logDebug(" ret=" + ret);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test_180036_180037Prepare() {
@@ -1505,7 +1551,11 @@ function test180042() {
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    query();
+    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店",
+        "作废挂单" : "正常" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+
     tapFirstText();
 
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
@@ -1523,7 +1573,10 @@ function test180042() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    query();
+    var keys = { "日期从" :"2015-1-1", "日期到" : getToday() }
+    var fields = shopOutQueryBatchFields(keys);
+    query(fields);
+    
     tapFirstText();
 
     var f3 = new TField("数量", TF, 3, "11");
@@ -1540,7 +1593,10 @@ function test180042() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    query();
+    var keys = { "日期从" :"2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    
     tapFirstText();
 
     var f3 = new TField("数量", TF, 3, "11");
