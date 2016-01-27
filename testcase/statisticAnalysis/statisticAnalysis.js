@@ -59,7 +59,7 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
     run("【统计分析—综合汇总】排序", "test190031");
     run("【统计分析—综合汇总】清除", "test190032");
-    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
+//    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
 
     // run("【新综合汇总】详细-余款", "test190042");
@@ -1171,10 +1171,22 @@ function test190036() {
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
 
-    var i, j, k;
-    var qr = getQR(window, getScrollView(), "序号", 19);
+    var qr = getQR(window, getScrollView(), "序号", 20);
+    var counts = qr.counts;
+    var arr = { "进数" : 0, "销数" : 0, "销额" : 0, "退数" : 0, "退额" : 0, "特殊货品" : 0,
+        "实销数" : 0, "实销额" : 0, "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0, "还款" : 0,
+        "欠款" : 0, "抵扣" : 0, "余款" : 0, "代收收款" : 0 };
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            arr = addObject(arr, qr.data[i]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR(window, getScrollView(), "序号", 20);
+        }
+    }
 
-    return true;
+    return isEqualObject(arr, counts);
 }
 
 function test190032() {

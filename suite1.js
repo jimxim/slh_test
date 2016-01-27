@@ -7,19 +7,17 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test110012");
+ run("test", "test190036");
 
 // run("test", "test190035");
- run("test", "onlyTest");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){
   var qr=getQR();
-  var jo=qr.data[0];
-  for(var i in jo){
-      var 
-  }
-  
+  var jo1=qr.data[0];
+  var jo2=qr.data[1];
+  return addObject(jo1,jo2);
 }
 
 

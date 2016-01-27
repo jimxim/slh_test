@@ -911,7 +911,7 @@ function isNegativeNumber(n) {
     return ret;
 }
 
-function addObject(jo1,jo2){
+function addObject(jo1, jo2) {
     debugObject(jo2, "jo2");
     debugObject(jo1, "jo1");
     var ret = {};
@@ -921,14 +921,12 @@ function addObject(jo1,jo2){
             ret[i] = v;
         } else {
             var v1 = 0;
-            if (isDefined(jo2) && !isNaN(jo1[i])) {
-                v1 = jo1[i];
+            if (isDefined(jo2) && !isNaN(jo2[i])) {
+                v1 = jo2[i];
             }
-            ret[i] = v + v1;
+            ret[i] = Number(v) + Number(v1);
         }
     }
-    debugObject(ret, "subObject jo2-jo1");
+    debugObject(ret, "addObject jo1+jo2");
     return ret;
 }
-
-
