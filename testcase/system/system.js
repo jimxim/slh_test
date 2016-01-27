@@ -30,7 +30,7 @@ function testSystem001() {
     run("【系统设置—新增人员】新增工号为0的员工", "test210034");
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置—改密码】关闭", "test210036");
-    run("【系统设置】店长查询人员列表时结果为空", "test210038");
+    run("【系统设置—更多-删除所有缩略图】删除", "test210037");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
@@ -1034,24 +1034,9 @@ function test210037() {
         ret = true;
     }
 
-    return ret;
-}
-function test210038() {
-    // 店长工号登录,常青店长004
-    tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员", "门店" : "常青店" };
-    var fields = querySystemStaffFields(keys);
-    query(fields);
-
-    var qr = getQR();
-    var a = qr.data[0]["工号"];
-    var a1 = qr.data[0]["姓名"];
-    var a2 = qr.data[0]["门店"];
-    var a3 = qr.data[0]["岗位"];
-
-    var ret = isAnd(isEqual("001", a), isEqual("财务员", a1), isEqual("常青店", a2),
-            isEqual("财务员", a3));
-
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    
     return ret;
 }
 function test210039() {

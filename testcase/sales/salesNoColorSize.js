@@ -143,9 +143,6 @@ function testSalesNoColorSize002() {
     if (sales_orderwhensales_1()) {
         run("【销售开单－开单】开单的同时订货", "test170125");
     }
-    if (sales_invalidate_days_3()) {
-        run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
-    }
     if (invalidate_sales_invalidate_0()) {
         run("【销售开单－开单】二次挂单功能检查", "test170173");
     }
@@ -431,14 +428,6 @@ function sales_orderwhensales_1() {
 
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
-}
-function sales_invalidate_days_3() {
-    var qo, o, ret = true;
-    qo = { "备注" : "销售开单允许作废和修改天数" };
-    o = { "新值" : "1", "数值" : [ "启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -3970,34 +3959,6 @@ function test170133() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test170136() {
-    // 设置销售开单允许修改和作废的天数N,不能用总经理账号测试，使用店长货开单员登陆，常青店长004登陆，3天
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
-    json["日期"] = getDay(-3);
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按批次查");
-    var f0 = new TField("客户", TF_AC, 0, "ls", -1, 0);
-    var f2 = new TField("日期从", TF_DT, 2, getDay(-3));
-    var f3 = new TField("到", TF_DT, 3, getDay(-3));
-    var fields = [ f0, f2, f3 ];
-    setTFieldsValue(window, fields);
-    query(fields);
-    tapFirstText();
-
-    tapButtonAndAlert("作 废", OK);
-
-    saveAndAlertOk();
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "操作失败：只能作废或修改 3 天内的单据"));
-
-    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
-    return ret;
-}
 function test170137() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -4507,13 +4468,13 @@ function test170177() {
     tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "更多.", "所有挂单");
     delay();
-    var qr = getQRtable1();
+//    var qr = getQRtable1();
 
-    debugQResult(qr);
+//    debugQResult(qr);
     loadHangBill(0);
 
     var a = getTextFieldValue(getScrollView(), 0);
-    var b = getTextFieldValue(getScrollView(), 7);
+    var b = getTextFieldValue(getScrollView(), 8);
 
     saveAndAlertOk();
     tapPrompt();
@@ -5075,39 +5036,6 @@ function test170237() {
     logDebug("ret=" + ret);
     return ret;
 }
-function test170134() {
-    // 全局设置里设置 单据打印后不允许修改 为 都不允许修改
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapButtonAndAlert("none", "打印(客户用)");
-    tapButton(window, RETURN);
-
-    tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls", "门店" : "常青店" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-    tapFirstText();
-
-    var f3 = new TField("数量", TF, 3, "3");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButtonAndAlert(RETURN, OK);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret = (isIn(alertMsg1, "不能修改"));
-
-    logDebug("ret=" + ret);
-    return ret;
-}
 function test170239() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
@@ -5474,6 +5402,8 @@ function test170251() {
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    
+//    debugElementTree(window);
 
     var table1 = getTableView(window, -1);
     var cells = table1.cells();
