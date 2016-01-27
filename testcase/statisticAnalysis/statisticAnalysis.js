@@ -59,8 +59,9 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
     run("【统计分析—综合汇总】排序", "test190031");
     run("【统计分析—综合汇总】清除", "test190032");
-//    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
+    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
+    run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
 
     // run("【新综合汇总】详细-余款", "test190042");
     // run("【新综合汇总】详细-抵扣", "test190043");
@@ -1119,19 +1120,57 @@ function test190031() {
     return ret;
 }
 
+function test190032() {
+    tapMenu("统计分析", "综合汇总");
+    var keys = { "日期从" : getDay(-30), "到" : getDay(-10), "门店" : "常青店" };
+    var fields = statisticAnalysisSynthesisFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
+
+    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
+            && isEqual(getToday(), getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2))
+
+    return ret;
+}
+
 function test190035() {
     var jo1 = getStatisticAnalysisSynthesis();
+    // debugObject(jo1, "jo1=");
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : "20" } ],
+        "特殊货品" : { "抹零" : 5, "打包费" : 15 } };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "新增入库+");
     json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "-10" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : "-10" } ],
+        "特殊货品" : { "抹零" : 50, "打包费" : 10 } };
     editSalesBillNoColorSize(json);
 
+    // 订货未发货
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "30" } ] };
+    editSalesBillNoColorSize(json);
+
+    // 订货部分入库
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "40" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    var f = new TField("入库数", TF, 5, 20);
+    setTFieldsValue(getScrollView(), [ f ]);
+    saveAndAlertOk();
+
+    delay(2);// 等待回到主页面
+    // 订货全部入库
     tapMenu("采购订货", "新增订货+");
     json = { "客户" : "Rt", "店员" : "000",
         "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
@@ -1147,9 +1186,52 @@ function test190035() {
         "明细" : [ { "货品" : "3035", "数量" : "15" }, { "货品" : "4562", "数量" : "25" } ] };
     editPurchaseBatch(json);
 
-    var change = { "进数" : 100 };
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 30, "打包费" : 15 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "-3" } ],
+        "特殊货品" : { "抹零" : 25, "打包费" : 35 } };
+    editSalesBillNoColorSize(json);
+
+    // 订货未发货
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "特殊货品" : { "抹零" : 40, "打包费" : 45 } };
+    editSalesBillNoColorSize(json);
+
+    // 订货部分入库
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
+        "特殊货品" : { "抹零" : 50, "打包费" : 65 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    f = new TField("数量", TF, 5, 15);
+    setTFieldsValue(getScrollView(), [ f ]);
+    saveAndAlertOk();
+
+    delay(2);
+    // 订货全部入库
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 15, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    tapFirstText();
+    saveAndAlertOk();
+
+    delay(2);
+    var change = { "进数" : 120, "销数" : 35, "销额" : 6000, "退数" : 3, "退额" : 600,
+        "特殊货品" : 5, "实销数" : 32, "实销额" : 5405, "现金" : 15610, "余款" : 10205 };
     var ret = test190035Field(jo1, change);
 
+    return ret;
 }
 
 function test190035Field(jo1, change) {
@@ -1189,18 +1271,11 @@ function test190036() {
     return isEqualObject(arr, counts);
 }
 
-function test190032() {
+function test190037() {
     tapMenu("统计分析", "综合汇总");
-    var keys = { "日期从" : getDay(-30), "到" : getDay(-10), "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, CLEAR);
+    query();
+    tapFirstText();
 
-    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual(getToday(), getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2))
-
-    return ret;
 }
 
 function test190042() {

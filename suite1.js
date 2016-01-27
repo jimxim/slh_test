@@ -7,17 +7,25 @@
 function test000All() {
 	debug = true;
 
- run("test", "test190036");
+// run("test", "test190025");
 
 // run("test", "test190035");
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
-  var qr=getQR();
-  var jo1=qr.data[0];
-  var jo2=qr.data[1];
-  return addObject(jo1,jo2);
+    tapMenu("销售开单", "开  单+");
+   var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "8" } ],
+        "代收" : { "物流商" : "sf" } };
+    editSalesBillNoColorSize(json);
+    var money = json["代收"]["代收金额"];
+    json = { "物流" : "sf", "核销" : [ 0 ] };
+    addLogisticsVerify(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var expected = { "类型" : "代收收款", "金额" : money, "操作人" : "总经理" };
+    return isEqualQRData1Object(qr, expected);
 }
 
 
