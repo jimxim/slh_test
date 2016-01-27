@@ -30,12 +30,14 @@ function testShopOutParams01() {
     qo = { "备注" : "调拨是否启用密码验证" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
 }
 function testShopOutParams02() {
     var qo, o, ret = true;
     qo = { "备注" : "调拨是否启用密码验证" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
 }
 
 function test150001_1() {
@@ -149,7 +151,7 @@ function test150001_3() {
 
     logDebug("ret=" + ret);
 
-    query();
+    tapButton(window,QUERY);
     var qr = getQR();
     var sum1 = 0, sum2 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {

@@ -404,7 +404,8 @@ function goPageCheckField() {
  */
 function isEqualDyadicArray(data1, data2) {
     var i, ret = true;
-    for (i = 0; i < data1.length; i++) {
+    var length=Math.min(data1.length,data2.length)
+    for (i = 0; i < length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
         ret = isAnd(ret, isEqualObject(arr1, arr2));
@@ -765,16 +766,19 @@ function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
         var a1 = o["核销"];
-        // debugElementTree(window);
-        // 坐标偏移8
-        var qr = getQRtable1(window, 8);
-        // debugQResult(qr);
+        debugElementTree(window);
+        // 坐标偏移8 ,8
+        //tableView是倒数第二个
+        var qr = getQRtable1(window, 8,-2);
+        debugQResult(qr);
+        debugObject(qr.data[0], "qr.data[0]=");
         var batch;
         for (var i = 0; i < a1.length; i++) {
             batch = qr.data[i]["批次"];
-            getTableView(window, -1).cells().firstWithName(batch).tap();
+            getTableView(window, -2).cells().firstWithName(batch).tap();
         }
-        tapNaviRightButton();
+        // tapNaviRightButton();
+        tapNaviButton("完成");
     }
 }
 

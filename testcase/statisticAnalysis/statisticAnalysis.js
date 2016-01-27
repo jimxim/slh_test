@@ -45,9 +45,9 @@ function testStatisticAnalysisAll() {
     run("【统计分析—汇总表-滞销表】翻页排序", "test190079");
 
     run("【统计分析—利润表】查询清除", "test190087_190101");
-    run("【统计分析—利润表】翻页排序", "test190088");
+    run("【统计分析—利润表】翻页排序", "test190088");// 利润额不作排序
     run("【统计分析—利润表】底部数据检查", "test190086");
-    run("【统计分析—利润表】成本额检查-最新进货价", "test190044");
+    // run("【统计分析—利润表】成本额检查-最新进货价", "test190044");
     run("【统计分析—利润表】查看详细", "test190083");
     run("【统计分析—利润表】详细页面排序翻页", "test190042");
     run("【统计分析—利润表】详细页面-特殊货品", "test190043");
@@ -62,9 +62,6 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
     run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
-
-    // run("【新综合汇总】详细-余款", "test190042");
-    // run("【新综合汇总】详细-抵扣", "test190043");
 
 }
 
@@ -1278,7 +1275,7 @@ function test190037() {
 
 }
 
-function test190042() {
+function test190038() {
     // 销售开单，余款1000
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
@@ -1311,8 +1308,8 @@ function test190042() {
     return ret;
 }
 
-function test190043() {
-    // 销售开单，核销190042开的余款单
+function test190041() {
+    // 销售开单，核销190038开的余款单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
         "核销" : [ 5 ] };
@@ -1669,26 +1666,49 @@ function test190083() {
     json = { "客户" : "xw",
         "明细" : [ { "货品" : r, "数量" : "-5", "单价" : "160", "折扣" : "0.5" } ] };
     editSalesBillNoColorSize(json);
+    var expected1 = { "款号" : r, "名称" : r, "数量" : "10", "单价" : "200",
+        "折扣" : "0.9", "销售额" : "1800", "进货价" : "100", "成本额" : "1000",
+        "利润额" : "800" };
+    var expected2 = { "款号" : r, "名称" : r, "数量" : "15", "单价" : "200",
+        "折扣" : "0.8", "销售额" : "2400", "进货价" : "100", "成本额" : "1500",
+        "利润额" : "900" };
+    var expected3 = { "款号" : r, "名称" : r, "数量" : "20", "单价" : "300",
+        "折扣" : "0.9", "销售额" : "5400", "进货价" : "100", "成本额" : "2000",
+        "利润额" : "3400" };
+    var expected4 = { "款号" : r, "名称" : r, "数量" : "-5", "单价" : "160",
+        "折扣" : "0.5", "销售额" : "-400", "进货价" : "100", "成本额" : "-500",
+        "利润额" : "100" };
 
     tapMenu("统计分析", "利润表");
     query();
     tapFirstText();
     var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-    var expected1 = { "款号" : r, "名称" : r, "数量" : "10", "单价" : "200",
-        "折扣" : "0.9", "销售额" : "1800", "进货价" : "100", "成本价" : "1000",
-        "利润额" : "800" };
-    var expected2 = { "款号" : r, "名称" : r, "数量" : "15", "单价" : "200",
-        "折扣" : "0.8", "销售额" : "2400", "进货价" : "100", "成本价" : "1500",
-        "利润额" : "900" };
-    var expected3 = { "款号" : r, "名称" : r, "数量" : "20", "单价" : "300",
-        "折扣" : "0.9", "销售额" : "5400", "进货价" : "100", "成本价" : "2000",
-        "利润额" : "3400" };
-    var expected4 = { "款号" : r, "名称" : r, "数量" : "-5", "单价" : "160",
-        "折扣" : "0.5", "销售额" : "-400", "进货价" : "100", "成本价" : "-500",
-        "利润额" : "100" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected1), isEqualQRData1Object(
-            qr, expected2), isEqualQRData1Object(qr, expected3),
-            isEqualQRData1Object(qr, expected4));
+    var ret1 = false, ret2 = false, ret3 = false, ret4 = false;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (!ret1) {
+                ret1 = isEqualQRData1Object(qr, expected1);
+            }
+            if (!ret2) {
+                ret2 = isEqualQRData1Object(qr, expected2);
+            }
+            if (!ret3) {
+                ret3 = isEqualQRData1Object(qr, expected3);
+            }
+            if (!ret4) {
+                ret4 = isEqualQRData1Object(qr, expected4);
+            }
+        }
+        if (ret1 && ret2 && ret3 && ret4) {
+            break;
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+        }
+    }
+
+    ret = isAnd(ret, ret1, ret2, ret3, ret4);
     tapNaviLeftButton();
 
     qo = { "备注" : "开单模式" };
@@ -1811,7 +1831,7 @@ function test190088() {
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("成本额", IS_NUM);
-    ret = ret && sortByTitle("利润额", IS_NUM);
+    ret = ret && sortByTitle("利润额");// , IS_NUM
 
     return ret;
 }

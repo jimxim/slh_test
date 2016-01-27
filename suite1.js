@@ -7,25 +7,27 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test190025");
+//    run("【统计分析—利润表】查看详细", "test190083");
+
+    run("【统计分析—综合汇总】排序", "test190031");
+
+
 
 // run("test", "test190035");
- run("test", "onlyTest");
+
+// run("test", "test100058");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){
-    tapMenu("销售开单", "开  单+");
-   var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "8" } ],
-        "代收" : { "物流商" : "sf" } };
-    editSalesBillNoColorSize(json);
-    var money = json["代收"]["代收金额"];
-    json = { "物流" : "sf", "核销" : [ 0 ] };
+//    var a1=getTableViews();
+//    var i=a1.length;
+//    logDebug("i="+i);
+
+    
+    var json = { "物流" : "sf", "核销" : [ 0 ] };
     addLogisticsVerify(json);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    var qr = getQR();
-    var expected = { "类型" : "代收收款", "金额" : money, "操作人" : "总经理" };
-    return isEqualQRData1Object(qr, expected);
+
 }
 
 
@@ -224,7 +226,7 @@ function  test000PurchaseOrder001() {
 // 中洲店总经理验证门店调出
 function test200ShopOut001(){
     var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
+    var ok = login("200","000000",p1);
     if( ok ) {
         testShopOut001();
         testShopOut002();
@@ -236,7 +238,7 @@ function test200ShopOut001(){
 // 常青店总经理验证门店调入
 function test000ShopIn001(){
     var p1 = {"角色":"总经理"};
-    var ok = login("200","000000",p1);
+    var ok = login("000","000000",p1);
     if( ok ) {
         testShopIn001();    
        logout();

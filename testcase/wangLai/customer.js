@@ -800,9 +800,9 @@ function test110020() {
     var fields = queryCustomerAccountFields(keys);
     query(fields);
     var qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[0]["名称"], "小")) {
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            if (!isIn(qr.data[i]["名称"], "小")) {
                 ret = false;
                 break;
             }
@@ -2315,10 +2315,10 @@ function test110047() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
-//    tapButton(window, RETURN);
+    // tapButton(window, RETURN);
 
     // tapMenu("往来管理", "更多.", "客户回访");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), "序号", 7);
     var expected = { "回访日期" : getToday("yy"), "名称" : "小王", "主题" : r,
         "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议" };
     var ret = isEqualQRData1Object(qr, expected);
@@ -2388,7 +2388,7 @@ function test110049() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
-//    tapButton(window, RETURN);
+    // tapButton(window, RETURN);
 
     // tapMenu("往来管理", "更多.", "客户回访");
     var qr = getQR();
