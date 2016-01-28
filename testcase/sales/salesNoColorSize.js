@@ -884,13 +884,15 @@ function test170046() {
     tapButton(getPop(), "关 闭");
 
     // 有欠款的客户
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0","不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "开  单+");
+    delay();
+    
     var keys = { "客户" : r };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+    
     var k0 = getTextFieldValue(window, 1);
 
     var texts = getStaticTexts(window);
@@ -899,6 +901,10 @@ function test170046() {
     var value = getStaticTextValue(window, index);
 
     var ret = isAnd(isEqual("欠款", value), isEqual("1500", k0));
+    
+    tapReturn();
+    
+    delay();
 
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
@@ -910,10 +916,11 @@ function test170046() {
     tapButton(getPop(), "关 闭");
 
     // 有余款的客户
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "4000" };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "4000","不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "开  单+");
+    delay();
+    
     var keys1 = { "客户" : r };
     var fields1 = editSalesBillFields(keys1);
     setTFieldsValue(window, fields1);
@@ -924,8 +931,13 @@ function test170046() {
     var value1 = getStaticTextValue(window, index);
 
     var ret1 = isAnd(isEqual("余款", value1), isEqual("2500", k1));
+    
+    tapReturn();
 
     // 无欠款无余款
+    
+    delay();
+
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
     var r = "anewkh3" + getTimestamp(6);
@@ -935,11 +947,9 @@ function test170046() {
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
 
-    // tapMenu("销售开单", "开 单+");
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : 1500 };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : 1500,"不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "开  单+");
     var keys2 = { "客户" : r };
     var fields2 = editSalesBillFields(keys2);
     setTFieldsValue(window, fields2);

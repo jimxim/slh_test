@@ -50,8 +50,6 @@ function test180022_Prepare() {
             f52, f55, f56, f59, f60, f63 ];
     setTFieldsValue(getScrollView(), fields);
     
-//    saveAndAlertOk();
-//    tapReturn();
 }
 function test180022() {
     tapMenu("盘点管理", "新增盘点+");
