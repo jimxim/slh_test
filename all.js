@@ -34,7 +34,7 @@
 #import "testcase/role/005.js"
 #import "testcase/role/006.js"
 #import "testcase/role/007.js"
-#import "testcase/role/104.js"
+#import "testcase/role/role.js"
 #import "testcase/role/logoutAndlogin.js"
 
 #import "testcase/sales/sales.js"

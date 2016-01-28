@@ -7,27 +7,19 @@
 function test000All() {
 	debug = true;
 
-//    run("【统计分析—利润表】查看详细", "test190083");
+// run("test", "test110041_1");
 
-    run("【统计分析—综合汇总】排序", "test190031");
-
-
-
-// run("test", "test190035");
+ run("test", "test190037");
+// run("test", "test190017");
 
 // run("test", "test100058");
 // run("test", "onlyTest");
 }
 
 function onlyTest(){
-//    var a1=getTableViews();
-//    var i=a1.length;
-//    logDebug("i="+i);
-
+//    debugElementTree(window);
+   
     
-    var json = { "物流" : "sf", "核销" : [ 0 ] };
-    addLogisticsVerify(json);
-
 }
 
 

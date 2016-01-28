@@ -301,6 +301,7 @@ function goPage2(page, qr) {
 
 /**
  * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~
+ * 最后会回到第一页
  * @param titleTotal
  */
 function goPageCheck(titleTotal) {
@@ -766,7 +767,7 @@ function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
         var a1 = o["核销"];
-        debugElementTree(window);
+//        debugElementTree(window);
         // 坐标偏移8 ,8
         //tableView是倒数第二个
         var qr = getQRtable1(window, 8,-2);
@@ -934,3 +935,4 @@ function addObject(jo1, jo2) {
     debugObject(ret, "addObject jo1+jo2");
     return ret;
 }
+

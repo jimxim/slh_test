@@ -1837,6 +1837,9 @@ function test110041_1() {
                 }
             }
         }
+        if(isDefined(batch1)&&isDefined(batch2)){
+            break;
+        }
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
