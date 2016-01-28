@@ -1,14 +1,15 @@
 //zhangy <2397655091 at qq.com> 20160120
 
 
-function test004() {
+function test004() {    
+    run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
+    run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
+    run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
+    
     run("【系统设置】数据清理授权", "test210043_4"); 
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
     run("【盘点管理-盈亏表】店长权限", "test180050");
-    
-    run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
-    run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
     
 }
 function test210043_4() {
@@ -151,4 +152,80 @@ function test170136() {
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
+}
+function test170464() {
+    // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店长：004
+    // 用店长权限分别在客户查询,客户门店帐,销售订货,销售开单四个界面检查,能否输入别的门店的客户
+    // var qo, o, ret = true;
+    // qo = { "备注" : "区分" };
+    // o = { "新值" : "1", "数值" : [ "只显示本门店客户", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("往来管理", "客户查询");
+    var i;
+    var ret = true;
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    tapMenu1("往来管理");
+    tapMenu2("客户账款");
+    tapMenu3("客户门店账");
+    var i;
+    var ret1 = true;
+    var f = new TField("客户", TF_AC, 1, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret1 = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var i;
+    var ret2 = true;
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret2 = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var i;
+    var ret3 = true;
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret3 = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    return ret && ret1 && ret2 && ret3;
 }
