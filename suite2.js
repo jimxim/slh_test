@@ -56,7 +56,7 @@ function test000All() {
     
 //    run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
 //    run("【销售开单－开单】收款（新增界面）", "test170163");
-//    run("【销售开单－开单】收款（修改界面）", "test170164");
+//    run("【销售开单－开单】收款（修改界面）", "test170164");//
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
 	 
 // testStatisticPictureAll();
@@ -70,7 +70,7 @@ function setSales001Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/开单模式2", "setIgnorecolorsize_1Params");
+        run("均色均码/开单模式2", "setNoColorSize_1Params");
         logout();
     }
 }

@@ -1,7 +1,6 @@
 // Zhangy <15068165765 at 139.com>  11.5
 
 function testSalesNoColorSizeElse001() {
-    // if(setIgnorecolorsize_1Params()){
     run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1");
     run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
     run("【销售开单－按明细查】翻页_排序_汇总", "test170028_1");
@@ -67,7 +66,6 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－更多-代收收款查询】清除", "test170297");
     run("【销售开单－更多-代收收款查询】底部数据汇总检查", "test170298");
     run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
-    // }
 
 }
 function testSalesNoColorSizeElse002() {
@@ -150,63 +148,6 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单】均色均码模式下，开单输入款号之后的款号框不能修改", "test170406");
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
     run("【销售开单-更多】检查代收收款金额", "test170410");
-}
-function setColorSize_1Params() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "显示颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setLocalParam(qo, o));
-
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    
-    qo = { "备注" : "是否检查折扣" };
-    o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    
-    qo = { "备注" : "总计是否需要四舍五入" };
-    o = { "新值" : "1", "数值" : [ "需要" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    var qo, o, ret = true;
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否允许修改单据日期" };
-    o = { "新值" : "0", "数值" : [ "默认不限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单是否门店过滤人员" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "价格模式" };
-    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
 }
 function test170001_1() {
     tapMenu("销售开单", "开  单+");
