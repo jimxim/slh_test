@@ -50,7 +50,7 @@ function testStatisticAnalysisAll() {
     run("【统计分析—利润表】查询清除", "test190087_190101");
     run("【统计分析—利润表】翻页排序", "test190088");// 利润额不作排序
     run("【统计分析—利润表】底部数据检查", "test190086");
-    // run("【统计分析—利润表】成本额检查-最新进货价", "test190044");
+    // run("【统计分析—利润表】成本额检查-最新进货价", "test190044");//先跳过成本额检查的4个用例
     run("【统计分析—利润表】查看详细", "test190083");
     run("【统计分析—利润表】详细页面排序翻页", "test190042");
     run("【统计分析—利润表】详细页面-特殊货品", "test190043");
@@ -64,7 +64,7 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】清除", "test190032");
     run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
-    run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
+//    run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
 
 }
 
@@ -1313,21 +1313,29 @@ function getDataFor190037() {
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     tapNaviLeftButton();
-    var data = qr.data;
-    return data;
+    var arr = qr.data;
+    return arr;
 }
 
-function test190037Field(data1, data2, arr) {
-    var type = arr[0];
-    var money = "金额";
-    if (type == "支出") {
-        money = "金额2";
-    }
 
-    for (var i = 0; i < qr.curPageTotal; i++) {
-        
+function test190037Field(arr) {
+    var data = [], data1 = {},i,j,name="现";
+    for(i=0;i<arr.length;i++){
+        if(isDefined(arr[i]["名称"])){
+           name=arr[i]["名称"];
+        }
+        if(isDefined(arr[i]["收入"])){
+            j="收入 "+name+arr[i]["收入"];
+            data1[j]=arr[i]["金额"];
+            data.push(data1);
+        }
+        if(isDefined(arr[i]["支出"])){
+            j="支出 "+name+arr[i]["支出"];
+            data1[j]=arr[i]["金额2"];
+            data.push(data1);
+        }
     }
-
+    return data;
 }
 
 function test190036() {

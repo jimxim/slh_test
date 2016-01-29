@@ -7,18 +7,20 @@
 function test000All() {
 	debug = true;
 
-// run("test", "test110041_1");
 
- run("test", "test190037");
-// run("test", "test190017");
+
+ run("test", "test160072");
+// run("test", "test160013");
 
 // run("test", "test100058");
 // run("test", "onlyTest");
 }
 
 function onlyTest(){
-//    debugElementTree(window);
-   
+    debugElementTree(window);
+//   var arr=getDataFor190037();
+//   var data=test190037Field(arr);
+//   debugObject(data);
     
 }
 
@@ -256,6 +258,15 @@ function test000SalesOrder001() {
       logout();
   }
 }
+
+function test000SalesOrderNoColor() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesOrderNoColor();
+        logout();
+    }
+  }
 
 // 销售开单 翻页/排序/汇总/条件查询/清除/下拉框
 function test000SalesNoColorSizeElse001() {

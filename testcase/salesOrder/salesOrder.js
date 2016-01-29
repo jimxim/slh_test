@@ -6,6 +6,7 @@ function testSalesOrderPrepare() {
         "明细" : [ { "货品" : "3035", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ],
         "特殊货品" : { "抹零" : "10", "打包费" : "20" } };
     editSalesBillNoColorSize(json);
+    return json;
 }
 
 function testSalesOrder001() {
@@ -29,7 +30,7 @@ function testSalesOrder001() {
     run("【销售订货—按缺货查】查询_清除", "test16_Stockout_2");
 }
 
-function testSalesOrderAll() {
+function testSalesOrderNoColor() {
     // run("【销售订货－新增订货】新增订货单", "test160047");
     // run("【销售订货－新增订货】新增超长订单并打印", "test160048");
     // run("【销售订货－新增订货】整单复制/整单粘贴", "test160060");
@@ -49,15 +50,16 @@ function testSalesOrderAll() {
     run("【销售订货—按批次查】作废功能", "test160009");
     run("【销售订货—按批次查】更多-查看修改日志", "test160011");
     run("【销售订货—按批次查】查看-终结订单", "test160012");
-    run("【销售订货-按批次查】修改单据保存再点打印", "test160072");// 实验版
+    run("【销售订货—按批次查】查看-刷新图像", "test160013");
+    run("【销售订货-按批次查】修改单据保存再点打印", "test160072");
     run("【销售订货-按批次查】整单折扣模式只付预付款，检查折扣值", "test160089");// 开单模式7
     run("【销售订货-按明细查】作废订单后内容检查", "test160021");
 
-    // 以下修改已发货的订单顺序不可换
-    run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
+    // run("【销售订货—订货汇总】按款号图像-刷新图像", "test160026");//没有任何提示框
+
     run("【销售订货-按批次查】均色均码+修改已发货的订单", "test160073");
-    run("【销售订货-按批次查】颜色尺码+修改已发货的订单", "test160074");
-    run("【销售订货-按批次查】颜色尺码+不允许修改已发货的订单", "test160088");
+    run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
+
 
     // run("【销售订货—订货汇总】按款号-待发数数值检查", "test160035");
     // run("【销售订货】订货汇总-按款号，未发数检查_终结订单", "test160063_1");
@@ -511,12 +513,12 @@ function test160068_160069() {
 
 function test160015_160016() {
     tapMenu("销售订货", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = salesOrderQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck( 16);
+    var ret = goPageCheck(16);
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -683,7 +685,7 @@ function test160001() {
         }
     }
 
-    return ret && ret1;
+    return isAnd(ret, ret1);
 }
 
 function test160002_160017() {
@@ -953,6 +955,25 @@ function test160012Field() {
     tapMenu("销售订货", "更多.", "终结订单");
 }
 
+function test160013() {
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapFirstText();
+    test160013Field();
+    tapPrompt();
+    var cond = "isIn(alertMsg, '刷新成功')";
+    waitUntil(cond, 300);
+    var ret = isIn(alertMsg, "刷新成功");
+    tapReturn();
+
+    return ret;
+
+}
+
+function test160013Field() {
+    tapMenu("销售订货", "更多.", "刷新图像");
+}
+
 function test160023_160024() {
     tapMenu("销售订货", "按明细查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
@@ -1010,6 +1031,9 @@ function test160019() {
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             ret = ret && isEqual("小王", qr.data[i]["客户"]);
+            if (!ret) {
+                break;
+            }
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
@@ -1024,6 +1048,9 @@ function test160019() {
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             ret = ret && isEqual("3035", qr.data[i]["款号"]);
+            if (!ret) {
+                break;
+            }
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
@@ -1042,6 +1069,9 @@ function test160019() {
                 ret = false;
                 break;
             }
+        }
+        if (!ret) {
+            break;
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
@@ -1115,6 +1145,19 @@ function test160021() {
     qr = getQR();
     ret = isAnd(ret, !isEqual(batch, qr.data[0]["批次"]));
 
+    return ret;
+
+}
+
+function test160026() {
+    tapMenu("销售订货", "按汇总", "按款号图像");
+    tapNaviButton("刷新图像");
+    tapAlertButton(1);// 确定
+    tapPrompt();
+    var cond = "isIn(alertMsg, '刷新成功')";
+    waitUntil(cond, 300);
+    var ret = isIn(alertMsg, "刷新成功");
+    tapNaviLeftButton();
     return ret;
 
 }
@@ -1692,25 +1735,23 @@ function test160072() {
     setTFieldsValue(getScrollView(), [ f3 ]);
     saveAndAlertOk();
     tapPrompt();
+    tapButtonAndAlert("打 印", "打印(客户用)");
 
-    var ret = true;
-    try {
-        tapButtonAndAlert("打 印", "打印(客户用)");
-    } catch (e) {
-        logError(e);
-        tapPrompt();
-        ret = false;
-        tapReturn();
-    }
+    // tapPrompt();
+    var ret = !isIn(alertMsg, "打印异常");
+    tapReturn();
 
     return ret;
 }
 
 // 均色均码
 function test160087() {
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改已发货的订单" };
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+  
 
 }
 // 均色均码
@@ -1720,6 +1761,71 @@ function test160073() {
     o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "goodsFieldIndex" : -2,
+        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ] };
+    editSalesBillColorSize(json);
+    
+    //9.选择一条已作废的订单，增加款号点保存
+    tapFirstText();
+    tapButton(window,"作 废");
+    tapFirstText();
+    var f1=new TField("货品", TF_AC, 8, "4562",-1,0);
+    var f2=new TField("数量", TF, 11, "10");
+    setTFieldsValue(getScrollView(), [ f1,f2 ]);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret=isIn(alertMsg,"已作废批次不能执行这个操作");
+    tapReturn();
+    
+    //部分入库单
+    test160073Field();
+    
+    //6.选择一条部分发货的款号，删除已发货的款号，点保存
+    tapMenu("销售订货", "按批次查");
+    tapFirstText();
+    tapButton(getScrollView(),0);
+    saveAndAlertOk();
+    tapPrompt();
+    ret=isAnd(ret,isIn(alertMsg,"已发货的明细不允许删除"));
+    tapReturn();
+    
+    //7.选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存
+    tapFirstText();
+    f1=new TField("数量", TF, 3, "10");
+    f2=new TField("数量", TF, 11, "10");
+    setTFieldsValue(getScrollView(), [ f1,f2 ]);
+    saveAndAlertOk();
+    tapPrompt();
+    ret=isAnd(ret,isIn(alertMsg,"操作成功"));
+    tapReturn();
+    
+    //8.选择一条部分发货，但预付款被部分或全部核销了的订单，增加或修改款号订货数量后保存
+    
+    qo = { "备注" : "是否允许修改已发货的订单" };
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+
+function test160073Field(all){
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "xw", "goodsFieldIndex" : -2,
+        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } , { "货品" : "4562", "数量" : [ 20 ] } ] };
+    editSalesBillColorSize(json);
+    
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    
+    if(isDefined(all)){
+        saveAndAlertOk();
+    }else{
+        f1=new TField("数量", TF, 5, "10");
+        f2=new TField("数量", TF, 14, "10");
+        setTFieldsValue(getScrollView(), [ f1,f2 ]);
+        saveAndAlertOk();
+    }
+   tapReturn();
 }
 // 颜色尺码
 function test160074() {
