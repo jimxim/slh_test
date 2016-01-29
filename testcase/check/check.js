@@ -71,6 +71,30 @@ function setIgnorecolorsize_1Params() {
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    checkPrepare();
+    
+    return ret;
+}
+function checkPrepare() {
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : getDay(-60) };
+    var fields = shopInFlitFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var total1 = qr.total;
+    for (var i = 0; i < total1; i++) {
+        tapFirstText();
+        editShopInFlitting();
+    }
+
+    qr = getQR();
+    var total2 = qr.total;
+    var ret = false;
+    if (total2 <= 1) {
+        ret = true;
+    }
+
     return ret;
 }
 function test180019() {
@@ -307,28 +331,6 @@ function test180001_180003_180005() {
 
     logDebug("sum1=" + sum1);
     return ret && ret1;
-}
-function checkPrepare() {
-    tapMenu("门店调入", "在途调拨");
-    var keys = { "日期从" : getDay(-60) };
-    var fields = shopInFlitFields(keys);
-    query(fields);
-
-    var qr = getQR();
-    var total1 = qr.total;
-    for (var i = 0; i < total1; i++) {
-        tapFirstText();
-        editShopInFlitting();
-    }
-
-    qr = getQR();
-    var total2 = qr.total;
-    var ret = false;
-    if (total2 <= 1) {
-        ret = true;
-    }
-
-    return ret;
 }
 function test180001_2() {
     tapMenu("盘点管理", "按批次查");

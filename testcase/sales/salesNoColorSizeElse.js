@@ -1009,11 +1009,9 @@ function test170028_2_4() {
 
     saveAndAlertOk();
     tapButtonAndAlert("none", "取 消");
-    delay(2);
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("销售开单", "按明细查");
-    query();
     var keys = { "款号" : "3035", "款号名称" : "jkk", "客户" : "lx", "店员" : "000,",
         "门店" : "常青店", "类型" : "退货", "日期从" : getToday(), "到" : getToday(),
         "备注" : "退货", "适用价格" : "打包价" };

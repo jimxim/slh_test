@@ -1,9 +1,11 @@
 //zhangy <2397655091 at qq.com> 20160120
 
 function testOutAndIn_Check001() {
-    run("【盘点管理—新增盘点】获取未保存", "test180022_Prepare");
+    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
+    run("【销售开单－开单】开单的同时订货", "test170125");
+    
+    run("【盘点管理—新增盘点】获取未保存数据准备", "test180022_Prepare");
     run("【盘点管理—新增盘点】获取未保存", "test180022");
-
 }
 function test180022_Prepare() {
     tapMenu("盘点管理", "新增盘点+");
@@ -49,7 +51,7 @@ function test180022_Prepare() {
             f27, f28, f31, f32, f35, f36, f39, f40, f43, f44, f47, f48, f51,
             f52, f55, f56, f59, f60, f63 ];
     setTFieldsValue(getScrollView(), fields);
-    
+
 }
 function test180022() {
     tapMenu("盘点管理", "新增盘点+");
@@ -97,5 +99,95 @@ function test180022() {
 
     tapReturn();
 
+    return ret;
+}
+function test170239_Params() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+function test170239() {
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+
+    tapMenu("销售开单", "开  单+");
+    var ret = false;
+    var f = new TField("客户", TF_AC, 5, "000", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        // debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("000,总经理", v)) {
+            ret = true;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+
+    var ret1 = true;
+    var f = new TField("客户", TF_AC, 5, "100", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        // debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("100,总经理", v)) {
+            ret1 = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    logDebug("ret=" + ret + ", ret=" + ret);
+    return ret && ret;
+}
+function test170125_Params() {
+    // 开启参数 销售开单的同时订货功能，需退出重新登陆
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时同时订货" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+function test170125() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("订货数", TF, 4, "2");
+    var f10 = new TField("订货数", TF, 10, "10");
+    var fields = [ f4, f10 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    tapReturn();
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "客户" : "ls" };
+    var fields1 = salesBillOrderFields(keys);
+    query(fields1);
+    var qr = getQR();
+    var a = qr.data[0]["订货数"];
+    var ret = false;
+    if (a == "2") {
+        ret = true;
+    }
+
+    tapFirstText();
+    // var ret1=款号，数量校对
+
+    logDebug("ret=" + ret);
     return ret;
 }

@@ -146,11 +146,11 @@ function setColorSize_1Params() {
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否检查折扣" };
     o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "总计是否需要四舍五入" };
     o = { "新值" : "1", "数值" : [ "需要" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -205,8 +205,8 @@ function testCs170181() {
 }
 function testCs170047() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "x001", "数量" : [ 5, 6 ] } ], "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x001", "数量" : [ 5, 6 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
     tapButton(window, "未付");
@@ -1693,9 +1693,10 @@ function testCs170105() {
         "备注" : "zdbz", "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var f4 = new TField("单价", TF, 4, "407");
-    var f11 = new TField("单价", TF, 11, "407");
-    var f18 = new TField("单价", TF, 18, "407");
+    var r = 1 + getRandomInt(1000);
+    var f4 = new TField("单价", TF, 4, r);
+    var f11 = new TField("单价", TF, 11, r);
+    var f18 = new TField("单价", TF, 18, r);
     var fields = [ f4, f11, f18 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1718,10 +1719,11 @@ function testCs170105() {
     var a = qr.data[0]["日期"];
     var b = qr.data[0]["数量"];
     var c = qr.data[0]["单价"];
+    var z = qr.data[0]["折扣"];
 
-    var ret = isEqual(getToday(""), a) && isEqual("3", b) && isEqual("407", c);
-    var ret1 = isAqualOptime("日期: " + getOpTime(), date, 1)
-            && isEqual("数量: 1 价格: 407 折扣: 1", num);
+    var ret = isAnd(isEqual(getToday(""), a), isEqual("3", b), isEqual(r, c),
+            isEqual("1", z), isAqualOptime("日期: " + getOpTime(), date, 1),
+            isEqual("数量: 1 价格: " + r + " 折扣: 1", num));
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapNaviLeftButton();
