@@ -1000,7 +1000,7 @@ function test190026() {
 function test190028() {
     tapMenu("统计分析", "收支类别");
     tapFirstText();
-    var r = "类别" + getTimestamp(6);
+    var r = "类别" + getTimestamp(7);
     var f = new TField("名称", TF, 0, r);
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);

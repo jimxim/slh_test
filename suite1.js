@@ -6,21 +6,17 @@
 // 总经理
 function test000All() {
 	debug = true;
-
-
-
- run("test", "test160072");
-// run("test", "test160013");
-
-// run("test", "test100058");
+//	 run("test", "test160096");
+	
+ run("test", "test160073");
 // run("test", "onlyTest");
 }
 
 function onlyTest(){
     debugElementTree(window);
-//   var arr=getDataFor190037();
-//   var data=test190037Field(arr);
-//   debugObject(data);
+// var arr=getDataFor190037();
+// var data=test190037Field(arr);
+// debugObject(data);
     
 }
 
