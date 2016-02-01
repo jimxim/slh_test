@@ -8,16 +8,13 @@ function test000All() {
 	debug = true;
 //	 run("test", "test160096");
 	
- run("test", "test160073");
+ run("test", "test160090");
 // run("test", "onlyTest");
 }
 
 function onlyTest(){
-    debugElementTree(window);
-// var arr=getDataFor190037();
-// var data=test190037Field(arr);
-// debugObject(data);
-    
+//    debugElementTree(window);
+
 }
 
 

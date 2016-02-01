@@ -198,6 +198,10 @@ function salesOrderCodeField(key, show) {
     case "门店":
         f = new TField("门店", TF_SC, 4, "常青店");
         break;
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 5, "xw");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -394,7 +398,7 @@ function salesOrderQueryByStockoutField(key, show) {
     switch (key) {
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 0, "3035",-1,0);
+        f = new TField("款号", TF_AC, 0, "3035", -1, 0);
         break;
     case "name":
     case "款号名称":
@@ -426,7 +430,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 8, -1,0);
+        f = new TField("品牌", TF_AC, 8, -1, 0);
         break;
     case "season":
     case "季节":
