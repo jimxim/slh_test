@@ -46,13 +46,12 @@ function test000All() {
 	
 	// 运单号取7位随即数
 	
-//	   run("【盘点管理—盘点处理】部分处理", "test180026");//
-//	    run("【盘点管理—盘点处理】全盘处理", "test180025");//
-//    run("【销售开单－开单】收款（修改界面）", "test170164");//
+// run("【盘点管理—盘点处理】部分处理", "test180026");//
+// run("【盘点管理—盘点处理】全盘处理", "test180025");//
+// run("【销售开单－开单】收款（修改界面）", "test170164");//
 
-//	    run("【销售开单－开单】异地发货－－配货员可查看内容", "test170119");
-	  run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240");
-
+	run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442");
+	 
 // testStatisticPictureAll();
 // testSystem001();
 // logout();
@@ -76,7 +75,17 @@ function setSales002Params() {
         logout();
     }
 }
+// 销售开单
 function test000SalesNoColorSizeElse001() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+        testSalesNoColorSizeAll();
+       
+       logout();
+   }
+}
+function test000SalesNoColorSizeElse002() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
@@ -86,6 +95,15 @@ function test000SalesNoColorSizeElse001() {
     }
 }
 function test000SalesColorSize001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesColorSize001();
+        
+        logout();
+    }
+}
+function test000SalesColorSize002() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
@@ -100,17 +118,6 @@ function test000SalesColorSize001() {
     var ok = login("000","000000",p1);
     if( ok ) {
          testPurchase001();
-        
-        logout();
-    }
- }
-// 销售开单
- function test000SalesNoColorSizeElse001() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-// testSalesNoColorSizeAll();
-        testSalesNoColorSizeElse001();
         
         logout();
     }

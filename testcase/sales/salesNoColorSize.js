@@ -140,10 +140,6 @@ function setNoColorSize_1Params() {
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -2297,7 +2293,7 @@ function test170092() {
     var money = getTextFieldValue(window, 3);
 
     tapStaticText(window, "代收");
-    debugElementTree(window);
+//    debugElementTree(window);
 
     var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "物流商*");
@@ -4501,7 +4497,7 @@ function test170245() {
         }
     }
     delay();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
     logDebug("ret=" + ret);
     return ret;
@@ -4846,10 +4842,6 @@ function test170461() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否检查折扣" };
-    o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "onlytest" : "yes" };
@@ -4884,6 +4876,14 @@ function test170461() {
     var ret1 = isAnd(isEqual(Math.round(416 * R + 1), qr.data[0]["金额"]),
             isEqual(Math.round(416 * R + 1), qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["未结"]));
+    
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
 }
