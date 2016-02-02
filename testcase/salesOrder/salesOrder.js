@@ -1569,11 +1569,46 @@ function test160042() {
     var fields = salesOrderStaffFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual("总经理", qr.data[0]["名称"], isEqual("1", qr.total), isEqual(
-            "1", qr.totalPageNo), isEqual(qr.counts["数量"], qr.data[0]["数量"]),
-            isEqual(qr.counts["已发"], qr.data[0]["已发"]), isEqual(
-                    qr.counts["差异数"], qr.data[0]["差异数"]), isEqual(
-                    qr.counts["小计"], qr.data[0]["小计"]));
+    var jo1 = qr.data[0];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText(getScrollView(), "序号", 14);
+    var f = new TField("数量", TF, 5, "10");
+    setTFieldsValue(getScrollView(), [ f ]);
+    test160073Save();
+    delay();
+
+    tapMenu1("销售订货");// 有时还是停留在销售开单
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "xw", "店员" : "005",
+        "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText(getScrollView(), "序号", 14);
+    f = new TField("数量", TF, 5, "15");
+    setTFieldsValue(getScrollView(), [ f ]);
+    test160073Save();
+    delay();
+
+    tapMenu1("销售订货");
+    tapMenu("销售订货", "按汇总", "按店员");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var jo2 = qr.data[0];
+    var actual = subObject(jo2, jo1);
+    var expected = { "名称" : "总经理", "数量" : 20, "已发" : 10, "差异数" : 10,
+        "小计" : 4000 };
+    var arr = jo2.slice(-4);
+    var ret = isAnd(isEqualObject(expected, actual), isEqualObject(arr,
+            qr.counts));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
@@ -1615,10 +1650,10 @@ function test160043() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发"],
+    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发"],
             sum2), isEqual(qr.counts["差异数"], sum3), isEqual(qr.counts["小计"],
             sum4));
-    return ret && ret1;
+    return ret;
 }
 
 function test160044() {

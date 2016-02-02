@@ -64,7 +64,7 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】清除", "test190032");
     run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
-//    run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
+    // run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
 
 }
 
@@ -1006,7 +1006,7 @@ function test190028() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
 
-    delay();
+    delay();// 有时界面未刷新
     var qr = getQR();
     var data = qr.data[0];
     var ret = isEqual(r, qr.data[0]["名称"]);
@@ -1317,21 +1317,20 @@ function getDataFor190037() {
     return arr;
 }
 
-
 function test190037Field(arr) {
-    var data = [], data1 = {},i,j,name="现";
-    for(i=0;i<arr.length;i++){
-        if(isDefined(arr[i]["名称"])){
-           name=arr[i]["名称"];
+    var data = [], data1 = {}, i, j, name = "现";
+    for (i = 0; i < arr.length; i++) {
+        if (isDefined(arr[i]["名称"])) {
+            name = arr[i]["名称"];
         }
-        if(isDefined(arr[i]["收入"])){
-            j="收入 "+name+arr[i]["收入"];
-            data1[j]=arr[i]["金额"];
+        if (isDefined(arr[i]["收入"])) {
+            j = "收入 " + name + arr[i]["收入"];
+            data1[j] = arr[i]["金额"];
             data.push(data1);
         }
-        if(isDefined(arr[i]["支出"])){
-            j="支出 "+name+arr[i]["支出"];
-            data1[j]=arr[i]["金额2"];
+        if (isDefined(arr[i]["支出"])) {
+            j = "支出 " + name + arr[i]["支出"];
+            data1[j] = arr[i]["金额2"];
             data.push(data1);
         }
     }
@@ -1845,6 +1844,42 @@ function test190084() {
     return ret;
 }
 
+function test190085() {
+    var i, j, sum1 = 0, sum2 = 0;
+    tapMenu("统计分析", "利润表");
+    query();
+    var qr = getQR();
+    var a = qr.data[0]["利润额"];
+
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["利润额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+        }
+    }
+
+    tapNaviRightButton();
+    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            sum2 += Number(qr.data[i]["利润额"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
+        }
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    return isEqual(sum1, sum2) && isEqual(a, sum2);
+}
+
 // 先跳过，有分歧
 function test190083() {
     var qo, o, ret = true;
@@ -1922,41 +1957,6 @@ function test190083() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
-}
-
-function test190085() {
-    tapMenu("统计分析", "利润表");
-    query();
-    tapFirstText();
-    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-    var sum1 = 0, i, j;
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-        }
-    }
-
-    tapNaviRightButton();
-    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-    var sum2 = 0;
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum2 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-        }
-    }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-    var ret = isEqual(sum1, sum2);
 
     return ret;
 }
@@ -2147,42 +2147,6 @@ function test190102() {
     tapNaviLeftButton();
 
     return ret;
-}
-
-function test190085() {
-    var i, j, sum1 = 0, sum2 = 0;
-    tapMenu("统计分析", "利润表");
-    query();
-    var qr = getQR();
-    var counts = qr.counts["利润额"];
-
-    tapFirstText();
-    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-        }
-    }
-
-    tapNaviRightButton();
-    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum2 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-        }
-    }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-
-    return isEqual(sum1, sum2) && isEqual(counts, sum2);
 }
 
 function editStatisticAnalysisIn(o) {
