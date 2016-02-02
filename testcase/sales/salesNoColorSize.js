@@ -183,6 +183,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "销售开单时同时订货" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "童装是否按组开单" };
+    o = { "新值" : "0", "数值" : [ "按件开单", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
 
     return ret;
 }
@@ -533,7 +537,6 @@ function test170047() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
