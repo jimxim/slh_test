@@ -7,24 +7,16 @@
 function test000All() {
 	debug = true;
 
-
-
- run("【统计分析—综合汇总】查询", "test190030");
- run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
- run("【统计分析—综合汇总】排序", "test190031");
-//
 // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
 // run("【统计分析—综合汇总】检查底部数据", "test190036");
 // run("test", "test160042");
 // run("test", "test160043");
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
-  var i=getActualDeliveryTFindex();
-  logDebug("i="+i);
-  return i;
+// debugElementTree(window);
+
 }
 
 

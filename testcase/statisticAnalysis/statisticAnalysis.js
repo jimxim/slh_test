@@ -1087,7 +1087,7 @@ function test190031() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    var ret = goPageCheck(19);
+    var ret = goPageCheck(20);
 
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("门店");
@@ -1107,7 +1107,8 @@ function test190031() {
     ret = ret && sortByTitle("欠款", IS_NUM);
     ret = ret && sortByTitle("抵扣", IS_NUM);
     ret = ret && sortByTitle("余款", IS_NUM);
-
+    ret = ret && sortByTitle("代收收款");//暂不支持排序
+    
     return ret;
 }
 

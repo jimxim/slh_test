@@ -300,8 +300,7 @@ function goPage2(page, qr) {
 }
 
 /**
- * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~
- * 最后会回到第一页
+ * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~ 最后会回到第一页
  * @param titleTotal
  */
 function goPageCheck(titleTotal) {
@@ -335,7 +334,7 @@ function goPageCheck(titleTotal) {
         ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
                 firstSeq, qr.data[0]["序号"]),
                 isEqual(totalPageNo, qr.curPageNo), isDifferentArray(page1,
-                        page2), scrollPrevPageCheck(firstTitle, titleTotal));
+                        page2, 1), scrollPrevPageCheck(firstTitle, titleTotal));
 
         // 当总页数大于2时，追加一页验证
         if (totalPageNo > 2) {
@@ -351,8 +350,8 @@ function goPageCheck(titleTotal) {
             ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
                     finSeq, qr.data[14]["序号"]), isEqual(midPage, qr.curPageNo),
                     scrollPrevPageCheck(firstTitle, titleTotal),
-                    isDifferentArray(page1, page2), isDifferentArray(page1,
-                            page3), isDifferentArray(page2, page3));
+                    isDifferentArray(page1, page2, 1), isDifferentArray(page1,
+                            page3, 1), isDifferentArray(page2, page3, 1));
 
             qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
             ret = isAnd(ret, goPageCheckField());
@@ -365,9 +364,8 @@ function goPageCheck(titleTotal) {
         goPage(1, qr);
         ret = isAnd(ret, goPageCheckField());
     }
-
+    logDebug("goPageCheck ret=" + ret);
     return ret;
-
 }
 
 /**
@@ -405,7 +403,7 @@ function goPageCheckField() {
  */
 function isEqualDyadicArray(data1, data2) {
     var i, ret = true;
-    var length=Math.min(data1.length,data2.length)
+    var length = Math.min(data1.length, data2.length)
     for (i = 0; i < length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
@@ -428,11 +426,14 @@ function arrayToString(data) {
  * @param data2
  * @returns {Boolean}
  */
-function isDifferentArray(data1, data2) {
+function isDifferentArray(data1, data2, n) {
     var i, j, s1, s2, ret = true;
-    for (j = 0; j < data1.length; j++) {
+    if (isUndefined(n)) {
+        n = 0;
+    }
+    for (j = n; j < data1.length; j++) {
         s1 = arrayToString(data1[j]);
-        for (i = 0; i < data2.length; i++) {
+        for (i = n; i < data2.length; i++) {
             s2 = arrayToString(data2[i]);
             if (isEqual(s1, s2)) {
                 ret = false;
@@ -767,10 +768,10 @@ function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
         var a1 = o["核销"];
-//        debugElementTree(window);
+        // debugElementTree(window);
         // 坐标偏移8 ,8
-        //tableView是倒数第二个
-        var qr = getQRtable1(window, 8,-2);
+        // tableView是倒数第二个
+        var qr = getQRtable1(window, 8, -2);
         debugQResult(qr);
         debugObject(qr.data[0], "qr.data[0]=");
         var batch;
@@ -935,4 +936,3 @@ function addObject(jo1, jo2) {
     debugObject(ret, "addObject jo1+jo2");
     return ret;
 }
-
