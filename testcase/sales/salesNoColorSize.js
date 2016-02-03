@@ -78,11 +78,15 @@ function testSalesNoColorSizeAll() {
 }
 function testSalesNoColorSize001() {
     run("【销售开单】客户或供应商信息不允许修改", "test170063");
+    run("【销售开单－开单】快速新增客户后折扣值检查", "test170067");
     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
     run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
     run("【销售开单－开单】开启退货数验证时提示具体哪个款号的退货数超出", "test170074");
     run("【销售开单－开单】客户退货数量－不填客户", "test170075");
     run("【销售开单－开单】单价小数位精确到元对保存打印的影响", "test170076");
+    run("【销售开单－开单】单价小数位精确到角对保存打印的影响", "test170076_1");
+    run("【销售开单－开单】单价小数位精确到分对保存打印的影响", "test170076_2");
+    run("【销售开单－开单】单价小数位精确到厘对保存打印的影响", "test170076_3");
     run("【销售开单－开单】客户折扣支持3位小数", "test170077_1");
     run("【销售开单－开单】客户折扣支持3位小数", "test170077_2");
     run("【销售开单-开单】开单模式-客户折扣", "test170083");
@@ -107,6 +111,12 @@ function testSalesNoColorSize001() {
     run("【销售开单】开单货品列表是否显示品牌信息", "test170245");
     run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
     run("【销售开单-开单】客户折扣模式下自动取上次折扣值", "test170461");
+    run("销售开单价格刷新+上次价", "test170491");
+    run("销售开单价格刷新+上次价", "test170491_1");
+    run("销售开单价格刷新+上次价", "test170491_2");
+    run("销售订货价格刷新+上次价", "test170492");
+    run("销售订货价格刷新+上次价", "test170492_1");
+    run("销售订货价格刷新+上次价", "test170492_2");
 }
 function testSalesNoColorSize002() {
     run("【销售开单-开单】积分跨门店共享", "test170183");
@@ -709,21 +719,21 @@ function test170051() {
 }
 function test170052() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "2001", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
+    var keys = { "工号" : "004", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
     var qr = getQR();
-    var ret1 = isEqual(" 总经理2001", qr.data[0]["姓名"]);
+    var ret1 = isEqual("店长", qr.data[0]["姓名"]);
 
     tapMenu("销售开单", "开  单+");
     var ret = false;
-    var f = new TField("店员", TF_AC, 5, "200", -1);
+    var f = new TField("店员", TF_AC, 5, "00", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual("2001, 总经理2001", v)) {
+        if (isEqual("004,店长", v)) {
             ret = true;
             break;
         }
@@ -745,7 +755,22 @@ function test170052() {
     }
     tapReturn();
 
-    return ret && ret1 && ret2;
+    tapMenu("销售开单", "开  单+");
+    var ret3 = true;
+    var f = new TField("店员", TF, 5, "vell");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret3 = isIn(alertMsg, "店员选择错误，请从弹出的列表中选择");
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170053() {
     tapMenu("销售开单", "开  单+");
@@ -952,17 +977,40 @@ function test170057() {
         var ret = true;
     }
 
-    var f21 = new TField("货品", TF_AC, 21, "3035", -1, 0);
-    var f24 = new TField("数量", TF, 24, "5");
-    var fields = [ f21, f24 ];
-    setTFieldsValue(getScrollView(), fields);
+    var r = "anewkhao" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
     tapButton(window, "核销");
     tapNaviLeftButton();
 
+    var ret1 = false;
     var b = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
     if (b = "下级客户1 其他店总欠: 0.0") {
-        var ret1 = true;
+        ret1 = true;
+    }
+
+    tapButton(window, "图片选款");
+    tapNaviLeftButton();
+    tapButton(window, "核销");
+    tapNaviLeftButton();
+
+    var ret10 = false;
+    var b = getStaticTextValue(getScrollView(-1, 0), 0);
+    tapNaviLeftButton();
+    if (b = "下级客户1 其他店总欠: 0.0") {
+        ret10 = true;
     }
 
     tapMenu("销售开单", "更多.", "查 询");
@@ -1037,7 +1085,7 @@ function test170057() {
         var ret7 = true;
     }
 
-    tapButton(window, CLEAR);
+    tapButton(window, 12);
     tapButton(window, "核销");
     tapNaviLeftButton();
     var j = getStaticTextValue(getScrollView(-1, 0), 0);
@@ -1059,11 +1107,12 @@ function test170057() {
 
     tapReturn();
 
-    logDebug("ret＝" + ret + "ret1＝" + ret1 + "ret2＝" + ret2 + "ret3＝" + ret3
-            + "ret4＝" + ret4 + "ret5＝" + ret5 + "ret6＝" + ret6 + "ret7＝" + ret7
-            + "ret8＝" + ret8 + "ret9＝" + ret9);
+    logDebug("ret＝" + ret + ", ret1＝" + ret1 + ", ret2＝" + ret2 + ", ret3＝"
+            + ret3 + ", ret4＝" + ret4 + ", ret5＝" + ret5 + ", ret6＝" + ret6
+            + ", ret7＝" + ret7 + ", ret8＝" + ret8 + ", ret9＝" + ret9
+            + ", ret10＝" + ret10);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9;
+            && ret9 && ret10;
 }
 
 function test170058() {
@@ -1104,7 +1153,7 @@ function test170058() {
 
     tapNaviLeftButton();
     tapNaviLeftButton();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
     var ret1 = isEqual(getToday("yy"), a1);
     var ret2 = isEqual("总经理", a3);
@@ -1172,7 +1221,7 @@ function test170059() {
 
     tapNaviLeftButton();
     tapNaviLeftButton();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
     var ret1 = isEqual(getToday("yy"), a1);
     var ret2 = isEqual("总经理", a3);
@@ -1262,6 +1311,8 @@ function test170061() {
     var json = { "客户" : "xjkh1", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
+    var money = getTextFieldValue(window, 1);
+
     tapButton(window, "核销");
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var len = qr.data.length;
@@ -1304,7 +1355,9 @@ function test170062() {
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    tapNaviLeftButton();
+    tapButton(getScrollView(1, 0), 5);
+
+    // tapNaviLeftButton();
     var e = getStaticTextValue(getScrollView(1), 0);
     tapNaviLeftButton();
     if (e = "下级客户1 其他店总欠: 0.0") {
@@ -1574,6 +1627,34 @@ function test170065_5() {
 
     return ret;
 }
+function test170067() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增+");
+    var r = "anewkh" + getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "9" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    var ret = isNoEqual(0, zk);
+
+    return ret;
+}
 function test170395_1() {
     // 设置不允许跨门店核销
     var qo, o, ret = true;
@@ -1795,6 +1876,10 @@ function test170076() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
@@ -1802,6 +1887,123 @@ function test170076() {
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("单价", TF, 4, "300.188");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var ret, ret1 = false;
+    if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
+        ret = true;
+    }
+    tapButtonAndAlert("none", OK, true);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    if (isIn(alertMsg1, "[第1行] 单价小数位超出了限制")) {
+        ret1 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
+}
+function test170076_1() {
+    // 设置 单价小数位 精确到角
+    var qo, o, ret = true;
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
+        "明细输入框个数" : 8 };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, "300.1888");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var ret, ret1 = false;
+    if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
+        ret = true;
+    }
+    tapButtonAndAlert("none", OK, true);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    if (isIn(alertMsg1, "[第1行] 单价小数位超出了限制")) {
+        ret1 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
+}
+function test170076_2() {
+    // 设置 单价小数位 精确到分
+    var qo, o, ret = true;
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
+        "明细输入框个数" : 8 };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, "300.18888");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var ret, ret1 = false;
+    if (isIn(alertMsg, "请仔细核对收款方式和金额,确定保存吗?")) {
+        ret = true;
+    }
+    tapButtonAndAlert("none", OK, true);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    if (isIn(alertMsg1, "[第1行] 单价小数位超出了限制")) {
+        ret1 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
+}
+function test170076_3() {
+    // 设置 单价小数位 精确到分
+    var qo, o, ret = true;
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes",
+        "明细输入框个数" : 8 };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, "300.188888");
     var fields = [ f4 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -4610,7 +4812,7 @@ function test170247_1() {
     qo = { "备注" : "默认显示零批价或打包价" };
     o = { "新值" : "1", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
     var r = "anewkh" + getTimestamp(6);
@@ -4925,40 +5127,110 @@ function test170424_1() {
 
     target.frontMostApp().alert().buttons()["刷新价格"].tap();
 
-    ret =isAnd(ret,isEqual("180", getTextFieldValue(getScrollView(), 4)));
+    ret = isAnd(ret, isEqual("180", getTextFieldValue(getScrollView(), 4)));
 
     tapReturn();
-    
+
     return ret;
 }
+function test170445Change() {
+    var f0 = new TField("客户", TF_AC, 0, "xw", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+}
 function test170445() {
+    var qo, o, ret = true;
+    qo = { "备注" : "单据是否允许修改客户或厂商" };
+    o = { "新值" : "1", "数值" : [ "允许" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" :"ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ]};
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
     query();
 
     tapFirstText();
-    var f0 = new TField("折扣", TF_AC, 0, "lx");
-    var fields = [ f0 ];
-    setTFieldsValue(window, fields);
 
-    tapButtonAndAlert("none","刷新价格");
-    
+    var price = getTextFieldValue(getScrollView(), 4);
+
+    runAndAlert("test170445Change", "刷新价格");
+    delay(3);
+
+    var ret = isNoEqual(price, getTextFieldValue(getScrollView(), 4));
+
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
-    
-    tapMenu("销售开单", "按批次查");
+
+    tapMenu("销售订货", "按批次查");
     query();
-    var qr=getQR();
-    var ret=isEqual("李响",qr.data[0]["客户"]);
-    
-    return ret;
+    var qr = getQR();
+    var ret1 = isEqual("小王", qr.data[0]["客户"]);
+
+    return ret && ret1;
 }
-function test1704527() {
-    
+function test170527Change() {
+    var f0 = new TField("客户", TF_AC, 0, "rt", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+}
+function test170527() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "现金" : "0" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+
+    tapFirstText();
+    var price = getTextFieldValue(getScrollView(), 4);
+
+    var ret = isIn(alertMsg, "客户/厂商重新做了选择，是否需要重新刷新明细价格等信息");
+
+    runAndAlert("test170527Change", "刷新价格");
+    delay(3);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    var qr = getQR();
+    var ret1 = isEqual("Rt", qr.data[0]["厂商"]);
+
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购订货", "按批次查");
+    query();
+
+    tapFirstText();
+    var price = getTextFieldValue(getScrollView(), 4);
+
+    var f0 = new TField("客户", TF_AC, 0, "vell", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
+    var ret2 = isIn(alertMsg, "客户/厂商重新做了选择，是否需要重新刷新明细价格等信息");
+
+    runAndAlert("test170527Change", "刷新价格");
+    delay(3);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购订货", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isEqual("Rt", qr.data[0]["厂商"]);
+
+    return ret && ret1 && ret2 && ret3;
 }
 function test170460() {
     var qo, o, ret = true;
@@ -5065,6 +5337,404 @@ function test170461() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
+}
+function test170491Change() {
+    var f0 = new TField("客户", TF_AC, 0, "xw", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+}
+function test170491() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var f5 = new TField("客户", TF, 5, r1);
+    var fields = [ f4, f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isAqualNum("180", getTextFieldValue(getScrollView(), 4)),
+            isAqualNum(1, getTextFieldValue(getScrollView(), 5)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isAqualNum(r, getTextFieldValue(getScrollView(), 4)),
+            isAqualNum(r1, getTextFieldValue(getScrollView(), 5)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(
+            Number(price) * Number(zk), 1), qr.data[0]["金额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170491_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var f5 = new TField("客户", TF, 5, r1);
+    var fields = [ f4, f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isEqual("180", getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(getScrollView(), 5)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isAqualNum(r, getTextFieldValue(getScrollView(), 4)),
+            isAqualNum(r1, getTextFieldValue(getScrollView(), 5)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(
+            Number(price) * Number(zk), 1), qr.data[0]["金额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170491_2() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var f5 = new TField("折扣", TF, 10, r1);
+    var fields = [ f5 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isEqual("200", getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(window, 10)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isAqualNum(r, getTextFieldValue(getScrollView(), 4)),
+            isAqualNum(1, getTextFieldValue(window, 10)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(price, 1),
+            qr.data[0]["金额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170492() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var f5 = new TField("客户", TF, 5, r1);
+    var fields = [ f4, f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isEqual("180", getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(getScrollView(), 5)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isAqualNum(r, getTextFieldValue(getScrollView(), 4)),
+            isAqualNum(r1, getTextFieldValue(getScrollView(), 5)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(
+            Number(price) * Number(zk), 1), qr.data[0]["金额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170492_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var f5 = new TField("客户", TF, 5, r1);
+    var fields = [ f4, f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isEqual("180", getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(getScrollView(), 5)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 4)),
+            isEqual(r1, getTextFieldValue(getScrollView(), 5)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(
+            Number(price) * Number(zk), 1), qr.data[0]["总额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170492_2() {
+    var qo, o, ret = true;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "1" + getTimestamp(3);
+    var r1 = "0." + getTimestamp(2);
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("价格", TF, 4, r);
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var f5 = new TField("折扣", TF, 10, r1);
+    var fields = [ f5 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xjkh", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret1 = isAnd(isEqual("200", getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(window, 10)));
+
+    runAndAlert("test170491Change", "刷新价格");
+    delay(3);
+    var price = getTextFieldValue(getScrollView(), 4);
+    var zk = getTextFieldValue(getScrollView(), 5);
+
+    var ret2 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 4)),
+            isEqual(1, getTextFieldValue(window, 10)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("小王", qr.data[0]["客户"]), isAqualNum(add(price, 1),
+            qr.data[0]["总额"], 0.6));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170496() {
+
 }
 function test170497() {
     // 1，设置 单价小数位 精确到厘 2，整单折扣单开单模式
