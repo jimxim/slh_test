@@ -165,6 +165,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "是否检查折扣" };
     o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "折扣后单价的核算模式" };
+    o = { "新值" : "1", "数值" : [ "四舍五入取整", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "总计是否需要四舍五入" };
     o = { "新值" : "1", "数值" : [ "需要" ] };
@@ -1876,7 +1880,7 @@ function test170076() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1915,7 +1919,7 @@ function test170076_1() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1954,7 +1958,7 @@ function test170076_2() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1993,7 +1997,7 @@ function test170076_3() {
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -2175,7 +2179,7 @@ function test170083() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = getTimestamp(6) + "newkehu";
+    var r = "newkehu" + getTimestamp(6);
     var keys = { "名称" : r, "适用价格" : "零批价", "拿货折扣" : "0.8" };
     addCustomer(keys);
 
@@ -2250,7 +2254,7 @@ function test170080_170084() {
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = getTimestamp(6) + "newkh";
+    var r = "newkh" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "产品折扣" : 0.788 };
     addGoods(keys);
 
@@ -2328,7 +2332,7 @@ function test170085() {
     o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = getTimestamp(6) + "newkehu";
+    var r = "newkehu" + getTimestamp(6);
     var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
