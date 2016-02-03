@@ -7,11 +7,9 @@
 function test000All() {
 	debug = true;
 
-// run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
-// run("【统计分析—综合汇总】检查底部数据", "test190036");
-// run("test", "test160042");
-// run("test", "test160043");
- run("test", "onlyTest");
+ run("test", "test160055_160056_160057_160058");
+// run("test", "test160031_160034");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){
