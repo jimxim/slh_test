@@ -31,6 +31,7 @@ function testStatisticAnalysisAll() {
     run("【统计分析—收支流水】翻页排序", "test190024");
     run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
     run("【统计分析—收支流水】底部数据检查", "test190026");
+    run("【统计分析—收支类别】查看,排序,翻页", "test190027");
     run("【统计分析—收支类别】保存", "test190028");
     run("【统计分析—收支类别】返回", "test190029");
     run("【统计分析—收支流水】帐户余额允许为负", "test190090");
@@ -168,6 +169,7 @@ function test190013() {
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
+    query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
     var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
@@ -737,7 +739,7 @@ function test190010() {
         }
     }
     tapNaviLeftButton();
-    ret = isAnd(ret, isEqual(a, sum));
+    ret = isAnd(ret, isAqualNum(a, sum, 0.0001));
 
     key = { "收支类别" : "支出" };
     fields = statisticAnalysisInOutSummaryFields(key);
@@ -767,7 +769,7 @@ function test190010() {
         }
     }
     tapNaviLeftButton();
-    ret = isAnd(ret, isEqual(b, sum));
+    ret = isAnd(ret, isAqualNum(b, sum, 0.0001));
 
     return ret;
 }
@@ -849,89 +851,79 @@ function test190024() {
 }
 
 function test190025() {
-    // 价格为200
+    // 3035价格为200
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
     editSalesBillNoColorSize(json);
     tapMenu("统计分析", "收支流水");
     query();
     var qr = getQR();
-    var a = Number(qr.data[0]["余额"]);// 账户:现
     var expected = { "序号" : "1", "类型" : "销售单", "账户" : "东灵测试-现金账户",
         "金额" : "3000", "操作人" : "总经理" };
     var ret = isAnd(isEqualQRData1Object(qr, expected), isAqualOptime(
             json["操作日期"], qr.data[0]["操作日期"], 1));
 
-    tapMenu("统计分析", "新增收入");
-    var r = getTimestamp(6);
-    json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
-    editStatisticAnalysisIn(json);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var b = Number(qr.data[0]["余额"]);// 账户:银
-    expected = { "序号" : "1", "类型" : "收入单", "账户" : "东灵测试-银行账户", "金额" : "6666",
-        "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
-            json["操作日期"], qr.data[0]["操作日期"]));
-
-    tapMenu("采购订货", "新增订货+");
-    json = { "客户" : "Vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ], };
-    editSalesBillNoColorSize(json);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var ret1 = isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], a));// 现余额验证
-    expected = { "序号" : "1", "类型" : "采购单", "账户" : "东灵测试-现金账户", "金额" : "-2000",
-        "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
-            json["操作日期"], qr.data[0]["操作日期"]));
-
-    tapMenu("统计分析", "新增支出");
-    json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "物业", "金额" : "1000", "备注" : r } ] };
-    editStatisticAnalysisIn(json);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    qr = getQR();
-    ret1 = ret1 && isEqual(qr.data[0]["金额"], sub(qr.data[0]["余额"], b));// 银余额验证
-    expected = { "序号" : "1", "类型" : "支出单", "账户" : "东灵测试-银行账户", "金额" : "-1000",
-        "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
-            json["操作日期"], qr.data[0]["操作日期"]));
-
-    // 积分兑换 为负值
-    addRedeemPoints("xw", 1000, 1000);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    qr = getQR();
-    expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
-
-    // 代收核销收入 为正值
+    // 退货单
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "8" } ],
-        "代收" : { "物流商" : "sf" } };
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-5" } ],
+        "现金" : -1000 };
     editSalesBillNoColorSize(json);
-    var money = json["代收"]["代收金额"];
-    json = { "物流" : "sf", "核销" : [ 0 ] };
-    addLogisticsVerify(json);
     tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
+    query();
     qr = getQR();
-    expected = { "类型" : "代收收款", "金额" : money, "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    expected = { "序号" : "1", "类型" : "销售单", "账户" : "东灵测试-现金账户", "金额" : "-1000",
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"], 1));
 
     // 销售订货预付款 正值
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "类型" : "销售单", "金额" : "4000", "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    // 销售开单按订货开单
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var f = new TField("数量", TF, 5, "10");// 数量
+    setTFieldsValue(getScrollview(), [ f ]);
+    saveAndAlertOk();
+    tapPrompt();
     tapMenu("统计分析", "收支流水");
     tapButton(window, QUERY);
     qr = getQR();
     expected = { "类型" : "销售单", "金额" : "2000", "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    // 采购订货
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "序号" : "1", "类型" : "采购单", "账户" : "东灵测试-现金账户", "金额" : "-2000",
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
+
+    // 采购订货 退货
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Vell", "明细" : [ { "货品" : "3035", "数量" : "-10" } ],
+        "现金" : -1000 };
+    editSalesBillNoColorSize(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "序号" : "1", "类型" : "采购单", "账户" : "东灵测试-现金账户", "金额" : "1000",
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
 
     // 采购订货预付款 负值
     tapMenu("采购订货", "新增订货+");
@@ -943,7 +935,67 @@ function test190025() {
     expected = { "类型" : "采购单", "金额" : "-5000", "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
-    return ret && ret1;
+    // 采购订货按订货入库
+    tapMenu("采购订货", "按订货入库");
+    query();
+    tapFirstText();
+    var f = new TField("入库数", TF, 5, "10");
+    setTFieldsValue(getScrollview(), [ f ]);
+    saveAndAlertOk();
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "类型" : "采购单", "金额" : "-1500", "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    tapMenu("统计分析", "新增收入");
+    var r = getTimestamp(6);
+    json = { "账户" : "银", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : "6666", "备注" : r } ] };
+    editStatisticAnalysisIn(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "序号" : "1", "类型" : "收入单", "账户" : "东灵测试-银行账户", "金额" : "6666",
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
+
+    tapMenu("统计分析", "新增支出");
+    json = { "账户" : "银", "收支备注" : r,
+        "明细" : [ { "收入类别" : "物业", "金额" : "1000", "备注" : r } ] };
+    editStatisticAnalysisIn(json);
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected = { "序号" : "1", "类型" : "支出单", "账户" : "东灵测试-银行账户", "金额" : "-1000",
+        "操作人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isAqualOptime(
+            json["操作日期"], qr.data[0]["操作日期"]));
+
+     // 积分兑换 为负值
+     addRedeemPoints("xw", 1000, 1000);
+     tapMenu("统计分析", "收支流水");
+     tapButton(window, QUERY);
+     qr = getQR();
+     expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
+     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    
+     // 代收核销收入 为正值
+     tapMenu("销售开单", "开 单+");
+     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "8" } ],
+     "代收" : { "物流商" : "sf" } };
+     editSalesBillNoColorSize(json);
+     var money = json["代收"]["代收金额"];
+     json = { "物流" : "sf", "核销" : [ 0 ] };
+     addLogisticsVerify(json);
+     tapMenu("统计分析", "收支流水");
+     tapButton(window, QUERY);
+     qr = getQR();
+     expected = { "类型" : "代收收款", "金额" : money, "操作人" : "总经理" };
+        ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+
+    return ret;
 }
 
 function test190090() {
@@ -994,6 +1046,16 @@ function test190026() {
     }
     var ret = isAqualNum(sum, qr.counts["金额"], 0.001);
 
+    return ret;
+}
+
+function test190027(){
+    tapMenu("统计分析", "收支类别");
+    var ret=goPageCheck(3);
+    
+    ret = ret && sortByTitle("出入类别");
+    ret = ret && sortByTitle("名称");
+    
     return ret;
 }
 
@@ -1107,8 +1169,8 @@ function test190031() {
     ret = ret && sortByTitle("欠款", IS_NUM);
     ret = ret && sortByTitle("抵扣", IS_NUM);
     ret = ret && sortByTitle("余款", IS_NUM);
-    ret = ret && sortByTitle("代收收款");//暂不支持排序
-    
+    ret = ret && sortByTitle("代收收款");// 暂不支持排序
+
     return ret;
 }
 

@@ -7,8 +7,15 @@
 function test000All() {
 	debug = true;
 
- run("test", "test160055_160056_160057_160058");
-// run("test", "test160031_160034");
+
+
+//    run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
+
+    run("test", "test190035");
+
+
+
+// run("test", "test160061");
 // run("test", "onlyTest");
 }
 
