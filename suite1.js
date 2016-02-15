@@ -3,16 +3,23 @@
 
 #import "all.js"
 
+// #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
+// test000All();
+
 // 总经理
 function test000All() {
 	debug = true;
 
 
 
-//    run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
+ run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
 
-    run("test", "test190035");
-
+ run("test", "test190035");
+ run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
+    run("【统计分析—综合汇总】进入详细-余款", "test190038");
+    run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
+    run("【统计分析—综合汇总】进入详细-欠款", "test190039");
+    run("【统计分析—综合汇总】进入详细-还款", "test190040");
 
 
 // run("test", "test160061");
@@ -20,7 +27,7 @@ function test000All() {
 }
 
 function onlyTest(){
-// debugElementTree(window);
+ debugElementTree(window);
 
 }
 
