@@ -52,8 +52,8 @@ function test000All() {
 // run("【销售开单－开单】店员输入检查", "test170052");//
 //    run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");//
 	
-	 run("【销售开单－开单】退货时明细备注框操作", "test170097");
-    
+    run("【销售开单－开单】查看上次成交价", "test170105");
+	   
 // testStatisticPictureAll();
 // testSystem001();
 // logout();

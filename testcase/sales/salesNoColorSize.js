@@ -42,6 +42,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】整单备注和明细备注", "test170095");
     run("【销售开单－开单】退货时备注显示", "test170096");
     run("【销售开单－开单】退货时明细备注框操作", "test170097");
+    run("【销售开单－开单】款号较多时打印", "test170100");
     run("【销售开单－开单】特殊货品", "test170128");
     run("【销售开单－开单】新增货品", "test170129");
     run("【销售开单－开单】连续新增货品", "test170131");
@@ -162,7 +163,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "上次单价" };
     o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -2397,18 +2398,18 @@ function test170085() {
 }
 function test170090() {
     // 开单模式-代收模式2
-//    var qo, o, ret = true;
-//    qo = { "备注" : "开单模式" };
-//    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
-//
-//    qo = { "备注" : "上次单价" };
-//    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
-//
-//    qo = { "备注" : "成交价" };
-//    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "上次单价" };
+    // o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "成交价" };
+    // o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
@@ -2425,15 +2426,15 @@ function test170090() {
     var qr = getQR();
     var a = qr.data[0]["代收"];
     var ret1 = isEqual("180", a);
-    
+
     tapMenu("销售开单", "按汇总", "按客户销售");
     var keys = { "到" : getToday(), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
     qr = getQR();
-    var ret2 = isEqual("180", qr.data[0]["代收"]);   
+    var ret2 = isEqual("180", qr.data[0]["代收"]);
 
-    logDebug("ret=" + ret + ", ret1=" + ret1+ ", ret2=" + ret2);
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1;
 }
 function test170091() {
@@ -2727,7 +2728,67 @@ function test170097() {
     return ret && ret1;
 }
 function test170100() {
-    
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var f4 = new TField("货品", TF_AC, 7, "k200", -1, 0);
+    var f7 = new TField("数量", TF, 10, "-11");
+    var f8 = new TField("货品", TF_AC, 14, "k300", -1, 0);
+    var f11 = new TField("数量", TF, 17, "0");
+
+    var f12 = new TField("货品", TF_AC, 21, "3035", -1, 0);
+    var f15 = new TField("数量", TF, 24, "12");
+    var f16 = new TField("货品", TF_AC, 28, "k200", -1, 0);
+    var f19 = new TField("数量", TF, 31, "-11");
+    var f20 = new TField("货品", TF_AC, 35, "k300", -1, 0);
+    var f23 = new TField("数量", TF, 38, "0");
+
+    var f24 = new TField("货品", TF_AC, 42, "3035", -1, 0);
+    var f27 = new TField("数量", TF, 45, "10");
+    var f28 = new TField("货品", TF_AC, 49, "k200", -1, 0);
+    var f31 = new TField("数量", TF, 52, "-11");
+    var f32 = new TField("货品", TF_AC, 56, "k300", -1, 0);
+    var f35 = new TField("数量", TF, 59, "0");
+
+    var f36 = new TField("货品", TF_AC, 63, "3035", -1, 0);
+    var f39 = new TField("数量", TF, 66, "10");
+    var f40 = new TField("货品", TF_AC, 70, "k200", -1, 0);
+    var f43 = new TField("数量", TF, 73, "-11");
+    var f44 = new TField("货品", TF_AC, 77, "k300", -1, 0);
+    var f47 = new TField("数量", TF, 80, "0");
+
+    var f48 = new TField("货品", TF_AC, 84, "3035", -1, 0);
+    var f51 = new TField("数量", TF, 87, "10");
+    var f52 = new TField("货品", TF_AC, 91, "k200", -1, 0);
+    var f55 = new TField("数量", TF, 94, "-11");
+    var f56 = new TField("货品", TF_AC, 98, "k300", -1, 0);
+    var f59 = new TField("数量", TF, 101, "0");
+
+    var f60 = new TField("货品", TF_AC, 105, "3035", -1, 0);
+    var f63 = new TField("数量", TF, 108, "20");
+
+    var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23, f24,
+            f27, f28, f31, f32, f35, f36, f39, f40, f43, f44, f47, f48, f51,
+            f52, f55, f56, f59, f60, f63 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var sl = qr.data[0]["数量"];
+
+    tapFirstText();
+    var a1 = getTextFieldValue(getScrollView(), 108);
+    tapReturn();
+
+    var ret = isAnd(isEqual(20, a1), isEqual(17, sl));
+
+    logDebug("ret=" + ret);
+    return ret;
 }
 function test170101() {
     // 颜色尺码模式下，开启款号合并功能：销售开单是否合并重复的款号
@@ -2773,7 +2834,7 @@ function test170103() {
     // 均色均码款号合并
     var qo, o, ret = true;
     qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "1", "数值" : [ "默认合并合并", "in" ] };
+    o = { "新值" : "1", "数值" : [ "默认合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
@@ -2793,25 +2854,42 @@ function test170103() {
     saveAndAlertOk();
     tapPrompt();
     delay();
-    tapButton(window, RETURN);
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "3" }, { "货品" : "3035", "数量" : "-1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var a1 = getTextFieldValue(getScrollView(), 3);
+    var ret1 = isEqual("3", a1);
+
+    saveAndAlertOk();
+    tapButtonAndAlert("none", "仍然保存");
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
     var sl = qr.data[0]["数量"];
+    var sl1 = qr.data[1]["数量"];
 
     tapFirstText();
-    var a1 = getTextFieldValue(getScrollView(), 3);
+    var a2 = getTextFieldValue(getScrollView(), 3);
     tapReturn();
 
-    var ret1 = isAnd(isEqual(3, a1), isEqual(3, sl));
+    var ret2 = isAnd(isEqual(3, a2), isEqual(2, sl), isEqual(3, sl1));
 
     qo = { "备注" : "销售开单是否合并重复的款号" };
     o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret);
-    return ret && ret1;
+    logDebug("ret=" + ret + ", sl=" + sl + ", sl1=" + sl1 + ", a2=" + a2
+            + ", a=" + a);
+    return ret && ret1 && ret2;
 }
 function test170104() {
     // 上次成交价界面显示备注信息
@@ -2825,8 +2903,10 @@ function test170104() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ], "备注" : "zdbz" };
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" },
+                { "货品" : "k200", "数量" : "5", "备注" : "mxbz1" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     // debugElementTree(window);
@@ -2855,16 +2935,6 @@ function test170104() {
     return ret;
 }
 function test170105() {
-    // 开启参数 颜色尺码下，开单显示上次单价
-    // var qo, o, ret = true;
-    // qo = { "备注" : "上次单价" };
-    // o = { "新值" : "1", "数值" : [ "显示" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    //
-    // qo = { "备注" : "成交价" };
-    // o = { "新值" : "1", "数值" : [ "启用" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
@@ -5164,13 +5234,12 @@ function test170425() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "10", "数值" : [ "童装+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "tz", "数量" : "1" } ],
         "代收" : { "物流商" : "yt", "运单号" : "1234" } };
     editSalesBillNoColorSize(json);
-    
-    
+
 }
 function test170445Change() {
     var f0 = new TField("客户", TF_AC, 0, "xw", -1, 0);
@@ -5820,4 +5889,7 @@ function test170497_170086() {
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret && ret1 && ret2;
+}
+function test170522() {
+    
 }
