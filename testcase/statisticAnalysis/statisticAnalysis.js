@@ -66,11 +66,12 @@ function testStatisticAnalysisAll() {
     run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
     run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");
+    run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
     run("【统计分析—综合汇总】进入详细-余款", "test190038");
     run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
     run("【统计分析—综合汇总】进入详细-欠款", "test190039");
     run("【统计分析—综合汇总】进入详细-还款", "test190040");
-//    run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
+    // run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
 }
 
 // 中洲店店长数据准备
@@ -1394,12 +1395,17 @@ function test190037() {
     var arr2 = getDataFor190037();
     var jo2 = test190037Field(arr2);
     var actual = subObject(jo2, jo1);
-    var oldData = { "收入 现销售单" : 0, "支出 现销售单" : 0, "收入 现采购单" : 0, "支出 现采购单" : 0,
-        "收入 现代收收款" : 0, "支出 现积分兑换" : 0, "收入 现订金" : 0, "支出 现物业" : 0,
-        "支出 现物损" : 0, "收入 银业务回扣1" : 0, "支出 银物业" : 0, "收入 银订金" : 0,
-        "收入 代销售单" : 0 };
-    var newData = {};
-    var expected = mixObject(oldData, newData);
+    // var oldData = { "收入 现销售单" : 0, "支出 现销售单" : 0, "收入 现采购单" : 0, "支出 现采购单" :
+    // 0,
+    // "收入 现代收收款" : 0, "支出 现积分兑换" : 0, "收入 现订金" : 0, "支出 现物业" : 0,
+    // "支出 现物损" : 0, "收入 银业务回扣1" : 0, "支出 银物业" : 0, "收入 银订金" : 0,
+    // "收入 代销售单" : 0 };
+    // var newData = { "收入 现销售单" : 9000, "支出 现销售单" : 1000, "收入 现采购单" : 1000,
+    // "支出 现采购单" : 8000, "收入 现代收收款" : 1600, "支出 现积分兑换" : 1000, "收入 银销售单" : 0,
+    // "支出 银物业" : 1000, "收入 银订金" : 6666, "收入 代销售单" : 1600 };
+    var expected = { "收入 现销售单" : 9000, "支出 现销售单" : 1000, "收入 现采购单" : 1000,
+        "支出 现采购单" : 8000, "收入 现代收收款" : 1600, "支出 现积分兑换" : 1000, "收入 银销售单" : 0,
+        "支出 银物业" : 1000, "收入 银订金" : 6666, "收入 代销售单" : 1600 };
     return isEqualObject(expected, actual);
 }
 
@@ -1422,16 +1428,83 @@ function test190037Field(arr) {
             name = arr[i]["名称"];
         }
         if (isDefined(arr[i]["收入"])) {
+            // 某个行现金,刷卡,汇款同时出现时,在综合收支界面体现出来,分别为刷卡**,汇款**
+            if (isIn(arr[i]["收入"], "销售单")) {
+                arr[i]["收入"] = "销售单";
+            }
             j = "收入 " + name + arr[i]["收入"];
             data[j] = arr[i]["金额"];
         }
         if (isDefined(arr[i]["支出"])) {
+            if (isIn(arr[i]["支出"], "销售单")) {
+                arr[i]["支出"] = "销售单";
+            }
             j = "支出 " + name + arr[i]["支出"];
             data[j] = arr[i]["金额2"];
         }
     }
 
     return data;
+}
+
+function test190037_1() {
+    var i, sum1 = 0, sum2 = 0;
+    // debugElementTree(window);
+    tapMenu("统计分析", "综合汇总");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    var qr = getQRverify(texts, "名称", 5);
+    var s1 = test190037_1Field(qr);
+    tapNaviLeftButton();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "现金" : "1000", "刷卡" : [ 400, "银" ], "汇款" : [ 600, "银" ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("统计分析", "综合汇总");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    var qr = getQRverify(texts, "名称", 5);
+    var s2 = test190037_1Field(qr);
+    var a = getStaticTextValue(getScrollView(-1, 0), -3);// 收入合计
+    var b = getStaticTextValue(getScrollView(-1, 0), -2);// 支出合计
+    var c = getStaticTextValue(getScrollView(-1, 0), -1);// 总合计
+    // 最后一行为合计,qr的合计取值有问题，便重新取
+    for (i = 0; i < qr.data.length - 1; i++) {
+        if (isDefined(qr.data[i]["金额"])) {
+            sum1 += Number(qr.data[i]["金额"]);
+        }
+        if (isDefined(qr.data[i]["金额2"])) {
+            sum2 += Number(qr.data[i]["金额2"]);
+        }
+    }
+    var expected = { "刷" : 400, "汇" : 600, "金额" : 1000 };
+    var ret = isAnd(isEqual(a, sum1), isEqual(b, sum2), isEqual(c, sub(a, b)),
+            isEqualObject(expected, subObject(s2, s1)));
+    tapNaviLeftButton();
+    return ret;
+}
+
+function test190037_1Field(qr) {
+    var name = "现", sum = 0, arr = {};
+    for (var i = 0; i < qr.data.length - 1; i++) {
+        if (isDefined(qr.data[i]["名称"])) {
+            name = qr.data[i]["名称"];
+        }
+        if (qr.data[i]["名称"] == "银") {
+            if (isIn(qr.data[i]["收入"], "销售单")) {
+                var a = qr.data[i]["收入"].split(" ");
+                debugObject(a, "a");
+                arr["刷"] = a[1].slice(1);
+                arr["汇"] = a[2].slice(1);
+                arr["金额"] = qr.data[i]["金额"];
+            }
+        }
+    }
+    return arr;
 }
 
 function test190036() {
@@ -1468,6 +1541,7 @@ function test190038() {
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
+    query();
     var qr = getQR();
     var a = qr.data[0]["余款"];
 
@@ -1506,6 +1580,7 @@ function test190041() {
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
+    query();
     var qr = getQR();
     var a = qr.data[0]["抵扣"];
 
@@ -1529,7 +1604,7 @@ function test190041() {
     tapNaviLeftButton();
 
     var expected = { "客户" : "小王", "抵扣" : 1000, "销额" : 4000, "退额" : 1000,
-        "现金" : 1000, "刷卡" : 200, "汇款" : 800, "代收" : 0, "核销" : 0 };
+        "现金" : 1000, "刷卡" : 200, "汇款" : 800, "代收" : 0, "核销" : 1000 };
     var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
     return ret;
 }
@@ -1543,6 +1618,7 @@ function test190039() {
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
+    query();
     var qr = getQR();
     var a = qr.data[0]["欠款"];
 
@@ -1581,6 +1657,7 @@ function test190040() {
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
+    query();
     var qr = getQR();
     var a = qr.data[0]["还款"];
 
@@ -1604,9 +1681,58 @@ function test190040() {
     tapNaviLeftButton();
 
     var expected = { "客户" : "小王", "还款" : 1000, "销额" : 2000, "退额" : 1000,
-        "现金" : 1000, "刷卡" : 1200, "汇款" : 1800, "代收" : 0, "核销" : 0 };
+        "现金" : 1000, "刷卡" : 1200, "汇款" : 1800, "代收" : 0, "核销" : -1000 };
     var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
     return ret;
+}
+
+function test190046() {
+    tapMenu("统计分析", "综合汇总");
+    query();
+    tapFirstText(getScrollView(), "序号", 20);
+
+    tapNaviButton("余款");
+    var ret = test190046Field();
+    tapNaviLeftButton();
+    
+    tapNaviButton("欠款");
+    ret =isAnd(ret, test190046Field());
+    tapNaviLeftButton();
+    
+    tapNaviButton("还款");
+    ret =isAnd(ret, test190046Field());
+    tapNaviLeftButton();
+    
+    tapNaviButton("抵扣");
+    ret =isAnd(ret, test190046Field());
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    
+    return ret;
+}
+
+function test190046Field() {
+    var i, j;
+    // debugElementTree(getScrollView(-1, 0));
+    var qr = getQR2(getScrollView(-1, 0), "批次", "核销");
+    var arr = {};
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            arr = addObject(qr.data[i], arr);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "批次", "核销");
+        }
+    }
+
+    var counts = {};
+    // 获取汇总栏的值,最后一个汇总值的staticText下标为-3
+    for (i = 2; i < qr.titles.length; i++) {
+        var title = qr.titles[i];
+        counts[title] = getStaticTextValue(getScrollView(-1, 0), i - 12);
+    }
+    return isEqualObject(counts, arr);
 }
 
 function test190068_190070() {
