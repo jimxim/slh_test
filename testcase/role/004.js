@@ -1,16 +1,16 @@
 //zhangy <2397655091 at qq.com> 20160120
 
-
-function test004() {    
+function test004() {
     run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
     run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
-    
-    run("【系统设置】数据清理授权", "test210043_4"); 
+
+    run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
+
     run("【盘点管理—按批次查】单据检查", "test180047");
     run("【盘点管理-盈亏表】店长权限", "test180050");
-    
+
 }
 function test210043_4() {
     // 店长004登录
@@ -61,7 +61,7 @@ function test180047() {
 
     tapButton(window, QUERY);
     qr = getQR();
-    
+
     var ret1 = isEqual(0, qr.data.length);
 
     return ret && ret1;
@@ -105,8 +105,7 @@ function test170134() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
@@ -115,7 +114,7 @@ function test170134() {
     logDebug("ret=" + ret);
     return ret;
 }
-function sales_invalidate_days_3() {
+function test170136Prepare() {
     var qo, o, ret = true;
     qo = { "备注" : "销售开单允许作废和修改天数" };
     o = { "新值" : "1", "数值" : [ "启用", "in" ] };
@@ -125,11 +124,10 @@ function sales_invalidate_days_3() {
 }
 function test170136() {
     // 设置销售开单允许修改和作废的天数N,不能用总经理账号测试，使用店长货开单员登陆，常青店长004登陆，3天
-    sales_invalidate_days_3();
-    
+//    test170136Prepare();
+
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     json["日期"] = getDay(-3);
     editSalesBillNoColorSize(json);
 
@@ -138,7 +136,6 @@ function test170136() {
     var f2 = new TField("日期从", TF_DT, 2, getDay(-3));
     var f3 = new TField("到", TF_DT, 3, getDay(-3));
     var fields = [ f0, f2, f3 ];
-    setTFieldsValue(window, fields);
     query(fields);
     tapFirstText();
 
@@ -149,6 +146,9 @@ function test170136() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "操作失败：只能作废或修改 3 天内的单据"));
+    
+    tapPrompt();
+    tapReturn();
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;

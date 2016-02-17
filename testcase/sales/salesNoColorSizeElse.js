@@ -1,4 +1,4 @@
-// Zhangy <15068165765 at 139.com>  11.5
+// Zhangy <15068165765 at 139.com>  2015.11.5
 
 function testSalesNoColorSizeElse001() {
     run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1_test1700010_1700011_1700012");

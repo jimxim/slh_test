@@ -1,3 +1,3 @@
-#import "/Users/hzdlmac/Documents/slh_test/suite2.js"
+#import "/Users/hzdlmac/Documents/slh_test/menuSuite.js"
 
-testCheck180022_Prepare();
+test001All();

@@ -3,7 +3,8 @@
 function testOutAndIn_Check001() {
     run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
     run("【销售开单－开单】开单的同时订货", "test170125");
-    
+    run("【销售开单－开单】取未保存", "test170140");
+
     run("【盘点管理—新增盘点】获取未保存数据准备", "test180022_Prepare");
     run("【盘点管理—新增盘点】获取未保存", "test180022");
 }
@@ -61,7 +62,7 @@ function test180022() {
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
-    query(fields);
+    query();
     tapFirstText();
 
     var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
@@ -153,9 +154,10 @@ function test170125_Params() {
 }
 function test170125() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "k300", "数量" : "10" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("订货数", TF, 4, "2");
@@ -165,7 +167,6 @@ function test170125() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -179,15 +180,51 @@ function test170125() {
     var fields1 = salesBillOrderFields(keys);
     query(fields1);
     var qr = getQR();
-    var a = qr.data[0]["订货数"];
-    var ret = false;
-    if (a == "2") {
-        ret = true;
-    }
+
+    var ret = isEqual("2", qr.data[0]["订货数"]);
 
     tapFirstText();
     // var ret1=款号，数量校对
 
     logDebug("ret=" + ret);
+    return ret;
+}
+function test170140Prepare() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "k300", "数量" : "10" },
+                { "货品" : "k200", "数量" : "2" }, { "货品" : "8989", "数量" : "30" },
+                { "货品" : "4562", "数量" : "10" }, { "货品" : "k300", "数量" : "20" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+}
+function test170140() {
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "取未保存");
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
+            isEqual(1, getTextFieldValue(getScrollView(), 3)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 7)),
+            isEqual(10, getTextFieldValue(getScrollView(), 10)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(), 14)),
+            isEqual(2, getTextFieldValue(getScrollView(), 17)), isEqual(
+                    "8989,我们", getTextFieldValue(getScrollView(), 21)),
+            isEqual(30, getTextFieldValue(getScrollView(), 24)), isEqual(
+                    "4562,Story", getTextFieldValue(getScrollView(), 28)),
+            isEqual(10, getTextFieldValue(getScrollView(), 31)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 0)),
+            isEqual(20, getTextFieldValue(getScrollView(), 3)));
+
+    tapReturn();
+
     return ret;
 }
