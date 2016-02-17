@@ -69,13 +69,25 @@ function goodsParams001() {
     qo = { "备注" : "是否允许跨门店核销" };
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
+    qo = { "备注" : "采购入库订货是否启用加工价显示ACList" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "颜色尺码下,开单是否显示上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "财务中货品成本价的核算方法" };
+    o = { "新值" : "0", "数值" : [ "按最新进货价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "采购入库模式" };
+    o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否启用自定义键盘" };

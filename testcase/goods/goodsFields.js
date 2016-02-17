@@ -459,15 +459,25 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
             f.value = "000,总经理";
         }
         break;
-
+    case "isProcess":
+    case "是否加工款":
+        f = new TField("是否加工款", BTN_SC, colorSizeStartIndex + 11, "否");
+        break;
+    case "processPrice":
+    case "加工价":
+        f = new TField("加工价", TF, priceStartIndex + 23, "100");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", BTN_SC, colorSizeStartIndex + 12, "常青店");
+        break;
     case "barcode":
     case "条码":
-        f = new TField("条码", TF, priceStartIndex + 22, "555555");
+        f = new TField("条码", TF, priceStartIndex + 25, "555555");
         break;
-
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, priceStartIndex + 23, "123");
+        f = new TField("备注", TF, priceStartIndex + 26, "123");
         break;
 
     default:

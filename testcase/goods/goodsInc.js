@@ -18,8 +18,8 @@
  */
 function getEditGoodsValue() {
     var arr = new Array();
-    // 现在有24个
-    for (var i = 0; i < 25; i++) {
+    // 现在有26个
+    for (var i = 0; i < 27; i++) {
         var j = i;
         if (i >= 6) {
             j = i + 1;

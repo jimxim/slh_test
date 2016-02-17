@@ -14,8 +14,8 @@ function test000All() {
 
 // run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
 
- run("test", "test190046");
-// run("综合收支表", "test190037_1");
+ run("test", "textFin_price_base2_2");
+// run("test", "test190028");
 
 
 
@@ -24,7 +24,7 @@ function test000All() {
 }
 
 function onlyTest(){
- debugElementTree(window);
+// debugElementTree(window);
 
 }
 
