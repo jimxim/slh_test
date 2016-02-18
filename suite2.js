@@ -56,7 +56,7 @@ function test000All() {
 //	 run("【销售开单－开单】连续新增货品", "test170131");//
 //	   run("【销售开单－开单】新增货品后再输入别的款号", "test170132");//
 	   
-	 run("【销售开单－开单】复制-粘贴", "test170139");
+    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
 	   
 // testStatisticPictureAll();
 // testSystem001();
@@ -167,7 +167,6 @@ function test000SalesColorSize002() {
          logout();
      }
  }
- 
 // 系统设置
  function test000System001() {
     var p1 = {"角色":"总经理"};

@@ -3,6 +3,7 @@
 function test004() {
     run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
     run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
+    run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
 
     run("【系统设置】数据清理授权", "test210043_4");
@@ -151,6 +152,29 @@ function test170136() {
     tapReturn();
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
+    return ret;
+}
+function test170177() {
+    //保证仓库店准备了挂单数据，常青店店长004登录
+    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", "更多.", "所有挂单");
+    delay();
+    var qr = getQRtable1(window, 8, -2);
+    // var qr = getQRtable1();
+
+    // debugQResult(qr);
+    loadHangBill(0);
+
+    var a = getTextFieldValue(getScrollView(), 0);
+    var b = getTextFieldValue(getScrollView(), 7);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    var ret = isAnd(isIn(a, "3035"), isIn(b, "8989"));
+
+    logDebug(" ret" + ret);
     return ret;
 }
 function test170464() {
