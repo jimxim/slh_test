@@ -27,7 +27,7 @@ function testCustomer001Prepare() {
     // 客户账款检查数据正确性
     run("上级客户1开单", "editBillForCustomerAccount1");
     run("下级客户1开单", "editBillForCustomerAccount2");
-    run("厂商账款数据准备", "editBillForCustomerAccount3");
+    // run("厂商账款数据准备", "editBillForCustomerAccount3");
 
 }
 
@@ -70,13 +70,14 @@ function testCustomer001Else() {
 function test005CustomerAll() {
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
     run("【往来管理】开单员查看客户门店帐", "test110031_110032");
+    run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");
 }
 
 function testWanLaiCustomerAll() {
-    // run("不体现颜色尺码，相同款号合并显示——是", "setAccountcheck_detail_showstyleParams1");
-    // run("【往来管理-客户账款】客户对账单中不体现颜色尺码,相同款号合并", "test110050");
-    // run("【往来管理-客户账款】按上级单位对账单中不体现颜色尺码,相同款号合并", "test110051");
-    // run("不体现颜色尺码，相同款号合并显示——否", "setAccountcheck_detail_showstyleParams2");
+     run("不体现颜色尺码，相同款号合并显示——是", "setAccountcheck_detail_showstyleParams1");
+     run("【往来管理-客户账款】客户对账单中不体现颜色尺码,相同款号合并", "test110050");
+     run("【往来管理-客户账款】按上级单位对账单中不体现颜色尺码,相同款号合并", "test110051");
+     run("不体现颜色尺码，相同款号合并显示——否", "setAccountcheck_detail_showstyleParams2");
 }
 
 // 翻页_排序
@@ -1230,6 +1231,7 @@ function test110029() {
 }
 
 // 常青店店长或者店员登陆，验证
+// 需要后台勾上客户账款相关权限
 function test110031_110032() {
     tapMenu("往来管理", "客户账款", "客户门店账");
     query();
@@ -1242,7 +1244,7 @@ function test110031_110032() {
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
     var qr = getQR();
-    ret = isAnd(ret, isEqual("0", qr.curPageTotal),
+    ret = isAnd(ret, isEqual(0, qr.data.length), isEqual("0", qr.curPageTotal),
             isEqual("1", qr.totalPageNo));
 
     return ret;
@@ -1837,7 +1839,7 @@ function test110041_1() {
                 }
             }
         }
-        if(isDefined(batch1)&&isDefined(batch2)){
+        if (isDefined(batch1) && isDefined(batch2)) {
             break;
         }
         if (j < qr.totalPageNo) {
@@ -2508,6 +2510,21 @@ function test110056() {
     tapButton(window, RETURN);
 
     return ret;
+}
+
+function test110057() {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "xw" };
+    var fields = queryCustomerFields(keys);
+    query(fields);
+    tapFirstText();
+
+    keys = { "名称" : "xiaowang123" };
+    fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, "修改保存");
+    tapPrompt();
+    return isIn(alertMsg, "该客户欠款或余额，不可修改信息");
 }
 
 function testCheckCustomerDropDownList() {

@@ -8,18 +8,17 @@
 
 // 总经理
 function test000All() {
-	debug = true;
+// debug = true;
+// run("setParams", "goodsParams001");
 
-
-
-// run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");//
-
- run("test", "textFin_price_base2_2");
+// testCustomer001Prepare();
+// testCustomer001();
+// testCustomer001Else();
 // run("test", "test190028");
 
-
-
-// run("test", "test160061");
+// test005CustomerAll();
+    testWanLaiCustomerAll();
+// run("test", "test110057");
 // run("test", "onlyTest");
 }
 
