@@ -54,6 +54,7 @@
 #import "testcase/shopOut/shopOut.js"
 #import "testcase/shopOut/shopOutFields.js"
 
+#import "testcase/statisticAnalysis/saProfit.js"
 #import "testcase/statisticAnalysis/saSynthesis.js"
 #import "testcase/statisticAnalysis/statisticAnalysis.js"
 #import "testcase/statisticAnalysis/statisticAnalysisFields.js"
