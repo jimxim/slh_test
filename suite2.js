@@ -55,8 +55,9 @@ function test000All() {
 	
 //	 run("【销售开单－开单】连续新增货品", "test170131");//
 //	   run("【销售开单－开单】新增货品后再输入别的款号", "test170132");//
-	   
-    run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");
+
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+//	run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
 	   
 // testStatisticPictureAll();
 // testSystem001();
@@ -172,7 +173,6 @@ function test000SalesColorSize002() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        testSystemprepare();
         testSystem001();
         
         logout();

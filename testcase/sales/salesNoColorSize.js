@@ -168,10 +168,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "现金" };
     o = { "新值" : "1", "数值" : [ "自动汇总现金栏", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setLocalParam(qo, o));
+    
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单时同时订货" };
     o = { "新值" : "0", "数值" : [ "默认不启用" ] };
@@ -229,17 +229,17 @@ function setNoColorSize_1Params() {
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "建款" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "价格模式" };
     o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    
+    qo = { "备注" : "建款" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
+    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
 
     qo = { "备注" : "童装是否按组开单" };
     o = { "新值" : "0", "数值" : [ "按件开单", "in" ] };
@@ -4256,6 +4256,9 @@ function test170163() {
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
+}
+function test120052Hang() {
+    tapButton(window, "作 废");
 }
 function test170164_Prepare() {
     tapMenu("销售开单", "按批次查");

@@ -1,7 +1,7 @@
 //luxingxin <52619481 at qq.com> 20151014
 
 function testCheck001() {
-    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    // run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
     run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_180003_180005");
     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2_180004");
     run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1_180055");
@@ -13,6 +13,7 @@ function testCheck001() {
     run("【盘点管理—库存表】清除", "test180054");
 }
 function testCheckAll() {
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
@@ -72,26 +73,30 @@ function setIgnorecolorsize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     checkPrepare();
-    
+
     return ret;
 }
+function checkPrepare_Off() {
+    tapMenu(window,"作 废");
+}
 function checkPrepare() {
-    tapMenu("门店调入", "在途调拨");
-    var keys = { "日期从" : getDay(-60) };
-    var fields = shopInFlitFields(keys);
+    tapMenu("销售开单", "按批次查");
+    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "作废挂单" : "待作废" };
+    var fields = salesQueryBatchFields(keys);
     query(fields);
 
     var qr = getQR();
     var total1 = qr.total;
     for (var i = 0; i < total1; i++) {
         tapFirstText();
-        editShopInFlitting();
+        runAndAlert("checkPrepare_Off", OK);
+        delay();
     }
 
     qr = getQR();
     var total2 = qr.total;
     var ret = false;
-    if (total2 <= 1) {
+    if (total2 < 1) {
         ret = true;
     }
 
