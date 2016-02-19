@@ -1,3 +1,3 @@
-#import "/Users/hzdlmac/Documents/slh_test/menuSuite.js"
+#import "/Users/sunway/Documents/slh_test/suite1.js"
 
-test001All();
+testBillClerk005();
