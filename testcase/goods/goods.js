@@ -1095,7 +1095,7 @@ function test100010_100011_100013() {
     // 修改除了条码图片外所有内容
     var keys1 = [ "款号", "名称", "品牌", "吊牌价", "进货价", "零批价", "打包价", "大客户价",
             "Vip价格", "产品折扣", "季节", "类别", "厂商", "计量单位", "仓位", "最小库存", "最大库存",
-            "经办人", "条码", "备注" ];
+            "经办人","门店", "条码", "备注" ];
     var fields = editGoodsFields(keys1, false, 0, 0);
     changeTFieldValue(fields["款号"], r1);
     changeTFieldValue(fields["名称"], r1);
@@ -1121,7 +1121,7 @@ function test100010_100011_100013() {
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
             200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "双", "A座六层", 1,
-            200, "000,总经理", "555555", 123);
+            200, "000,总经理", "否", 0, "常青店", "555555", 123);
     for (var i = 0; i < expected1.length; i++) {
         var j = i;
         if (i >= 6) {
