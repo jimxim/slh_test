@@ -14,6 +14,8 @@ function testCheck001() {
 }
 function testCheckAll() {
     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("【盘点管理—盘点处理】部分处理", "test180026");//
+    run("【盘点管理—盘点处理】全盘处理", "test180025");//
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
@@ -32,8 +34,6 @@ function testCheckAll() {
     run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
     run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
     run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
-    run("【盘点管理—盘点处理】部分处理", "test180026");//
-    run("【盘点管理—盘点处理】全盘处理", "test180025");//
     run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
     run("【盘点管理—盘点撤销】", "test180033");
     run("【盘点管理—盈亏表】颜色检查", "test_180036_180037Prepare");
@@ -864,20 +864,20 @@ function test180026() {
 function test180026_1() {
     // 先处理掉以前的盘点单
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "中洲店" };
+    var keys = { "款号" :"k300", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var b = qr.data[0]["库存"];
 
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : "4562", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -885,7 +885,7 @@ function test180026_1() {
 
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
-    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, r);
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "0");
@@ -919,7 +919,7 @@ function test180026_1() {
             qr.data[0]["操作日期"], 1));
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
@@ -927,14 +927,14 @@ function test180026_1() {
             qr.data[0]["库存"]));
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "中洲店" };
+    var keys = { "款号" : "k300", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : "4562", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
@@ -1591,7 +1591,7 @@ function test180042() {
     o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    test180042Prepare();
+//    test180042Prepare();
     // 部分处理
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
