@@ -125,7 +125,7 @@ function test170136Prepare() {
 }
 function test170136() {
     // 设置销售开单允许修改和作废的天数N,不能用总经理账号测试，使用店长货开单员登陆，常青店长004登陆，3天
-//    test170136Prepare();
+    // test170136Prepare();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -147,7 +147,7 @@ function test170136() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "操作失败：只能作废或修改 3 天内的单据"));
-    
+
     tapPrompt();
     tapReturn();
 
@@ -155,11 +155,11 @@ function test170136() {
     return ret;
 }
 function test170177() {
-    //保证仓库店准备了挂单数据，常青店店长004登录
+    // 保证仓库店准备了挂单数据，常青店店长004登录
     tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "更多.", "所有挂单");
     delay();
-    var qr = getQRtable1(window, 8, -2);
+    var qr = getQRtable1(window);
     // var qr = getQRtable1();
 
     // debugQResult(qr);
