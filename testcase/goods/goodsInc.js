@@ -764,6 +764,22 @@ function logisticsVerifySetField(o, key) {
     logDebug(msg);
 }
 
+/**
+ * 撤销一段时间内的盘点记录
+ */
+function repealRecordsForCheck() {
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : getDay(-365), "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+    var qr = getQR();
+    do {
+        tapChoose(getScrollView(), [ 0 ]);
+        tapButton(window, "盘点撤销");
+        qr = getQR();
+    } while (qr.data.length > 0);
+}
+
 function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");

@@ -18,8 +18,8 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
 // run("【统计分析—综合汇总】进入详细-欠款", "test190039");
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
-// run("test", "test150007");
- run("test", "onlyTest");
+ run("test", "test100001_1");
+// run("test", "onlyTest");
 }
 
 function onlyTest(){
@@ -28,13 +28,12 @@ function onlyTest(){
     var f = new TField("颜色", BTN_MC, 2, [ 0, 1,2 ]);
     
     
-    var btnIndex = f.index;
-    tapButton(view1, btnIndex);
-
-    var valueBtnIndexes = f.value;
-    for (var i = 0; i < valueBtnIndexes.length; i++) {
-        if(!valueBtnIndexes[i].checked){
-            tapButton(getPopView(), valueBtnIndexes[i]);
+//    var btnIndex = f.index;
+//    tapButton(view1, btnIndex);
+    var indexes = f.value;
+    for (var i = 0; i < indexes.length; i++) {
+        if(!getScrollView().buttons()[i].checked){
+            tapButton(getScrollView(), indexes[i]);//getPopView()
         }      
     }
 
