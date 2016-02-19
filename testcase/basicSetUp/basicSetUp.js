@@ -165,27 +165,25 @@ function changeMarketTime(day2) {
 /**
  * 新增/修改客户
  */
-function editCustomerBasicSetUp(name, keys) {
+function editCustomerBasicSetUp(keys) {
     tapMenu("往来管理", "客户查询");
-    var f = new TField("客户", TF, 0, name);
+    var f = new TField("客户", TF, 0, keys["名称"]);
     var fields = [ f ];
     query(fields);
 
-    var ret = isIn(alertMsg, "查询必须从列表中选择");
     delay();
-    if (ret == false) {
+    if (isIn(alertMsg, "查询必须从列表中选择")) {
+        addCustomer(keys);
+    } else {
         tapFirstText();
-        var fields = editCustomerFields(keys);
+        fields = editCustomerFields(keys);
         setTFieldsValue(getScrollView(), fields);
         tapButton(window, EDIT_SAVE);
-    } else {
-        addCustomer(keys);
     }
 
     query();
     var qr = getQR();
-    var ret1 = isEqual(name, qr.data[0]["名称"]);
-    return ret1;
+    return isEqual(keys["名称"], qr.data[0]["名称"]);
 }
 
 /**
@@ -195,8 +193,7 @@ function setXiaoWang() {
     var keys = { "名称" : "小王", "门店" : "常青店", "店员" : "000", "上级客户" : "",
         "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价", "拿货折扣" : "1",
         "信用额度" : "0", "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("小王", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
@@ -207,8 +204,7 @@ function setZhaoBenShan() {
         "生日" : "2015-03-06", "店员" : "000", "上级客户" : "", "客户类别" : "VIP客户",
         "允许退货" : "是", "适用价格" : "大客户价", "拿货折扣" : "0.678", "信用额度" : "0",
         "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("赵本山", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
@@ -218,8 +214,7 @@ function setCustomer001() {
     var keys = { "名称" : "上级客户1", "门店" : "常青店", "店员" : "000",
         "生日" : "2000-12-30", "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价",
         "信用额度" : "0", "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("上级客户1", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
@@ -229,8 +224,7 @@ function setCustomer002() {
     var keys = { "名称" : "下级客户1", "门店" : "常青店", "店员" : "000", "上级客户" : "sjkh1",
         "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价", "信用额度" : "0",
         "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("下级客户1", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 李四
@@ -240,8 +234,7 @@ function setCustomer003() {
         "上级客户" : "", "店员" : "000", "客户类别" : "零批客户", "允许退货" : "是",
         "适用价格" : "打包价", "地址" : "杭州东灵", "拿货折扣" : "0.76", "信用额度" : "0",
         "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("李四", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 李响
@@ -250,8 +243,7 @@ function setCustomer004() {
     var keys = { "名称" : "李响", "手机" : "13844115460", "门店" : "常青店", "上级客户" : "",
         "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "打包价", "拿货折扣" : "0.5",
         "信用额度" : "0", "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("李响", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 李天
@@ -262,8 +254,7 @@ function setCustomer005() {
         "客户类别" : "零批客户", "允许退货" : "否", "适用价格" : "零批价", "传真号" : "13911112224",
         "备注" : "客户备注", "地址" : "浙江省杭州市上城区", "拿货折扣" : "0.5", "信用额度" : "500",
         "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("李天", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 李六
@@ -272,8 +263,7 @@ function setCustomer006() {
     var keys = { "名称" : "李六", "手机" : "13836272323", "门店" : "中洲店", "上级客户" : "",
         "客户类别" : "零批客户", "允许退货" : "是", "地址" : "杭州", "拿货折扣" : "1", "信用额度" : "0",
         "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("李六", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 韩红
@@ -283,24 +273,21 @@ function setCustomer007() {
         "门店" : "中洲店", "生日" : "2000-12-30", "店员" : "002,", "上级客户" : "",
         "客户类别" : "打包客户", "允许退货" : "是", "适用价格" : "打包价", "传真号" : "13822221113",
         "拿货折扣" : "0.5", "信用额度" : "500", "欠款报警" : "0" };
-    var ret = editCustomerBasicSetUp("韩红", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 综合汇总1
  */
 function setCustomer008() {
     var keys = { "名称" : "综合汇总1", "门店" : "常青店", "适用价格" : "零批价" };
-    var ret = editCustomerBasicSetUp("综合汇总1", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 /**
  * 不开单客户
  */
 function setCustomer009() {
     var keys = { "名称" : "不开单客户", "门店" : "常青店", "适用价格" : "零批价" };
-    var ret = editCustomerBasicSetUp("不开单客户", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
@@ -308,96 +295,86 @@ function setCustomer009() {
  */
 function setCustomer010() {
     var keys = { "名称" : "yun客户", "门店" : "常青店", "适用价格" : "零批价" };
-    var ret = editCustomerBasicSetUp("yun客户", keys);
-    return ret;
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
  * yun客户下级
  */
 function setCustomer011() {
-    var keys = { "名称" : "yun客户下级", "门店" : "常青店","上级客户" : "yun客户", "适用价格" : "零批价" };
-    var ret = editCustomerBasicSetUp("yun客户下级", keys);
-    return ret;
+    var keys = { "名称" : "yun客户下级", "门店" : "常青店", "上级客户" : "yun客户",
+        "适用价格" : "零批价" };
+    return editCustomerBasicSetUp(keys);
 }
 
 /**
  * 新增/修改厂商
  */
-function editProviderBasicSetUp(name, keys) {
+function editProviderBasicSetUp(keys) {
     tapMenu("往来管理", "厂商查询");
-    var f = new TField("厂商", TF, 0, name);
+    var f = new TField("厂商", TF, 0, keys["名称"]);
     var fields = [ f ];
     query(fields);
 
-    var ret = isIn(alertMsg, "查询必须从列表中选择");
     delay();
-    if (ret == false) {
+    if (isIn(alertMsg, "查询必须从列表中选择")) {
+        addProvider(keys);
+    } else {
         tapFirstText();
         fields = editCustomerProviderFields(keys);
         setTFieldsValue(getScrollView(), fields);
         tapButton(window, EDIT_SAVE);
-    } else {
-        addProvider(keys);
     }
 
     query();
     var qr = getQR();
-    var ret1 = isEqual(name, qr.data[0]["名称"]);
-    return ret1;
+    return isEqual(keys["名称"], qr.data[0]["名称"]);
 }
 
 function setProvider001() {
     var keys = { "名称" : "Vell", "适用价格" : "进货价" };
-    var ret = editProviderBasicSetUp("Vell", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 
 function setProvider002() {
     var keys = { "名称" : "Adidas公司", "适用价格" : "进货价" };
-    var ret = editProviderBasicSetUp("Adidas公司", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 function setProvider003() {
     var keys = { "名称" : "Rt", "适用价格" : "进货价" };
-    var ret = editProviderBasicSetUp("Rt", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 function setProvider004() {
     var keys = { "名称" : "联想", "适用价格" : "进货价" };
-    var ret = editProviderBasicSetUp("联想", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 function setProvider005() {
     var keys = { "名称" : "特步生产商", "适用价格" : "零批价" };
-    var ret = editProviderBasicSetUp("特步生产商", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 function setProvider006() {
     var keys = { "名称" : "新百伦生产商", "适用价格" : "打包价" };
-    var ret = editProviderBasicSetUp("新百伦生产商", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 function setProvider007() {
     var keys = { "名称" : "yun厂商", "适用价格" : "零批价" };
-    var ret = editProviderBasicSetUp("yun厂商", keys);
-    return ret;
+    return editProviderBasicSetUp(keys);
 }
 
-function basicSetUpByType(name, keys) {
+function basicSetUpByType(keys) {
     tapMenu("货品管理", "基本设置", "货品类别");
     var fields = goodsTypeFields(keys);
     query(fields);
 
     var qr = getQR();
-    if (qr.total == 0) {
+    if (qr.data.length == 0) {
         tapMenu("货品管理", "基本设置", "新增类别+");
         fields = editGoodsTypeFields(keys);
         setTFieldsValue(getScrollView(), fields);
         tapButton(window, SAVE);
         tapButton(window, RETURN);
     }
-    if (qr.total > 0) {
+    if (qr.data.length > 0) {
         if (isEqual("是", qr.data[0]["是否停用"])) {
             tapFirstText();
             tapButtonAndAlert(START);
@@ -408,94 +385,82 @@ function basicSetUpByType(name, keys) {
 
     tapButton(window, QUERY);
     qr = getQR();
-    var ret = isAnd(isEqual(name, qr.data[0]["名称"]), isEqual("否",
+    return isAnd(isEqual(keys["名称"], qr.data[0]["名称"]), isEqual("否",
             qr.data[0]["是否停用"]));
-    return ret;
 }
 
 function setGoodsType001() {
     var keys = { "名称" : "登山服" };
-    var ret = basicSetUpByType("登山服", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
 
 function setGoodsType002() {
     var keys = { "名称" : "鞋" };
-    var ret = basicSetUpByType("鞋", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
 function setGoodsType003() {
     var keys = { "名称" : "铅笔裤" };
-    var ret = basicSetUpByType("铅笔裤", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
 function setGoodsType004() {
     var keys = { "名称" : "夹克" };
-    var ret = basicSetUpByType("夹克", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
 function setGoodsType005() {
     var keys = { "名称" : "跑步鞋" };
-    var ret = basicSetUpByType("跑步鞋", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
 function setGoodsType006() {
     var keys = { "名称" : "围巾" };
-    var ret = basicSetUpByType("围巾", keys);
-    return ret;
+    return basicSetUpByType(keys);
 }
-function basicSetUpByBrand(name, keys) {
+function basicSetUpByBrand(keys) {
     tapMenu("货品管理", "基本设置", "所有品牌");
     var fields = goodsBrandFields(keys);
     query(fields);
 
     var qr = getQR();
-    if (qr.total == 0) {
+    if (qr.data.length == 0) {
         tapMenu("货品管理", "基本设置", "新增品牌+");
         fields = editGoodsTypeFields(keys);
         setTFieldsValue(getScrollView(), fields);
         tapButton(window, SAVE);
         tapButton(window, RETURN);
     }
-    if (qr.total > 0) {
+    if (qr.data.length > 0) {
         tapFirstText();
         tapButtonAndAlert(START);
         tapPrompt();
     }
 
-    var qkeys = { "名称" : name, "是否停用" : "否" };
+    var qkeys = { "名称" : keys["名称"], "是否停用" : "否" };
     fields = goodsBrandFields(qkeys);
     query(fields);
     qr = getQR();
-    var ret = isEqual(name, qr.data[0]["名称"]);
-    return ret;
+    return isEqual(keys["名称"], qr.data[0]["名称"]);
 }
 
 function setGoodsBrand001() {
     var keys = { "名称" : "1010pp" };
-    var ret = basicSetUpByBrand("1010pp", keys);
-    return ret;
+    return basicSetUpByBrand(keys);
 }
 
 function setGoodsBrand002() {
     var keys = { "名称" : "Adidas" };
-    var ret = basicSetUpByBrand("Adidas", keys);
-    return ret;
+    return basicSetUpByBrand(keys);
 }
 function setGoodsBrand003() {
     var keys = { "名称" : "Ck公司" };
-    var ret = basicSetUpByBrand("Ck公司", keys);
-    return ret;
+    return basicSetUpByBrand(keys);
 }
 function setGoodsBrand004() {
     var keys = { "名称" : "0309pp" };
-    var ret = basicSetUpByBrand("0309pp", keys);
-    return ret;
+    return basicSetUpByBrand(keys);
 }
 
-function basicSetUpByBrandDiscount(name, keys) {
+function basicSetUpByBrandDiscount(keys) {
     tapMenu("货品管理", "基本设置", "所有品牌折扣");
-    var qKeys = { "品牌" : name };
+    var qKeys = { "品牌" : keys["品牌"] };
     var qFields = goodsBrandDiscountFields(qKeys);
     query(qFields);
 
@@ -514,15 +479,13 @@ function basicSetUpByBrandDiscount(name, keys) {
 
     query(qFields);
     qr = getQR();
-    var ret = isEqual(name, qr.data[0]["品牌"]);
-    return ret;
+    return isEqual(keys["品牌"], qr.data[0]["品牌"]);
 }
 
 function setGoodsBrandDiscount001() {
     var keys = { "品牌" : "1010pp", "进货价折扣" : "0.5", "零批价" : "1", "打包价" : "0.9",
         "大客户价" : "0.8", "Vip价格" : "0.7" };
-    var ret = basicSetUpByBrandDiscount("1010pp", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 
 function setLogisticsBasicSetUp(name, keys) {
@@ -546,61 +509,53 @@ function setLogisticsBasicSetUp(name, keys) {
 
     query(qFields);
     qr = getQR();
-    var ret = isEqual(name, qr.data[0]["名称"]);
-    return ret;
+    basicSetUpByBrandDiscount(keys);
 
 }
 
 function setLogistics001() {
     var keys = { "名称" : "天天物流", "店员" : "000", "电话" : "13833331112",
         "门店" : "常青店" };
-    var ret = setLogisticsBasicSetUp("天天物流", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 
 function setLogistics002() {
     var keys = { "名称" : "顺丰快递", "店员" : "000", "门店" : "常青店" };
-    var ret = setLogisticsBasicSetUp("顺丰快递", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 function setLogistics003() {
     var keys = { "名称" : "圆通速递", "门店" : "常青店" };
-    var ret = setLogisticsBasicSetUp("圆通速递", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 function setLogistics004() {
     var keys = { "名称" : "汇通快递", "门店" : "常青店" };
-    var ret = setLogisticsBasicSetUp("汇通快递", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 function setLogistics005() {
     var keys = { "名称" : "yun物流", "门店" : "常青店" };
-    var ret = setLogisticsBasicSetUp("yun物流", keys);
-    return ret;
+    return basicSetUpByBrandDiscount(keys);
 }
 
 /**
- * 新增/修改货品
+ * 省代模式,新增/修改货品
  * @day2 上架日期
  * @color "yes":颜色尺码模式
  */
-function editGoodsBasicSetUp(code, name, keys, day, color) {
+function editGoodsBasicSetUp(keys, day, color) {
     tapMenu("货品管理", "货品查询");
-    var qKeys = { "款号名称" : code + name };
+    var qKeys = { "款号名称" : keys["款号"] + keys["名称"] };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
     var qr = getQR();
 
-    var colorSizeStartIndex;
+    var colorSizeStartIndex = 0;
     if (isDefined(color) && color == "yes") {
         colorSizeStartIndex = 4;
-    } else {
-        colorSizeStartIndex = 0;
     }
 
     delay();
     var fields = editGoodsFields(keys, false, colorSizeStartIndex, 0);
-    if (qr.total == "1") {
+    if (qr.data.length > 0) {
         tapFirstText();
         if (isDefined(day)) {
             changeMarketTime(day);
@@ -608,7 +563,7 @@ function editGoodsBasicSetUp(code, name, keys, day, color) {
         setTFieldsValue(getScrollView(), fields);
         tapButtonAndAlert(EDIT_SAVE);
     }
-    if (qr.total == "0") {
+    if (qr.data.length == 0) {
         tapMenu("货品管理", "新增货品+");
         if (isDefined(day)) {
             changeMarketTime(day);
@@ -621,9 +576,8 @@ function editGoodsBasicSetUp(code, name, keys, day, color) {
 
     query(qFields);
     var qr = getQR();
-    var ret1 = isAnd(isEqual(code, qr.data[0]["款号"]), isEqual(name,
+    return isAnd(isEqual(keys["款号"], qr.data[0]["款号"]), isEqual(keys["名称"],
             qr.data[0]["名称"]));
-    return ret1;
 }
 
 // "上架日期" : "2015-10-13",
@@ -632,8 +586,7 @@ function setGoods001() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
         "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("3035", "jkk", keys, "2015-10-13");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-10-13");
 }
 
 // "上架日期" : "2014-03-14",
@@ -642,8 +595,7 @@ function setGoods002() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
         "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("4562", "Story", keys, "2014-03-14");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2014-03-14");
 }
 
 // "上架日期" : "2015-10-13",
@@ -652,8 +604,7 @@ function setGoods003() {
         "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
         "Vip价格" : "0", "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k300", "铅笔裤", keys, "2015-10-13");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-10-13");
 }
 // "上架日期" : "2015-10-13",
 function setGoods004() {
@@ -661,8 +612,7 @@ function setGoods004() {
         "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
         "产品折扣" : "1", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("k200", "范范", keys, "2015-10-13");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-10-13");
 }
 // "上架日期" : "2015-03-17",
 function setGoods005() {
@@ -670,32 +620,27 @@ function setGoods005() {
         "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
         "产品折扣" : "0.985", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("8989", "我们", keys, "2015-03-17");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-03-17");
 }
 function setGoods006() {
     var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1", "品牌" : "1010pp",
         "吊牌价" : "300" };
-    var ret = editGoodsBasicSetUp("plczcs1", "批量操作测试1", keys);
-    return ret;
+    return editGoodsBasicSetUp(keys);
 }
 function setGoods007() {
     var keys = { "款号" : "plczcs2", "名称" : "批量操作测试2" };
-    var ret = editGoodsBasicSetUp("plczcs2", "批量操作测试2", keys);
-    return ret;
+    return editGoodsBasicSetUp(keys);
 }
 function setGoods008() {
     var keys = { "款号" : "plczcs3", "名称" : "批量操作测试3" };
-    var ret = editGoodsBasicSetUp("plczcs3", "批量操作测试3", keys);
-    return ret;
+    return editGoodsBasicSetUp(keys);
 }
 function setGoods013() {
     var keys = { "款号" : "Tz002", "名称" : "童装2", "品牌" : "0309pp", "颜色" : "0,1,2",
         "尺码" : "12,13,14,15,16,17,18", "进货价" : "100", "零批价" : "713",
         "打包价" : "864", "大客户价" : "864", "Vip价格" : "618", "产品折扣" : "0.6",
         "季节" : "春季", "计量单位" : "件", "最小库存" : "0", "最大库存" : "0" }
-    var ret = editGoodsBasicSetUp("Tz002", "童装2", keys, "2014-06-22", "yes");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2014-06-22", "yes");
 }
 function setGoods009() {
     var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "Ck公司", "颜色" : "0,1,",
@@ -703,8 +648,7 @@ function setGoods009() {
         "打包价" : "440", "大客户价" : "390", "Vip价格" : "190", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "夹克", "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层",
         "最小库存" : "0", "最大库存" : "0" };
-    var ret = editGoodsBasicSetUp("x001", "特步夹克", keys, "2015-03-04", "yes");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-03-04", "yes");
 }
 function setGoods010() {
     var keys = { "款号" : "x003", "名称" : "特步登山服", "品牌" : "Ck公司", "颜色" : "0,1,2",
@@ -712,8 +656,7 @@ function setGoods010() {
         "打包价" : "370", "大客户价" : "350", "Vip价格" : "190", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "登山服", "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层",
         "最小库存" : "0", "最大库存" : "0", "经办人" : "005" };
-    var ret = editGoodsBasicSetUp("x003", "特步夹克", keys, "2015-03-09", "yes");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-03-09", "yes");
 }
 function setGoods011() {
     var keys = { "款号" : "nb001", "名称" : "新百伦运动鞋", "品牌" : "0309pp",
@@ -721,8 +664,7 @@ function setGoods011() {
         "零批价" : "390", "打包价" : "370", "大客户价" : "350", "Vip价格" : "190",
         "产品折扣" : "0.8", "季节" : "春季", "类别" : "跑步鞋", "厂商" : "新百伦生产商",
         "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0", "经办人" : "001" };
-    var ret = editGoodsBasicSetUp("nb001", "新百伦运动鞋", keys, "2015-02-12", "yes");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-02-12", "yes");
 }
 function setGoods012() {
     var keys = { "款号" : "nb003", "名称" : "新百伦围巾", "品牌" : "0309pp",
@@ -730,6 +672,5 @@ function setGoods012() {
         "零批价" : "430", "打包价" : "390", "大客户价" : "350", "Vip价格" : "190",
         "产品折扣" : "0.8", "季节" : "春季", "类别" : "围巾", "厂商" : "新百伦生产商",
         "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0", "经办人" : "001" }
-    var ret = editGoodsBasicSetUp("nb003", "新百伦围巾", keys, "2015-02-13", "yes");
-    return ret;
+    return editGoodsBasicSetUp(keys, "2015-02-13", "yes");
 }

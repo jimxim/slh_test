@@ -11,6 +11,10 @@ function test000All() {
  debug = true;
 // run("setParams", "goodsParams001");
 //    run("prepare","testCustomer001Prepare");
+ run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
+// run("【门店调出-按批次查】作废", "test150002");
+// testShopOut002();
+// run("【往来管理-积分查询】数据验证", "test110036_2");
 // run("test", "test110022");
 // run("test", "onlyTest");
 }
