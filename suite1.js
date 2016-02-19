@@ -11,17 +11,34 @@ function test000All() {
  debug = true;
 // run("setParams", "goodsParams001");
 //    run("prepare","testCustomer001Prepare");
- run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
-// run("【门店调出-按批次查】作废", "test150002");
-// testShopOut002();
-// run("【往来管理-积分查询】数据验证", "test110036_2");
-// run("test", "test110022");
-// run("test", "onlyTest");
+// run("【统计分析—综合汇总】检查底部数据", "test190036");
+// run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");// 作废
+// run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
+// run("【统计分析—综合汇总】进入详细-余款", "test190038");
+// run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
+// run("【统计分析—综合汇总】进入详细-欠款", "test190039");
+// run("【统计分析—综合汇总】进入详细-还款", "test190040");
+// run("test", "test150007");
+ run("test", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
+    var view1=getScrollView();
+    var f = new TField("颜色", BTN_MC, 2, [ 0, 1,2 ]);
+    
+    
+    var btnIndex = f.index;
+    tapButton(view1, btnIndex);
 
+    var valueBtnIndexes = f.value;
+    for (var i = 0; i < valueBtnIndexes.length; i++) {
+        if(!valueBtnIndexes[i].checked){
+            tapButton(getPopView(), valueBtnIndexes[i]);
+        }      
+    }
+
+    tapButton(getPop(), OK);
 }
 
 

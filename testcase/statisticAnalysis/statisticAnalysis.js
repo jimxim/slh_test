@@ -467,6 +467,7 @@ function test190001() {
 function test190002_190003_190008() {
     var i, j;
     var rm = (getRandomInt(100000) + 1) / 100;
+    logDebug("rm=" + rm);
     var r1 = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
 
     tapMenu("统计分析", "新增收入");
@@ -480,7 +481,7 @@ function test190002_190003_190008() {
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
-    var key = { "日期从" : getDay(-10) };
+    var key = { "日期从" : getDay(-5) };
     var fields = statisticAnalysisInOutFields(key);
     query(fields);
     var qr = getQR();
@@ -494,8 +495,8 @@ function test190002_190003_190008() {
     qr = getQR();
     var expected = { "序号" : "1", "日期" : getToday(""), "账户名称" : "东灵测试-银行账户",
         "简称" : "银", "金额" : rm, "备注" : r1, "操作人" : "总经理" };
-    var ret = isEqualQRData1Object(qr, expected);
     var sum1 = 0;
+    var ret=isEqualQRData1Object(qr, expected);
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             sum1 += Number(qr.data[i]["金额"]);
@@ -506,8 +507,9 @@ function test190002_190003_190008() {
             qr = getQR();
         }
     }
-
-    ret = isAnd(ret, isAqualNum(qr.counts["金额"], sum1, 0.001));
+    var a = qr.counts["金额"];
+    ret = isAnd(ret, isAqualNum(a, sum1,
+            0.001));
 
     key = { "收支类别" : "支出" };
     fields = statisticAnalysisInOutFields(key);
@@ -517,7 +519,7 @@ function test190002_190003_190008() {
     qr = getQR();
     expected = { "序号" : "1", "日期" : getToday(""), "账户名称" : "东灵测试-现金账户",
         "简称" : "现", "金额" : rm, "备注" : r2, "操作人" : "总经理" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    ret=isAnd(ret,isEqualQRData1Object(qr, expected));
     var sum2 = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
@@ -528,13 +530,14 @@ function test190002_190003_190008() {
             qr = getQR();
         }
     }
-    ret = isAnd(ret, isEqual(qr.counts["金额"], -sum2));// 支出的汇总为负数
+    var b = qr.counts["金额"];
+    ret = isAnd(ret,isEqual(b, -sum2));// 支出的汇总为负数
 
     query();
     qr = getQR();
     // 收入-支出=总值
-    ret = isAnd(ret, isAqualNum(sum, sub(sum1, sum2), 0.001), isEqual(
-            getToday(), getTextFieldValue(window, 0)), isEqual(getToday(),
+    ret = isAnd(ret, isAqualNum(sum, add(a, b), 0.001), isEqual(getToday(),
+            getTextFieldValue(window, 0)), isEqual(getToday(),
             getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
             window, 2)));
 
@@ -2181,7 +2184,7 @@ function test190079_190099() {
 // 总经理能看到其他门店信息
 function test190103For000() {
     tapMenu("统计分析", "汇总表", "滞销表");
-    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
+    var keys = { "上架从" : "2015-10-01", "门店" : "中洲店" };
     var fields = statisticAnalysisUnsalableFields(keys);
     query(fields);
     var qr = getQR();
@@ -2194,7 +2197,7 @@ function test190103For000() {
 // 其他角色不能看到其他门店信息
 function test190103ForElse() {
     tapMenu("统计分析", "汇总表", "滞销表");
-    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
+    var keys = { "上架从" : "2015-10-01", "门店" : "中洲店" };
     var fields = statisticAnalysisUnsalableFields(keys);
     query(fields);
     var qr = getQR();
@@ -2435,8 +2438,6 @@ function test190088() {
 
     return ret;
 }
-
-
 
 function test190042() {
     tapMenu("统计分析", "利润表");

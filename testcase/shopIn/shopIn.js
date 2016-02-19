@@ -99,7 +99,7 @@ function test140001() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual("全部接收", qr.data[0]["状态"]));
+    ret = isAnd(ret, isEqual("已接收", qr.data[0]["状态"]));
 
     var a3, a4, b3, b4;
     tapMenu("货品管理", "当前库存");
@@ -138,6 +138,7 @@ function test140002_140003() {
     query(fields);
     var qr = getQR();
     var batch1 = Number(qr.data[0]["批次"]) + 1;
+//    logDebug("batch1="+batch1);
 
     // 调入test150003生成的调出单
     tapMenu("门店调出", "按批次查");
@@ -160,13 +161,13 @@ function test140002_140003() {
     var staff = qr.data[i]["送货人"];// 调出人
 
     tapMenu("门店调入", "在途调拨");
-    keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
+    keys = { "日期从" : getDay(-30), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch };
     fields = shopInFlitFields(keys);
     query(fields);
     qr = getQR();
     // 操作日期？
     var expected = { "批次" : batch, "调出门店" : "中洲店", "数量" : sum, "送货人" : staff,
-        "操作人" : "总经理", "备注" : market };
+        "操作人" : "总经理200", "备注" : market };
     var ret = isEqualQRData1Object(qr, expected);
 
     tapFirstText();

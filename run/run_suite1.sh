@@ -9,11 +9,11 @@ js_func="setGoods001Params"
 #新综合汇总接口
 #js_func="$js_func testSASynthesisAll000"
 #货品管理
-#js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
+js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
 #往来管理
 #js_func="$js_func test000Customer001Prepare test000Customer001 test000Customer001Else"
 #统计分析
-js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
+#js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
 #门店调出、门店调入
 #js_func="$js_func test200ShopOut001 test000ShopIn001"
 

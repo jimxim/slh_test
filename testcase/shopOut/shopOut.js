@@ -42,7 +42,7 @@ function testShopOutParams02() {
 
 function test150001_1() {
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "常青店",
+    var json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
@@ -92,8 +92,8 @@ function test150001_2() {
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "常青店",
-        "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
+    var json = { "调出人" : "200", "接收店" : "常青店","备注":"abc123",
+        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
     tapMenu("门店调出", "按批次查");
@@ -114,8 +114,10 @@ function test150001_2() {
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-    var ret1 = isAnd(isEqual("常青店", qr.data[0]["调出门店"]), isEqual("中洲店",
-            qr.data[0]["调入门店"]));
+    var expected = { "批次" : batch + 1, "调出门店" : "中洲店", "调入门店" : "常青店",
+        "送货人" : "总经理200", "数量" : "10", "状态" : "未接收", "金额" : 1600,
+        "操作人" : "总经理200", "备注" : "abc123" };
+    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
     tapButton(window, CLEAR);
     for (i = 0; i < 6; i++) {
@@ -126,7 +128,7 @@ function test150001_2() {
         }
     }
 
-    return ret && ret1;
+    return ret;
 }
 function test150001_3() {
     tapMenu("门店调出", "按明细查");
@@ -151,7 +153,7 @@ function test150001_3() {
 
     logDebug("ret=" + ret);
 
-    tapButton(window,QUERY);
+    tapButton(window, QUERY);
     var qr = getQR();
     var sum1 = 0, sum2 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -263,7 +265,7 @@ function test150002() {
 
     tapTitle(getScrollView(), "状态");
     tapTitle(getScrollView(), "状态");
-    tapFirstTextByTitle("状态", "全部接收");
+    tapFirstTextByTitle("状态", "已接收");
 
     tapButtonAndAlert("作 废");
     tapPrompt();
@@ -300,10 +302,10 @@ function test150003() {
     qr = getQR();
     var expected1 = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : batch,
         "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : "50",
-        "单价" : "160", "金额" : "8000", "操作人" : "总经理" };
+        "单价" : "160", "金额" : "8000", "操作人" : "总经理200" };
     var expected2 = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : batch,
         "款号" : "4562", "名称" : "Story", "颜色" : "均色", "尺码" : "均码", "数量" : "25",
-        "单价" : "160", "金额" : "4000", "操作人" : "总经理" };
+        "单价" : "160", "金额" : "4000", "操作人" : "总经理200" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected1), isEqualQRData1Object(
             qr, expected2));
 
@@ -342,19 +344,19 @@ function test150006() {
     tapFirstText();
     tapButtonAndAlert("打 印", OK);
 
-    tapButton(window, 7);
+    tapButton(window, 8);//"打 印"
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "填写密码后才能打印"));
 
     // 修改前密码
     tf = window.secureTextFields()[1].secureTextFields()[0];
     tf.setValue("000000");
-    tapButton(window, 7);
+    tapButton(window, 8);
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "操作失败，[密码错误]"));
 
     tf.setValue("123456");
-    tapButton(window, 7);
+    tapButton(window, 8);
     delay();
     // ret = isAnd(ret, window.buttons()["按批次查"].isVisible);
 
