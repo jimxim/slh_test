@@ -8,17 +8,10 @@
 
 // 总经理
 function test000All() {
-// debug = true;
+ debug = true;
 // run("setParams", "goodsParams001");
-
-// testCustomer001Prepare();
-// testCustomer001();
-// testCustomer001Else();
-// run("test", "test190028");
-
-// test005CustomerAll();
-    testWanLaiCustomerAll();
-// run("test", "test110057");
+//    run("prepare","testCustomer001Prepare");
+// run("test", "test110022");
 // run("test", "onlyTest");
 }
 
@@ -170,16 +163,6 @@ function test000Customer001Else() {
   }
 }
 
-// 开单员
-function test005Customer() {
-    var p1 = {"角色":"开单员"};
-  var ok = login("005","000000",p1);
-  if( ok ) {
-      test005CustomerAll();
-     logout();
-  }
-}
-
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
 function test000Purchase001() {
    var p1 = {"角色":"总经理"};
@@ -324,6 +307,15 @@ function testShopkeeper004() {
 }
 
 
+//开单员
+function testBillClerk005() {
+ var p1 = {"角色":"开单员"};
+var ok = login("005","000000",p1);
+if( ok ) {
+   testBillClerk005All();
+  logout();
+}
+}
 
 
 

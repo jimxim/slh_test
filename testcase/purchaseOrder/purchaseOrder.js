@@ -22,7 +22,7 @@ function testPurchaseOrderAll() {
     run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
     // }
     // if(setIgnorecolorsize_0Params()){
-    run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
+    // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
 
     // }
     // run("【采购订货-按明细查】作废订单后内容检查", "test130003");
@@ -65,7 +65,7 @@ function setIgnorecolorsize_0Params() {
 // 翻页_排序_汇总
 function test130001_1() {
     tapMenu("采购订货", "按批次查");
-    var keys = { "日期从" : getDay(-10), "日期到" : getToday(), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     // 点击翻页

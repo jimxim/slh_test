@@ -16,8 +16,12 @@ js_func="$js_func test000Customer001Prepare test000Customer001 test000Customer00
 #js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
 #门店调出、门店调入
 js_func="$js_func test200ShopOut001 test000ShopIn001"
+
+#常青店的其他角色的各种用例
 #店长
-#js_func="$js_func testShopkeeper004 "
+js_func="$js_func testShopkeeper004 "
+#开单员
+js_func="$js_func testBillClerk005 "
 
 
 

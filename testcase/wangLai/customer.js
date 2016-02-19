@@ -38,16 +38,16 @@ function testCustomer001Else() {
     run("【往来管理】允许退货－－是", "test110008");
     run("【往来管理】允许退货－－否", "test110009");
     run("【往来管理】往来管理-厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
-    run("【往来管理-客户查询】上下级客户模式下不允许设置客户分店", "test110053");// 后台参数为上下级客户模式
-    run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 后台参数为上下级客户模式
+    run("【往来管理-客户查询】上下级客户模式下不允许设置客户分店", "test110053");// 上下级客户模式
+    run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
     run("【往来管理-新增客户】客户编码", "test110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "test110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
 
     run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
-    // run("【往来管理-客户账款】详细页面", "test110022");
-    // run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
+    run("【往来管理-客户账款】详细页面", "test110022");
+    run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
     run("【往来管理】是否欠款报警查询", "test110028");
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
@@ -64,20 +64,6 @@ function testCustomer001Else() {
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
-}
-
-// 开单员
-function test005CustomerAll() {
-    run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
-    run("【往来管理】开单员查看客户门店帐", "test110031_110032");
-    run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");
-}
-
-function testWanLaiCustomerAll() {
-     run("不体现颜色尺码，相同款号合并显示——是", "setAccountcheck_detail_showstyleParams1");
-     run("【往来管理-客户账款】客户对账单中不体现颜色尺码,相同款号合并", "test110050");
-     run("【往来管理-客户账款】按上级单位对账单中不体现颜色尺码,相同款号合并", "test110051");
-     run("不体现颜色尺码，相同款号合并显示——否", "setAccountcheck_detail_showstyleParams2");
 }
 
 // 翻页_排序
@@ -937,10 +923,12 @@ function editBillForCustomerAccount2() {
 }
 
 function test110022() {
-    editBillForCustomerAccount1();
-    editBillForCustomerAccount2();
+    //
+//    editBillForCustomerAccount1();
+//    editBillForCustomerAccount2();
 
     // a1，b1，c1，d1为无结余，在客户账款中应该不显示
+    // a2，b2，c2，d2为余款，a3，b3，c3，d3为欠款，应该在相应位置显示
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "xjkh1", "门店" : "常青店" };
     var fields = salesQueryBatchFields(keys);
@@ -949,9 +937,10 @@ function test110022() {
     var a2 = test110022Field(1);
     var a3 = test110022Field(2);
 
-    keys = { "客户" : "xjkh1", "门店" : "中洲店" };
+    keys = { "门店" : "中洲店" };
     fields = salesQueryBatchFields(keys);
-    query(fields);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     var b1 = test110022Field(0);
     var b2 = test110022Field(1);
     var b3 = test110022Field(2);
@@ -963,9 +952,10 @@ function test110022() {
     var c2 = test110022Field(1);
     var c3 = test110022Field(2);
 
-    keys = { "客户" : "sjkh1", "门店" : "中洲店" };
+    keys = {  "门店" : "中洲店" };
     fields = salesQueryBatchFields(keys);
-    query(fields);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     var d1 = test110022Field(0);
     var d2 = test110022Field(1);
     var d3 = test110022Field(2);
@@ -1020,7 +1010,7 @@ function test110022() {
     query(fields);
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
-    ret = isAnd(ret, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
+    var ret2 = isAnd(!isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             isInQRData1Object(qr, b2), isInQRData1Object(qr, b3),
             !isInQRData1Object(qr, c1), isInQRData1Object(qr, c2),
@@ -1035,7 +1025,7 @@ function test110022() {
 
     tapFirstTextByTitle("名称", "上级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
-    ret = isAnd(ret, !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
+    var ret3 = isAnd( !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
             !isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             !isInQRData1Object(qr, b2), !isInQRData1Object(qr, b3),
             !isInQRData1Object(qr, c1), isInQRData1Object(qr, c2),
@@ -1046,12 +1036,12 @@ function test110022() {
     delay();
     tapFirstTextByTitle("名称", "下级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
-    ret = isAnd(ret, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
+    ret3 = isAnd(ret3, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             isInQRData1Object(qr, b2), isInQRData1Object(qr, b3));
     tapNaviLeftButton();
 
-    return ret;
+    return isAnd(ret,ret2,ret3);
 }
 
 function test110022_1() {
@@ -1105,7 +1095,7 @@ function test110023() {
     changeTFieldValue(fields["客户"], "sjkh1");
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("上级客户1", qr.data[0]["名称"]);
+    ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     keys = [ "客户名称" ];
@@ -1113,15 +1103,15 @@ function test110023() {
     changeTFieldValue(fields["客户名称"], "下级客户1");
     query(fields);
     qr = getQR();
-    var ret1 = isEqual(0, qr.total);
+    var ret1 = isEqual(0, qr.data.length);
 
     changeTFieldValue(fields["客户名称"], "上级客户1");
     query(fields);
     qr = getQR();
-    ret1 = ret1 && isEqual("上级客户1", qr.data[0]["名称"]);
+    ret1 = isAnd(ret1, isEqual("上级客户1", qr.data[0]["名称"]));
 
     tapFirstText();
-    qr = getQResult2(getScrollView(1), "批次", "未结");
+    qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
     var totalPageNo = qr.totalPageNo;
     var ret3 = false;
     for (var j = 1; j <= totalPageNo; j++) {
@@ -1131,9 +1121,12 @@ function test110023() {
                 break;
             }
         }
+        if (ret3) {
+            break;
+        }
         if (j < totalPageNo) {
             scrollNextPage();
-            qr = getQResult2(getScrollView(1), "批次", "未结");
+            qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
         }
 
     }
@@ -1150,9 +1143,9 @@ function test110023() {
     changeTFieldValue(fields["客户"], "sjkh1");
     query(fields);
     qr = getQR();
-    ret2 = ret2 && isEqual("上级客户1", qr.data[0]["名称"]);
+    ret2 = isAnd(ret2, isEqual("上级客户1", qr.data[0]["名称"]));
 
-    return ret && ret1 && ret2 && ret3;
+    return isAnd(ret, ret1, ret2, ret3);
 }
 
 function test110024() {
