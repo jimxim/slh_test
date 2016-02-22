@@ -3,7 +3,7 @@ D=`dirname $0`
 
 SUITE=suite2
 ＃参数设置
-js_func="setSales001Params"
+#js_func="setSales001Params"
 #销售开单
 js_func="$js_func test000SalesNoColorSize001"
 ＃js_func="$js_func test000SalesNoColorSize002"
