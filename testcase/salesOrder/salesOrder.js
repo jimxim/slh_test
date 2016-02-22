@@ -1030,7 +1030,7 @@ function test160019() {
     tapMenu("销售订货", "按明细查");
     var i, j;
     var ret = true;
-    var keys = { "日期从" : getDay(-30), "客户" : "xw" };
+    var keys = { "日期从" : getDay(-15), "客户" : "xw" };
     var fields = salesOrderQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
@@ -1047,7 +1047,7 @@ function test160019() {
         }
     }
 
-    keys = { "日期从" : getDay(-30), "款号" : "3035" };
+    keys = { "日期从" : getDay(-15), "款号" : "3035" };
     fields = salesOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -1064,7 +1064,7 @@ function test160019() {
         }
     }
 
-    keys = { "日期从" : getDay(-30), "日期到" : getDay(-10) };
+    keys = { "日期从" : getDay(-15), "日期到" : getDay(-10) };
     fields = salesOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -1090,7 +1090,7 @@ function test160019() {
 
 function test160020_160022() {
     tapMenu("销售订货", "按明细查");
-    var keys = { "门店" : "常青店" };
+    var keys = { "门店" : "常青店", "日期从" : getDay(-30) };
     var fields = salesOrderQueryParticularFields(keys);
     query(fields);
     var qr = getQR();

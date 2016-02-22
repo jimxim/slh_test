@@ -16,6 +16,7 @@ function testBasicSetUpAll() {
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
     run("yun客户", "setCustomer010");// 下拉框验证,上级客户
     run("yun客户下级", "setCustomer011");// 下拉框验证,下级客户
+    run("0309", "setCustomer012");// 纯数字客户，用于查询条件验证
     // 厂商
     run("Vell", "setProvider001");
     run("Adidas公司", "setProvider002");
@@ -191,7 +192,7 @@ function editCustomerBasicSetUp(keys) {
  */
 function setXiaoWang() {
     var keys = { "名称" : "小王", "门店" : "常青店", "店员" : "000", "上级客户" : "",
-        "客户类别" : "零批客户", "允许退货" : "是", "适用价格" : "零批价", "拿货折扣" : "1",
+        "客户类别" : "零批客户", "客户代码":"xw001","允许退货" : "是", "适用价格" : "零批价", "拿货折扣" : "1",
         "信用额度" : "0", "欠款报警" : "0" };
     return editCustomerBasicSetUp(keys);
 }
@@ -308,6 +309,14 @@ function setCustomer011() {
 }
 
 /**
+ * 0309 纯数字客户，用于查询条件验证
+ */
+function setCustomer012() {
+    var keys = { "名称" : "0309", "门店" : "常青店", "适用价格" : "零批价" };
+    return editCustomerBasicSetUp(keys);
+}
+
+/**
  * 新增/修改厂商
  */
 function editProviderBasicSetUp(keys) {
@@ -349,7 +358,7 @@ function setProvider004() {
     return editProviderBasicSetUp(keys);
 }
 function setProvider005() {
-    var keys = { "名称" : "特步生产商", "适用价格" : "零批价" };
+    var keys = { "名称" : "特步生产商","手机":"13122221112", "适用价格" : "零批价" };
     return editProviderBasicSetUp(keys);
 }
 function setProvider006() {

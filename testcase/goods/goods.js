@@ -93,6 +93,10 @@ function goodsParams001() {
     qo = { "备注" : "是否启用自定义键盘" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }

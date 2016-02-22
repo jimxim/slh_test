@@ -670,36 +670,36 @@ function isEqualDropDownList(expected, view1) {
  * @param index 静态文本下标
  * @param title
  * @param value 输入值
- * @param title1 查询条件为款号名称时，对应标题为款号或名称
+ * @param title1 查询条件为款号名称时，对应标题为款号或名称，2个标题符合一个就可
  */
 function fuzzyQueryCheckField(index, title, value, title1) {
     var f = new TField("名称", TF, index, value);
     var fields = [ f ];
     query(fields);
-    var i, j;
     var qr = getQR();
     var ret1 = true;
     var ret2 = true;
     var value1 = value.toUpperCase();
 
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
             if (!isIn(qr.data[i][title], value)
                     && !isIn(qr.data[i][title], value1)) {
                 ret1 = false;
-                break;
             }
-            if (ret1 == false && isDefined(title1)) {
+            if (!ret1 && isDefined(title1)) {
                 if (!isIn(qr.data[i][title1], value)
                         && !isIn(qr.data[i][title1], value1)) {
                     ret2 = false;
-                    break;
                 }
-                if (ret2 == true) {
+                if (ret2) {
                     ret1 = true;
                 }
             }
-            logDebug("ret=" + ret1);
+            if (!ret1) {
+                logDebug("错误页码j=" + j + "  错误序号i=" + i);
+                break;
+            }
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
