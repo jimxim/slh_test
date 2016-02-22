@@ -56,9 +56,11 @@ function test000All() {
 //	 run("【销售开单－开单】连续新增货品", "test170131");//
 //	   run("【销售开单－开单】新增货品后再输入别的款号", "test170132");//
 
-//	run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
-    run("【盘点管理—盘点处理】部分处理", "test180026");//
+//    run("【盘点管理—盘点处理】部分处理", "test180026");//
 //    run("【盘点管理—盘点处理】全盘处理", "test180025");//
+	
+    run("【销售开单－开单】客户切换后点核销", "test170056");
+//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
 	   
 // testStatisticPictureAll();
 // testSystem001();
@@ -84,7 +86,7 @@ function setSales002Params() {
     }
 }
 // 销售开单
-function test000SalesNoColorSizeElse001() {
+function test000SalesNoColorSize001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
    if( ok ) {
@@ -93,11 +95,47 @@ function test000SalesNoColorSizeElse001() {
        logout();
    }
 }
-function test000SalesNoColorSizeElse002() {
+function test000SalesNoColorSize002() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSize001();
+        
+        logout();
+    }
+}
+function test000SalesNoColorSize003() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSize002();
+        
+        logout();
+    }
+}
+function test000SalesNoColorSizeElse001() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
         testSalesNoColorSizeElse001();
+        
+        logout();
+    }
+}
+function test000SalesNoColorSizeElse002() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElse002();
+        
+        logout();
+    }
+}
+function test000SalesNoColorSizeElse003() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElseAll();
         
         logout();
     }
@@ -168,6 +206,16 @@ function test000SalesColorSize002() {
          
          logout();
      }
+ }
+//统计图表
+ function test000testStatisticPicture001() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testStatisticPictureAll();
+        
+        logout();
+    }
  }
 // 系统设置
  function test000System001() {

@@ -168,7 +168,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "现金" };
     o = { "新值" : "1", "数值" : [ "自动汇总现金栏", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -228,11 +228,11 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "价格模式" };
     o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "建款" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
@@ -265,7 +265,7 @@ function test170040_170041() {
     qr = getQR();
     var c = qr.data[0]["姓名"];
 
-    var ret = isAnd(isEqual("李四", a), isEqual("总经理", b), isEqual("开单员", c));
+    var ret = isAnd(isEqual("李四", a), isEqual("总经理", b), isEqual("开单员005", c));
 
     tapMenu("销售开单", "开  单+");
     var ret1 = false;
@@ -340,8 +340,8 @@ function test170040_170041() {
 
     tapReturn();
 
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2 + "ret3=" + ret3
-            + "ret4=" + ret4);
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
     return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170043() {
@@ -758,7 +758,7 @@ function test170052() {
     var fields = querySystemStaffFields(keys);
     query(fields);
     var qr = getQR();
-    var ret1 = isEqual("店长", qr.data[0]["姓名"]);
+    var ret1 = isEqual("店长004", qr.data[0]["姓名"]);
 
     tapMenu("销售开单", "开  单+");
     var ret = false;
@@ -768,7 +768,7 @@ function test170052() {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual("004,店长", v)) {
+        if (isEqual("004,店长004", v)) {
             ret = true;
             break;
         }
@@ -976,10 +976,14 @@ function test170056() {
 
     // debugElementTree(window);
 
-    getQRverify(getStaticTexts(getScrollView(-1)), "门店", 8);
-    var ret = isEqual("下级客户1 其他店总欠: 0.0", a);
+    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    var md = qr.data[0]["门店"];
+    var kh = qr.data[0]["客户"];
 
     tapNaviLeftButton();
+
+    var ret = isAnd(isEqual("下级客户1 其他店总欠: 0.0", a), isEqual("常青店", md),
+            isEqual("下级客户1", kh));
 
     tapButton(window, CLEAR);
     var keys1 = { "客户" : "ls" };
@@ -987,12 +991,18 @@ function test170056() {
     setTFieldsValue(window, fields1);
     tapButton(window, "核销");
 
-    var ret1 = isEqual("李四 其他店总欠: 0.0", getStaticTextValue(
-            getScrollView(-1, 0), 0));
+    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    var md1 = qr.data[0]["门店"];
+    var kh1 = qr.data[0]["客户"];
+
+    var ret1 = isAnd(isEqual("李四 其他店总欠: 0.0", getStaticTextValue(getScrollView(
+            -1, 0), 0)), isEqual("常青店", md), isEqual("李四", kh));
 
     tapNaviLeftButton();
     tapReturn();
 
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", a=" + a + ", md=" + md
+            + ", kh=" + kh);
     return ret && ret1;
 }
 function test170057() {
@@ -4924,14 +4934,14 @@ function test170179() {
     var qr = getQRtable1(window);
 
     loadHangBill(1);
-    
+
     saveAndAlertOk();
     tapPrompt();
-    
-    var ret=isIn(alertMsg,"保存成功，是否打印");
-    
+
+    var ret = isIn(alertMsg, "保存成功，是否打印");
+
     tapReturn();
-    
+
     return ret;
 }
 function test170180() {
@@ -5109,7 +5119,7 @@ function test170186() {
     tapButton(window, "核销");
 
     var e = getStaticTextValue(getScrollView(1), 0);
-    
+
     tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "9" + getTimestamp(6);
     var g0 = new TField("兑换积分*", TF, 0, r);
@@ -5636,7 +5646,7 @@ function test170247() {
 function test170247_1() {
     var qo, o, ret = true;
     qo = { "备注" : "默认显示零批价或打包价" };
-    o = { "新值" : "1", "数值" : [ "默认打包价", "in" ] };
+    o = { "新值" : "2", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
@@ -5692,7 +5702,7 @@ function test170247_1() {
 function test170248() {
     var qo, o, ret = true;
     qo = { "备注" : "默认显示零批价或打包价" };
-    o = { "新值" : "1", "数值" : [ "默认打包价", "in" ] };
+    o = { "新值" : "2", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");

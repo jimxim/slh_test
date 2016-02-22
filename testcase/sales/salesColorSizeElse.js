@@ -1,6 +1,6 @@
 //Zhangy <2397655091 at qq.com> 20150128
 
-function testSalesNoColorSizeElse001() {
+function testSalesColorSizeElse001() {
     run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1");
     run("【销售开单－按批次查】条件查询，清除按钮,下拉框", "test170001_2");
 }

@@ -337,7 +337,7 @@ function test180001_180003_180005() {
     logDebug("sum1=" + sum1);
     return ret && ret1;
 }
-function test180001_2() {
+function test180001_2_180004() {
     tapMenu("盘点管理", "按批次查");
     var ret = false;
     tap(getTextField(window, 6));
@@ -634,7 +634,7 @@ function test180010() {
 }
 function test180013_1_180055() {
     tapMenu("盘点管理", "按明细查");
-    var keys = { "日期从" : getDay(-3), "到" : getToday() };
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday() };
     var fields = queryCheckParticularFields(keys);
     query(fields);
     // 点击翻页
@@ -702,10 +702,6 @@ function test180013_2_180014() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "按明细查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "款号" : "3035",
-        "款号名称" : "jkk", "品牌" : "Adidas", "类别" : "登山服", "门店" : "常青店" };
-
-    tapMenu("盘点管理", "按明细查");
     query();
     qr = getQR();
     var batch1 = qr.data[0]["批次"];
@@ -714,8 +710,11 @@ function test180013_2_180014() {
     var a2 = qr.data[1]["盘点数量"];
 
     var ret = isAnd(isEqual(batch, batch1), isEqual(batch, batch2), isEqual(
-            "－10", a1), isEqual("150", a2));
-
+            "-10", a1), isEqual("150", a2));
+    
+    tapMenu("盘点管理", "按明细查");
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday(), "款号" : "3035",
+        "款号名称" : "jkk", "品牌" : "Adidas", "类别" : "登山服", "门店" : "常青店" };
     var fields = queryCheckParticularFields(keys);
     query(fields);
     var qr = getQR();
@@ -1346,7 +1345,7 @@ function test180033() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test_180036_180037Prepare() {
+function test180036_180037Prepare() {
     // 需先处理掉以前的盘点单
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -1480,7 +1479,7 @@ function test_180036_180037Prepare() {
 }
 function test180037_1() {
     // 为了数据的多样性和复杂性，跑这部分用例之前需要造一些数据
-    test180037Prepare();
+    test180036_180037Prepare();
 
     tapMenu("盘点管理", "盈亏表");
     var keys = { "日期从" : getDay(-3), "到" : getToday() };
