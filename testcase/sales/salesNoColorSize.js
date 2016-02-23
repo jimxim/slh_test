@@ -1,51 +1,50 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-//    run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-//    run("【销售开单－开单】客户新增按钮", "test170043");
-//    run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-//    run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
-//    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
-//    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
-//    run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
-//    run("【销售开单－开单】客户输入框清除功能", "test170045");
-//    run("【销售开单－开单】结余文本框检查", "test170046");
-//    run("【销售开单－开单】未付按钮", "test170047");
-//    run("【销售开单－开单】刷卡按钮", "test170048");
-//    run("【销售开单－开单】汇款按钮", "test170049");
-//    run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
-//    run("【销售开单－开单】收款方式汇总检查-组合", "test170051");
-//    run("【销售开单－开单】店员输入检查", "test170052");
-//    run("【销售开单－开单】店员输入框清除功能", "test170053");
-//    run("【销售开单－开单】核销（客户余款）", "test170054_1");
-//    run("【销售开单－开单】核销（客户余款）", "test170054_2");
-//    run("【销售开单－开单】核销（客户欠款）", "test170055");
-//    run("【销售开单－开单】客户切换后点核销", "test170056");
-//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
-//    run("【销售开单－开单】核销后检查本单已核销", "test170058");
-//    run("【销售开单－开单】核销后检查所有已核销", "test170059");
-//    run("【销售开单－开单】 核销界面第一条记录选择性勾选检查", "test170452");
-//    run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");
-//    run("【销售开单－开单】连续核销后核销界面检查", "test170062");
-//    run("【销售开单-开单】连续核销+检查本单已核销", "test170475");
-//    run("【销售开单-开单】核销单子排序检查", "test170064");
-//    run("【销售开单-开单】检查核销", "test170065_1");
-//    run("【销售开单-开单】检查核销", "test170065_2");
-//    run("【销售开单-开单】检查核销", "test170065_3");
-//    run("【销售开单-开单】检查核销", "test170065_4");
-//    run("【销售开单-开单】检查核销", "test170065_5");
-//    run("【销售开单－开单】款号价格为负数时检查", "test170072");
-//    run("【销售开单-开单】开单模式-代收模式2", "test170090");
-//    run("【销售开单－开单】收款方式选择代收", "test170091");
-//    run("【销售开单－开单】代收模式2", "test170092");
-//    run("【销售开单－开单】代收模式2", "test170093");
-//    run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
-//    run("【销售开单－开单】整单备注和明细备注", "test170095");
-//    run("【销售开单－开单】退货时备注显示", "test170096");
-//    run("【销售开单－开单】退货时明细备注框操作", "test170097");
-//    run("【销售开单－开单】款号较多时打印", "test170100");
-//    run("【销售开单－开单】特殊货品", "test170128");
-//    run("【销售开单-开单】特殊货品为小数", "test170526");
-//
+    run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+    run("【销售开单－开单】客户新增按钮", "test170043");
+    run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
+    run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
+    run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
+    run("【销售开单－开单】客户输入框清除功能", "test170045");
+    run("【销售开单－开单】结余文本框检查", "test170046");
+    run("【销售开单－开单】未付按钮", "test170047");
+    run("【销售开单－开单】刷卡按钮", "test170048");
+    run("【销售开单－开单】汇款按钮", "test170049");
+    run("【销售开单－开单】收款方式汇总检查-单一", "test170050");
+    run("【销售开单－开单】收款方式汇总检查-组合", "test170051");
+    run("【销售开单－开单】店员输入检查", "test170052");
+    run("【销售开单－开单】店员输入框清除功能", "test170053");
+    run("【销售开单－开单】核销（客户余款）", "test170054_1");
+    run("【销售开单－开单】核销（客户余款）", "test170054_2");
+    run("【销售开单－开单】核销（客户欠款）", "test170055");
+    run("【销售开单－开单】客户切换后点核销", "test170056");
+    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
+    run("【销售开单－开单】核销后检查本单已核销", "test170058");
+    run("【销售开单－开单】核销后检查所有已核销", "test170059");
+    run("【销售开单－开单】 核销界面第一条记录选择性勾选检查", "test170452");
+    run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");
+    run("【销售开单－开单】连续核销后核销界面检查", "test170062");
+    run("【销售开单-开单】连续核销+检查本单已核销", "test170475");
+    run("【销售开单-开单】核销单子排序检查", "test170064");
+    run("【销售开单-开单】检查核销", "test170065_1");
+    run("【销售开单-开单】检查核销", "test170065_2");
+    run("【销售开单-开单】检查核销", "test170065_3");
+    run("【销售开单-开单】检查核销", "test170065_4");
+    run("【销售开单-开单】检查核销", "test170065_5");
+    run("【销售开单－开单】款号价格为负数时检查", "test170072");
+    run("【销售开单-开单】开单模式-代收模式2", "test170090");
+    run("【销售开单－开单】收款方式选择代收", "test170091");
+    run("【销售开单－开单】代收模式2", "test170092");
+    run("【销售开单－开单】代收模式2", "test170093");
+    run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
+    run("【销售开单－开单】整单备注和明细备注", "test170095");
+    run("【销售开单－开单】退货时备注显示", "test170096");
+    run("【销售开单－开单】退货时明细备注框操作", "test170097");
+    run("【销售开单－开单】款号较多时打印", "test170100");
+    run("【销售开单－开单】特殊货品", "test170128");
+    run("【销售开单-开单】特殊货品为小数", "test170526");
     run("【销售开单－开单】新增货品", "test170129");
     run("【销售开单－开单】连续新增货品", "test170131");
     run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
@@ -69,20 +68,20 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");
     run("【销售开单-开单】挂单操作之后检查开单输入客户", "test170525");
     run("【销售开单－开单】设置已配货", "test170180");
-//    run("【销售开单-开单】客户不允许退货", "test170181");
-//    run("【销售开单－开单】积分兑换", "test170186");
-//    run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-//    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
-//    run("【销售开单－开单】兑换记录", "test170189");
-//    run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
-//    run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
-//    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
-//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
-//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");
-//    run("销售订货价格刷新", "test170445");
-//    run("采购入库/采购订货价格刷新", "test170527");
-//    run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
-//    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
+    run("【销售开单-开单】客户不允许退货", "test170181");
+    run("【销售开单－开单】积分兑换", "test170186");
+    run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
+    run("【销售开单－开单】兑换记录", "test170189");
+    run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
+    run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
+    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");
+    run("销售订货价格刷新", "test170445");
+    run("采购入库/采购订货价格刷新", "test170527");
+    run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
+    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
 }
 function testSalesNoColorSize001() {
     run("【销售开单】客户或供应商信息不允许修改", "test170063");
@@ -233,7 +232,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "建款" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "自动生成款号" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -241,15 +240,15 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "采购入库模式" };
     o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "调拨是否启用密码验证" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否启用自定义键盘" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -261,7 +260,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "童装是否按组开单" };
     o = { "新值" : "0", "数值" : [ "按件开单", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
-    
+
     return ret;
 }
 function test170040_170041() {
@@ -3728,7 +3727,7 @@ function test170131() {
 }
 function test170132() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "000", "onlytest" : "yes" };
+    var json = { "客户" : "ls", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var r = "anewkhao" + getTimestamp(3);
@@ -3765,7 +3764,7 @@ function test170132() {
     query(fields);
     var qr = getQR();
     var ret = isAnd(isEqual(6, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
-            qr.data[0]["操作日期"]), 1);
+            qr.data[0]["操作日期"]));
 
     tapMenu("货品管理", "货品查询");
     var qKeys = [ "款号名称" ];
@@ -3777,15 +3776,15 @@ function test170132() {
     var b = qr.data[0]["名称"];
 
     tapFirstText();
-    var ret2 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
+    var ret1 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
             isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("",
                     getTextFieldValue(getScrollView(), 3)), isEqual("",
                     getTextFieldValue(getScrollView(), 4)), isEqual(c,
                     getTextFieldValue(getScrollView(), 8)), isEqual(c,
                     getTextFieldValue(getScrollView(), 9)), isEqual(c,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
-                    getTextFieldValue(getScrollView(), 13)), isEqual(r, a1),
-            isEqual(r, b1));
+                    getTextFieldValue(getScrollView(), 13)), isEqual(r, a),
+            isEqual(r, b));
 
     tapReturn();
 
@@ -4641,10 +4640,10 @@ function test170172() {
 }
 function test170173() {
     // 全局参数，不显示待作废按钮
-    // var qo, o, ret = true;
-    // qo = { "备注" : "是否显示待作废按钮功能" };
-    // o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "是否显示待作废按钮功能" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -4814,7 +4813,7 @@ function test170176() {
     tapMenu("销售开单", "按挂单");
     query();
     var qr = getQR();
-    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("总经理000",
+    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("总经理",
             qr.data[0]["店员"]), isNoEqual(0, qr.data[0]["现金"]), isEqual(0,
             qr.data[0]["代收"]));
 
@@ -5177,13 +5176,16 @@ function test170187() {
     changeTFieldValue(fields["customer"], "xw");
     query(fields);
     var qr = getQR();
-    var a = qr.data[0]["当前积分"];
+    var jf = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
+    var score = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a = score.split(": ");
+
     tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "1" + getTimestamp(3);
     var g0 = new TField("兑换积分*", TF, 0, r);
@@ -5193,7 +5195,7 @@ function test170187() {
     tapButton(getPop(), OK);
     tapButton(getPop(), "关 闭");
     tapNaviLeftButton();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
     delay(3);
 
     tapMenu("往来管理", "客户查询");
@@ -5202,17 +5204,29 @@ function test170187() {
     changeTFieldValue(fields1["customer"], "xw");
     query(fields1);
     var qr = getQR();
-    var b = qr.data[0]["当前积分"];
+    var jf1 = qr.data[0]["当前积分"];
 
-    var ret = isEqual(b, a - r);
+    var ret = isEqual(jf1, Number(jf - r));
 
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    // saveAndAlertOk();
+    // tapPrompt();
+    // tapReturn();
 
-    logDebug(" a=" + a + " b=" + b);
-    return ret;
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    var score1 = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a1 = score1.split(": ");
+
+    tapNaviLeftButton();
+    tapReturn();
+
+    var ret1 = isAnd(isEqual(a1[0], "当前积分"), isEqual(a1[1], sub(a[1], r)));
+
+    logDebug(" a=" + a + ", a1=" + a1 + ", jf1=" + jf1);
+    return ret && ret1;
 }
 function test170188() {
     tapMenu("销售开单", "开  单+");
@@ -5220,6 +5234,10 @@ function test170188() {
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
+
+    var score = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a = score.split(": ");
+
     tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "1" + getTimestamp(2);
     var g0 = new TField("兑换积分*", TF, 0, r);
@@ -5229,8 +5247,19 @@ function test170188() {
     tapButton(getPop(), OK);
     // tapButton(getPop(), "关 闭");
     tapNaviLeftButton();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
     delay(3);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    var score1 = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a1 = score1.split(": ");
+
+    tapNaviLeftButton();
+    tapReturn();
 
     tapMenu("统计分析", "综合汇总");
     var f2 = new TField("门店", TF_SC, 2, "常青店");
@@ -5241,9 +5270,9 @@ function test170188() {
 
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
-    var a = qr.data[0]["金额"];
+    var je = qr.data[0]["金额"];
     var ret = false;
-    if (a >= 0) {
+    if (je >= 0) {
         ret = true;
     }
     tapNaviLeftButton();
@@ -5260,9 +5289,10 @@ function test170188() {
     var qr = getQR();
 
     var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
-            qr.data[0]["金额"]));
+            qr.data[0]["金额"]), isEqual(a1[0], "当前积分"), isEqual(r, sub(a[1],
+            a1[1])));
 
-    logDebug("金额=" + a + "ret=" + ret + "ret1=" + ret1);
+    logDebug("金额=" + je+ ", a1=" + a1 + ", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 
 }
@@ -5865,21 +5895,29 @@ function test170248_1() {
     return ret && ret1 && ret2;
 }
 function test170251() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a" } };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "物流单");
-    query();
-    var qr = getQR();
-    var batch = qr.data[0]["批次"];
+    // var r = getTimestamp(8);
+    // var r1 = r + "tt";
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    // "代收" : { "物流商" : "tt", "运单号" : r, "备注" : r1 } };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("销售开单", "物流单");
+    // query();
+    // var qr = getQR();
+    // var batch = qr.data[0]["批次"];
 
     tapMenu("销售开单", "核销+");
     var f = new TField("物流", TF, 0, "tt", -1, 0);
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+
+    var table1 = getTableViews(window)[0];
+    var cells = table1.cells();
+    var len1 = cells.length;
+
+    logDebug("len1=" + len1);
 
     // debugElementTree(window);
 
