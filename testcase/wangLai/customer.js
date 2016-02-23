@@ -1654,6 +1654,14 @@ function test110036_3() {
     query(fields);
     var qr = getQR();
     var a = qr.counts["当前积分"];
+    var point = 0;
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["门店"] == "常青店") {
+            point = qr.data[i]["当前积分"];
+            break;
+        }
+    }
+    // logDebug("b=" + b);
 
     tapMenu("往来管理", "客户查询");
     key = { "客户" : "xw" };
@@ -1680,8 +1688,16 @@ function test110036_3() {
     tapMenu("往来管理", "积分查询");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["当前积分"], sub(a, 1000)), isEqual(
-            qr.data[0]["最近兑换日期"], getToday("yy")));
+    var point1;
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["门店"] == "常青店") {
+            point1 = qr.data[i]["当前积分"];
+            break;
+        }
+    }
+    ret = isAnd(ret, isEqual(point1, sub(point, 1000)), isEqual(
+            qr.counts["当前积分"], sub(a, 1000)), isEqual(qr.data[0]["最近兑换日期"],
+            getToday("yy")));
 
     return ret;
 }
@@ -2436,15 +2452,15 @@ function test110045_110046() {
     delay();
 
     tapFirstText(getScrollView(), TITLE_SEQ, 9);
-    ret = ret && isEqual(r + "a", getTextFieldValue(getScrollView(), 0))
-            && isEqual("000,总经理", getTextFieldValue(getScrollView(), 1))
-            && isEqual("客户", getTextFieldValue(getScrollView(), 2))
-            && isEqual(r, getTextFieldValue(getScrollView(), 3)) // 电话
-            && isEqual("310000", getTextFieldValue(getScrollView(), 4))
-            && isEqual("地址", getTextFieldValue(getScrollView(), 5))
-            && isEqual("abc", getTextFieldValue(getScrollView(), 6))// 账号
-            && isEqual("常青店", getTextFieldValue(getScrollView(), 7))
-            && isEqual("备注abc123", getTextFieldValue(getScrollView(), 8));
+    ret = isAnd(ret, isEqual(r + "a", getTextFieldValue(getScrollView(), 0)),
+            isEqual("000,总经理", getTextFieldValue(getScrollView(), 1)), isEqual(
+                    "客户", getTextFieldValue(getScrollView(), 2)), isEqual(r,
+                    getTextFieldValue(getScrollView(), 3)) // 电话
+            , isEqual("310000", getTextFieldValue(getScrollView(), 4)),
+            isEqual("地址", getTextFieldValue(getScrollView(), 5)), isEqual(
+                    "abc", getTextFieldValue(getScrollView(), 6))// 账号
+            , isEqual("常青店", getTextFieldValue(getScrollView(), 7)), isEqual(
+                    "备注abc123", getTextFieldValue(getScrollView(), 8)));
 
     // 停用
     tapButtonAndAlert(STOP);
@@ -2452,7 +2468,7 @@ function test110045_110046() {
     fields = queryCustomerLogisticsFields(keys);
     query(fields);
     var qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r));
+    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
@@ -2472,7 +2488,7 @@ function test110045_110046() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r));
+    ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");

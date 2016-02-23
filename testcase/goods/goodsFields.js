@@ -332,6 +332,15 @@ function editGoodsFields(keys, show, colorSizeStartIndex, priceStartIndex) {
 function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
     // logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" +
     // colorSizeStartIndex);
+    if (isUndefined(key)) {
+        return;
+    }
+    if (isUndefined(colorSizeStartIndex)) {
+        colorSizeStartIndex = 0;
+    }
+    if (isUndefined(priceStartIndex)) {
+        priceStartIndex = 0;
+    }
     var f;
     switch (key) {
     case "code":
