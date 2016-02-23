@@ -93,14 +93,23 @@ function addGoodsStockAdjustment(r) {
  * 新增客户
  * @param keys
  */
-function addCustomer(keys) {
+function addCustomer(keys, check) {
     tapMenu("往来管理", "新增客户+");
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-
     delay();
     tapReturn();
+
+    var ret = true;
+    if (isDefined(check) && check == "yes") {
+        tapMenu("往来管理", "客户查询");
+        var qKeys = { "客户名称" : keys["名称"] };
+        fields = queryCustomerFields(qKeys);
+        var qr = getQR();
+        ret = isEqual(keys["名称"], qr.data[0]["名称"]);
+    }
+    return ret;
 }
 
 /**

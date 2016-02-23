@@ -29,6 +29,16 @@ function testCustomer001Prepare() {
     run("下级客户1开单", "editBillForCustomerAccount2");
     // run("厂商账款数据准备", "editBillForCustomerAccount3");
 
+    var r = "wh" + getTimestamp(6);
+    var keys = { "名称" : r, "门店" : "仓库店" };
+    var ret = addCustomer(keys, "yes");
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "未付" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    return ret;
 }
 
 function testCustomer001Else() {
@@ -66,6 +76,12 @@ function testCustomer001Else() {
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
+}
+
+// 仓库店，总经理100
+// 绑定的仓库为文一店，文一店店长404
+function testWarehouseAll() {
+    run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
 }
 
 // 翻页_排序
@@ -2757,26 +2773,31 @@ function test110057_1() {
 // 仓库店 后台绑定仓库文一店
 function test110058_1() {
     tapMenu("往来管理", "客户账款", "客户门店账");
-    var keys = { "门店" : "常青店" };
+    var keys = { "门店" : "仓库店" };
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
     tapTitle(getScrollView(), "未拿货天数");
     tapTitle(getScrollView(), "未拿货天数");
     var qr = getQR();
-    var jo = qr.data[0];
+    var ret = false;
+    if (qr.data[0]["未拿货天数"] > 0) {
+        var jo = qr.data[0];
 
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : jo["名称"], "明细" : [ { "货品" : "3035", "数量" : "6" } ] };
-    editSalesBillNoColorSize(json);
-    jo["未拿货天数"] = 0;
+        tapMenu("销售开单", "开  单+");
+        var json = { "客户" : jo["名称"], "明细" : [ { "货品" : "3035", "数量" : "6" } ] };
+        editSalesBillNoColorSize(json);
+        jo["未拿货天数"] = 0;
 
-    tapMenu("往来管理", "客户账款", "客户门店账");
-    keys = { "客户名称" : jo["名称"] };
-    var fields = queryCustomerShopAccountFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
-    qr = getQR();
-    ret = isAnd(ret, isEqualObject(jo, qr.data[0]));
+        tapMenu("往来管理", "客户账款", "客户门店账");
+        keys = { "客户名称" : jo["名称"] };
+        fields = queryCustomerShopAccountFields(keys);
+        setTFieldsValue(window, fields);
+        tapButton(window, QUERY);
+        qr = getQR();
+        ret = isEqualObject(jo, qr.data[0]);
+    } else {
+        logDebug("未找到未拿货天数大于0的数据");
+    }
 
     return ret;
 }

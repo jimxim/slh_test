@@ -24,6 +24,9 @@ js_func="$js_func testShopkeeper004 "
 #开单员
 js_func="$js_func testBillClerk005 "
 
+#仓库店 
+#总经理
+js_func="$js_func test100Warehouse "
 
 #采购订货
 #js_func="$js_func test000PurchaseOrder001"
