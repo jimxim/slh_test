@@ -1047,51 +1047,6 @@ function test210037() {
 function test210039() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否显示颜色尺码字样" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "k200", "数量" : "1", "备注" : "mxbz" },
-                { "货品" : "3035", "数量" : "1", "备注" : "mxbz1" } ], "备注" : "zdbz" };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getToday(), "日期到" : getToday() };
-    var fields = salesQueryBatchFields(keys);
-
-    tapFirstText();
-    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(), 1)),
-            isEqual("", getTextFieldValue(getScrollView(), 2)), isEqual("",
-                    getTextFieldValue(getScrollView(), 8)), isEqual("",
-                    getTextFieldValue(getScrollView(), 9)));
-
-    tapReturn();
-
-    qo = { "备注" : "是否显示颜色尺码字样" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "按批次查");
-    query();
-    tapFirstText();
-    var ret1 = isAnd(isEqual("均色", getTextFieldValue(getScrollView(), 1)),
-            isEqual("均码", getTextFieldValue(getScrollView(), 2)), isEqual("均色",
-                    getTextFieldValue(getScrollView(), 8)), isEqual("均码",
-                    getTextFieldValue(getScrollView(), 9)));
-
-    tapReturn();
-
-    return ret && ret1;
-}
-function test210039_1() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1168,16 +1123,54 @@ function test210039_1() {
 
     tapReturn();
 
+    return ret && ret1;
+}
+function test210039_1() {
+    var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "k200", "数量" : "1", "备注" : "mxbz" },
+                { "货品" : "3035", "数量" : "1", "备注" : "mxbz1" } ], "备注" : "zdbz" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "日期从" : getToday(), "日期到" : getToday() };
+    var fields = salesQueryBatchFields(keys);
+
+    tapFirstText();
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(), 1)),
+            isEqual("", getTextFieldValue(getScrollView(), 2)), isEqual("",
+                    getTextFieldValue(getScrollView(), 8)), isEqual("",
+                    getTextFieldValue(getScrollView(), 9)));
+
+    tapReturn();
+
+    qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var ret1 = isAnd(isEqual("均色", getTextFieldValue(getScrollView(), 1)),
+            isEqual("均码", getTextFieldValue(getScrollView(), 2)), isEqual("均色",
+                    getTextFieldValue(getScrollView(), 8)), isEqual("均码",
+                    getTextFieldValue(getScrollView(), 9)));
+
+    tapReturn();
+
     return ret && ret1;
 }
+
 function test210041() {
     tapMenu("系统设置", "人员列表");
     var keys = { "是否停用" : "否" };
