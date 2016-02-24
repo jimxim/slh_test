@@ -1498,26 +1498,31 @@ function test110035() {
     fields = salesQueryParticularFields(keys);
     query(fields);
     qr = getQR();
-    ret = isAnd(ret, isEqual(jo["最后一次拿货"], qr.data[0]["日期"]), isEqual(
-            jo["未拿货天数"], subTime(getToday("yy"), jo["最后一次拿货"])));
+    if (qr.data.length > 0) {
+        ret = isAnd(ret, isEqual(jo["最后一次拿货"], qr.data[0]["日期"]), isEqual(
+                jo["未拿货天数"], subTime(getToday("yy"), jo["最后一次拿货"])));
 
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : jo["名称"], "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
-    jo["最后一次拿货"] = getToday("yy");
-    jo["未拿货天数"] = 0;
+        tapMenu("销售开单", "开  单+");
+        var json = { "客户" : jo["名称"], "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
+        editSalesBillNoColorSize(json);
+        jo["最后一次拿货"] = getToday("yy");
+        jo["未拿货天数"] = 0;
 
-    tapMenu("往来管理", "客户活跃度");
-    keys = { "客户" : jo["名称"], "门店" : jo["门店"] };
-    fields = queryCustomerActiveFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, isEqualObject(qr.data[0], jo));
+        tapMenu("往来管理", "客户活跃度");
+        keys = { "客户" : jo["名称"], "门店" : jo["门店"] };
+        fields = queryCustomerActiveFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqualObject(qr.data[0], jo));
 
-    tapMenu("往来管理", "客户账款", "客户门店账");
-    tapButton(window, QUERY);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["未拿货天数"], jo["未拿货天数"]));
+        tapMenu("往来管理", "客户账款", "客户门店账");
+        tapButton(window, QUERY);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(qr.data[0]["未拿货天数"], jo["未拿货天数"]));
+    } else {
+        logDebug("销售开单-按明细查中没有数据");
+        ret = false;
+    }
 
     return ret;
 }
@@ -2724,17 +2729,44 @@ function test110057() {
     tapPrompt();
     var ret = isIn(alertMsg, "该客户欠款或余额，不可修改信息");
 
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "qkkh", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "未付" : "yes" };
-    editSalesBillNoColorSize(json);
+    if (!ret) {
+        keys = { "客户" : "xiaowang123" };
+        fields = queryCustomerFields(keys);
+        query(fields);
+        tapFirstText();
+        keys = { "名称" : "小王" };
+        fields = editCustomerFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        tapButton(window, "修改保存");
+        tapPrompt();
+    }
 
     keys = { "客户" : "qkkh" };// 欠款客户
     fields = queryCustomerFields(keys);
     query(fields);
-    tapFirstText();
+    delay();
+    var qr = getQR();
 
-    keys = { "名称" : "abc123" };
+    // 找不到就新增
+    if (isEqual(0, qr.data.length)) {
+        tapMenu("销售开单", "开  单+");
+        tapButton(window, "新增+");
+        var f = new TField("名称", TF, 0, "欠款客户");
+        setTFieldsValue(getPopView(), [ f ]);
+        tapButton(getPop(), OK);
+        tapButton(getPop(), CLOSE);
+        var json = { "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
+        editSalesBillNoColorSize(json);
+
+        tapMenu("往来管理", "客户查询");
+        keys = { "客户" : "qkkh" };
+        fields = queryCustomerFields(keys);
+        query(fields);
+    }
+
+    tapFirstText();
+    var r = "c" + getTimestamp(5);
+    keys = { "名称" : r };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
@@ -2748,12 +2780,16 @@ function test110057_1() {
 
     // 欠款
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "qkkh", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "未付" : "yes" };
+    tapButton(window, "新增+");
+    var f = new TField("名称", TF, 0, r);
+    setTFieldsValue(getPopView(), [ f ]);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), CLOSE);
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
-    var keys = { "客户" : "r" };
+    var keys = { "客户" : r };
     var fields = queryCustomerFields(keys);
     query(fields);
     tapFirstText();
@@ -2765,9 +2801,13 @@ function test110057_1() {
     tapPrompt();
     var ret = !isIn(alertMsg, "该客户欠款或余额，不可修改信息");
 
+    tapButton(window, QUERY);
+    var qr = getQR();
+    ret = isAnd(ret, isEqual(0, qr.data.length));
+
     // 余款
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "qkkh", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    json = { "客户" : r + "a", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "现金" : "5000" };
     editSalesBillNoColorSize(json);
 
@@ -2783,37 +2823,61 @@ function test110057_1() {
     tapButton(window, "修改保存");
     tapPrompt();
     ret = isAnd(ret, !isIn(alertMsg, "该客户欠款或余额，不可修改信息"));
+
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(0, qr.data.length));
+
     return ret;
 }
 
 // 仓库店 后台绑定仓库文一店
 function test110058_1() {
+    var r = "wh" + getTimestamp(6);
+    var keys = { "名称" : r };
+    addCustomer(keys);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "日期" : getDay(-30),
+        "明细" : [ { "货品" : "3035", "数量" : "5" } ], "未付" : "yes" };
+    editSalesBillNoColorSize(json);
+
     tapMenu("往来管理", "客户账款", "客户门店账");
-    var keys = { "门店" : "仓库店" };
+    keys = { "客户" : r, "门店" : "仓库店" };
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
-    tapTitle(getScrollView(), "未拿货天数");
-    tapTitle(getScrollView(), "未拿货天数");
     var qr = getQR();
-    var ret = false;
-    if (qr.data[0]["未拿货天数"] > 0) {
-        var jo = qr.data[0];
+    var exp = { "门店" : "仓库店", "名称" : r, "余额" : -1000, "未拿货天数" : 30 };
+    var ret = isInQRData1Object(qr, exp);
 
-        tapMenu("销售开单", "开  单+");
-        var json = { "客户" : jo["名称"], "明细" : [ { "货品" : "3035", "数量" : "6" } ] };
-        editSalesBillNoColorSize(json);
-        jo["未拿货天数"] = 0;
+    tapMenu("往来管理", "客户活跃度");
+    keys = { "客户" : r, "门店" : "仓库店" };
+    fields = queryCustomerActiveFields(keys);
+    query(fields);
+    qr = getQR();
+    var exp1 = { "门店" : "仓库店", "名称" : r, "最后一次拿货" : getDay(-30, "yy"),
+        "未拿货天数" : 30 };
 
-        tapMenu("往来管理", "客户账款", "客户门店账");
-        keys = { "客户名称" : jo["名称"] };
-        fields = queryCustomerShopAccountFields(keys);
-        setTFieldsValue(window, fields);
-        tapButton(window, QUERY);
-        qr = getQR();
-        ret = isEqualObject(jo, qr.data[0]);
-    } else {
-        logDebug("未找到未拿货天数大于0的数据");
-    }
+    keys = { "门店" : "文一店" };
+    fields = queryCustomerActiveFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(0, qr.data.length));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
+    editSalesBillNoColorSize(json);
+    exp["未拿货天数"] =exp1["未拿货天数"] = 0;
+    exp1["最后一次拿货"] =getToday("yy");
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    keys = { "客户名称" : jo["名称"] };
+    fields = queryCustomerShopAccountFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isEqualObject(jo, qr.data[0]);
 
     return ret;
 }
@@ -2835,7 +2899,7 @@ function test110058() {
     var jo = qr.data[0];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : jo["名称"], "发货" : "仓库店",
+    var json = { "客户" : jo["名称"], "发货" : "中洲店",
         "明细" : [ { "货品" : "3035", "数量" : "6" } ] };
     editSalesBillNoColorSize(json);
     jo["未拿货天数"] = 0;

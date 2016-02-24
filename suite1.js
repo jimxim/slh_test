@@ -13,18 +13,18 @@ function test000All() {
 // run("prepare","testCustomer001Prepare");
 // run("prepare","testStatisticAnalysisPrepare");
  
-// run("【往来管理-客户查询】翻页_排序", "test110001_1");
+// run("【往来管理-客户查询】翻页_排序", "test110002");
 // run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
 // run("【往来管理-客户查询】客户查询->客户停用", "test110005");
-// run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "test110057_1");
+// run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "test110057");
 // run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
 // run("【往来管理-新增客户】客户编码", "test110056");
 // run("【往来管理】是否欠款报警查询", "test110028");
-// run("【往来管理-客户活跃度】客户活跃度", "test110033");
+// run("【往来管理-客户活跃度】客户活跃度", "test110035");
 // run("【往来管理-客户活跃度】未拿货天数", "test110035");//有bug
 // run("【往来管理-积分查询】数据验证", "test110036_3");
 // run("【往来管理-新增厂商】新增厂商", "test110038");
-// run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
+// run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110015");
  
 // run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
 // run("【统计分析—收支汇总】查询清除", "test190094");// 随机数
@@ -34,32 +34,19 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");// 作废
 // run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
 // run("【统计分析—综合汇总】进入详细-余款", "test190038");
- run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
- run("【统计分析—综合汇总】进入详细-欠款", "test190039");
- run("【统计分析—综合汇总】进入详细-还款", "test190040");
-// run("【test", "test190037");
+// run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
+// run("【统计分析—综合汇总】进入详细-欠款", "test190039");
+// run("【统计分析—综合汇总】进入详细-还款", "test190040");
+ run("【test", "test110057_1");
 
 // run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-// debugElementTree(window);
-    var view1=getScrollView();
-    var f = new TField("颜色", BTN_MC, 2, [ 0, 1,2 ]);
-    
-    
-// var btnIndex = f.index;
-// tapButton(view1, btnIndex);
-    var indexes = f.value;
-    for (var i = 0; i < indexes.length; i++) {
-        if(!getScrollView().buttons()[i].checked){
-            tapButton(getScrollView(), indexes[i]);// getPopView()
-        }      
-    }
-
-    tapButton(getPop(), OK);
-
+   var o={"名称":"小王","手机":"1234","店员":"000","地址":"a"};
+   editSalesBillAddCustomer(o);
+   return o;
 }
 
 
