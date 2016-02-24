@@ -4,6 +4,7 @@ function test004() {
     run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
     run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
     run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
+    run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_4");
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
 
     run("【系统设置】数据清理授权", "test210043_4");
@@ -176,6 +177,62 @@ function test170177() {
 
     logDebug(" ret" + ret);
     return ret;
+}
+function test170450Prepare() {
+    var qo, o, ret = true;
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+function test170450_4() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var lprice = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+    
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "18" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice-10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+    
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+    
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
+    
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
+
+    return ret && ret1;
 }
 function test170464() {
     // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店长：004

@@ -61,7 +61,7 @@ function test000All() {
     
 //    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
 
-	run("【销售开单-开单】总计四舍五入", "test170191");
+	  run("【销售开单】补货退货验证+不允许继续输入+颜色尺码", "test170208");
 	   
 // testStatisticPictureAll();
 // testSystem001();

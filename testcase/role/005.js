@@ -8,6 +8,7 @@ function test005() {
     run("【销售开单】单据打印后不允许修改--明细不允许修改", "test170237");// 非总经理账号登陆
     run("【销售开单－开单】按门店区分客户--区分", "test170249");
     run("【销售开单－开单】按门店区分客户--不区分", "test170250");
+    run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_5");
 
 }
 function test210043_5() {
@@ -232,4 +233,54 @@ function test170250() {
 
     logDebug("ret=" + ret);
     return ret;
+}
+function test170450_5() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var lprice = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+    
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "20" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 15 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice-10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+    
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+    
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
+    
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
+
+    return ret && ret1;
 }
