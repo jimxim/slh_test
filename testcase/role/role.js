@@ -1,6 +1,12 @@
 //luxingxin <52619481 at qq.com> 20160113
 
 
+function testTreasurer001All() {
+    // customer.js
+    run("【往来管理】财务员查看客户门店帐", "test110031_110032");
+
+}
+
 function testShopkeeper004All() {
     // customer.js
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");

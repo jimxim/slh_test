@@ -37,7 +37,7 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
 // run("【统计分析—综合汇总】进入详细-欠款", "test190039");
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
- run("【test", "test110057_1");
+ run("【test", "test110020");
 
 // run("test", "onlyTest");
 // return ret;
@@ -335,6 +335,16 @@ function test100Warehouse(){
     }
 }
 
+//财务员
+function testTreasurer001() {
+    var p1 = {"角色":"财务员"};
+  var ok = login("001","000000",p1);
+  if( ok ) {
+      testTreasurer001All();
+     logout();
+  }
+}
+
 // 店长登陆的一些用例
 function testShopkeeper004() {
     var p1 = {"角色":"店长"};
@@ -362,14 +372,6 @@ if( ok ) {
 
 
 
-function test001All() {
-    var p1 = {"角色":"财务员","门店":"常青店"};
-    var ok = login("001","000000",p1);
-    if( ok ) {
-       
-        logout();
-    }
-}
 
 function test002All() {
     var p1 = {"角色":"仓管员"};
@@ -383,24 +385,6 @@ function test002All() {
 function test003All() {
     var p1 = {"角色":"采购员"};
   var ok = login("003","000000",p1);
-  if( ok ) {
-    
-     logout();
-  }
-}
-
-function test004All() {
-    var p1 = {"角色":"店长"};
-  var ok = login("004","000000",p1);
-  if( ok ) {
-     testCheckMenuAll();
-     logout();
-  }
-}
-
-function test005All() {
-    var p1 = {"角色":"开单员"};
-  var ok = login("005","000000",p1);
   if( ok ) {
     
      logout();

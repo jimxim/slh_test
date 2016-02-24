@@ -19,6 +19,8 @@ js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
 
 
 #常青店的其他角色的各种用例
+#财务员 
+js_func="$js_func testTreasurer001 "
 #店长
 js_func="$js_func testShopkeeper004 "
 #开单员

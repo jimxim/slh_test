@@ -14,6 +14,8 @@ function testBasicSetUpAll() {
     run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");// 新综合汇总
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
+    run("上级不开单客户", "setCustomer009_1");// 不做开单操作，无欠余款
+    run("下级不开单客户", "setCustomer009_2");// 不做开单操作，无欠余款
     run("yun客户", "setCustomer010");// 下拉框验证,上级客户
     run("yun客户下级", "setCustomer011");// 下拉框验证,下级客户
     run("0309", "setCustomer012");// 纯数字客户，用于查询条件验证
@@ -288,6 +290,14 @@ function setCustomer008() {
  */
 function setCustomer009() {
     var keys = { "名称" : "不开单客户", "门店" : "常青店", "适用价格" : "零批价" };
+    return editCustomerBasicSetUp(keys);
+}
+function setCustomer009_1() {
+    var keys = { "名称" : "上级不开单客户", "门店" : "常青店", "适用价格" : "零批价" };
+    return editCustomerBasicSetUp(keys);
+}
+function setCustomer009_2() {
+    var keys = { "名称" : "下级不开单客户", "门店" : "常青店","上级客户":"sjbkdkh", "适用价格" : "零批价" };
     return editCustomerBasicSetUp(keys);
 }
 
