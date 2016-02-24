@@ -134,8 +134,16 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
     run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450");
     run("【销售开单-开单】客户折扣下，输入客户，再新增货品，点保存时检查提示", "test170509");
-    run("【销售开单】补货退货验证+允许继续输入+颜色尺码", "test170207");
     run("【销售开单】补货退货验证+不允许继续输入+颜色尺码", "test170208");
+    run("【销售开单】补货退货验证+允许继续输入+颜色尺码", "test170207");
+    run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
+    run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户分店+均色均码", "test170210");
+    run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+均色均码", "test170211");
+    run("【销售开单】销售开单错开款号导致不能退货情况", "test170226");
+    run("【销售开单】单据修改状态下退货验证问题", "test170227");
+    run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
+    run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");
+    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
 
 }
 function testSalesNoColorSize002() {
@@ -246,6 +254,14 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "补货退货" };
     o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
+    o = { "新值" : "1", "数值" : [ "可以继续输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "未拿货款号做退货" };
+    o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "自动生成款号" };
@@ -5493,7 +5509,7 @@ function test170207() {
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否允许继续输入" };
+    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
     o = { "新值" : "1", "数值" : [ "可以继续输入", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5506,7 +5522,7 @@ function test170207() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "特殊货品" : { "抹零" : 19, "打包费" : 30 },
+    var json = { "客户" : "ls", "特殊货品" : { "抹零" : 9, "打包费" : 20 },
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -5515,14 +5531,17 @@ function test170207() {
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isIn(alertMsg, "操作提醒，该款属于补货不能退货 ]\n [3035,jkk");
-
-    var f3 = new TField("数量", TF, 3, 3);
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    var ret = isEqual("-2", getTextFieldValue(getScrollView(), 3));
 
     saveAndAlertOk();
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
     tapPrompt();
+
+    var ret1 = isIn(alertMsg, "保存成功，是否打印");
+
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -5534,17 +5553,19 @@ function test170207() {
     var opt = qr.data[0]["操作日期"];
 
     tapFirstText();
-    var ret = isAnd(isEqual(je, getTextFieldValue(window, 3)), isEqual(
-            "3035,jkk", getTextFieldValue(getScrollView(), 0)), isEqual(3,
+    var ret2 = isAnd(isEqual(je, getTextFieldValue(window, 3)), isEqual(
+            "3035,jkk", getTextFieldValue(getScrollView(), 0)), isEqual(-2,
             getTextFieldValue(getScrollView(), 3)), isEqual("00000,抹零",
             getTextFieldValue(getScrollView(), 7)), isEqual(-1,
             getTextFieldValue(getScrollView(), 10)), isEqual("00001,打包费",
             getTextFieldValue(getScrollView(), 14)), isEqual(1,
             getTextFieldValue(getScrollView(), 17)), isEqual("李四", kh),
             isEqual(3, sl), isAqualOptime(getOpTime(), opt));
+
     tapReturn();
-    
-    return ret;
+
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170208() {
     var qo, o, ret = true;
@@ -5552,10 +5573,10 @@ function test170208() {
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否允许继续输入" };
+    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
     o = { "新值" : "0", "数值" : [ "不能输入", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
     editSalesBillNoColorSize(json);
@@ -5602,8 +5623,415 @@ function test170208() {
             getTextFieldValue(getScrollView(), 17)), isEqual("李四", kh),
             isEqual(3, sl), isAqualOptime(getOpTime(), opt));
     tapReturn();
-    
+
     return ret;
+}
+function test170209() {
+    var qo, o, ret = true;
+    qo = { "备注" : "未拿货款号做退货" };
+    o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("客户", TF_AC, 0, "ls", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, "特殊货品");
+    var g0 = new TField("抹零", TF, 0, 58);
+    var g1 = new TField("打包费", TF, 1, 300);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    var r = "anewk" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var f24 = new TField("数量", TF, 24, "-30");
+    var fields = [ f24 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=30, [" + r + "," + r + "]");
+
+    tapReturn();
+
+    return ret;
+}
+function test170210() {
+    var qo, o, ret = true;
+    qo = { "备注" : "未拿货款号做退货" };
+    o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("客户", TF_AC, 0, "xjkh1", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, "特殊货品");
+    var g0 = new TField("抹零", TF, 0, 58);
+    var g1 = new TField("打包费", TF, 1, 300);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    var r = "anewk" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var f24 = new TField("数量", TF, 24, "-30");
+    var fields = [ f24 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=30, [" + r + "," + r + "]");
+
+    tapReturn();
+
+    return ret;
+}
+function test170211() {
+    var qo, o, ret = true;
+    qo = { "备注" : "未拿货款号做退货" };
+    o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "特殊货品");
+    var g0 = new TField("抹零", TF, 0, 58);
+    var g1 = new TField("打包费", TF, 1, 300);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    var r = "anewk" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var f24 = new TField("数量", TF, 24, "-30");
+    var fields = [ f24 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作失败，[往来单位为空不允许有欠款或余额，请核对客户是否填写或支付是否正确");
+
+    tapReturn();
+
+    return ret;
+}
+function test170226() {
+    var qo, o, ret = true;
+    qo = { "备注" : "未拿货款号做退货" };
+    o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "退货数" };
+    o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单针对未拿货款号" };
+    o = { "新值" : "1", "数值" : [ "仅提醒，允许输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var f0 = new TField("客户", TF_AC, 0, "ls", -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, "特殊货品");
+    var g0 = new TField("抹零", TF, 0, 58);
+    var g1 = new TField("打包费", TF, 1, 300);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    var r = "anewk" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var f24 = new TField("数量", TF, 24, "-30");
+    var fields = [ f24 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var kh = qr.data[0]["客户"];
+    var je = qr.data[0]["金额"];
+    var sl = qr.data[0]["数量"];
+    var opt = qr.data[0]["操作日期"];
+
+    tapFirstText();
+    var ret = isAnd(ret, isEqual("00000,抹零", getTextFieldValue(getScrollView(),
+            0)), isEqual(-1, getTextFieldValue(getScrollView(), 3)), isEqual(
+            "00001,打包费", getTextFieldValue(getScrollView(), 7)), isEqual(1,
+            getTextFieldValue(getScrollView(), 10)), isEqual(je,
+            getTextFieldValue(window, 3)), isIn(getTextFieldValue(
+            getScrollView(), 14), r), isEqual(-30, getTextFieldValue(
+            getScrollView(), 17)), isEqual("李四", kh), isEqual(-30, sl),
+            isAqualOptime(getOpTime(), opt));
+    tapReturn();
+
+    return ret;
+}
+function test170227() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "备注" : "zdbz" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapFirstText();
+    var f3 = new TField("数量", TF, 3, "-6");
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var kh = qr.data[0]["客户"];
+    var je = qr.data[0]["金额"];
+    var sl = qr.data[0]["数量"];
+    var opt = qr.data[0]["操作日期"];
+
+    tapFirstText();
+    var ret = isAnd(ret, isEqual("3035,jkk", getTextFieldValue(getScrollView(),
+            0)), isEqual(-6, getTextFieldValue(getScrollView(), 3)), isEqual(
+            je, getTextFieldValue(window, 3)), isEqual("李响", kh), isEqual(-6,
+            sl), isAqualOptime(getOpTime(), opt));
+    tapReturn();
+
+    return ret;
+}
+function test170228() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售允许单价为0的退货和开单" };
+    o = { "新值" : "1", "数值" : [ "退货和销售价格允许为零", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "lx",
+        "明细" : [ { "货品" : "k300", "数量" : "6" }, { "货品" : "3035", "数量" : "-5" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("数量", TF, 4, "0");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    return ret;
+}
+function test170229() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售允许单价为0的退货和开单" };
+    o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "lx",
+        "明细" : [ { "货品" : "k200", "数量" : "20" },
+                { "货品" : "3035", "数量" : "-10" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, "0");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作失败，[销售价不能为零，请核对款号[k200]价格是否维护");
+
+    tapReturn();
+
+    return ret;
+}
+function test170239() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "1", "数值" : [ "支持，开启后店员只显示本门店人员", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+
+    var cond = "isIn(alertMsg, '清理和刷新成功')";
+    waitUntil(cond, 300);
+
+    tapMenu("销售开单", "开  单+");
+    var ret = true;
+    var f = new TField("店员", TF_AC, 4, "1", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("101,财务员", v)) {
+            ret = false;
+            break;
+        }
+    }
+    delay();
+
+    tapButton(window, CLEAR);
+    var ret1 = true;
+    var f = new TField("店员", TF_AC, 4, "2", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("201,财务员", v)) {
+            ret1 = false;
+            break;
+        }
+    }
+    delay();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var ret2 = true;
+    var f = new TField("店员", TF_AC, 4, "1", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("103,采购员", v)) {
+            ret2 = false;
+            break;
+        }
+    }
+    delay();
+    tapReturn();
+
+    tapMenu("采购入库", "按订货入库");
+    var ret3 = true;
+    var f = new TField("店员", TF_AC, 4, "2", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("204,店长", v)) {
+            ret3 = false;
+            break;
+        }
+    }
+    delay();
+    tapReturn();
+
+    tapMenu("采购入库", "按订货入库");
+    var ret4 = true;
+    var f = new TField("店员", TF_AC, 4, "1", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        debugElementTree(cell);
+        var v = cell.name();
+        if (isEqual("102,仓管员", v)) {
+            ret4 = false;
+            break;
+        }
+    }
+    delay();
+    tapReturn();
+
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170240() {
     // 设置全局参数 开单是否门店过滤人中为 支持,开启后店员只显示本门店人员
@@ -6316,7 +6744,8 @@ function test170450() {
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("单价", TF, 4, Number(lprice - 10));
