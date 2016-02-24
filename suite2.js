@@ -61,7 +61,7 @@ function test000All() {
     
 //    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
 
-    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
+    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");//
 	   
 // testStatisticPictureAll();
 // testSystem001();

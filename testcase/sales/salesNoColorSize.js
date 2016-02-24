@@ -5954,7 +5954,7 @@ function test170239() {
 
     tapMenu("销售开单", "开  单+");
     var ret = true;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
+    var f = new TField("店员", TF_AC, 5, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -5969,7 +5969,7 @@ function test170239() {
 
     tapButton(window, CLEAR);
     var ret1 = true;
-    var f = new TField("店员", TF_AC, 4, "2", -1);
+    var f = new TField("店员", TF_AC, 5, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -5999,7 +5999,18 @@ function test170239() {
     delay();
     tapReturn();
 
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+    tapReturn();
+
     tapMenu("采购入库", "按订货入库");
+    var keys = { "日期从" : getDay(-3), "到" : getToday() }
+    var fields = purchaseOrderFields(keys);
+    query(fields);
+
+    tapFirstText();
+
     var ret3 = true;
     var f = new TField("店员", TF_AC, 4, "2", -1);
     var cells = getTableViewCells(window, f);
@@ -6015,23 +6026,7 @@ function test170239() {
     delay();
     tapReturn();
 
-    tapMenu("采购入库", "按订货入库");
-    var ret4 = true;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        debugElementTree(cell);
-        var v = cell.name();
-        if (isEqual("102,仓管员", v)) {
-            ret4 = false;
-            break;
-        }
-    }
-    delay();
-    tapReturn();
-
-    return ret && ret1 && ret2 && ret3 && ret4;
+    return ret && ret1 && ret2 && ret3;
 }
 function test170240() {
     // 设置全局参数 开单是否门店过滤人中为 支持,开启后店员只显示本门店人员
