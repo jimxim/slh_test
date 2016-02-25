@@ -37,16 +37,14 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
 // run("【统计分析—综合汇总】进入详细-欠款", "test190039");
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
- run("【test", "test110020");
+// run("【test", "editBillForCustomerAccount3");
 
-// run("test", "onlyTest");
+ run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-   var o={"名称":"小王","手机":"1234","店员":"000","地址":"a"};
-   editSalesBillAddCustomer(o);
-   return o;
+    tapButtonScroll(getScrollView(-1,0),60);
 }
 
 

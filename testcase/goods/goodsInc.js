@@ -776,9 +776,9 @@ function logisticsVerifySetField(o, key) {
 /**
  * 撤销一段时间内的盘点记录
  */
-function repealRecordsForCheck() {
+function repealRecordsForCheck(day) {
     tapMenu("盘点管理", "处理记录");
-    var keys = { "日期从" : getDay(-365), "是否撤销" : "否" };
+    var keys = { "日期从" : day, "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
     var qr = getQR();
@@ -797,8 +797,8 @@ function editLogisticsVerify(o) {
         // 坐标偏移8 ,8
         // tableView是倒数第二个
         var qr = getQRtable1(window, 8, -2);
-        debugQResult(qr);
-        debugObject(qr.data[0], "qr.data[0]=");
+        // debugQResult(qr);
+        // debugObject(qr.data[0], "qr.data[0]=");
         var batch;
         for (var i = 0; i < a1.length; i++) {
             batch = qr.data[i]["批次"];
