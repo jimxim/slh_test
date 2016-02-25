@@ -1,9 +1,9 @@
 //zhangy <2397655091 at qq.com> 20160120
 
 function testOutAndIn_Check001() {
-    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
     run("【销售开单－开单】开单的同时订货", "test170125");
     run("【销售开单－开单】取未保存", "test170140");
+    run("【销售开单-开单-加工货品】加工货品", "test170429");
 
     run("【盘点管理—新增盘点】获取未保存数据准备", "test180022_Prepare");
     run("【盘点管理—新增盘点】获取未保存", "test180022");
@@ -108,43 +108,6 @@ function test170239_Params() {
     o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 }
-function test170239() {
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
-
-    tapMenu("销售开单", "开  单+");
-    var ret = false;
-    var f = new TField("客户", TF_AC, 5, "000", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        // debugElementTree(cell);
-        var v = cell.name();
-        if (isEqual("000,总经理", v)) {
-            ret = true;
-            break;
-        }
-    }
-    tapButton(window, CLEAR);
-
-    var ret1 = true;
-    var f = new TField("客户", TF_AC, 5, "100", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        // debugElementTree(cell);
-        var v = cell.name();
-        if (isEqual("100,总经理", v)) {
-            ret1 = false;
-            break;
-        }
-    }
-    tapButton(window, CLEAR);
-    tapReturn();
-
-    logDebug("ret=" + ret + ", ret=" + ret);
-    return ret && ret;
-}
 function test170125_Params() {
     // 开启参数 销售开单的同时订货功能，需退出重新登陆
     var qo, o, ret = true;
@@ -227,4 +190,51 @@ function test170140() {
     tapReturn();
 
     return ret;
+}
+function test170429Prepare() {
+    // 后台参数：“开单时，采购入库订货是否启用加工价显示ACList”开启,需重新登录
+    var qo, o, ret = true;
+    qo = { "备注" : "加工价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+function test170429() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "gg55" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var jprice = getTextFieldValue(getScrollView(), 8);
+    var lprice = getTextFieldValue(getScrollView(), 9);
+    var gprice = getTextFieldValue(getScrollView(), 23);
+
+    tapReturn();
+
+    tapMenu("统计分析", "利润表");
+    query();
+    var qr = getQR();
+    var cbe = qr.data[0]["成本额"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "gg55", "数量" : "1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var ret = isAnd(isEqual(lprice, getTextFieldValue(getScrollView(), 4)),
+            isNoEqual(gprice, getTextFieldValue(getScrollView(), 4)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("统计分析", "利润表");
+    query();
+    qr = getQR();
+    var cbe1 = qr.data[0]["成本额"];
+
+    var ret1 = isEqual(jprice * 1, sub(cbe1, cbe));
+
+    logDebug("ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }

@@ -62,14 +62,19 @@ function testBasicSetUpAll() {
     run("plczcs2", "setGoods007");
     run("plczcs3", "setGoods008");
 
-    // 童装尺码模式开单带款号
-    run("Tz", "setGoods0013");
-
     run("颜色尺码模式", "setGoodsColorParams");
     run("x001", "setGoods009");
     run("x003", "setGoods010");
     run("nb001", "setGoods011");
     run("nb003", "setGoods012");
+    
+    // 童装尺码模式开单带款号
+    run("Tz", "setGoods0013");
+
+    // 加工款
+    run("GG55", "setGoods014");
+    // 中洲店款
+    run("Aaa002", "setGoods015");
 
     run("均色均码模式", "setGoodsNoColorParams");
 
@@ -194,8 +199,8 @@ function editCustomerBasicSetUp(keys) {
  */
 function setXiaoWang() {
     var keys = { "名称" : "小王", "门店" : "常青店", "店员" : "000", "上级客户" : "",
-        "客户类别" : "零批客户", "客户代码":"xw001","允许退货" : "是", "适用价格" : "零批价", "拿货折扣" : "1",
-        "信用额度" : "0", "欠款报警" : "0" };
+        "客户类别" : "零批客户", "客户代码" : "xw001", "允许退货" : "是", "适用价格" : "零批价",
+        "拿货折扣" : "1", "信用额度" : "0", "欠款报警" : "0" };
     return editCustomerBasicSetUp(keys);
 }
 
@@ -297,7 +302,8 @@ function setCustomer009_1() {
     return editCustomerBasicSetUp(keys);
 }
 function setCustomer009_2() {
-    var keys = { "名称" : "下级不开单客户", "门店" : "常青店","上级客户":"sjbkdkh", "适用价格" : "零批价" };
+    var keys = { "名称" : "下级不开单客户", "门店" : "常青店", "上级客户" : "sjbkdkh",
+        "适用价格" : "零批价" };
     return editCustomerBasicSetUp(keys);
 }
 
@@ -368,7 +374,7 @@ function setProvider004() {
     return editProviderBasicSetUp(keys);
 }
 function setProvider005() {
-    var keys = { "名称" : "特步生产商","手机":"13122221112", "适用价格" : "零批价" };
+    var keys = { "名称" : "特步生产商", "手机" : "13122221112", "适用价格" : "零批价" };
     return editProviderBasicSetUp(keys);
 }
 function setProvider006() {
@@ -654,13 +660,6 @@ function setGoods008() {
     var keys = { "款号" : "plczcs3", "名称" : "批量操作测试3" };
     return editGoodsBasicSetUp(keys);
 }
-function setGoods013() {
-    var keys = { "款号" : "Tz002", "名称" : "童装2", "品牌" : "0309pp", "颜色" : "0,1,2",
-        "尺码" : "12,13,14,15,16,17,18", "进货价" : "100", "零批价" : "713",
-        "打包价" : "864", "大客户价" : "864", "Vip价格" : "618", "产品折扣" : "0.6",
-        "季节" : "春季", "计量单位" : "件", "最小库存" : "0", "最大库存" : "0" }
-    return editGoodsBasicSetUp(keys, "2014-06-22", "yes");
-}
 function setGoods009() {
     var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "Ck公司", "颜色" : "0,1,",
         "尺码" : "3,4,5,", "吊牌价" : "500", "进货价" : "150", "零批价" : "490",
@@ -692,4 +691,27 @@ function setGoods012() {
         "产品折扣" : "0.8", "季节" : "春季", "类别" : "围巾", "厂商" : "新百伦生产商",
         "计量单位" : "件", "仓位" : "A座六层", "最小库存" : "0", "最大库存" : "0", "经办人" : "001" }
     return editGoodsBasicSetUp(keys, "2015-02-13", "yes");
+}
+function setGoods013() {
+    var keys = { "款号" : "Tz002", "名称" : "童装2", "品牌" : "0309pp", "颜色" : "0,1,2",
+        "尺码" : "12,13,14,15,16,17,18", "进货价" : "100", "零批价" : "713",
+        "打包价" : "864", "大客户价" : "864", "Vip价格" : "618", "产品折扣" : "0.6",
+        "季节" : "春季", "计量单位" : "件", "最小库存" : "0", "最大库存" : "0" }
+    return editGoodsBasicSetUp(keys, "2014-06-22", "yes");
+}
+function setGoods014() {
+    var keys = { "款号" : "GG55", "名称" : "衣服", "品牌" : "1010pp", "吊牌价" : "0",
+        "进货价" : "50", "零批价" : "713", "打包价" : "864", "大客户价" : "864",
+        "Vip价格" : "618", "产品折扣" : "1", "季节" : "春季", "类别" : "小类袜子", "厂商" : "杭州",
+        "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0", "是否加工款" : "是",
+        "加工价" : "250" }
+    return editGoodsBasicSetUp(keys, "2014-03-17", "yes");
+}
+function setGoods015() {
+    var keys = { "款号" : "Aaa002", "名称" : "浅色牛仔衣", "品牌" : "0309pp", "吊牌价" : "300",
+        "进货价" : "100", "零批价" : "792", "打包价" : "772", "大客户价" : "752",
+        "Vip价格" : "642", "产品折扣" : "0.9", "季节" : "春季", "类别" : "牛仔衣", "厂商" : "蓝色天空",
+        "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0", "是否加工款" : "否",
+        "加工价" : "0", "门店" : "中洲店", "备注" : "一家" }
+    return editGoodsBasicSetUp(keys, "2014-12-06", "yes");
 }
