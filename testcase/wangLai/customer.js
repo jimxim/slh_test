@@ -8,7 +8,7 @@ function testCustomer001() {
     run("【往来管理-客户查询】翻页_排序", "test110001_1");
     run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
     run("【往来管理-客户账款】客户账款->客户门店账", "test110015");
-    run("【往来管理-客户账款】客户账款->按上级单位", "test110018");
+    run("【往来管理-客户账款】客户账款->按上级单位", "test110018");// 账户余款暂不支持排序
     run("【往来管理-客户账款】客户总账", "test110020");
     run("【往来管理-客户账款】客户总账底部数据汇总", "test110021");
     run("【往来管理-客户活跃度】客户活跃度", "test110033");
@@ -29,11 +29,6 @@ function testCustomer001Prepare() {
     run("下级客户1开单", "editBillForCustomerAccount2");
     run("厂商账款异地核销验证数据准备", "editBillForCustomerAccount3");
 
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "未付" : "yes" };
-    editSalesBillNoColorSize(json);
-    return json;
 }
 
 function testCustomer001Else() {
@@ -68,7 +63,8 @@ function testCustomer001Else() {
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
     run("【往来管理-厂商账款】总经理权限检查", "test110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
-    run("【往来管理-厂商账款】异地核销", "test110041_1");
+    // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");//待测
+    // run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");//待测
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -1778,21 +1774,17 @@ function test110036() {
     var fields = queryCustomerScoreFields(key);
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("赵本山", qr.data[0]["名称"])
-            && isEqual(qr.data[0]["当前积分"], qr.counts["当前积分"])
-            && isEqual(1, qr.total) && isEqual(1, qr.totalPageNo);
+    ret = isAnd(ret, isEqual("赵本山", qr.data[0]["名称"]), isEqual(
+            qr.data[0]["当前积分"], qr.counts["当前积分"]), isEqual(1, qr.total),
+            isEqual(1, qr.totalPageNo));
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2));
 
-    var ret1 = true;
-    ret1 = ret1 && sortByTitle("门店");
-    ret1 = ret1 && sortByTitle("名称");
-    ret1 = ret1 && sortByTitle("电话");
-    ret1 = ret1 && sortByTitle("当前积分", IS_NUM);
-    ret1 = ret1 && sortByTitle("最近兑换日期", IS_DATE2);
+    var ret1 = isAnd(sortByTitle("门店"), sortByTitle("名称"), sortByTitle("电话"),
+            sortByTitle("当前积分", IS_NUM), sortByTitle("最近兑换日期", IS_DATE2));
 
     return isAnd(ret, ret1);
 }
@@ -2340,15 +2332,14 @@ function editBillForCustomerAccount3() {
 
     return json;
 }
-function test110041Verify_1() {
-    // 异地核销中洲店的2笔1500元欠款单，一笔核销750元，一笔全部核销
-    var i, j, ret = true;
-    // qo = { "备注" : "是否允许跨门店核销" };
-    // o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
 
+// 默认已经开启异地核销参数
+// 异地核销欠款
+function test110041Verify_1() {
+    var i, j, ret = true;
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
+    // 本门店的欠款单，用于与异地核销做对比
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
         "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2357,102 +2348,64 @@ function test110041Verify_1() {
     var qr = getQR();
     var batch3 = Number(qr.data[0]["批次"]);// 常青店的入库单批次
 
-    // 取editBillForCustomerAccount3做的2个欠款入库单
-    var keys = { "厂商" : "vell", "门店" : "中洲店" };
-    var fields = purchaseQueryBatchFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
-    qr = getQR();
-    var batch1, batch2;// 中洲店的入库单批次
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            if (qr.data[i]["备注"] == "异地核销") {
-                batch2 = qr.data[i]["批次"];// 用来全部核销
-                break;
-            }
-        }
-        if (!isDefined(batch2) && j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    batch1 = Number(batch2) - 1;// 部分核销
-
     tapMenu("往来管理", "厂商账款", "厂商门店账");
-    keys = { "厂商" : "vell" };
-    fields = queryProviderShopAccountFields(keys);
+    var keys = { "厂商" : "vell" };
+    var fields = queryProviderShopAccountFields(keys);
     query(fields);
     qr = getQR();
-    var s1, s2;
+    var n1, n2;
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
-            s1 = qr.data[i]["余额"];
+            n1 = qr.data[i]["余额"];
         }
         if (qr.data[i]["门店"] == "中洲店") {
-            s2 = qr.data[i]["余额"];
+            n2 = qr.data[i]["余额"];
         }
     }
-
-    tapFirstTextByTitle("门店", "常青店");
-    qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
-    var arr3 = { "批次" : batch3, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "2000", "付款" : "0" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, arr3));
-    tapNaviLeftButton();
-    delay();
-
-    tapFirstTextByTitle("门店", "中洲店");
-    qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
-    var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0" };
-    var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
-            arr2));
-    tapNaviLeftButton();
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     keys = { "厂商" : "vell" };
     fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     qr = getQR();
-    // 查询结果唯一
-    var s = qr.data[0]["余额"];
+    var n = qr.data[0]["余额"]; // 查询结果唯一
 
-    tapFirstText();
-    qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-    var jo1 = { "门店" : "中洲店", "批次" : batch1, "日期" : getToday("yy"),
-        "类型" : "进货单", "金额" : "1500", "付款" : "0" };
-    var jo2 = { "门店" : "中洲店", "批次" : batch2, "日期" : getToday("yy"),
-        "类型" : "进货单", "金额" : "1500", "付款" : "0" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
-            jo2));
-    tapNaviLeftButton();
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "vell", "核销" : [ 4 ] };
+    editSalesBillNoColorSize(json);
 
-    test110041_1Field(batch1, "750");// 部分核销
-    test110041_1Field(batch2, "1500");// 全部核销
+    var batch1 = test110041_1Field("-1500", "750");// 部分核销
+    var batch2 = test110041_1Field("-1500", "1500");// 全部核销
+    var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+    var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     tapButton(window, QUERY);
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
-            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(s1, 750)));
+            // batch1的750，batch3的1500
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n1, 2250)));
         }
         if (qr.data[i]["门店"] == "中洲店") {
-            ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(s2, 3000)));
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(n2, 3000)));
         }
     }
 
     tapFirstTextByTitle("门店", "常青店");
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
-    var b1 = batch3 + 1, b2 = batch3 + 2;
-    var arr4 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
+    var b1 = batch3 + 2, b2 = batch3 + 3;
+    var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
         "付款" : "750", "异地核销" : "-1500" };
-    var arr5 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
+    var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
         "付款" : "1500", "异地核销" : "-1500" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, arr3), isEqualQRData1Object(qr,
-            arr4), isEqualQRData1Object(qr, arr5));
+    var jo3 = { "批次" : batch3, "日期" : getToday("yy"), "类型" : "进货单", "金额" : 0,
+        "付款" : 1500, "异地核销" : 0 };
+    // 验证常青店的3个核销单的数据
+    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
+            jo2), isEqualQRData1Object(qr, jo3));
     tapNaviLeftButton();
     delay();
 
@@ -2466,71 +2419,240 @@ function test110041Verify_1() {
         }
     }
     a1 = String(sub(a2, 1));
-    var arr6 = { "批次" : a2, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
+    var jo4 = { "批次" : a2, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
         "付款" : "0", "异地核销" : "1500" };
-    var arr7 = { "批次" : a1, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
+    var jo5 = { "批次" : a1, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
         "付款" : "0", "异地核销" : "1500" };
     ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
-            arr2), isEqualQRData1Object(qr, arr6), isEqualQRData1Object(qr,
-            arr7));
+            arr2), isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
+
     // 000,总经理
     // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
-    keys = {};
     var texts = getStaticTexts(window);
+    var batchA = "批次:   " + a2;
     var day = "日期:   " + getToday();
     var market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
     var staff = "操作人:   000,总经理";
-    ret = isAnd(ret, isHasStaticTexts(texts, day), isHasStaticTexts(texts,
-            market), isHasStaticTexts(texts, staff));
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+
     tapNaviLeftButton();
     delay();
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
     texts = getStaticTexts(window);
+    batchA = "批次:   " + a1;
     market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, day), isHasStaticTexts(texts,
-            market), isHasStaticTexts(texts, staff));
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
     tapNaviLeftButton();
     tapNaviLeftButton();
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["余额"], add(s, 2250)));
+    ret = isAnd(ret, isEqual(qr.data[0]["余额"], add(n, 3750)));
 
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
     // 原本的2个入库单应该还在
-    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
-            jo2));
-    jo1 = { "门店" : "常青店", "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "0", "付款" : "750", "异地核销" : "-1500" };
-    jo2 = { "门店" : "中洲店", "批次" : a1, "日期" : getToday("yy"), "类型" : "异地核销",
-        "金额" : "0", "付款" : "0", "异地核销" : "1500" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
-            jo2));
-    jo1 = { "门店" : "常青店", "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "0", "付款" : "1500", "异地核销" : "-1500" };
-    jo2 = { "门店" : "中洲店", "批次" : a2, "日期" : getToday("yy"), "类型" : "异地核销",
-        "金额" : "0", "付款" : "0", "异地核销" : "1500" };
-    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
-            jo2));
+    arr1["门店"] = "中洲店", arr2["门店"] = "中洲店";
+    jo1["门店"] = "常青店", jo2["门店"] = "常青店", jo3["门店"] = "常青店", jo4["门店"] = "中洲店",
+            jo5["门店"] = "中洲店";
+    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
+            arr2), isEqualQRData1Object(qr, jo1),
+            isEqualQRData1Object(qr, jo2), isEqualQRData1Object(qr, jo3),
+            isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
 
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
+    texts = getStaticTexts(window);
+    batchA = "批次:   " + a2;
+    market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+    tapNaviLeftButton();
 
+    tapTextByFirstWithName(a1, getScrollView(-1, 0));
+    texts = getStaticTexts(window);
+    batchA = "批次:   " + a1;
+    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+    tapNaviLeftButton();
     tapNaviLeftButton();
 
     return ret;
+
 }
 
-function test110041_1Field(batch, cash) {
+// 异地核销余款
+function test110041Verify_2() {
+    var i, j, ret = true;
+    tapMenu("采购入库", "新增入库+");
+    // 本门店的欠款单，用于与异地核销做对比
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
+        "现金" : "1500" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    var qr = getQR();
+    var batch3 = Number(qr.data[0]["批次"]);// 常青店的入库单批次
+
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    var keys = { "厂商" : "rt" };
+    var fields = queryProviderShopAccountFields(keys);
+    query(fields);
+    qr = getQR();
+    var n1, n2;
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["门店"] == "常青店") {
+            n1 = qr.data[i]["余额"];
+        }
+        if (qr.data[i]["门店"] == "中洲店") {
+            n2 = qr.data[i]["余额"];
+        }
+    }
+
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    keys = { "厂商" : "rt" };
+    fields = queryCustomerProviderAccountFields(keys);
+    query(fields);
+    qr = getQR();
+    var n = qr.data[0]["余额"]; // 查询结果唯一
+
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "rt", "核销" : [ 5 ] };
+    editSalesBillNoColorSize(json);
+
+    var batch1 = test110041_1Field("-1500", "750");// 部分核销
+    var batch2 = test110041_1Field("-1500", "1500");// 全部核销
+    var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+    var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    tapButton(window, QUERY);
+    qr = getQR();
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["门店"] == "常青店") {
+            // batch1的750，batch3的1500
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n1, 2250)));
+        }
+        if (qr.data[i]["门店"] == "中洲店") {
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(n2, 3000)));
+        }
+    }
+
+    tapFirstTextByTitle("门店", "常青店");
+    qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
+    var b1 = batch3 + 2, b2 = batch3 + 3;
+    var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
+        "付款" : "750", "异地核销" : "-1500" };
+    var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
+        "付款" : "1500", "异地核销" : "-1500" };
+    var jo3 = { "批次" : batch3, "日期" : getToday("yy"), "类型" : "进货单", "金额" : 0,
+        "付款" : 1500, "异地核销" : 0 };
+    // 验证常青店的3个核销单的数据
+    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
+            jo2), isEqualQRData1Object(qr, jo3));
+    tapNaviLeftButton();
+    delay();
+
+    tapFirstTextByTitle("门店", "中洲店");
+    var a1, a2;// 异地核销批次号
+    qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
+    for (i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["类型"] == "异地核销") {
+            a2 = qr.data[i]["批次"];
+            break;
+        }
+    }
+    a1 = String(sub(a2, 1));
+    var jo4 = { "批次" : a2, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
+        "付款" : "0", "异地核销" : "1500" };
+    var jo5 = { "批次" : a1, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
+        "付款" : "0", "异地核销" : "1500" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
+            arr2), isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
+
+    // 000,总经理
+    // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
+    tapTextByFirstWithName(a2, getScrollView(-1, 0));
+    var texts = getStaticTexts(window);
+    var batchA = "批次:   " + a2;
+    var day = "日期:   " + getToday();
+    var market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    var staff = "操作人:   000,总经理";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+
+    tapNaviLeftButton();
+    delay();
+
+    tapTextByFirstWithName(a1, getScrollView(-1, 0));
+    texts = getStaticTexts(window);
+    batchA = "批次:   " + a1;
+    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(qr.data[0]["余额"], add(n, 3750)));
+
+    tapFirstText();
+    qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+    // 原本的2个入库单应该还在
+    arr1["门店"] = "中洲店", arr2["门店"] = "中洲店";
+    jo1["门店"] = "常青店", jo2["门店"] = "常青店", jo3["门店"] = "常青店", jo4["门店"] = "中洲店",
+            jo5["门店"] = "中洲店";
+    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
+            arr2), isEqualQRData1Object(qr, jo1),
+            isEqualQRData1Object(qr, jo2), isEqualQRData1Object(qr, jo3),
+            isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
+
+    tapTextByFirstWithName(a2, getScrollView(-1, 0));
+    texts = getStaticTexts(window);
+    batchA = "批次:   " + a2;
+    market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+    tapNaviLeftButton();
+
+    tapTextByFirstWithName(a1, getScrollView(-1, 0));
+    texts = getStaticTexts(window);
+    batchA = "批次:   " + a1;
+    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
+            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
+            staff));
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    return ret;
+
+}
+
+function test110041_1Field(n, cash, det) {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "现金" : cash };
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
-    // 日期降序，找到batch
+    // 日期降序，找到editBillForCustomerAccount3的准备数据
     tapTitle(getScrollView(-1, 0), "日期");
     tapTitle(getScrollView(-1, 0), "日期");
     delay();
@@ -2538,16 +2660,24 @@ function test110041_1Field(batch, cash) {
     var index = 4;// 起始下标为4
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["备注"] == "异地核销"
-                && qr.data[i]["批次"] == batch) {
+                && qr.data[i]["未结金额"] == n) {
             index = index + i * 2;
+            var batch = qr.data[i]["批次"];
             break;
         }
     }
     logDebug("index=" + index);
-    tapButton(getScrollView(-1, 0), index);
+    tapButtonScroll(getScrollView(-1, 0), index);
     app.navigationBar().buttons()["确 认"].tap();
+
+    if (isDefined(det)) {
+        json["明细"] = [ { "货品" : "3035", "数量" : 8 } ];
+    }
+    editSalesBillDetNoColorSize(json);
     editSalesBillCash(json);
     editSalesBillSave(json);
+
+    return batch;
 }
 
 function test110041Field(o) {
@@ -2881,7 +3011,7 @@ function test110048() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("往来管理", "更多.", "客户回访");
     query();

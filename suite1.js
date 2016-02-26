@@ -13,19 +13,6 @@ function test000All() {
 // run("prepare","testCustomer001Prepare");
 // run("prepare","testStatisticAnalysisPrepare");
  
-// run("【往来管理-客户查询】翻页_排序", "test110002");
-// run("【往来管理-客户查询】客户查询：单个或多个查询条件", "test110001");
-// run("【往来管理-客户查询】客户查询->客户停用", "test110005");
-// run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "test110057");
-// run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
-// run("【往来管理-新增客户】客户编码", "test110056");
-// run("【往来管理】是否欠款报警查询", "test110028");
-// run("【往来管理-客户活跃度】客户活跃度", "test110035");
-// run("【往来管理-客户活跃度】未拿货天数", "test110035");//有bug
-// run("【往来管理-积分查询】数据验证", "test110036_3");
-// run("【往来管理-新增厂商】新增厂商", "test110038");
-// run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110015");
- 
 // run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
 // run("【统计分析—收支汇总】查询清除", "test190094");// 随机数
 // run("【统计分析-新增收入】金额支持2位小数", "test190020");// 单价小数位元
@@ -37,14 +24,49 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
 // run("【统计分析—综合汇总】进入详细-欠款", "test190039");
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
+ 
+ 
 // run("【test", "editBillForCustomerAccount3");
+// logout();
+ run("【test", "test110041Verify_1");
 
- run("test", "onlyTest");
+// run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-    tapButtonScroll(getScrollView(-1,0),60);
+    var texts = getStaticTexts(window);
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        if(isIn(v,"批次")){
+            logDebug("v="+v);
+            break;
+        }
+    }
+}
+
+// 关闭尺码表头
+function addBillSales_sizehead0(){
+// tapMenu(menu1, menu2);
+// if(isIn(alertMsg,"开启表头尺码模式的开单必须是颜色尺码模式下")){
+// tapPrompt();
+        tapMenu("系统设置", "全局设置");
+        var qo = { "备注" : "颜色尺码模式开单更便捷" };
+        var fields = querySystemGlobalFields(qo);
+        query(fields);
+        tapFirstText();
+        var setObj = {};
+        setObj["数值"] = [ "默认不支持", "in" ];
+        setObj["授权码"] = [];
+        fields = editSystemGlobalFields(setObj);
+        setTFieldsValue(getScrollView(), fields);
+        saveAndAlertOk();
+        tapPrompt();
+        var ret=isIn(alertMsg,"必须重启商陆花");
+// }else{
+// return;
+// }
+        return ret;
 }
 
 
@@ -333,7 +355,7 @@ function test100Warehouse(){
     }
 }
 
-//财务员
+// 财务员
 function testTreasurer001() {
     var p1 = {"角色":"财务员"};
   var ok = login("001","000000",p1);

@@ -811,31 +811,19 @@ function editLogisticsVerify(o) {
 
 /**
  * 静态文本中是否包含txt1 类似销售开单，代收，物流商界面的内容判断
- * @param uiArr1
+ * @param texts
  * @param txt1
  * @param f1
  * @returns {Boolean}
  */
-function isHasStaticTexts(uiArr1, txt1, f1) {
-    debugArray(uiArr1);
-    if (isUndefined(f1)) {
-        f1 = "name";
-    }
-    var index = -1, v, ret;
-    for (var i = 0; i < uiArr1.length; i++) {
-        var t = uiArr1[i];
-        try {
-            v = eval("t." + f1 + "()");
-        } catch (e) {
-            logError(e);
-        }
+function isHasStaticTexts(texts, txt1) {
+    var ret = false;
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
         if (isEqual(v, txt1)) {
             ret = true;
             break;
         }
-    }
-    if (isUndefined(ret)) {
-        ret = false;
     }
     return ret;
 }
