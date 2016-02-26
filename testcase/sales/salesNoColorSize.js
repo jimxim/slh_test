@@ -76,13 +76,15 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】打印小票上积分与往来管理里积分比对", "test170190");
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");
     run("销售订货价格刷新", "test170445");
     run("采购入库/采购订货价格刷新", "test170527");
+    run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
-    run("【销售开单】底部汇总统一检查", "test170423");
+
 }
 function testSalesNoColorSize001() {
     run("【销售开单】客户或供应商信息不允许修改", "test170063");
@@ -177,6 +179,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "显示颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "更便捷" };
+    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "默认显示零批价或打包价" };
@@ -7189,6 +7195,46 @@ function test170430() {
 
     return ret;
 }
+function test170443() {
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+
+    var r = getTimestamp(8);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "40" } ],
+        "代收" : { "物流商" : "yt", "运单号" : r, "备注" : r + "yt" }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f7 = new TField("货品", TF_AC, 7, "k300", -1, 0);
+    var f10 = new TField("数量", TF, 10, "10");
+    var fields = [ f7, f10 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButton(window, "特殊货品");
+    var g0 = new TField("抹零", TF, 0, 58);
+    var g1 = new TField("打包费", TF, 1, 300);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "操作失败，[本单余额计算有误，请随意修改表单内容重新汇总");
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var batch1 = qr.data[0]["批次"];
+
+    ret = isAnd(ret, isEqual(batch1, batch));
+
+    return ret;
+}
 function test170445Change() {
     var f0 = new TField("客户", TF_AC, 0, "xw", -1, 0);
     var fields = [ f0 ];
@@ -8260,7 +8306,7 @@ function test170526() {
             getTextFieldValue(getScrollView(), 11)), isEqual("00001,打包费",
             getTextFieldValue(getScrollView(), 14)), isEqual(r1,
             getTextFieldValue(getScrollView(), 18)), isEqual(2, sl), isEqual(
-            k3, je), isEqual(getOpTime(), opt));
+            k3, je), isAqualOptime(getOpTime(), opt));
 
     tapReturn();
 
@@ -8268,19 +8314,28 @@ function test170526() {
     return ret;
 }
 function test170552() {
+    tapMenu("系统设置", "全局设置");
     var qo, o, ret = true;
     qo = { "备注" : "款号是否按门店区分" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+    var qr = getQR();
+    var num = qr.data[0]["数值"];
+
     o = { "新值" : "1", "数值" : [ "区分，门店只能选择自己的款号", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
+    if (!isIn(num, "区分，门店只能选择自己的款号")) {
+        runAndAlert("test210020Clear", OK);
+        tapPrompt();
 
-    var cond = "isIn(alertMsg, '清理和刷新成功')";
-    waitUntil(cond, 300);
+        var cond = "isIn(alertMsg, '清理和刷新成功')";
+        waitUntil(cond, 300);
+    }
 
-    var r = "0." + getTimestamp(3);
-    var r1 = "1." + getTimestamp(2);
+    delay(2);
+    var r = "1" + getTimestamp(1);
+    var r1 = "1" + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "aaa002", "数量" : "20" } ],
         "特殊货品" : { "抹零" : r, "打包费" : r1 } };
@@ -8301,11 +8356,12 @@ function test170552() {
     var ret1 = isAnd(isEqual("Aaa002,浅色牛仔衣", getTextFieldValue(getScrollView(),
             0)), isEqual(20, getTextFieldValue(getScrollView(), 3)), isEqual(
             Math.round(add(getTextFieldValue(getScrollView(), 5), sub(r1, r))),
-            k3), isEqual("00000,抹零", getTextFieldValue(getScrollView(), 7)),
-            isEqual(r, getTextFieldValue(getScrollView(), 11)), isEqual(
-                    "00001,打包费", getTextFieldValue(getScrollView(), 14)),
-            isEqual(r1, getTextFieldValue(getScrollView(), 18)),
-            isEqual(2, sl), isEqual(k3, je), isEqual(getOpTime(), opt));
+            getTextFieldValue(window, 3)), isEqual("00000,抹零",
+            getTextFieldValue(getScrollView(), 7)), isEqual(r,
+            getTextFieldValue(getScrollView(), 11)), isEqual("00001,打包费",
+            getTextFieldValue(getScrollView(), 14)), isEqual(r1,
+            getTextFieldValue(getScrollView(), 18)), isEqual(20, sl), isEqual(
+            getTextFieldValue(window, 3), je), isAqualOptime(getOpTime(), opt));
 
     tapReturn();
 
