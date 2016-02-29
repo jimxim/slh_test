@@ -2798,66 +2798,52 @@ function test110043() {
 }
 
 function test110043Check() {
-    tapButton(window,QUERY);
-//    query();
+    tapButton(window, QUERY);
+    // query();
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
-    var ret = true;
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
 
-    // 第一页的数据验证
-    // 本次的累计未结=上次的累计未结+付款-金额+异地核销
-    ret = ret && test110043Field(qr, "常青店");
-    ret = ret && test110043Field(qr, "中洲店");
-    ret = ret && test110043Field(qr, "仓库店");
+    // 第一页的数据验证,若该页没有相关门店的数据返回true
+    // 本次的累计未结=上次的累计未结+本次（付款-金额+异地核销）
+    var ret = test110043Field(qr, "常青店");
+    ret = isAnd(ret, test110043Field(qr, "中洲店"));
+    ret = isAnd(ret, test110043Field(qr, "仓库店"));
 
     var shop1, shop2, shop3, i, j;
-
-    for (i = qr.curPageTotal - 1; i >= 0; i--) {
-        if (qr.data[i]["门店"] == "常青店") {
-            shop1 = qr.data[i]["累计未结"];
-        }
-        if (qr.data[i]["门店"] == "中洲店") {
-            shop2 = qr.data[i]["累计未结"];
-        }
-        if (qr.data[i]["门店"] == "仓库店") {
-            shop3 = qr.data[i]["累计未结"];
-        }
-    }
-    // logDebug("shop1="+shop1+" shop2="+shop2+" shop3="+shop3);
-
     for (j = 1; j <= qr.totalPageNo; j++) {
-        if (shop1 == undefined) {
-            for (i = qr.curPageTotal - 1; i >= 0; i--) {
+        if (isUndefined(shop1)) {
+            for (i = 0; i < qr.curPageTotal; i++) {
                 if (qr.data[i]["门店"] == "常青店") {
                     shop1 = qr.data[i]["累计未结"];
+                    break;
                 }
             }
         }
-        if (shop2 == undefined) {
-            for (i = qr.curPageTotal - 1; i >= 0; i--) {
+        if (isUndefined(shop2)) {
+            for (i = 0; i < qr.curPageTotal; i++) {
                 if (qr.data[i]["门店"] == "中洲店") {
                     shop2 = qr.data[i]["累计未结"];
+                    break;
                 }
             }
         }
-        if (shop3 == undefined) {
-            for (i = qr.curPageTotal - 1; i >= 0; i--) {
+        if (isUndefined(shop3)) {
+            for (i = 0; i < qr.curPageTotal; i++) {
                 if (qr.data[i]["门店"] == "仓库店") {
                     shop3 = qr.data[i]["累计未结"];
+                    break;
                 }
             }
         }
-
+        if (isDefined(shop1) && isDefined(shop2) && isDefined(shop3)) {
+            break;
+        }
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
-        }
-
-        if (isDefined(shop1) && isDefined(shop2) && isDefined(shop3)) {
-            break;
         }
     }
     tapNaviLeftButton();
@@ -2872,6 +2858,7 @@ function test110043Check() {
         shop3 = 0;
     }
 
+    logDebug("shop1=" + shop1 + "  shop2=" + shop2 + "  shop3=" + shop3);
     var sum = Number(shop1) + Number(shop2) + Number(shop3);
     ret = isAnd(ret, isEqual(a, sum));
 
@@ -2882,7 +2869,7 @@ function test110043Field(qr, shop) {
     var expected, actual, startIndex, x, y, z;
     var ret = true;
     for (var i = 0; i < qr.curPageTotal - 1; i++) {
-        if (isDefined(shop) && qr.data[i]["门店"] == shop) {
+        if (qr.data[i]["门店"] == shop) {
             startIndex = i;
             expected = qr.data[i]["累计未结"]
             x = Number(qr.data[i]["付款"]);
@@ -2891,11 +2878,11 @@ function test110043Field(qr, shop) {
             for (var j = startIndex + 1; j < qr.curPageTotal; j++) {
                 if (qr.data[j]["门店"] == shop) {
                     actual = Number(qr.data[j]["累计未结"]) + x - y + z;
+                    ret = isEqual(expected, actual);
                     break;
                 }
             }
-            ret = ret && isEqual(expected, actual);
-            if (ret == false) {
+            if (!ret) {
                 break;
             }
         }

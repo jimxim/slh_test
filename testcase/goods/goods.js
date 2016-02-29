@@ -903,8 +903,8 @@ function test100006_1() {
             qr = getQR();
         }
     }
-    var ret = isAnd(isEqual(sum1, qr.counts["库存"]), isEqual(sum2,
-            qr.counts["价值"]), isEqual(sum3, qr.counts["仓库店"]), isEqual(sum4,
+    var ret = isAnd(isEqual(sum1, qr.counts["库存"]), isAqualNum(sum2,
+            qr.counts["价值"],0.01), isEqual(sum3, qr.counts["仓库店"]), isEqual(sum4,
             qr.counts["常青店"]), isEqual(sum5, qr.counts["中洲店"]));
 
     return ret;
