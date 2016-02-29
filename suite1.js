@@ -11,8 +11,21 @@ function test000All() {
  debug = true;
 // run("setParams", "goodsParams001");
 // run("prepare","testCustomer001Prepare");
-// run("prepare","testStatisticAnalysisPrepare");
+// run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");//还是可以修改
+// run("【往来管理】店长查看客户门店帐", "test110031_110032");
+// run("【往来管理-客户活跃度】未拿货天数", "test110035");
+// run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
+// run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");//100登陆
+ run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
+// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
+//run("【test", "editBillForCustomerAccount3");
+//logout();
+// run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
+// run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
  
+ 
+ 
+// run("prepare","testStatisticAnalysisPrepare");
 // run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
 // run("【统计分析—收支汇总】查询清除", "test190094");// 随机数
 // run("【统计分析-新增收入】金额支持2位小数", "test190020");// 单价小数位元
@@ -26,9 +39,7 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
  
  
-// run("【test", "editBillForCustomerAccount3");
-// logout();
- run("【test", "test110041Verify_1");
+
 
 // run("test", "onlyTest");
 // return ret;

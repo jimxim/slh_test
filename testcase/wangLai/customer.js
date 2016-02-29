@@ -48,8 +48,8 @@ function testCustomer001Else() {
     run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
     run("【往来管理-客户账款】详细页面", "test110022");
-    run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");// 有bug，现金刷卡位置互换，待测
-    run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");// 有bug，现金刷卡位置互换，待测
+    run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
+    run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
     run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
     run("【往来管理】是否欠款报警查询", "test110028");
 
@@ -63,8 +63,8 @@ function testCustomer001Else() {
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
     run("【往来管理-厂商账款】总经理权限检查", "test110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
-    // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");//待测
-    // run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");//待测
+    run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
+    run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -2374,8 +2374,11 @@ function test110041Verify_1() {
     json = { "客户" : "vell", "核销" : [ 4 ] };
     editSalesBillNoColorSize(json);
 
-    var batch1 = test110041_1Field("-1500", "750");// 部分核销
-    var batch2 = test110041_1Field("-1500", "1500");// 全部核销
+    json = { "客户" : "vell", "现金" : 750 };
+    var batch1 = test110041_1Field(json, "-1500");// 部分核销
+    json = { "客户" : "vell", "现金" : 1500 };
+    var batch2 = test110041_1Field(json, "-1500");// 全部核销
+
     var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
         "金额" : "1500", "付款" : "0", "异地核销" : "0" };
     var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
@@ -2386,8 +2389,8 @@ function test110041Verify_1() {
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
-            // batch1的750，batch3的1500
-            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n1, 2250)));
+            // batch1的750
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(n1, 750)));
         }
         if (qr.data[i]["门店"] == "中洲店") {
             ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(n2, 3000)));
@@ -2401,8 +2404,8 @@ function test110041Verify_1() {
         "付款" : "750", "异地核销" : "-1500" };
     var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
         "付款" : "1500", "异地核销" : "-1500" };
-    var jo3 = { "批次" : batch3, "日期" : getToday("yy"), "类型" : "进货单", "金额" : 0,
-        "付款" : 1500, "异地核销" : 0 };
+    var jo3 = { "批次" : batch3 + 1, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : 0, "付款" : 1500, "异地核销" : 0 };
     // 验证常青店的3个核销单的数据
     ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
             jo2), isEqualQRData1Object(qr, jo3));
@@ -2430,10 +2433,10 @@ function test110041Verify_1() {
     // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
     var texts = getStaticTexts(window);
-    var batchA = "批次:   " + a2;
-    var day = "日期:   " + getToday();
-    var market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
-    var staff = "操作人:   000,总经理";
+    var batchA = "批次   " + a2;
+    var day = "日期   " + getToday();
+    var market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    var staff = "操作人   000,总经理";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2443,8 +2446,8 @@ function test110041Verify_1() {
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a1;
-    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    batchA = "批次   " + a1;
+    market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2462,15 +2465,15 @@ function test110041Verify_1() {
     arr1["门店"] = "中洲店", arr2["门店"] = "中洲店";
     jo1["门店"] = "常青店", jo2["门店"] = "常青店", jo3["门店"] = "常青店", jo4["门店"] = "中洲店",
             jo5["门店"] = "中洲店";
-    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
-            arr2), isEqualQRData1Object(qr, jo1),
-            isEqualQRData1Object(qr, jo2), isEqualQRData1Object(qr, jo3),
-            isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
+    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
+            jo2), isEqualQRData1Object(qr, jo3), isEqualQRData1Object(qr, jo4),
+            isEqualQRData1Object(qr, jo5), test110041Field(qr, arr1),
+            test110041Field(qr, arr2));// arr1,arr2也许不在第一页
 
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a2;
-    market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    batchA = "批次   " + a2;
+    market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2478,8 +2481,8 @@ function test110041Verify_1() {
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a1;
-    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    batchA = "批次   " + a1;
+    market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2495,8 +2498,8 @@ function test110041Verify_2() {
     var i, j, ret = true;
     tapMenu("采购入库", "新增入库+");
     // 本门店的欠款单，用于与异地核销做对比
-    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
-        "现金" : "1500" };
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+        "现金" : "2000" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
@@ -2527,38 +2530,42 @@ function test110041Verify_2() {
     var n = qr.data[0]["余额"]; // 查询结果唯一
 
     tapMenu("采购入库", "新增入库+");
-    json = { "客户" : "rt", "核销" : [ 5 ] };
+    json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
+        "核销" : [ 4 ] };
     editSalesBillNoColorSize(json);
 
-    var batch1 = test110041_1Field("-1500", "750");// 部分核销
-    var batch2 = test110041_1Field("-1500", "1500");// 全部核销
+    json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
+    var batch1 = test110041_1Field(json, "1500");// 部分核销
+    json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
+    var batch2 = test110041_1Field(json, "1500");// 全部核销
+
     var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+        "金额" : "500", "付款" : "2000", "异地核销" : "0" };
     var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+        "金额" : "500", "付款" : "2000", "异地核销" : "0" };
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     tapButton(window, QUERY);
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
-            // batch1的750，batch3的1500
-            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n1, 2250)));
+            // batch1的800
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n1, 800)));
         }
         if (qr.data[i]["门店"] == "中洲店") {
-            ret = isAnd(ret, isEqual(qr.data[i]["余额"], add(n2, 3000)));
+            ret = isAnd(ret, isEqual(qr.data[i]["余额"], sub(n2, 3000)));
         }
     }
 
     tapFirstTextByTitle("门店", "常青店");
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var b1 = batch3 + 2, b2 = batch3 + 3;
-    var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
-        "付款" : "750", "异地核销" : "-1500" };
-    var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
-        "付款" : "1500", "异地核销" : "-1500" };
-    var jo3 = { "批次" : batch3, "日期" : getToday("yy"), "类型" : "进货单", "金额" : 0,
-        "付款" : 1500, "异地核销" : 0 };
+    var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "800",
+        "付款" : "0", "异地核销" : "1500" };
+    var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "1500",
+        "付款" : "0", "异地核销" : "1500" };
+    var jo3 = { "批次" : batch3 + 1, "日期" : getToday("yy"), "类型" : "进货单",
+        "金额" : 1500, "付款" : 0, "异地核销" : 0 };
     // 验证常青店的3个核销单的数据
     ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
             jo2), isEqualQRData1Object(qr, jo3));
@@ -2576,9 +2583,9 @@ function test110041Verify_2() {
     }
     a1 = String(sub(a2, 1));
     var jo4 = { "批次" : a2, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
-        "付款" : "0", "异地核销" : "1500" };
+        "付款" : "0", "异地核销" : "-1500" };
     var jo5 = { "批次" : a1, "日期" : getToday("yy"), "类型" : "异地核销", "金额" : "0",
-        "付款" : "0", "异地核销" : "1500" };
+        "付款" : "0", "异地核销" : "-1500" };
     ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
             arr2), isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
 
@@ -2586,10 +2593,10 @@ function test110041Verify_2() {
     // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
     var texts = getStaticTexts(window);
-    var batchA = "批次:   " + a2;
-    var day = "日期:   " + getToday();
-    var market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
-    var staff = "操作人:   000,总经理";
+    var batchA = "批次   " + a2;
+    var day = "日期   " + getToday();
+    var market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    var staff = "操作人   000,总经理";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2599,8 +2606,8 @@ function test110041Verify_2() {
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a1;
-    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    batchA = "批次   " + a1;
+    market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2610,7 +2617,7 @@ function test110041Verify_2() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["余额"], add(n, 3750)));
+    ret = isAnd(ret, isEqual(qr.data[0]["余额"], sub(n, 3800)));
 
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
@@ -2618,15 +2625,15 @@ function test110041Verify_2() {
     arr1["门店"] = "中洲店", arr2["门店"] = "中洲店";
     jo1["门店"] = "常青店", jo2["门店"] = "常青店", jo3["门店"] = "常青店", jo4["门店"] = "中洲店",
             jo5["门店"] = "中洲店";
-    ret = isAnd(ret, isEqualQRData1Object(qr, arr1), isEqualQRData1Object(qr,
-            arr2), isEqualQRData1Object(qr, jo1),
-            isEqualQRData1Object(qr, jo2), isEqualQRData1Object(qr, jo3),
-            isEqualQRData1Object(qr, jo4), isEqualQRData1Object(qr, jo5));
+    ret = isAnd(ret, isEqualQRData1Object(qr, jo1), isEqualQRData1Object(qr,
+            jo2), isEqualQRData1Object(qr, jo3), isEqualQRData1Object(qr, jo4),
+            isEqualQRData1Object(qr, jo5), test110041Field(qr, arr1),
+            test110041Field(qr, arr2));// arr1,arr2也许不在第一页
 
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a2;
-    market = "备注:   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
+    batchA = "批次   " + a2;
+    market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2634,8 +2641,8 @@ function test110041Verify_2() {
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
     texts = getStaticTexts(window);
-    batchA = "批次:   " + a1;
-    market = "备注:   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
+    batchA = "批次   " + a1;
+    market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
     ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
             day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
             staff));
@@ -2646,10 +2653,10 @@ function test110041Verify_2() {
 
 }
 
-function test110041_1Field(n, cash, det) {
+function test110041_1Field(o, n) {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "现金" : cash };
-    editSalesBillCustomer(json);
+    editSalesBillCustomer(o);
+    editSalesBillDetNoColorSize(o);
 
     tapButton(window, "核销");
     // 日期降序，找到editBillForCustomerAccount3的准备数据
@@ -2659,40 +2666,36 @@ function test110041_1Field(n, cash, det) {
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var index = 4;// 起始下标为4
     for (var i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["备注"] == "异地核销"
-                && qr.data[i]["未结金额"] == n) {
+        // && qr.data[i]["备注"] == "异地核销"
+        if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["未结金额"] == n) {
             index = index + i * 2;
             var batch = qr.data[i]["批次"];
             break;
         }
     }
-    logDebug("index=" + index);
+    // logDebug("index=" + index);
     tapButtonScroll(getScrollView(-1, 0), index);
     app.navigationBar().buttons()["确 认"].tap();
 
-    if (isDefined(det)) {
-        json["明细"] = [ { "货品" : "3035", "数量" : 8 } ];
-    }
-    editSalesBillDetNoColorSize(json);
-    editSalesBillCash(json);
-    editSalesBillSave(json);
+    editSalesBillCash(o);
+    editSalesBillSave(o);
 
     return batch;
 }
 
-function test110041Field(o) {
-    var texts = getStaticTexts(window);
-    var batch = "批次:   " + o["批次"];
-    var day = "日期:   " + o["日期"];
-    var num = "总数:   " + o["总数"];
-    var sum = "总额:   " + o["总额"];
-    var type = "类型:   " + o["类型"];
-    var market = "备注:   " + o["备注"];
-    var staff = "操作人:   " + o["操作人"];
-    var ret = isAnd(isHasStaticTexts(texts, batch),
-            isHasStaticTexts(texts, day), isHasStaticTexts(texts, num),
-            isHasStaticTexts(texts, sum), isHasStaticTexts(texts, type),
-            isHasStaticTexts(texts, market), isHasStaticTexts(texts, staff));
+function test110041Field(qr, arr) {
+    var j, ret;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        ret = isEqualQRData1Object(qr, arr);
+        if (!ret && j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+        }
+    }
+    if (j > 1) {
+        tapNaviLeftButton();
+        tapFirstText();
+    }
     return ret;
 }
 
