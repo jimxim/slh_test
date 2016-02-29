@@ -47,9 +47,10 @@ function testCustomer001Else() {
 
     run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "test110019");
-    run("【往来管理-客户账款】详细页面", "test110022");
+    run("【往来管理-客户账款】详细页面_上下级模式", "test110022");
     run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
     run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
+    run("【往来管理-客户账款】异地核销", "test110022Verify3");
     run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
     run("【往来管理】是否欠款报警查询", "test110028");
 
@@ -1264,7 +1265,7 @@ function test110022Verify1() {
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var exp = { "批次" : batch, "操作日期" : getToday("yy"), "店员" : "总经理",
-        "金额" : 1000 + num * 2, "现金" : 1000 + num, "刷卡" : 0, "汇款" : 0, "代收" : 0,
+        "金额" : 1000, "现金" : 1000 + num, "刷卡" : 0, "汇款" : 0, "代收" : 0,
         "未结" : -num };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
     tapNaviLeftButton();
@@ -1369,7 +1370,7 @@ function test110022Verify2() {
 }
 
 function test110022Verify2Field(pay) {
-    var i;
+    var i, index;
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "sjkh1" };
     editSalesBillCustomer(json);
@@ -1377,28 +1378,82 @@ function test110022Verify2Field(pay) {
     tapButton(window, "核销");
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["客户"] == "下级客户1") {
-            if (qr.data[i]["未结金额"] > 0) {
-                break;
-            }
+        if (qr.data[i]["门店"] == "常青店" && qr.data[i]["客户"] == "下级客户1"
+                && qr.data[i]["未结金额"] > 0) {
+            index = i;
+            break;
         }
     }
-    tapButtonScroll(getScrollView(1, 0), i * 2 + 5);
-    app.navigationBar().buttons()["确 认"].tap();
+    if (isDefined(index)) {
+        tapButtonScroll(getScrollView(1, 0), index * 2 + 5);
+        app.navigationBar().buttons()["确 认"].tap();
 
-    var cardTFindex = getValueFromCacheF1("getCardTFindex");// 获取刷卡的下标
-    var num1 = getTextFieldValue(window, cardTFindex - 1);// 核销的欠余款的值
+        var cardTFindex = getValueFromCacheF1("getCardTFindex");// 获取刷卡的下标
+        var num1 = getTextFieldValue(window, cardTFindex - 1);// 核销的欠余款的值
 
-    var n = Math.ceil(num1 / 200);
-    if (isDefined(pay)) {
-        n--;
+        var n = Math.ceil(num1 / 200);
+        if (isDefined(pay)) {
+            n--;
+        }
+        json["明细"] = [ { "货品" : "3035", "数量" : n } ];
+        editSalesBillDetNoColorSize(json);
+        editSalesBillSave(json);
+        var num2 = sub(n * 200, num1);
+        var num = { "余款" : num1, "应收" : num2, "数量" : n };
+        return num;
+    } else {
+        tapNaviLeftButton();
+        tapReturn();
     }
-    json["明细"] = [ { "货品" : "3035", "数量" : n } ];
-    editSalesBillDetNoColorSize(json);
-    editSalesBillSave(json);
-    var num2 = sub(n * 200, num1);
-    var num = { "余款" : num1, "应收" : num2, "数量" : n };
-    return num;
+}
+// 异地核销
+function test110022Verify3() {
+    var ret = true;
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = { "客户" : "sjkh1", "门店" : "常青店" };
+    var fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["余额"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "sjkh1" };
+    editSalesBillCustomer(json);
+
+    tapButton(window, "核销");
+    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["未结金额"] < 0) {
+            var index = i;
+            break;
+        }
+    }
+    if (isDefined(index)) {
+        tapButtonScroll(getScrollView(1, 0), index * 2 + 5);
+        app.navigationBar().buttons()["确 认"].tap();
+        var cardTFindex = getValueFromCacheF1("getCardTFindex");// 获取刷卡的下标
+        var num1 = getTextFieldValue(window, cardTFindex - 1);// 核销的欠余款的值
+        var num = json["现金"] = Math.floor(num1 / 2);
+        editSalesBillCash(json);
+        editSalesBillSave(json);
+
+        tapMenu("往来管理", "客户账款", "客户门店账");
+        tapButton(window, QUERY);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(qr.data[0]["余额"], sub(a, num)));
+        tapFirstText();
+        qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+        var exp = { "操作日期" : getToday("yy"), "店员" : "总经理", "金额" : 0,
+            "现金" : num, "刷卡" : 0, "汇款" : 0, "代收" : 0, "未结" : sub(num, num1) };
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
+        tapNaviLeftButton();
+    } else {
+        tapNaviLeftButton();
+        tapReturn();
+        logDebug("未找到其他门店数据");
+        ret = false;
+    }
+    return ret;
 }
 
 function test110023() {
@@ -1597,8 +1652,7 @@ function test110033() {
     var qr = getQR();
     var day = qr.data[0]["日期"];
     var day1 = subTime(getToday("yy"), day);
-
-    logDebug(" day1=" + day1);
+    // logDebug(" day1=" + day1);
 
     tapMenu("往来管理", "客户活跃度");
     query();
@@ -1625,6 +1679,7 @@ function test110033() {
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 1)));
 
+    // 未开过单的客户是查询不到的
     var r = "c" + getTimestamp(6);
     keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
@@ -2660,9 +2715,9 @@ function test110041_1Field(o, n) {
 
     tapButton(window, "核销");
     // 日期降序，找到editBillForCustomerAccount3的准备数据
-    tapTitle(getScrollView(-1, 0), "日期");
-    tapTitle(getScrollView(-1, 0), "日期");
-    delay();
+    // tapTitle(getScrollView(-1, 0), "日期");
+    // tapTitle(getScrollView(-1, 0), "日期");
+    // delay();
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var index = 4;// 起始下标为4
     for (var i = 0; i < qr.curPageTotal; i++) {
@@ -2743,8 +2798,8 @@ function test110043() {
 }
 
 function test110043Check() {
-
-    query();
+    tapButton(window,QUERY);
+//    query();
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
