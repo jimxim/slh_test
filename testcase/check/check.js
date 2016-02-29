@@ -441,9 +441,9 @@ function test180002() {
     query(fields);
     qr = getQR();
 
-    var keys = { "日期从" : "2015-1-1" };
-    var fields = queryCheckBatchFields(keys);
-    query(fields);
+//    var keys = { "日期从" : "2015-1-1" };
+//    var fields = queryCheckBatchFields(keys);
+//    query(fields);
 
     var ret = true;
     var len = qr.data.length;
@@ -2704,7 +2704,7 @@ function test180057() {
 
     tapPrompt();
 
-    // var ret = (isIn(alertMsg, "作废成功"));
+     var ret = (isIn(alertMsg, "作废成功"));
 
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
