@@ -43,6 +43,7 @@ function testCheckAll() {
     run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function testCheck002() {
+    run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028Prepare");
     run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
 }
 function setIgnorecolorsize_1Params() {
@@ -767,6 +768,12 @@ function test180015() {
 
     return ret;
 }
+function test180028Prepare() {
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "常青店",
+        "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
+    editShopOutDecruitIn(json);
+}
 // 需要存在在途数
 function test180028() {
     tapMenu("盘点管理", "盘点处理");
@@ -1102,9 +1109,11 @@ function test180025_1() {
 
     tapReturn();
 
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    tapMenu("盘点管理", "处理记录");
+    query();
+
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);

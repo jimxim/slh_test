@@ -61,10 +61,8 @@ function test000All() {
     
 // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
 	
-    run("【盘点管理—库存表】清除", "test180054");
-    run("【盘点管理—盈亏表】翻页_排序_汇总", "test180037");
-	   
-	   
+	 run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
+	 
 // testStatisticPictureAll();
 // testSystem001();
 // logout();
@@ -211,6 +209,24 @@ function test000SalesColorSize002() {
      var ok = login("000","000000",p1);
      if( ok ) {
          run("【盘点管理—新增盘点】获取未保存", "test180022");
+         
+         logout();
+     }
+ }
+ function testCheck180028_Prepare() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("200","000000",p1);
+     if( ok ) {
+         run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028Prepare()");
+         
+         logout();
+     }
+ }
+ function testCheck180028() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("000","000000",p1);
+     if( ok ) {
+         run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028");
          
          logout();
      }

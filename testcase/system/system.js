@@ -745,6 +745,16 @@ function test210031() {
     return ret;
 }
 function test210032() {
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var ret = isAnd(isEqual("001", qr.data[0]["工号"]), isEqual("财务员",
+            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("财务员",
+            qr.data[0]["岗位"]));
+
     tapMenu("系统设置", "新增人员");
     var f0 = new TField("工号", TF, 0, "001");
     var f1 = new TField("姓名", TF, 1, "财务员");
@@ -756,9 +766,9 @@ function test210032() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "工号已存在")) {
-        ret = true;
+    var ret1 = false;
+    if (isIn(alertMsg, "工号已存在，请选择另外一个")) {
+        ret1 = true;
     }
 
     var r = getTimestamp(4);
@@ -774,15 +784,11 @@ function test210032() {
     var keys = { "工号" : "y" + r, "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
+    qr = getQR();
 
-    var qr = getQR();
-    var a = qr.data[0]["工号"];
-    var a1 = qr.data[0]["姓名"];
-    var a2 = qr.data[0]["门店"];
-    var a3 = qr.data[0]["岗位"];
-
-    ret = isAnd(isEqual("y" + r, a), isEqual("财务员", a1), isEqual("常青店", a2),
-            isEqual("财务员", a3));
+    var ret2 = isAnd(isEqual("y" + r, qr.data[0]["工号"]), isEqual("财务员",
+            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("财务员",
+            qr.data[0]["岗位"]));
 
     tapFirstText();
     tapButtonAndAlert("停 用", OK);
@@ -792,17 +798,35 @@ function test210032() {
     var fields = querySystemStaffFields(keys);
     query(fields);
 
-    var qr = getQR();
+    qr = getQR();
     var a = qr.data[0]["工号"];
     var a1 = qr.data[0]["姓名"];
     var a2 = qr.data[0]["门店"];
     var a3 = qr.data[0]["岗位"];
 
-    var ret1 = isAnd(isEqual("y" + r, a), isEqual("财务员", a1),
-            isEqual("常青店", a2), isEqual("财务员", a3));
+    tapFirstText();
+    var gh = getTextFieldValue(getScrollView(), 0);
+    var xm = getTextFieldValue(getScrollView(), 1);
+    var md = getTextFieldValue(getScrollView(), 2);
+    var gw = getTextFieldValue(getScrollView(), 3);
+    
+    tapReturn();
+
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "2001", "是否停用" : "是" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+    qr = getQR();
+
+    var ret3 = isAnd(isEqual("y" + r, a), isEqual("财务员", a1),
+            isEqual("常青店", a2), isEqual("财务员", a3), isEqual("y" + r, gh),
+            isEqual("财务员", xm), isEqual("常青店", md), isEqual("财务员", gw),
+            isEqual("2001", qr.data[0]["工号"]), isEqual("总经理2001",
+                    qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]),
+            isEqual("总经理", qr.data[0]["岗位"]));
 
     tapMenu("系统设置", "新增人员");
-    var f0 = new TField("工号", TF, 0, "y" + r);
+    var f0 = new TField("工号", TF, 0, "2001");
     var f1 = new TField("姓名", TF, 1, "财务员");
     var f2 = new TField("门店", BTN_SC, 0, "常青店");
     var f3 = new TField("岗位", BTN_SC, 1, "财务员");
@@ -812,20 +836,13 @@ function test210032() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret2 = (isIn(alertMsg, "操作失败，[单据重复保存，请核对！"));
-
-    var f0 = new TField("工号", TF, 0, "2001");
-    var fields = [ f0 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    tapButtonAndAlert(SAVE, OK);
-    tapPrompt();
-
-    var ret3 = (isIn(alertMsg, "工号已存在"));
+    var ret4 = (isIn(alertMsg, "工号已存在，请选择另外一个"));
 
     tapReturn();
 
-    return ret && ret1 && ret2 && ret3;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test210033() {
     tapMenu("系统设置", "新增人员");
@@ -2105,7 +2122,7 @@ function test210053_1() {
 
     tapFirstText();
     var setObj = {};
-    setObj["数值"] = [ "不显示","in" ];
+    setObj["数值"] = [ "不显示", "in" ];
     setObj["授权码"] = [];
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(), fields);
