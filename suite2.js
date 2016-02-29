@@ -61,8 +61,9 @@ function test000All() {
     
 // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
 	
-	run("test","test110043");
 //	 run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
+	
+    run("【盘点管理—处理记录】条件查询，清除按钮", "test180029_180031_180032");
 
 // testStatisticPictureAll();
 // testSystem001();

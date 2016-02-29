@@ -866,6 +866,20 @@ function test180026() {
     return ret;
 }
 function test180026_1() {
+    tapMenu("货品管理", "新增货品+");
+    var s = "anewkhao" + getTimestamp(4);
+    var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : s, "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "4562", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
@@ -880,7 +894,7 @@ function test180026_1() {
     qr = getQR();
     var b = qr.data[0]["库存"];
 
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : s, "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -939,7 +953,7 @@ function test180026_1() {
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : s, "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
@@ -987,7 +1001,20 @@ function test180025() {
     return ret;
 }
 function test180025_1() {
-    // 先处理掉以前的盘点单
+    tapMenu("货品管理", "新增货品+");
+    var s = "anewkhao" + getTimestamp(4);
+    var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
+    var fields = editGoodsFields(keys, false, 0, 0);
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : s, "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
@@ -1003,7 +1030,7 @@ function test180025_1() {
     var b = qr.data[0]["库存"];
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : s, "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -1065,7 +1092,7 @@ function test180025_1() {
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "k300", "门店" : "常青店" };
+    var keys = { "款号" : s, "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
@@ -1303,11 +1330,10 @@ function test180029_180031_180032() {
     var a3 = qr.data[0]["操作日期"];
     var a4 = qr.data[0]["备注"];
     var a5 = qr.data[0]["批次"];
-    var a6 = qr.data[1]["批次"];
 
     var ret = isAnd(isEqual(getToday("yy"), a), isEqual("常青店", a1), isEqual(
             "总经理", a2), isIn(a3, getDay(0, "")), isEqual("部分盘点", a4), isEqual(
-            add(batch, 1), a5), isEqual(batch, a6));
+                    add(batch, 1), a5));
 
     tapButton(window, CLEAR);
     var ret1 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
