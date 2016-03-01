@@ -63,19 +63,13 @@ function test000All() {
 	
 //	 run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
 	
-	  run("【盘点管理—盘点撤销】", "test180033");
-
+    run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");// (关闭参数异地发货仓库)
+//    run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
+    
 // testStatisticPictureAll();
 // testSystem001();
 // logout();
-
 }
-
-function test(){
-    var key={"款号":"a","名称":"a","进货价":"100"};
-    addGoods(key);
-}
-
 
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
