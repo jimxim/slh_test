@@ -78,7 +78,7 @@ function testPurchase002() {
     run("【采购入库-批量入库】批量入库后店员检查", "test120048");
     run("【采购订货-按订货入库】检查备注", "test120051");
     run("【采购订货-按订货入库】核销", "test120061");
-    
+
 }
 
 function testPurchaseAll() {
@@ -2848,7 +2848,8 @@ function editPurchaseBatchSave(o) {
     }
 }
 
-function editSalesBillAddGoods(o) {
+// sales.js里面也有一个~，看情况修改
+function editSalesBillAddGoods1(o) {
     var ot = o["新增货品"];
     if (isDefined(ot)) {
         delay();

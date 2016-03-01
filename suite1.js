@@ -39,7 +39,7 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
  
 
-run("test", "test110043");
+run("test", "test100114");
 // run("test", "onlyTest");
 // return ret;
 }
