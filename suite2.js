@@ -63,7 +63,7 @@ function test000All() {
 	
 //	 run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
 	
-    run("【盘点管理—处理记录】条件查询，清除按钮", "test180029_180031_180032");
+	  run("【盘点管理—盘点撤销】", "test180033");
 
 // testStatisticPictureAll();
 // testSystem001();
@@ -117,6 +117,60 @@ function test000SalesNoColorSize003() {
     var ok = login("000","000000",p1);
     if( ok ) {
         testSalesNoColorSize002();
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170125_Params() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】开单的同时订货", "test170125_Prepare");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170125() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】开单的同时订货", "test170125");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170140_Params() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】取未保存", "test170140_Prepare");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170140() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】取未保存", "test170140");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170429_Params() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单-加工货品】加工货品", "test170429Prepare");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170429() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单-加工货品】加工货品", "test170429");
         
         logout();
     }
@@ -215,6 +269,25 @@ function test000SalesColorSize002() {
          logout();
      }
  }
+ function testCheck180058_Prepare() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("200","000000",p1);
+     if( ok ) {
+         run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058Prepare");
+         
+         logout();
+     }
+ }
+ function testCheck180058() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("000","000000",p1);
+     if( ok ) {
+         run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058");
+         
+         logout();
+     }
+ }
+ 
  function testCheck180028_Prepare() {
      var p1 = {"角色":"总经理"};
      var ok = login("200","000000",p1);
