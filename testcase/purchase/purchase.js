@@ -1567,7 +1567,7 @@ function test120024() {
 function test120025_1() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
-        "备注" : "xx","采购订货":"yes" };
+        "备注" : "xx", "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
     delay();
     tapButton(window, RETURN);
@@ -2763,7 +2763,7 @@ function test120048() {
 function test120051() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "zdbz" };
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "zdbz" ,"采购订货":"yes"};
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
