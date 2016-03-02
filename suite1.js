@@ -18,8 +18,8 @@ function test000All() {
 // run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");//100登陆
 // run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
 // run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-//run("【test", "editBillForCustomerAccount3");
-//logout();
+// run("【test", "editBillForCustomerAccount3");
+// logout();
 // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
 // run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
  
@@ -39,7 +39,7 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
  
 
-run("test", "test100114");
+// run("test", "test100010_100011_100013");
 // run("test", "onlyTest");
 // return ret;
 }

@@ -1104,6 +1104,12 @@ function test100114() {
 
 // 照片无法验证
 function test100010_100011_100013() {
+    var qo, o, ret = true;
+    // 开启这个参数，新增货品界面的门店才能修改保存成功
+    qo = { "备注" : "开单时，款号是否按门店区分" };
+    o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = "g" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
@@ -1112,11 +1118,11 @@ function test100010_100011_100013() {
     var qKeys = { "款号名称" : r };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
-    delay();
+    // delay();
     var qr = getQR();
-    delay();
+    // delay();
     // debugQResult(qr);
-    var ret = isEqual(r, qr.data[0]["款号"]) && isEqual(r, qr.data[0]["名称"]);
+    ret = isAnd(ret, isEqual(r, qr.data[0]["款号"]), isEqual(r, qr.data[0]["名称"]));
 
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 0)),
@@ -1125,14 +1131,14 @@ function test100010_100011_100013() {
     // 改成昨天上架
     tapButton(getScrollView(), "减量");
     var day = getTextFieldValue(getScrollView(), 5);// 上架日期
-    if (day != getDay(-1)) {
+    if (day == getDay(1)) {
         tapButton(getScrollView(), "减量");
         tapButton(getScrollView(), "减量");
     }
     // 修改除了条码图片外所有内容
     var keys1 = [ "款号", "名称", "品牌", "吊牌价", "进货价", "零批价", "打包价", "大客户价",
             "Vip价格", "产品折扣", "季节", "类别", "厂商", "计量单位", "仓位", "最小库存", "最大库存",
-            "经办人", "门店", "条码", "备注" ];
+            "经办人", "是否加工款", "加工价", "门店", "条码", "备注" ];
     var fields = editGoodsFields(keys1, false, 0, 0);
     changeTFieldValue(fields["款号"], r1);
     changeTFieldValue(fields["名称"], r1);
@@ -1158,29 +1164,30 @@ function test100010_100011_100013() {
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
             200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "双", "A座六层", 1,
-            200, "000,总经理", "否", 0, "常青店", "555555", 123);
+            200, "000,总经理", "否", 100, "常青店", "555555", 123);
     for (var i = 0; i < expected1.length; i++) {
         var j = i;
         if (i >= 6) {
             j = i + 1;
         }
-        ret = ret
-                && isEqual(expected1[i], getTextFieldValue(getScrollView(), j));
+        ret = isAnd(ret, isEqual(expected1[i], getTextFieldValue(
+                getScrollView(), j)));
     }
     tapButton(window, RETURN);
 
     tapButton(window, CLEAR);
     for (i = 0; i < 10; i++) {
-        if (i != 3) {
+        if (i != 7) {
             // 是否停用无法删除
-            // if (i != 7) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
-            // }
         } else {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            ret = ret && isEqual("否", getTextFieldValue(window, i));
         }
     }
 
+    qo = { "备注" : "开单时,款号是否按门店区分" };
+    o = { "新值" : "0", "数值" : [ "默认不区分" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
 }
 
@@ -1811,7 +1818,7 @@ function test100054_2() {
     return ret;
 }
 
-function test1000111() {
+function test100111() {
     tapMenu("货品管理", "基本设置", "新增品牌+");
     var keys1 = { "名称" : "'" };
     var ret = test1000111Field(keys1);
@@ -1853,7 +1860,7 @@ function test1000111() {
     return ret;
 }
 
-function test1000111Field(keys) {
+function test100111Field(keys) {
     var fields = editGoodsBrandFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
@@ -3155,13 +3162,14 @@ function test100116() {
 function test100120() {
     tapMenu("货品管理", "货品进销存");
     query();
+    var qr = getQR();
     var counts = qr.counts;
 
     var keys = { "门店" : "常青店" };
     var fields = queryGoodsInOutFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQR();
+    qr = getQR();
     var ret = isEqualObject(counts, qr.counts);
 
     keys = { "门店" : "中洲店" };

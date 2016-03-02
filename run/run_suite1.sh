@@ -9,29 +9,31 @@ js_func="setGoods001Params"
 #新综合汇总接口
 #js_func="$js_func testSASynthesisAll000"
 #货品管理
-js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
+#js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
 #往来管理
 #js_func="$js_func test000Customer001Prepare test000Customer001 test000Customer001Else"
 #统计分析
 #js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
 #门店调出、门店调入
-#js_func="$js_func test200ShopOut001 test000ShopIn001"
-
+js_func="$js_func test200ShopOut001 test000ShopIn001"
+#采购订货
+#js_func="$js_func test000PurchaseOrder001"
+#采购入库
+#js_func="$js_func test000Purchase001 test000Purchase002Prepare test000Purchase002"
 
 #常青店的其他角色的各种用例
 #财务员 
-js_func="$js_func testTreasurer001 "
+#js_func="$js_func testTreasurer001 "
 #店长
-js_func="$js_func testShopkeeper004 "
+#js_func="$js_func testShopkeeper004 "
 #开单员
-js_func="$js_func testBillClerk005 "
+#js_func="$js_func testBillClerk005 "
 
 #仓库店 
 #总经理
-js_func="$js_func test100Warehouse "
+#js_func="$js_func test100Warehouse "
 
-#采购订货
-#js_func="$js_func test000PurchaseOrder001"
+
 
 #货品管理的下拉框，模糊查询
 #js_func="$js_func setGoods002Params test000Goods002 "
