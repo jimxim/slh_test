@@ -1567,7 +1567,7 @@ function test120024() {
 function test120025_1() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
-        "备注" : "xx" };
+        "备注" : "xx","采购订货":"yes" };
     editSalesBillNoColorSize(json);
     delay();
     tapButton(window, RETURN);
