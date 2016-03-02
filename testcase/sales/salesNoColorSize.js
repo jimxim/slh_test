@@ -204,6 +204,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "发货数" };
+    o = { "新值" : "0", "数值" : [ "默认不填写" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "信用额度" };
     o = { "新值" : "0", "数值" : [ "不启用" ] };
@@ -227,6 +231,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "1", "数值" : [ "允许折扣大于1", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否检查折扣" };
