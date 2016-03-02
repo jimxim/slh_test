@@ -15,7 +15,7 @@ js_func="setGoods001Params"
 #统计分析
 #js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
 #门店调出、门店调入
-js_func="$js_func test200ShopOut001 test000ShopIn001"
+#js_func="$js_func test200ShopOut001 test000ShopIn001"
 #采购订货
 #js_func="$js_func test000PurchaseOrder001"
 #采购入库

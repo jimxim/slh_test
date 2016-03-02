@@ -325,7 +325,9 @@ function salesOrderAddFields(keys, show) {
     return getTFields("salesOrderAddField", keys, show);
 }
 function salesOrderAddField(key, show) {
-    var l = getTableViews().length;
+    // var cashTFindex = getEditSalesTFindex("客户,厂商", "现金");
+    var cardTFindex = getValueFromCacheF1("getCardTFindex");
+    var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
     var f;
     switch (key) {
     case "customer":
@@ -337,18 +339,18 @@ function salesOrderAddField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 4, "000", -1, 0);
+        f = new TField("店员", TF_AC, cardTFindex - 2, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
     case "day":
     case "日期":
-        f = new TField("日期", TF_DT, 8, getToday());
+        f = new TField("日期", TF_DT, totalNumTFindex - 2, getToday());
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 9, "123");
+        f = new TField("备注", TF, totalNumTFindex - 1, "123");
         break;
     default:
         logWarn("未知key＝" + key);
