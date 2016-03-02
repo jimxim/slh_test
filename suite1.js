@@ -37,20 +37,16 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
 // run("【统计分析—综合汇总】进入详细-欠款", "test190039");
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
- 
- run("test", "test130001_2");
-// run("test", "onlyTest");
+
+
+// run("test", "test120017");
+// run("test", "test120017_1");
+ run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-    tapMenu("采购订货", "新增订货+");
-    var json = {
-            "客户" : "vell",
-            "goodsFieldIndex" : -2,
-            "明细" : [ { "货品" : "3035", "数量" : [ 10 ] },
-                    { "货品" : "k300", "数量" : [ 20 ] } ] };
-        editSalesBillColorSize(json);
+    runAndAlert("test120052Hang", OK);
 }
 
 // 关闭尺码表头

@@ -19,7 +19,7 @@ js_func="setGoods001Params"
 #采购订货
 #js_func="$js_func test000PurchaseOrder001"
 #采购入库
-#js_func="$js_func test000Purchase001 test000Purchase002Prepare test000Purchase002"
+js_func=" test000Purchase001 test000Purchase002Prepare test000Purchase002"
 
 #常青店的其他角色的各种用例
 #财务员 

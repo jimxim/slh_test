@@ -1607,7 +1607,7 @@ function test100102_100103() {
     var keys = { "款号" : "款号" + code };
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("修改保存");
+    tapButtonAndAlert("修改保存", OK);
     delay();
 
     var qr = getQR();
@@ -1619,7 +1619,7 @@ function test100102_100103() {
 
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    tapButtonAndAlert("修改保存");
+    tapButtonAndAlert("修改保存", OK);
     delay();
     tapPrompt();
     ret = ret && isIn(alertMsg, "该款号包括了中文");
