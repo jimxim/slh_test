@@ -61,7 +61,7 @@ function test000All() {
     
 // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
 
-	 run("【销售开单－代收收款】核销代收收款功能", "test170287");
+    run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");
     
 // testStatisticPictureAll();
 // testSystem001();
