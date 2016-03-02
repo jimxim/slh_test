@@ -229,7 +229,6 @@ function purchaseOrderAddFields(keys, show) {
     return getTFields("purchaseOrderAddField", keys, show);
 }
 function purchaseOrderAddField(key, show) {
-    var l = getTableViews().length;
     var f;
     var cashTFindex = getEditSalesTFindex("客户,厂商", "现金");
     var cardTFindex = getValueFromCacheF1("getCardTFindex");
