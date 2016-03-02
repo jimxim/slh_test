@@ -34,6 +34,12 @@ function testPurchase002Prepare() {
         "明细" : [ { "货品" : "jkk", "数量" : "100" } ] };
     editShopOutDecruitIn(json);
 
+    // test120026
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "1" } ],
+        "备注" : "120026" };
+    editSalesBillNoColorSize(json);
+
     return json;
 }
 
@@ -923,66 +929,6 @@ function test120013_2() {
     return ret && ret1;
 }
 
-// function test120019() {
-// tapMenu("货品管理", "当前库存");
-// delay();
-// var keys = { "款号" : "3035", "门店" : "常青店" };
-// var fields = queryGoodsStockFields(keys);
-// query(fields);
-// var qr = getQR();
-// var a = qr.data[0]["库存"];
-//
-// tapMenu("货品管理", "款号库存");
-// var fields1 = queryGoodsCodeStockFields(keys);
-// query(fields1);
-// qr = getQR();
-// var b1 = qr.data[0]["库存"];
-// var b2 = qr.data[0]["累计进"];
-//
-// tapMenu("货品管理", "库存分布");
-// var keys2 = [ "类别", "厂商" ];
-// var fields2 = queryGoodsDistributionFields(keys2);
-// changeTFieldValue(fields2["类别"], "登山服");
-// changeTFieldValue(fields2["厂商"], "vell");
-// query(fields2);
-// qr = getQR();
-// var c1 = qr.data[0]["库存"];
-// var c2 = qr.data[0]["常青店"];
-//
-// tapMenu("采购入库", "新增入库+");
-// var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
-// editSalesBillNoColorSize(json);
-//
-// tapMenu("货品管理", "当前库存");
-// tapButton(window, QUERY);
-// qr = getQR();
-// var a1 = qr.data[0]["库存"];
-// // logDebug("a1="+a1);
-// var ret1 = isEqual("50", sub(a1, a));
-//
-// tapMenu("货品管理", "款号库存");
-// tapButton(window, QUERY);
-// qr = getQR();
-// var ret2 = isAnd(isEqual("50", sub(qr.data[0]["库存"], b1)), isEqual("50",
-// sub(qr.data[0]["累计进"], b2)));
-//
-// tapMenu("货品管理", "库存分布");
-// tapButton(window, QUERY);
-// qr = getQR();
-// var ret3 = isAnd(isEqual("50", sub(qr.data[0]["库存"], c1)), isEqual("50",
-// sub(qr.data[0]["常青店"], c2)));
-//
-// tapMenu("统计分析", "收支流水");
-// tapButton(window, QUERY);
-// qr = getQR();
-// var ret4 = isEqual("-5000", qr.data[0]["金额"]);
-//
-// logDebug("ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3 + " ret4="
-// + ret4);
-// return ret1 && ret2 && ret3 && ret4;
-//
-// }
-
 function test120019() {
     var i, r = "g" + getTimestamp(8), jo1, jo2;
     tapMenu("货品管理", "库存分布");
@@ -1002,7 +948,7 @@ function test120019() {
         "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ] };
     editSalesBillCustomer(json);
     editSalesBillDetNoColorSize(json);
-    editSalesBillAddGoods(json);
+    editPurchaseBillAddGoods(json);
     var f = new TField("数量", TF, 11, "20");
     setTFieldsValue(getScrollView(), [ f ]);
     editSalesBillCash(json);
@@ -1045,7 +991,7 @@ function test120019() {
     }
     var jo = subObject(jo2, jo1);
     expected = { "序号" : 0, "名称" : 0, "库存" : 20, "价值" : 6000, "仓库店" : 0,
-        "常青店" : 20, "中洲店" : 0 };
+        "常青店" : 20, "文一店" : 0, "中洲店" : 0 };
     ret = isAnd(ret, isEqualObject(jo, expected));
 
     tapMenu("统计分析", "收支流水");
@@ -1102,7 +1048,7 @@ function test120023() {
         "明细" : [ { "货品" : "3035", "数量" : "30" } ], "未付" : "yes" };
     editSalesBillCustomer(json);
     editSalesBillDetNoColorSize(json);
-    editSalesBillAddGoods(json);
+    editPurchaseBillAddGoods(json);
     var f = new TField("数量", TF, 11, "10");
     setTFieldsValue(getScrollView(), [ f ]);
     editSalesBillCash(json);
@@ -1146,7 +1092,7 @@ function test120023() {
     }
     var jo = subObject(jo2, jo1);
     expected = { "序号" : 0, "名称" : 0, "库存" : 10, "价值" : 2000, "仓库店" : 0,
-        "常青店" : 10, "中洲店" : 0 };
+        "常青店" : 10, "文一店" : 0, "中洲店" : 0 };
     ret = isAnd(ret, isEqualObject(jo, expected));
 
     tapMenu("采购入库", "厂商账款", "厂商总账");
@@ -1390,7 +1336,7 @@ function test120021() {
     tapButton(window, QUERY);
     qr = getQR();
     // 厂商账款余额为数量30*进货价100
-    ret = isAnd(ret, isEqual("-3000", sub(qr.data[0]["余额"], y1)));
+    ret = isAnd(ret, isEqual("3000", sub(qr.data[0]["余额"], y1)));
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
     tapButton(window, QUERY);
@@ -1403,7 +1349,7 @@ function test120021() {
             var Z2 = qr.data[i]["余额"];
         }
     }
-    ret = isAnd(ret, isEqual("-3000", sub(Z1, z1)), isEqual(z2, Z2));
+    ret = isAnd(ret, isEqual("3000", sub(Z1, z1)), isEqual(z2, Z2));
 
     tapMenu("统计分析", "收支流水");
     query();
@@ -1705,14 +1651,17 @@ function test120025() {
 // 需要现在其他门店新增订货
 function test120026() {
     tapMenu("采购入库", "按订货入库");
-    var keys = { "日期从" : "2015-10-20", "到" : "2015-10-20", "款号" : "3035" };
+    var keys = { "款号" : "k300", "备注" : "120026" };
     var fields = purchaseOrderFields(keys);
     query(fields);
-
+    // var qr=getQR();
+    // var ret = false;
+    // if (qr.data.length > 0) {
     tapFirstText();
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "目前不支持按订货开单入库的跨门店操作");
+    var ret = isIn(alertMsg, "目前不支持按订货开单或入库的跨门店操作");
+    // }
 
     return ret;
 }
@@ -2048,7 +1997,7 @@ function test120037() {
     var keys = { "名称" : r };
     addProvider(keys);
 
-    tapFirstText();
+    tapFirstText(getScrollView(), TITLE_SEQ, 5);// 不指定标题总数，有时会点击第二条数据
     var ret = isEqual("进货价", getTextFieldValue(getScrollView(), 3));
     tapReturn();
 
@@ -2060,10 +2009,8 @@ function test120037() {
     var a = getTextFieldValue(getScrollView(), 4);
     ret = isAnd(ret, isEqual("100", a));
     // window.segmentedControls()[2].buttons()["进货价"].isVisible();
-
     tapButton(window, RETURN);
 
-    logDebug("ret=" + ret);
     return ret;
 }
 
@@ -2524,7 +2471,7 @@ function test120017() {
     var fields = [ f8, f11, f16, f19 ];
     setTFieldsValue(getScrollView(), fields);
     // 重复挂单
-     runAndAlert("test120052Hang", OK);
+    runAndAlert("test120052Hang", OK);
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "操作成功"));
     tapReturn();
@@ -2579,6 +2526,7 @@ function test120017_1() {
     var ret = isEqual("0", qr.data.length);
 
     query();
+    qr = getQR();
     ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]));
     tapTitle(getScrollView(), "批次");
     ret = isAnd(ret, !isEqual("0", qr.data[0]["批次"]));
@@ -2822,7 +2770,7 @@ function editPurchaseBatchSave(o) {
 }
 
 // sales.js里面也有一个~，看情况修改
-function editSalesBillAddGoods1(o) {
+function editPurchaseBillAddGoods(o) {
     var ot = o["新增货品"];
     if (isDefined(ot)) {
         delay();
@@ -2832,22 +2780,22 @@ function editSalesBillAddGoods1(o) {
             tapButton(window, "新增货品");
         }
 
-        var fields = [];
-        var n0 = ot["款号"];
-        if (isDefined(n0)) {
-            fields.push(new TField("款号", TF, 0, n0));
+        var fields = [], n;
+        n = ot["款号"];
+        if (isDefined(n)) {
+            fields.push(new TField("款号", TF, 0, n));
         }
-        var n1 = ot["名称"];
-        if (isDefined(n1)) {
-            fields.push(new TField("名称", TF, 1, n1));
+        n = ot["名称"];
+        if (isDefined(n)) {
+            fields.push(new TField("名称", TF, 1, n));
         }
-        var n2 = ot["进货价"];
-        if (isDefined(n2)) {
-            fields.push(new TField("进货价", TF, 2, n2));
+        n = ot["进货价"];
+        if (isDefined(n)) {
+            fields.push(new TField("进货价", TF, 2, n));
         }
-        var n3 = ot["零批价"];
-        if (isDefined(n2)) {
-            fields.push(new TField("零批价", TF, 3, n3));
+        n = ot["零批价"];
+        if (isDefined(n)) {
+            fields.push(new TField("零批价", TF, 3, n));
         }
         var view1 = getPopOrView();
         setTFieldsValue(view1, fields);

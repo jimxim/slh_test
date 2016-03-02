@@ -39,14 +39,16 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
 
 
-// run("test", "test120017");
-// run("test", "test120017_1");
- run("test", "onlyTest");
+ run("test", "test120026");
+// run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-    runAndAlert("test120052Hang", OK);
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "1" } ],"备注":"120026","采购订货":"yes" };
+    editSalesBillNoColorSize(json);
+    return json;
 }
 
 // 关闭尺码表头
