@@ -2609,10 +2609,9 @@ function test170287() {
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-
-    var table1 = getTableView(window, -1);
-    var cells = table1.cells();
-    tap(cells[0]);
+    
+    json={"核销" :[ 0 ]};
+    editLogisticsVerify(json);
 
     tapNaviRightButton();
     tapButtonAndAlert(SAVE, OK);
@@ -2623,9 +2622,9 @@ function test170287() {
     var fields = salesCollectionFields(keys);
     query(fields);
     var qr = getQR();
-    var a = qr.data[0]["现金"];
-    var a1 = qr.data[0]["金额"];
-    var ret = isAnd(isEqual("200", a), isEqual("200", a1));
+    var ds = Number(qr.data[0]["现金"],qr.data[0]["刷卡"],qr.data[0]["汇款"]);
+    var je = qr.data[0]["金额"];
+    var ret = isAnd(isEqual("200",ds), isEqual("200", je));
 
     tapMenu("统计分析", "收支流水");
     var keys = [ "day1", "day2", "shop", "account" ];
@@ -2646,7 +2645,7 @@ function test170287() {
     var c = qr2.data[0]["现金"];
     var c1 = qr2.data[0]["代收收款"];
 
-    var ret = isEqual(c, b);
+    var ret =isAnd(isEqual(c, b),isEqual(c, b));
 
     tapMenu("统计分析", "综合汇总");
     var f2 = new TField("门店", TF_SC, 2, "常青店");
@@ -2662,6 +2661,7 @@ function test170287() {
     if (d >= 0) {
         var ret2 = true;
     }
+    delay();
     tapNaviLeftButton();
 
     logDebug("金额=" + a + "ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);

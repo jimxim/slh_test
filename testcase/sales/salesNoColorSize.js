@@ -4361,9 +4361,6 @@ function test170163() {
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
     return ret;
 }
-function test120052Hang() {
-    tapButton(window, "作 废");
-}
 function test170164_Prepare() {
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "作废挂单" : "待作废" };
