@@ -77,9 +77,9 @@ function testPurchase002() {
     run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
     run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
 
-    run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//
+    // run("【采购入库-新增入库】先输款号后输厂商,检查界面展示价格", "test120059");//颜色尺码模式
 
-    run("【采购入库-批量入库】批量入库实现退货功能+颜色尺码 (开单尺码头部暂不支持)", "test120041");
+    // run("【采购入库-批量入库】批量入库实现退货功能+颜色尺码 (开单尺码头部暂不支持)", "test120041");//颜色尺码模式
     run("【采购入库-批量入库】批量入库后店员检查", "test120048");
     run("【采购订货-按订货入库】检查备注", "test120051");
     run("【采购订货-按订货入库】核销", "test120061");
@@ -1666,6 +1666,7 @@ function test120026() {
     return ret;
 }
 
+// 无法修改已有款号 这点无法验证，程序可以清除灰化文本框的内容
 function test120027() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "50" } ] };
@@ -1683,7 +1684,7 @@ function test120027() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var a = getTextFieldValue(getScrollView(), 6);
+    var a = getTextFieldValue(getScrollView(), 8);
     var ret = isEqual("", a);
     delay();
     tapReturn();
@@ -1692,7 +1693,7 @@ function test120027() {
     query();
     tapFirstText();
     var b = getTextFieldValue(getScrollView(), 0);
-    var c = getTextFieldValue(getScrollView(), 7);
+    var c = getTextFieldValue(getScrollView(), 8);
     ret = isAnd(ret, isEqual("k300,铅笔裤", b), isEqual("3035,jkk", c));
     delay();
 
@@ -2583,6 +2584,8 @@ function test120018() {
 
     return ret;
 }
+
+// 颜色尺码
 function test120059() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "tbscs", "goodsFieldIndex" : -2,
@@ -2694,7 +2697,10 @@ function test120051() {
     var ret = isEqual("zdbz", qr.data[0]["备注"]);
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window, 9)));
+    var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
+    // 备注为总数的前一个
+    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window,
+            totalNumTFindex - 1)));
     saveAndAlertOk();
     delay();
     tapReturn();
@@ -2704,10 +2710,31 @@ function test120051() {
     ret = isAnd(ret, isEqual("zdbz", qr.data[0]["备注"]));
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window, 9)));
+    totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
+    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window,
+            totalNumTFindex - 1)));
     tapReturn();
 
     return ret;
+}
+function test120061() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "2" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    var oldObj = editSalesBillGetValue();
+
+    json = { "核销" : [ 4 ] };
+    editSalesBillVerify(json);
+
+    var newObj = { "现金" : 0, "应" : 0, "核销" : 200, "代收/实付" : 0 };// 这里的代收是实付
+    var exp = mixObject(oldObj, newObj);
+    var actual = editSalesBillGetValue();
+    tapReturn();
+    return isEqualObject(exp, actual);
 }
 
 /**

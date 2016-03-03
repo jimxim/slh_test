@@ -39,16 +39,18 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
 
 
- run("test", "test120026");
+ run("test", "test120061");
 // run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "1" } ],"备注":"120026","采购订货":"yes" };
-    editSalesBillNoColorSize(json);
-    return json;
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    var f = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var fields = [ f ];
+    setTFieldsValue(getScrollView(), fields);
 }
 
 // 关闭尺码表头
