@@ -3,7 +3,7 @@
 //收入类别  订金 业务回扣1
 //支出类别  物业 物损
 //因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
-function testStatisticAnalysisAll() {
+function testStatisticAnalysis001() {
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
 
     run("【统计分析—新增收入】新增类别", "test190012");

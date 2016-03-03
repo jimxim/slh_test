@@ -3,24 +3,25 @@ D=`dirname $0`
 
 SUITE=suite1
 #主要参数为均色均码，省代，开单2
-js_func="setGoods001Params"
+js_func="loginGoodsParams001"
 #基础数据设置
 #js_func="$js_func setBasicSetUpAll"
 #新综合汇总接口
-#js_func="$js_func testSASynthesisAll000"
-#货品管理
-#js_func="$js_func test000Goods001Prepare test000Goods001 test000Goods001Else"
+#js_func="$js_func loginSASynthesisAll"
+#货品管理，省代
+#js_func="$js_func login200GoodsPrepare login000Goods001 login000Goods002"
 #往来管理
-#js_func="$js_func test000Customer001Prepare test000Customer001 test000Customer001Else"
+#js_func="$js_func login200CustomerPrepare login000Customer001 login000Customer002"
 #统计分析
-#js_func="$js_func test000StatisticAnalysisPrepare test000StatisticAnalysisAll"
+#js_func="$js_func login200StatisticAnalysisPrepare login000StatisticAnalysis001"
 #门店调出、门店调入
-#js_func="$js_func test200ShopOut001 test000ShopIn001"
+#js_func="$js_func login200ShopOut001 login000ShopIn001"
 #采购订货
-#js_func="$js_func test000PurchaseOrder001"
+#js_func="$js_func login000PurchaseOrder001 login000PurchaseOrder002"
 #采购入库
-js_func=" test000Purchase001 test000Purchase002Prepare test000Purchase002"
-
+#js_func="$js_func login200PurchasePrepare login000Purchase001 login000Purchase002"
+#销售订货
+#js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesOrder002"
 #常青店的其他角色的各种用例
 #财务员 
 #js_func="$js_func testTreasurer001 "
@@ -31,14 +32,10 @@ js_func=" test000Purchase001 test000Purchase002Prepare test000Purchase002"
 
 #仓库店 
 #总经理
-#js_func="$js_func test100Warehouse "
+#js_func="$js_func login100Warehouse "
 
-
-
-#货品管理的下拉框，模糊查询
-#js_func="$js_func setGoods002Params test000Goods002 "
 #货品管理的默认价格模式
-#js_func="$js_func setGoods003Params test000Goods003 "
+#js_func="$js_func loginGoodsParams002 login000Goods003 "
 
 
 

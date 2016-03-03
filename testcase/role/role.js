@@ -1,9 +1,25 @@
 //luxingxin <52619481 at qq.com> 20160113
 
+// 仓库店，总经理100
+// 绑定的仓库为文一店，文一店店长404
+function testWarehouseAll() {
+    run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
+}
+
 function testTreasurer001All() {
     // customer.js
     run("【往来管理】财务员查看客户门店帐", "test110031_110032");
 
+}
+
+function testStoreKeeper002_1() {
+    // goods.js
+    run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
+}
+
+function testStoreKeeper002_2() {
+    // goods.js
+    run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
 }
 
 function testShopkeeper004All() {
@@ -16,6 +32,7 @@ function testShopkeeper004All() {
 
     // goods.js
     run("【货品管理-货品进销存】店长权限查看货品进销存-查看范围", "test100120");// 后台PAD店长权限里勾上货品进销存
+    run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
 
     //
     run("【销售订货—按批次查】更多-查看修改日志", "test160011_1");
@@ -27,9 +44,14 @@ function testShopkeeper004All() {
 
 }
 
-function testBillClerk005All() {
+function testBillClerk005_1() {
     // customer.js
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
     run("【往来管理】开单员查看客户门店帐", "test110031_110032");
     run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");
+}
+
+function testBillClerk005_2() {
+    // goods.js
+    run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
 }

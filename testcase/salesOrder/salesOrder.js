@@ -12,7 +12,7 @@ function testSalesOrderPrepare() {
 function testSalesOrder001() {
     run("【销售订货—按批次查】查询条件单项查询", "test160001");
     run("【销售订货—按批次查】查询条件组合查询_清除", "test160002_160017");
-    run("【销售订货—按批次查】翻页_排序", "test160015_160016");//汇总无法排除作废数据的影响
+    run("【销售订货—按批次查】翻页_排序", "test160015_160016");// 汇总无法排除作废数据的影响
     run("【销售订货—按明细查】查询条件单项查询", "test160019");
     run("【销售订货—按明细查】查询条件组合查询_清除", "test160020_160022");
     run("【销售订货—按明细查】翻页_排序_汇总", "test160023_160024");
@@ -30,7 +30,7 @@ function testSalesOrder001() {
     run("【销售订货—按缺货查】查询_清除", "test16_Stockout_2");
 }
 
-function testSalesOrderNoColor() {
+function testSalesOrder002() {
     run("【销售订货－新增订货】新增订货单", "test160047");
     run("【销售订货－新增订货】新增超长订单并打印", "test160048");
     // run("【销售订货－新增订货】整单复制/整单粘贴", "test160060");

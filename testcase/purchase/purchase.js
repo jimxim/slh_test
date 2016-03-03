@@ -27,7 +27,7 @@ function testPurchase001() {
 
 }
 
-function testPurchase002Prepare() {
+function testPurchasePrepare002() {
     // test120011_3
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "200", "接收店" : "常青店",

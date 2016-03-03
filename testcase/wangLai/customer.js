@@ -23,7 +23,7 @@ function testCustomer001() {
 }
 
 // 中洲店总经理准备数据
-function testCustomer001Prepare() {
+function testCustomerPrepare001() {
     // 客户账款检查数据正确性
     run("上级客户1开单", "editBillForCustomerAccount1");
     run("下级客户1开单", "editBillForCustomerAccount2");
@@ -31,7 +31,7 @@ function testCustomer001Prepare() {
 
 }
 
-function testCustomer001Else() {
+function testCustomer002() {
     run("【往来管理-客户查询】客户查询->消费明细", "test110002");// 开单5，产品折扣
     run("【往来管理-客户查询】客户查询->修改保存", "test110004");
     run("【往来管理-客户查询】客户查询->客户停用", "test110005");
@@ -73,12 +73,6 @@ function testCustomer001Else() {
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
 
-}
-
-// 仓库店，总经理100
-// 绑定的仓库为文一店，文一店店长404
-function testWarehouseAll() {
-    run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
 }
 
 // 翻页_排序

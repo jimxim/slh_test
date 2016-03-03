@@ -3,7 +3,7 @@
 /**
  * 均色均码 省代价格模式 价格模式2 不支持自动生成款号
  */
-function goodsParams001() {
+function setGoodsParams001() {
 
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -108,7 +108,7 @@ function goodsParams001() {
 /**
  * 中洲店总经理登陆，为常青店准备数据
  */
-function testGoods001Prepare() {
+function testGoodsPrepare001() {
     var i;
     // test100001_3
     for (i = 0; i < 2; i++) {
@@ -160,13 +160,13 @@ function testGoods001() {
 
 }
 
-function testGoods001Else() {
-    // 均色均码
+function testGoods002() {
+    // 均色均码 开单模式2
     run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "test100101_100118");
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
-    run("当前库存、款号库存、库存分布 检查底部数据汇总", "test100123");
+    run(" 当前库存、款号库存、库存分布 检查底部数据汇总", "test100123");
     run("【货品管理-当前库存】库存调整", "test100090");
     run("【货品管理-库存分布】停用的类型在库存分布里不出现", "test100007");
     run("【货品管理-货品进销存】库存显示的门店情况", "test100009");
@@ -177,14 +177,15 @@ function testGoods001Else() {
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
     run("【货品管理-货品查询】货品条形码关联/不关联颜色尺码+款号输中文", "test100102_100103");
-    run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");//
+    run("【货品管理】货品管理-货品查询，显示条码功能", "test100058");
+    run("【货品查询】查询条件“是否停用 ”需要默认为“否", "test100124");
     // run("【货品管理-新增货品】显示条码/重设条码", "test100042_100045");//
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "test100092");
     run("【货品管理-批量调价】单选", "test100047_100048_100049_100050_100051_100052");
     // run("【货品管理-批量调价】多选", "test100047_100048_100049_100050_100051_100052All");
     run("【货品管理-批量操作】批量操作", "test100053");
     run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
-    run("新增品牌特殊符号校验", "test100111");
+    run(" 新增品牌特殊符号校验", "test100111");
     run("【货品管理-更多-仓位列表】保存修改", "test100070");
     run("【货品管理-更多-新增仓位】新增仓位,修改页面返回", "test100073_100074");
     run("【货品管理-更多-超储统计】最大库存为0不计入超储统计/库存>最大库存/库存=最大库存",
@@ -192,29 +193,19 @@ function testGoods001Else() {
     run("【货品管理-更多-缺货统计】最小库存为0不计入缺货统计", "test100086");
     run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
             "test100087_100088_100089");
-
-    // 颜色尺码
-    run("颜色尺码模式", "setGoodsColorParams");
-    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
-    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
-
-    run("均色均码模式", "setGoodsNoColorParams");
+    // 开单模式5
+    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
+            "test10_fuzzyQueryAndDropDownListCheck");
 
 }
 
-function testGoodsGoodsAll() {
+function testGoods001Color() {
+    // 颜色尺码
+    run(" 颜色尺码模式", "setGoodsColorParams");
+    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
+    run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "test100031");
 
-    // login004
-    // run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");
-    // login002
-    // if(setTagprice_invperson_1()){
-    // run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
-    // run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
-    // }
-    // login005
-    // if(setTagprice_invperson_0()){
-    // run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
-    // }
+    run(" 均色均码模式", "setGoodsNoColorParams");
 
     // 跳过部分
     // run("【货品管理-当前库存】进货价（总额、单据、小计 ）权限控制", "test100004");//未完成
@@ -222,7 +213,7 @@ function testGoodsGoodsAll() {
 
 }
 
-function goodsParams002() {
+function setGoodsParams002() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -247,7 +238,7 @@ function goodsParams002() {
     return ret;
 }
 
-function testGoods002() {
+function testGoods003() {
     // 均色均码
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入必填项信息", "test100025");
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100046");
@@ -256,36 +247,6 @@ function testGoods002() {
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
 
-}
-/**
- * 均色均码 省代价格模式 价格模式5 不支持自动生成款号 新增界面格式——老模式
- */
-function goodsParams003() {
-
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "货品建款的价格模式" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
-}
-
-function testGoods003() {
-    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
-            "test10_fuzzyQueryAndDropDownListCheck");
-    run("设置开单模式2", "setPaymethod2");
 }
 
 function setPaymethod2() {
@@ -1258,10 +1219,8 @@ function test100015_100017Field() {
 function test100019() {
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
-    var keys = [ "款号", "名称", "品牌", "吊牌价" ];
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
     var fields = editGoodsFields(keys, false, 0, 0);
-    changeTFieldValue(fields["款号"], r);
-    changeTFieldValue(fields["名称"], r);
     setTFieldsValue(getScrollView(), fields);
 
     var ret = isEqual(100, getTextFieldValue(getScrollView(), 8))
@@ -1871,6 +1830,7 @@ function test100111Field(keys) {
     return ret;
 }
 
+// 均色均码的只有一条记录
 function test100058() {
     var r = "g" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r };
@@ -1887,6 +1847,23 @@ function test100058() {
     tapNaviLeftButton();
     tapButton(window, RETURN);
 
+    return ret;
+}
+
+function test100124() {
+    // 检查货品管理-当前库存、款号库存、库存分布、货品查询界面的查询条件 “是否停用”
+    // 点到相应界面，查询条件 “是否停用”的内容就会刷新变成默认值“否”
+    tapMenu("货品管理", "当前库存");
+    var ret = isEqual("否", getTextFieldValue(window, 7));
+
+    tapMenu("货品管理", "款号库存");
+    ret = isAnd(ret, isEqual("否", getTextFieldValue(window, 7)));
+
+    tapMenu("货品管理", "库存分布");
+    ret = isAnd(ret, isEqual("否", getTextFieldValue(window, 2)));
+
+    tapMenu("货品管理", "货品查询");
+    ret = isAnd(ret, isEqual("否", getTextFieldValue(window, 7)));
     return ret;
 }
 

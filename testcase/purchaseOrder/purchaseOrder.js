@@ -19,7 +19,7 @@ function testPurchaseOrder001() {
 
 }
 
-function testPurchaseOrderAll() {
+function testPurchaseOrder002() {
     // if(setIgnorecolorsize_1Params()){
     run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
     // }

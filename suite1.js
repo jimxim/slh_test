@@ -39,7 +39,7 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
 
 
- run("test", "test120061");
+ run("test", "test100124");
 // run("test", "onlyTest");
 // return ret;
 }
@@ -79,11 +79,11 @@ function addBillSales_sizehead0(){
 
 
 //
-function setGoods001Params(){
+function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/省代价格模式/价格模式2", "goodsParams001");
+        run("均色均码/省代价格模式/价格模式2", "setGoodsParams001");
        logout();
     }
 }
@@ -100,7 +100,7 @@ function setBasicSetUpAll(){
 
 // 新综合汇总接口
 // 可用setGoods001Params
-function testSASynthesisAll000Params(){
+function loginSASynthesisParams(){
   var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -109,7 +109,7 @@ function testSASynthesisAll000Params(){
   }
 }
 
-function testSASynthesisAll000() {
+function loginSASynthesisAll() {
   var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -119,17 +119,17 @@ function testSASynthesisAll000() {
 }
 
 // 中洲店总经理登陆，为常青店准备数据
-function test000Goods001Prepare(){
+function login200GoodsPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testGoods001Prepare();
+        testGoodsPrepare001();
        logout();
     }
   }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
-function test000Goods001() {
+function login000Goods001() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -138,29 +138,8 @@ function test000Goods001() {
   }
 }
 
-//
-function test000Goods001Else() {
-    var p1 = {"角色":"总经理"};
-  var ok = login("000","000000",p1);
-  if( ok ) {
-      testGoods001Else();
-     logout();
-  }
-}
-
-/**
- * 参数 setGoods002Params 准备数据 用例 test000Goods002
- */
-function setGoods002Params(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        run("均色均码/省代价格模式/价格模式5", "goodsParams002");
-       logout();
-    }
-}
-// 款号名称模糊查询、款号下拉列表验证产品折扣
-function test000Goods002() {
+// 均色均码 省代价格模式
+function login000Goods002() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -169,19 +148,16 @@ function test000Goods002() {
   }
 }
 
-/**
- * 参数 setGoods003Params 准备数据 用例 test000Goods003
- */
-function setGoods003Params(){
+function loginGoodsParams002(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("均色均码/默认价格模式/价格模式2", "goodsParams003");
+        run("均色均码/默认价格模式", "setGoodsParams002");
        logout();
     }
 }
-// 默认价格模式新增货品检验
-function test000Goods003() {
+// 均色均码 默认价格模式
+function login000Goods003() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -190,18 +166,20 @@ function test000Goods003() {
   }
 }
 
+
+
 // 中洲店总经理登陆，为常青店准备数据
-function test000Customer001Prepare(){
+function login200CustomerPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testCustomer001Prepare();
+        testCustomerPrepare001();
        logout();
     }
   }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
-function test000Customer001() {
+function login000Customer001() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -211,17 +189,17 @@ function test000Customer001() {
 }
 
 //
-function test000Customer001Else() {
+function login000Customer002() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
-      testCustomer001Else();
+      testCustomer002();
      logout();
   }
 }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
-function test000Purchase001() {
+function login000Purchase001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
    if( ok ) {
@@ -231,17 +209,17 @@ function test000Purchase001() {
 }
 
 // 中洲店总经理登陆，为常青店准备数据
-function test000Purchase002Prepare(){
+function login200PurchasePrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testPurchase002Prepare();
+        testPurchasePrepare002();
        logout();
     }
   }
 
 //
-function test000Purchase002() {
+function login000Purchase002() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
    if( ok ) {
@@ -251,17 +229,26 @@ function test000Purchase002() {
 }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框/数据
-function  test000PurchaseOrder001() {
+function  login000PurchaseOrder001() {
   var p1 = {"角色":"总经理"};
- var ok = login("000","000000",p1);
- if( ok ) {
-    testPurchaseOrder001();
-   logout();
-}
+  var ok = login("000","000000",p1);
+  if( ok ) {
+      testPurchaseOrder001();
+      logout();
+  }
 }
 
+function  login000PurchaseOrder002() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testPurchaseOrder002();
+        logout();
+    }
+  }
+
 // 中洲店总经理验证门店调出
-function test200ShopOut001(){
+function login200ShopOut001(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
@@ -273,7 +260,7 @@ function test200ShopOut001(){
 }
 
 // 常青店总经理验证门店调入
-function test000ShopIn001(){
+function login000ShopIn001(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
@@ -283,7 +270,7 @@ function test000ShopIn001(){
 }
 
 // 中洲店总经理登陆，为常青店准备数据
-function test000SalesOrderPrepare(){
+function login200SalesOrderPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
@@ -293,7 +280,7 @@ function test000SalesOrderPrepare(){
   }
 
 // 翻页/排序/汇总/条件查询/清除/下拉框
-function test000SalesOrder001() {
+function login000SalesOrder001() {
   var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);
   if( ok ) {
@@ -302,39 +289,17 @@ function test000SalesOrder001() {
   }
 }
 
-function test000SalesOrderNoColor() {
+function login000SalesOrder002() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        testSalesOrderNoColor();
+        testSalesOrder002();
         logout();
     }
   }
 
-// 销售开单 翻页/排序/汇总/条件查询/清除/下拉框
-function test000SalesNoColorSizeElse001() {
-   var p1 = {"角色":"总经理"};
-   var ok = login("000","000000",p1);
-   if( ok ) {
-       testSalesNoColorSizeElse001();
-       
-       logout();
-   }
-}
-
-// 盘点管理 翻页/排序/汇总/条件查询/清除/下拉框
-function test000Check001() {
-   var p1 = {"角色":"总经理"};
-   var ok = login("000","000000",p1);
-   if( ok ) {
-       testCheck001();
-       
-       logout();
-   }
-}
-
 // 统计分析 中洲店数据准备
-function test000StatisticAnalysisPrepare() {
+function login200StatisticAnalysisPrepare() {
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
@@ -343,18 +308,17 @@ function test000StatisticAnalysisPrepare() {
     }
  }
 // 统计分析
-function test000StatisticAnalysisAll() {
+function login000StatisticAnalysis001() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);
    if( ok ) {
-       testStatisticAnalysisAll();
-       
+       testStatisticAnalysis001();   
        logout();
    }
 }
 
 // 仓库店总经理
-function test100Warehouse(){
+function login100Warehouse(){
     var p1 = {"角色":"总经理"};
     var ok = login("100","000000",p1);
     if( ok ) {
@@ -364,7 +328,7 @@ function test100Warehouse(){
 }
 
 // 财务员
-function testTreasurer001() {
+function loginTreasurer001() {
     var p1 = {"角色":"财务员"};
   var ok = login("001","000000",p1);
   if( ok ) {
@@ -372,9 +336,27 @@ function testTreasurer001() {
      logout();
   }
 }
+// 仓管员是否可以根据吊牌价生成价格 为 默认不需要
+function loginStoreKeeper002_1(){
+    var p1 = {"角色":"仓管员"};
+    var ok = login("002","000000",p1);
+    if( ok ) {
+        testStoreKeeper002_1();
+       logout();
+    }   
+}
+// 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+function loginStoreKeeper002_2(){
+    var p1 = {"角色":"仓管员"};
+    var ok = login("002","000000",p1);
+    if( ok ) {
+        testStoreKeeper002_2();
+       logout();
+    }   
+}
 
 // 店长登陆的一些用例
-function testShopkeeper004() {
+function loginShopkeeper004() {
     var p1 = {"角色":"店长"};
   var ok = login("004","000000",p1);
   if( ok ) {
@@ -385,66 +367,19 @@ function testShopkeeper004() {
 
 
 // 开单员
-function testBillClerk005() {
+function loginBillClerk005_1() {
  var p1 = {"角色":"开单员"};
 var ok = login("005","000000",p1);
 if( ok ) {
-   testBillClerk005All();
+   testBillClerk005_1();
   logout();
-}
-}
-
-
-
-
-
-
-
-
-function test002All() {
-    var p1 = {"角色":"仓管员"};
-  var ok = login("002","000000",p1);
-  if( ok ) {
-    
-     logout();
-  }
-}
-
-function test003All() {
-    var p1 = {"角色":"采购员"};
-  var ok = login("003","000000",p1);
-  if( ok ) {
-    
-     logout();
-  }
-}
-
-function test006All() {
-    var p1 = {"角色":"营业员"};
-  var ok = login("006","000000",p1);
-  if( ok ) {
-    
-     logout();
-  }
-}
-
-function test007All() {
-    var p1 = {"角色":"配货员"};
-  var ok = login("007","000000",p1);
-  if( ok ) {
-
-     logout();
-  }
+ }
 }
 
 
 
 
-function test004All() {
-    var p1 = {"角色":"店长"};
-  var ok = login("004","000000",p1);
-  if( ok ) {
-     testCheckMenuAll();
-     logout();
-  }
-}
+
+
+
+
