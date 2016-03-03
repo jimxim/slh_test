@@ -28,7 +28,7 @@ js_func="loginGoodsParams001"
 #店长
 #js_func="$js_func testShopkeeper004 "
 #开单员
-#js_func="$js_func testBillClerk005 "
+#js_func="$js_func loginBillClerk005_1 "
 
 #仓库店 
 #总经理

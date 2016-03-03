@@ -102,6 +102,10 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "默认门店可自由查询各自库存" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
+    o = { "新值" : "0", "数值" : [ "默认不填写" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 
@@ -199,7 +203,7 @@ function testGoods002() {
 
 }
 
-function testGoods001Color() {
+function testGoods002Color() {
     // 颜色尺码
     run(" 颜色尺码模式", "setGoodsColorParams");
     run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "test100029");
@@ -246,7 +250,7 @@ function testGoods003() {
     run("颜色尺码模式", "setGoodsColorParams");
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "test100023");
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "test100024");
-
+    run(" 均色均码模式", "setGoodsNoColorParams");
 }
 
 function setPaymethod2() {
@@ -1235,15 +1239,13 @@ function test100019() {
     tapButton(window, RETURN);
 
     tapMenu("货品管理", "货品查询");
-    var qKeys = [ "款号名称" ];
-    var qFields = queryGoodsFields(qKeys);
-    changeTFieldValue(qFields["款号名称"], r);
-    query(qFields);
+    keys = { "款号名称" : r };
+    fields = queryGoodsFields(qKeys);
+    query(fields);
     var qr = getQR();
-    var ret1 = isEqual(100, qr.data[0]["进货价"]);
+    ret = isAnd(ret, isEqual(100, qr.data[0]["进货价"]));
 
-    logDebug("ret=" + ret + "   ret1=" + ret1);
-    return ret && ret1;
+    return ret;
 }
 
 // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
@@ -1251,39 +1253,21 @@ function test100019() {
 // 仓管员002登录
 function test100020() {
     var r = getTimestamp(8);
-    tapMenu("货品管理", "新增货品+");
-    var f0 = new TField("款号", TF, 0, r);
-    var f1 = new TField("名称", TF, 1, "a" + r);
-    var f2 = new TField("品牌", TF_AC, 2, "1010pp", -1, 0);
-    var f7 = new TField("吊牌价", TF, 7, 200);
-    var fields = [ f0, f1, f2, f7 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    delay(2);
-    tapButton(window, RETURN);
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
+    addGoods(keys);
 
     tapMenu("货品管理", "货品查询");
+    query();
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
 
-    var ret1 = isEqual(200, getTextFieldValue(getScrollView(), 9))
+    var ret = isEqual(200, getTextFieldValue(getScrollView(), 9))
             && isEqual(180, getTextFieldValue(getScrollView(), 10))
             && isEqual(160, getTextFieldValue(getScrollView(), 11))
             && isEqual(140, getTextFieldValue(getScrollView(), 12));
     delay();
     tapButton(window, RETURN);
 
-    return ret1;
-
-    // 总经理000登陆
-    // tapMenu("货品管理", "货品查询");
-    // tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    // var ret2 = isEqual(200, getTextFieldValue(getScrollView(), 8))
-    // && isEqual(200, getTextFieldValue(getScrollView(), 9))
-    // && isEqual(180, getTextFieldValue(getScrollView(), 10))
-    // && isEqual(160, getTextFieldValue(getScrollView(), 11))
-    // && isEqual(140, getTextFieldValue(getScrollView(), 12));
-    // delay();
-    // tapButton(window, RETURN);
+    return ret;
 
 }
 
@@ -1291,8 +1275,9 @@ function test100020() {
 // 省代模式
 // 开单员005登录
 function test100022() {
+    var r = getTimestamp(8);
     tapMenu("货品管理", "新增货品+");
-    var keys = [ "款号", "名称", "品牌", "吊牌价" ];
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
 
@@ -1327,56 +1312,52 @@ function test100021() {
 
 function test100025() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "进货价" : "100",
-        "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "a", "计量单位" : "双",
-        "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000", "经办人" : "000",
-        "条码" : "555555", "备注" : "123" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "进货价" : "100", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "a",
+        "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
+        "经办人" : "000", "是否加工款" : "是", "加工价" : 150, "门店" : "常青店", "备注" : "123" };
     addGoods(keys, "no", "yes");
 
-    var expected = new Array(code, name, "1010pp", "", "", getToday(), 100,
-            130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司", "双", "默认", 0,
-            1000, "000,总经理", "555555", 123);
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
+            100, 130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司", "双", "默认",
+            0, 1000, "000,总经理", "是", 150, "常青店", "", 123);
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100046() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "进货价" : "100" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "进货价" : "100" };
     addGoods(keys, "no", "yes");
 
-    var expected = new Array(code, name, "1010pp", "", "", getToday(), 100,
-            130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "", "",
-            "");
-    var ret = test100033Field(name, expected);
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
+            100, 130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "",
+            "否", 0, "常青店", "", "");
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100033() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "吊牌价" : "200" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "吊牌价" : "200" };
     addGoods(keys);
 
-    var expected = new Array(code, name, "1010pp", "", "", getToday(), 200,
-            100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0", "",
-            "", "");
-    var ret = test100033Field(name, expected);
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
+            200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0",
+            "", "否", "0", "常青店", "", "");
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
-function test100033Field(name, expected) {
+function test100033Field(expected) {
     tapMenu("货品管理", "货品查询");
-    var qKeys = { "款号名称" : name };
+    var qKeys = { "款号名称" : expected[1] };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
 
@@ -1392,90 +1373,84 @@ function test100033Field(name, expected) {
 
 function test100034() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "吊牌价" : "200",
-        "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "a", "计量单位" : "双",
-        "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000", "经办人" : "000", "备注" : "123" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "a",
+        "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
+        "经办人" : "000", "是否加工款" : "是", "加工价" : 150, "门店" : "常青店", "备注" : "123" };
     addGoods(keys);
 
-    var expected = new Array(code, name, "1010pp", "", "", getToday(), 200,
-            100, 200, 180, 160, 140, 0.85, "夏季", "登山服", "Adida公司", "双", "默认",
-            0, 1000, "000,总经理", "", 123);
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
+            200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服", "Adida公司", "双",
+            "默认", 0, 1000, "000,总经理", "是", 150, "常青店", "", 123);
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100023() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "颜色" : "0,1", "尺码" : "0",
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "颜色" : "0,1", "尺码" : "0",
         "进货价" : "100" };
     addGoods(keys, "yes", "yes");
 
-    var expected = new Array(code, name, "", "花色,黑色,", "s,", getToday(), 100,
-            130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "", "",
-            "");
+    var expected = new Array("g" + r, "货品" + r, "", "花色,黑色,", "s,", getToday(),
+            100, 130, 120, 160, 150, 1, "春季", "", "", "件", "默认", "0", "0", "",
+            "否", 0, "常青店", "", "");
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100024() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
-        "尺码" : "0", "进货价" : "100", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
-        "厂商" : "a", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
-        "经办人" : "000", "条码" : "555555", "备注" : "123" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "颜色" : "0,1", "尺码" : "0", "进货价" : "100", "产品折扣" : "0.85", "季节" : "夏季",
+        "类别" : "登山服", "厂商" : "a", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "1000", "经办人" : "000", "是否加工款" : "是", "加工价" : 150,
+        "门店" : "常青店", "备注" : "123" };
     addGoods(keys, "yes", "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,", getToday(),
-            100, 130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司", "双", "默认",
-            0, 1000, "000,总经理", "555555", 123);
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "花色,黑色,", "s,",
+            getToday(), 100, 130, 120, 160, 150, 0.85, "夏季", "登山服", "Adida公司",
+            "双", "默认", 0, 1000, "000,总经理", "是", 150, "常青店", "", 123);
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100029() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
-        "尺码" : "0", "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
-        "厂商" : "a", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
-        "经办人" : "000", "条码" : "555555", "备注" : "123" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "颜色" : "0,1", "尺码" : "0", "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季",
+        "类别" : "登山服", "厂商" : "a", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "1000", "经办人" : "000", "是否加工款" : "是", "加工价" : 150,
+        "门店" : "常青店", "备注" : "123" };
     addGoods(keys, "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,", getToday(),
-            200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服", "Adida公司", "双",
-            "默认", "0", "1000", "000,总经理", "555555", "123");
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "花色,黑色,", "s,",
+            getToday(), 200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服",
+            "Adida公司", "双", "默认", "0", "1000", "000,总经理", "是", 150, "常青店", "",
+            "123");
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }
 
 function test100031() {
     var r = getTimestamp(8);
-    var code = "g" + r;
-    var name = "货品" + r;
-    var keys = { "款号" : code, "名称" : name, "品牌" : "1010pp", "颜色" : "0,1",
-        "尺码" : "0", "吊牌价" : "200" };
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "颜色" : "0,1", "尺码" : "0", "吊牌价" : "200" };
     addGoods(keys, "yes");
 
-    var expected = new Array(code, name, "1010pp", "花色,黑色,", "s,", getToday(),
-            200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0",
-            "", "", "");
+    var expected = new Array("g" + r, "货品" + r, "1010pp", "花色,黑色,", "s,",
+            getToday(), 200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件",
+            "默认", "0", "0", "", "否", 0, "常青店", "", "");
 
-    var ret = test100033Field(name, expected);
+    var ret = test100033Field(expected);
 
     return ret;
 }

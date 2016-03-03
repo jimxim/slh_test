@@ -3248,14 +3248,14 @@ function test110056() {
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
-    ret = ret && isIn(alertMsg, "包含特殊字符");
+    ret = isAnd(ret, isIn(alertMsg, "包含特殊字符"));
     tapPrompt();
 
     keys = { "客户代码" : "xw001" };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
-    ret = ret && isIn(alertMsg, "相同客户代码已存在");
+    ret = isAnd(ret, isIn(alertMsg, "相同客户代码已存在"));
     tapPrompt();
 
     var r = "客户代码abc" + getTimestamp(6);
@@ -3266,7 +3266,7 @@ function test110056() {
 
     delay();
     tapFirstText();
-    ret = ret && isEqual(r, getTextFieldValue(getScrollView(), 11));
+    ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 11)));
     tapButton(window, RETURN);
 
     return ret;

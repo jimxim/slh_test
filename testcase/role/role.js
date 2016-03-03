@@ -14,11 +14,13 @@ function testTreasurer001All() {
 
 function testStoreKeeper002_1() {
     // goods.js
+    // 全局参数 仓管员是否可以根据吊牌价生成价格 为 默认不支持
     run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
 }
 
 function testStoreKeeper002_2() {
     // goods.js
+    // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
     run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
 }
 
@@ -53,5 +55,6 @@ function testBillClerk005_1() {
 
 function testBillClerk005_2() {
     // goods.js
+    // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
     run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
 }

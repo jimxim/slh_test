@@ -33,7 +33,7 @@ function testSalesOrder001() {
 function testSalesOrder002() {
     run("【销售订货－新增订货】新增订货单", "test160047");
     run("【销售订货－新增订货】新增超长订单并打印", "test160048");
-    // run("【销售订货－新增订货】整单复制/整单粘贴", "test160060");
+    run("【销售订货－新增订货】整单复制/整单粘贴", "test160060");
     run("【销售订货－新增订货】订单修改界面内容检查_开单日期检查", "test160049_160052");
     run("【销售订货－新增订货】客户新增", "test160050");
     run("【销售订货－新增订货】客户名称和店员名称检查", "test160051");
@@ -75,23 +75,24 @@ function testSalesOrder002() {
 
 function test160047() {
     tapMenu("销售订货", "按批次查");
-    var keys = { "日期从" : "2015-10-21" };
+    var keys = { "日期从" : getDay(-100), "门店" : "常青店" };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]) + 1;
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "现金" : 1000, "刷卡" : [ 400, "银" ], "汇款" : [ 600, "银" ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
     qr = getQR();
-    var expected = { "序号" : "1", "批次" : batch, "日期" : getToday("yy"),
-        "门店" : "常青店", "店员" : "000,总经理", "客户" : "小王", "数量" : "10", "已发数" : "0",
-        "差异数" : "10", "发货状态" : "未发货", "总额" : "2000", "现金" : "2000", "刷卡" : "0",
-        "汇款" : "0", "客户分店" : "", "操作日期" : json["操作日期"] };
-    var ret = isEqualQRData1Object(qr, expected);
+    var expected = { "批次" : batch, "日期" : getToday("yy"), "门店" : "常青店",
+        "店员" : "总经理", "客户" : "小王", "数量" : "10", "已发数" : "0", "差异数" : "10",
+        "发货状态" : "未发货", "总额" : "2000", "现金" : "1000", "刷卡" : "400",
+        "汇款" : "600", "客户分店" : "", "操作日期" : json["操作日期"] };
+    var ret = isEqualObject(expected, qr.data[0]);
 
     return ret;
 }
@@ -134,15 +135,15 @@ function test160048() {
     }
     tapButton(window, RETURN);
 
-    logDebug("ret1=" + ret1 + "   ret2=" + ret2)
-    return ret1 && ret2;
+    return isAnd(ret1, ret2);
 }
 
 function test160060() {
     // 先跑160048可省该订货操作
-    test160048AddBill();
+    // test160048AddBill();
 
     tapMenu("销售订货", "按批次查");
+    query();
     tapFirstText();
     tapButton(window, "整单复制");
 
@@ -160,10 +161,7 @@ function test160060() {
             && isEqual("000,总经理", getTextFieldValue(window, 4))
             && isEqual(getToday(), getTextFieldValue(window, 8))
             && isEqual("123", getTextFieldValue(window, 9));
-    var ret1 = true;
-    var ret2 = true;
-    var ret3 = true;
-    var ret4 = true;
+    var ret1 = true, ret2 = true, ret3 = true, ret4 = true;
     for (i = 0; i < 16; i++) {
         ret1 = ret1
                 && isIn(getTextFieldValue(getScrollView(), 0 + n * i), "kh0");
@@ -1668,6 +1666,8 @@ function test160041() {
     return ret;
 }
 
+// 按订货开单是否按当前库存数自动填写发货数-默认不填写~
+// 否则总库存为负时，按订货开单明细会无数据
 function test160042() {
     tapMenu("销售订货", "按汇总", "按店员");
     var keys = { "日期从" : getDay(-3), "到" : getToday(), "店员" : "000" }
@@ -2417,7 +2417,7 @@ function test16_Stockout_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 10; i++) {
-        if (i == 2 || i == 3 || i == 6) {
+        if (i == 2 || i == 3) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));

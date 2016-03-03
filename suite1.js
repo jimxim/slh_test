@@ -10,18 +10,7 @@
 function test000All() {
  debug = true;
 // run("setParams", "goodsParams001");
-// run("prepare","testCustomer001Prepare");
-// run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");//还是可以修改
-// run("【往来管理】店长查看客户门店帐", "test110031_110032");
-// run("【往来管理-客户活跃度】未拿货天数", "test110035");
-// run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
-// run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");//100登陆
-// run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
-// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-// run("【test", "editBillForCustomerAccount3");
-// logout();
-// run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
-// run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
+
  
  
  
@@ -39,18 +28,21 @@ function test000All() {
 // run("【统计分析—综合汇总】进入详细-还款", "test190040");
 
 
- run("test", "test100124");
-// run("test", "onlyTest");
+// run("【销售订货-按批次查】均色均码+修改已发货的订单", "test160073");
+// run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
+// run("【销售订货-按明细查】作废订单后内容检查", "test160021");
+// run("【销售订货—订货汇总】按款号-待发数数值检查", "test160035");
+// run("【销售订货—订货汇总】按款号-未发数数值检查--多发", "test160036");
+// run("【销售订货—订货汇总】按款号-厂商查询", "test160037");
+// run("【销售订货—订货汇总】按款号-按客户", "test160038");
+
+ run("test", "onlyTest");
 // return ret;
 }
 
 function onlyTest(){
-    tapMenu("采购入库", "按订货入库");
-    query();
-    tapFirstText();
-    var f = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
+   var qr=getQR();
+   debugObject(qr.counts);
 }
 
 // 关闭尺码表头
