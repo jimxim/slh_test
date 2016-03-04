@@ -18,12 +18,6 @@ function testStoreKeeper002_1() {
     run("【货品管理-新增货品】省代模式+仓管员不可以根据吊牌价生成价格", "test100021");
 }
 
-function testStoreKeeper002_2() {
-    // goods.js
-    // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
-    run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
-}
-
 function testShopkeeper004All() {
     // customer.js
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
@@ -51,6 +45,20 @@ function testBillClerk005_1() {
     run("【往来管理-客户查询】客户查询->消费明细_权限验证", "test110002_1");
     run("【往来管理】开单员查看客户门店帐", "test110031_110032");
     run("【往来管理-客户查询】非总经理角色修改有欠款或余款的客户的名称", "test110057");
+}
+
+function setGoodsParams003() {
+    var qo, o, ret = true;
+    qo = { "备注" : "仓管是否可以根据吊牌价生成价格" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
+}
+
+function testStoreKeeper002_2() {
+    // goods.js
+    // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+    run("【货品管理-新增货品】省代模式+仓管员可以根据吊牌价生成价格", "test100020");
 }
 
 function testBillClerk005_2() {

@@ -337,15 +337,6 @@ function loginStoreKeeper002_1(){
        logout();
     }   
 }
-// 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
-function loginStoreKeeper002_2(){
-    var p1 = {"角色":"仓管员"};
-    var ok = login("002","000000",p1);
-    if( ok ) {
-        testStoreKeeper002_2();
-       logout();
-    }   
-}
 
 // 店长登陆的一些用例
 function loginShopkeeper004() {
@@ -368,6 +359,33 @@ if( ok ) {
  }
 }
 
+//仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+function loginGoodsParams003(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        setGoodsParams003();
+       logout();
+    }   
+}
+
+//仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
+function loginStoreKeeper002_2(){
+    var p1 = {"角色":"仓管员"};
+    var ok = login("002","000000",p1);
+    if( ok ) {
+        testStoreKeeper002_2();
+       logout();
+    }   
+}
+function loginBillClerk005_2() {
+    var p1 = {"角色":"开单员"};
+   var ok = login("005","000000",p1);
+   if( ok ) {
+      testBillClerk005_2();
+     logout();
+    }
+   }
 
 
 

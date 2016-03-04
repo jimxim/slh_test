@@ -105,6 +105,10 @@ function setGoodsParams001() {
     qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "仓管是否可以根据吊牌价生成价格" };
+    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }

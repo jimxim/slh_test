@@ -24,9 +24,9 @@ js_func="loginGoodsParams001"
 #js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesOrder002"
 #常青店的其他角色的各种用例
 #财务员 
-#js_func="$js_func testTreasurer001 "
+#js_func="$js_func loginTreasurer001 "
 #店长
-#js_func="$js_func testShopkeeper004 "
+#js_func="$js_func loginShopkeeper004 "
 #开单员
 #js_func="$js_func loginBillClerk005_1 "
 
@@ -34,9 +34,9 @@ js_func="loginGoodsParams001"
 #总经理
 #js_func="$js_func login100Warehouse "
 
-#货品管理的默认价格模式
+#货品管理
 #js_func="$js_func loginGoodsParams002 login000Goods003 "
-
+#js_func="$js_func loginGoodsParams003 loginStoreKeeper002_2 loginBillClerk005_2 "
 
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
