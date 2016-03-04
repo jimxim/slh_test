@@ -556,6 +556,7 @@ function test190004() {
         "明细" : [ { "收入类别" : "订金", "金额" : rm, "备注" : r1 } ] };
     editStatisticAnalysisIn(json);
 
+    query();
     tapFirstText();
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             "现", getTextFieldValue(window, 1)), isEqual(rm, getTextFieldValue(
@@ -991,7 +992,7 @@ function test190025() {
     setTFieldsValue(getScrollView(), [ f ]);
     saveAndAlertOk();
     tapPrompt();
-    tapReturn();// 防止有时卡在开单界面
+    // tapReturn();// 防止有时卡在开单界面
     tapMenu("统计分析", "收支流水");
     tapButton(window, QUERY);
     qr = getQR();
@@ -2432,12 +2433,13 @@ function test190086() {
     query(fields);
 
     var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0;// 数量 金额 利润额
+    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;// 数量 金额 利润额
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             sum1 += Number(qr.data[i]["数量"]);
             sum2 += Number(qr.data[i]["金额"]);
             sum3 += Number(qr.data[i]["利润额"]);
+            sum4 += Number(qr.data[i]["成本额"]);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
@@ -2445,7 +2447,8 @@ function test190086() {
         }
     }
     var ret = isAnd(isEqual(sum1, qr.counts["数量"]), isAqualNum(sum2,
-            qr.counts["金额"], 0.001), isAqualNum(sum3, qr.counts["利润额"]), 0.001);
+            qr.counts["金额"], 0.001), isAqualNum(sum3, qr.counts["利润额"], 0.001),
+            isAqualNum(sum4, qr.counts["成本额"]), 0.001);
 
     return ret;
 

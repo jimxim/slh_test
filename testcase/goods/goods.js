@@ -239,7 +239,7 @@ function setGoodsParams002() {
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "支持,颜色尺码模式开单更便捷" };
+    qo = { "备注" : "支持，颜色尺码模式开单更便捷" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

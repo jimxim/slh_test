@@ -31,8 +31,8 @@ function testPurchaseOrder002() {
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "test130009");
     // run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
     // run("【采购订货】客户或供应商信息不允许修改", "test130011");
-//    run("【采购订货-新增订货】采购订货复杂支付模式-使用有权查看进货价的角色登录", "test130012");//
-//    run("1.开启全局参数 采购入库模式为 默认复杂模式,有支付类型", "test130013");//
+    // run("【采购订货-新增订货】采购订货复杂支付模式-使用有权查看进货价的角色登录", "test130012");//
+    // run("1.开启全局参数 采购入库模式为 默认复杂模式,有支付类型", "test130013");//
     run("1.采购订货-新增订货-检查界面上是否存在 整单备注输入框和明细备注输入框", "test130014");
     run("【采购订货】订单终结功能", "test130015");
     run("【采购订货-新增订货】订单终结-重复终结", "test130016_1");
@@ -220,7 +220,7 @@ function test130002_2() {
         "客户" : "vell",
         "goodsFieldIndex" : -2,
         "明细" : [ { "货品" : "3035", "数量" : [ 10 ] },
-                { "货品" : "k300", "数量" : [ 20 ] } ], "备注" : "xx" };
+                { "货品" : "k300", "数量" : [ 20 ] } ], "备注" : "xx", "采购订货" : "yes" };
     editSalesBillColorSize(json);
 
     tapMenu("采购订货", "按明细查");
@@ -261,7 +261,7 @@ function test130003_1() {
     // 颜色尺码模式下按明细查
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "jkk", "数量" : "20" } ], "备注" : "xx" };
+        "明细" : [ { "货品" : "jkk", "数量" : "20" } ], "备注" : "xx", "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按明细查");
@@ -310,7 +310,7 @@ function test130003_2() {
     // 颜色尺码模式下按明细查
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "jkk", "数量" : "20", "备注" : "xx" } ] };
+        "明细" : [ { "货品" : "jkk", "数量" : "20", "备注" : "xx" } ], "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按明细查");
@@ -875,7 +875,8 @@ function test130013() {
 function test130014() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : "8", "备注" : "mxbz" } ], "备注" : "zdbzx" };
+        "明细" : [ { "货品" : "3035", "数量" : "8", "备注" : "mxbz" } ],
+        "备注" : "zdbzx", "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按批次查");
@@ -887,7 +888,7 @@ function test130014() {
 
     tapFirstText();
     var a = getTextFieldValue(window, 0);
-    var a1 = getTextFieldValue(window, 9);
+    var a1 = getTextFieldValue(window, 8);
     var a2 = getTextFieldValue(getScrollView(), 6);
     var ret = isAnd(isEqual("Vell", a), isEqual("zdbzx", a1), isEqual("mxbz",
             a2));
@@ -918,7 +919,8 @@ function test130015() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ], "备注" : "zdbzx" };
+        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ],
+        "备注" : "zdbzx", "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
@@ -1025,9 +1027,8 @@ function test130016_2() {
     tapMenu("采购入库", "按订货入库");
     query();
     qr = getQR();
-    var total1 = qr.total;
     ret = isAnd(ret, !isEqual(batch, qr.data[0]["批次"]), isEqual("1", sub(total,
-            total1)));
+            qr.total)));
 
     return ret;
 }

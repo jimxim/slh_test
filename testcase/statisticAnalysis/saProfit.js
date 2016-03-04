@@ -3,20 +3,21 @@
 //成本核算
 function textFin_price_base() {
     var ret1 = false, ret2 = false, ret3 = false;
-    if (setParamFin_price_base2()) {
-        ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
-                textFin_price_base2_3());
-    }
+    // if (setParamFin_price_base2()) {
+    // ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
+    // textFin_price_base2_3());
+    // }
 
-    if (setParamFin_price_base3()) {
-        ret2 = textFin_price_base3_1();
-    }
-
+    // if (setParamFin_price_base3()) {
+    // ret2 = textFin_price_base3_1();
+    // }
+    //
     if (setParamFin_price_base0()) {
         ret3 = textFin_price_base0_1();
     }
-
-    return isAnd(ret1, ret2, ret3);
+    //
+    // return isAnd(ret1, ret2, ret3);
+    return ret3;
 }
 
 function setParamFin_price_base2() {
@@ -243,7 +244,7 @@ function textFin_price_base0_1() {
     editSalesBillNoColorSize(json);
 
     var exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 2, "金额" : 400,
-        "成本额" : 210, "利润额" : 190 };
+        "成本额" : 220, "利润额" : 180 };
     var exp2 = { "款号" : r, "名称" : r, "数量" : 1, "单价" : 200, "折扣" : 1,
         "销售额" : 200, "进货价" : 110, "成本额" : 110, "利润额" : 90 };
     var exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,
