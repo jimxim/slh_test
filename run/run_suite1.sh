@@ -19,7 +19,7 @@ js_func="loginGoodsParams001"
 #采购订货
 #js_func="$js_func login000PurchaseOrder001 login000PurchaseOrder002"
 #采购入库
-#js_func="$js_func login200PurchasePrepare login000Purchase001 login000Purchase002"
+js_func="$js_func login200PurchasePrepare login000Purchase001 login000Purchase002"
 #销售订货
 #js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesOrder002"
 #常青店的其他角色的各种用例

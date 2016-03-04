@@ -783,6 +783,7 @@ function test110017() {
     tapNaviLeftButton();
     var ret = isEqual(a, sum3);
 
+    qr = getQR();
     var sum1 = 0; // 余额汇总
     var sum2 = 0; // 条数汇总
     for (j = 1; j <= qr.totalPageNo; j++) {
@@ -911,7 +912,19 @@ function test110020() {
     var actual = getTextFieldValue(window, f.index);
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
+    if (qr.data.length > 0) {
+        ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
+    } else {
+        tapMenu("销售开单", "开  单+");
+        f = new TField("客户", TF, 0, actual);
+        setTextFieldACValue(window, f);
+        var json = { "明细" : [ { "货品" : "3035", "数量" : "15" } ], "未付" : "yes" };
+        editSalesBillNoColorSize(json);
+        tapMenu("往来管理", "客户账款", "客户总账");
+        tapButton(window, QUERY);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
+    }
 
     query();
     qr = getQR();

@@ -37,7 +37,7 @@ function testPurchasePrepare002() {
     // test120026
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "1" } ],
-        "备注" : "120026" };
+        "备注" : "120026", "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     return json;
@@ -84,11 +84,6 @@ function testPurchase002() {
     run("【采购订货-按订货入库】检查备注", "test120051");
     run("【采购订货-按订货入库】核销", "test120061");
 
-}
-
-function testPurchaseAll() {
-
-    run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");//      
 }
 
 function setDwxx_not_allow_edit_0Params() {
@@ -1661,6 +1656,7 @@ function test120026() {
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "目前不支持按订货开单或入库的跨门店操作");
+    tapReturn();
     // }
 
     return ret;
