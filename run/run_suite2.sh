@@ -15,15 +15,15 @@ js_func="setSales001Params"
 ＃js_func="$js_func testSalesNoColorSize170429_Params testSalesNoColorSize170429"
 ＃js_func="$js_func testSalesNoColorSize170125_Params testSalesNoColorSize170125"
 #系统设置
-＃js_func="$js_func test000System001"
+#js_func="$js_func test000System001"
 #统计图表
 #js_func="$js_func test000testStatisticPicture001"
 #盘点管理
-js_func=" test000Check001"
-#js_func="$js_func test000Check002"
-#js_func="$js_func testCheck180022_Prepare testCheck180022"
-#js_func="$js_func testCheck180058_PreparetestCheck180058 "
-#js_func="$js_func testCheck180028_PreparetestCheck180028 "
+js_func="$js_func test000Check001"
+js_func="$js_func test000Check002"
+js_func="$js_func testCheck180022_Prepare testCheck180022"
+js_func="$js_func testCheck180058_PreparetestCheck180058 "
+js_func="$js_func testCheck180028_PreparetestCheck180028 "
 #js_func="$js_func "
 
 #js_func="$js_func  "

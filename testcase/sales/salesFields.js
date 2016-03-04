@@ -917,7 +917,7 @@ function salesCollectionRecordField(key,show) {
 
 // 物流商查询
 function testSalesQueryLogisticsFields() {
-	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "shipno","receive"];
+	var keys=["customer","day1","day2","logistics", "batch1","batch2", "shop", "shipno","receive","invalid"];
 	var fields = salesQueryLogisticsFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=salesQueryLogisticsFields(keys,true);
