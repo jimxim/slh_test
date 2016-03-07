@@ -1311,7 +1311,7 @@ function test180033() {
     qr = getQR();
 
     var ret3 = sortByTitle("批次", IS_NUM);
-    
+
     qr = getQR();
 
     ret3 = ret3 && !isEqual(batch, qr.data[0]["批次"]);
@@ -1455,7 +1455,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店",
+    var keys = {  "门店" : "常青店",
         "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -1475,7 +1475,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday() }
+    var keys = { "日期到" : getToday() }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -1495,7 +1495,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = {  "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
@@ -1516,7 +1516,7 @@ function test180042() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
-    return ret && ret1 && ret2;
+    return ret && ret1 && ret2&& ret3;
 }
 function test180042_1() {
     // var qo, o, ret = true;
@@ -1660,7 +1660,7 @@ function test180042_2() {
     // tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店",
+    var keys = {  "门店" : "常青店",
         "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -1677,7 +1677,7 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday() }
+    var keys = { "日期到" : getToday() }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -1693,7 +1693,7 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
@@ -1708,6 +1708,7 @@ function test180042_2() {
     }
     tapReturn();
 
+    logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1 && ret2;
 }
 function test180042_3() {

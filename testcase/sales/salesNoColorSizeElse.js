@@ -1,15 +1,15 @@
 // Zhangy <15068165765 at 139.com>  2015.11.5
 
 function testSalesNoColorSizeElse001() {
-    run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1_test1700010_1700011_1700012");
+    run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1_1700010_1700011_1700012");
     run("【销售开单－按批次查】条件查询，清除按钮,下拉框",
             "test170001_2_170002_170003_170004_170020_170485");
     run("【销售开单－按批次查】底部数据统计检查", "test170018");
     run("【销售开单－按明细查】翻页_排序_汇总", "test170028_170031_170032_170033");
     run("【销售开单－按明细查】下拉框", "test170028_2_1_170524");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2_170029()");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_3");
-    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_4");
+    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_2_2_170029");
+    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_170038");
+    run("【销售开单－按明细查】条件查询，清除按钮,下拉框", "test170028_170036_170487");
     run("【销售开单】按挂单--正常功能检查", "test170305_1");
     run("【销售开单】按挂单--正常功能检查", "test170305_2");
     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");
@@ -169,7 +169,7 @@ function test170001_1_1700010_1700011_1700012() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "日期从" : getDay(-3), "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     // 点击翻页
@@ -197,7 +197,7 @@ function test170001_1_1700010_1700011_1700012() {
 
     logDebug("ret=" + ret);
 
-    query();
+    query(fields);
     var qr = getQR();
     var sum1 = 0;
     var sum2 = 0;
@@ -3972,29 +3972,30 @@ function test170310_170311_170312() {
     return ret && ret1;
 }
 function test170313() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
-        "现金" : "1500" };
-    editSalesBillNoColorSize(json);
+//    tapMenu("销售开单", "开  单+");
+//    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "-5" } ],
+//        "现金" : "1500" };
+//    editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "客户" : "xjkh1", "日期从" : getToday(), "到" : getToday(),
-        "门店" : "常青店", "类型" : "退货" };
+    var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店",
+        "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["名称"];
+    var totalSale = qr.data[0]["数量"];
 
     var ret = isEqual("退货", a);
 
-    tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店",
-        "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
+    tapMenu("销售开单", "按明细查");
+    var keys = { "门店" : "常青店", "日期从" : getDay(-30), "到" : getToday(),
+        "类型" : "退货" };
+    var fields = salesQueryParticularFields(keys);
     query(fields);
     qr = getQR();
 
-    var ret = isEqual(totalSale, qr.counts["退数"]);
+    ret = isAnd(ret, isEqual(totalSale, -qr.counts["数量"]));
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "day1" : getDay(-30), "day2" : getToday(), "shop" : "常青店" };

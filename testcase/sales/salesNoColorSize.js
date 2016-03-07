@@ -77,8 +77,8 @@ function testSalesNoColorSizeAll() {
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     run("【销售开单】底部汇总统一检查", "test170423");
+    
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");
     run("销售订货价格刷新", "test170445");
     run("采购入库/采购订货价格刷新", "test170527");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
@@ -101,6 +101,7 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】客户折扣支持3位小数", "test170077_2");
     run("【销售开单-开单】开单模式-客户折扣", "test170083");
     run("【销售开单－开单】客户折扣,复制-粘贴", "test170139_3");
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");
     run("【销售开单－开单】产品折扣支持3位小数", "test170080_170084");
     run("【销售开单－开单】产品折扣,复制-粘贴", "test170139_2");
     run("【销售开单－开单】整单折扣下使用折扣3位小数", "test170078");
@@ -6579,17 +6580,13 @@ function test170251() {
     var cells = table1.cells();
     var len1 = cells.length;
 
-    logDebug("len1=" + len1);
-
     // debugElementTree(window);
 
-    var table1 = getTableView(window, -1);
-    var cells = table1.cells();
-    tap(cells[0]);
+    json = { "核销" : [ 0 ] };
+    editLogisticsVerify(json);
 
     tapNaviRightButton();
     tapButtonAndAlert(SAVE, OK);
-
     tapReturn();
 
     tapMenu("销售开单", "物流单");
@@ -6624,6 +6621,7 @@ function test170251() {
     tapButton(getPop(), "关 闭");
     tapReturn();
 
+    logDebug("len1=" + len1);
     return ret && ret1;
 }
 function test170384() {

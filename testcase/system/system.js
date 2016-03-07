@@ -1929,6 +1929,11 @@ function test210052() {
     return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test210052_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "2", "数值" : [ "限制修改所有单据日期", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
