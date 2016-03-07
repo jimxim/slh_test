@@ -57,7 +57,7 @@ function testCustomer002() {
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
     run("【往来管理-客户活跃度】未拿货天数", "test110035");
-    run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
+    run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
     run("【往来管理-新增厂商】新增厂商", "test110038");
@@ -1169,24 +1169,30 @@ function test110022() {
 // 后台 开单员 ipad开单员敏感字段 勾上
 function test110022_1() {
     // 数据准备可省略
-    editBillForCustomerAccount1();
-    editBillForCustomerAccount2();
+    // editBillForCustomerAccount1();
+    // editBillForCustomerAccount2();
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "xjkh1", "门店" : "常青店" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var a1 = test110022Field(0);
+    a1["门店"] = "常青店";
     var a2 = test110022Field(1);
+    a2["门店"] = "常青店";
     var a3 = test110022Field(2);
+    a3["门店"] = "常青店";
 
     keys = { "客户" : "sjkh1" };
     fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     var c1 = test110022Field(0);
+    c1["门店"] = "常青店";
     var c2 = test110022Field(1);
+    c2["门店"] = "常青店";
     var c3 = test110022Field(2);
+    c3["门店"] = "常青店";
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     keys = { "客户名称" : "上级客户1" };
@@ -1518,22 +1524,23 @@ function test110022Verify4() {
 
 function test110023() {
     tapMenu("往来管理", "客户账款", "客户门店账");
-    var keys = [ "客户" ];
+    var keys1 = { "客户" : "xjkh1" };
     var fields = queryCustomerShopAccountFields(keys);
-    changeTFieldValue(fields["客户"], "xjkh1");
     query(fields);
     var qr = getQR();
+    var n1 = qr.counts["余额"];
     var ret = isEqual("下级客户1", qr.data[0]["名称"]);
 
-    changeTFieldValue(fields["客户"], "sjkh1");
-    query(fields);
+    var keys2 = { "客户" : "xjkh1" };
+    fields = queryCustomerShopAccountFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
+    var n2 = qr.counts["余额"];
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
 
     tapMenu("往来管理", "客户账款", "按上级单位");
-    keys = [ "客户名称" ];
-    fields = queryCustomerSuperFields(keys);
-    changeTFieldValue(fields["客户名称"], "下级客户1");
+    fields = queryCustomerSuperFields(keys1);
     query(fields);
     qr = getQR();
     var ret1 = isEqual(0, qr.data.length);
@@ -1583,14 +1590,15 @@ function test110023() {
 
 function test110024() {
     tapMenu("往来管理", "客户账款", "客户门店账");
-    delay();
-    tapButton(window, "清 除");
-    query();
-    tapFirstText();
-    delay();
-    tapNaviButton("所有统计")
+    var keys = { "门店" : "中洲店" };
+    var fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    return qr.data.length > 0;
 }
 
+// 客户分店先跳过
 function test110025() {
 
 }
@@ -2263,10 +2271,38 @@ function test110040() {
             getScrollView(-1), 4)));
     tapReturn();
 
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapTextByFirstWithName("1");
+    ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
+            getScrollView(-1), 6)));
+    tapReturn();
+    tapTextByFirstWithName("2");
+    ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
+            getScrollView(-1), 6)));
+    tapReturn();
+
+    keys = { "款号" : "g" + r1, "名称" : "g" + r1, "进货价" : 100, "厂商" : r1 };
+    addGoods(keys);
+
+    keys = { "款号" : "g" + r2, "名称" : "g" + r2, "进货价" : 100, "厂商" : r2 };
+    addGoods(keys);
+
+    tapMenu("采购入库", "批量入库+");
+    json = {
+        "店员" : "000",
+        "明细" : [ { "货品" : "g" + r1, "数量" : 10 }, { "货品" : "g" + r2, "数量" : 10 } ],
+        "onlytest" : "yes" };
+    editPurchaseBatch(json);
+    ret = isAnd(ret, isEqual("100", getTextFieldValue(getScrollView(-1), 5)),
+            isEqual("100", getTextFieldValue(getScrollView(-1), 12)));
+    editPurchaseBatchSave({});
+
     return ret;
 }
 
 function test110040Field(value) {
+    // 进货价的按钮是否可见
     return window.segmentedControls()[2].buttons()[value].isVisible();
 }
 
@@ -2317,7 +2353,7 @@ function test110041TitleCheck() {
     var titles = qr.titles;
     var ret1 = false;
     for ( var i in titles) {
-        if (titles[i] == "累计未结") {
+        if (titles[i] == "异地核销") {
             ret1 = true;
             break;
         }
@@ -2331,7 +2367,7 @@ function test110041TitleCheck() {
     titles = qr.titles;
     var ret2 = true;
     for ( var i in titles) {
-        if (titles[i] == "累计未结") {
+        if (titles[i] == "异地核销") {
             ret2 = false;
             break;
         }
@@ -2383,6 +2419,7 @@ function test110041Role000() {
 }
 
 function test110041RoleElse() {
+    // 后台 店长敏感字段(ipad) iPad采购员敏感字段(勾上看不到)不勾上，去除厂商总账的厂商灰化
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
     var ret = test110031_110032Field();
@@ -2399,8 +2436,8 @@ function test110041RoleElse() {
             isEqual("1", qr.totalPageNo));
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
-    var keys = { "厂商" : "rt" };
-    var fields = queryCustomerProviderAccountFields(keys);
+    keys = { "厂商" : "rt" };
+    fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
@@ -2494,10 +2531,10 @@ function test110041Verify_1() {
     json = { "客户" : "vell", "现金" : 1500 };
     var batch2 = test110041_1Field(json, "-1500");// 全部核销
 
-    var arr1 = { "批次" : batch1, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
-    var arr2 = { "批次" : batch2, "日期" : getToday("yy"), "类型" : "进货单",
-        "金额" : "1500", "付款" : "0", "异地核销" : "0" };
+    var arr1 = { "批次" : batch1, "类型" : "进货单", "金额" : "1500", "付款" : "0",
+        "异地核销" : "0" };
+    var arr2 = { "批次" : batch2, "类型" : "进货单", "金额" : "1500", "付款" : "0",
+        "异地核销" : "0" };// "日期" : getToday("yy"),
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     tapButton(window, QUERY);
@@ -2516,7 +2553,7 @@ function test110041Verify_1() {
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var b1 = batch3 + 2, b2 = batch3 + 3;
     var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
-        "付款" : "750", "异地核销" : "-1500" };
+        "付款" : "1500", "异地核销" : "-1500" };
     var jo2 = { "批次" : b2, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
         "付款" : "1500", "异地核销" : "-1500" };
     var jo3 = { "批次" : batch3 + 1, "日期" : getToday("yy"), "类型" : "进货单",

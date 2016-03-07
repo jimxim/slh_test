@@ -8,7 +8,7 @@ function testWarehouseAll() {
 
 function testTreasurer001All() {
     // customer.js
-    run("【往来管理】财务员查看客户门店帐", "test110031_110032");
+    run("【往来管理】财务员查看客户门店帐", "test110024");
 
 }
 

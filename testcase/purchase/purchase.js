@@ -2770,7 +2770,7 @@ function editPurchaseBatchDet(o) {
 
         var fields = [];
         if (isDefined(d["单价"])) {
-            fields.push(new TField("单价", TF, start + 5, d["备注"]));
+            fields.push(new TField("单价", TF, start + 5, d["单价"]));
         }
         setTFieldsValue(getScrollView(), fields);
     }

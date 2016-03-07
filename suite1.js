@@ -48,15 +48,13 @@ function test000All() {
 // run("【往来管理-客户活跃度】未拿货天数", "test110035");
 // run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
 
-run("test", "test130016_2");
+run("test", "test110024");
 // return ret;
 }
 
 function onlyTest(){
-    var qo,o,ret=true;
-    qo = { "备注" : "支持，颜色尺码模式开单更便捷" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    
     return ret;
 }
 

@@ -7,11 +7,11 @@ function testBasicSetUpAll() {
     run("赵本山", "setZhaoBenShan");
     run("上级客户1", "setCustomer001");
     run("下级客户1", "setCustomer002");
-    run("李四", "setCustomer003");
-    run("李响", "setCustomer004");
-    run("李天", "setCustomer005");
-    run("李六", "setCustomer006");
-    run("韩红", "setCustomer007");
+    // run("李四", "setCustomer003");
+    // run("李响", "setCustomer004");
+    // run("李天", "setCustomer005");
+    // run("李六", "setCustomer006");
+    // run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");// 新综合汇总
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
     run("上级不开单客户", "setCustomer009_1");// 不做开单操作，无欠余款
@@ -67,7 +67,7 @@ function testBasicSetUpAll() {
     run("x003", "setGoods010");
     run("nb001", "setGoods011");
     run("nb003", "setGoods012");
-    
+
     // 童装尺码模式开单带款号
     run("Tz", "setGoods0013");
 
@@ -520,10 +520,10 @@ function setLogisticsBasicSetUp(name, keys) {
     query(qFields);
 
     var qr = getQR();
-    if (qr.total == 0) {
+    if (qr.data.length == 0) {
         tapMenu("货品管理", "基本设置", "新增物流商+");
     }
-    if (qr.total > 0) {
+    if (qr.data.length > 0) {
         tapFirstText();
     }
     var fields = editCustomerLogisticsFields(keys);
@@ -708,10 +708,10 @@ function setGoods014() {
     return editGoodsBasicSetUp(keys, "2014-03-17", "yes");
 }
 function setGoods015() {
-    var keys = { "款号" : "Aaa002", "名称" : "浅色牛仔衣", "品牌" : "0309pp", "吊牌价" : "300",
-        "进货价" : "100", "零批价" : "792", "打包价" : "772", "大客户价" : "752",
-        "Vip价格" : "642", "产品折扣" : "0.9", "季节" : "春季", "类别" : "牛仔衣", "厂商" : "蓝色天空",
-        "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0", "是否加工款" : "否",
-        "加工价" : "0", "门店" : "中洲店", "备注" : "一家" }
+    var keys = { "款号" : "Aaa002", "名称" : "浅色牛仔衣", "品牌" : "0309pp",
+        "吊牌价" : "300", "进货价" : "100", "零批价" : "792", "打包价" : "772",
+        "大客户价" : "752", "Vip价格" : "642", "产品折扣" : "0.9", "季节" : "春季",
+        "类别" : "牛仔衣", "厂商" : "蓝色天空", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0",
+        "最大库存" : "0", "是否加工款" : "否", "加工价" : "0", "门店" : "中洲店", "备注" : "一家" }
     return editGoodsBasicSetUp(keys, "2014-12-06", "yes");
 }
