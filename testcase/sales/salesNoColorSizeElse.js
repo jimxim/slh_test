@@ -1060,7 +1060,7 @@ function test170028_170038() {
     saveAndAlertOk();
     tapButtonAndAlert("none", "取 消");
     delay(2);
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("销售开单", "按明细查");
     query();
