@@ -7,7 +7,7 @@ function test004() {
     run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");
     run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_4");
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
-    run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4");
+    run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4Prepare");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430_4");//
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170550_4");
@@ -744,6 +744,16 @@ function test170551_4Prepare() {
     waitUntil(cond, 300);
 }
 function test170551_4() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "aaa002" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var md = getTextFieldValue(getScrollView(), 22);
+
+    tapReturn();
+    
     tapMenu("销售开单", "开  单+");
     var i;
     var ret3 = false;
@@ -766,7 +776,22 @@ function test170551_4() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
+    var ret1 =isAnd(isEqual("中洲店", md),  isIn(alertMsg1, "保存成功，是否打印"));
+    
+    tapMenu("货品管理", "当前库存");
+    var ret2 = false;
+    var f = new TField("客户", TF_AC, 0, "aaa0", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        // debugElementTree(cell);
+        var v = cell.name();
+        if (isIn(v, "Aaa002,浅色牛仔衣")) {
+            ret2 = true;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
 
     return ret && ret1;
 }

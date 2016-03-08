@@ -62,8 +62,11 @@ function test000All() {
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");
 // run("【销售开单－开单】客户新增按钮", "test170043");//
 
-//    run("【销售开单－开单】客户切换后点核销", "test170056");
-//170098  //170545
+// run("【销售开单－开单】客户切换后点核销", "test170056");//
+// 170098 //170545	
+// run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430");(用例要修改)
+	
+	  run("【开单  】开单时，款号是否按门店区分--总经理权限", "test170552");
 	
 // testStatisticPictureAll();
 // testSystem001();
@@ -209,6 +212,33 @@ function test000SalesColorSize002() {
     var ok = login("000","000000",p1);
     if( ok ) {
         testSalesColorSizeAll();
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170240_Prepare() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4Prepare");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170240() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170240() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
         
         logout();
     }
