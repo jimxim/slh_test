@@ -48,14 +48,13 @@ function test000All() {
 // run("【往来管理-客户活跃度】未拿货天数", "test110035");
 // run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
 
-run("test", "test110024");
+run("test", "test120031_120032");
 // return ret;
 }
 
 function onlyTest(){
-
-    
-    return ret;
+    var arr=["1","2","3","4","1"];
+   return isUnique(arr);
 }
 
 // 关闭尺码表头

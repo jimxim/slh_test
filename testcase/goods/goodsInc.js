@@ -913,6 +913,21 @@ function getUnique(arr) {
     }
     return result;
 }
+/**
+ * 判断数组是否有重复,有返回true
+ * @param arr
+ * @returns {Boolean}
+ */
+function isRepetitione(arr) {
+    var hash = {};
+    for ( var i in arr) {
+        if (hash[arr[i]])
+            return true;
+        hash[arr[i]] = true;
+    }
+    return false;
+
+}
 
 function isPositiveNumber(n) {
     var ret = false;

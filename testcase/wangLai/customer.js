@@ -1524,15 +1524,15 @@ function test110022Verify4() {
 
 function test110023() {
     tapMenu("往来管理", "客户账款", "客户门店账");
-    var keys1 = { "客户" : "xjkh1" };
-    var fields = queryCustomerShopAccountFields(keys);
+    var key1 = { "客户" : "xjkh1" };
+    var fields = queryCustomerShopAccountFields(key1);
     query(fields);
     var qr = getQR();
     var n1 = qr.counts["余额"];
     var ret = isEqual("下级客户1", qr.data[0]["名称"]);
 
-    var keys2 = { "客户" : "xjkh1" };
-    fields = queryCustomerShopAccountFields(keys);
+    var key2 = { "客户" : "sjkh1" };
+    fields = queryCustomerShopAccountFields(key2);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -1540,31 +1540,29 @@ function test110023() {
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
 
     tapMenu("往来管理", "客户账款", "按上级单位");
-    fields = queryCustomerSuperFields(keys1);
+    fields = queryCustomerSuperFields(key1);
     query(fields);
     qr = getQR();
-    var ret1 = isEqual(0, qr.data.length);
+    ret = isAnd(ret, isEqual(0, qr.data.length));
 
-    changeTFieldValue(fields["客户名称"], "上级客户1");
-    query(fields);
+    fields = queryCustomerSuperFields(key2);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual("上级客户1", qr.data[0]["名称"]));
+    ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]),
+            isEqual(qr.counts["余额"]), add(n1, n2));
 
     tapFirstText();
     qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
-    var totalPageNo = qr.totalPageNo;
-    var ret3 = false;
-    for (var j = 1; j <= totalPageNo; j++) {
+    var ret1 = false;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i]["客户"] == "下级客户1") {
-                ret3 = true;
+                ret1 = true;
                 break;
             }
         }
-        if (ret3) {
-            break;
-        }
-        if (j < totalPageNo) {
+        if (!ret1 && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
         }
@@ -1573,19 +1571,19 @@ function test110023() {
     tapNaviLeftButton();
 
     tapMenu("往来管理", "客户账款", "客户总账");
-    keys = [ "客户" ];
-    fields = queryCustomerAccountFields(keys);
-    changeTFieldValue(fields["客户"], "xjkh1");
+    fields = queryCustomerAccountFields(key1);
     query(fields);
     qr = getQR();
-    var ret2 = isEqual("下级客户1", qr.data[0]["名称"]);
+    ret = isAnd(ret, isEqual("下级客户1", qr.data[0]["名称"]), isEqual(
+            qr.counts["余额"], n1));
 
-    changeTFieldValue(fields["客户"], "sjkh1");
+    fields = queryCustomerAccountFields(key2);
     query(fields);
     qr = getQR();
-    ret2 = isAnd(ret2, isEqual("上级客户1", qr.data[0]["名称"]));
+    ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]), isEqual(
+            qr.counts["余额"], n2));
 
-    return isAnd(ret, ret1, ret2, ret3);
+    return isAnd(ret, ret1);
 }
 
 function test110024() {
@@ -3525,6 +3523,13 @@ function test110058() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
+}
+
+// 后台-角色管理-pad菜单权限先将需要测试的角色的客户门店账、按上级单位、客户总账的明细全部勾上
+function test110060() {
+    // 上级客户开欠款单，余款单，无欠余单
+    editBillForCustomerAccount1();
+
 }
 
 function testCheckCustomerDropDownList() {

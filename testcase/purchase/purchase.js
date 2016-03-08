@@ -808,58 +808,51 @@ function test120031_120032() {
         }
     }
 
+    // 3035与k200的货品类别都是登山服
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+    var json = {
+        "客户" : "vell",
+        "明细" : [ { "货品" : "3035", "数量" : "30" }, { "货品" : "k200", "数量" : "20" } ],
         "特殊货品" : { "抹零" : 40, "打包费" : 100 } };
     editSalesBillNoColorSize(json);
+    // 相同款号，不同厂商入库
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "rt", "明细" : [ { "货品" : "story", "数量" : "50" } ] };
+    json = { "客户" : "rt", "明细" : [ { "货品" : "story", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "story", "数量" : "30" } ] };
+    json = { "客户" : "vell", "明细" : [ { "货品" : "story", "数量" : "25" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按汇总", "按类别汇总");
     query();
-    var qr = getQR();
-    var code = qr.data[0]["款号"];
-    var ret1 = true;
-    var ret2 = true;
-    var actual = 0;
-    var totalPageNo = qr.totalPageNo;
+    qr = getQR();
+    var arr = [];
 
-    for (j = 1; j <= totalPageNo; j++) {
+    for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
-            actual += Number(qr.data[i]["数量"]);
-        }
-        // 检测同一款号是否合并
-        for (i = 1; i < qr.curPageTotal; i++) {
-            if (code == qr.data[i]["款号"]) {
-                ret = false;
-
-            }
+            arr[i] = qr.data[i]["款号"];
         }
         // 检测是否显示特殊货品
         for (i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i]["名称"] == "打包费") {
                 ret = false;
-                break;
-                logDebug("打包费显示");
+                logDebug("第" + j + "页第" + i + "条数据的名称显示为打包费");
             }
-        }
-        for (i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i]["名称"] == "抹零") {
                 ret = false;
+                logDebug("第" + j + "页第" + i + "条数据的名称显示为抹零");
+            }
+            if (!ret) {
                 break;
-                logDebug("抹零显示");
             }
         }
-        if (j < totalPageNo) {
+        if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
         }
     }
 
+    ret = isAnd(ret, !isRepetitione(arr));// 判断是否有重复款号
     return ret;
 }
 function test120013_1() {
@@ -922,6 +915,37 @@ function test120013_2() {
                     getTextFieldValue(window, 2)));
 
     return ret && ret1;
+}
+
+function test120014() {
+    // 备注下标为7，若有变动会报错
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
+    editSalesBillCustomer(json);
+    editSalesBillDetNoColorSize(json);
+
+    // target.frontMostApp().mainWindow().popover().scrollViews()[0].staticTexts()["退货"]
+    var p = "退货 赠品 代卖 次品 代保管 换色 换码";
+    tap(getScrollView().textFields()[7].textFields()[0]);// 点击备注文本框
+    var view1 = getPopView(window, -1);
+    var ret = true;
+    var texts = getStaticTexts(view1);
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        if (v) {
+            ret = isAnd(ret, isIn(p, v));
+        }
+    }
+
+    tap(texts[0]);// 退货
+    editSalesBillSave(json);
+
+    query();
+    tapFirstText();
+    ret = isAnd(ret, isEqual("退货", getTextFieldValue(getScrollView(), 7)));
+    tapReturn();
+
+    return ret;
 }
 
 function test120019() {
@@ -2283,9 +2307,9 @@ function test120060() {
 
 function test120079() {
     var qo, o, ret = true;
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "单据是否允许修改客户或厂商" };
+    // o = { "新值" : "1", "数值" : [ "允许" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
@@ -2295,17 +2319,18 @@ function test120079() {
     query();
     tapFirstText();
 
-    json = { "客户" : "vell" };
+    json = { "客户" : "tbscs" };// 特步生产商 适用价格零批价
     editSalesBillCustomer(json);
-    tapButtonAndAlert("none", "刷新价格");
-    ret = isAnd(ret, isEqual(getTextFieldValue(getScrollView(), 5),
-            getTextFieldValue(getScrollView(), 3)
+    tapButtonAndAlert("none", "刷新价格");// SLH-5834 刷新价格的bug
+    ret = isAnd(ret, isEqual(100, getTextFieldValue(getScrollView(), 4)),
+            isEqual(getTextFieldValue(getScrollView(), 5), getTextFieldValue(
+                    getScrollView(), 3)
                     * getTextFieldValue(getScrollView(), 4)));
     tapReturn();
 
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "单据是否允许修改客户或厂商" };
+    // o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -2402,6 +2427,10 @@ function test120052() {
     qr = getQR();
     var ret = isEqual(batch, qr.data[0]["批次"]);
 
+    tapTitle(getScrollView(), "批次");
+    qr = getQR();
+    ret = isAnd(ret, !isEqual(0, qr.data[0]["批次"]));
+
     keys = { "作废挂单" : "挂单" };
     fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -2412,6 +2441,7 @@ function test120052() {
 
     tapFirstText();
     tapButtonAndAlert(SAVE, OK);
+    delay();
     tapReturn();
     exp["批次"] = batch + 1;
 
