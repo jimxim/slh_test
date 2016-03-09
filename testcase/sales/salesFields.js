@@ -921,7 +921,7 @@ function testSalesQueryLogisticsFields() {
 	var fields = salesQueryLogisticsFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=salesQueryLogisticsFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function salesQueryLogisticsFields(keys,show) {
@@ -1012,7 +1012,7 @@ function testSalesCollectionFields() {
 	var fields = salesCollectionFields(keys);
 	setTFieldsValue(window, fields);
 	var showFields=salesCollectionFields(keys,true);
-	return checkShowFields=(window,showFields);
+	return checkShowFields(window,showFields);
 }
 
 function salesCollectionFields(keys,show) {

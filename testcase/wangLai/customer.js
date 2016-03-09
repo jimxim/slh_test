@@ -27,7 +27,8 @@ function testCustomerPrepare001() {
     // 客户账款检查数据正确性
     run("上级客户1开单", "editBillForCustomerAccount1");
     run("下级客户1开单", "editBillForCustomerAccount2");
-    run("厂商账款异地核销验证数据准备", "editBillForCustomerAccount3");
+    // 厂商账款检查数据正确性
+    run("厂商账款异地核销验证数据准备", "editBillForProviderAccount1");
 
 }
 
@@ -916,7 +917,7 @@ function test110020() {
         ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
     } else {
         tapMenu("销售开单", "开  单+");
-        f = new TField("客户", TF, 0, actual);
+        f.index = 0;
         setTextFieldACValue(window, f);
         var json = { "明细" : [ { "货品" : "3035", "数量" : "15" } ], "未付" : "yes" };
         editSalesBillNoColorSize(json);
@@ -2457,7 +2458,7 @@ function test110041RoleElse() {
     return isAnd(ret, ret1);
 }
 // 厂商账款验证准备
-function editBillForCustomerAccount3() {
+function editBillForProviderAccount1() {
     // 欠款
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
@@ -2809,7 +2810,7 @@ function test110041_1Field(o, n) {
     editSalesBillDetNoColorSize(o);
 
     tapButton(window, "核销");
-    // 日期降序，找到editBillForCustomerAccount3的准备数据
+    // 日期降序，找到editBillForProviderAccount1的准备数据
     // tapTitle(getScrollView(-1, 0), "日期");
     // tapTitle(getScrollView(-1, 0), "日期");
     // delay();

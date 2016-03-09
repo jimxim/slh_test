@@ -105,7 +105,7 @@ function setGoodsParams001() {
     qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "仓管是否可以根据吊牌价生成价格" };
     o = { "新值" : "0", "数值" : [ "默认不支持" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -119,18 +119,28 @@ function setGoodsParams001() {
 function testGoodsPrepare001() {
     var i;
     // test100001_3
-    for (i = 0; i < 2; i++) {
-        tapMenu("门店调出", "批量调出+");
-        var json = { "调出人" : "200", "接收店" : "常青店",
-            "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
-        editShopOutDecruitIn(json);
-    }
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "常青店",
+        "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
+    editShopOutDecruitIn(json);
+
+    tapMenu("门店调出", "批量调出+");
+    json = { "调出人" : "200", "接收店" : "常青店",
+        "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
+    editShopOutDecruitIn(json);
 
     // 库存调整单，test100007验证
     tapMenu("货品管理", "当前库存");
     query();
     var r = getRandomInt(100) + 1;
     addGoodsStockAdjustment(r);
+
+    // 使3035在中洲店有库存，主要是防止帐套清理之后 相关查询用例的运行
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "未付" : "yes" };
+    editSalesBillNoColorSize(json);
 
     return json;
 }
@@ -599,21 +609,21 @@ function testGoods002Field(n1, n2) {
  */
 function test10_fuzzyQueryAndDropDownListCheck() {
     tapMenu("货品管理", "当前库存");
-    var ret = isAnd(dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
+    var ret1 = isAnd(dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
             fuzzyQueryCheckField(1, "款号", "3", "名称"));
 
     tapMenu("货品管理", "款号库存");
-    ret = isAnd(ret, dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
+    var ret2 = isAnd(dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
             fuzzyQueryCheckField(1, "款号", "3", "名称"));
 
     tapMenu("货品管理", "货品进销存");
-    ret = isAnd(ret, dropDownListCheck(1, "456", "4562,Story,200元,0.9,1010pp"),
+    var ret3 = isAnd(dropDownListCheck(1, "456", "4562,Story,200元,0.9,1010pp"),
             fuzzyQueryCheckField(2, "款号", "3", "名称"));
 
     tapMenu("货品管理", "货品查询");
-    ret = isAnd(ret, fuzzyQueryCheckField(1, "款号", "z", "名称"));
+    var ret4 = fuzzyQueryCheckField(1, "款号", "z", "名称");
 
-    return ret;
+    return isAnd(ret1, ret2, ret3, ret4);
 }
 
 // function test100004() {

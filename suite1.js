@@ -9,79 +9,31 @@
 // 总经理
 function test000All() {
  debug = true;
-// run("setParams", "goodsParams001");
-
+// TITLE_SXE = getTitleSXE();
  
- 
- 
-// run("prepare","testStatisticAnalysisPrepare");
-// run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
-// run("【统计分析—收支汇总】查询清除", "test190094");// 随机数
-// run("【统计分析-新增收入】金额支持2位小数", "test190020");// 单价小数位元
-// run("【统计分析-新增支出】金额支持2位小数", "test190021");// 单价小数位元
-// run("【统计分析—综合汇总】检查底部数据", "test190036");
-// run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");// 作废
-// run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
-// run("【统计分析—综合汇总】进入详细-余款", "test190038");
-// run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
-// run("【统计分析—综合汇总】进入详细-欠款", "test190039");
-// run("【统计分析—综合汇总】进入详细-还款", "test190040");
-
-
-// run("【销售订货-按批次查】均色均码+修改已发货的订单", "test160073");
-// run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
-// run("【销售订货-按明细查】作废订单后内容检查", "test160021");
-// run("【销售订货—订货汇总】按款号-待发数数值检查", "test160035");
-// run("【销售订货—订货汇总】按款号-未发数数值检查--多发", "test160036");
-// run("【销售订货—订货汇总】按款号-厂商查询", "test160037");
-// run("【销售订货—订货汇总】按款号-按客户", "test160038");
+// run("setParams", "setGoodsParams001");
+// run("【销售订货－新增订货】新增超长订单并打印", "test160048");
+ run("", "test10_fuzzyQueryAndDropDownListCheck");
 
 
 
-
-// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-// run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
-// run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
-// run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
-// run("【往来管理】是否欠款报警查询", "test110028");
-// run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
-// run("【往来管理-客户活跃度】未拿货天数", "test110035");
-// run("【往来管理-客户活跃度】异地仓库模式下查看客户门店帐下未拿货天数", "test110058");
-
-run("test", "test120031_120032");
 // return ret;
 }
 
 function onlyTest(){
-    var arr=["1","2","3","4","1"];
-   return isUnique(arr);
+    var f = new TField("款号", TF_AC, 0, "303", -1);
+    var cells = getTableViewCells(window, f);
+    logDebug("length="+cells.length);
 }
 
-// 关闭尺码表头
-function addBillSales_sizehead0(){
-// tapMenu(menu1, menu2);
-// if(isIn(alertMsg,"开启表头尺码模式的开单必须是颜色尺码模式下")){
-// tapPrompt();
-        tapMenu("系统设置", "全局设置");
-        var qo = { "备注" : "颜色尺码模式开单更便捷" };
-        var fields = querySystemGlobalFields(qo);
-        query(fields);
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "默认不支持", "in" ];
-        setObj["授权码"] = [];
-        fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        tapPrompt();
-        var ret=isIn(alertMsg,"必须重启商陆花");
-// }else{
-// return;
-// }
-        return ret;
+function prepare200All(){
+    // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来
+    run("GoodsPrepare", "testGoodsPrepare001");
+    testCustomerPrepare001();
+    run("PurchasePrepare", "testPurchasePrepare002");
+    run("SalesOrderPrepare", "testSalesOrderPrepare");
+    run("StatisticAnalysisPrepare", "testStatisticAnalysisPrepare");
 }
-
-
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};
