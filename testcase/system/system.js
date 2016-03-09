@@ -108,7 +108,9 @@ function test210001() {
     tapButton(getScrollView(), "本 机");
     var ret1 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
+    delay();
 
+    tapMenu("系统设置", "打印机");
     tapFirstText();
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapReturn();

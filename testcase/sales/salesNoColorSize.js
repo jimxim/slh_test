@@ -58,14 +58,14 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     run("【销售开单－开单】刷新图像", "test170168");
     run("【销售开单－开单】挂单保存", "test170169");
-    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");//
+    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
     run("【销售开单－开单】挂单转销售单", "test170171");
     run("【销售开单－开单】二次挂单功能检查", "test170173");
-    run("【销售开单－开单】二次挂单功能检查", "test170174");//
+    run("【销售开单－开单】二次挂单功能检查", "test170174");
     run("【销售开单－开单】对正常销售单执行挂单操作", "test170175");
     run("【销售开单－开单】挂单修改界面修改客户和付款方式", "test170176");
     run("【销售开单－开单】更多-所有挂单-加载后修改内容再保存打印", "test170178");
-    run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");//
+    run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");
     run("【销售开单-开单】挂单操作之后检查开单输入客户", "test170525");
     run("【销售开单－开单】设置已配货", "test170180");
     run("【销售开单-开单】客户不允许退货", "test170181");
@@ -4638,7 +4638,7 @@ function test170170() {
     var f31 = new TField("数量", TF, 31, "7");
     var f35 = new TField("货品", TF_AC, 35, "k200", -1, 0);
     var f38 = new TField("数量", TF, 38, "8");
-    var f41 = new TField("数量", TF, 41, "mxbz6");
+    var f41 = new TField("备注", TF, 41, "mxbz6");
     var fields = [ f7, f10, f14, f17, f21, f24, f28, f31, f35, f38, f41 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -4648,6 +4648,30 @@ function test170170() {
     // debugArray(alertMsgs);
     // var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg, "保存成功"));
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    keys1 = [ "作废挂单" ];
+    fields1 = salesQueryBatchFields(keys1);
+    changeTFieldValue(fields1["作废挂单"], "正常");
+    query(fields1);
+
+    tapFirstText();
+
+    ret = isAnd(ret, isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(1, getTextFieldValue(getScrollView(), 3)), isIn(
+                    getTextFieldValue(getScrollView(), 7), "k300"), isEqual(4,
+                    getTextFieldValue(getScrollView(), 10)), isIn(
+                    getTextFieldValue(getScrollView(), 14), "4562"), isEqual(5,
+                    getTextFieldValue(getScrollView(), 17)), isIn(
+                    getTextFieldValue(getScrollView(), 21), "8989"), isEqual(6,
+                    getTextFieldValue(getScrollView(), 24)), isIn(
+                    getTextFieldValue(getScrollView(), 28), "3035"), isEqual(7,
+                    getTextFieldValue(getScrollView(), 31)), isIn(
+                    getTextFieldValue(getScrollView(), 35), "k200"), isEqual(8,
+                    getTextFieldValue(getScrollView(), 38)), isEqual("mxbz6",
+                    getTextFieldValue(getScrollView(), 41)));
 
     tapReturn();
 
@@ -4854,7 +4878,7 @@ function test170174() {
     delay();
 
     var r = getTimestamp(8);
-    var r1 = getTimestamp(8) + "a";
+    var r1 = getTimestamp(8) + "yt";
     var json = { "现金" : 0, "代收" : { "物流商" : "yt", "运单号" : r, "备注" : r1 } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
@@ -4885,6 +4909,16 @@ function test170174() {
             getTextFieldValue(getScrollView(), 24)));
 
     tapReturn();
+
+    tapMenu("销售开单", "物流单");
+    var keys2 = { "运单号" : r, "物流商" : "圆通速递", "是否作废" : "否" }
+    var fields2 = salesQueryLogisticsFields(keys2);
+    query(fields2);
+    var qr2 = getQR();
+
+    var ret1 = isAnd(isEqual(getToday(), qr.data[0]["日期"]), isEqual("常青店",
+            qr.data[0]["门店"]), isEqual("李四", qr.data[0]["客户"]), isEqual("圆通速递",
+            qr.data[0]["物流商"]), isEqual(r, qr.data[0]["运单号"]), isEqual(r1, qr.data[0]["物流备注"]));
 
     logDebug(" ret" + ret);
     return ret;
@@ -5284,6 +5318,7 @@ function test170186() {
     tapButton(window, "核销");
 
     var e = getStaticTextValue(getScrollView(1), 0);
+    var b = getStaticTextValue(getScrollView(1), 1);
 
     tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "9" + getTimestamp(6);
@@ -5299,7 +5334,7 @@ function test170186() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret = (isIn(alertMsg1, "客户当前积分不足"));
+    var ret = isAnd(isIn(b, a),isIn(alertMsg1, "客户当前积分不足"));
 
     logDebug("ret=" + ret);
     return ret;
