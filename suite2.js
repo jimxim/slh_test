@@ -63,13 +63,22 @@ function test000All() {
 // run("【销售开单－开单】客户新增按钮", "test170043");//
 
 // run("【销售开单－开单】客户切换后点核销", "test170056");//
-// 170098 //170545	
+// 170098 //170545
 // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430");(用例要修改)
 	
-//	  run("【销售开单－开单】积分兑换", "test170186");//
-//	  run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
+// run("【销售开单－开单】积分兑换", "test170186");//
+// run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
+// run("【销售开单－开单】查看修改日志(修改记录)", "test170166");//
+// run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
+    
+// run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
+    	
+//	run("【销售开单－按批次查】页面跳转检查", "test170013");  
+//	 run("【销售开单】按挂单--正常功能检查", "test170305_1");
+//	    run("【销售开单】按挂单--正常功能检查", "test170305_2");
 	
-    run("【系统设置—打印机】保存", "test210001");
+//    run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");// (关闭参数异地发货仓库)
+    run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269")
 	
 // testStatisticPictureAll();
 // testSystem001();
@@ -201,24 +210,24 @@ function test000SalesNoColorSizeElse003() {
         logout();
     }
 }
-function test000SalesColorSize001() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        testSalesColorSize001();
-        
-        logout();
-    }
-}
-function test000SalesColorSize002() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        testSalesColorSizeAll();
-        
-        logout();
-    }
-}
+// function test000SalesColorSize001() {
+// var p1 = {"角色":"总经理"};
+// var ok = login("000","000000",p1);
+// if( ok ) {
+// testSalesColorSize001();
+//        
+// logout();
+// }
+// }
+// function test000SalesColorSize002() {
+// var p1 = {"角色":"总经理"};
+// var ok = login("000","000000",p1);
+// if( ok ) {
+// testSalesColorSizeAll();
+//        
+// logout();
+// }
+// }
 function testSalesNoColorSize170240_Prepare() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
