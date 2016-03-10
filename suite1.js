@@ -13,7 +13,7 @@ function test000All() {
  
 // run("setParams", "setGoodsParams001");
 // run("【销售订货－新增订货】新增超长订单并打印", "test160048");
- run("", "test10_fuzzyQueryAndDropDownListCheck");
+ run("", "test120083");
 
 
 
@@ -21,9 +21,11 @@ function test000All() {
 }
 
 function onlyTest(){
-    var f = new TField("款号", TF_AC, 0, "303", -1);
-    var cells = getTableViewCells(window, f);
-    logDebug("length="+cells.length);
+    
+    qr = getQR();
+    var value=getDay24(qr.data[0]["日期"]);
+    
+    return getDay(-1) <= valuee <= getToday();
 }
 
 function prepare200All(){

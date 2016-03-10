@@ -230,6 +230,47 @@ function checkShowField(view1, fields, expected) {
     }
     return ret;
 }
+/**
+ * 单项查询条件验证
+ * @param qr
+ * @param title
+ * @param expected
+ * @param type
+ * @param expected2
+ * @returns {Boolean}
+ */
+function checkQResult(qr, title, expected, type, expected2) {
+    var ret = false;
+    if (qr.data.length > 0) {
+        for (var j = 1; j <= qr.totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal; i++) {
+                var value = qr.data[i][title];
+                switch (type) {
+                case "batch":
+                    ret = expected <= value && value <= expected2;
+                    break;
+                case "day":
+                    var value = getDay24(value);
+                    ret = isAnd(expected <= value, value <= expected2);
+                    break;
+                default:
+                    ret = isEqual(expected, value);
+                    break;
+                }
+                if (!ret) {
+                    logDebug("第" + j + "页,第" + i + "行 expected=" + expected
+                            + "  actual=" + value);
+                    break;
+                }
+            }
+            if (ret && j < qr.totalPageNo) {
+                scrollNextPage();
+                qr = getQR();
+            }
+        }
+    }
+    return ret;
+}
 
 /**
  * 清除指定下标的文本框的内容

@@ -2398,13 +2398,18 @@ function test120083() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    var balance = getTextFieldValue(window, 1);// 结余
+    var index = getValueFromCacheF1("getCardTFindex") - 1;
+    var b = getTextFieldValue(window, 1);// 结余
+    var v = getTextFieldValue(window, index);// 核销
+
+    tapButton(window, 9);// 厂商的清除按钮
+    var ret = isAnd(isEqual("", getTextFieldValue(window, 1)), isEqual(v,
+            getTextFieldValue(window, index)));
 
     json = { "客户" : "rt" };
     editSalesBillCustomer(json);
-    var cardTFindex = getValueFromCacheF1("getCardTFindex");
-    var ret = isAnd(!isEqual(balance, getTextFieldValue(window, 1)), isEqual(
-            "", getTextFieldValue(window, cardTFindex - 1)));
+    ret = isAnd(ret, !isEqual(b, getTextFieldValue(window, 1)), isEqual("",
+            getTextFieldValue(window, index)));
     tapReturn();
     return ret;
 }

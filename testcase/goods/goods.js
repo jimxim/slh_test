@@ -392,7 +392,7 @@ function test100001_2() {
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
-    var exp = { "厂商" : "Vell", "库存/门店" : "常青店", "款号" : "3035", "款号名称" : "jkk",
+    var exp = { "厂商" : "Vell", "库存/门店" : "常青店", "款号" : "3035", "名称" : "jkk",
         "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas" };
     var ret = isAnd(isEqualObject(exp, qr.data[0]), isEqual(qr.data[0]["库存"],
             qr.counts["库存"]), isEqual(qr.data[0]["在途数"], qr.counts["在途数"]),
@@ -681,7 +681,7 @@ function test100005_2() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
-    var exp = { "厂商" : "Vell", "库存/门店" : "常青店", "款号" : "3035", "名称" : "jkk",
+    var exp = { "厂商" : "Vell", "仓库/门店" : "常青店", "款号" : "3035", "名称" : "jkk",
         "上架日期" : "15-10-13" };
     var ret = isAnd(isEqualObject(exp, qr.data[0]), isEqual(qr.data[0]["库存"],
             qr.counts["库存"]));
@@ -996,7 +996,7 @@ function test100008() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
     var qr = getQR();
-    var exp = { "厂商" : "Vell", "款号" : "3035", "名称" : "jkk", "上级日期" : "15-10-13" };
+    var exp = { "厂商" : "Vell", "款号" : "3035", "名称" : "jkk", "上架日期" : "15-10-13" };
     var ret = isEqualObject(exp, qr.data[0]);
     var a = add(qr.data[0]["在途数"], qr.data[0]["库存"]);
     delay();
@@ -2563,7 +2563,7 @@ function test100075_100076_100077_100078() {
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2))
-            && isEqual(getToday(), getTextFieldValue(window, 3));
+            && isEqual("", getTextFieldValue(window, 3));
 
     return ret;
 }
