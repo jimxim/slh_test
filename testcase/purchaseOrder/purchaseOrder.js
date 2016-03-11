@@ -27,10 +27,10 @@ function testPurchaseOrder002() {
     // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
 
     // }
-    // run("【采购订货-按明细查】作废订单后内容检查", "test130003");
+    run("【采购订货-按明细查】作废订单后内容检查", "test130003");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "test130009");
-    // run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
-    // run("【采购订货】客户或供应商信息不允许修改", "test130011");
+    run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
+    run("【采购订货】客户或供应商信息不允许修改", "test130011");
     // run("【采购订货-新增订货】采购订货复杂支付模式-使用有权查看进货价的角色登录", "test130012");//
     // run("1.开启全局参数 采购入库模式为 默认复杂模式,有支付类型", "test130013");//
     run("1.采购订货-新增订货-检查界面上是否存在 整单备注输入框和明细备注输入框", "test130014");
@@ -196,7 +196,7 @@ function test130002_1() {
     ret = ret && sortByTitle("备注");
 
     var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;// 库存，在途数，核算金额
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             sum1 += Number(qr.data[i]["数量"]);
@@ -286,7 +286,7 @@ function test130003_1() {
     ret = ret && sortByTitle("备注");
 
     var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0;// 库存，在途数，核算金额
+    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;// 库存，在途数，核算金额
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             sum1 += Number(qr.data[i]["数量"]);
@@ -873,6 +873,11 @@ function test130013() {
 
 }
 function test130014() {
+    tapMenu("采购订货", "按批次查");
+    query();
+    var qr = getQR();
+    var batch = Number(qr.data[0]["批次"]) + 1;
+
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell",
         "明细" : [ { "货品" : "3035", "数量" : "8", "备注" : "mxbz" } ],
@@ -883,16 +888,15 @@ function test130014() {
     var keys = { "备注" : "zdbz" };
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
-    var batch = Number(qr.data[0]["批次"]);
+    qr = getQR();
+    var ret = isEqual(batch, qr.data[0]["批次"]);
 
     tapFirstText();
     var a = getTextFieldValue(window, 0);
     var a1 = getTextFieldValue(window, 8);
     var a2 = getTextFieldValue(getScrollView(), 6);
-    var ret = isAnd(isEqual("Vell", a), isEqual("zdbzx", a1), isEqual("mxbz",
+    ret = isAnd(ret, isEqual("Vell", a), isEqual("zdbzx", a1), isEqual("mxbz",
             a2));
-
     tapReturn();
 
     tapMenu("采购订货", "按明细查");
@@ -900,12 +904,8 @@ function test130014() {
     fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     qr = getQR();
-    var batch1 = Number(qr.data[0]["批次"]);
-
-    tapFirstText();
-    ret = isAnd(ret, isEqual("mxbz", qr.data[0]["备注"]), isEqual(batch, batch1));
-
-    tapReturn();
+    ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("mxbz",
+            qr.data[0]["备注"]));
 
     return ret;
 }
@@ -968,8 +968,7 @@ function test130015End() {
 }
 function test130016_1() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : "8", "备注" : "mxbz" } ], "备注" : "zdbzx" };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
@@ -1013,6 +1012,7 @@ function test130016_2() {
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
+    delay();
 
     tapMenu("采购订货", "按批次查");
     query();
@@ -1035,14 +1035,18 @@ function test130016_2() {
 function test130017() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "8" } ],
-        "现金" : 10, "刷卡" : [ 39, "交" ], "汇款" : [ 1000, "建" ], "备注" : "xx" };
+        "现金" : 10, "刷卡" : [ 39, "交" ], "汇款" : [ 1000, "建" ], "备注" : "xx",
+        "采购订货" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按批次查");
     tapFirstText();
-    var a = getTextFieldValue(window, 2);
-    var a1 = getTextFieldValue(window, 6);
-    var a2 = getTextFieldValue(window, 12);
+    var cashTFindex = getEditSalesTFindex("客户,厂商", "现金");
+    var cardTFindex = getValueFromCacheF1("getCardTFindex");
+    var remitTFindex = getValueFromCacheF1("getTotalNumTFindex") + 2;
+    var a = getTextFieldValue(window, cashTFindex);
+    var a1 = getTextFieldValue(window, cardTFindex);
+    var a2 = getTextFieldValue(window, remitTFindex);
     var ret = isAnd(isEqual("10", a), isEqual("39", a1), isEqual("1000", a2));
 
     tapReturn();

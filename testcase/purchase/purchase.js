@@ -49,8 +49,8 @@ function testPurchase002() {
     run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
     run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
-    run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");  
-    run("【采购入库-按批次查】切换厂商后检查核销", "test120083"); 
+    run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");
+    run("【采购入库-按批次查】切换厂商后检查核销", "test120083");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,正负零", "test120013_3");
@@ -72,8 +72,9 @@ function testPurchase002() {
     run("【采购入库-按订货入库】按订货入库", "test120025");
     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
-    run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
+    // run("【采购入库-按订货入库】修改供应商名称", "test120028");//5。58版本可测，之后的版本清除按钮灰化
     run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");
+    run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
 
     run("【采购入库】批量入库实现进货功能+均色均码", "test120042");
     run("【采购入库】批量入库实现退货功能+均色均码", "test120043");
@@ -728,15 +729,29 @@ function test120011_1() {
     var a = getStaticTextValue(getScrollView(-1, 0), 1);
     var day1 = toDate(a.substr(3));
     var day2 = toDate(getDay(-30));
-    logDebug("day1=" + day1 + " day2=" + day2);
+    // logDebug("day1=" + day1 + " day2=" + day2);
     if (day1 < day2) {
         ret = false;
     }
     tapNaviLeftButton();
 
+    var qr = getQR();
+    var sum1 = 0, sum2 = 0;
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["金额"]);
+            sum2 += Number(qr.data[i]["总数"]);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
     tapButton(window, CLEAR);
-    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)));
+    ret = isAnd(ret, isEqual(qr.counts["金额"], sum1), isEqual(qr.counts["总数"],
+            sum2), isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
+            getToday(), getTextFieldValue(window, 1)));
 
     return ret;
 }
@@ -1771,7 +1786,15 @@ function test120027() {
     var c = getTextFieldValue(getScrollView(), 8);
     ret = isAnd(ret, isEqual("k300,铅笔裤", b), isEqual("3035,jkk", c));
     delay();
+    tapButton(window, RETURN);
 
+    tapMenu("采购订货", "按批次查");
+    query();
+    tapFirstText();
+    b = getTextFieldValue(getScrollView(), 7);
+    c = getTextFieldValue(getScrollView(), 10);
+    ret = isAnd(ret, isEqual("", b), isEqual("", c));
+    delay();
     tapButton(window, RETURN);
 
     return ret;
