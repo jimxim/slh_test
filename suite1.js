@@ -13,7 +13,7 @@ function test000All() {
  
 // run("setParams", "setGoodsParams001");
 // run("【销售订货－新增订货】新增超长订单并打印", "test160048");
- run("", "test120083");
+ run("", "test120026");
 
 
 
@@ -21,11 +21,12 @@ function test000All() {
 }
 
 function onlyTest(){
-    
-    qr = getQR();
-    var value=getDay24(qr.data[0]["日期"]);
-    
-    return getDay(-1) <= valuee <= getToday();
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        
+       logout();
+    }
 }
 
 function prepare200All(){
