@@ -117,9 +117,16 @@ function setGoodsParams001() {
  * 中洲店总经理登陆，为常青店准备数据
  */
 function testGoodsPrepare001() {
-    var i;
-    // test100001_3
+    // 库存调整单，test100007验证
+    tapMenu("货品管理", "当前库存");
+    // 找那些带g的自动生成的货品，这些一般不会带有在途数
+    var keys = { "款号名称" : "g" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var r = getRandomInt(100) + 1;
+    addGoodsStockAdjustment(r);
 
+    // test100001_3
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
@@ -129,12 +136,6 @@ function testGoodsPrepare001() {
     json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
     editShopOutDecruitIn(json);
-
-    // 库存调整单，test100007验证
-    tapMenu("货品管理", "当前库存");
-    query();
-    var r = getRandomInt(100) + 1;
-    addGoodsStockAdjustment(r);
 
     // 使3035在中洲店有库存，主要是防止帐套清理之后 相关查询用例的运行
     tapMenu("采购入库", "新增入库+");
@@ -150,7 +151,7 @@ function testGoodsPrepare001() {
  */
 function testGoods001() {
     // 需要先跑testGoods001Prepare
-    run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100107");
+     run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100107");
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -180,7 +181,7 @@ function testGoods001() {
 
 function testGoods002() {
     // 均色均码 开单模式2
-    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "test100101_100118");
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
@@ -321,7 +322,10 @@ function setTagprice_invperson_1() {
 
 function test100107() {
     tapMenu("货品管理", "当前库存");
-    query();
+    // 找那些带g的自动生成的货品，这些一般不会带有在途数
+    var keys = { "款号名称" : "g" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
     var qr = getQR();
     var code = qr.data[0]["款号"];
     var name = qr.data[0]["名称"];
@@ -2993,7 +2997,19 @@ function test100090Field() {
 }
 
 function test100090Field1(r) {
-    var f = new TField("调整后库存", TF, 15, r);
+    // 设置库存调整的值，这里的文本框下标是接货品管理-当前库存查询条件的下标
+    var index;
+    switch (ipadVer) {
+    case "6.59":
+        index = 15;
+        break;
+    case "6.61":
+        index = 16;
+        break;
+    default:
+        logWarn("未知版本号＝" + ipadVer);
+    }
+    var f = new TField("调整后库存", TF, index, r);
     setTFieldsValue(window, [ f ]);
 }
 
