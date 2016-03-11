@@ -2,21 +2,17 @@
 //测试套具，集合测试用例
 
 #import "all.js"
-
+ 
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
-// test000All();
 
 // 总经理
 function test000All() {
- debug = true;
+    debug = true;
 // TITLE_SXE = getTitleSXE();
- 
+
 // run("setParams", "setGoodsParams001");
 // run("【销售订货－新增订货】新增超长订单并打印", "test160048");
- run("", "test120026");
-
-
-
+ run("", "test100010_100011_100013");
 // return ret;
 }
 

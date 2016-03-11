@@ -18,6 +18,10 @@ function setGoodsParams001() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "开单时是否显示当前库存" };
+    o = { "新值" : "1", "数值" : [ "显示库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "自动生成款号" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -151,7 +155,7 @@ function testGoodsPrepare001() {
  */
 function testGoods001() {
     // 需要先跑testGoods001Prepare
-     run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100107");
+    run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100107");
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -181,7 +185,7 @@ function testGoods001() {
 
 function testGoods002() {
     // 均色均码 开单模式2
-    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "test100101_100118");
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
@@ -428,7 +432,7 @@ function test100001_3() {
     var num2 = Number(qr.data[0]["累计销"]);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "12" } ] };
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "4562", "数量" : "12" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "批量入库+");
@@ -456,13 +460,17 @@ function test100001_3() {
     var stock1 = Number(qr.data[0]["库存"]);
     var price = Number(qr.data[0]["单价"]);
     var market = subTime(getToday(), "2015-10-13");// 上架天数
-    var ret1 = isEqual(market, qr.data[0]["上架天数"])
-            && isEqual(num1 - 50, qr.data[0]["在途数"])
-            && isEqual(num2 + 5, qr.data[0]["累计销"]) && isEqual("200", price)// 单价
-            && isEqual(stock1 * price, qr.data[0]["核算金额"]);
+    var ret1 = isAnd(isEqual(market, qr.data[0]["上架天数"]), isEqual(num1 - 50,
+            qr.data[0]["在途数"]), isEqual(num2 + 5, qr.data[0]["累计销"]), isEqual(
+            "200", price)// 单价
+    , isEqual(stock1 * price, qr.data[0]["核算金额"]));
 
     tapFirstText();
     delay();
+    var ret2 = isAnd(isEqual("4562",
+            getStaticTextValue(getScrollView(-1, 0), 0)), isEqual("Story",
+            getStaticTextValue(getScrollView(-1, 0), 1)));
+
     var i, j;
     qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
     var name = new Array();
@@ -483,20 +491,17 @@ function test100001_3() {
     }
 
     tapNaviButton("历史库存");
-    // var view2 = getScrollView(-1);
-    // view2 = view2.scrollViews()[0];
     qr = getQResult2(getScrollView(-1, 0), "操作日期", "数量");
     var stock2 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
-    var ret2 = isAnd(isEqual(stock1, stock2), isEqual(stock1, sum));
+    ret2 = isAnd(ret2, isEqual(stock1, stock2), isEqual(stock1, sum));
     var ret3 = isAnd(isEqual("调拨入库", name[0]), isEqual("50", num[0]), isEqual(
             "调拨出库", name[1]), isEqual("-10", num[1]), isEqual("销售出货", name[2]),
             isEqual("-5", num[2]), isEqual("采购进货", name[3]), isEqual("18",
                     num[3]), isEqual("采购进货", name[4]), isEqual("12", num[4]));
 
-    logDebug("   ret1=" + ret1 + "   ret2=" + ret2);
-    return ret1 && ret2 && ret3;
+    return isAnd(ret1, ret2, ret3);
 }
 
 function test100101_100118() {
@@ -1005,12 +1010,12 @@ function test100008() {
     var a = add(qr.data[0]["在途数"], qr.data[0]["库存"]);
     delay();
 
-    tapFirstText();
-    // getScrollView(), "序号", 9
+    tapFirstText(getScrollView(), "序号", 9);
     var oStockNum = getColorSizeStockNum();
+    // 开单时是否显示当前库存 设置为显示
     var b = Number(oStockNum["均色-均码-常青店"]);
     // +Number(oStockNum["均色-均码-中洲店"])+Number(oStockNum["均色-均码-仓库店"])
-    ret = ret && isEqual(a, b);
+    ret = isAnd(ret, isEqual(a, b));
     tapNaviLeftButton();
 
     tapButton(window, CLEAR);
@@ -1089,7 +1094,7 @@ function test100114() {
 function test100010_100011_100013() {
     var qo, o, ret = true;
     // 开启这个参数，新增货品界面的门店才能修改保存成功
-    qo = { "备注" : "开单时，款号是否按门店区分" };
+    qo = { "备注" : "款号是否按门店区分" };
     o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1168,7 +1173,7 @@ function test100010_100011_100013() {
         }
     }
 
-    qo = { "备注" : "开单时,款号是否按门店区分" };
+    qo = { "备注" : "款号是否按门店区分" };
     o = { "新值" : "0", "数值" : [ "默认不区分" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
