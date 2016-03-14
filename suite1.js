@@ -10,14 +10,28 @@ function test000All() {
     debug = true;
 // TITLE_SXE = getTitleSXE();
 
-// run("setParams", "setGoodsParams001");
-// run("【销售订货－新增订货】新增超长订单并打印", "test160048");
- run("", "test120019");
-// return ret;
+// run("【货品管理-基本设置】所有品牌", "test10_brand");
+// run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
+// "test100082_100083_100084_100085_100093");
+// run("【货品管理-更多-库存调整单】条件查询_清除按钮", "test100104_100105");
+// run("【货品管理-更多-库存调整单】翻页/排序/汇总", "test100106");
+ run("", "test150001_2");
 }
 
 function onlyTest(){
-
+    // target.frontMostApp().mainWindow().popover().scrollViews()[0].textFields()[0].textFields()[0].tap();
+// target.frontMostApp().mainWindow().popover().buttons()["确 定"].tap();
+   var o={"备注":"123456"};
+   editShopOutDecruitField1(o, "备注");
+   
+   var view=getPop();
+   if (isDefined(view) && view.isVisible()) {
+       var f = new TField("备注", TF, 0, o["备注"]);
+       setTFieldsValue(getPopOrView(), [ f ]);
+       tapButton(view, OK);
+   }
+    
+    
 }
 
 function prepare200All(){

@@ -253,6 +253,9 @@ function checkQResult(qr, title, expected, type, expected2) {
                     var value = getDay24(value);
                     ret = isAnd(expected <= value, value <= expected2);
                     break;
+                case "in":
+                    ret = isIn(value, expected);
+                    break;
                 default:
                     ret = isEqual(expected, value);
                     break;

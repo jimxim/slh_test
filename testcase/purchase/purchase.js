@@ -1178,6 +1178,11 @@ function test120023() {
         "品牌" : "", "上架天数" : "1", "累计销" : "0", "单价" : "200", "核算金额" : "2000",
         "上架日期" : getToday("yy"), "累计进" : "10" };
 
+    tapFirstText();
+    var exp = editSalesBillGetValue();
+    var ret1 = isEqualObject(exp, json["输入框值"]);
+    tapReturn();
+
     tapMenu("货品管理", "当前库存");
     delay();
     keys = { "款号" : r, "门店" : "常青店" };
@@ -1225,7 +1230,7 @@ function test120023() {
     }
     ret = isAnd(ret, isEqual("-4000", sub(Z1, z1)), isEqual(z2, Z2));
 
-    return ret;
+    return isAnd(ret, ret1);
 }
 
 function test120020() {
@@ -1265,19 +1270,6 @@ function test120020() {
     qr = getQR();
     var c1 = qr.data[0];
 
-    tapFirstText();
-    var f = new TField("款号", TF_AC, 0, "3035", -1, 0);
-    setTFieldsValue(getScrollView(-1, 0), [ f ]);
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var data1 = qr.data[0];
-
-    tapFirstText(getScrollView(-1, 0), "名称", 8);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var data2 = qr.data[0];
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-20" } ],
         "现金" : "-1000", "刷卡" : [ -600, "交" ], "汇款" : [ -400, "交" ] };
@@ -1287,6 +1279,11 @@ function test120020() {
     query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
+
+    tapFirstText();
+    var exp = editSalesBillGetValue();
+    var ret1 = isEqualObject(exp, json["输入框值"]);
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -1330,23 +1327,6 @@ function test120020() {
         "常青店" : -20, "中洲店" : 0 };
     ret = isAnd(ret, isEqualObject(expected, subObject(c2, c1)));
 
-    tapFirstText();
-    var f = new TField("款号", TF_AC, 0, "3035", -1, 0);
-    setTFieldsValue(getScrollView(-1, 0), [ f ]);
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var change = { "库存" : -20, "价值" : -4000, "常青店" : -20 };
-    expected = mixObject(data1, change);
-    var ret1 = isEqualObject(expected, sub(qr.data[0], data1));
-
-    tapFirstText(getScrollView(-1, 0), "名称", 8);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    change = { "库存" : 20, "常青店" : 20 };
-    expected = mixObject(data2, change);
-    ret1 = isAnd(ret1, isEqualObject(data2, qr.data[0]));
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-
     tapMenu("统计分析", "收支流水");
     query();
     qr = getQR();
@@ -1359,7 +1339,7 @@ function test120020() {
     ret = isAnd(ret, isEqualQRData1Object(qr, expect1), isEqualQRData1Object(
             qr, expect2), isEqualQRData1Object(qr, expect3));
 
-    return ret;
+    return isAnd(ret, ret1);
 
 }
 
@@ -1430,6 +1410,11 @@ function test120021() {
     query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
+
+    tapFirstText();
+    var exp = editSalesBillGetValue();
+    var ret1 = isEqualObject(exp, json["输入框值"]);
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -1504,7 +1489,7 @@ function test120021() {
         }
     }
 
-    return ret;
+    return isAnd(ret, ret1);
 }
 
 function test120022() {

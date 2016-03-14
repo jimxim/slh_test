@@ -19,7 +19,7 @@ function setGoodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示库存", "in" ] };
+    o = { "新值" : "1", "数值" : [ "显示库存" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "自动生成款号" };
@@ -2819,18 +2819,7 @@ function test10_brand() {
     var fields = goodsBrandFields(keys);
     query(fields);
     qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i]["名称"], "品牌")) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    var ret1 = checkQResult(qr, "名称", "品牌", "in");
 
     keys = { "名称" : "1010pp" };
     fields = goodsBrandFields(keys);
@@ -2842,8 +2831,8 @@ function test10_brand() {
     fields = goodsBrandFields(keys);
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
-            && isEqual("1", qr.totalPageNo);
+    var ret2 = isAnd(isEqual("1010pp", qr.data[0]["名称"]),
+            isEqual("1", qr.total), isEqual("1", qr.totalPageNo));
 
     tapFirstText();
     tapButtonAndAlert(START);
@@ -2852,14 +2841,14 @@ function test10_brand() {
     fields = goodsBrandFields(keys);
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("1010pp", qr.data[0]["名称"]) && isEqual("1", qr.total)
-            && isEqual("1", qr.totalPageNo);
+    ret2 = isAnd(ret2, isEqual("1010pp", qr.data[0]["名称"]), isEqual("1",
+            qr.total), isEqual("1", qr.totalPageNo));
 
     tapButton(window, CLEAR);
-    ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1));
+    ret2 = isAnd(ret2, isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)));
 
-    return ret;
+    return isAnd(ret, ret1, ret2);
 }
 
 function test10_size_group() {

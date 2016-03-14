@@ -92,7 +92,7 @@ function test150001_2() {
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店","备注":"abc123",
+    var json = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
@@ -344,7 +344,7 @@ function test150006() {
     tapFirstText();
     tapButtonAndAlert("打 印", OK);
 
-    tapButton(window, 8);//"打 印"
+    tapButton(window, 8);// "打 印"
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "填写密码后才能打印"));
 
@@ -411,6 +411,17 @@ function editShopOutDecruitField1(o, key) {
         keys[key] = v;
         var fields = shopOutDecruitFields(keys);
         setTFieldsValue(window, fields);
+
+        // 备注框输入超过5个时会触发，进入后重新输入一次值，针对备注框已经有值，而输入的内容不同的情况
+        if (key == "备注") {
+            var view = getPop();
+            if (isDefined(view) && view.isVisible()) {
+                var f = new TField("备注", TF, 0, v);
+                setTFieldsValue(getPopOrView(), [ f ]);
+                delay();
+                tapButton(view, OK);
+            }
+        }
     }
 }
 
