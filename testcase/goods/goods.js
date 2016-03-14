@@ -156,6 +156,7 @@ function testGoodsPrepare001() {
 function testGoods001() {
     // 需要先跑testGoods001Prepare
     run("【货品管理-更多-库存调整单】门店相互查看调整单", "test100107");
+
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
@@ -166,6 +167,7 @@ function testGoods001() {
     run("【货品管理-货品进销存】货品进销存", "test100008");
     run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
     run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
+
     run("【货品管理-基本设置】价格名称", "test10_price");
     run("【货品管理-基本设置】货品类别", "test10_type");
     run("【货品管理-基本设置】所有颜色", "test10_color");
@@ -173,6 +175,7 @@ function testGoods001() {
     run("【货品管理-基本设置】所有品牌", "test10_brand");
     run("【货品管理-基本设置】所有尺码组", "test10_size_group");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序
+
     run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
     run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
             "test100075_100076_100077_100078");
@@ -448,7 +451,7 @@ function test100001_3() {
         "明细" : [ { "货品" : "4562", "数量" : "10" } ] };
     editShopOutDecruitIn(json);
 
-    // 调入50件
+    // 调入数据准备中的4562 50件
     tapMenu("门店调入", "在途调拨");
     query();
     tapFirstText();
@@ -459,25 +462,26 @@ function test100001_3() {
     qr = getQR();
     var stock1 = Number(qr.data[0]["库存"]);
     var price = Number(qr.data[0]["单价"]);
-    var market = subTime(getToday(), "2015-10-13");// 上架天数
+    var market = subTime(getToday(), "2014-03-14");// 上架天数
+    // 核算金额==库存+在途
     var ret1 = isAnd(isEqual(market, qr.data[0]["上架天数"]), isEqual(num1 - 50,
             qr.data[0]["在途数"]), isEqual(num2 + 5, qr.data[0]["累计销"]), isEqual(
-            "200", price)// 单价
-    , isEqual(stock1 * price, qr.data[0]["核算金额"]));
+            "200", price), isEqual(add(stock1, qr.data[0]["在途数"]) * price,
+            qr.data[0]["核算金额"]));
 
     tapFirstText();
     delay();
+    // 验证明细界面左上角的款号与款号名称
     var ret2 = isAnd(isEqual("4562",
             getStaticTextValue(getScrollView(-1, 0), 0)), isEqual("Story",
             getStaticTextValue(getScrollView(-1, 0), 1)));
 
     var i, j;
     qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
-    var name = new Array();
-    var num = new Array();
+    var actual = {};
     for (i = 0; i < 5; i++) {
-        name[i] = qr.data[i]["名称"];
-        num[i] = qr.data[i]["数量"]
+        var name = qr.data[i]["名称"];
+        actual[name] = qr.data[i]["数量"];
     }
     var sum = 0;
     for (j = 1; j <= qr.totalPageNo; j++) {
@@ -495,11 +499,12 @@ function test100001_3() {
     var stock2 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
-    ret2 = isAnd(ret2, isEqual(stock1, stock2), isEqual(stock1, sum));
-    var ret3 = isAnd(isEqual("调拨入库", name[0]), isEqual("50", num[0]), isEqual(
-            "调拨出库", name[1]), isEqual("-10", num[1]), isEqual("销售出货", name[2]),
-            isEqual("-5", num[2]), isEqual("采购进货", name[3]), isEqual("18",
-                    num[3]), isEqual("采购进货", name[4]), isEqual("12", num[4]));
+    ret2 = isAnd(ret2, isEqual("4562", getStaticTextValue(getScrollView(-1, 0),
+            0)), isEqual("Story", getStaticTextValue(getScrollView(-1, 0), 1)));
+    var exp = { "调拨入库" : 50, "调拨出库" : -10, "销售出货" : -5, "采购进货" : 18,
+        "采购进货" : 12 };
+    var ret3 = isAnd(isEqualObject(exp, actual), isEqual(stock1, stock2),
+            isEqual(stock1, sum));
 
     return isAnd(ret1, ret2, ret3);
 }

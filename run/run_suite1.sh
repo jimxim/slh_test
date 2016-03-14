@@ -9,7 +9,7 @@ js_func="loginGoodsParams001"
 #新综合汇总接口
 js_func="$js_func loginSASynthesisAll"
 #货品管理，省代
-js_func="$js_func login200GoodsPrepare login000Goods002 login000Goods001"
+js_func="$js_func login200GoodsPrepare login000Goods001 login000Goods002 "
 #往来管理
 js_func="$js_func login200CustomerPrepare login000Customer002 login000Customer001 "
 #统计分析

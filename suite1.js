@@ -12,17 +12,12 @@ function test000All() {
 
 // run("setParams", "setGoodsParams001");
 // run("【销售订货－新增订货】新增超长订单并打印", "test160048");
- run("", "test100010_100011_100013");
+ run("", "test120019");
 // return ret;
 }
 
 function onlyTest(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        
-       logout();
-    }
+
 }
 
 function prepare200All(){
