@@ -2026,7 +2026,7 @@ function test160065() {
 function test160070() {
     tapMenu("销售订货", "按厂商报单");
     var keys = { "订货日期从" : getDay(-30), "订货日期到" : getToday(), "厂商" : "Vell",
-        "订货时间从" : "2015-10-01", "订货时间到" : "2030-10-01" }
+        "店员" : "000" }
     var fields = salesOrderCompanyFields(keys);
     query(fields);
     var qr = getQR();
@@ -2037,8 +2037,7 @@ function test160070() {
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)), isEqual("",
-                    getTextFieldValue(window, 3)), isEqual("",
-                    getTextFieldValue(window, 4)));
+                    getTextFieldValue(window, 3)));
 
     return ret;
 }
@@ -2322,15 +2321,13 @@ function test16_Stockout_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(9);
+    var ret = goPageCheck(7);
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("颜色");
-    ret = ret && sortByTitle("尺码");
-    ret = ret && sortByTitle("订货未发数", IS_NUM);
+    ret = ret && sortByTitle("订货未发", IS_NUM);
     ret = ret && sortByTitle("库存(含在途)", IS_NUM);
-    ret = ret && sortByTitle("采购未到数", IS_NUM);
+    ret = ret && sortByTitle("采购未到", IS_NUM);
     ret = ret && sortByTitle("缺货数", IS_NUM);
     logDebug("ret=" + ret);
 
@@ -2339,9 +2336,9 @@ function test16_Stockout_1() {
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["订货未发数"]);
+            sum1 += Number(qr.data[i]["订货未发"]);
             sum2 += Number(qr.data[i]["库存(含在途)"]);
-            sum3 += Number(qr.data[i]["采购未到数"]);
+            sum3 += Number(qr.data[i]["采购未到"]);
             sum4 += Number(qr.data[i]["缺货数"]);
         }
         if (j < qr.totalPageNo) {
@@ -2349,10 +2346,10 @@ function test16_Stockout_1() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["订货未发数"], sum1), isEqual(
-            qr.counts["库存(含在途)"], sum2), isEqual(qr.counts["采购未到数"], sum3),
+    var ret1 = isAnd(isEqual(qr.counts["订货未发"], sum1), isEqual(
+            qr.counts["库存(含在途)"], sum2), isEqual(qr.counts["采购未到"], sum3),
             isEqual(qr.counts["缺货数"], sum4));
-    return ret && ret1;
+    return isAnd(ret, ret1);
 }
 
 // 条件查询/数据验证/清除
@@ -2382,12 +2379,12 @@ function test16_Stockout_2() {
     var fields = salesOrderQueryByStockoutFields(keys);
     query(fields);
     var qr = getQR();
-    var expected = { "款号" : r, "名称" : "a" + r, "颜色" : "均色", "尺码" : "均码",
-        "订货未发数" : "50", "库存(含在途)" : "10", "采购未到数" : "20", "缺货数" : "20" };
+    var expected = { "款号" : r, "名称" : "a" + r, 
+        "订货未发" : "50", "库存(含在途)" : "10", "采购未到" : "20", "缺货数" : "20" };
     var ret = isEqualQRData1Object(qr, expected);
-    ret = isAnd(ret, isEqual(qr.data[0]["订货未发数"], qr.counts["订货未发数"]), isEqual(
+    ret = isAnd(ret, isEqual(qr.data[0]["订货未发"], qr.counts["订货未发"]), isEqual(
             qr.data[0]["库存(含在途)"], qr.counts["库存(含在途)"]), isEqual(
-            qr.data[0]["采购未到数"], qr.counts["采购未到数"]), isEqual(
+            qr.data[0]["采购未到"], qr.counts["采购未到"]), isEqual(
             qr.data[0]["缺货数"], qr.counts["缺货数"]))
 
     tapButton(window, CLEAR);

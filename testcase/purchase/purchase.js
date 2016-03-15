@@ -14,7 +14,8 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按厂商汇总,查询清除数据验证", "test120010");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总，翻页排序汇总", "test120010_1");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/查询/清除", "test120011_1");
-    run("【采购入库-采购汇总】采购汇总->出入库汇总,汇总", "test120011_2");
+    run("【采购入库-采购汇总】采购汇总->出入库汇总,数据验证", "test120011_2");
+    run("【采购入库-采购汇总】采购汇总->汇总", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总，翻页排序汇总", "test120013_1");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,查询清除", "test120013_2");
 
@@ -748,12 +749,7 @@ function test120011_1() {
     return ret;
 }
 
-// 汇总，作废数据影响，因此按照新增数据的方式验证
 function test120011_2() {
-
-}
-
-function test120011_3() {
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-30), "调出门店" : "中洲店" }
     var fields = shopOutQueryBatchFields(keys);
@@ -805,6 +801,31 @@ function test120011_3() {
             jo2));
 
     return ret;
+}
+
+// 汇总，作废数据影响，因此按照新增数据的方式验证
+function test120011_3() {
+    return isAnd(test120011_3Field(50), test120011_3Field(-50));
+}
+
+function test120011_3Field(num) {
+    tapMenu("采购入库", "按汇总", "出入库汇总");
+    var keys = { "日期从" : getDay(-30) }
+    var fields = purchaseInOutFields(keys);
+    query(fields);
+    var qr = getQR();
+    var counts1 = qr.counts;
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : num } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("采购入库", "按汇总", "出入库汇总");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var counts2 = qr.counts;
+    var exp = { "金额" : num * 100, "总数" : num };
+    return isEqualObject(exp, subObject(counts2, counts1));
 }
 
 function test120031_120032() {

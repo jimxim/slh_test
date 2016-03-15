@@ -377,13 +377,9 @@ function salesOrderCompanyField(key, show) {
     case "厂商":
         f = new TField("厂商", TF_AC, 2, "常青店", -1, 0);
         break;
-    case "day1":
-    case "订货时间从":
-        f = new TField("订货时间从", TF_DT, 3, "2015-10-01 09:01");
-        break;
-    case "day2":
-    case "订货时间到":
-        f = new TField("到", TF_DT, 4, "2015-10-01 09:01");
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_DT, 3, "000");
         break;
     default:
         logWarn("未知key＝" + key);

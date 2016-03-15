@@ -2053,7 +2053,7 @@ function test1100_QueryProvider() {
     ret = ret && sortByTitle("地址");
     ret = ret && sortByTitle("备注");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期",IS_DATE2);
+    ret = ret && sortByTitle("操作日期", IS_DATE2);
 
     var keys = { "厂商" : "1010cs", "手机" : "2344444333", "是否停用" : "否" };
     var fields = queryCustomerProviderFields(keys);
@@ -3463,7 +3463,7 @@ function test110058_1() {
     exp["未拿货天数"] = exp1["未拿货天数"] = 0;
     exp1["最后一次拿货"] = getToday("yy");
     ret = isAnd(ret, test110058Field(exp, exp1, "文一店"));
-    
+
     return ret;
 }
 
@@ -3616,6 +3616,7 @@ function testCheckCustomerDropDownList() {
     view = getScrollView();
     f = new TField("客户", TF_AC, 1, "yun", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
+    delay();// 有时候下拉框会挡住客户的输入框
     f = new TField("店员", TF_AC, 2, "y", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
