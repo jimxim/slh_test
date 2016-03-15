@@ -4,6 +4,25 @@
 // 绑定的仓库为文一店，文一店店长404
 function testWarehouseAll() {
     run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
+    run("作废仓库店的销售单", "repealWarehouseSalesBill");
+}
+
+function repealWarehouseSalesBill() {
+    tapMenu("销售开单", "开  单+");
+    var keys = { "日期从" : getDay(-30), "门店" : "仓库店", "作废挂单" : "正常" };
+    var field = testSalesQueryBatchFields(keys);
+    query(field);
+    var qr = getQR();
+    var length = qr.data.length;
+    while (length > 0) {
+        tapFirstText();
+        tapButtonAndAlert("作 废", OK);
+        qr = getQR();
+        if (qr.data.length == length) {
+            break;
+        }
+    }
+    return qr.data.length == 0
 }
 
 function testTreasurer001All() {

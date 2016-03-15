@@ -87,7 +87,6 @@ function test130001_1() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
-
     logDebug("ret=" + ret);
 
     var qr = getQR();
@@ -318,15 +317,19 @@ function test130003_2() {
     var ret1 = false;
     var f = new TField("款号", TF_AC, 1, "303", -1);
     var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "3035,jkk,")) {
-            ret1 = true;
-            break;
+    if (cells.length > 0) {
+        for (i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var v = cell.name();
+            if (isIn(v, "3035,jkk,")) {
+                ret1 = true;
+                break;
+            }
         }
+        tapKeyboardHide();
+    } else {
+        ret1 = isIn(getTextFieldValue(window, f.index), "3035,jkk");
     }
-    tapKeyboardHide();
 
     var keys = { "门店" : "常青店", "款号" : "3035", "厂商" : "Vell",
         "日期从" : getToday(), "到" : getToday(), "备注" : "xx" }
@@ -344,7 +347,7 @@ function test130003_2() {
         }
     }
 
-    return ret && ret1;
+    return isAnd(ret, ret1);
 }
 
 function test130004() {

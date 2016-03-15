@@ -974,19 +974,11 @@ function isRepetitione(arr) {
 }
 
 function isPositiveNumber(n) {
-    var ret = false;
-    if (Number(n) >= 0) {
-        ret = true;
-    }
-    return ret;
+    return Number(n) >= 0;
 }
 
 function isNegativeNumber(n) {
-    var ret = false;
-    if (Number(n) <= 0) {
-        ret = true;
-    }
-    return ret;
+    return Number(n) <= 0;
 }
 
 function addObject(jo1, jo2) {

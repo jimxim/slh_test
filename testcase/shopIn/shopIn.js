@@ -31,7 +31,7 @@ function editShopInFlitting(secure) {
 }
 
 function test140001() {
-    var i, a1, a2, b1, b2;
+    var i;
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "调入门店" : "常青店" };
     var fields = shopOutQueryBatchFields(keys);
@@ -39,17 +39,19 @@ function test140001() {
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
-    i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "(0; -5)");
+    tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "(0; -5)");
     // test150007做的调出单
+    var tfNum = getSalesBillDetTfNum({});
     var ret = isIn(getTextFieldValue(getScrollView(), 0), "3035");
     var market1 = getTextFieldValue(window, 3);// 整单备注
     var num = getTextFieldValue(getScrollView(), 3);// 数量
-    var market2 = getTextFieldValue(getScrollView(), 4);// 明细备注
+    var market2 = getTextFieldValue(getScrollView(), tfNum - 1);// 明细备注
     tapReturn();
 
     var qr = getQR();
     var batch = qr.data[i]["批次"];
 
+    var a1 = 0, a2 = 0, b1 = 0, b2 = 0, c1 = 0, c2 = 0, d1 = 0, d2 = 0;
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "3035" };
     fields = queryGoodsStockFields(keys);
@@ -63,6 +65,14 @@ function test140001() {
         if (isEqual(qr.data[i]["仓库/门店"], "中洲店")) {
             b1 = qr.data[i]["库存"];
             b2 = qr.data[i]["在途数"];
+        }
+        if (isEqual(qr.data[i]["仓库/门店"], "仓库店")) {
+            c1 = qr.data[i]["库存"];
+            c2 = qr.data[i]["在途数"];
+        }
+        if (isEqual(qr.data[i]["仓库/门店"], "文一店")) {
+            d1 = qr.data[i]["库存"];
+            d2 = qr.data[i]["在途数"];
         }
     }
 
@@ -80,18 +90,19 @@ function test140001() {
     fields = shopInFlitFields(keys);
     query(fields);
     tapFirstText();
+    tfNum = getSalesBillDetTfNum({});
     // 整单备注下标为4
     ret = isAnd(ret, isEqual(market1, getTextFieldValue(window, 4)), isEqual(
             num, getTextFieldValue(getScrollView(), 3)), isEqual(market2,
-            getTextFieldValue(getScrollView(), 4)));
+            getTextFieldValue(getScrollView(), tfNum - 1)));
     editShopInFlitting();// 全部调入
 
     tapButton(window, CLEAR);
-    ret = ret && isEqual(getToday(), getTextFieldValue(window, 0));
-    ret = ret && isEqual(getToday(), getTextFieldValue(window, 1));
-    ret = ret && isEqual("", getTextFieldValue(window, 2));
-    ret = ret && isEqual("", getTextFieldValue(window, 3));
-    ret = ret && isEqual("", getTextFieldValue(window, 4));
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)), isEqual("",
+                    getTextFieldValue(window, 3)), isEqual("",
+                    getTextFieldValue(window, 4)));
 
     tapMenu("门店调出", "按批次查");
     keys = { "批次从" : batch, "批次到" : batch };
@@ -101,7 +112,7 @@ function test140001() {
     qr = getQR();
     ret = isAnd(ret, isEqual("已接收", qr.data[0]["状态"]));
 
-    var a3, a4, b3, b4;
+    var a3 = 0, a4 = 0, b3 = 0, b4 = 0, c3 = 0, c4 = 0, d3 = 0, d4 = 0;
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
     qr = getQR();
@@ -114,16 +125,26 @@ function test140001() {
             b3 = qr.data[i]["库存"];
             b4 = qr.data[i]["在途数"];
         }
+        if (isEqual(qr.data[i]["仓库/门店"], "仓库店")) {
+            c3 = qr.data[i]["库存"];
+            c4 = qr.data[i]["在途数"];
+        }
+        if (isEqual(qr.data[i]["仓库/门店"], "文一店")) {
+            d3 = qr.data[i]["库存"];
+            d4 = qr.data[i]["在途数"];
+        }
     }
     // 常青店 调入后库存-调入前库存，调入前在途-调入后在途==num 中洲店的不变
     ret = isAnd(ret, isEqual(num, sub(a3, a1)), isEqual(num, sub(a2, a4)),
-            isEqual(b1, b3), isEqual(b2, b4));
+            isEqual(b1, b3), isEqual(b2, b4), isEqual(c1, c3), isEqual(c2, c4),
+            isEqual(d1, d3), isEqual(d2, d4));
 
     tapMenu("货品管理", "库存分布");
     tapButton(window, QUERY);
     qr = getQR();
     // 库存按销价1核算 3035的零批价为200
-    var change = { "库存" : add(a3, b3), "价值" : add(p, 200 * num), "常青店" : a3 };
+    var change = { "库存" : a3 + b3 + c3 + d3, "价值" : add(p, 200 * num),
+        "常青店" : a3 };
     var expected = mixObject(jo1, change);
     var jo2 = qr.data[0];
     ret = isAnd(ret, isEqualObject(jo2, expected));
@@ -138,7 +159,7 @@ function test140002_140003() {
     query(fields);
     var qr = getQR();
     var batch1 = Number(qr.data[0]["批次"]) + 1;
-//    logDebug("batch1="+batch1);
+    // logDebug("batch1="+batch1);
 
     // 调入test150003生成的调出单
     tapMenu("门店调出", "按批次查");
@@ -148,12 +169,12 @@ function test140002_140003() {
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
-    var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注",
-            "shopInCheck");
+    var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "t150003");
+    var tfNum = getSalesBillDetTfNum({});
     var market = getTextFieldValue(window, 3);// 整单备注
     var sum = getTextFieldValue(window, 5);// 总数
     var s1 = getTextFieldValue(getScrollView(), 3);// 3035的数量
-    var s2 = getTextFieldValue(getScrollView(), 8);// 4562的数量
+    var s2 = getTextFieldValue(getScrollView(), tfNum + 3);// 4562的数量
     tapReturn();
 
     qr = getQR();

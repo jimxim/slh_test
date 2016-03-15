@@ -1,8 +1,8 @@
 //LuXingXin <52619481 at qq.com> 20150930
 
 function testPurchase001() {
-    run("【采购入库】翻页_排序_汇总", "test120001_1");
-    run("【采购入库】条件查询，清除按钮", "test120001_2");
+    run("【采购入库-按批次查】翻页_排序_汇总", "test120001_1");
+    run("【采购入库-按批次查】条件查询，清除按钮", "test120001_2");
     run("【采购入库-按明细查】界面功能检查,翻页/排序/汇总", "test120047_1");
     run("【采购入库-按明细查】界面功能检查,查询/清除", "test120047_2");
     run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
@@ -14,6 +14,7 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按厂商汇总,查询清除数据验证", "test120010");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总，翻页排序汇总", "test120010_1");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/查询/清除", "test120011_1");
+    run("【采购入库-采购汇总】采购汇总->出入库汇总,汇总", "test120011_2");
     run("【采购入库-采购汇总】采购汇总->按类别汇总，翻页排序汇总", "test120013_1");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,查询清除", "test120013_2");
 
@@ -123,9 +124,10 @@ function test120001_1() {
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck(14);
+    var ret = goPageCheck(15);
 
     ret = ret && sortByTitle("批次");
+    ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("店员");
@@ -185,10 +187,10 @@ function test120001_2() {
     fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    var expected = { "批次" : batch + 1, "日期" : getToday(""), "厂商" : "Rt",
-        "店员" : "总经理", "厂商" : "Rt", "总数" : "20", "金额" : "2000", "现金" : "1000",
-        "刷卡" : "500", "汇款" : "500", "订货号" : "0", "操作日期" : time, "备注" : "abc",
-        "操作人" : "总经理" }
+    var expected = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday(""),
+        "厂商" : "Rt", "店员" : "总经理", "厂商" : "Rt", "总数" : "20", "金额" : "2000",
+        "现金" : "1000", "刷卡" : "500", "汇款" : "500", "订货号" : "0", "操作日期" : time,
+        "备注" : "abc", "操作人" : "总经理" }
     var ret = isEqualQRData1Object(qr, expected);
 
     tapButton(window, CLEAR);
@@ -738,25 +740,17 @@ function test120011_1() {
     }
     tapNaviLeftButton();
 
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["金额"]);
-            sum2 += Number(qr.data[i]["总数"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(qr.counts["金额"], sum1), isEqual(qr.counts["总数"],
             sum2), isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             getToday(), getTextFieldValue(window, 1)));
 
     return ret;
+}
+
+// 汇总，作废数据影响，因此按照新增数据的方式验证
+function test120011_2() {
+
 }
 
 function test120011_3() {
@@ -1154,7 +1148,7 @@ function test120023() {
     }
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell",
+    var json = { "客户" : "vell", "店员" : "000",
         "新增货品" : { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200 },
         "明细" : [ { "货品" : "3035", "数量" : "30" } ], "未付" : "yes" };
     editSalesBillCustomer(json);
@@ -1271,8 +1265,9 @@ function test120020() {
     var c1 = qr.data[0];
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-20" } ],
-        "现金" : "-1000", "刷卡" : [ -600, "交" ], "汇款" : [ -400, "交" ] };
+    var json = { "客户" : "vell", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "-20" } ], "现金" : "-1000",
+        "刷卡" : [ -600, "交" ], "汇款" : [ -400, "交" ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
@@ -1402,8 +1397,8 @@ function test120021() {
     }
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-30" } ],
-        "未付" : "yes" };
+    var json = { "客户" : "vell", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : "-30" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
@@ -2134,7 +2129,7 @@ function test120037() {
     var keys = { "名称" : r };
     addProvider(keys);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 5);// 不指定标题总数，有时会点击第二条数据
+    tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
     var ret = isEqual("进货价", getTextFieldValue(getScrollView(), 3));
     tapReturn();
 
@@ -2799,8 +2794,8 @@ function test120018() {
     query();
     qr = getQR();
     var exp1 = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday(""),
-        "厂商" : "Rt", "店员" : "总经理", "总数" : 30, "金额" : 3000, "现金" : 400,
-        "刷卡" : 800, "汇款" : 1200, "备注" : "zxc" };
+        "厂商" : "Rt", "店员" : "店长", "总数" : 10, "金额" : 4000, "现金" : 400,
+        "刷卡" : 800, "汇款" : 1200, "备注" : "(30; -20)" };
     ret = isEqual(ret, isEqualObject(exp1, qr.data[0]));
 
     tapFirstText();

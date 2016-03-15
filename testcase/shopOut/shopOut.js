@@ -285,7 +285,7 @@ function test150003() {
     var json = {
         "调出人" : "204",
         "接收店" : "常青店",
-        "备注" : "shopInCheck",
+        "备注" : "t150003",
         "明细" : [ { "货品" : "3035", "数量" : "50" }, { "货品" : "4562", "数量" : "25" } ] };
     editShopOutDecruitIn(json);
 
@@ -376,10 +376,11 @@ function test150007() {
     var ret = isEqual("(0; -5)", qr.data[0]["备注"]);
 
     tapFirstText();
+    var tfNum = getSalesBillDetTfNum({});
     ret = isAnd(ret, isEqual(getTextFieldValue(window, 3), "(0; -5)"), isIn(
             getTextFieldValue(getScrollView(), 0), "3035,jkk"), isEqual("-5",
             getTextFieldValue(getScrollView(), 3)), isEqual("备注abc123",
-            getTextFieldValue(getScrollView(), 4)));
+            getTextFieldValue(getScrollView(), tfNum - 1)));
     tapReturn();
     return ret;
 
@@ -439,8 +440,9 @@ function editShopOutDecruitDet(o) {
         setTFieldsValue(getScrollView(), [ f1 ]);
 
         var fields = [];
+        // 备注为最后一个
         if (isDefined(d["备注"])) {
-            fields.push(new TField("备注", TF, start + 4, d["备注"]));
+            fields.push(new TField("备注", TF, start + tfNum - 1, d["备注"]));
         }
         setTFieldsValue(getScrollView(), fields);
     }

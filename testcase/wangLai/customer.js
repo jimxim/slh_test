@@ -2046,24 +2046,26 @@ function test1100_QueryProvider() {
     tapMenu("往来管理", "厂商查询");
     query();
     // 翻页
-    var ret = goPageCheck(5);
+    var ret = goPageCheck(7);
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
     ret = ret && sortByTitle("地址");
     ret = ret && sortByTitle("备注");
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("操作日期",IS_DATE2);
 
     var keys = { "厂商" : "1010cs", "手机" : "2344444333", "是否停用" : "否" };
     var fields = queryCustomerProviderFields(keys);
     query(fields);
     var qr = getQR();
-    ret = ret && isEqual("1010cs", qr.data[0]["名称"]) && isEqual(1, qr.total)
-            && isEqual(1, qr.totalPageNo);
+    ret = isAnd(ret, isEqual("1010cs", qr.data[0]["名称"]), isEqual(1, qr.total),
+            isEqual(1, qr.totalPageNo));
 
     query();
-    ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2));
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)));
 
     return ret;
 }
@@ -3461,7 +3463,7 @@ function test110058_1() {
     exp["未拿货天数"] = exp1["未拿货天数"] = 0;
     exp1["最后一次拿货"] = getToday("yy");
     ret = isAnd(ret, test110058Field(exp, exp1, "文一店"));
-
+    
     return ret;
 }
 
