@@ -247,10 +247,13 @@ function checkQResult(qr, title, expected, type, expected2) {
                 var value = qr.data[i][title];
                 switch (type) {
                 case "batch":
-                    ret = expected <= value && value <= expected2;
+                    value = Number(value);
+                    expected = Number(expected);
+                    expected2 = Number(expected);
+                    ret = isAnd(expected <= value, value <= expected2);
                     break;
                 case "day":
-                    var value = getDay24(value);
+                    value = getDay24(value);
                     ret = isAnd(expected <= value, value <= expected2);
                     break;
                 case "in":

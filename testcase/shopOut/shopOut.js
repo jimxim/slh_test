@@ -83,6 +83,8 @@ function test150001_1() {
             sum2));
     return ret && ret1;
 }
+
+// 参数 门店调拨是否可以填写价格 改为默认只有数量
 function test150001_2() {
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" }
@@ -291,10 +293,11 @@ function test150003() {
 
     tapButton(window, QUERY);
     tapFirstText();
+    var tfNum = getSalesBillDetTfNum({});
     var ret = isAnd(isIn(getTextFieldValue(getScrollView(), 0), "3035,jkk"),
             isEqual("50", getTextFieldValue(getScrollView(), 3)), isIn(
                     getTextFieldValue(getScrollView(), 5), "4562,Story"),
-            isEqual("25", getTextFieldValue(getScrollView(), 8)));
+            isEqual("25", getTextFieldValue(getScrollView(), tfNum + 3)));
     tapButton(window, RETURN);
 
     tapMenu("门店调出", "按明细查");
@@ -343,8 +346,9 @@ function test150006() {
     query();
     tapFirstText();
     tapButtonAndAlert("打 印", OK);
-
-    tapButton(window, 8);// "打 印"
+    delay();
+    
+    tapButton(window, 8);// "打 印" 接上个界面的下标
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "填写密码后才能打印"));
 

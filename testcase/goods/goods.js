@@ -114,6 +114,10 @@ function setGoodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认不支持" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "门店调拨是否可以填写价格" };
+    o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 

@@ -10,12 +10,14 @@ function test000All() {
     debug = true;
 // TITLE_SXE = getTitleSXE();
 
-    
- run("", "test16_Stockout_1");
+    run("【销售订货－新增订货】特殊货品", "test160059");
+    run("【销售订货－新增订货】打印功能", "test160108");
+// run("", "test160055_160056_160057_160058");
 }
 
 function onlyTest(){
-
+    var index=getButtonIndex(window,CLEAR);
+    
 }
 
 function prepare200All(){
