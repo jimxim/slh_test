@@ -54,9 +54,9 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】复制-粘贴", "test170139");
     run("【销售开单－开单】收款（新增界面）", "test170163");
     // run("【销售开单－开单】收款（修改界面）", "test170164");
-//    run("【销售开单－开单】查看修改日志(修改记录)", "test170166");//
+    // run("【销售开单－开单】查看修改日志(修改记录)", "test170166");//
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
-//    run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
+    // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
     run("【销售开单－开单】挂单保存", "test170169");
     run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
     run("【销售开单－开单】挂单转销售单", "test170171");
@@ -69,7 +69,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单-开单】挂单操作之后检查开单输入客户", "test170525");
     run("【销售开单－开单】设置已配货", "test170180");
     run("【销售开单-开单】客户不允许退货", "test170181");
-//    run("【销售开单－开单】积分兑换", "test170186");//
+    // run("【销售开单－开单】积分兑换", "test170186");//
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【销售开单－开单】兑换记录", "test170189");
@@ -81,9 +81,9 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
 
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
     run("销售订货价格刷新", "test170445");
-    run("采购入库/采购订货价格刷新", "test170527");
+    run("采购入库/采购订货价格刷新", "test170527");//
 
 }
 function testSalesNoColorSize001() {
@@ -102,12 +102,12 @@ function testSalesNoColorSize001() {
     run("【销售开单-开单】开单模式-客户折扣", "test170083");
     run("【销售开单－开单】客户折扣,复制-粘贴", "test170139_3");
     run("【销售开单-开单】客户折扣下，输入客户，再新增货品，点保存时检查提示", "test170509");
-//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");// (还没有看,价格刷新在改)
+    // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");// (还没有看,价格刷新在改)
     run("【销售开单－开单】产品折扣支持3位小数", "test170080_170084");
     run("【销售开单－开单】产品折扣,复制-粘贴", "test170139_2");
-//    run("【销售开单－开单】整单折扣下使用折扣3位小数", "test170078");// (整单折扣三位小数时，商路花程序bug)
-//    run("【销售开单－开单】整单折扣,复制-粘贴", "test170139_1");// (整单折扣三位小数时，商路花程序bug)
-//    run("【销售开单-开单】开单模式-整单折扣", "test170085");// (整单折扣三位小数时，商路花程序bug)
+    // run("【销售开单－开单】整单折扣下使用折扣3位小数", "test170078");// (整单折扣三位小数时，商路花程序bug)
+    // run("【销售开单－开单】整单折扣,复制-粘贴", "test170139_1");// (整单折扣三位小数时，商路花程序bug)
+    // run("【销售开单-开单】开单模式-整单折扣", "test170085");// (整单折扣三位小数时，商路花程序bug)
     run("【销售开单-开单】均色均码款号合并", "test170103");
     run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");
     run("【销售开单－开单】查看上次成交价", "test170105");
@@ -5077,7 +5077,7 @@ function test170178() {
     var money = json1["代收"]["代收金额"];
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = isIn(alertMsg1, "保存成功，是否打印");
 
     tapMenu("销售开单", "按批次查");
@@ -5123,7 +5123,7 @@ function test170178() {
     var ret2 = isEqual(1, sub(len, len1));
 
     logDebug("len=" + len + ", alertMsg1=" + alertMsg1 + ", ret=" + ret
-            + ", ret1=" + ret1);
+            + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170179() {
@@ -6610,7 +6610,7 @@ function test170248() {
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "零批价", a3), isEqual(r, a4));
 
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "1" } ],
@@ -6630,6 +6630,7 @@ function test170248() {
     var ret2 = isEqual("200", c);
     tapReturn();
 
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170248_1() {
@@ -6751,8 +6752,8 @@ function test170251() {
     var a3 = qr.data[0]["物流备注"];
     var a4 = qr.data[0]["代收货款"];
 
-    var ret = isAnd(isEqual(batch, a), isEqual("天天物流", a1), isEqual("123", a2),
-            isEqual("a", a3), isEqual("是", a4));
+    var ret = isAnd(isEqual(batch, a), isEqual("天天物流", a1), isEqual(r, a2),
+            isEqual(r1, a3), isEqual("是", a4));
 
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "lx", "门店" : "常青店" };
@@ -6774,7 +6775,7 @@ function test170251() {
     tapButton(getPop(), "关 闭");
     tapReturn();
 
-    logDebug("len1=" + len1);
+    logDebug("len1=" + len1 + ", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170384() {

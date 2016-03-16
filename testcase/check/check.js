@@ -1275,13 +1275,13 @@ function test180033() {
 
     tapButton(window, "盘点撤销");
 
-    var ret = isIn(alertMsg, "请选择一条记录撤销");
+    var ret = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
 
     tapButton(getScrollView(), 0);
     tapButton(getScrollView(), 1);
     tapButton(window, "盘点撤销");
 
-    var ret1 = isIn(alertMsg, "请选择一条记录撤销");
+    var ret1 = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
 
     var qr = getQR();
     var batch = qr.data[0]["批次"];
@@ -1291,7 +1291,7 @@ function test180033() {
     var opTime = qr.data[0]["操作日期"];
     var tip = qr.data[0]["备注"];
 
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(), 1);
     tapButton(window, "盘点撤销");
 
     tapMenu("盘点管理", "处理记录");
