@@ -728,6 +728,7 @@ function test120011_1() {
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
+    logDebug("ret=" + ret);
 
     // 变成升序
     tapTitle(getScrollView(), "日期");
@@ -742,9 +743,8 @@ function test120011_1() {
     tapNaviLeftButton();
 
     tapButton(window, CLEAR);
-    ret = isAnd(ret, isEqual(qr.counts["金额"], sum1), isEqual(qr.counts["总数"],
-            sum2), isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-            getToday(), getTextFieldValue(window, 1)));
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)));
 
     return ret;
 }

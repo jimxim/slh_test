@@ -207,6 +207,16 @@ function changeSecure(oldSecure, newSecure) {
     return ret;
 }
 
+function checkChinese(str) {
+    var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+    return reg.test(str);
+}
+
+function checkABC(str) {
+    var reg = new RegExp("^[A-Za-z]+$");
+    return reg.test(str);
+}
+
 function checkShowField(view1, fields, expected) {
     var ret = true;
     for ( var i in fields) {
@@ -249,7 +259,7 @@ function checkQResult(qr, title, expected, type, expected2) {
                 case "batch":
                     value = Number(value);
                     expected = Number(expected);
-                    expected2 = Number(expected);
+                    expected2 = Number(expected2);
                     ret = isAnd(expected <= value, value <= expected2);
                     break;
                 case "day":
@@ -733,27 +743,31 @@ function fuzzyQueryCheckField(index, title, value, title1) {
     var fields = [ f ];
     query(fields);
     var qr = getQR();
-    var ret1 = true;
-    var ret2 = true;
+    var ret1 = true, ret2 = true;
+    var isABC = checkABC(value);
     var value1 = value.toUpperCase();
 
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i][title], value)
-                    && !isIn(qr.data[i][title], value1)) {
-                ret1 = false;
-            }
-            if (!ret1 && isDefined(title1)) {
-                if (!isIn(qr.data[i][title1], value)
-                        && !isIn(qr.data[i][title1], value1)) {
-                    ret2 = false;
+            var str = qr.data[i][title];
+            if (isABC && checkChinese(str)) {
+                logDebug("第" + j + "页,第" + i + "行,内容为" + str + ",字母转汉字搞不定,跳过判断")
+            } else {
+                if (!isIn(str, value) && !isIn(str, value1)) {
+                    ret1 = false;
                 }
-                if (ret2) {
-                    ret1 = true;
+                if (!ret1 && isDefined(title1)) {
+                    if (!isIn(str, value) && !isIn(str, value1)) {
+                        ret2 = false;
+                    }
+                    if (ret2) {
+                        ret1 = true;
+                    }
                 }
             }
             if (!ret1) {
-                logDebug("错误页码j=" + j + "  错误序号i=" + i);
+                logDebug("错误页码j=" + j + "  错误序号i=" + i + "  isIn b=" + str
+                        + " a=" + value);
                 break;
             }
         }

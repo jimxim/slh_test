@@ -4,11 +4,11 @@
 // 绑定的仓库为文一店，文一店店长404
 function testWarehouseAll() {
     run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
-    run("作废仓库店的销售单", "repealWarehouseSalesBill");
+    run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
 }
 
 function repealWarehouseSalesBill() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getDay(-30), "门店" : "仓库店", "作废挂单" : "正常" };
     var field = testSalesQueryBatchFields(keys);
     query(field);

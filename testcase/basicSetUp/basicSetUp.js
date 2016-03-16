@@ -513,6 +513,12 @@ function setGoodsBrandDiscount001() {
     return basicSetUpByBrandDiscount(keys);
 }
 
+function setGoodsBrandDiscount001() {
+    var keys = { "品牌" : "Ck公司", "进货价折扣" : "0.5", "零批价" : "1", "打包价" : "0.9",
+        "大客户价" : "0.8", "Vip价格" : "0.7" };
+    return basicSetUpByBrandDiscount(keys);
+}
+
 function setLogisticsBasicSetUp(name, keys) {
     tapMenu("往来管理", "更多.", "物流商查询");
     var qKeys = { "名称" : name };
@@ -662,8 +668,8 @@ function setGoods008() {
 }
 function setGoods009() {
     var keys = { "款号" : "x001", "名称" : "特步夹克", "品牌" : "Ck公司", "颜色" : "0,1,",
-        "尺码" : "3,4,5,", "吊牌价" : "500", "进货价" : "150", "零批价" : "490",
-        "打包价" : "440", "大客户价" : "390", "Vip价格" : "190", "产品折扣" : "0.8",
+        "尺码" : "3,4,5,", "吊牌价" : "300", "进货价" : "150", "零批价" : "300",
+        "打包价" : "270", "大客户价" : "240", "Vip价格" : "210", "产品折扣" : "0.8",
         "季节" : "春季", "类别" : "夹克", "厂商" : "特步生产商", "计量单位" : "件", "仓位" : "A座六层",
         "最小库存" : "0", "最大库存" : "0" };
     return editGoodsBasicSetUp(keys, "2015-03-04", "yes");

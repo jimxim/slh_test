@@ -39,7 +39,7 @@ function test140001() {
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
-    tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "(0; -5)");
+    tapFirstTextByTitle("备注", "(0; -5)", getScrollView());
     // test150007做的调出单
     var tfNum = getSalesBillDetTfNum({});
     var ret = isIn(getTextFieldValue(getScrollView(), 0), "3035");

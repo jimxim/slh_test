@@ -3517,7 +3517,7 @@ function test110058() {
     json = { "客户" : r, "发货" : "中洲店", "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
     editSalesBillNoColorSize(json);
 
-    exp["未拿货天数"] = exp1["未拿货天数"] = 0;
+    exp["未拿货天数"] = 0, exp1["未拿货天数"] = 0;
     exp1["最后一次拿货"] = getToday("yy");
     ret = isAnd(ret, test110058Field(exp, exp1, "中洲店"));
 

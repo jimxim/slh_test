@@ -87,30 +87,43 @@ function test130001_1() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
-    logDebug("ret=" + ret);
 
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["现金"]);
-            sum2 += Number(qr.data[i]["刷卡"]);
-            sum3 += Number(qr.data[i]["汇款"]);
-            sum4 += Number(qr.data[i]["总数"]);
-            sum5 += Number(qr.data[i]["金额"]);
-            sum6 += Number(qr.data[i]["入库数"]);
-            sum7 += Number(qr.data[i]["差异数"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["总数"],
-            sum4), isEqual(qr.counts["金额"], sum5), isEqual(qr.counts["入库数"],
-            sum6), isEqual(qr.counts["差异数"], sum7));
     return ret;
+}
+
+function ts130001Count() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 5, 5 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+    }
+
+    return ts130001CountField(det);
+}
+
+function ts130001CountField(det) {
+    tapMenu("采购订货", "按批次查");
+    query();
+    var qr = getQR();
+    var count1 = qr.counts;
+
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "Rt" };
+    var josn = mixObject(jo, det);
+    editSalesBill(json);
+
+    tapMenu("采购订货", "按批次查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var count2 = qr.counts;
+
+    
 }
 
 // 条件查询，清除按钮,下拉框

@@ -600,7 +600,7 @@ function test190009() {
 }
 
 function test190094() {
-    var a1, a2, b1, b2, i, j;
+    var a2, b2, i, j;
     var rm = (getRandomInt(100000) + 1) / 100;
     var r = "备注" + "a" + getTimestamp(6);
 
@@ -610,6 +610,7 @@ function test190094() {
     query(fields);
     var qr = getQR();
     var sum = qr.counts["金额"];
+    var a1 = 0, b1 = 0;// 找不到则为0
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["收支类别"] == "物损") {
             a1 = qr.data[i]["金额"];
@@ -617,12 +618,6 @@ function test190094() {
         if (qr.data[i]["收支类别"] == "业务回扣1") {
             b1 = qr.data[i]["金额"];
         }
-    }
-    if (isUndefined(a1)) {
-        a1 = 0;
-    }
-    if (isUndefined(b1)) {
-        b1 = 0;
     }
 
     tapMenu("统计分析", "新增收入");
@@ -2625,6 +2620,15 @@ function editStatisticAnalysisInField1(o, key) {
         keys[key] = v;
         var fields = editStatisticAnalysisInFields(keys);
         setTFieldsValue(window, fields);
+        if (key == "收支备注") {
+            var view = getPop();
+            if (isDefined(view) && view.isVisible()) {
+                var f = new TField("备注", TF, 0, v);
+                setTFieldsValue(getPopOrView(), [ f ]);
+                delay();
+                tapButton(view, OK);
+            }
+        }
     }
 }
 

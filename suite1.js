@@ -7,17 +7,20 @@
 
 // 总经理
 function test000All() {
+// colorSize="no";
     debug = true;
+    ipadVer = "6.59";
 // TITLE_SXE = getTitleSXE();
-
-    run("【销售订货－新增订货】特殊货品", "test160059");
-    run("【销售订货－新增订货】打印功能", "test160108");
-// run("", "test160055_160056_160057_160058");
+//    run("", "onlyTest1");
+ run("", "onlyTest");
 }
 
 function onlyTest(){
-    var index=getButtonIndex(window,CLEAR);
-    
+// debugElementTree(window);
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+ return json;
 }
 
 function prepare200All(){

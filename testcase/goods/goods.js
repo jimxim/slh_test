@@ -4,7 +4,7 @@
  * 均色均码 省代价格模式 价格模式2 不支持自动生成款号
  */
 function setGoodsParams001() {
-
+    colorSize="no";
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -1095,7 +1095,7 @@ function test100114() {
     query(fields);
     var qr = getQR();
     var exp = { "款号" : r, "名称" : r, "在途数" : 0, "库存" : -10, "累计进" : 0,
-        "累计销" : 10, "上级日期" : getToday("yy") };
+        "累计销" : 10, "上架日期" : getToday("yy") };
     return isEqualObject(exp, qr.data[0]);
 }
 
@@ -1787,18 +1787,18 @@ function test100054_2() {
 function test100111() {
     tapMenu("货品管理", "基本设置", "新增品牌+");
     var keys1 = { "名称" : "'" };
-    var ret = test1000111Field(keys1);
+    var ret = test100111Field(keys1);
     var keys2 = { "名称" : "," };
-    ret = ret && test1000111Field(keys2);
+    ret = ret && test100111Field(keys2);
     var keys3 = { "名称" : "&" };
-    ret = ret && test1000111Field(keys3);
+    ret = ret && test100111Field(keys3);
     tapReturn();
 
     tapMenu("货品管理", "基本设置", "所有品牌");
     tapFirstText();
-    ret = ret && test1000111Field(keys1);
-    ret = ret && test1000111Field(keys2);
-    ret = ret && test1000111Field(keys3);
+    ret = ret && test100111Field(keys1);
+    ret = ret && test100111Field(keys2);
+    ret = ret && test100111Field(keys3);
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
@@ -2817,7 +2817,7 @@ function test10_brand() {
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作日期");//, IS_OPTIME没有年份无法判断
 
     var keys = { "名称" : "品牌" };
     var fields = goodsBrandFields(keys);
