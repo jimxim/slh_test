@@ -35,6 +35,39 @@ function getEditGoodsValue() {
     return arr;
 }
 
+function getQResult3(dataView, startTitle, firstTitle, lastTitle) {
+    if (isUndefined(dataView)) {
+        dataView = window;
+    }
+    if (isUndefined(startTitle)) {
+        startTitle = "批次";
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = TITLE_SEQ;
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = "小计";
+    }
+
+    var firstTitleIndex = 0;
+    var lastTitleIndex = 0;
+    var texts = getStaticTexts(dataView);
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].value();
+        if (firstTitleIndex == 0 && isIn(v, startTitle)) {
+            firstTitleIndex = i;
+        }
+        if (lastTitleIndex == 0 && v == lastTitle) {
+            lastTitleIndex = i;
+        }
+    }
+
+    var counts = {};
+    var qResult = new QResult(titles, data, total, curPageTotal, curPageNo,
+            totalPageNo, counts, hasError);
+    return qResult;
+}
+
 /**
  * 新增货品
  * @param keys
@@ -207,13 +240,18 @@ function changeSecure(oldSecure, newSecure) {
     return ret;
 }
 
+function checkABC(str) {
+    var reg = new RegExp("^[A-Za-z]+$");
+    return reg.test(str);
+}
+
 function checkChinese(str) {
     var reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
     return reg.test(str);
 }
 
-function checkABC(str) {
-    var reg = new RegExp("^[A-Za-z]+$");
+function checkDate(str) {
+    var reg = new RegExp("^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$");
     return reg.test(str);
 }
 
@@ -493,7 +531,8 @@ function arrayToString(data) {
  * @returns {Boolean}
  */
 function isDifferentArray(data1, data2, n) {
-    var i, j, s1, s2, ret = true;
+    var i, j, s1, s2;
+    var ret = true;
     if (isUndefined(n)) {
         n = 0;
     }
@@ -503,11 +542,11 @@ function isDifferentArray(data1, data2, n) {
             s2 = arrayToString(data2[i]);
             if (isEqual(s1, s2)) {
                 ret = false;
+                logDebug("s1=" + s1 + "   s2=" + s2 + " 内容相同");
                 break;
             }
         }
         if (!ret) {
-            logDebug("内容相同");
             break;
         }
     }

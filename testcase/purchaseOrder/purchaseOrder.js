@@ -122,8 +122,10 @@ function ts130001CountField(det) {
     tapButton(window, QUERY);
     qr = getQR();
     var count2 = qr.counts;
+    var actual = subObject(count2, count1);
+    var exp = {};
+    var ret = isEqualObject(exp, actual);
 
-    
 }
 
 // 条件查询，清除按钮,下拉框
@@ -175,7 +177,7 @@ function test130001_2() {
         }
     }
 
-    return ret && ret1;
+    return isAnd(ret, ret1);
 }
 function test130002_1() {
     tapMenu("采购订货", "新增订货+");

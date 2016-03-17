@@ -11,16 +11,15 @@ function test000All() {
     debug = true;
     ipadVer = "6.59";
 // TITLE_SXE = getTitleSXE();
-//    run("", "onlyTest1");
+
+//    run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
+
  run("", "onlyTest");
 }
 
 function onlyTest(){
-// debugElementTree(window);
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
- return json;
+ debugElementTree(window);
+
 }
 
 function prepare200All(){

@@ -4,7 +4,7 @@
  * 均色均码 省代价格模式 价格模式2 不支持自动生成款号
  */
 function setGoodsParams001() {
-    colorSize="no";
+    colorSize = "no";
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -2285,10 +2285,13 @@ function test100070() {
     clearTField(getScrollView(), f0);
     tapButtonAndAlert("保存修改");
     tapButtonAndAlert("none", OK, true);
+
+    tapKeyboardHide();
+    delay();
+    tapPrompt();
     if (isIn(alertMsg, "名称不能为空")) {
         ret1 = true;
     }
-    delay();
 
     f0 = new TField("名称", TF, 0, "AB");
     fields = [ f0 ];
@@ -2817,7 +2820,7 @@ function test10_brand() {
 
     var qr = getQR();
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("操作日期");//, IS_OPTIME没有年份无法判断
+    ret = ret && sortByTitle("操作日期");// , IS_OPTIME没有年份无法判断
 
     var keys = { "名称" : "品牌" };
     var fields = goodsBrandFields(keys);
@@ -2895,20 +2898,20 @@ function test10_discount() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("进货价折扣", IS_NUM);
-    // ret = ret && sortByTitle("零批价", IS_NUM);
-    // ret = ret && sortByTitle("打包价", IS_NUM);
-    // ret = ret && sortByTitle("大客户价", IS_NUM);
-    // ret = ret && sortByTitle("Vip价格", IS_NUM);
+    ret = ret && sortByTitle("零批价");// , IS_NUM
+    ret = ret && sortByTitle("打包价");// , IS_NUM
+    ret = ret && sortByTitle("大客户价");// , IS_NUM
+    ret = ret && sortByTitle("Vip价格");// , IS_NUM
     logDebug("ret=" + ret);
 
     var keys = { "品牌" : "1010pp" };
     var fields = goodsBrandDiscountFields(keys);
     query(fields);
     qr = getQR();
-    ret = ret && isEqual("1010pp", qr.data[0]["品牌"]);
+    ret = isAnd(ret, isEqual("1010pp", qr.data[0]["品牌"]));
 
     tapButton(window, CLEAR);
-    ret = ret && isEqual("", getTextFieldValue(window, 0));
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)));
 
     return ret;
 }

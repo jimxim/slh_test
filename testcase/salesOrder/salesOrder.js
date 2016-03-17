@@ -1368,6 +1368,7 @@ function test160036() {
     var expected = { "名称" : "jkk", "数量" : 30, "已发数" : 50, "未发数" : 0,
         "差异数" : -20, "小计" : 6000 };
     var ret = isEqualObject(expected, actual);
+    return ret;
 }
 
 // 终结订单
@@ -1456,18 +1457,18 @@ function test160090() {
 function test160037() {
     var i, j, arr1, arr2;
     tapMenu("销售订货", "按汇总", "按款号");
-    var keys = { "厂商" : "vell" };
+    var keys = { "厂商" : "vell","款号":"3035" };
     var fields = salesOrderCodeFields(keys);
     query(fields);
     var qr = getQR();
     var jo1 = qr.data[0];
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "厂商", "小计");
-    for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["款号" == "3035"]) {
+//    for (i = 0; i < qr.curPageTotal; i++) {
+//        if (qr.data[i]["款号" == "3035"]) {
             arr1 = qr.data[i];
-        }
-    }
+    // }
+    //    }
     tapNaviLeftButton();
 
     tapMenu("销售订货", "新增订货+");
@@ -2321,10 +2322,12 @@ function test16_Stockout_1() {
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(7);
+    var ret = goPageCheck(9);
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("订货未发", IS_NUM);
     ret = ret && sortByTitle("库存(含在途)", IS_NUM);
     ret = ret && sortByTitle("采购未到", IS_NUM);

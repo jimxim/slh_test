@@ -101,12 +101,12 @@ function editCustomerField(key, show) {
     case "店员":
         f = new TField("店员", TF_AC, 7, "000", -1,0);
         if (show) {
-            f.value = f.p2;
+            f.value = "000,总经理";
         }
         break;
     case "super":
     case "上级客户":
-        f = new TField("上级客户", TF_AC, 8, "b", -1, 0);
+        f = new TField("上级客户", TF_AC, 8, "yvb", -1, 0);
         if (show) {
             f.value = "Yvb";
         }
