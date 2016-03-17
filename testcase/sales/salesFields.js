@@ -536,6 +536,59 @@ function salesCustomerSupplyField(key, show) {
 	return f;
 }
 
+//按款号上货
+function testSalesCodeSupplyFields() {
+    var keys = [ "code" ];
+    var fields = salesCodeSupplyFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = salesCodeSupplyFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function salesCodeSupplyFields(keys, show) {
+    return getTFields("salesCustomerSupplyField", keys, show);
+}
+function salesCustomerSupplyField(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "303", -1, 0);
+        if (show) {
+            f.value = "3035";
+        }
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+//按款号上货 明细界面
+function salesCodeDetailSupplyFields(keys, show) {
+    return getTFields("salesCustomerSupplyField", keys, show);
+}
+function salesCustomerSupplyField(key, show) { 
+    var f;
+    switch (key) {
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "ls", -1, 0);
+        if (show) {
+            f.value = "李四";
+        }
+        break;
+    case "supply":
+    case "是否上货":
+        f = new TField("是否上货", TF_SC, 1, "是");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+
 // 代人核销表
 function testSalesVerifyFields() {
 	var fields = salesVerifyFields("day1", "day2");
