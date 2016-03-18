@@ -14,7 +14,7 @@ function test000All() {
 
 // run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
 
- run("", "test110060_1");
+ run("", "test190035");
 }
 
 function onlyTest(){

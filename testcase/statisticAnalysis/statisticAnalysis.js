@@ -1347,7 +1347,7 @@ function test190035() {
     tapMenu("采购入库", "新增入库+");
     json = { "客户" : "vell", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "-10" } ],
-        "特殊货品" : { "抹零" : 50, "打包费" : 10 } };
+        "特殊货品" : { "抹零" : 50, "打包费" : 10 }, "现金" : "-1040" };
     editSalesBillNoColorSize(json);
 
     // 订货未发货
@@ -1398,13 +1398,13 @@ function test190035() {
 
     // 订货未发货
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "特殊货品" : { "抹零" : 40, "打包费" : 45 } };
     editSalesBillNoColorSize(json);
 
     // 订货部分入库
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "特殊货品" : { "抹零" : 50, "打包费" : 65 } };
     editSalesBillNoColorSize(json);
 
@@ -1418,7 +1418,7 @@ function test190035() {
     delay(2);
     // 订货全部入库
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 10 } };
     editSalesBillNoColorSize(json);
 
@@ -1427,8 +1427,8 @@ function test190035() {
     saveAndAlertOk();
 
     delay(2);
-    var change = { "进数" : 105, "销数" : 35, "销额" : 6000, "退数" : 3, "退额" : 600,
-        "特殊货品" : 5, "实销数" : 32, "实销额" : 5405, "现金" : 15610, "余款" : 10205 };
+    var change = { "进数" : 105, "销数" : 35, "销额" : 6600, "退数" : 3, "退额" : 480,
+        "特殊货品" : 5, "实销数" : 32, "实销额" : 6125, "现金" : 18610, "余款" : 12485 };
     var ret = test190035Field(jo1, change);
 
     return ret;
@@ -2157,7 +2157,7 @@ function test190078_190080() {
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual(getToday(), getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2))
             && isEqual("", getTextFieldValue(window, 3));
 

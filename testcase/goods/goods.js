@@ -2678,7 +2678,7 @@ function test100082_100083_100084_100085_100093() {
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2))
-            && isEqual(getToday(), getTextFieldValue(window, 3));
+            && isEqual("", getTextFieldValue(window, 3));
 
     return ret;
 }

@@ -3171,7 +3171,8 @@ function test110054() {
     tapButton(window, "修改保存");
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "zbs", "核销" : [ 5 ] };
+    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "核销" : [ 5 ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
