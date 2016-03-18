@@ -35,37 +35,95 @@ function getEditGoodsValue() {
     return arr;
 }
 
-function getQResult3(dataView, startTitle, firstTitle, lastTitle) {
+function getQR3(dataView, firstTitle, lastTitle) {
+    var qr = getQResult3(dataView, firstTitle, lastTitle);
+    if (qr.hasError) {
+        logDebug("getQResult3 again");
+        delay();// 有时是界面未加载完毕第一次没取到
+        qr = getQResult3(dataView, firstTitle, lastTitle);
+    }
+    return qr;
+}
+/**
+ * 获取类似往来管理-客户账款-客户门店账-所有未结界面明细的查询结果
+ * @param dataView
+ * @param firstTitle
+ * @param lastTitle
+ * @returns {QResult}
+ */
+function getQResult3(dataView, firstTitle, lastTitle) {
+    if (isUndefined(dataView)) {
+        dataView = getScrollView(-1);
+    }
+    // 这里的标题在window里，而内容在getScrollView中
+    var firstIndex = 0;
+    var lastIndex = 0;
+    var texts = getStaticTexts(window);
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].value();
+        if (firstIndex == 0 && v == firstTitle) {
+            firstIndex = i;
+        }
+        if (lastIndex == 0 && v == lastTitle) {
+            lastIndex = i;
+        }
+    }
+
+    var titles = new Array();
+    var j = 0;
+    for (var i = firstIndex; i <= lastIndex; i++) {
+        titles[j] = texts[i].value();
+        j++
+    }
+
+    var titleNum = titles.length;
+    texts = getStaticTexts(dataView);
+    var total = Math.ceil(texts.length / titleNum);
+    var data = new Array(total);
+    var hasError = false;
+    for (var i = 0; i < total; i++) {
+        var data1 = new Array(titleNum);
+        for (var j = 0; j < titleNum; j++) {
+            var t = titles[j];
+            var index = titleNum * i + j;
+            if (index < texts.length) {
+                data1[t] = texts[index].value();
+            } else {
+                hasError = true;
+            }
+        }
+        data[i] = data1;
+    }
+
+    var qResult = new QResult(titles, data, total, hasError);
+    return qResult;
+}
+
+function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     if (isUndefined(dataView)) {
         dataView = window;
     }
-    if (isUndefined(startTitle)) {
-        startTitle = "批次";
-    }
-    if (isUndefined(firstTitle)) {
-        firstTitle = TITLE_SEQ;
-    }
-    if (isUndefined(firstTitle)) {
-        firstTitle = "小计";
-    }
-
-    var firstTitleIndex = 0;
-    var lastTitleIndex = 0;
+    var firstIndex = 0;
+    var lastIndex = 0;
     var texts = getStaticTexts(dataView);
     for (var i = 0; i < texts.length; i++) {
         var v = texts[i].value();
-        if (firstTitleIndex == 0 && isIn(v, startTitle)) {
-            firstTitleIndex = i;
+        if (firstIndex == 0 && isIn(v, firstTitle)) {
+            firstIndex = i;
         }
-        if (lastTitleIndex == 0 && v == lastTitle) {
-            lastTitleIndex = i;
+        if (lastIndex == 0 && isIn(v, lastTitle)) {
+            lastIndex = i;
         }
     }
 
-    var counts = {};
-    var qResult = new QResult(titles, data, total, curPageTotal, curPageNo,
-            totalPageNo, counts, hasError);
-    return qResult;
+    var data = new Array();
+    for (var i = firstIndex; i <= lastIndex; i++) {
+        var v = texts[i].value();
+        var v1 = v.split("   ");
+        var t = v1[0];
+        data[t] = v1[1];
+    }
+    return data;
 }
 
 /**

@@ -12,14 +12,15 @@ function test000All() {
     ipadVer = "6.59";
 // TITLE_SXE = getTitleSXE();
 
-//    run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
+// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
 
- run("", "onlyTest");
+ run("", "test110060_1");
 }
 
 function onlyTest(){
- debugElementTree(window);
-
+// debugElementTree(window);
+    var ok=tapFirstText(getScrollView(-1, 0), "批次",9);
+    return ok;
 }
 
 function prepare200All(){

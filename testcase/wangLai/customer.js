@@ -55,6 +55,7 @@ function testCustomer002() {
     run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
     run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
     run("【往来管理-客户账款】右上角的所有统计、未结统计", "test110060");
+    run("【往来管理-客户账款】右上角的所有统计、未结统计详细界面", "test110060_1");
     run("【往来管理】是否欠款报警查询", "test110028");
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
@@ -3480,6 +3481,54 @@ function test110060() {
     tapNaviLeftButton();
 
     return isAnd(ret1, ret2, ret3);
+}
+
+function test110060_1() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "sjkh1",
+        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "4562", "数量" : "10" } ],
+        "备注" : "xxx", "未付" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    delay();
+    query();
+    var qr = getQR();
+    var exp1 = { "批次" : qr.data[0]["批次"], "日期" : getToday(), "总数" : 15,
+        "总额" : 3000, "类型" : "销售出货", "备注" : "xxx", "操作人" : "000,总经理" };
+    var exp2 = { "序号" : 1, "款号" : "3035", "名称" : "jkk", "颜色" : "均色",
+        "尺码" : "均码", "数量" : 5, "单价" : 200, "小计" : 1000 };
+    var exp3 = { "序号" : 2, "款号" : "4562", "名称" : "Story", "颜色" : "均色",
+        "尺码" : "均码", "数量" : 10, "单价" : 200, "小计" : 2000 };
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = { "客户" : "sjkh1", "门店" : "常青店" };
+    var fields = queryCustomerShopAccountFields(keys);
+    var ret1 = test110060_1Field(fields, exp1, exp2, exp3);
+
+    tapMenu("往来管理", "客户账款", "按上级单位");
+    keys = { "客户" : "sjkh1" };
+    fields = queryCustomerSuperFields(keys);
+    var ret2 = test110060_1Field(fields, exp1, exp2, exp3);
+
+    tapMenu("往来管理", "客户账款", "客户总账");
+    fields = queryCustomerAccountFields(keys);
+    var ret3 = test110060_1Field(fields, exp1, exp2, exp3);
+    return isAnd(ret1, ret2, ret3);
+}
+
+function test110060_1Field(fields, exp1, exp2, exp3) {
+    query(fields);
+    tapFirstText();
+    tapNaviButton("所有统计");
+    tapFirstText(getScrollView(-1, 0), "批次", "未结", 9);
+    var qr1 = getQR3(getScrollView(-1), "序号", "小计");
+    var data = getQRStaticTexts(window, "批次", "操作人");
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    return isAnd(isEqualObject(exp1, data), isEqualObject(exp2, qr1.data[0]),
+            isEqualObject(exp3, qr1.data[1]));
 }
 
 function testCheckCustomerDropDownList() {
