@@ -546,9 +546,9 @@ function testSalesCodeSupplyFields() {
 }
 
 function salesCodeSupplyFields(keys, show) {
-    return getTFields("salesCustomerSupplyField", keys, show);
+    return getTFields("salesCodeSupplyField", keys, show);
 }
-function salesCustomerSupplyField(key, show) {
+function salesCodeSupplyField(key, show) {
     var f;
     switch (key) {
     case "code":
@@ -566,9 +566,9 @@ function salesCustomerSupplyField(key, show) {
 
 //按款号上货 明细界面
 function salesCodeDetailSupplyFields(keys, show) {
-    return getTFields("salesCustomerSupplyField", keys, show);
+    return getTFields("salesCodeDetailSupplyField", keys, show);
 }
-function salesCustomerSupplyField(key, show) { 
+function salesCodeDetailSupplyField(key, show) { 
     var f;
     switch (key) {
     case "customer":
