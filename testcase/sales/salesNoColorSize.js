@@ -79,11 +79,11 @@ function testSalesNoColorSizeAll() {
     run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
-    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
+//    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
 
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
-    run("销售订货价格刷新", "test170445");
-    run("采购入库/采购订货价格刷新", "test170527");//
+//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
+//    run("销售订货价格刷新", "test170445");
+//    run("采购入库/采购订货价格刷新", "test170527");//
 
 }
 function testSalesNoColorSize001() {
@@ -116,7 +116,7 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】开单时不允许负库存", "test170116");
     run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
     run("【销售开单－开单】开单时允许负库存", "test170117");
-    run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
+//    run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
     run("【销售开单－开单】待作废参数与二次挂单功能检查", "test170172");
     run("【销售开单-开单】总计四舍五入", "test170191");
     run("【销售开单】开单后是否显示打印确认窗口-不显示", "test170200");
@@ -1482,7 +1482,7 @@ function test170452() {
 }
 function test170061() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
+    var json = { "客户" : "lx", "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var money = getTextFieldValue(window, 1);
@@ -1508,7 +1508,7 @@ function test170061() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
+    var json = { "客户" : "lx", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1518,7 +1518,10 @@ function test170061() {
     tapNaviLeftButton();
     tapReturn();
 
-    var ret1 = isEqual(2, sub(len, len1));
+    var ret1 = false;
+    if (sub(len, len1) == 2 || sub(len, len1) == 3) {
+        ret1 = true;
+    }
 
     logDebug(", ret1=" + ret1 + ", len=" + len + ", len1=" + len1);
     return ret1;
@@ -1638,8 +1641,17 @@ function test170063() {
 
     tapReturn();
 
-    logDebug("ret=" + ret + "ret1=" + ret1);
-    return ret && ret1;
+    tapButton(window, QUERY);
+    tapFirstText();
+
+    var ret2 = isAnd(isEqual("下级客户1", getTextFieldValue(window, 0)), isEqual(
+            "k300,铅笔裤", getTextFieldValue(getScrollView(), 0)), isEqual("5",
+            getTextFieldValue(getScrollView(), 3)));
+    
+    tapReturn();
+
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170064() {
     tapMenu("销售开单", "开  单+");
@@ -4700,12 +4712,12 @@ function test170171() {
     delay();
     tapReturn();
 
-//    tapMenu("销售开单", "按批次查");
-//    var keys1 = [ "作废挂单" ];
-//    var fields1 = salesQueryBatchFields(keys1);
-//    changeTFieldValue(fields1["作废挂单"], "挂单");
-//    query(fields1);
-    
+    // tapMenu("销售开单", "按批次查");
+    // var keys1 = [ "作废挂单" ];
+    // var fields1 = salesQueryBatchFields(keys1);
+    // changeTFieldValue(fields1["作废挂单"], "挂单");
+    // query(fields1);
+
     tapMenu("销售开单", "按挂单");
     query();
     tapFirstText();
