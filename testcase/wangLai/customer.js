@@ -3311,11 +3311,13 @@ function test110057_1() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
     tapPrompt();
+    // 弹窗内容是必须从下拉列表选择
     var ret = !isIn(alertMsg, "该客户欠款或余额，不可修改信息");
 
     tapButton(window, QUERY);
     var qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
+    tapButton(window, CLEAR);
 
     // 余款
     tapMenu("销售开单", "开  单+");
@@ -3340,6 +3342,8 @@ function test110057_1() {
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
+
+    tapButton(window, CLEAR);
 
     return ret;
 }
@@ -3626,46 +3630,54 @@ function testCheckCustomerDropDownListField(f, view) {
         view = window;
     }
     var cell, i, v, ret;
-    var r1 = false, r2 = false, r3 = false, r4 = false;
+    var r1 = false, r2 = false, r3 = false, r4 = false, r5 = false;
     var cells = getTableViewCells(view, f);
     for (i = 0; i < cells.length; i++) {
         cell = cells[i];
         v = cell.name();
-        if (r1 == false) {
+        if (!r1) {
             if (isIn(v, "yun客户")) {
                 r1 = true;
             }
         }
         // 店员显示工号+名称
-        if (r2 == false) {
+        if (!r2) {
             if (isEqual(v, "888,yun")) {
                 r2 = true;
             }
         }
-        if (r3 == false) {
+        if (!r3) {
             if (isIn(v, "yun厂商")) {
                 r3 = true;
             }
         }
-        if (r4 == false) {
+        if (!r4) {
             if (isIn(v, "yun物流")) {
                 r4 = true;
             }
         }
-
+        if (!r5) {
+            if (isIn(v, "圆梦")) {
+                r5 = true;
+            }
+        }
     }
+
     switch (f.label) {
     case "客户":
-        ret = isAnd(r1, !r2, !r3, !r4);
+        ret = isAnd(r1, !r2, !r3, !r4, !r5);
         break;
     case "店员":
-        ret = isAnd(!r1, r2, !r3, !r4);
+        ret = isAnd(!r1, r2, !r3, !r4, !r5);
         break;
     case "厂商":
-        ret = isAnd(!r1, !r2, r3, !r4);
+        ret = isAnd(!r1, !r2, r3, !r4, !r5);
         break;
     case "物流":
-        ret = isAnd(!r1, !r2, !r3, r4);
+        ret = isAnd(!r1, !r2, !r3, r4, !r5);
+        break;
+    case "品牌":
+        ret = isAnd(!r1, !r2, !r3, !r4, r5);
         break;
 
     default:
