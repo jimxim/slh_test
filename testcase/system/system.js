@@ -1221,10 +1221,10 @@ function test210041() {
         var g = qr.data[i]["岗位"];
         var g1 = qr.data[i + 1]["岗位"];
 
-        if (isNoEqual(h1, h)) {
+        if (!isEqual(h1, h)) {
             ret = true;
         } else {
-            if (isNoEqual(g1, g)) {
+            if (!isEqual(g1, g)) {
                 ret = true;
             }
         }

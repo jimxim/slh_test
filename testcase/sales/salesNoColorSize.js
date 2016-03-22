@@ -75,15 +75,15 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
 
-    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+//    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
     run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
-//    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
+    // run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
 
-//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
-//    run("销售订货价格刷新", "test170445");
-//    run("采购入库/采购订货价格刷新", "test170527");//
+    // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
+    // run("销售订货价格刷新", "test170445");
+    // run("采购入库/采购订货价格刷新", "test170527");//
 
 }
 function testSalesNoColorSize001() {
@@ -116,7 +116,7 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】开单时不允许负库存", "test170116");
     run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
     run("【销售开单－开单】开单时允许负库存", "test170117");
-//    run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
+    // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
     run("【销售开单－开单】待作废参数与二次挂单功能检查", "test170172");
     run("【销售开单-开单】总计四舍五入", "test170191");
     run("【销售开单】开单后是否显示打印确认窗口-不显示", "test170200");
@@ -1647,7 +1647,7 @@ function test170063() {
     var ret2 = isAnd(isEqual("下级客户1", getTextFieldValue(window, 0)), isEqual(
             "k300,铅笔裤", getTextFieldValue(getScrollView(), 0)), isEqual("5",
             getTextFieldValue(getScrollView(), 3)));
-    
+
     tapReturn();
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -4057,7 +4057,7 @@ function test170133() {
     query();
     var qr = getQR();
     var ret = isAnd(isEqual(21, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
-            qr.data[0]["操作日期"], 2));
+            qr.data[0]["操作日期"], 3));
 
     query();
     tapFirstText();
@@ -4859,13 +4859,13 @@ function test170173() {
 
     tapFirstText();
 
-    var ret = isAnd(isEqual("李四", a), isAqualOptime(getOpTime(), b), isEqual(
-            "3035,jkk", getTextFieldValue(getScrollView(), 0)), isEqual("1",
-            getTextFieldValue(getScrollView(), 3)), isEqual("k200,范范",
-            getTextFieldValue(getScrollView(), 7)), isEqual("3",
-            getTextFieldValue(getScrollView(), 10)), isEqual("k300,铅笔裤",
-            getTextFieldValue(getScrollView(), 14)), isEqual("4",
-            getTextFieldValue(getScrollView(), 17)));
+    var ret = isAnd(isEqual("李四", a), isAqualOptime(getOpTime(), b, 2),
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
+            isEqual("1", getTextFieldValue(getScrollView(), 3)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(), 7)), isEqual(
+                    "3", getTextFieldValue(getScrollView(), 10)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 14)),
+            isEqual("4", getTextFieldValue(getScrollView(), 17)));
 
     tapReturn();
 

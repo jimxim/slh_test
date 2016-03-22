@@ -903,7 +903,7 @@ function test180025_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), isNoEqual(a,
+    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), !isEqual(a,
             qr.data[0]["库存"]));
 
     tapMenu("货品管理", "款号库存");
@@ -1069,7 +1069,7 @@ function test180026_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), isNoEqual(a,
+    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), !isEqual(a,
             qr.data[0]["库存"]));
 
     tapMenu("货品管理", "款号库存");
@@ -1084,7 +1084,7 @@ function test180026_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret4 = isAnd(isEqual(c, qr.data[0]["库存"]), isNoEqual(0,
+    var ret4 = isAnd(isEqual(c, qr.data[0]["库存"]), !isEqual(0,
             qr.data[0]["库存"]));
 
     tapMenu("盘点管理", "盘点处理");
