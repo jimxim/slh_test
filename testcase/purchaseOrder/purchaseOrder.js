@@ -2,7 +2,7 @@
 
 function testPurchaseOrder001() {
 
-    run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");
+    run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");// 差异数目前不支持排序
     run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "test130003_1");
     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130003_2");
@@ -80,7 +80,7 @@ function test130001_1() {
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
-    ret = ret && sortByTitle("差异数", IS_NUM);
+    ret = ret && sortByTitle("差异数", IS_NUM);// 目前不支持排序
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);

@@ -83,7 +83,7 @@ function setGoodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
+    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "财务中货品成本价的核算方法" };

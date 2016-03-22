@@ -62,7 +62,7 @@ function testStatisticAnalysis001() {
 
     run("【统计分析—综合汇总】查询", "test190030");
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
-    run("【统计分析—综合汇总】排序", "test190031");
+    run("【统计分析—综合汇总】排序", "test190031");//特殊货品 代收收款暂不支持排序
     run("【统计分析—综合汇总】清除", "test190032");
     run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");//
     run("【统计分析—综合汇总】检查底部数据", "test190036");
@@ -1182,9 +1182,8 @@ function test190026() {
             qr = getQR();
         }
     }
-    var ret = isAqualNum(sum, qr.counts["金额"], 0.001);
 
-    return ret;
+    return isAqualNum(sum, qr.counts["金额"], 0.001);
 }
 
 function test190027() {
@@ -1297,7 +1296,7 @@ function test190031() {
     ret = ret && sortByTitle("销额", IS_NUM);
     ret = ret && sortByTitle("退数", IS_NUM);
     ret = ret && sortByTitle("退额", IS_NUM);
-    ret = ret && sortByTitle("特殊货品", IS_NUM);
+    ret = ret && sortByTitle("特殊货品");// 暂不支持排序
     ret = ret && sortByTitle("实销数", IS_NUM);
     ret = ret && sortByTitle("实销额", IS_NUM);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -1526,15 +1525,7 @@ function test190037() {
     var arr2 = getDataFor190037();
     var jo2 = test190037Field(arr2);
     var actual = subObject(jo2, jo1);
-    // var oldData = { "收入 现销售单" : 0, "支出 现销售单" : 0, "收入 现采购单" : 0, "支出 现采购单" :
-    // 0,
-    // "收入 现代收收款" : 0, "支出 现积分兑换" : 0, "收入 现订金" : 0, "支出 现物业" : 0,
-    // "支出 现物损" : 0, "收入 银业务回扣1" : 0, "支出 银物业" : 0, "收入 银订金" : 0,
-    // "收入 代销售单" : 0 };
-    // var newData = { "收入 现销售单" : 9000, "支出 现销售单" : 1000, "收入 现采购单" : 1000,
-    // "支出 现采购单" : 8000, "收入 现代收收款" : 1600, "支出 现积分兑换" : 1000, "收入 银销售单" : 0,
-    // "支出 银物业" : 1000, "收入 银订金" : 6666, "收入 代销售单" : 1600 };
-    var expected = { "收入 现销售单" : 9000, "支出 现销售单" : 1000, "收入 现采购单" : 1000,
+    var expected = { "收入 现销售单" : 9000, "支出 现销售单退款" : 1000, "收入 现采购单退款" : 1000,
         "支出 现采购单" : 8000, "收入 现代收收款" : 1600, "支出 现积分兑换" : 1000,
         "支出 银物业" : 1000, "收入 银订金" : 6666, "收入 代销售单" : 1600 };
     return isEqualObject(expected, actual);
