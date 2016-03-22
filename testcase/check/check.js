@@ -994,7 +994,7 @@ function test180026() {
 }
 function test180026_1() {
     tapMenu("货品管理", "新增货品+");
-    var s = "anewkhao" + getTimestamp(4);
+    var s = "anewC" + getTimestamp(4);
     var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
