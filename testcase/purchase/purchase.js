@@ -1173,6 +1173,7 @@ function test120023() {
         "新增货品" : { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200 },
         "明细" : [ { "货品" : "3035", "数量" : "30" } ], "未付" : "yes" };
     editSalesBillCustomer(json);
+    editSalesBillField1(json, "店员");
     editSalesBillDetNoColorSize(json);
     editPurchaseBillAddGoods(json);
     var f = new TField("数量", TF, 11, "10");
@@ -1360,7 +1361,7 @@ function test120020() {
 }
 
 function test120021() {
-    var a1, a2, b1, b2, i, A1, A2, B1, B2;
+    var a1 = 0, a2 = 0, b1 = 0, b2 = 0, i, A1, A2, B1, B2;
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035" };
     var fields = queryGoodsStockFields(keys);

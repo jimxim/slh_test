@@ -38,7 +38,8 @@ function setGoodsParams001() {
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "库存核算价格" };
+    // 门店调拨是否可以填写价格改为默认，否则修改无效
+    qo = { "备注" : "库存核算价格" };// 零批价
     o = { "新值" : "1", "数值" : [ "库存按销价1核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1374,6 +1375,11 @@ function test100046() {
 }
 
 function test100033() {
+    var qo, o, ret = true;
+    // qo = { "备注" : "款号是否按门店区分" };
+    // o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200" };
@@ -1381,9 +1387,12 @@ function test100033() {
 
     var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
             200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0",
-            "", "否", "0", "常青店", "", "");
-    var ret = test100033Field(expected);
+            "", "否", "0", "", "", "");
+    ret = isAnd(ret, test100033Field(expected));
 
+    // qo = { "备注" : "款号是否按门店区分" };
+    // o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
 }
 
@@ -1404,19 +1413,28 @@ function test100033Field(expected) {
 }
 
 function test100034() {
+    var qo, o, ret = true;
+    qo = { "备注" : "款号是否按门店区分" };
+    o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服", "厂商" : "a",
         "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
-        "经办人" : "000", "是否加工款" : "是", "加工价" : 150, "门店" : "常青店", "备注" : "123" };
+        "经办人" : "000", "是否加工款" : "是", "加工价" : 150, "门店" : "常青店", "条码" : "111",
+        "备注" : "123" };
     addGoods(keys);
 
+    // var f = editGoodsFields(keys);
     var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
             200, 100, 200, 180, 160, 140, 0.85, "夏季", "登山服", "Adida公司", "双",
-            "默认", 0, 1000, "000,总经理", "是", 150, "常青店", "", 123);
+            "默认", 0, 1000, "000,总经理", "是", 150, "常青店", "111", 123);
+    ret = isAnd(ret, test100033Field(expected));
 
-    var ret = test100033Field(expected);
-
+    qo = { "备注" : "款号是否按门店区分" };
+    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
 }
 

@@ -775,6 +775,7 @@ function editSalesBillField(key, show) {
 		break;
 	case "remarks":
 	case "备注":
+	    //各种开单模式下，销售开单的备注一般为刷卡的后3格
 		f = new TField("备注", TF, cardTFindex+3, "123"); // 10
 		break;
     case "汇款":

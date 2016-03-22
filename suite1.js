@@ -7,26 +7,26 @@
 
 // 总经理
 function test000All() {
-// colorSize="no";
+    colorSize="no";
     debug = true;
     ipadVer = "6.59";
 // TITLE_SXE = getTitleSXE();
 
-    run("【统计分析—综合汇总】进入详细-余款", "test190038");
-    run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
-    run("【统计分析—综合汇总】进入详细-欠款", "test190039");
-    run("【统计分析—综合汇总】进入详细-还款", "test190040");
-//    run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
-//    run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-//    run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
-//    run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
-// run("", "test190037");
+// run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
+// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
+// run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
+// run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
+ var caseName="test";
+ run(caseName, "onlyTest");
+// run(caseName, "");
 }
 
 function onlyTest(){
- debugElementTree(window);
-//    var ok=tapFirstText(getScrollView(-1, 0), "批次",9);
-//    return ok;
+// debugElementTree(window);
+   var title=getBillTitle("货品","小计");
+   var index=getIndexEqualsTexts1(title,"入库数");
+   logDebug("index="+index);
+   return index;
 }
 
 function prepare200All(){

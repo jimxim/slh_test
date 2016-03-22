@@ -64,7 +64,7 @@ function setIgnorecolorsize_0Params() {
 
     return ret;
 }
-// 翻页_排序_汇总
+// 翻页_排序
 function test130001_1() {
     tapMenu("采购订货", "按批次查");
     var keys = { "日期从" : getDay(-30) };
@@ -95,10 +95,11 @@ function ts130001Count() {
     var det = {};
     switch (colorSize) {
     case "no":
-        det = { "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        det = { "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "x001", "数量" : [ 5, 5, 5 ] } ] };
+        det = { "明细" : [ { "货品" : "x001", "数量" : [ 10, 15, 5 ] } ],
+            "goodsFieldIndex" : -2 };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -115,8 +116,12 @@ function ts130001CountField(det) {
 
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "Rt" };
-    var josn = mixObject(jo, det);
+    var json = mixObject(jo, det);
     editSalesBill(json);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
 
     tapMenu("采购订货", "按批次查");
     tapButton(window, QUERY);
