@@ -46,6 +46,17 @@ function purchaseOrderQueryBatchField(key, show) {
     case "备注":
         f = new TField("备注", TF, 6, "备注");
         break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 7, "000");
+        if (show) {
+            f.value = "000,总经理";
+        }
+        break;
+    case "shipping":
+    case "发货状态":// 7.01新增
+        f = new TField("发货状态", TF_SC, 8, "未发货");
+        break;
     default:
         logWarn("未知key＝" + key);
     }

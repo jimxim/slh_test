@@ -463,7 +463,7 @@ function goPage2(page, qr) {
 
 /**
  * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~ 最后会回到第一页
- * @param titleTotal
+ * @param titleTotal 这个地方的标题数组很奇怪，有时候会重复好几遍，所以暂时弄成指定标题总数的方式
  */
 function goPageCheck(titleTotal) {
     var pageInfoView = window;
@@ -972,7 +972,7 @@ function editLogisticsVerify(o) {
  * @param lastTitle
  * @returns {Array}
  */
-function getBillTitle(firstTitle, lastTitle) {
+function getBillTitles(firstTitle, lastTitle) {
     var firstIndex = 0;
     var lastIndex = 0;
     var texts = getStaticTexts(window);
@@ -987,13 +987,34 @@ function getBillTitle(firstTitle, lastTitle) {
         }
     }
 
-    var titles = new Array();
+    var titles = [];
     var j = 0;
     for (var i = firstIndex; i <= lastIndex; i++) {
         titles[j] = texts[i].value();
         j++
     }
     return titles;
+}
+/**
+ * 获取数组中第一个与期望值相同的下标，没有返回-1
+ * @param arr
+ * @param expected
+ * @returns {Number}
+ */
+function getFirstIndexOfArrayIsExp(arr, expected) {
+    var index = -1;
+    if (isArray(arr)) {
+        for (var i = 0; i < arr.length; i++) {
+            if (arr[i] == expected) {
+                index = i;
+                break;
+            }
+        }
+    } else {
+        logDebug("undefined is not a object Array");
+    }
+    logDebug("index=" + index);
+    return index;
 }
 
 /**

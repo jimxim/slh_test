@@ -1857,6 +1857,7 @@ function test120027() {
 // 6.58后的版本，按订货入库的厂商，与新增清楚按钮已经灰化
 function test120028() {
     if (ipadVer != 6.58) {
+        logDebug("6.58后的版本，按订货入库的厂商，与新增清楚按钮已经灰化");
         return false;
     }
     tapMenu("采购订货", "新增订货+");

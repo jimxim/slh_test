@@ -7,26 +7,24 @@
 
 // 总经理
 function test000All() {
-    colorSize="no";
+    colorSize = "no";
     debug = true;
     ipadVer = "6.59";
+    var caseName="test";
 // TITLE_SXE = getTitleSXE();
 
 // run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
 // run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
 // run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
 // run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
- var caseName="test";
+
+// run(caseName, "ts130001Count");
  run(caseName, "onlyTest");
-// run(caseName, "");
 }
 
 function onlyTest(){
-// debugElementTree(window);
-   var title=getBillTitle("货品","小计");
-   var index=getIndexEqualsTexts1(title,"入库数");
-   logDebug("index="+index);
-   return index;
+ debugElementTree(window);
+
 }
 
 function prepare200All(){

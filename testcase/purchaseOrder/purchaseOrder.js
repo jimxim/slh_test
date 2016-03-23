@@ -2,7 +2,8 @@
 
 function testPurchaseOrder001() {
 
-    run("【采购订货-按批次查】翻页_排序_汇总", "test130001_1");// 差异数目前不支持排序
+    run("【采购订货-按批次查】翻页_排序", "test130001_1");// 差异数目前不支持排序
+    run("【采购订货-按批次查】汇总", "ts130001Count");
     run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "test130001_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "test130003_1");
     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130003_2");
@@ -52,6 +53,7 @@ function setIgnorecolorsize_1Params() {
 
     return ret;
 }
+
 function setIgnorecolorsize_0Params() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -80,7 +82,7 @@ function test130001_1() {
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
-    ret = ret && sortByTitle("差异数", IS_NUM);// 目前不支持排序
+    ret = ret && sortByTitle("差异数");// 目前不支持排序
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
@@ -93,44 +95,48 @@ function test130001_1() {
 
 function ts130001Count() {
     var det = {};
+    var exp = { "总数" : 30, "入库数" : 10, "差异数" : 20, "现金" : 1000, "刷卡" : 600,
+        "汇款" : 300 };
     switch (colorSize) {
     case "no":
         det = { "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
+        exp["金额"] = 3000;
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "x001", "数量" : [ 10, 15, 5 ] } ],
+        det = { "明细" : [ { "货品" : "x001", "数量" : [ 30 ] } ],
             "goodsFieldIndex" : -2 };
+        exp["金额"] = 4500;
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
     }
 
-    return ts130001CountField(det);
-}
-
-function ts130001CountField(det) {
     tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
     var count1 = qr.counts;
 
-    tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "Rt" };
+    tapMenu2("新增订货+");
+    var jo = { "客户" : "Rt", "现金" : 1000, "刷卡" : [ 600, "银" ],
+        "汇款" : [ 300, "银" ] };
     var json = mixObject(jo, det);
-    editSalesBill(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
+    var title = getBillTitles("货品", "小计");
+    var index = getFirstIndexOfArrayIsExp(title, "入库数");
+    var f = new TField("入库数", TF, index, "10");
+    setTFieldsValue(getScrollView(), [ f ]);
+    editSalesBillSave({});
 
     tapMenu("采购订货", "按批次查");
     tapButton(window, QUERY);
     qr = getQR();
     var count2 = qr.counts;
     var actual = subObject(count2, count1);
-    var exp = {};
-    var ret = isEqualObject(exp, actual);
-
+    return isEqualObject(exp, actual);
 }
 
 // 条件查询，清除按钮,下拉框
@@ -142,10 +148,11 @@ function test130001_2() {
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "xx", "采购订货" : "yes" };
-    editSalesBillNoColorSize(json);
+    tapMenu2("新增订货+");
+    var jo = { "客户" : "Rt", "店员" : "000", "备注" : "xx", "采购订货" : "yes" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
     var i;
@@ -1075,4 +1082,20 @@ function test130017() {
     tapReturn();
 
     return ret;
+}
+
+function editPurOrderDet() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "x001", "数量" : [ 30 ] } ],
+            "goodsFieldIndex" : -2 };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+    }
+    return det;
 }
