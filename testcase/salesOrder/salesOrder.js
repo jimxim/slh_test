@@ -149,7 +149,7 @@ function test160060() {
 
     tapMenu("销售订货", "新增订货+");
     tapButton(window, "整单粘贴");
-    var jo1 = editSalesBillGetValue();
+    var jo1 = editSalesBillGetValue({});
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -157,7 +157,7 @@ function test160060() {
 
     tapMenu("销售订货", "按批次查");
     tapFirstText();
-    var jo2 = editSalesBillGetValue();
+    var jo2 = editSalesBillGetValue({});
     var ret = isEqualObject(jo1, jo2);
     var i, n = 8;
     var ret1 = true, ret2 = true, ret3 = true, ret4 = true;
@@ -191,7 +191,7 @@ function test160049_160052() {
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
     tapFirstText();
-    var jo2 = editSalesBillGetValue();
+    var jo2 = editSalesBillGetValue({});
     var ret = isAnd(isEqualObject(jo1, jo2), isIn(getTextFieldValue(
             getScrollView(), 0), "3035"), isEqual("10", getTextFieldValue(
             getScrollView(), 3)), isIn(getTextFieldValue(getScrollView(), 8),
@@ -368,7 +368,7 @@ function test160055_160056_160057_160058() {
             getTextFieldValue(window, 5)));
 
     editSalesBillUnpay(json);
-    var actual = editSalesBillGetValue();
+    var actual = editSalesBillGetValue({});
     var exp = { "现金" : 0, "刷卡" : 0, "汇款" : 0, "实" : 0 };
     ret = isAnd(ret, isEqualObject(exp, actual));
 
@@ -400,7 +400,7 @@ function test160059() {
     var ret = isEqual("2010", qr.data[0]["总额"]);
 
     tapFirstText();
-    var jo2 = editSalesBillGetValue();
+    var jo2 = editSalesBillGetValue({});
     tapButton(window, RETURN);
     ret = isAnd(ret, isEqualObject(jo1, jo2));
 

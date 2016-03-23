@@ -86,7 +86,7 @@ function shopOutQueryParticularField(key, show) {
     case "到":
         f = new TField("到", TF_DT, 4, "2015-9-16");
         break;
-    
+
     case "shop-in":
     case "调入门店":
         f = new TField("调入门店", TF_SC, 5, "仓库店");
@@ -110,15 +110,30 @@ function shopOutDecruitFields(keys, show) {
     return getTFields("shopOutDecruitField", keys, show);
 }
 function shopOutDecruitField(key, show) {
-    var f;
+    var f, startIdx;
+    // switch (ipadVer) {
+    // case "6.59":
+    // startIdx = 0;
+    // break;
+    // case "7.01":
+    // startIdx = 1;
+    // break;
+    // }
     switch (key) {
-    case "staff":
+    case "staff_out":
     case "调出人":
         f = new TField("调出人", TF_AC, 0, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
+    // case "staff_in":
+    // case "接收人":
+    // f = new TField("接收人", TF_AC, 1, "000", -1, 0);
+    // if (show) {
+    // f.value = "000,管理员";
+    // }
+    // break;
     case "shop":
     case "接收店":
         f = new TField("接收店", TF_SC, 1, "仓库店");

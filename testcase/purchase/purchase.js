@@ -1195,7 +1195,7 @@ function test120023() {
         "上架日期" : getToday("yy"), "累计进" : "10" };
 
     tapFirstText();
-    var exp = editSalesBillGetValue();
+    var exp = editSalesBillGetValue({});
     var ret1 = isEqualObject(exp, json["输入框值"]);
     tapReturn();
 
@@ -1298,7 +1298,7 @@ function test120020() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    var exp = editSalesBillGetValue();
+    var exp = editSalesBillGetValue({});
     var ret1 = isEqualObject(exp, json["输入框值"]);
     tapReturn();
 
@@ -1429,7 +1429,7 @@ function test120021() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    var exp = editSalesBillGetValue();
+    var exp = editSalesBillGetValue({});
     var ret1 = isEqualObject(exp, json["输入框值"]);
     tapReturn();
 
@@ -2792,7 +2792,7 @@ function test120018() {
         "明细" : [ { "货品" : "4562", "数量" : "30" } ], "现金" : 500,
         "刷卡" : [ 1000, "银" ], "汇款" : [ 2000, "银" ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    var exp = editSalesBillGetValue();
+    var exp = editSalesBillGetValue({});
     runAndAlert("test120052Hang", OK);
     tapReturn();
 
@@ -2802,7 +2802,7 @@ function test120018() {
     query(fields);
 
     tapFirstText();
-    var actual = editSalesBillGetValue();
+    var actual = editSalesBillGetValue({});
     var ret = isEqualObject(exp, actual);
 
     tapButton(getScrollView(), 0);
@@ -2823,7 +2823,7 @@ function test120018() {
 
     tapFirstText();
     var tfNum = getSalesBillDetTfNum({});
-    exp = editSalesBillGetValue();
+    exp = editSalesBillGetValue({});
     ret = isAnd(ret, isEqualObject(exp, json["输入框值"]), isEqual("k300,铅笔裤",
             getTextFieldValue(getScrollView(), 0)), isEqual("30",
             getTextFieldValue(getScrollView(), 3)), isEqual("3035,jkk",
@@ -2974,14 +2974,14 @@ function test120061() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var oldObj = editSalesBillGetValue();
+    var oldObj = editSalesBillGetValue({});
 
     json = { "核销" : [ 4 ] };
     editSalesBillVerify(json);
 
     var newObj = { "现金" : 0, "应" : 0, "核销" : 200, "代收/实付" : 0 };// 这里的代收是实付
     var exp = mixObject(oldObj, newObj);
-    var actual = editSalesBillGetValue();
+    var actual = editSalesBillGetValue({});
     tapReturn();
     return isEqualObject(exp, actual);
 }

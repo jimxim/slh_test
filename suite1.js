@@ -13,18 +13,18 @@ function test000All() {
     var caseName="test";
 // TITLE_SXE = getTitleSXE();
 
-// run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
-// run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-// run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
-// run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
-
-// run(caseName, "ts130001Count");
- run(caseName, "onlyTest");
+ run(caseName, "ts130009");
+// run(caseName, "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
-
+// debugElementTree(window);
+    var num = getDetSizheadTitle();
+    var i=0;
+    var index=num["明细输入框个数"] * i + num["入库数"];
+    debugObject(num,"num=");
+    logDebug("index="+index);
+    return index;
 }
 
 function prepare200All(){

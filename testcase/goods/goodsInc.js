@@ -966,35 +966,7 @@ function editLogisticsVerify(o) {
         tapNaviButton("完成");
     }
 }
-/**
- * 获取开单界面明细的标题数组
- * @param firstTitle
- * @param lastTitle
- * @returns {Array}
- */
-function getBillTitles(firstTitle, lastTitle) {
-    var firstIndex = 0;
-    var lastIndex = 0;
-    var texts = getStaticTexts(window);
-    // 目标标题一般在最后
-    for (var i = texts.length; i >= 0; i--) {
-        var v = texts[i].value();
-        if (firstIndex == 0 && v == firstTitle) {
-            firstIndex = i;
-        }
-        if (lastIndex == 0 && v == lastTitle) {
-            lastIndex = i;
-        }
-    }
 
-    var titles = [];
-    var j = 0;
-    for (var i = firstIndex; i <= lastIndex; i++) {
-        titles[j] = texts[i].value();
-        j++
-    }
-    return titles;
-}
 /**
  * 获取数组中第一个与期望值相同的下标，没有返回-1
  * @param arr
