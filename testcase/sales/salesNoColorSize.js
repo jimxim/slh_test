@@ -69,17 +69,17 @@ function testSalesNoColorSizeAll() {
     run("【销售开单-开单】挂单操作之后检查开单输入客户", "test170525");
     run("【销售开单－开单】设置已配货", "test170180");
     run("【销售开单-开单】客户不允许退货", "test170181");
-    // run("【销售开单－开单】积分兑换", "test170186");//
+    run("【销售开单－开单】积分兑换", "test170186");
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
 
-    // run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");//
+    run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
-    // run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");//
+    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
 
     // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
     // run("销售订货价格刷新", "test170445");
@@ -323,8 +323,8 @@ function setNoColorSize_1Params() {
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
-    qo = { "备注" : "童装是否按组开单" };
-    o = { "新值" : "0", "数值" : [ "按件开单", "in" ] };
+    qo = { "备注" : "童装模式是否批发零售分开(按组按件分开)" };
+    o = { "新值" : "1", "数值" : [ "默认分开", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
     return ret;
@@ -4487,11 +4487,11 @@ function test170164() {
 }
 function test170166() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "onlytest" : "yes" };
-    // json["日期"] = getDay(-1);
+    var json = { "客户" : "ls", "店员" : "004",
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
+    // json["日期"] = getDay(-1);
     // tapMenu("销售开单", "更多.", "查看修改日志");
     // var texts = getStaticTexts(getPopOrView());
     // debugElementTree(getPopOrView());
@@ -4520,26 +4520,30 @@ function test170166() {
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
-    // tapPrompt();
-    tapButtonAndAlert("打 印", "打印(客户用)");
+    tapPrompt();
+    // tapButtonAndAlert("打 印", "打印(客户用)");
     delay();
 
     tapFirstText();
     tapMenu("销售开单", "更多.", "查看修改日志");
     var texts = getStaticTexts(getPopOrView());
-    debugElementTree(getPopOrView());
+    // debugElementTree(getPopOrView());
     var index = getArrayIndexIn(texts, "最后打印时间");
     var date = getStaticTextValue(getPopOrView(), index + 1);
     var opt = getStaticTextValue(getPopOrView(), index - 1);
     var staff = getStaticTextValue(getPopOrView(), index - 3);
+    var firstStaff = getStaticTextValue(getPopOrView(), index - 7);
+    var firstOpt = getStaticTextValue(getPopOrView(), index - 5);
 
     var ret = isAnd(isAqualOptime(getOpTime(), date, 2), isAqualOptime(
-            getOpTime(), opt, 2), isEqual("总经理", staff));
+            getOpTime(), opt, 2), isEqual("总经理", staff), isAqualOptime(
+            getOpTime(), firstOpt), isEqual("总经理", firstStaff));
 
     tapButton(getPop(), OK);
     tapReturn();
 
-    logDebug("date=" + date + ", ret=" + ret);
+    logDebug("date=" + date + ", index=" + index + ", opt=" + opt + ", staff="
+            + staff + ", ret=" + ret);
     return ret;
 }
 function test170167() {
@@ -5342,8 +5346,8 @@ function test170186() {
 
     tapButton(window, "核销");
 
-    var e = getStaticTextValue(getScrollView(1), 0);
-    var b = getStaticTextValue(getScrollView(1), 1);
+    // var e = getStaticTextValue(getScrollView(-1, 0), 0);
+    var b = getStaticTextValue(getScrollView(-1, 0), 1);
 
     tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "9" + getTimestamp(6);
@@ -8436,7 +8440,7 @@ function test170526() {
             getTextFieldValue(getScrollView(), 5), sub(r1, r))), k3), isEqual(
             "00000,抹零", getTextFieldValue(getScrollView(), 7)), isEqual(r,
             getTextFieldValue(getScrollView(), 11)), isEqual("00001,打包费",
-            getTextFieldValue(getScrollView(), 14)), isEqual(r1,
+            getTextFieldValue(getScrollView(), 14)), isAqualNum(r1,
             getTextFieldValue(getScrollView(), 18)), isEqual(2, sl), isEqual(
             k3, je), isAqualOptime(getOpTime(), opt));
 

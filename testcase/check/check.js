@@ -1,7 +1,7 @@
 //luxingxin <52619481 at qq.com> 20151014
 
 function testCheck001() {
-     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
     run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_180003_180005");
     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2_180004");
     run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1_180055");
@@ -13,7 +13,7 @@ function testCheck001() {
     run("【盘点管理—库存表】清除", "test180054");
 }
 function testCheckAll() {
-     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
@@ -170,7 +170,6 @@ function test180001_2_180004() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");
@@ -193,7 +192,6 @@ function test180001_2_180004() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");
@@ -205,9 +203,8 @@ function test180001_2_180004() {
     tapButton(window, "返 回");
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "批次从" : batch,
-        "批次到" : batch + 1, "处理时间从" : getToday(), "处理时间到" : getToday(),
-        "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30), "批次从" : batch, "批次到" : batch + 1,
+        "处理时间从" : getToday(), "处理时间到" : getToday(), "门店" : "常青店" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
 
@@ -903,8 +900,8 @@ function test180025_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), !isEqual(a,
-            qr.data[0]["库存"]));
+    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
+            !isEqual(a, qr.data[0]["库存"]));
 
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "门店" : "中洲店" };
@@ -1069,8 +1066,8 @@ function test180026_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]), !isEqual(a,
-            qr.data[0]["库存"]));
+    var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
+            !isEqual(a, qr.data[0]["库存"]));
 
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "4562", "门店" : "中洲店" };
@@ -1084,8 +1081,8 @@ function test180026_1() {
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    var ret4 = isAnd(isEqual(c, qr.data[0]["库存"]), !isEqual(0,
-            qr.data[0]["库存"]));
+    var ret4 = isAnd(isEqual(c, qr.data[0]["库存"]),
+            !isEqual(0, qr.data[0]["库存"]));
 
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -1166,8 +1163,8 @@ function test180027() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    var keys = { "日期从" : getToday(), "日期到" : getDay(1), "门店" : "常青店",
-        "是否撤销" : "否" };
+    var keys = { "日期到" : getDay(1), "门店" : "常青店", "是否撤销" : "否" };// "日期从" :
+                                                                    // getToday(),
     var fields = checkProcessRecordFields(keys);
     query(fields);
 
@@ -1194,10 +1191,9 @@ function test180027() {
 }
 function test180030() {
     tapMenu("盘点管理", "处理记录");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "仓库店" };
+    var keys = { "日期从" : "2015-01-01", "门店" : "仓库店" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-
     var qr = getQR();
 
     var ret = isEqual(0, qr.data.length);
@@ -1237,9 +1233,8 @@ function test180029_180031_180032() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    query();
-    var keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店",
-        "批次从" : batch, "批次到" : add(batch, 1), "是否撤销" : "否" };
+    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : add(batch, 1),
+        "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
     var qr = getQR();
@@ -1263,12 +1258,12 @@ function test180029_180031_180032() {
                     getTextFieldValue(window, 4)), isEqual("",
                     getTextFieldValue(window, 5)));
 
-    logDebug("ret=" + ret + "ret1=" + ret1);
+    logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test180033() {
     tapMenu("盘点管理", "处理记录");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "门店" : "常青店",
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
         "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
@@ -1295,7 +1290,7 @@ function test180033() {
     tapButton(window, "盘点撤销");
 
     tapMenu("盘点管理", "处理记录");
-    keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "门店" : "常青店",
+    keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
         "批次从" : batch, "批次到" : batch, "是否撤销" : "是" };
     fields = checkProcessRecordFields(keys);
     query(fields);
@@ -1325,7 +1320,7 @@ function test180037() {
     // test180036();
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "日期从" : getDay(-3), "到" : getToday() };
+    var keys = { "日期从" : getDay(-3) };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     // 点击翻页
@@ -1383,8 +1378,7 @@ function test180037_180034_180035() {
     query();
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : "常青店", "款号" : "k300", "日期从" : getDay(-30),
-        "到" : getToday() };
+    var keys = { "门店" : "常青店", "款号" : "k300", "日期从" : getDay(-30) };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     var qr = getQR();
@@ -1455,8 +1449,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = {  "门店" : "常青店",
-        "作废挂单" : "正常" };
+    var keys = { "门店" : "常青店", "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
 
@@ -1475,9 +1468,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期到" : getToday() }
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
+    query();
 
     tapFirstText();
 
@@ -1495,7 +1486,7 @@ function test180042() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = {  "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
@@ -1516,7 +1507,7 @@ function test180042() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
-    return ret && ret1 && ret2&& ret3;
+    return ret && ret1 && ret2 && ret3;
 }
 function test180042_1() {
     // var qo, o, ret = true;
@@ -1551,8 +1542,7 @@ function test180042_1() {
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店",
-        "作废挂单" : "正常" };
+    var keys = { "日期从" : "2015-01-01", "门店" : "常青店", "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
 
@@ -1572,7 +1562,7 @@ function test180042_1() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday() }
+    var keys = { "日期从" : "2015-01-01" }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -1592,7 +1582,7 @@ function test180042_1() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "日期从" : "2015-01-01", "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
@@ -1660,8 +1650,7 @@ function test180042_2() {
     // tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = {  "门店" : "常青店",
-        "作废挂单" : "正常" };
+    var keys = { "门店" : "常青店", "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
 
@@ -1677,9 +1666,9 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期到" : getToday() }
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
+    // var keys = { "日期到" : getToday() }
+    // var fields = shopOutQueryBatchFields(keys);
+    query();
 
     tapFirstText();
 
@@ -1746,8 +1735,7 @@ function test180042_3() {
     // tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "门店" : "常青店",
-        "作废挂单" : "正常" };
+    var keys = { "日期从" : "2015-01-01", "门店" : "常青店", "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
 
@@ -1763,7 +1751,7 @@ function test180042_3() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday() }
+    var keys = { "日期从" : "2015-01-01" }
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -2314,7 +2302,7 @@ function test180049_180036() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
+    // delay();
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
@@ -2361,7 +2349,7 @@ function test180049_180036() {
     query();
     var qr = getQR();
     var ret = isAnd(isEqual(15, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
-            qr.data[0]["盘点日期"], 1));
+            qr.data[0]["盘点日期"], 2));
 
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -2413,7 +2401,7 @@ function test180049_180036() {
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
+    var keys = { "门店" : [ "常青店", "in" ] };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
@@ -2597,7 +2585,7 @@ function test180049_1() {
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "日期从" : getToday(), "到" : getToday() };
+    var keys = { "门店" : [ "常青店", "in" ]};//, "日期从" : getToday(), "到" : getToday() 
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
