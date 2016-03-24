@@ -14,7 +14,7 @@ function testPurchaseOrder001() {
     run("【采购订货-按汇总-按厂商】查询清除", "ts130005_2");
     run("【采购订货-按汇总-按门店】翻页排序汇总", "ts130006_1");
     run("【采购订货-按汇总-按门店】查询清除", "ts130006_2");
-    run("【采购订货-按汇总】数据验证", "ts130004_05_06");
+    run("【采购订货-按汇总】数据验证", "ts130004_05_06");//
 
 }
 
@@ -38,21 +38,20 @@ function testPurchaseOrder001Color() {
 function testPurchaseOrder002() {
     // if(setIgnorecolorsize_1Params()){
     // run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
-    // }
+
     // if(setIgnorecolorsize_0Params()){
     // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
 
-    // }
     // run("【采购订货-按明细查】作废订单后内容检查", "test130003");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
-    // run("【采购订货】不输入店员时在单据修改界面检查店员显示", "test130010");
-    // run("【采购订货】客户或供应商信息不允许修改", "test130011");
+    run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
+    run("【采购订货】客户或供应商信息不允许修改", "ts130011");
     // run("【采购订货-新增订货】采购订货复杂支付模式-使用有权查看进货价的角色登录", "test130012");//
     // run("1.开启全局参数 采购入库模式为 默认复杂模式,有支付类型", "test130013");//
-    // run("1.采购订货-新增订货-检查界面上是否存在 整单备注输入框和明细备注输入框", "test130014");
-    // run("【采购订货】订单终结功能", "test130015");
-    // run("【采购订货-新增订货】订单终结-重复终结", "test130016_1");
-    // run("【采购订货-新增订货】订单终结-已发货后终结", "test130016_2");
+    run("【采购订货-新增订货】整单备注和明细备注", "ts130014");
+    run("【采购订货】订单终结功能", "ts130015");
+    run("【采购订货-新增订货】订单终结-部分发货后终结", "ts130016_1");
+    run("【采购订货-新增订货】订单终结-全部发货后终结", "ts130016_2");
     run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
 
 }
@@ -60,32 +59,15 @@ function testPurchaseOrder002() {
 function testPurchaseOrder002Color() {
     run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
+    run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
+    run("【采购订货】客户或供应商信息不允许修改", "ts130011");
+    run("【采购订货-新增订货】整单备注和明细备注", "ts130014");
+    run("【采购订货】订单终结功能", "ts130015");
+    run("【采购订货-新增订货】订单终结-重复终结", "ts130016_1");
+    run("【采购订货-新增订货】订单终结-部分发货后终结", "ts130016_2");
+    run("【采购订货-新增订货】订单终结-全部发货后终结", "ts130016_3");
 }
-// function setIgnorecolorsize_1Params() {
-// var qo, o, ret = true;
-// qo = { "备注" : "是否需要颜色尺码" };
-// o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-// ret = isAnd(ret, setGlobalParam(qo, o));
-//
-// qo = { "备注" : "开单模式" };
-// o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-// ret = isAnd(ret, setGlobalParam(qo, o));
-//
-// return ret;
-// }
-//
-// function setIgnorecolorsize_0Params() {
-// var qo, o, ret = true;
-// qo = { "备注" : "是否需要颜色尺码" };
-// o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
-// ret = isAnd(ret, setGlobalParam(qo, o));
-//
-// qo = { "备注" : "开单模式" };
-// o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-// ret = isAnd(ret, setGlobalParam(qo, o));
-//
-// return ret;
-// }
+
 // 翻页_排序
 function ts130001_1() {
     tapMenu("采购订货", "按批次查");
@@ -599,26 +581,6 @@ function test130008() {
     return ret1 && ret2;
 }
 
-function test130003() {
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ], };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购订货", "按批次查");
-    var qr = getQR();
-    var a = qr.data[0]["批次"];
-    tapFirstText();
-    tapButtonAndAlert("作 废");
-    delay();
-    tapButton(window, RETURN);
-
-    tapMenu("采购订货", "按明细查");
-    qr = getQR();
-    var ret = !isEqual(a, qr.data[0]["批次"]);
-
-    return ret;
-}
-
 function ts130009() {
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "Rt", "现金" : 1000, "刷卡" : [ 600, "银" ],
@@ -643,30 +605,38 @@ function ts130009() {
     return isIn(alertMsg, "订单已入库，不允许作废");
 }
 
-function test130010() {
+function ts130010() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "20" } ], };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : "Rt" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
     tapFirstText();
-    var ret = isIn(getTextFieldValue(window, 4), "000");
+    var staffTFindex = getEditSalesTFindex("客户,厂商", "店员");
+    var ret = isIn(getTextFieldValue(window, staffTFindex), "000");
     tapReturn();
 
     tapMenu("采购入库", "按订货入库");
     tapFirstText();
-    ret = isAnd(ret, isIn(getTextFieldValue(window, 4), "000"));
+    staffTFindex = getEditSalesTFindex("客户,厂商", "店员");
+    ret = isAnd(ret, isIn(getTextFieldValue(window, staffTFindex), "000"));
     tapReturn();
 
     return ret;
 }
 
-function test130011() {
+function ts130011() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
+        "汇款" : [ 300, "银" ], "备注" : "xx", "采购订货" : "yes" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
+    query();
     tapFirstText();
     var keys = { "厂商" : "lx" };
     var fields = purchaseOrderAddFields(keys);
@@ -695,65 +665,56 @@ function test130012() {
 function test130013() {
 
 }
-function test130014() {
-    tapMenu("采购订货", "按批次查");
-    query();
-    var qr = getQR();
-    var batch = Number(qr.data[0]["批次"]) + 1;
-
+function ts130014() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : "8", "备注" : "mxbz" } ],
-        "备注" : "zdbzx", "采购订货" : "yes" };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : "vell", "备注" : "xx", "采购订货" : "yes" };
+    var det = {}, remark = "";
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "3035", "数量" : 30, "备注" : "123" } ] };
+        break;
+    case "yes":
+        det = {
+            "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ], "备注" : [ 123, 321 ] } ],
+            "goodsFieldIndex" : -2 };
+        remark = "321";
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+    }
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
-    tapMenu("采购订货", "按批次查");
-    var keys = { "备注" : "zdbz" };
-    var fields = purchaseOrderQueryBatchFields(keys);
-    query(fields);
-    qr = getQR();
-    var ret = isEqual(batch, qr.data[0]["批次"]);
-
+    tapMenu2("按批次查");
+    query();
     tapFirstText();
-    var a = getTextFieldValue(window, 0);
-    var a1 = getTextFieldValue(window, 8);
-    var a2 = getTextFieldValue(getScrollView(), 6);
-    ret = isAnd(ret, isEqual("Vell", a), isEqual("zdbzx", a1), isEqual("mxbz",
-            a2));
+    var remarketTFindex = getEditSalesTFindex("客户,厂商", "备注");
+    var tfNum = getDetSizheadTitle();
+    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"),
+            isEqual(getTextFieldValue(getScrollView(), tfNum["入库数"]), "123"),
+            isEqual(getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
+                    + tfNum["入库数"]), remark));
     tapReturn();
-
-    tapMenu("采购订货", "按明细查");
-    keys = { "备注" : "mxbz" };
-    fields = purchaseOrderQueryParticularFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("mxbz",
-            qr.data[0]["备注"]));
 
     return ret;
 }
-function test130015() {
+function ts130015() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
     var fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     var qr = getQR();
-    var a = Number(qr.data[0]["余额"]);
+    var a = qr.data[0]["余额"];
 
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ],
-        "备注" : "zdbzx", "采购订货" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("往来管理", "厂商账款", "厂商总账");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var a1 = Number(qr.data[0]["余额"]);
+    var jo = { "客户" : "vell", "现金" : 3000 };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按订货入库");
     query();
-    var qr = getQR();
+    qr = getQR();
     var total = qr.total;
 
     tapMenu("采购订货", "按批次查");
@@ -764,66 +725,38 @@ function test130015() {
     tapFirstText();
     runAndAlert("test130015End", OK);
     tapPrompt();
-
-    var ret = false;
-    if (isIn(alertMsg, "订单终结成功")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "订单终结成功");
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     tapButton(window, QUERY);
     qr = getQR();
-    var a2 = Number(qr.data[0]["余额"]);
+    ret = isAnd(ret, isEqual(qr.data[0]["余额"], a))
 
     tapMenu("采购入库", "按订货入库");
     query();
     qr = getQR();
-    var total1 = qr.total;
+    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch), isEqual(1, sub(
+            total, qr.total)));
 
-    ret = isAnd(ret, !isEqual(batch, qr.data[0]["批次"]), isEqual("1", sub(total,
-            total1)), isEqual("100", sub(a1, a)), isEqual("0", sub(a1, a2)));
-
+    tapMenu("采购订货", "按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();
+    runAndAlert("test130015End", OK);// 重复作废
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "不能重复结束"));
     return ret;
 }
 function test130015End() {
     tapMenu2("更多.");
     tapMenu3("终结订单");
 }
-function test130016_1() {
+
+function ts130016_1() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购入库", "按订货入库");
-    query();
-    var qr = getQR();
-    var total = qr.total;
-
-    tapMenu("采购订货", "按批次查");
-    query();
-    tapFirstText();
-
-    runAndAlert("test130015End", OK);
-    tapPrompt();
-
-    tapMenu("采购订货", "按批次查");
-    query();
-    tapFirstText();
-
-    runAndAlert("test130015End", OK);
-    tapPrompt();
-
-    var ret = false;
-    if (isIn(alertMsg, "不能重复结束")) {
-        ret = true;
-    }
-
-    return ret;
-}
-function test130016_2() {
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "100" } ] };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : "Rt" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按订货入库");
     query();
@@ -831,11 +764,8 @@ function test130016_2() {
     var total = qr.total;
 
     tapFirstText();
-    var f = new TField("入库数", TF, 5, "50");
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    delay();
+    json = { "入库明细" : [ { "数量" : 10 } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
     query();
@@ -848,10 +778,44 @@ function test130016_2() {
     var ret = isIn(alertMsg, "订单终结成功");
 
     tapMenu("采购入库", "按订货入库");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch), isEqual("1", sub(
+            total, qr.total)));
+
+    return ret;
+}
+
+function ts130016_2() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "Rt" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    var qr = getQR();
+    var total = qr.total;
+
+    tapFirstText();
+    editSalesBillSave({});
+
+    tapMenu("采购订货", "按批次查");
     query();
     qr = getQR();
-    ret = isAnd(ret, !isEqual(batch, qr.data[0]["批次"]), isEqual("1", sub(total,
-            qr.total)));
+    var batch = qr.data[0]["批次"];
+
+    tapFirstText();
+    runAndAlert("test130015End", OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "订单终结成功");
+
+    tapMenu("采购入库", "按订货入库");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch), isEqual("1", sub(
+            total, qr.total)));
 
     return ret;
 }

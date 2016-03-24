@@ -12,7 +12,7 @@ function test000All() {
     ipadVer = "6.59";
     var caseName="test";
 // TITLE_SXE = getTitleSXE();
-
+// testPurchaseOrder002();//待测
  run(caseName, "ts130004_05_06");
 // run(caseName, "onlyTest");
 }
