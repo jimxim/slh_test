@@ -83,7 +83,7 @@ function test110001_1() {
     tapMenu("往来管理", "客户查询");
     query();
 
-    var ret = goPageCheck(13);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("生日", IS_DATE2);
@@ -617,7 +617,7 @@ function test110014Field(keys, msg) {
 function test110015() {
     tapMenu("往来管理", "客户账款", "客户门店账");
     query();
-    var ret = goPageCheck(6);
+    var ret = goPageCheck();
 
     query();
     ret = ret && sortByTitle("门店");
@@ -809,7 +809,7 @@ function test110017() {
 function test110018() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     query();
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("账户余额");// ,IS_SUM
@@ -897,7 +897,7 @@ function test110020() {
     tapMenu("往来管理", "客户账款", "客户总账");
     var i, j;
     query();
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -1638,8 +1638,7 @@ function test110033() {
 
     tapMenu("往来管理", "客户活跃度");
     query();
-    var ret = goPageCheck(7);
-    // logDebug("ret=" + ret);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -1783,7 +1782,7 @@ function test110036() {
     query();
     // 验证点击"最近兑换日期"标题后，记录重复的BUG
     tapTitle(getScrollView(), "最近兑换日期");
-    var ret = goPageCheck(6);
+    var ret = goPageCheck();
 
     var qr = getQR();
     var sum = 0;
@@ -1952,7 +1951,7 @@ function test1100_QueryProvider() {
     tapMenu("往来管理", "厂商查询");
     query();
     // 翻页
-    var ret = goPageCheck(7);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
@@ -2218,7 +2217,7 @@ function test110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
     // 翻页
-    var ret = goPageCheck(4);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
@@ -2763,7 +2762,7 @@ function test110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     query();
     // 翻页
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2897,7 +2896,7 @@ function test110043Field(qr, shop) {
 
 function test110044() {
     tapMenu("往来管理", "更多.", "物流商查询");
-    var ret = goPageCheck(7);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("区域");
     ret = ret && sortByTitle("名称");
@@ -3065,7 +3064,7 @@ function test110048() {
     tapMenu("往来管理", "更多.", "客户回访");
     query();
     var qr = getQR();
-    var ret = goPageCheck(7);
+    var ret = goPageCheck();
 
     // debugElementTree(getScrollView());
     ret = ret && sortByTitle("回访日期", IS_DATE2);

@@ -454,7 +454,7 @@ function test190001() {
     var keys = { "日期从" : getDay(-15) };
     var fields = statisticAnalysisInOutFields(keys);
     query(fields);
-    var ret = goPageCheck(9);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -591,7 +591,7 @@ function test190009() {
     var fields = statisticAnalysisInOutSummaryFields(key);
     query(fields);
 
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("收支类别");
     ret = ret && sortByTitle("金额", IS_NUM);
@@ -929,7 +929,7 @@ function test190024() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
-    var ret = goPageCheck(8);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("类型");
@@ -1188,7 +1188,7 @@ function test190026() {
 
 function test190027() {
     tapMenu("统计分析", "收支类别");
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("出入类别");
     ret = ret && sortByTitle("名称");
@@ -1287,7 +1287,7 @@ function test190031() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    var ret = goPageCheck(20);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("门店");
@@ -1937,7 +1937,7 @@ function test190069_190072() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisReturnFields(keys);
     query(fields);
-    var ret = goPageCheck(5);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("款号");
@@ -2047,7 +2047,7 @@ function test190074() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisGoodMarketFields(keys);
     query(fields);
-    var ret = goPageCheck(6);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("款号");
@@ -2209,7 +2209,7 @@ function test190078_190080() {
 function test190079_190099() {
     tapMenu("统计分析", "汇总表", "滞销表");
     query();
-    var ret = goPageCheck(8);
+    var ret = goPageCheck();
 
     query();
     ret = ret && sortByTitle("门店");
@@ -2485,7 +2485,7 @@ function test190088() {
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
 
-    var ret = goPageCheck(7);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("门店");

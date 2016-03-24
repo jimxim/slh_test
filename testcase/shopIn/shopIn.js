@@ -31,15 +31,14 @@ function editShopInFlitting(secure) {
 }
 
 function test140001() {
-    var i;
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var keys = { "调出门店" : "中洲店", "调入门店" : "常青店" };// "日期从" : getDay(-15),
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
-    tapTitle(getScrollView(), "备注");
-    tapTitle(getScrollView(), "备注");
-    tapFirstTextByTitle("备注", "(0; -5)", getScrollView());
+    // tapTitle(getScrollView(), "备注");
+    // tapTitle(getScrollView(), "备注");
+    var i = tapFirstTextByTitle("备注", "(0; -5)", getScrollView());
     // test150007做的调出单
     var tfNum = getSalesBillDetTfNum({});
     var ret = isIn(getTextFieldValue(getScrollView(), 0), "3035");
@@ -143,7 +142,7 @@ function test140001() {
     tapButton(window, QUERY);
     qr = getQR();
     // 库存按销价1核算 3035的零批价为200
-    var change = { "库存" : a3 + b3 + c3 + d3, "价值" : add(p, 200 * num),
+    var change = { "库存" : add(a3, b3, c3, d3), "价值" : add(p, 200 * num),
         "常青店" : a3 };
     var expected = mixObject(jo1, change);
     var jo2 = qr.data[0];
@@ -312,7 +311,7 @@ function test140001_1() {
     var keys = { "日期从" : getDay(-365) };
     var fields = shopInFlitFields(keys);
     query(fields);
-    var ret = goPageCheck(8);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -347,7 +346,7 @@ function test140002_1() {
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(11);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出批次", IS_NUM);
@@ -384,7 +383,7 @@ function test140003_1() {
     var fields = shopInQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(13);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");

@@ -125,7 +125,7 @@ function test120001_1() {
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck(15);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("门店");
@@ -315,7 +315,7 @@ function test120007() {
     var keys = { "日期从" : getDay(-30) };
     var fields = purchasePriceFields(keys);
     query(fields);
-    var ret = goPageCheck(6);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("日期", IS_DATE2);
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -389,7 +389,7 @@ function test120008() {
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
     var fields = purchaseCodeFields(keys);
     query(fields);
-    var ret = goPageCheck(10);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -545,7 +545,7 @@ function test120009() {
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = purchaseProviderReturnFields(keys);
     query(fields);
-    var ret = goPageCheck(8);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("款号");
@@ -676,7 +676,7 @@ function test120010_1() {
     var fields = purchaseProviderFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck(9);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("现金", IS_NUM);
@@ -718,7 +718,7 @@ function test120011_1() {
     var fields = purchaseInOutFields(keys);
     query(fields);
     // 翻页
-    var ret = goPageCheck(9);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("类型");
@@ -905,7 +905,7 @@ function test120013_1() {
     query(fields);
 
     // 翻页
-    var ret = goPageCheck(6);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -1663,7 +1663,7 @@ function test120025_1() {
     query(fields);
 
     // 翻页
-    var ret = goPageCheck(10);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("厂商");
@@ -1898,7 +1898,7 @@ function test120029_1() {
     query();
 
     // 翻页
-    var ret = goPageCheck(3);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2024,7 +2024,7 @@ function test120030_1() {
     query(feilds);
 
     // 翻页
-    var ret = goPageCheck(4);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -2506,7 +2506,7 @@ function test120047_1() {
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(11);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("厂商");
     ret = ret && sortByTitle("批次", IS_NUM);

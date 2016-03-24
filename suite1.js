@@ -13,18 +13,15 @@ function test000All() {
     var caseName="test";
 // TITLE_SXE = getTitleSXE();
 
- run(caseName, "ts130002_2");
+ run(caseName, "ts130004_05_06");
 // run(caseName, "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    var num = getDetSizheadTitle();
-    var i=0;
-    var index=num["明细输入框个数"] * i + num["入库数"];
-    debugObject(num,"num=");
-    logDebug("index="+index);
-    return index;
+// var num = getDetSizheadTitle();
+    var arr=["数量","已发","差异数","小计"];
+    return isEqualCounts(arr);
 }
 
 function prepare200All(){

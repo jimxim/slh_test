@@ -98,7 +98,13 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var qResult = new QResult(titles, data, total, hasError);
     return qResult;
 }
-
+/**
+ * 获取类似往来管理-客户账款-所有未结window界面的值
+ * @param dataView
+ * @param firstTitle
+ * @param lastTitle
+ * @returns {Array}
+ */
 function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     if (isUndefined(dataView)) {
         dataView = window;
@@ -465,7 +471,7 @@ function goPage2(page, qr) {
  * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~ 最后会回到第一页
  * @param titleTotal 这个地方的标题数组很奇怪，有时候会重复好几遍，所以暂时弄成指定标题总数的方式
  */
-function goPageCheck(titleTotal) {
+function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
     var pageInfoView = window;
     var dataView = getScrollView();
     var firstTitle = TITLE_SEQ;
@@ -496,7 +502,8 @@ function goPageCheck(titleTotal) {
         ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
                 firstSeq, qr.data[0]["序号"]),
                 isEqual(totalPageNo, qr.curPageNo), isDifferentArray(page1,
-                        page2, 1), scrollPrevPageCheck(firstTitle, titleTotal));
+                        page2, 1), scrollPrevPageCheck(pageInfoView, dataView,
+                        firstTitle, titleTotal));
 
         // 当总页数大于2时，追加一页验证
         if (totalPageNo > 2) {
@@ -511,9 +518,10 @@ function goPageCheck(titleTotal) {
             var page3 = qr.data;
             ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
                     finSeq, qr.data[14]["序号"]), isEqual(midPage, qr.curPageNo),
-                    scrollPrevPageCheck(firstTitle, titleTotal),
-                    isDifferentArray(page1, page2, 1), isDifferentArray(page1,
-                            page3, 1), isDifferentArray(page2, page3, 1));
+                    scrollPrevPageCheck(pageInfoView, dataView, firstTitle,
+                            titleTotal), isDifferentArray(page1, page2, 1),
+                    isDifferentArray(page1, page3, 1), isDifferentArray(page2,
+                            page3, 1));
 
             qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
             ret = isAnd(ret, goPageCheckField());
@@ -670,7 +678,7 @@ function isInQRData1Object(qr, expected) {
 /**
  * 滑动翻页验证 先向上翻，再向下翻
  */
-function scrollPrevPageCheck(firstTitle, titleTotal) {
+function scrollPrevPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
     var pageInfoView = window;
     var dataView = getScrollView();
 
@@ -812,6 +820,57 @@ function dropDownListCheck2(index, value, expected, o) {
 
     return ret;
 }
+/**
+ * 查询界面汇总值验证 会判断汇总栏有汇总值的标题的汇总值是否正确（没有作废数据影响的情况下）
+ * @param arr 应该存在的汇总值的标题数组
+ * @param pageInfoView
+ * @param dataView
+ * @param firstTitle
+ * @param titleTotal
+ * @returns {Boolean}
+ */
+function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
+    tapButton(window, QUERY);// 点一次查询按钮，使界面刷新，防止getQR出错
+    var i, j;
+    var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+
+    var sum = {};
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum = addObject(qr.data[i], sum);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+        }
+    }
+    var ret = true;
+    for (i in qr.counts) {
+        var v1 = qr.counts[i];
+        var v2 = sum[i];
+        if (v1 != "") {
+            ret = ret && (v1 == v2);
+        }
+        // logDebug("v1=" + v1 + " v2=" + v2 + " ret=" + ret);
+    }
+    if (!ret) {
+        debugObject(sum, "sum=");
+        debugObject(qr.counts, "qr.counts=");
+    }
+    var ret1 = true;
+    if (isDefined(arr)) {
+        for (i = 0; i < arr.length; i++) {
+            if (!qr.counts.hasOwnProperty(arr[i])) {
+                ret1 = false;
+                logDebug("缺少汇总值  " + arr[i]);
+
+            }
+        }
+    }
+
+    return ret && ret1;
+}
+
 /**
  * 下拉框内容是否与期望内容相同
  * @param expected
@@ -1147,8 +1206,8 @@ function isNegativeNumber(n) {
 }
 
 function addObject(jo1, jo2) {
-    debugObject(jo2, "jo2");
-    debugObject(jo1, "jo1");
+    // debugObject(jo2, "jo2");
+    // debugObject(jo1, "jo1");
     var ret = {};
     for ( var i in jo1) {
         var v = jo1[i];

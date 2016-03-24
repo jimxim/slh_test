@@ -51,7 +51,7 @@ function test150001_1() {
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(11);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
@@ -138,7 +138,7 @@ function test150001_3() {
     var fields = shopOutQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck(13);
+    var ret = goPageCheck();
 
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");
