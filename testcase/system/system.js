@@ -196,7 +196,7 @@ function test210004_210005_210006() {
 function test210007_210008() {
     tapMenu("系统设置", "本地设置");
 
-    var ret = goPageCheck(4);
+    var ret = goPageCheck();
 
     return ret;
 }
@@ -275,7 +275,7 @@ function test210015_210016() {
 
     query();
 
-    var ret = goPageCheck(4);
+    var ret = goPageCheck();
 
     return ret;
 }
