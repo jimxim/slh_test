@@ -5,6 +5,7 @@ function testPurchaseOrder001() {
     run("【采购订货-按批次查】汇总", "ts130001Count");
     run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130001_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
+    run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "ts130002_2");
 
     // run("【采购订货-订货汇总】订货汇总->按款号", "test130004");
     // run("【采购订货-订货汇总】订货汇总->按厂商", "test130005");
@@ -15,7 +16,6 @@ function testPurchaseOrder001() {
 
     // 颜色尺码
     // run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
-    // run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "test130002_2");
 
 }
 
@@ -25,6 +25,7 @@ function testPurchaseOrder001Color() {
     run("【采购订货-按批次查】汇总", "ts130001Count");
     run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130001_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "test130002_1");
+    run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "ts130002_2");
 }
 
 function testPurchaseOrder002() {
@@ -231,17 +232,24 @@ function test130002_1() {
 
     return ret;
 }
-function test130002_2() {
+function ts130002_2() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell" };
-    var det = {};
+    var jo = { "客户" : "vell", "备注" : "xx", "采购订货" : "yes" };
+    var det = {}, jo2 = {}, kCode = {}, i;
     switch (colorSize) {
     case "no":
-        det = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        kCode = { "款号" : "3035" };
+        det = { "明细" : [ { "货品" : "3035", "数量" : 30, "备注" : "123" } ] };
+        jo2 = { "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码",
+            "单价" : 100, "数量" : 30, "已入库" : 10, "备注" : "123" };
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ] } ],
+        kCode = { "款号" : "agc001" };
+        det = {
+            "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ], "备注" : [ 123, 321 ] } ],
             "goodsFieldIndex" : -2 };
+        jo2 = { "款号" : "agc001", "名称" : "auto001", "颜色" : "均色", "花色" : "L",
+            "单价" : 100, "数量" : 30, "已入库" : 10, "备注" : "123" }
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -252,13 +260,16 @@ function test130002_2() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var title = getDetSizheadTitle();
-    var f = new TField("入库数", TF, title["入库数"], "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    editSalesBillSave({});
+    json = { "入库明细" : [ { "数量" : 10 } ] };
+    editSalesBill(json, colorSize);
 
-    tapMenu("采购订货", "按明细查");
-    var i;
+    tapMenu("采购订货", "按批次查");
+    query();
+    var qr = getQR();
+    var jo1 = qr.data[0];
+    var exp = mixObject(jo1, jo2);
+
+    tapMenu2("按明细查");
     var ret1 = false;
     var f = new TField("款号", TF_AC, 1, "303", -1);
     var cells = getTableViewCells(window, f);
@@ -272,15 +283,21 @@ function test130002_2() {
     }
     tapKeyboardHide();
 
-    var keys = { "门店" : "常青店", "款号" : "3035", "厂商" : "Vell",
-        "日期从" : getToday(), "到" : getToday() }// , "备注" : "xx"
+    var key1 = { "门店" : "常青店", "厂商" : "Vell", "日期从" : getToday(),
+        "到" : getToday(), "备注" : "123" }// 这个是明细备注
+    var keys = mixObject(key1, kCode);
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual("3035", qr.data[0]["款号"]);
+    if (qr.data.length > 0) {
+        var ret = isEqualObject(qr.data[0], exp);
+    } else {
+        ret = false;
+    }
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 6; i++) {
+    var text = getTextFields(window);
+    for (i = 0; i < text.length; i++) {
         if (i == 3 || i == 4) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -1101,37 +1118,4 @@ function editPurOrderDet() {
         logWarn("未知colorSize＝" + colorSize);
     }
     return det;
-}
-
-function editPurInByOrder(o, colorSize) {
-    debugObject(o);
-
-    editSalesBillCustomer(o);
-    editSalesBillField1(o, "店员");
-    editSalesBillField1(o, "日期");
-    editSalesBillField1(o, "备注");
-
-    editPurInByOrderDet(o);
-    if (colorSize == "yes") {
-        editPurInByOrderDetColorSize(o)
-    }
-    if (colorSize == "no") {
-        editPurInByOrderDetNoColorSize(o);
-    }
-    if (colorSize == "head") {
-        editPurInByOrderDetSizehead(o);
-    }
-
-}
-
-function editPurInByOrderDet(o) {
-    var details = o["入库明细"];
-    var num = getDetSizheadTitle();
-    var fields = [];
-    for ( var i in details) {
-        var f = new TField("入库数", TF, num["明细输入框个数"] * i + num["入库数"], num);
-        fields.push(f);
-    }
-
-    setTFieldsValue(getScrollView(), fields);
 }

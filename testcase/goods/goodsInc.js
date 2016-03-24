@@ -966,6 +966,35 @@ function editLogisticsVerify(o) {
         tapNaviButton("完成");
     }
 }
+/**
+ * 新增修改按订货入库的明细,均色均码和颜色尺码是一样的
+ * @param o
+ */
+function editPurInByOrderDet(o) {
+    var details = o["入库明细"];
+    if (isDefined(details)) {
+        var tfNum = getDetSizheadTitle();
+        var fields = [];
+        for ( var i in details) {
+            var d = details[i];
+            if (isDefined(d["数量"])) {
+                fields.push(new TField("入库数", TF, tfNum["明细输入框个数"] * i
+                        + tfNum["入库数"], d["数量"]));
+            }
+
+            if (isDefined(d["单价"])) {
+                fields.push(new TField("单价", TF, tfNum["明细输入框个数"] * i
+                        + tfNum["单价"], d["单价"]));
+            }
+
+            if (isDefined(d["备注"])) {
+                fields.push(new TField("备注", TF, tfNum["明细输入框个数"] * i
+                        + tfNum["备注"], d["备注"]));
+            }
+        }
+        setTFieldsValue(getScrollView(), fields);
+    }
+}
 
 /**
  * 获取数组中第一个与期望值相同的下标，没有返回-1

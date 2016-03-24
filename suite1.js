@@ -7,13 +7,13 @@
 
 // 总经理
 function test000All() {
-    colorSize = "no";
+    colorSize = "yes";
     debug = true;
     ipadVer = "6.59";
     var caseName="test";
 // TITLE_SXE = getTitleSXE();
 
- run(caseName, "ts130009");
+ run(caseName, "ts130002_2");
 // run(caseName, "onlyTest");
 }
 
