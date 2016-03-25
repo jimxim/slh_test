@@ -991,6 +991,24 @@ function logisticsVerifySetField(o, key) {
 }
 
 /**
+ * 指定超时
+ * @param i 默认1秒
+ */
+function pushTimeout(i) {
+    if (isUndefined(i)) {
+        i = 1;
+    }
+    target.pushTimeout(i);
+}
+
+/**
+ * 超时弹出
+ */
+function popTimeout() {
+    target.popTimeout();
+}
+
+/**
  * 撤销一段时间内的盘点记录
  */
 function repealRecordsForCheck(day) {
@@ -1221,6 +1239,6 @@ function addObject(jo1, jo2) {
             ret[i] = Number(v) + Number(v1);
         }
     }
-    debugObject(ret, "addObject jo1+jo2");
+    debugObject(ret, "addObject result=");
     return ret;
 }

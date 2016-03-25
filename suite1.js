@@ -4,24 +4,25 @@
 #import "all.js"
  
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
-
+// #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-    colorSize = "yes";
+    colorSize = "no";
     debug = true;
     ipadVer = "6.59";
-    var caseName="test";
+// var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testPurchaseOrder002();//待测
- run(caseName, "ts130004_05_06");
-// run(caseName, "onlyTest");
+
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
-// debugElementTree(window);
-// var num = getDetSizheadTitle();
-    var arr=["数量","已发","差异数","小计"];
-    return isEqualCounts(arr);
+ debugElementTree(window);
+
+ 
+
+// return ret;
 }
 
 function prepare200All(){

@@ -114,7 +114,7 @@ function setGoodsParams001() {
     qo = { "备注" : "门店调拨是否可以填写价格" };
     o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否启用加工价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -625,7 +625,6 @@ function test10_fuzzyQueryAndDropDownListCheck() {
 
     tapMenu("货品管理", "货品查询");
     var ret4 = fuzzyQueryCheckField(1, "款号", "z", "名称");
-
     return isAnd(ret1, ret2, ret3, ret4);
 }
 
@@ -1623,7 +1622,12 @@ function test100042_100045() {
     ret2 = isAnd(ret2, testCheckCustomerDropDownListField(f, view));
     f = new TField("店员", TF_AC, 21, "y", -1);
     ret2 = isAnd(ret2, testCheckCustomerDropDownListField(f, view));
+    delay();
     tapButton(window, RETURN);
+    if (getButton(window, RETURN).isVisible()) {
+        tapPrompt();
+        tapButton(window, RETURN);
+    }
 
     return isAnd(ret1, ret2);
 

@@ -36,13 +36,8 @@ function testPurchaseOrder001Color() {
 }
 
 function testPurchaseOrder002() {
-    // if(setIgnorecolorsize_1Params()){
-    // run("【采购订货-新增订货】全局变量：均色均码+新增订货", "test130007");
 
-    // if(setIgnorecolorsize_0Params()){
-    // run("新增【采购订货-新增订货】全局变量：颜色尺码+新增订货", "test130008");
-
-    // run("【采购订货-按明细查】作废订单后内容检查", "test130003");
+    run("【采购订货-新增订货】均色均码快速新增", "test130007");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
     run("【采购订货】客户或供应商信息不允许修改", "ts130011");
@@ -66,6 +61,7 @@ function testPurchaseOrder002Color() {
     run("【采购订货-新增订货】订单终结-重复终结", "ts130016_1");
     run("【采购订货-新增订货】订单终结-部分发货后终结", "ts130016_2");
     run("【采购订货-新增订货】订单终结-全部发货后终结", "ts130016_3");
+    run("【采购订货-新增订货】颜色尺码快速新增", "test130008");
 }
 
 // 翻页_排序
@@ -446,13 +442,13 @@ function ts130006_2() {
 function ts130004_05_06() {
     var det = editPurOrderDet();
     var keys = { "款号" : det["明细"][0]["货品"] };
-    var jo1 = ts130004_05_06QR1("按款号", keys);
+    var jo1 = get130004_05_06QR("按款号", keys);
 
     keys = { "厂商" : "vell" };
-    var jo2 = ts130004_05_06QR1("按厂商", keys);
+    var jo2 = get130004_05_06QR("按厂商", keys);
 
     keys = { "门店" : "常青店" };
-    var jo3 = ts130004_05_06QR1("按门店", keys);
+    var jo3 = get130004_05_06QR("按门店", keys);
 
     tapMenu2("新增订货+");
     var jo = { "客户" : "vell" };
@@ -465,18 +461,24 @@ function ts130004_05_06() {
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
-    var jo11 = ts130004_05_06QR1("按款号");
-    var jo21 = ts130004_05_06QR1("按厂商");
-    var jo31 = ts130004_05_06QR1("按门店");
+    var jo11 = get130004_05_06QR("按款号");
+    var ret = check130004_05_06det("厂商", "差异数", jo11);
+
+    var jo21 = get130004_05_06QR("按厂商");
+    ret = isAnd(ret, check130004_05_06det("款号", "差异数", jo21));
+
+    var jo31 = get130004_05_06QR("按门店");
+    ret = isAnd(ret, check130004_05_06det("款号", "差异数", jo31));
+
     var exp = { "数量" : 30, "已发" : 10, "差异数" : 20, "小计" : 3000 };
-    var ret = isAnd(isEqualObject(exp, subObject(jo11, jo1)), isEqualObject(
+    ret = isAnd(ret, isEqualObject(exp, subObject(jo11, jo1)), isEqualObject(
             exp, subObject(jo21, jo2)),
             isEqualObject(exp, subObject(jo31, jo3)));
 
     return ret;
 }
 
-function ts130004_05_06QR1(menu3_name, key2) {
+function get130004_05_06QR(menu3_name, key2) {
     tapMenu("采购订货", "按汇总", menu3_name);
     if (isDefined(key2)) {
         var key1 = { "门店" : "常青店" };
@@ -502,6 +504,35 @@ function ts130004_05_06QR1(menu3_name, key2) {
     tapButton(window, QUERY);
     var qr = getQR();
     return qr.data[0];
+}
+
+function check130004_05_06det(firstTitle, lastTitle, exp) {
+    tapFirstText();
+    delay();// 等待页面加载完毕
+    pushTimeout(10);
+    var qr = getQR2(getScrollView(-1, 0), firstTitle, lastTitle);
+    var sum = {};
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum = addObject(qr.data[i], sum);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), firstTitle, lastTitle);
+        }
+    }
+    popTimeout();
+
+    tapNaviLeftButton();
+
+    var ret = false;
+    if (!qr.hasError) {
+        ret = isAnd(isEqual(exp["数量"], sum["数量"]),
+                isEqual(exp["已发"], sum["已发"]), isEqual(exp["差异数"], sum["差异数"]));
+    } else {
+        logDebug("qr.hasError=false,未取到详细界面的值");
+    }
+    return ret;
 }
 
 function test130007() {

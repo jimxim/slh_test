@@ -153,25 +153,24 @@ function test140001() {
 
 function test140002_140003() {
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-15), "调出门店" : "中洲店", "调入门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30), "调出门店" : "中洲店", "调入门店" : "常青店" };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch1 = Number(qr.data[0]["批次"]) + 1;
-    // logDebug("batch1="+batch1);
 
     // 调入test150003生成的调出单
     tapMenu("门店调出", "按批次查");
-    keys = { "日期从" : getDay(-30), "调出门店" : "中洲店", "调入门店" : "常青店" };
     fields = shopOutQueryBatchFields(keys);
     query(fields);
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
     var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "t150003");
+    var totalNumTFindex = getEditSalesTFindex("客户,厂商", "总数");
     var tfNum = getSalesBillDetTfNum({});
-    var market = getTextFieldValue(window, 3);// 整单备注
-    var sum = getTextFieldValue(window, 5);// 总数
+    var market = getTextFieldValue(window, totalNumTFindex-1);// 整单备注
+    var sum = getTextFieldValue(window, totalNumTFindex);// 总数
     var s1 = getTextFieldValue(getScrollView(), 3);// 3035的数量
     var s2 = getTextFieldValue(getScrollView(), tfNum + 3);// 4562的数量
     tapReturn();
