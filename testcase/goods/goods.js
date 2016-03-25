@@ -75,10 +75,6 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "采购入库订货是否启用加工价显示ACList" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "颜色尺码下,开单是否显示上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -117,6 +113,10 @@ function setGoodsParams001() {
 
     qo = { "备注" : "门店调拨是否可以填写价格" };
     o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "是否启用加工价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
