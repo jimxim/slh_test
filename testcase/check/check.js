@@ -20,10 +20,10 @@ function testCheckAll() {
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_4");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_6");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
+//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
+//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
+//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
+//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
     run("【盘点管理—新增盘点】", "test180019");
     run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
     run("【盘点管理—新增盘点】返回", "test180023");
@@ -39,8 +39,8 @@ function testCheckAll() {
     run("【盘点管理—按批次查】处理人检查", "test180048");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
-    run("【盘点管理—盘点处理】处理日期设置", "test180027");
-    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+//    run("【盘点管理—盘点处理】处理日期设置", "test180027");
+//    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -2477,7 +2477,7 @@ function test180049_1() {
     delay();
 
     tapMenu("货品管理", "新增货品+");
-    var r = "khao" + getTimestamp(8);
+    var r = "anewCode1" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
@@ -2490,7 +2490,7 @@ function test180049_1() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    var r1 = "khao" + getTimestamp(8);
+    var r1 = "anewCode2" + getTimestamp(8);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
