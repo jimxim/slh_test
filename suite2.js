@@ -7,44 +7,21 @@
 // 总经理
 function test000All() {
 	debug = true;
-// var ok = login("000","000000");
-// if( ok ) {
-// testParamAll();
-// testBasicSetUpAll();
-// testWanLaiCustomerAll();
-// testGoodsGoodsAll();
-// testPurchaseAll();
-// testPurchase002();
-// testPurchase001();
-// testPurchaseOrder001();
-// testPurchaseOrderAll();
-// testShopInAll();
-// testShopIn001();
-// testShopOutAll();
-// testShopOut001();
-// testSalesOrderAll();
-// testCheckAll();
-// testCheck001();
-// testSalesNoColorSizeAll();
-// testSalesNoColorSizeElseAll();
-// testSalesNoColorSizeElse001();
-// testSalesColorSizeAll();
-// testSalesColorSize001();
-// testSalesColorSize002();
-// testStatisticPictureAll();
-// testSystem001();
-// logout();
 	
 // run("【销售开单-开单】检查核销", "testCs170132"); //添加款号 覆盖了,商路花程序Bug
 // run("【销售开单－开单】客户新增（不选择适用价格检查）", "testCs170104");//备注不对
 // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "testCs170242");//
 // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "testCs170244");//
 	// run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430");(用例要修改)
+
+    run("【销售开单】超期提醒+不允许继续输入+均色均码", "test170214");
+//    run("【销售开单】超期提醒+允许继续输入+颜色尺码", "test170210");
 	
- run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");//
-
+// run("","test1");
 }
-
+function test1(){
+    debugElementTree(window);
+}
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);

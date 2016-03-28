@@ -3175,6 +3175,114 @@ function testCs170200() {
     logDebug("ret1=" + ret1);
     return !ret1;
 }
+function test170Cs213() {
+    // 后台参数 退货期限(天数),销售开单退货时验证是否已经超出期限 设为一个不为0的时间,比如10天
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单退货时验证时,是否允许继续输入" };
+    o = { "新值" : "1", "数值" : [ "可以继续输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "允许退货" : "是" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : [ 8 ] } ],
+        "日期" : getDay(-11) };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : r, "日期从" : getDay(-11), "日期到" : getDay(-11),
+        "作废挂单" : "正常" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var ret = isEqual(r, getTextFieldValue(window, 0));
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : [ -8 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var ret1 = isEqual("", getTextFieldValue(getScrollView(), 3))
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    ret1 = isAnd(ret1, isIn(alertMsg, "保存成功"));
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+
+    tapFirstText();
+    var ret = isAnd(isEqual(r, getTextFieldValue(window, 0)), isEqual(-8,
+            qr.data[0]["数量"]), isEqual("3035,jkk", getTextFieldValue(
+            getScrollView(), 0)), isEqual(-8, getTextFieldValue(
+            getScrollView(), 3)));
+
+    tapReturn();
+
+    return ret && ret1;
+}
+function testCs170214() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单退货时验证时,是否允许继续输入" };
+    o = { "新值" : "0", "数值" : [ "不能输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "允许退货" : "是" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : [ 8 ] } ],
+        "日期" : getDay(-11) };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : r, "日期从" : getDay(-11), "日期到" : getDay(-11),
+        "作废挂单" : "正常" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+
+    tapFirstText();
+    var ret = isEqual(r, getTextFieldValue(window, 0));
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035" } ], "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var f3 = new TField("数量", TF, 3, -2);
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    var ret1 = isEqual("", getTextFieldValue(getScrollView(), 3));
+
+    ret1 = isAnd(ret1, isIn(alertMsg, "操作提醒，该款已经超出了退货期限10天 ，首次拿货日期= ["
+            + getDay(-11) + "] [3035,jkk]"));
+
+    tapReturn();
+
+    return ret && ret1;
+}
 function testCs170236() {
     // 全局设置里设置 单据打印后不允许修改 为 不限制;开单员(非总经理)005登陆
     var qo, o, ret = true;
