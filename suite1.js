@@ -14,15 +14,14 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testPurchaseOrder002();//待测
 
- run("测试用例", "onlyTest");
+ run("测试用例", "ts130007_08");
 }
 
 function onlyTest(){
- debugElementTree(window);
+// debugElementTree(window);
 
- 
 
-// return ret;
+ return joP;
 }
 
 function prepare200All(){

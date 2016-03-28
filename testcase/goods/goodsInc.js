@@ -34,6 +34,64 @@ function getEditGoodsValue() {
 
     return arr;
 }
+/**
+ * 获取开单界面明细界面的值
+ * @param view
+ * @returns {QResult}
+ */
+function getQRDet(view) {
+    if (isUndefined(view)) {
+        view = getScrollView();
+    }
+
+    var titles = getDetSizheadTitle();
+    delete titles["明细输入框个数"];
+    var title = [];
+    for ( var i in titles) {
+        title.push(i);
+    }
+
+    var texts = getStaticTexts(window);
+    var firstIndex = 0, lastIndex = 0;
+    for (var i = texts.length - 1; i >= 0; i--) {
+        var v = texts[i].value();
+        if (firstIndex == 0 && v == title[0]) {
+            firstIndex = i;
+        }
+        if (lastIndex == 0 && v == title[title.length - 1]) {
+            lastIndex = i;
+        }
+    }
+    // logDebug("firstIndex=" + firstIndex + " lastIndex=" + lastIndex);
+
+    var titlesX = {}, j = 0;
+    for (var i = firstIndex; i <= lastIndex; i++) {
+        titlesX[title[j]] = getX(texts[i]);// getX
+        j++;
+    }
+    // debugObject(titlesX, "titlesX=");
+
+    var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
+
+    var data = [];
+    texts = getTextFields(view);
+    for (var j = 0; j < line.length; j++) {
+        if (getTextFieldValue(view, title.length * j) != "") {
+            var data1 = {};
+            for (var i = 0; i < title.length; i++) {
+                var index = title.length * j + i;
+                var v = texts[index].value();
+                var x = getX(texts[index]);
+                var t = getKeyByXy(titlesX, x);
+                data1[t] = v;
+            }
+            data.push(data1);
+        }
+    }
+    var total = data.length;
+    var qResult = new QResult(titles, data, total);
+    return qResult;
+}
 
 function getQR3(dataView, firstTitle, lastTitle) {
     var qr = getQResult3(dataView, firstTitle, lastTitle);
@@ -98,6 +156,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var qResult = new QResult(titles, data, total, hasError);
     return qResult;
 }
+
 /**
  * 获取类似往来管理-客户账款-所有未结window界面的值
  * @param dataView
