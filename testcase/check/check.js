@@ -20,10 +20,10 @@ function testCheckAll() {
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_4");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_6");
-//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
-//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
-//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
-//    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
+    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
     run("【盘点管理—新增盘点】", "test180019");
     run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
     run("【盘点管理—新增盘点】返回", "test180023");
@@ -39,8 +39,8 @@ function testCheckAll() {
     run("【盘点管理—按批次查】处理人检查", "test180048");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
-//    run("【盘点管理—盘点处理】处理日期设置", "test180027");
-//    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+    run("【盘点管理—盘点处理】处理日期设置", "test180027");
+    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -640,12 +640,18 @@ function test180021() {
     var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
     var f11 = new TField("数量", TF, 11, "0");
 
+    var fields = [ f0, f3, f4, f7, f8, f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
     var f12 = new TField("货品", TF_AC, 12, "3035", -1, 0);
     var f15 = new TField("数量", TF, 15, "12");
     var f16 = new TField("货品", TF_AC, 16, "k200", -1, 0);
     var f19 = new TField("数量", TF, 19, "-11");
     var f20 = new TField("货品", TF_AC, 20, "k300", -1, 0);
     var f23 = new TField("数量", TF, 23, "0");
+
+    fields = [ f12, f15, f16, f19, f20, f23 ];
+    setTFieldsValue(getScrollView(), fields);
 
     var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
     var f27 = new TField("数量", TF, 27, "10");
@@ -654,12 +660,18 @@ function test180021() {
     var f32 = new TField("货品", TF_AC, 32, "k300", -1, 0);
     var f35 = new TField("数量", TF, 35, "0");
 
+    fields = [ f24, f27, f28, f31, f32, f35 ];
+    setTFieldsValue(getScrollView(), fields);
+
     var f36 = new TField("货品", TF_AC, 36, "3035", -1, 0);
     var f39 = new TField("数量", TF, 39, "10");
     var f40 = new TField("货品", TF_AC, 40, "k200", -1, 0);
     var f43 = new TField("数量", TF, 43, "-11");
     var f44 = new TField("货品", TF_AC, 44, "k300", -1, 0);
     var f47 = new TField("数量", TF, 47, "0");
+
+    fields = [ f36, f39, f40, f43, f44, f47 ];
+    setTFieldsValue(getScrollView(), fields);
 
     var f48 = new TField("货品", TF_AC, 48, "3035", -1, 0);
     var f51 = new TField("数量", TF, 51, "10");
@@ -671,9 +683,7 @@ function test180021() {
     var f60 = new TField("货品", TF_AC, 60, "3035", -1, 0);
     var f63 = new TField("数量", TF, 63, "20");
 
-    var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23, f24,
-            f27, f28, f31, f32, f35, f36, f39, f40, f43, f44, f47, f48, f51,
-            f52, f55, f56, f59, f60, f63 ];
+    fields = [ f48, f51, f52, f55, f56, f59, f60, f63 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -693,7 +703,7 @@ function test180021() {
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
-    query(fields);
+    tapButton(window, QUERY);
     tapFirstText();
 
     var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
@@ -1164,7 +1174,7 @@ function test180027() {
 
     tapMenu("盘点管理", "处理记录");
     var keys = { "日期到" : getDay(1), "门店" : "常青店", "是否撤销" : "否" };// "日期从" :
-                                                                    // getToday(),
+    // getToday(),
     var fields = checkProcessRecordFields(keys);
     query(fields);
 
@@ -2585,7 +2595,8 @@ function test180049_1() {
     tapReturn();
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ]};//, "日期从" : getToday(), "到" : getToday() 
+    var keys = { "门店" : [ "常青店", "in" ] };// , "日期从" : getToday(), "到" :
+    // getToday()
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
