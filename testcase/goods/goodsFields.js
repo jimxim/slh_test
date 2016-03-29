@@ -274,7 +274,7 @@ function queryGoodsField(key, show) {
         f = new TField("上架从", TF_DT, 2, "2015-9-11");
         break;
     case "market2":
-    case "到":
+    case "上架到":
         f = new TField("到", TF_DT, 3, "2015-9-14");
         break;
     case "color":

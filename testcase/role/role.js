@@ -8,6 +8,7 @@ function testWarehouseAll() {
 }
 
 function repealWarehouseSalesBill() {
+    // 主要是针对统计分析综合汇总，仓库店排序在常青店之前，现在修改统计分析的用例比较麻烦，因此在这先把仓库店的开单作废
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getDay(-30), "门店" : "仓库店", "作废挂单" : "正常" };
     var field = testSalesQueryBatchFields(keys);

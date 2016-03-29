@@ -99,7 +99,7 @@ function editCustomerField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 7, "000", -1,0);
+        f = new TField("店员", TF_AC, 7, "000", -1, 0);
         if (show) {
             f.value = "000,总经理";
         }
@@ -389,13 +389,13 @@ function queryCustomerActiveField(key, show) {
             f.value = "Qaq";
         }
         break;
-//    case "staff":
-//    case "店员":
-//        f = new TField("店员", TF_AC, 1, "000", -1, 0);
-//        if (show) {
-//            f.value = "000,管理员";
-//        }
-//        break;
+    // case "staff":
+    // case "店员":
+    // f = new TField("店员", TF_AC, 1, "000", -1, 0);
+    // if (show) {
+    // f.value = "000,管理员";
+    // }
+    // break;
     case "shop":
     case "门店":
         f = new TField("门店", TF_SC, 1, "仓库店");
@@ -497,6 +497,9 @@ function editCustomerProviderField(key, show) {
     case "name":
     case "名称":
         f = new TField("名称", TF, 0, "a");
+        if (show) {
+
+        }
         break;
     case "mobile":
     case "手机":
@@ -520,6 +523,7 @@ function editCustomerProviderField(key, show) {
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

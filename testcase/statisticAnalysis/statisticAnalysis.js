@@ -5,7 +5,8 @@
 //因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
 function testStatisticAnalysis001() {
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
-
+    run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
+    
     run("【统计分析—新增收入】新增类别", "test190012");
     run("【统计分析—新增收入】保存", "test190013");
     run("【统计分析—新增收入】返回", "test190014");

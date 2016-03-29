@@ -54,7 +54,7 @@ function testSalesOrder002() {
     run("【销售订货—按批次查】更多-查看修改日志", "test160011");
     run("【销售订货—按批次查】查看-终结订单", "test160012");
     run("【销售订货-按批次查】修改单据保存再点打印", "test160072");
-    run("【销售订货-按批次查】均色均码+修改已发货的订单", "test160073");
+    // run("【销售订货-按批次查】均色均码+修改已发货的订单", "test160073");
     run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
     run("【销售订货-按批次查】整单折扣模式只付预付款，检查折扣值", "test160089");// 开单模式7
     run("【销售订货-按明细查】作废订单后内容检查", "test160021");
@@ -2317,7 +2317,9 @@ function test160089() {
 
     query();
     tapFirstText();
+    pushTimeout(10);
     ret = isAnd(ret, isEqual("0.678", getTextFieldValue(window, 10)));// 折扣
+    popTimeout();
     tapReturn();
 
     qo = { "备注" : "开单模式" };

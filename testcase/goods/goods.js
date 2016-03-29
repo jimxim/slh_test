@@ -194,7 +194,7 @@ function testGoods001() {
 function testGoods002() {
     // 均色均码 开单模式2 省代模式
     run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
-    run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "test100101_100118");
+    // run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "test100101_100118");
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
     run(" 当前库存、款号库存、库存分布 检查底部数据汇总", "test100123");
@@ -225,8 +225,8 @@ function testGoods002() {
     run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
             "test100087_100088_100089");
     // 开单模式5
-    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
-            "test10_fuzzyQueryAndDropDownListCheck");
+    // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
+    // "test10_fuzzyQueryAndDropDownListCheck");
 
 }
 
@@ -2301,8 +2301,6 @@ function test100068_100069() {
 function test100070() {
     tapMenu("货品管理", "更多", "新增仓位+");
     var r = "cw" + getTimestamp(6);
-    var ret1 = false;
-    var ret2 = false;
     var f0 = new TField("名称", TF, 0, r);
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
@@ -2324,18 +2322,14 @@ function test100070() {
     tapKeyboardHide();
     delay();
     tapPrompt();
-    if (isIn(alertMsg, "名称不能为空")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "名称不能为空");
 
     f0 = new TField("名称", TF, 0, "AB");
     fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("保存修改");
     tapButtonAndAlert("none", OK, true);
-    if (isIn(alertMsg, "相同记录已存在")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg, "相同记录已存在");
 
     var r1 = r + "edit";
     f0 = new TField("名称", TF, 0, r1);

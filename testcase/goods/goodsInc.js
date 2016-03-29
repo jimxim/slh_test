@@ -378,29 +378,6 @@ function checkDate(str) {
     return reg.test(str);
 }
 
-function checkShowField(view1, fields, expected) {
-    var ret = true;
-    for ( var i in fields) {
-        var f = fields[i];
-        var idx = f.index;
-        var actual;
-        var type2 = f.type.substr(0, 2);
-        switch (type2) {
-        case TF:
-            actual = getTextFieldValue(view1, idx);
-            break;
-        case TV:
-            actual = getTextViewValue(view1, idx);
-            break;
-        default:
-            logWarn("未知type＝" + f.type);
-        }
-
-        var ok = isEqual(expected, actual);
-        ret = ret && ok;
-    }
-    return ret;
-}
 /**
  * 单项查询条件验证
  * @param qr

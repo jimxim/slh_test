@@ -14,14 +14,19 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testPurchaseOrder002();//待测
 
- run("测试用例", "ts130007_08");
+// run("【销售订货—按明细查】销售订货-按明细查页面已发数汇总与销售订货-按批次查页面已发数对比", "test160096");
+// run("【销售订货—订货汇总】按款号-待发数数值检查", "test160035");
+// run("【销售订货—订货汇总】按款号-未发数数值检查--多发", "test160036");
+// run("【销售订货—订货汇总】按款号-厂商查询", "test160037");
+// run("【销售订货—订货汇总】按款号-按客户", "test160038");
+
+ run("测试用例", "test110035");
 }
 
 function onlyTest(){
 // debugElementTree(window);
 
-
- return joP;
+// return joP;
 }
 
 function prepare200All(){
