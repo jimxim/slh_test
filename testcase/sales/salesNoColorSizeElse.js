@@ -102,7 +102,8 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】预付款", "test170266");
     run("【销售开单－按订货开单】清除数量", "test170267");
     run("【销售开单－按订货开单】开单日期检查", "test170272");
-
+}
+function testSalesNoColorSizeElseAll_1() {
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
     run("【销售开单-按订货开单】修改界面检查明细内容输入区域", "test170419");
     run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
@@ -133,10 +134,11 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－销售汇总】按类别汇总", "test170356");
     run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1");
     run("【销售开单－销售汇总-按客户销售】点击查询记录后页面检查", "test170331");
-
+}
+function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单－代收收款】清除功能", "test170286");
-    run("【销售开单－代收收款】核销代收收款功能", "test170287");
+    run("【销售开单－代收收款】核销代收收款功能", "test170287");// (综合收支表界面取值不稳定)
     run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");
     run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
     run("【销售开单－代收收款】店员下拉框检查", "test170289");
@@ -2705,7 +2707,7 @@ function test170287() {
     }
 
     ret2 = isAnd(ret2, isEqual("代收收款", d), isEqual(ds, add(Math
-            .abs(qr3.data[1]["金额"]), Math.abs(qr3.data[3]["金额"]))));
+            .abs(qr3.data[1]["金额"]), Math.abs(qr3.data[2]["金额"]))));
 
     delay();
     tapNaviLeftButton();

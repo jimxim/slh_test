@@ -25,19 +25,10 @@ function test000All() {
 // run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");// (弹窗检查不稳定)
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");//
 	
-// run("【销售开单－按订货开单】特殊货品金额计算", "test170264");//
+ run("【销售开单－按订货开单】特殊货品金额计算", "test170264");//
 	
 // run("【销售开单－销售汇总-按客户上货】按客户上货", "test170338_170344");//(修改测试程序)
-//    run("【销售开单-收款撤销】收款撤销", "test170277");
-// run("【销售开单－代收收款】核销代收收款功能", "test170287");//
-// run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
-// run("【销售开单】销售开单-销售汇总-按退货汇总，点击进入明细，内容检查", "test170394");//
-
-//    run("【销售开单+产品折扣+代收】销售开单-销售汇总-按店员汇总，检查代收", "test170379");
-//    run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170383");
-//    run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");
     
-    run("【销售开单－按批次查】底部数据统计检查", "test170018");
 	
 // run("","test1");
 }
@@ -169,7 +160,24 @@ function test000SalesNoColorSizeElse003() {
         logout();
     }
 }
-
+function test000SalesNoColorSizeElse004() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElseAll_1();
+        
+        logout();
+    }
+}
+function test000SalesNoColorSizeElse005() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSizeElseAll_2();
+        
+        logout();
+    }
+}
 function testSalesNoColorSize170240_Prepare() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
