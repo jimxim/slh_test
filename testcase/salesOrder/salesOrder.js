@@ -2317,9 +2317,7 @@ function test160089() {
 
     query();
     tapFirstText();
-    pushTimeout(10);
     ret = isAnd(ret, isEqual("0.678", getTextFieldValue(window, 10)));// 折扣
-    popTimeout();
     tapReturn();
 
     qo = { "备注" : "开单模式" };

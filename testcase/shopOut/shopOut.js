@@ -5,9 +5,9 @@
  */
 // 调拨不启用密码验证
 function testShopOut001() {
-    run("【门店调出-按批次查】翻页_排序_汇总", "test150001_1");
+    run("【门店调出-按批次查】翻页_排序", "ts150001_1");
     run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "test150001_2");
-    run("【门店调出-按明细查】翻页_排序_汇总", "test150001_3");
+    run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
     run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "test150001_4");
     run("【门店调出-按批次查】按批次查", "test150001");
     run("【门店调出-按批次查】作废", "test150002");
@@ -15,6 +15,11 @@ function testShopOut001() {
     run("【门店调出-批量调出】批量调出", "test150003");
     run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "test150007");
     // run("【门店调出-按明细查】加工商品单价检查", "test150011");//参数有问题
+}
+
+function testShopOut001Color() {
+    run("【门店调出-按批次查】翻页_排序", "ts150001_1");
+    run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
 }
 
 // 调拨启用密码验证
@@ -41,12 +46,7 @@ function testShopOutParams02() {
     return ret;
 }
 
-function test150001_1() {
-    tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店",
-        "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
-
+function ts150001_1() {
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-30) };
     var fields = shopOutQueryBatchFields(keys);
@@ -65,51 +65,28 @@ function test150001_1() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    logDebug("ret=" + ret);
-
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["金额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
-            sum2));
-    return ret && ret1;
+    return ret;
 }
 
 // 参数 门店调拨是否可以填写价格 改为默认只有数量
 function test150001_2() {
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" }
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
-    tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123",
-        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    tapMenu2("批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123" };
+    var det = editShopOutDet();
+    var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
 
-    tapMenu("门店调出", "按批次查");
-    var ret = false;
+    tapMenu2("按批次查");
     tap(getTextField(window, 2));
     var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret = true;
-            break;
-        }
-    }
+    var ret = isHasStaticTexts(getPopView(), "常青店");
     window.popover().dismiss();
 
     var keys = { "日期从" : getToday(), "日期到" : getToday(), "批次从" : batch,
@@ -133,7 +110,7 @@ function test150001_2() {
 
     return ret;
 }
-function test150001_3() {
+function ts150010_1() {
     tapMenu("门店调出", "按明细查");
     var keys = { "日期从" : getDay(-30) };
     var fields = shopOutQueryParticularFields(keys);
@@ -154,24 +131,10 @@ function test150001_3() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
 
-    logDebug("ret=" + ret);
-
     tapButton(window, QUERY);
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["金额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
-            sum2));
-    return ret && ret1;
+    var arr = [ "数量", "金额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
 }
 function test150001_4() {
     tapMenu("门店调出", "按明细查");
@@ -398,16 +361,24 @@ function test150011() {
     editShopOutDecruitIn(json);
 }
 
-function editShopOutDecruitIn(o) {
+function editShopOutDecruitIn(o, colorSize) {
     editShopOutDecruitField1(o, "调出人");
     editShopOutDecruitField1(o, "接收店");
     editShopOutDecruitField1(o, "日期");
     editShopOutDecruitField1(o, "备注");
     editShopOutDecruitField1(o, "操作人密码");
 
-    editShopOutDecruitDet(o);
+    if (colorSize == "yes") {
+        editSalesBillDetColorSize(o);
+    }
+    if (colorSize == "no") {
+        editSalesBillDetNoColorSize(o);
+    }
+    if (colorSize == "head") {
+        editSalesBillDetSizehead(o);
+    }
 
-    editShopOutDecruitSave(o);
+    editSalesBillSave(o);
 }
 
 function editShopOutDecruitField1(o, key) {
@@ -431,42 +402,18 @@ function editShopOutDecruitField1(o, key) {
     }
 }
 
-function editShopOutDecruitDet(o) {
-    var details = o["明细"];
-    for ( var i in details) {
-        var tfNum = getSalesBillDetTfNum(o);
-        var start = tfNum * i;
-        var d = details[i];
-
-        var f0 = new TField("货品", TF_AC, start, d["货品"], -1, 0);
-        setTFieldsValue(getScrollView(), [ f0 ]);
-
-        var f1 = new TField("数量", TF, start + 3, d["数量"]);
-        setTFieldsValue(getScrollView(), [ f1 ]);
-
-        var fields = [];
-        // 备注为最后一个
-        if (isDefined(d["备注"])) {
-            fields.push(new TField("备注", TF, start + tfNum - 1, d["备注"]));
-        }
-        setTFieldsValue(getScrollView(), fields);
+function editShopOutDet() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "名称" : "jkk", "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        break;
+    case "yes":
+        det = { "名称" : "auto001", "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
     }
-}
-
-// 不选择打印
-function editShopOutDecruitSave(o) {
-    if (isDefined(o["onlytest"])) {
-        return;
-    }
-
-    tapButtonAndAlert(SAVE, OK);
-    o["操作日期"] = getOpTime();
-    tapPrompt(CANCEL);
-    delay(2);
-    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
-        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
-        tapKeyboardHide();
-    } else {
-        tapReturn();
-    }
+    return det;
 }

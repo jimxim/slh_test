@@ -2490,25 +2490,21 @@ function test110041Verify_1() {
     // 000,总经理
     // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
-    var texts = getStaticTexts(window);
     var batchA = "批次   " + a2;
     var day = "日期   " + getToday();
     var market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
     var staff = "操作人   000,总经理";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    var exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
 
     tapNaviLeftButton();
     delay();
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a1;
     market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
     tapNaviLeftButton();
 
@@ -2529,21 +2525,17 @@ function test110041Verify_1() {
             test110041Field(qr, arr2));// arr1,arr2也许不在第一页
 
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a2;
     market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a1;
     market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
     tapNaviLeftButton();
 
@@ -2650,25 +2642,20 @@ function test110041Verify_2() {
     // 000,总经理
     // 核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]"
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
-    var texts = getStaticTexts(window);
     var batchA = "批次   " + a2;
     var day = "日期   " + getToday();
     var market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
     var staff = "操作人   000,总经理";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
-
+    var exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
     delay();
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a1;
     market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
     tapNaviLeftButton();
 
@@ -2689,21 +2676,17 @@ function test110041Verify_2() {
             test110041Field(qr, arr2));// arr1,arr2也许不在第一页
 
     tapTextByFirstWithName(a2, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a2;
     market = "备注   核销门店[常青店],批次[" + b2 + "],被核销批次[" + batch2 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
 
     tapTextByFirstWithName(a1, getScrollView(-1, 0));
-    texts = getStaticTexts(window);
     batchA = "批次   " + a1;
     market = "备注   核销门店[常青店],批次[" + b1 + "],被核销批次[" + batch1 + "]";
-    ret = isAnd(ret, isHasStaticTexts(texts, batchA), isHasStaticTexts(texts,
-            day), isHasStaticTexts(texts, market), isHasStaticTexts(texts,
-            staff));
+    exp = [ batchA, day, market, staff ];
+    ret = isAnd(ret, isHasStaticTexts(window, exp));
     tapNaviLeftButton();
     tapNaviLeftButton();
 

@@ -8,12 +8,12 @@ js_func="loginGoodsParams001"
 #js_func="$js_func setBasicSetUpAll"
 #新综合汇总接口
 js_func="$js_func loginSASynthesisAll"
+#统计分析
+js_func="$js_func login200StatisticAnalysisPrepare login000StatisticAnalysis001"
 #货品管理，省代
 js_func="$js_func login200GoodsPrepare login000Goods001 login000Goods002 "
 #往来管理
 js_func="$js_func login200CustomerPrepare login000Customer002 login000Customer001 "
-#统计分析
-js_func="$js_func login200StatisticAnalysisPrepare login000StatisticAnalysis001"
 #门店调出、门店调入
 js_func="$js_func login200ShopOut001 login000ShopIn001"
 #采购订货

@@ -14,6 +14,7 @@ function testSASynthesisAll() {
     }
     // var ok = run("新综合汇总接口参数设置", "setSASynthesisParams");
     var caseName = "【新综合汇总接口】";
+    run("作废仓库店的销售单", "repealWarehouseSalesBill");
     // if (ok) {
     run(caseName, "test190047");
     run(caseName, "test190048");

@@ -122,7 +122,7 @@ function shopOutDecruitField(key, show) {
     switch (key) {
     case "staff_out":
     case "调出人":
-        f = new TField("调出人", TF_AC, 0, "000", -1, 0);
+        f = new TField("调出人", TF_AC, 0, "200", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -136,7 +136,7 @@ function shopOutDecruitField(key, show) {
     // break;
     case "shop":
     case "接收店":
-        f = new TField("接收店", TF_SC, 1, "仓库店");
+        f = new TField("接收店", TF_SC, 1, "常青店");
         break;
     case "day":
     case "日期":

@@ -1,17 +1,6 @@
 //LuXingXin <52619481 at qq.com> 20151214
-//货品管理内部用到的一些方法
+//一些不靠谱的方法
 
-/**
- * 新增货品 混合keys
- */
-//function addGoodsKeysMix(newKeys) {
-//    var oldKeys = { "款号" : "goods", "名称" : "货品", "品牌" : "1010pp",
-//        "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
-//        "厂商" : "Adida公司", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
-//        "最大库存" : "1000", "经办人" : "000", "备注" : "123" }
-//    var ret = mixObject(oldKeys, newKeys);
-//    return ret;
-//}
 /**
  * 获取新增货品界面输入框的值
  * @returns {Array}
@@ -21,6 +10,7 @@ function getEditGoodsValue() {
     // 现在有26个
     for (var i = 0; i < 27; i++) {
         var j = i;
+        // 上架日期和吊牌价之间有一个隐藏的
         if (i >= 6) {
             j = i + 1;
         }
@@ -83,6 +73,7 @@ function getQRDet(view) {
                 var v = texts[index].value();
                 var x = getX(texts[index]);
                 var t = getKeyByXy(titlesX, x);
+                // 还需要优化 有些内容隐藏了，但还是可以取到
                 data1[t] = v;
             }
             data.push(data1);
@@ -475,6 +466,29 @@ function totalAndPageCheck() {
     goPage(1, qr);
     delay();
     return ret;
+}
+/**
+ * 等待loading图 有问题，待改
+ * @param maxTime最大等待时间，默认60s
+ */
+function waitForLoad(maxTime) {
+    if (isUndefined(maxTime)) {
+        maxTime = 60;
+    }
+    var times = 0;
+    while (times < maxTime) {
+        var indicator = window.activityIndicators()[0];
+        if (indicator != "[object UIAElementNil]") {
+            // UIALogger.logMessage("loading");
+            times += 1;
+        } else {
+            break;
+        }
+        delay();
+    }
+    if (times == maxTime) {
+        logDebug("加载超时" + maxTime + "s");
+    }
 }
 
 /**
@@ -1027,24 +1041,6 @@ function logisticsVerifySetField(o, key) {
 }
 
 /**
- * 指定超时
- * @param i 默认1秒
- */
-function pushTimeout(i) {
-    if (isUndefined(i)) {
-        i = 1;
-    }
-    target.pushTimeout(i);
-}
-
-/**
- * 超时弹出
- */
-function popTimeout() {
-    target.popTimeout();
-}
-
-/**
  * 撤销一段时间内的盘点记录
  */
 function repealRecordsForCheck(day) {
@@ -1132,18 +1128,21 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
 }
 
 /**
- * 静态文本中是否包含txt1 类似销售开单，代收，物流商界面的内容判断
+ * 静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
  * @param texts
- * @param txt1
+ * @param value
  * @param f1
  * @returns {Boolean}
  */
-function isHasStaticTexts(texts, txt1) {
-    var ret = false;
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isEqual(v, txt1)) {
-            ret = true;
+function isHasStaticTexts(view, arr) {
+    var ret = true;
+    var texts = getStaticTexts(view);
+    for (var i = 0; i < arr.length; i++) {
+        var value = arr[i];
+        var obj = texts.firstWithName(value);
+        ret = ret && obj != "[object UIAElementNil]";
+        if (!ret) {
+            logDebug("未找到内容为" + value + "的StaticTexts");
             break;
         }
     }

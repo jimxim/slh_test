@@ -166,8 +166,8 @@ function testGoods001() {
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
-    run("【货品管理-库存分布】库存分布", "test100006");
-    run("【货品管理-库存分布】库存分布_汇总", "test100006_1");
+    // run("【货品管理-库存分布】库存分布", "test100006");
+    run("【货品管理-库存分布】库存分布_汇总", "test100006_1");// 都不支持排序
     run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
     run("【货品管理-货品进销存】货品进销存", "test100008");
     run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
@@ -460,10 +460,9 @@ function test100001_3() {
 
     tapFirstText();
     delay();
+    var stVaule=["4562","Story"];
     // 验证明细界面左上角的款号与款号名称
-    var ret2 = isAnd(isEqual("4562",
-            getStaticTextValue(getScrollView(-1, 0), 0)), isEqual("Story",
-            getStaticTextValue(getScrollView(-1, 0), 1)));
+    var ret2 = isHasStaticTexts(getScrollView(-1, 0),stVaule);
 
     var i, j;
     qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
@@ -488,8 +487,8 @@ function test100001_3() {
     var stock2 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
-    ret2 = isAnd(ret2, isEqual("4562", getStaticTextValue(getScrollView(-1, 0),
-            0)), isEqual("Story", getStaticTextValue(getScrollView(-1, 0), 1)));
+    delay(); 
+    ret2 = isAnd(ret2,isHasStaticTexts(getScrollView(-1, 0),stVaule));
     var exp = { "调拨入库" : 50, "调拨出库" : -10, "销售出货" : -5, "采购进货" : 18,
         "采购进货" : 12 };
     var ret3 = isAnd(isEqualObject(exp, actual), isEqual(stock1, stock2),
@@ -878,37 +877,17 @@ function test100006_1() {
     query();
     var ret = goPageCheck();
 
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("库存", IS_NUM);
-    ret = ret && sortByTitle("价值", IS_NUM);
-    ret = ret && sortByTitle("仓库店", IS_NUM);
-    ret = ret && sortByTitle("常青店", IS_NUM);
-    ret = ret && sortByTitle("文一店", IS_NUM);
-    ret = ret && sortByTitle("中洲店", IS_NUM);
+    // ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("库存", IS_NUM);
+    // ret = ret && sortByTitle("价值", IS_NUM);
+    // ret = ret && sortByTitle("仓库店", IS_NUM);
+    // ret = ret && sortByTitle("常青店", IS_NUM);
+    // ret = ret && sortByTitle("文一店", IS_NUM);
+    // ret = ret && sortByTitle("中洲店", IS_NUM);
 
-    var qr = getQR();
-    // 库存 价值 仓库店 常青店 文一店 中洲店
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["库存"]);
-            sum2 += Number(qr.data[i]["价值"]);
-            sum3 += Number(qr.data[i]["仓库店"]);
-            sum4 += Number(qr.data[i]["常青店"]);
-            sum5 += Number(qr.data[i]["文一店"]);
-            sum6 += Number(qr.data[i]["中洲店"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var sum = sum3 + sum4 + sum5 + sum6;
-    var ret = isAnd(isEqual(sum1, qr.counts["库存"]), isAqualNum(sum2,
-            qr.counts["价值"], 0.01), isEqual(sum3, qr.counts["仓库店"]), isEqual(
-            sum4, qr.counts["常青店"]), isEqual(sum5, qr.counts["文一店"]), isEqual(
-            sum6, qr.counts["中洲店"]), isEqual(sum, qr.counts["库存"]));
-
+    // 这里 仓库店与文一店不一定有数据，所以不一定有汇总值
+    var arr = [ "库存", "价值", "常青店", "中洲店" ];
+    ret = ret && isEqualCounts(arr);
     return ret;
 }
 

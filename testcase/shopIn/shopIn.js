@@ -167,10 +167,10 @@ function test140002_140003() {
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
     var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "t150003");
-    var totalNumTFindex = getEditSalesTFindex("客户,厂商", "总数");
+//    var totalNumTFindex = getEditSalesTFindex("客户,厂商", "总数");
     var tfNum = getSalesBillDetTfNum({});
-    var market = getTextFieldValue(window, totalNumTFindex-1);// 整单备注
-    var sum = getTextFieldValue(window, totalNumTFindex);// 总数
+    var market = getTextFieldValue(window, 2);// 整单备注
+    var sum = getTextFieldValue(window, 1);// 总数
     var s1 = getTextFieldValue(getScrollView(), 3);// 3035的数量
     var s2 = getTextFieldValue(getScrollView(), tfNum + 3);// 4562的数量
     tapReturn();
