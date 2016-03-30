@@ -78,7 +78,7 @@ function checkPrepare_Off() {
 }
 function checkPrepare() {
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "作废挂单" : "待作废" };
+    var keys = { "日期从" : "2015-01-01", "作废挂单" : "待作废" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 

@@ -115,7 +115,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】订货额、已付、未付检查--核销预付款", "test170453");
     run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
-    // run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");// (弹窗检查不稳定)
+     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");
     run("【销售开单－销售汇总-按款号汇总】增加门店查询条件", "test170437");
     run("【销售开单-销售汇总－按客户未结】在上下级模式下看客户未结数据", "test170502");
@@ -138,7 +138,7 @@ function testSalesNoColorSizeElseAll_1() {
 function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单－代收收款】清除功能", "test170286");
-    run("【销售开单－代收收款】核销代收收款功能", "test170287");// (综合收支表界面取值不稳定)
+    run("【销售开单－代收收款】核销代收收款功能", "test170287");
     run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");
     run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
     run("【销售开单－代收收款】店员下拉框检查", "test170289");
@@ -700,15 +700,15 @@ function test170018() {
 function test170019() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "-1" } ],
-        "特殊货品" : { "抹零" : 21, "打包费" : 30 } };
+        "特殊货品" : { "抹零" : 21, "打包费" : 30 }, "现金" : "-171" };
     editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
     tapFirstText(getScrollView(), "序号", 20);
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var r = getQRverify(texts, "名称", 5);
-    var cash = r.data[0]["金额2"];
-    var bank = r.data[2]["金额2"];
+    var q = getQRverify(texts, "名称", 5);
+    var cash = q.data[0]["金额2"];
+    var bank = q.data[2]["金额2"];
 
     tapNaviLeftButton();
 
@@ -1628,12 +1628,13 @@ function test170264() {
     var a4 = getTextFieldValue(getScrollView(), 24);
     var a5 = getTextFieldValue(getScrollView(), 25);
 
-    var ret = isAnd(isEqual("部分发货", a), isEqual("1000", a1), isEqual("-1", a2),
-            isEqual("0", a3), isEqual("0", a4), isEqual("1", getTextFieldValue(
-                    getScrollView(), 30)), isEqual("1", getTextFieldValue(
-                    getScrollView(), 31)), isEqual("0", getTextFieldValue(
-                    getScrollView(), 32)), isEqual("0", getTextFieldValue(
-                    getScrollView(), 33)));
+    var ret = isAnd(isEqual("部分发货", a), isEqual("15", qr.data[0]["订货数"]),
+            isEqual("10", qr.data[0]["已发数"]), isEqual("5", qr.data[0]["差异数"]),
+            isEqual("1000", a1), isEqual("-1", a2), isEqual("0", a3), isEqual(
+                    "0", a4), isEqual("1", getTextFieldValue(getScrollView(),
+                    30)), isEqual("1", getTextFieldValue(getScrollView(), 31)),
+            isEqual("0", getTextFieldValue(getScrollView(), 32)), isEqual("0",
+                    getTextFieldValue(getScrollView(), 33)));
     saveAndAlertOk();
     tapPrompt();
 
@@ -1648,15 +1649,15 @@ function test170264() {
 
     tapFirstText();
 
-    ret = isAnd(ret,
-            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
-            isEqual(5, getTextFieldValue(getScrollView(), 3)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 7)), isEqual(
-                    "0", getTextFieldValue(getScrollView(), 10)), isEqual(
-                    "00000,抹零", getTextFieldValue(getScrollView(), 14)),
-            isEqual("0", getTextFieldValue(getScrollView(), 17)), isEqual(
-                    "00001,打包费", getTextFieldValue(getScrollView(), 21)),
-            isEqual("0", getTextFieldValue(getScrollView(), 24)));
+    var ret1 = isAnd(isEqual(5, sl), isAqualOptime(getOpTime(), opt), isEqual(
+            "3035,jkk", getTextFieldValue(getScrollView(), 0)), isEqual(5,
+            getTextFieldValue(getScrollView(), 3)), isEqual("k200,范范",
+            getTextFieldValue(getScrollView(), 7)), isEqual("0",
+            getTextFieldValue(getScrollView(), 10)), isEqual("00000,抹零",
+            getTextFieldValue(getScrollView(), 14)), isEqual("0",
+            getTextFieldValue(getScrollView(), 17)), isEqual("00001,打包费",
+            getTextFieldValue(getScrollView(), 21)), isEqual("0",
+            getTextFieldValue(getScrollView(), 24)));
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -1667,7 +1668,7 @@ function test170264() {
 
     tapFirstText();
 
-    ret = isAnd(ret,
+    var ret2 = isAnd(
             isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
             isEqual(0, getTextFieldValue(getScrollView(), 3)), isEqual(
                     "k200,范范", getTextFieldValue(getScrollView(), 7)), isEqual(
@@ -1678,7 +1679,8 @@ function test170264() {
             isEqual("1", getTextFieldValue(getScrollView(), 24)));
     tapReturn();
 
-    return ret;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170265() {
     tapMenu("销售订货", "新增订货+");
@@ -7293,7 +7295,34 @@ function test170479() {
 
     return ret && ret1;
 }
+function test170482_prepare() {
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : getDay(-2), "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+
+    var qr = getQR();
+    var total1 = qr.total;
+    for (var i = 0; i < total1; i++) {
+
+        tapButton(getScrollView(), 0);
+        tapButton(window, "盘点撤销");
+        delay();
+    }
+
+    qr = getQR();
+    var total2 = qr.total;
+    var ret = false;
+    if (total2 < 1) {
+        ret = true;
+    }
+
+    return ret;
+}
 function test170482() {
+    test170482_prepare();
+
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "lt",
@@ -7312,7 +7341,9 @@ function test170482() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "保存成功");
+    // var ret = false;
+    // var alertMsg1 = getArray1(alertMsgs, -1);
+    // ret = isIn(alertMsg1, "保存成功");
 
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getDay(-2), "作废挂单" : "正常" };
@@ -7320,10 +7351,11 @@ function test170482() {
     query(fields);
     var qr = getQR();
 
-    ret = isAnd(ret, isIn(getDay(-2), qr.data[0]["日期"]), isAqualOptime(
-            getOpTime(), qr.data[0]["操作日期"], 2));
+    var ret1 = isAnd(isIn(getDay(-2), qr.data[0]["日期"]), isAqualOptime(
+            getOpTime(), qr.data[0]["操作日期"]));
 
-    return ret;
+    logDebug(", ret1=" + ret1);
+    return ret1;
 }
 function test170502() {
     tapMenu("销售开单", "开  单+");

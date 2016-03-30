@@ -7,11 +7,18 @@ js_func="setSales001Params"
 #销售开单
 js_func="$js_func test000SalesNoColorSize001"
 js_func="$js_func test000SalesNoColorSize002"
-js_func="$js_func test000SalesNoColorSize003"
+js_func="$js_func test000SalesNoColorSize004"
+#js_func="$js_func test000SalesNoColorSize003"
 
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse003"
+js_func="$js_functest000SalesNoColorSizeElse004"
+js_func="$js_functest000SalesNoColorSizeElse005"
+
+js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse002"
+
+js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001"
 ＃js_func="$js_func testSalesNoColorSize170140_Params"
 ＃js_func="$js_func testSalesNoColorSize170140"
