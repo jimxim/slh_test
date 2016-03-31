@@ -44,7 +44,6 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－物流单查询】查询条件组合查询", "test170285");
     run("【销售开单－物流单查询】下拉列表", "test170285_1");
     run("【销售开单－物流单查询】底部数据统计汇总", "test170285_2");
-    run("【销售开单－物流单查询】翻页／排序", "test170285_3");
     run("【销售开单－更多-代收收款查询】单项查询", "test170295");
     run("【销售开单－更多-代收收款查询】组合查询", "test170296");
     run("【销售开单－更多-代收收款查询】清除", "test170297");
@@ -115,7 +114,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】订货额、已付、未付检查--核销预付款", "test170453");
     run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
-     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
+    run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");
     run("【销售开单－销售汇总-按款号汇总】增加门店查询条件", "test170437");
     run("【销售开单-销售汇总－按客户未结】在上下级模式下看客户未结数据", "test170502");
@@ -189,7 +188,7 @@ function test170001_1_170010_170011_170012() {
     ret = ret && sortByTitle("客户分店", IS_NUM);
     ret = ret && sortByTitle("配货");
     ret = ret && sortByTitle("备注");
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
 
     query(fields);
@@ -2005,7 +2004,7 @@ function test170272() {
     query(fields);
     qr = getQR();
 
-    var ret2 = isAnd(isIn(getDay(-3), qr.data[0]["日期"]), isAqualOptime(
+    var ret2 = isAnd(isEqual(getDay(-3,""), qr.data[0]["日期"]), isAqualOptime(
             getOpTime(), qr.data[0]["操作日期"], 2), isEqual(0, qr.data[0]["差异数"]),
             isEqual("全部发货", qr.data[0]["发货状态"]));
 
@@ -2397,7 +2396,7 @@ function test170284() {
     var ret = isEqual("圆通速递", a);
 
     tapMenu("销售开单", "物流单");
-    var keys1 = { "日期从" : getDay(-60), "日期到" : getToday() }
+    var keys1 = { "日期从" : getDay(-60) }
     var fields1 = salesQueryLogisticsFields(keys1);
     query(fields1);
     var qr1 = getQR();
@@ -2454,9 +2453,9 @@ function test170285() {
     var num = Number(q.data[0]["批次"]);
 
     tapMenu("销售开单", "物流单");
-    var keys = { "客户" : "ls", "日期从" : getDay(-60), "日期到" : getToday(),
-        "物流商" : "圆通速递", "批次从" : num - 1, "批次到" : num, "门店" : "常青店",
-        "运单号" : "123", "是否收款" : "否", "是否作废" : "否" };
+    var keys = { "客户" : "ls", "日期从" : getDay(-60), "物流商" : "圆通速递",
+        "批次从" : num - 1, "批次到" : num, "门店" : "常青店", "运单号" : "123",
+        "是否收款" : "否", "是否作废" : "否" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
 
@@ -2525,7 +2524,7 @@ function test170285_1() {
     query();
 
     tapMenu("销售开单", "物流单");
-    var keys = { "客户" : "ls", "日期从" : getDay(-60), "日期到" : getToday() }
+    var keys = { "客户" : "ls", "日期从" : getDay(-60) }
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     var q = getQR();
@@ -2558,8 +2557,7 @@ function test170285_1() {
     return ret && ret1 && ret2 && ret3;
 }
 function test170285_2() {
-    var keys = { "客户" : "ls", "日期从" : getDay(-10), "日期到" : getToday(),
-        "是否作废" : "否" };
+    var keys = { "客户" : "ls", "日期从" : getDay(-10), "是否作废" : "否" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     var qr = getQR();
@@ -2579,32 +2577,6 @@ function test170285_2() {
     var ret = isAnd(isEqual(qr.counts["代收金额"], sum1));
 
     logDebug("sum1=" + sum1);
-    return ret;
-}
-function test170285_3() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
-        "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "物流单");
-    var keys = { "客户" : "ls", "日期从" : getDay(-60) };
-    var fields = salesQueryLogisticsFields(keys);
-    query(fields);
-    // 点击翻页
-    var ret = goPageCheck();
-
-    ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("日期");
-    ret = ret && sortByTitle("门店");
-    ret = ret && sortByTitle("客户");
-    ret = ret && sortByTitle("物流商");
-    ret = ret && sortByTitle("运单号");
-    ret = ret && sortByTitle("代收货款");
-    ret = ret && sortByTitle("代收金额", IS_NUM);
-    ret = ret && sortByTitle("货款收讫");
-    ret = ret && sortByTitle("物流备注");
-
     return ret;
 }
 function test170286() {

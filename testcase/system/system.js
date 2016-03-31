@@ -1157,6 +1157,10 @@ function test210039() {
 
     tapReturn();
 
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret && ret1;
 }
 function test210039_1() {

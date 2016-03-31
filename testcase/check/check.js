@@ -122,7 +122,7 @@ function test180001_180003_180005() {
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("盘点日期");
+    ret = ret && sortByTitle("盘点日期",IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("处理时间");
     ret = ret && sortByTitle("处理人");
@@ -457,7 +457,7 @@ function test180013_1_180055() {
     ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("盘点数量", IS_NUM);
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_DATE2);
 
     var qr = getQR();
     var sum1 = 0;
@@ -1345,7 +1345,7 @@ function test180037() {
     ret = ret && sortByTitle("盘后", IS_NUM);
     ret = ret && sortByTitle("盈亏", IS_NUM);
     ret = ret && sortByTitle("盈亏金额", IS_NUM);
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_DATE2);
 
     var qr = getQR();
     var sum1 = 0;
@@ -2633,10 +2633,10 @@ function test180053() {
     //
     ret = ret && sortByTitle("选择");
     ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("盘点日期");
+    ret = ret && sortByTitle("盘点日期",IS_DATE2);
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期");
+    ret = ret && sortByTitle("操作日期",IS_OPTIME);
     ret = ret && sortByTitle("备注");
 
     query();
