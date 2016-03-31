@@ -12,8 +12,8 @@ js_func="$js_func test000SalesNoColorSize004"
 
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse003"
-js_func="$js_functest000SalesNoColorSizeElse004"
-js_func="$js_functest000SalesNoColorSizeElse005"
+js_func="$js_func test000SalesNoColorSizeElse004"
+js_func="$js_func test000SalesNoColorSizeElse005"
 
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse002"
@@ -26,8 +26,8 @@ js_func="$js_func test000SalesNoColorSizeElse001"
 ＃js_func="$js_func testSalesNoColorSize170429"
 ＃js_func="$js_func testSalesNoColorSize170125_Params"
 ＃js_func="$js_func testSalesNoColorSize170125"
-＃js_func="testSalesNoColorSize170240_Prepare"
-＃js_func="testSalesNoColorSize170240"
+＃js_func="test SalesNoColorSize170240_Prepare"
+＃js_func="test SalesNoColorSize170240"
 #统计图表
 js_func="$js_func test000testStatisticPicture001"
 #系统设置

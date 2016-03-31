@@ -137,8 +137,8 @@ function testSalesNoColorSizeElseAll_1() {
 function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单－代收收款】清除功能", "test170286");
-    run("【销售开单－代收收款】核销代收收款功能", "test170287");
     run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");
+    run("【销售开单－代收收款】核销代收收款功能", "test170287");
     run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
     run("【销售开单－代收收款】店员下拉框检查", "test170289");
     run("【销售开单－代收收款】核销代收单", "test170290");
@@ -1670,6 +1670,7 @@ function test170266() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
+    query();
     tapFirstText();
     tapButton(window, "预付款");
 
@@ -1683,7 +1684,7 @@ function test170266() {
 
     var ret = isAnd(isEqual(getDay(), a), isEqual("002,仓管员", a1), isEqual(
             "500", a2), isEqual(100, a3), isEqual(200, a4));
-    target.frontMostApp().mainWindow().popover().dismiss();
+    window.popover().dismiss();
     tapReturn();
 
     return ret;
@@ -1698,6 +1699,7 @@ function test170267() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
+    query();
     tapFirstText();
 
     tapButton(window, "清除数量");
@@ -1713,7 +1715,7 @@ function test170267() {
     return ret;
 }
 function test170268() {
-    // // (关闭参数异地发货仓库)，设置全局参数 按订货开单是否按当前库存自动填写发货数 为 自动填写 ,然后重新登录
+    // (关闭参数异地发货仓库)，设置全局参数 按订货开单是否按当前库存自动填写发货数 为 自动填写 ,然后重新登录
     var qo, o, ret = true;
     qo = { "备注" : "发货数" };
     o = { "新值" : "1", "数值" : [ "自动填写", "in" ] };
@@ -3903,7 +3905,7 @@ function test170313() {
     // editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "类型" : "退货" };
+    var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
     var qr = getQR();
@@ -3915,7 +3917,7 @@ function test170313() {
             / totalReturn));
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "类型" : "换码" };
+    var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "换码" };
     var fields = salesReturnFields(keys);
     query(fields);
     var qr = getQR();
@@ -3926,7 +3928,7 @@ function test170313() {
     var ret = isAnd(ret, isEqual("换码", b));
 
     tapMenu("销售开单", "按明细查");
-    var keys = { "门店" : "常青店", "日期从" : getDay(-30), "类型" : "退货" };
+    var keys = { "门店" : "常青店", "日期从" : getDay(-10), "类型" : "退货" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -3934,7 +3936,7 @@ function test170313() {
     var xj = qr.counts["小计"];
 
     tapMenu("销售开单", "按明细查");
-    var keys = { "门店" : "常青店", "日期从" : getDay(-30), "类型" : "换码" };
+    var keys = { "门店" : "常青店", "日期从" : getDay(-10), "类型" : "换码" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -3942,7 +3944,7 @@ function test170313() {
     var xj1 = qr.counts["小计"];
 
     tapMenu("销售开单", "按明细查");
-    var keys = { "门店" : "常青店", "日期从" : getDay(-30), "款号" : "00000" };
+    var keys = { "门店" : "常青店", "日期从" : getDay(-10), "款号" : "00000" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -3952,14 +3954,15 @@ function test170313() {
             isEqual(add(totalMoney, totalMoney1), -sub(add(xj, xj1), xj2)));
 
     tapMenu("统计分析", "综合汇总");
-    var keys = { "day1" : getDay(-30), "shop" : "常青店" };
+    var keys = { "day1" : getDay(-10), "shop" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
     qr = getQR();
 
     var ret1 = isAnd(isEqual(add(totalReturn, totalReturn1), qr.counts["退数"]),
-            isEqual(add(totalMoney, totalMoney1), qr.counts["退额"]));
+            isAqualNum(add(totalMoney, totalMoney1), qr.counts["退额"], 2));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170314() {
@@ -7234,7 +7237,7 @@ function test170472() {
 }
 function test170479() {
     tapMenu("货品管理", "新增货品+");
-    var r = "anewkhao" + getTimestamp(4);
+    var r = "anewK479Hao" + getTimestamp(4);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "产品折扣" : "1.5" }
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
@@ -7259,7 +7262,7 @@ function test170479() {
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
-    var keys = { "日期从" : getDay(-1), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-1) };
     var fields = salesBillOrderFields(keys);
     query(fields);
     tapFirstText();
