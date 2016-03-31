@@ -291,7 +291,7 @@ function test120005() {
     saveAndAlertOk();
     delay();
     tapPrompt();
-    var ret = isIn(alertMsg, "必须从下拉列表选择");
+    var ret = isIn(alertMsg, "货品 必须从下拉列表选择");
     tapButton(getScrollView(), 1);
 
     f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);

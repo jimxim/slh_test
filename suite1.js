@@ -47,20 +47,19 @@ function test000All() {
 // run("【货品管理-更多-新增仓位】新增仓位,修改页面返回", "test100073_100074");
 // run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
 // "test100087_100088_100089");
-   
 
- run("测试用例", "onlyTest");
+ run("测试用例", "ts150001");
 }
 
 function onlyTest(){
 // debugElementTree(window);
- tapMenu2("按批次查");
- tap(getTextField(window, 2));
- var texts = getStaticTexts(getPopView());
- var ret = isHasStaticTexts(getPopView(), "常青店");
- window.popover().dismiss();
-
- return ret;
+    editSPCBill(90);
+    tapButtonAndAlert(SAVE, OK);
+    var cond="!isIn(alertMsg, '确定保存吗')";
+    waitUntil(cond, 10);
+    var ret = isIn(alertMsg, "保存成功");
+    tapButton(window, RETURN);
+    return ret;
 }
 
 function prepare200All(){

@@ -244,7 +244,7 @@ function test110005() {
     editSalesBillCustomer(json);
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "必须从下拉列表选择");
+    var ret = isIn(alertMsg, "客户或厂商 必须从下拉列表选择");
     tapReturn();
 
     tapMenu("往来管理", "客户查询");
@@ -552,7 +552,7 @@ function test110012() {
     editSalesBillCustomer(json);
     saveAndAlertOk();
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "必须从下拉列表选择"));
+    ret = isAnd(ret, isIn(alertMsg, "客户或厂商 必须从下拉列表选择"));
     tapReturn();
 
     return ret;

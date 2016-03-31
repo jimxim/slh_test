@@ -286,7 +286,7 @@ function test160051() {
     delay();
     saveAndAlertOk();
     tapPrompt();
-    var ret = isAnd(isIn(alertMsg, "必须从下拉列表选择"), ret1, ret2);
+    var ret = isAnd(isIn(alertMsg, "客户或厂商 必须从下拉列表选择"), ret1, ret2);
     tapReturn();
 
     return ret;

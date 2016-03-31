@@ -83,7 +83,7 @@ function shopOutQueryParticularField(key, show) {
         f = new TField("日期从", TF_DT, 3, "2015-9-11");
         break;
     case "day2":
-    case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 4, "2015-9-16");
         break;
 

@@ -119,6 +119,10 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "默认显示零批价或打包价" };
+    o = { "新值" : "1", "数值" : [ "默认零批价" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 
@@ -225,8 +229,8 @@ function testGoods002() {
     run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
             "test100087_100088_100089");
     // 开单模式5
-    // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
-    // "test10_fuzzyQueryAndDropDownListCheck");
+    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
+            "test10_fuzzyQueryAndDropDownListCheck");
 
 }
 
@@ -460,9 +464,9 @@ function test100001_3() {
 
     tapFirstText();
     delay();
-    var stVaule=["4562","Story"];
+    var stVaule = [ "4562", "Story" ];
     // 验证明细界面左上角的款号与款号名称
-    var ret2 = isHasStaticTexts(getScrollView(-1, 0),stVaule);
+    var ret2 = isHasStaticTexts(getScrollView(-1, 0), stVaule);
 
     var i, j;
     qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
@@ -487,8 +491,8 @@ function test100001_3() {
     var stock2 = qr.data[0]["数量"];
     tapNaviLeftButton();
     tapNaviLeftButton();
-    delay(); 
-    ret2 = isAnd(ret2,isHasStaticTexts(getScrollView(-1, 0),stVaule));
+    delay();
+    ret2 = isAnd(ret2, isHasStaticTexts(getScrollView(-1, 0), stVaule));
     var exp = { "调拨入库" : 50, "调拨出库" : -10, "销售出货" : -5, "采购进货" : 18,
         "采购进货" : 12 };
     var ret3 = isAnd(isEqualObject(exp, actual), isEqual(stock1, stock2),
@@ -610,21 +614,32 @@ function testGoods002Field(n1, n2) {
  * 款号名称模糊查询 款号下拉列表验证产品折扣
  */
 function test10_fuzzyQueryAndDropDownListCheck() {
-    tapMenu("货品管理", "当前库存");
-    var ret1 = isAnd(dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
-            fuzzyQueryCheckField(1, "款号", "3", "名称"));
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    var ok = setGlobalParam(qo, o);
+    if (ok) {
+        tapMenu("货品管理", "当前库存");
+        var ret1 = isAnd(dropDownListCheck(0, "456",
+                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号",
+                "3", "名称"));
 
-    tapMenu("货品管理", "款号库存");
-    var ret2 = isAnd(dropDownListCheck(0, "456", "4562,Story,200元,0.9,1010pp"),
-            fuzzyQueryCheckField(1, "款号", "3", "名称"));
+        tapMenu("货品管理", "款号库存");
+        var ret2 = isAnd(dropDownListCheck(0, "456",
+                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号",
+                "3", "名称"));
 
-    tapMenu("货品管理", "货品进销存");
-    var ret3 = isAnd(dropDownListCheck(1, "456", "4562,Story,200元,0.9,1010pp"),
-            fuzzyQueryCheckField(2, "款号", "3", "名称"));
+        tapMenu("货品管理", "货品进销存");
+        var ret3 = isAnd(dropDownListCheck(1, "456",
+                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号",
+                "3", "名称"));
 
-    tapMenu("货品管理", "货品查询");
-    var ret4 = fuzzyQueryCheckField(1, "款号", "z", "名称");
-    return isAnd(ret1, ret2, ret3, ret4);
+        tapMenu("货品管理", "货品查询");
+        var ret4 = fuzzyQueryCheckField(1, "款号", "z", "名称");
+    }
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return isAnd(ok, ret1, ret2, ret3, ret4);
 }
 
 // function test100004() {
