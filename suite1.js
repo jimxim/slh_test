@@ -48,18 +48,13 @@ function test000All() {
 // run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
 // "test100087_100088_100089");
 
- run("测试用例", "ts150001");
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    editSPCBill(90);
-    tapButtonAndAlert(SAVE, OK);
-    var cond="!isIn(alertMsg, '确定保存吗')";
-    waitUntil(cond, 10);
-    var ret = isIn(alertMsg, "保存成功");
-    tapButton(window, RETURN);
-    return ret;
+    var staffIdx = getEditSalesTFindex("调出人", "现金");
+    return staffIdx;
 }
 
 function prepare200All(){

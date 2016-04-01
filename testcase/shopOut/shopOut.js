@@ -7,24 +7,23 @@
 function testShopOut001() {
     run("【门店调出-按批次查】翻页_排序", "ts150001_1");
     run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
-    var ok = tsShopOutParams();
+    run("【门店调出-按批次查】作废", "ts150002");
+    var ok = setShopOutParams();
     if (ok) {
         run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "ts150001_2");
         run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "ts150010_2");
-        run("【门店调出-按批次查】按批次查", "ts150001");
+        run("【门店调出-按批次查】按批次查作废，汇总", "ts150001_09");
+
+//        run("【门店调出-批量调出】批量调出", "ts150003");
+//        run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");
     } else {
         UIALogger.logFail("修改参数失败");
     }
 
-    
-    run("【门店调出-按批次查】作废", "test150002");
-    // 调拨按销价3核算
-    run("【门店调出-批量调出】批量调出", "test150003");
-    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "test150007");
-    // run("【门店调出-按明细查】加工商品单价检查", "test150011");//参数有问题
+    run("【门店调出-按明细查】加工商品单价检查", "ts150011");
 }
 
-function tsShopOutParams() {
+function setShopOutParams() {
     var qo, o, ret = true;
     qo = { "备注" : "门店调拨是否可以填写价格" };
     o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
@@ -190,7 +189,7 @@ function ts150010_2() {
 
     return ret;
 }
-function ts150001() {
+function ts150001_09() {
     var det = editShopOutDet();
 
     tapMenu("货品管理", "当前库存");
@@ -200,6 +199,11 @@ function ts150001() {
     var qr = getQR();
     var arr1 = ts150001Field(qr, det);
 
+    tapMenu("门店调出", "按批次查");
+    query();
+    qr = getQR();
+    var count1 = qr.counts;
+
     tapMenu("门店调出", "批量调出+");
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "作废" };
     var json = mixObject(jo, det);
@@ -207,18 +211,32 @@ function ts150001() {
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
+    qr = getQR();
     var arr2 = ts150001Field(qr, det);
     var exp = { "常库存" : 0, "常在途" : 50, "中库存" : -50, "中在途" : 0 };
     var ret = isEqualObject(exp, subObject(arr2, arr1));
 
     tapMenu("门店调出", "按批次查");
     query();
+    qr = getQR();
+    var count2 = qr.counts;
+    exp = { "数量" : 50, "金额" : 8000 };
+    ret = isAnd(ret, isEqualObject(exp, subObject(count2, count1)));
+
     tapFirstText();
     tapButtonAndAlert("作 废");
+    // 作废后会自动返回按批次查界面，但是有点慢
+    var cond = " window.buttons()['按批次查'].isVisible()";
+    waitUntil(cond, 10);
     // tapButton(window, RETURN);
+
+    qr = getQR();
+    count2 = qr.counts;
+    ret = isAnd(ret, isEqualObject(count1, count2));
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
+    qr = getQR();
     arr2 = ts150001Field(qr, det);
     ret = isAnd(ret, isEqualObject(arr1, arr2));
 
@@ -227,15 +245,13 @@ function ts150001() {
 
 function ts150001Field(qr, det) {
     var arr = { "常库存" : 0, "常在途" : 0, "中库存" : 0, "中在途" : 0 };
-    for (var i = 0; i < qr.curPageTotal; i++) {
-        if (arr["常库存"] != 0 && qr.data[i]["仓库/门店"] == "常青店"
-                && qr.data[i]["颜色"] == det["颜色"]
+    for (var i = 0; i < qr.data.length; i++) {
+        if (qr.data[i]["仓库/门店"] == "常青店" && qr.data[i]["颜色"] == det["颜色"]
                 && qr.data[i]["尺码"] == det["尺码"]) {
             arr["常库存"] = qr.data[i]["库存"];
             arr["常在途"] = qr.data[i]["在途数"];
         }
-        if (arr["中库存"] != 0 && qr.data[i]["仓库/门店"] == "中洲店"
-                && qr.data[i]["颜色"] == det["颜色"]
+        if (qr.data[i]["仓库/门店"] == "中洲店" && qr.data[i]["颜色"] == det["颜色"]
                 && qr.data[i]["尺码"] == det["尺码"]) {
             arr["中库存"] = qr.data[i]["库存"];
             arr["中在途"] = qr.data[i]["在途数"];
@@ -244,9 +260,9 @@ function ts150001Field(qr, det) {
     return arr;
 }
 
-function test150002() {
+function ts150002() {
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-365), "调出门店" : "中洲店" };
+    var keys = { "日期从" : getDay(-60), "调出门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
 
@@ -262,28 +278,47 @@ function test150002() {
     return ret;
 }
 
-function test150003() {
+// 与ts140002_140003成对
+function ts150003() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = {
+            "名称" : "jkk",
+            "颜色" : "均色",
+            "尺码" : "均码",
+            "明细" : [ { "货品" : "3035", "数量" : 50 }, { "货品" : "4562", "数量" : 25 } ] };
+        break;
+    case "yes":
+        det = {
+            "名称" : "auto001",
+            "颜色" : "花色",
+            "尺码" : "L",
+            "明细" : [ { "货品" : "agc001", "数量" : [ 10, 20 ] },
+                    { "货品" : "agc002", "数量" : [ 25 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
     tapMenu("门店调出", "按批次查");
     query();
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]) + 1;
 
-    tapMenu("门店调出", "批量调出+");
-    var json = {
-        "调出人" : "204",
-        "接收店" : "常青店",
-        "备注" : "t150003",
-        "明细" : [ { "货品" : "3035", "数量" : "50" }, { "货品" : "4562", "数量" : "25" } ] };
-    editShopOutDecruitIn(json);
+    tapMenu2("批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "ts150003",
+        "onlytest" : "yes" };
+    var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
+    var title = [ "调出人", "接收店", "日期", "备", "总数" ];
+    var v1 = getEditBillValue("调出人", title);
+    var data = getQRDet().data;
+    editSalesBillSave({});
 
     tapButton(window, QUERY);
     tapFirstText();
-    var tfNum = getSalesBillDetTfNum({});
-    var ret = isAnd(isIn(getTextFieldValue(getScrollView(), 0), "3035,jkk"),
-            isEqual("50", getTextFieldValue(getScrollView(), 3)), isIn(
-                    getTextFieldValue(getScrollView(), 5), "4562,Story"),
-            isEqual("25", getTextFieldValue(getScrollView(), tfNum + 3)));
-    tapButton(window, RETURN);
 
     tapMenu("门店调出", "按明细查");
     query();
@@ -375,11 +410,41 @@ function test150007() {
 
 }
 
-function test150011() {
+function ts150011() {
+    var qo = { "备注" : "调拨核算价格" };
+    var o = { "新值" : "0", "数值" : [ "调拨按进货价核算", "in" ] };
+    var ret = setGlobalParam(qo, o);
+
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "名称" : "auto003", "颜色" : "均色", "尺码" : "均码",
+            "明细" : [ { "货品" : "agc003", "数量" : 25 } ] };
+        break;
+    case "yes":
+        det = { "名称" : "auto004", "颜色" : "花色", "尺码" : "L",
+            "明细" : [ { "货品" : "agc004", "数量" : [ 25 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "常青店",
-        "明细" : [ { "货品" : "3035", "数量" : "-5", "备注" : "备注abc123" } ] };
-    editShopOutDecruitIn(json);
+    var jo = { "调出人" : "200", "接收店" : "常青店" };
+    var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按明细查");
+    query();
+    var qr = getQR();
+    ret = isAnd(ret, isEqual(100, qr.data[0]["单价"]));
+
+    qo = { "备注" : "调拨核算价格" };
+    o = { "新值" : "3", "数值" : [ "调拨按销价3核算", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
 }
 
 function editShopOutDecruitIn(o, colorSize) {

@@ -1,5 +1,67 @@
 //LuXingXin <52619481 at qq.com> 20151214
 //一些不靠谱的方法
+/**
+ * 新增客户
+ * @param keys
+ */
+function addCustomer(keys, check) {
+    tapMenu("往来管理", "新增客户+");
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    var ret = true;
+    if (isDefined(check) && check == "yes") {
+        tapMenu("往来管理", "客户查询");
+        var qKeys = { "客户名称" : keys["名称"] };
+        fields = queryCustomerFields(qKeys);
+        var qr = getQR();
+        ret = isEqual(keys["名称"], qr.data[0]["名称"]);
+    }
+    return ret;
+}
+/**
+ * 库存调整单 r:调整后库存
+ */
+function addGoodsStockAdjustment(r) {
+    tapFirstText();
+    tapNaviButton("库存调整");
+    test100090Field1(r);
+    runAndAlert("test100090Field", OK);
+    tapNaviLeftButton();
+}
+/**
+ * 新增厂商
+ * @param keys
+ */
+function addProvider(keys) {
+    tapMenu("往来管理", "新增厂商+");
+    var fields = editCustomerProviderFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+
+    delay();
+    tapReturn();
+}
+/**
+ * 获取开单界面window视图中的值,标题与文本框必须一一对应
+ * @param firstTitle 起始标题
+ * @param arr 需要获取的标题数组
+ * @returns
+ */
+function getEditBillValue(firstTitle, arr) {
+    var data = {};
+    for (var i = 0; i < arr.length; i++) {
+        var title = arr[i];
+        var index = getEditSalesTFindex(firstTitle, title);
+        if (index >= 0) {
+            data[title] = getTextFieldValue(window, index);
+        }
+    }
+    return data;
+}
 
 /**
  * 获取新增货品界面输入框的值
@@ -122,7 +184,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var j = 0;
     for (var i = firstIndex; i <= lastIndex; i++) {
         titles[j] = texts[i].value();
-        j++
+        j++;
     }
 
     var titleNum = titles.length;
@@ -220,54 +282,6 @@ function addGoods(keys, colorSize, price, day) {
             priceStartIndex);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-
-    delay();
-    tapReturn();
-}
-
-/**
- * 库存调整单 r:调整后库存
- */
-function addGoodsStockAdjustment(r) {
-    tapFirstText();
-    tapNaviButton("库存调整");
-    test100090Field1(r);
-    runAndAlert("test100090Field", OK);
-    tapNaviLeftButton();
-}
-
-/**
- * 新增客户
- * @param keys
- */
-function addCustomer(keys, check) {
-    tapMenu("往来管理", "新增客户+");
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapReturn();
-
-    var ret = true;
-    if (isDefined(check) && check == "yes") {
-        tapMenu("往来管理", "客户查询");
-        var qKeys = { "客户名称" : keys["名称"] };
-        fields = queryCustomerFields(qKeys);
-        var qr = getQR();
-        ret = isEqual(keys["名称"], qr.data[0]["名称"]);
-    }
-    return ret;
-}
-
-/**
- * 新增厂商
- * @param keys
- */
-function addProvider(keys) {
-    tapMenu("往来管理", "新增厂商+");
-    var fields = editCustomerProviderFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
 
     delay();
     tapReturn();

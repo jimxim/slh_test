@@ -1,9 +1,9 @@
 //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrder001() {
-    run("【采购订货-按批次查】翻页_排序", "ts130001_1");// 差异数目前不支持排序
-    run("【采购订货-按批次查】汇总", "ts130001Count");
-    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130001_2");
+    run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
+    run("【采购订货-按批次查】汇总", "ts130020Count");
+    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130020_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "ts130002_1");
     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "ts130002_2");
     run("【采购订货-按明细查】作废订单后内容检查", "ts130003");
@@ -20,9 +20,9 @@ function testPurchaseOrder001() {
 
 function testPurchaseOrder001Color() {
     colorSize = "yes";
-    run("【采购订货-按批次查】翻页_排序", "ts130001_1");// 差异数目前不支持排序
-    run("【采购订货-按批次查】汇总", "ts130001Count");
-    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130001_2");
+    run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
+    run("【采购订货-按批次查】汇总", "ts130020Count");
+    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130020_2");
     run("【采购订货-按明细查】翻页_排序_汇总", "ts130002_1");
     run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "ts130002_2");
     run("【采购订货-按明细查】作废订单后内容检查", "ts130003");
@@ -62,7 +62,7 @@ function testPurchaseOrder002Color() {
 }
 
 // 翻页_排序
-function ts130001_1() {
+function ts130020_1() {
     tapMenu("采购订货", "按批次查");
     var keys = { "日期从" : getDay(-30) };
     var fields = purchaseOrderQueryBatchFields(keys);
@@ -88,7 +88,7 @@ function ts130001_1() {
     return ret;
 }
 
-function ts130001Count() {
+function ts130020Count() {
     tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
@@ -120,7 +120,7 @@ function ts130001Count() {
 }
 
 // 条件查询，清除按钮,下拉框
-function ts130001_2() {
+function ts130020_2() {
     tapMenu("采购订货", "按批次查");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = purchaseOrderQueryBatchFields(keys);

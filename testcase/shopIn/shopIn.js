@@ -166,7 +166,7 @@ function test140002_140003() {
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
-    var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "t150003");
+    var i = tapFirstTextByTitle("状态", "未接收", getScrollView(), "备注", "ts150003");
 //    var totalNumTFindex = getEditSalesTFindex("客户,厂商", "总数");
     var tfNum = getSalesBillDetTfNum({});
     var market = getTextFieldValue(window, 2);// 整单备注
