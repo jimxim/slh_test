@@ -43,7 +43,10 @@ js_func="$js_func test000Check001"
 #js_func="$js_func testCheck180058 
 #js_func="$js_func testCheck180028_Prepare "
 #js_func="$js_func testCheck180028 "
-#js_func="$js_func "
+
+js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2
+                  ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4
+                  ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 
