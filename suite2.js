@@ -8,7 +8,10 @@
 function test000All() {
 	debug = true;	
 	
-	    
+//    run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");
+    
+    run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
+    
 // run("","test1");
 }
 function test1(){
