@@ -5,7 +5,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
-    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");//
+    // run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");//
     run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
     run("【销售开单－开单】客户输入框清除功能", "test170045");
     run("【销售开单－开单】结余文本框检查", "test170046");
@@ -53,7 +53,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】待作废", "test170138");
     run("【销售开单－开单】复制-粘贴", "test170139");
     run("【销售开单－开单】收款（新增界面）", "test170163");
-     run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
+    run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     // // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
     run("【销售开单－开单】挂单保存", "test170169");
@@ -76,7 +76,7 @@ function testSalesNoColorSizeAll() {
 
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     run("【销售开单】底部汇总统一检查", "test170423");
-    run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
+    // run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");//(用例需要修改)
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
 
@@ -3048,12 +3048,10 @@ function test170104() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" },
-                { "货品" : "k200", "数量" : "5", "备注" : "mxbz1" } ], "备注" : "zdbz" };
+                { "货品" : "k200", "数量" : "5", "备注" : "mxbz1" } ], "备注" : "zdbz",
+        "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    // debugElementTree(window);
-
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "303", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
@@ -5119,9 +5117,7 @@ function test170180() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
+    query();
 
     tapFirstText();
     tapMenu("销售开单", "更多.", "设置已配货");
@@ -5142,10 +5138,9 @@ function test170180() {
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
     return ret && ret1;
-
 }
 function test170181() {
-    var r = "anewkh" + getTimestamp(5);
+    var r = "anewKH" + getTimestamp(6);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "允许退货" : "否" };
     var fields = editCustomerFields(keys);
@@ -7471,10 +7466,9 @@ function test170443() {
     var qr = getQR();
     var batch = qr.data[0]["批次"];
 
-    var r = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "40" } ],
-        "代收" : { "物流商" : "yt", "运单号" : r, "备注" : r + "yt" }, "onlytest" : "yes" };
+        "代收" : { "物流商" : "yt" }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f7 = new TField("货品", TF_AC, 7, "k300", -1, 0);
@@ -8554,9 +8548,7 @@ function test170525() {
 
     tapButtonAndAlert("挂 单", OK);
     delay(2);
-    tapReturn();
 
-    tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "更多.", "所有挂单");
     delay();
     loadHangBill(0);

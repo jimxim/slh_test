@@ -63,17 +63,17 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单+整单折扣+代收】收支流水界面检查代收款核销单", "test170371");
     run("【销售开单+整单折扣+代收】统计分析-综合汇总，检查代收", "test170372");
     run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170368_1");
-    run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");
+//    run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");//
     run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
     run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
     run("【销售开单+产品折扣+代收】销售开单-销售汇总-按店员汇总，检查代收", "test170379");
     run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
     run("销售开单+产品折扣+代收】销售开单-销售汇总-按金额汇总，检查代收", "test170381");
     run("【销售开单+产品折扣+代收】统计分析-综合汇总，检查代收", "test170382");
-    run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170383");
+//    run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170383");//
     run("【销售开单-按明细查】折扣后价格的核算模式 四舍五入取整", "test170438");
-    run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");
-    run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442");
+//    run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");//
+//    run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442");//
     run("【销售开单－按汇总-按款号汇总】异地发货模式查询", "test170523");
 }
 function testSalesNoColorSizeElseAll() {
@@ -688,15 +688,15 @@ function test170018() {
     return ret && ret1;
 }
 function test170019() {
-    // tapMenu("采购入库", "新增入库+");
-    // var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
-    // "现金" : "1000" };
-    // editSalesBillNoColorSize(json);
-    //
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "-1" } ],
-    // "特殊货品" : { "抹零" : 21, "打包费" : 30 }, "现金" : "-171" };
-    // editSalesBillNoColorSize(json);
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
+        "现金" : "1000" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "-1" } ],
+        "特殊货品" : { "抹零" : 21, "打包费" : 30 }, "现金" : "-171" };
+    editSalesBillNoColorSize(json);
 
     tapMenu("统计分析", "综合汇总");
     tapFirstText(getScrollView(), "序号", 20);
@@ -705,7 +705,7 @@ function test170019() {
 
     if (texts.length == 0) {
         for (var i = 0; i <= 3; i++) {
-            qr = getQRverify(texts, "名称", 5);
+            q = getQRverify(texts, "名称", 5);
             if (texts.length != 0) {
                 break;
             }
@@ -1835,7 +1835,7 @@ function test170269() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "新增货品+");
-    var r = "anewkhao" + getTimestamp(4);
+    var r = "anewK269" + getTimestamp(4);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100" }
     var fields = editGoodsFields(keys, false, 0, 0);
     setTFieldsValue(getScrollView(), fields);
@@ -2657,7 +2657,7 @@ function test170287() {
     }
 
     ret2 = isAnd(ret2, isEqual("代收收款", d), isEqual(ds, add(Math
-            .abs(qr3.data[1]["金额"]), Math.abs(qr3.data[2]["金额"]))));
+            .abs(qr3.data[1]["金额"]), Math.abs(qr3.data[4]["金额"]))));
 
     delay();
     tapNaviLeftButton();
@@ -2753,9 +2753,13 @@ function test170288() {
     var fields = [ f2 ];
     // setTFieldsValue(window, fields);
     query(fields);
+    var q3 = getQR();
+
     tapFirstText();
 
     var texts = getStaticTexts(getScrollView(-1, 0));
+//    var index = getArrayIndexIn(texts, "代收收款");
+    
     var qr3 = getQRverify(texts, "名称", 5);
     var d = qr3.data[1]["收入"];
     var d1 = qr3.data[2]["收入"];
@@ -2764,8 +2768,9 @@ function test170288() {
         ret2 = true;
     }
 
-    ret2 = isAnd(ret2, isEqual("代收收款", d), isEqual("代收收款", d1), isEqual(ds,
-            add(Math.abs(qr3.data[1]["金额"]), Math.abs(qr3.data[2]["金额"]))));
+    ret2 = isAnd(ret2, isEqual("代收收款", d), isEqual("代收收款", d1), isEqual(
+            q3.data[0]["代收收款"], add(Math.abs(qr3.data[1]["金额"]), Math
+                    .abs(qr3.data[4]["金额"]))));
 
     delay();
     tapNaviLeftButton();
@@ -6282,7 +6287,7 @@ function test170419() {
     tapFirstText();
 
     var r = 1 + getTimestamp(2);
-    var f0 = new TField("数量", TF_AC, 0, "8989");
+    var f0 = new TField("货品", TF_AC, 0, "8989");
     var f5 = new TField("数量", TF, 5, r);
     var fields = [ f0, f5 ];
     setTFieldsValue(getScrollView(), fields);
@@ -7000,6 +7005,8 @@ function test170454() {
 
     ret1 = isAnd(isIn(getTextFieldValue(getScrollView(), 0), r), isEqual("-9",
             getTextFieldValue(getScrollView(), 3)));
+
+    tapReturn();
 
     return ret && ret1;
 }
