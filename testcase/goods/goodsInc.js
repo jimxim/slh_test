@@ -641,7 +641,7 @@ function isEqualDyadicArray(data1, data2) {
     for (i = 0; i < length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
-        ret = isAnd(ret, isEqualObject(arr1, arr2));
+        ret = ret && isEqualObject(arr1, arr2);
     }
     return ret;
 }

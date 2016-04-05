@@ -3,21 +3,19 @@
 //成本核算
 function textFin_price_base() {
     var ret1 = false, ret2 = false, ret3 = false;
-    // if (setParamFin_price_base2()) {
-    // ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
-    // textFin_price_base2_3());
-    // }
+    if (setParamFin_price_base2()) {
+        ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
+                textFin_price_base2_3());
+    }
 
-    // if (setParamFin_price_base3()) {
-    // ret2 = textFin_price_base3_1();
-    // }
-    //
+    if (setParamFin_price_base3()) {
+        ret2 = textFin_price_base3_1();
+    }
+
     if (setParamFin_price_base0()) {
         ret3 = textFin_price_base0_1();
     }
-    //
-    // return isAnd(ret1, ret2, ret3);
-    return ret3;
+    return isAnd(ret1, ret2, ret3);
 }
 
 function setParamFin_price_base2() {

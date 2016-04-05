@@ -13,48 +13,14 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 
-// run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "test110057_1");
-// run("【往来管理-新增客户】客户编码", "test110056");
-// run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "ts110013");
-// run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
-// run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
-// run("【往来管理-客户账款】右上角的所有统计、未结统计", "test110060");
-// run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
-// run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
-// run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
-// run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
-
-// run("【货品管理-货品查询】修改货品信息", "test100010_100011_100013");
-// run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
-// run("【货品管理-基本设置】价格名称", "test10_price");
-// run("【货品管理-基本设置】货品类别", "test10_type");
-// run("【货品管理-基本设置】所有颜色", "test10_color");
-// run("【货品管理-基本设置】所有尺码", "test10_size");
-// run("【货品管理-基本设置】所有品牌", "test10_brand");
-// run("【货品管理-基本设置】所有尺码组", "test10_size_group");
-// run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序
-//
-// run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
-// run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-// "test100075_100076_100077_100078");
-// run("【货品管理-更多-缺货统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
-// "test100082_100083_100084_100085_100093");
-// run("【货品管理-更多-库存调整单】条件查询_清除按钮", "test100104_100105");
-// run("【货品管理-更多-库存调整单】翻页/排序/汇总", "test100106");
-    
-// run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "test100114");
-// run("【货品管理-更多-仓位列表】保存修改", "test100070");
-// run("【货品管理-更多-新增仓位】新增仓位,修改页面返回", "test100073_100074");
-// run("【货品管理-更多-缺货统计】库存<最小库存/库存=最小库存/最小库存<库存<最大库存",
-// "test100087_100088_100089");
-
- run("测试用例", "onlyTest");
+ run("测试用例", "ts140010");
+// run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    var staffIdx = getEditSalesTFindex("调出人", "现金");
-    return staffIdx;
+    app.keyboard().typeString("abc123");
+    tapKeyboardReturn();
 }
 
 function prepare200All(){
@@ -239,9 +205,8 @@ function login200ShopOut001(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testShopOut001();
-        testShopOut002();
         run("【往来管理-积分查询】数据验证", "test110036_2");
+        testShopOut001();    
        logout();
     }   
 }
@@ -252,6 +217,40 @@ function login000ShopIn001(){
     var ok = login("000","000000",p1);
     if( ok ) {
         testShopIn001();    
+       logout();
+    }   
+}
+
+// 中洲店总经理验证门店调出 调拨需要密码验证
+function login200ShopOut002(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        UIALogger.logStart("设置参数");
+        ok = testShopOutParams01();
+        if (ok) {
+            UIALogger.logPass("设置参数" + ",通过");
+            testShopOut002();   
+        } else {
+            UIALogger.logFail("设置参数" + ",失败");
+        }        
+       logout();
+    }
+}
+
+// 常青店总经理验证门店调入
+function login000ShopIn002(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testShopIn002(); 
+        UIALogger.logStart("设置参数");
+        ok = testShopOutParams02();
+        if (ok) {
+            UIALogger.logPass("设置参数" + ",通过");
+        } else {
+            UIALogger.logFail("设置参数" + ",失败");
+        }    
        logout();
     }   
 }
@@ -300,6 +299,16 @@ function login000StatisticAnalysis001() {
    var ok = login("000","000000",p1);
    if( ok ) {
        testStatisticAnalysis001();   
+       logout();
+   }
+}
+
+//统计分析
+function login000SAProfit() {
+   var p1 = {"角色":"总经理"};
+   var ok = login("000","000000",p1);
+   if( ok ) {
+       textFin_price_base();   
        logout();
    }
 }
