@@ -46,6 +46,6 @@ js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesO
 #js_func="$js_func login200ShopOut002 login000ShopIn002 login000SAProfit"
 
 
-SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
+SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (9.2)"
 
 . $D/run_uia.sh
