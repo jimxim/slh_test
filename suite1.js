@@ -13,7 +13,7 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 
- run("测试用例", "ts140010");
+ run("测试用例", "test110044");
 // run("测试用例", "onlyTest");
 }
 
