@@ -18,6 +18,7 @@ function testShopOut001() {
         UIALogger.logFail("修改参数失败");
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
+    run(" 门店调入数据准备", "shopInPrepare");
     run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 必须放在最后，后面接150013
 }
 
@@ -491,6 +492,30 @@ function ts150011() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
+}
+
+function shopInPrepare() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "3035", "数量" : 15, "备注" : "xx1" },
+                { "货品" : "4562", "数量" : 25, "备注" : "xx2" } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 15 ], "备注" : "xx1" },
+                { "货品" : "agc002", "数量" : [ 25 ], "备注" : "xx2" } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
+    tapMenu("门店调出", "批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "inPre" };
+    var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
+
+    return true;
 }
 
 function editShopOutDecruitIn(o, colorSize) {

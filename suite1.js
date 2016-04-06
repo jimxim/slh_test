@@ -13,7 +13,7 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 
- run("测试用例", "test110044");
+ run("测试用例", "ts140015");
 // run("测试用例", "onlyTest");
 }
 
@@ -76,7 +76,9 @@ function login200GoodsPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
+        UIALogger.logStart("数据准备");
         testGoodsPrepare001();
+        UIALogger.logPass("数据准备完成");
        logout();
     }
   }
@@ -289,7 +291,9 @@ function login200StatisticAnalysisPrepare() {
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        testStatisticAnalysisPrepare();    
+        UIALogger.logStart("数据准备");
+        testStatisticAnalysisPrepare();  
+        UIALogger.logPass("数据准备完成");
         logout();
     }
  }
@@ -303,7 +307,7 @@ function login000StatisticAnalysis001() {
    }
 }
 
-//统计分析
+// 统计分析
 function login000SAProfit() {
    var p1 = {"角色":"总经理"};
    var ok = login("000","000000",p1);

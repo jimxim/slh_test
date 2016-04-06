@@ -313,29 +313,28 @@ function test190017() {
     }
     tapNaviLeftButton();
 
-    var rm = (getRandomInt(100000) + 1) / 100;
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增支出");
     var json = { "账户" : "现", "收支备注" : r,
-        "明细" : [ { "收入类别" : "物业", "金额" : rm } ] };
+        "明细" : [ { "收入类别" : "物业", "金额" : 123.45 } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
     qr = getQR();
     var batch = qr.data[0]["批次"];
     var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
-        "金额" : rm, "备注" : r, "操作人" : "总经理" };
+        "金额" : 123.45, "备注" : r, "操作人" : "总经理" };
     var ret = isEqualQRData1Object(qr, expected);
 
     tapMenu("统计分析", "收支汇总");
     tapButton(window, QUERY);
     qr = getQR(window, getScrollView(), "序号", 3);
-    ret = isAnd(ret, isAqualNum(counts - rm, qr.counts["金额"], 0.001));
+    ret = isAnd(ret, isAqualNum(counts - 123.45, qr.counts["金额"], 0.001));
     // logDebug("counts + rm="+counts +" "+ rm+" 金额= "+qr.counts["金额"]);
 
     tapFirstTextByTitle("收支类别", "物业");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
-    expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : rm,
+    expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : 123.45,
         "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
     tapNaviLeftButton();
@@ -352,13 +351,13 @@ function test190017() {
     }
     tapNaviLeftButton();
     var result = sub(a2, a1);
-    ret = isAnd(ret, isAqualNum(rm, result, 0.001));
+    ret = isAnd(ret, isAqualNum(123.45, result, 0.001));
     // logDebug("a2=" + a2 + " a1=" + a1 + " result=" + result);
 
     tapMenu("统计分析", "收支流水");
     query();
     qr = getQR();
-    expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户", "金额" : -rm,
+    expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户", "金额" : -123.45,
         "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
@@ -602,7 +601,6 @@ function test190009() {
 
 function test190094() {
     var a2, b2, i, j;
-    var rm = (getRandomInt(100000) + 1) / 100;
     var r = "备注" + "a" + getTimestamp(6);
 
     tapMenu("统计分析", "收支汇总");
@@ -623,11 +621,11 @@ function test190094() {
 
     tapMenu("统计分析", "新增收入");
     var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "业务回扣1", "金额" : rm } ] };
+        "明细" : [ { "收入类别" : "业务回扣1", "金额" : 234.56 } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "新增支出");
-    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物损", "金额" : rm } ] };
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物损", "金额" : 234.56 } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支汇总");
@@ -649,7 +647,7 @@ function test190094() {
             qr = getQR();
         }
     }
-    var ret = isAnd(isAqualNum(b1, sub(b2, rm), 0.001), isAqualNum(
+    var ret = isAnd(isAqualNum(b1, sub(b2, 234.56), 0.001), isAqualNum(
             qr.counts["金额"], sum1, 0.001));
 
     key = { "收支类别" : "支出" };
@@ -670,7 +668,7 @@ function test190094() {
             qr = getQR();
         }
     }
-    ret = isAnd(ret, isAqualNum(a1, sub(a2, rm), 0.001), isAqualNum(
+    ret = isAnd(ret, isAqualNum(a1, sub(a2, 234.56), 0.001), isAqualNum(
             qr.counts["金额"], -sum2, 0.001));// 支出的汇总为负数
 
     query();

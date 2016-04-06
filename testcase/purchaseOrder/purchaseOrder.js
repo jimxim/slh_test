@@ -663,7 +663,7 @@ function ts130007_08() {
     }
 
     tapMenu("货品管理", "货品查询");
-    var keys = { "款号名称" : r2, "上架从" : getToday(), "上架到" : getToday(),
+    var keys = { "款号名称" : r2, "上架从" : getToday(), 
         "是否停用" : "否" };
     var fields = queryGoodsFields(keys);
     query(fields);
