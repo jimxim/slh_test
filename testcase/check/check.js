@@ -13,9 +13,17 @@ function testCheck001() {
     run("【盘点管理—库存表】清除", "test180054");
 }
 function testCheckAll() {
-    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("【盘点管理—按批次查】", "checkPrepare");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
+    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
+    run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
+    run("【盘点管理—新增盘点】", "test180019");
+    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
+    run("【盘点管理—新增盘点】返回", "test180023");
+    run("【盘点管理—新增盘点】删除按钮", "test180024");
+    run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
+    run("【盘点管理—按批次查】处理人检查", "test180048");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_4");
@@ -24,19 +32,10 @@ function testCheckAll() {
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
     run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
-    run("【盘点管理—新增盘点】", "test180019");
-    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
-    run("【盘点管理—新增盘点】返回", "test180023");
-    run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
-    run("【盘点管理—新增盘点】删除按钮", "test180024");
-    run("【盘点管理—按批次查】保存（未处理盘点单）", "test180007");
     run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
     run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
     run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
-    run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
-    run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
     run("【盘点管理—盘点撤销】", "test180033");
-    run("【盘点管理—按批次查】处理人检查", "test180048");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     run("【盘点管理—盘点处理】处理日期设置", "test180027");
@@ -99,7 +98,6 @@ function checkPrepare() {
 
     return ret;
 }
-
 function test180001_180003_180005() {
     tapMenu("盘点管理", "新增盘点+");
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
@@ -122,7 +120,7 @@ function test180001_180003_180005() {
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("盘点日期",IS_OPTIME);
+    ret = ret && sortByTitle("盘点日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("处理时间");
     ret = ret && sortByTitle("处理人");
@@ -457,7 +455,7 @@ function test180013_1_180055() {
     ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("盘点数量", IS_NUM);
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期",IS_DATE2);
+    ret = ret && sortByTitle("操作日期", IS_DATE2);
 
     var qr = getQR();
     var sum1 = 0;
@@ -966,13 +964,24 @@ function test180025_1() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    query();
+    var keys = { "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+    var qr = getQR();
+    var total1 = qr.total;
 
     tapButton(getScrollView(), 0);
     tapButton(window, "盘点撤销");
 
+    tapButton(window, QUERY);
+    qr = getQR();
+    var total2 = qr.total;
+
+    var ret7 = isEqual(1, sub(total1, total2));
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test180026() {
@@ -1021,7 +1030,6 @@ function test180026_1() {
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "4562", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
@@ -1079,14 +1087,12 @@ function test180026_1() {
     var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
             !isEqual(a, qr.data[0]["库存"]));
 
-    tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "4562", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
-    tapMenu("货品管理", "款号库存");
     var keys = { "款号" : s, "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
@@ -1105,8 +1111,8 @@ function test180026_1() {
 
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    logDebug(" r=" + r + ", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2
+            + ", ret3=" + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180027() {
@@ -1345,7 +1351,7 @@ function test180037() {
     ret = ret && sortByTitle("盘后", IS_NUM);
     ret = ret && sortByTitle("盈亏", IS_NUM);
     ret = ret && sortByTitle("盈亏金额", IS_NUM);
-    ret = ret && sortByTitle("操作日期",IS_DATE2);
+    ret = ret && sortByTitle("操作日期", IS_DATE2);
 
     var qr = getQR();
     var sum1 = 0;
@@ -1432,6 +1438,10 @@ function test180042Prepare() {
     editSalesBillNoColorSize(json);
 }
 function test180042() {
+    var p = "全局设置";
+    var cond = "p.isVisible()";
+    waitUntil(cond, 10);
+    
     var qo, o, ret = true;
     qo = { "备注" : "不允许修改盘点之前出入库流水" };
     o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
@@ -2192,11 +2202,11 @@ function test180042_7() {
 
     var ret1 = isAnd(isEqual(b, b2), isEqual("10", sub(b, b1)));
 
-    tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" }
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
-    qr = getQR();
+    // tapMenu("门店调出", "按批次查");
+    // var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" }
+    // var fields = shopOutQueryBatchFields(keys);
+    // query(fields);
+    // qr = getQR();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
@@ -2261,6 +2271,10 @@ function test180048() {
     return ret;
 }
 function test180049_180036() {
+//    var p = "全局设置";
+//    var cond = "p.isVisible()";
+//    waitUntil(cond, 10);
+    
     var qo, o, ret = true;
     qo = { "备注" : "盘点核算价格" };
     o = { "新值" : "0", "数值" : [ "盘点按进货价核算", "in" ] };
@@ -2445,6 +2459,10 @@ function test180049_180036() {
     return ret && ret1;
 }
 function test180049_1() {
+//    var p = "全局设置";
+//    var cond = "p.isVisible()";
+//    waitUntil(cond, 10);
+
     var qo, o, ret = true;
     qo = { "备注" : "盘点核算价格" };
     o = { "新值" : "1", "数值" : [ "盘点按销价1核算", "in" ] };
@@ -2633,10 +2651,10 @@ function test180053() {
     //
     ret = ret && sortByTitle("选择");
     ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("盘点日期",IS_DATE2);
+    ret = ret && sortByTitle("盘点日期", IS_DATE2);
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期",IS_OPTIME);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("备注");
 
     query();

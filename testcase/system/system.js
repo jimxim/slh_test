@@ -30,11 +30,11 @@ function testSystem001() {
     run("【系统设置—新增人员】新增人员", "test210032");
     run("【系统设置—新增人员】返回", "test210033");
     run("【系统设置—新增人员】新增工号为0的员工", "test210034");
-    // run("【系统设置—人员列表】详细-密码重置", "test210030");
-    // run("【系统设置—改密码】关闭", "test210036");
-    // run("【系统设置—改密码】修改", "test210035");(商路花闪退)
-    // run("【系统设置—更多-删除所有缩略图】删除", "test210037");//(该功能已经去掉)
-    // run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
+    run("【系统设置—人员列表】详细-密码重置", "test210030");
+    run("【系统设置—改密码】关闭", "test210036");
+    run("【系统设置—改密码】修改", "test210035");
+    run("【系统设置—更多-删除所有缩略图】删除", "test210037");// (该功能已经去掉)
+    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
@@ -42,6 +42,9 @@ function testSystem001() {
     run("【系统设置-全局参数】异地发货参数互斥", "test210063");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
+}
+function testSystem002() {
+    run("【系统设置】", "testSystem002prepare");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");//
     run("【系统设置-全局参数】均色均码+打印小票以尺码为头部", "test210049");
@@ -56,23 +59,30 @@ function testSystem001() {
     run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
     run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
 }
-function testSystemprepare() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+function testSystem002prepare() {
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(1), "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
 
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    var qr = getQR();
+    var total1 = qr.total;
+    for (var i = 0; i < total1; i++) {
+        tapButton(getScrollView(), 0);
+        tapButton(window, "盘点撤销");
+        delay(5);
+        
+        tapButton(window, QUERY);       
+    }
 
-    qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    qr = getQR();
+    var total2 = qr.total;
+    var ret = false;
+    if (total2 < 1) {
+        ret = true;
+    }
 
-    qo = { "备注" : "价格模式" };
-    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
 }
 function test210001() {
     tapMenu("系统设置", "打印机");

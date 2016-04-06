@@ -77,8 +77,8 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     run("【销售开单】底部汇总统一检查", "test170423");
     // run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");//(用例需要修改)
-    run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
-    run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
+    // run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
+    // run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
 
     // run("【销售开单－开单】收款（修改界面）", "test170164");
     // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");//
@@ -126,24 +126,25 @@ function testSalesNoColorSize001_1() {
     run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
     run("【销售开单-开单】客户折扣模式下自动取上次折扣值", "test170461");
     run("【销售开单－开单】异地发货－－后台不绑仓库，开单时不选择发货仓库", "test170120");
-    run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
-    run("【销售开单】销售开单错开款号导致不能退货情况", "test170226");
-    run("【销售开单】单据修改状态下退货验证问题", "test170227");
-    run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
-    run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");
-    run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
-    run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值大于0", "test170384");
-    run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值等于0", "test170385");
-    run("【销售开单-信用额度控制】后台关闭信用额度控制", "test170386");
-    run("【销售开单】销售开单界面整单复制后第二次粘贴时行数需准确", "test170405");
-    run("【开单  】开单时，款号是否按门店区分--总经理权限", "test170552");
-    run("超期提醒+允许继续输入+均色均码", "test170213");
-    // run("【销售开单】超期提醒+不允许继续输入+均色均码", "test170214");
+    // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");//
+    // run("【销售开单】销售开单错开款号导致不能退货情况", "test170226");
+    // run("【销售开单】单据修改状态下退货验证问题", "test170227");
+    // run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
+    // run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");
+    // run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
+    // run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值大于0", "test170384");
+    // run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值等于0", "test170385");
+    // run("【销售开单-信用额度控制】后台关闭信用额度控制", "test170386");
+    // run("【销售开单】销售开单界面整单复制后第二次粘贴时行数需准确", "test170405");
+    // run("【开单 】开单时，款号是否按门店区分--总经理权限", "test170552");
+
     // run("【销售开单】补货退货验证+不允许继续输入+颜色尺码", "test170208");//
     // run("【销售开单】补货退货验证+允许继续输入+颜色尺码", "test170207");//
     // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
     // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户分店+均色均码", "test170210");
     // run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+均色均码", "test170211");
+    // run("超期提醒+允许继续输入+均色均码", "test170213");
+    // run("【销售开单】超期提醒+不允许继续输入+均色均码", "test170214");
 
     // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424_1");//
     // run("【销售开单-开单】客户切换价格类型+均色均码", "test170476");//
@@ -597,7 +598,7 @@ function test170045() {
 function test170046() {
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
-    var r = "anewkh1" + getTimestamp(6);
+    var r = "anewKH1" + getTimestamp(3) + getTimestamp(4);
     var g0 = new TField("名称", TF, 0, r);
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -626,7 +627,7 @@ function test170046() {
 
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
-    var r = "anewkh2" + getTimestamp(6);
+    var r = "anewKH2" + getTimestamp(7);
     var g0 = new TField("名称", TF, 0, r);
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -2370,7 +2371,7 @@ function test170080_170084() {
 
     var ret2 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual("0", qr.data[0]["未结"]), isAqualOptime(
-            getOpTime(), qr.data[0]["操作日期"]));
+            getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "10" } ],
@@ -6833,12 +6834,6 @@ function test170251() {
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
 
-    var table1 = getTableViews(window)[0];
-    var cells = table1.cells();
-    var len1 = cells.length;
-
-    // debugElementTree(window);
-
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
@@ -6873,12 +6868,12 @@ function test170251() {
     var d = getStaticTextValue(getPopOrView(), index + 5);
 
     var ret1 = isAnd(isEqual("总经理", a), isEqual("", c), isEqual("", d),
-            isAqualOptime(getOpTime(), b));
+            isAqualOptime(getOpTime(), b, 2));
 
     tapButton(getPop(), "关 闭");
     tapReturn();
 
-    logDebug("len1=" + len1 + ", ret=" + ret + ", ret1=" + ret1);
+    logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170384() {
@@ -8604,13 +8599,14 @@ function test170526() {
     var opt = qr.data[0]["操作日期"];
 
     tapFirstText();
-    var ret = isAnd(isEqual(Math.round(add(
-            getTextFieldValue(getScrollView(), 5), sub(r1, r))), k3), isEqual(
-            "00000,抹零", getTextFieldValue(getScrollView(), 7)), isEqual(r,
-            getTextFieldValue(getScrollView(), 11)), isEqual("00001,打包费",
-            getTextFieldValue(getScrollView(), 14)), isAqualNum(r1,
-            getTextFieldValue(getScrollView(), 18)), isEqual(2, sl), isEqual(
-            k3, je), isAqualOptime(getOpTime(), opt));
+    var ret = isAnd(
+            isEqual(Math.round(add(getTextFieldValue(getScrollView(), 5), sub(
+                    r1, r))), k3),
+            isEqual("00000,抹零", getTextFieldValue(getScrollView(), 7)),
+            isEqual(Number(r), Number(getTextFieldValue(getScrollView(), 11))),
+            isEqual("00001,打包费", getTextFieldValue(getScrollView(), 14)),
+            isEqual(Number(r1), Number(getTextFieldValue(getScrollView(), 18))),
+            isEqual(2, sl), isEqual(k3, je), isAqualOptime(getOpTime(), opt));
 
     tapReturn();
 
