@@ -12,15 +12,16 @@ function test000All() {
     ipadVer = "6.59";
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
+// testCheckMenuAll();
 
- run("测试用例", "ts140015");
+ run("测试用例", "ts130004_05_06");
 // run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    app.keyboard().typeString("abc123");
-    tapKeyboardReturn();
+  
+   return eval("");
 }
 
 function prepare200All(){

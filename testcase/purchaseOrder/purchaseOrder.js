@@ -18,37 +18,7 @@ function testPurchaseOrder001() {
 
 }
 
-function testPurchaseOrder001Color() {
-    colorSize = "yes";
-    run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
-    run("【采购订货-按批次查】汇总", "ts130020Count");
-    run("【采购订货-按批次查】条件查询，清除按钮,下拉框", "ts130020_2");
-    run("【采购订货-按明细查】翻页_排序_汇总", "ts130002_1");
-    run("【采购订货-按明细查】条件查询，清除按钮,下拉框", "ts130002_2");
-    run("【采购订货-按明细查】作废订单后内容检查", "ts130003");
-    run("【采购订货-按汇总-按款号】翻页排序汇总", "ts130004_1");
-    run("【采购订货-按汇总-按款号】查询清除", "ts130004_2");
-    run("【采购订货-按汇总-按厂商】翻页排序汇总", "ts130005_1");
-    run("【采购订货-按汇总-按厂商】查询清除", "ts130005_2");
-    run("【采购订货-按汇总-按门店】翻页排序汇总", "ts130006_1");
-    run("【采购订货-按汇总-按门店】查询清除", "ts130006_2");
-    run("【采购订货-按汇总】数据验证", "ts130004_05_06");
-}
-
 function testPurchaseOrder002() {
-    run("【采购订货-新增订货】快速新增", "ts130007_08");
-    run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
-    run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
-    run("【采购订货】客户或供应商信息不允许修改", "ts130011");
-    run("【采购订货-新增订货】采购订货复杂支付模式-使用有权查看进货价的角色登录", "ts130012");
-    run("【采购订货-新增订货】整单备注和明细备注", "ts130014");
-    run("【采购订货】订单终结功能", "ts130015");
-    run("【采购订货-新增订货】订单终结-部分发货后终结", "ts130016_1");
-    run("【采购订货-新增订货】订单终结-全部发货后终结", "ts130016_2");
-    run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
-}
-
-function testPurchaseOrder002Color() {
     run("【采购订货-新增订货】快速新增", "ts130007_08");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
@@ -116,10 +86,29 @@ function ts130020Count() {
     var actual = subObject(count2, count1);
     var exp = { "总数" : 30, "金额" : 3000, "入库数" : 10, "差异数" : 20, "现金" : 1000,
         "刷卡" : 600, "汇款" : 300 };
-    return isEqualObject(exp, actual);
+    var ret = isEqualObject(exp, actual);
+
+    tapMenu2("新增订货+");
+    var jo = { "客户" : "Rt", "现金" : 1000, "刷卡" : [ 600, "银" ],
+        "汇款" : [ 300, "银" ] };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();
+    tapButtonAndAlert("作 废", OK);
+    delay();
+    // tapPrompt();
+    tapButton(window, QUERY);
+    qr = getQR();
+    count1 = qr.counts;
+    ret = isAnd(ret, isEqualObject(count1, count2));
+    return ret;
 }
 
-// 条件查询，清除按钮,下拉框
+// 条件查询，清除按钮
 function ts130020_2() {
     tapMenu("采购订货", "按批次查");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
@@ -135,36 +124,22 @@ function ts130020_2() {
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
-    // 下拉框验证
     tapMenu("采购订货", "按批次查");
-    var ret1 = false;
-    var f = new TField("厂商", TF_AC, 0, "v", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "Vell")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-
-    // "日期从" : getToday(), "日期到" : getToday(),
-    keys = { "厂商" : "vell", "批次从" : batch, "批次到" : batch + 1, "门店" : "常青店",
-        "备注" : "xx", "店员" : "000" };
+    // "日期到" : getToday(),
+    keys = { "厂商" : "vell", "日期从" : getDay(-10), "批次从" : batch,
+        "批次到" : batch + 1, "门店" : "常青店", "备注" : "xx", "店员" : "000" };
     fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
     var expected = { "批次" : batch + 1, "日期" : getToday("yy"), "厂商" : "Vell",
         "门店" : "常青店", "总数" : 30, "金额" : 3000, "入库数" : 0, "差异数" : 30,
-        "现金" : 1000, "刷卡" : 600, "汇款" : 300, "操作人" : "总经理", "备注" : "xx" };
+        "现金" : 1000, "刷卡" : 600, "汇款" : 300, "操作日期" : json["操作日期"],
+        "操作人" : "总经理", "备注" : "xx" };
     var ret = isEqualObject(expected, qr.data[0]);
 
     tapButton(window, CLEAR);
     var text = getTextFields(window);
-    for (i = 0; i < text.length; i++) {
+    for (var i = 0; i < text.length; i++) {
         if (i == 1 || i == 2) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -172,7 +147,7 @@ function ts130020_2() {
         }
     }
 
-    return isAnd(ret, ret1);
+    return ret;
 }
 function ts130002_1() {
     tapMenu("采购订货", "按明细查");
@@ -231,6 +206,7 @@ function ts130002_2() {
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
+    // 按明细查的批次与操作日期直接取按批次的，按批次的已经验证过其批次与操作日期的准确性
     tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
@@ -238,19 +214,6 @@ function ts130002_2() {
     var exp = mixObject(jo1, jo2);
 
     tapMenu2("按明细查");
-    var ret1 = false;
-    var f = new TField("款号", TF_AC, 1, "303", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "3035,jkk,")) {
-            ret1 = true;
-            break;
-        }
-    }
-    tapKeyboardHide();
-
     var key1 = { "门店" : "常青店", "厂商" : "Vell", "日期从" : getToday(),
         "到" : getToday(), "备注" : "123" }// 这个是明细备注
     var keys = mixObject(key1, kCode);
@@ -265,7 +228,7 @@ function ts130002_2() {
 
     tapButton(window, CLEAR);
     var text = getTextFields(window);
-    for (i = 0; i < text.length; i++) {
+    for (var i = 0; i < text.length; i++) {
         if (i == 3 || i == 4) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -273,7 +236,7 @@ function ts130002_2() {
         }
     }
 
-    return isAnd(ret, ret1);
+    return ret;
 }
 
 function ts130003() {
@@ -477,7 +440,7 @@ function ts130006_1() {
 function ts130006_2() {
     var det = editPurOrderDet();
     tapMenu("采购订货", "按汇总", "按门店");
-    var keys = { "日期从" : getDay(-60), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = purchaseOrderShopFields(keys);
     query(fields);
     var qr = getQR();
@@ -507,12 +470,17 @@ function ts130004_05_06() {
     var det = editPurOrderDet();
     var keys = { "款号" : det["明细"][0]["货品"] };
     var jo1 = get130004_05_06QR("按款号", keys);
+    var cond1 = "qr.data[i]['厂商']=='Vell'";
+    var det1 = get130004_05_06det("厂商", "差异数", cond1);
 
     keys = { "厂商" : "vell" };
     var jo2 = get130004_05_06QR("按厂商", keys);
+    var cond2 = "qr.data[i]['款号']=='3035'";
+    var det2 = get130004_05_06det("款号", "差异数", cond2);
 
     keys = { "门店" : "常青店" };
     var jo3 = get130004_05_06QR("按门店", keys);
+    var det3 = get130004_05_06det("款号", "差异数", cond2);
 
     tapMenu2("新增订货+");
     var jo = { "客户" : "vell" };
@@ -525,16 +493,26 @@ function ts130004_05_06() {
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
+    var exp = { "数量" : 30, "已发" : 10, "差异数" : 20 };
+    var exp1 = { "款号" : det["明细"][0]["货品"], "名称" : det["名称"], "颜色" : det["颜色"],
+        "尺码" : det["尺码"] };
+
     var jo11 = get130004_05_06QR("按款号");
-    var ret = check130004_05_06det("厂商", "差异数", jo11);
+    var det11 = get130004_05_06det("厂商", "差异数", cond1);
+    var ret = isAnd(isEqualObject(exp1, det11["明细"]), isEqualObject(exp,
+            subObject(det11["汇总"], det1["汇总"])));
 
     var jo21 = get130004_05_06QR("按厂商");
-    ret = isAnd(ret, check130004_05_06det("款号", "差异数", jo21));
+    var det21 = get130004_05_06det("款号", "差异数", cond2);
+    ret = isAnd(ret, isEqualObject(exp1, det21["明细"]), isEqualObject(exp,
+            subObject(det21["汇总"], det2["汇总"])));
 
     var jo31 = get130004_05_06QR("按门店");
-    ret = isAnd(ret, check130004_05_06det("款号", "差异数", jo31));
+    var det31 = get130004_05_06det("款号", "差异数", cond2);
+    ret = isAnd(ret, isEqualObject(exp1, det31["明细"]), isEqualObject(exp,
+            subObject(det31["汇总"], det3["汇总"])));
 
-    var exp = { "数量" : 30, "已发" : 10, "差异数" : 20, "小计" : 3000 };
+    exp["小计"] = 3000;
     ret = isAnd(ret, isEqualObject(exp, subObject(jo11, jo1)), isEqualObject(
             exp, subObject(jo21, jo2)),
             isEqualObject(exp, subObject(jo31, jo3)));
@@ -570,9 +548,10 @@ function get130004_05_06QR(menu3_name, key2) {
     return qr.data[0];
 }
 
-function check130004_05_06det(firstTitle, lastTitle, exp) {
+function get130004_05_06det(firstTitle, lastTitle, cond) {
     tapFirstText();
     delay();// 等待页面加载完毕
+    var json = {};
     var qr = getQR2(getScrollView(-1, 0), firstTitle, lastTitle);
     var ret = false;
     if (!qr.hasError) {
@@ -580,21 +559,23 @@ function check130004_05_06det(firstTitle, lastTitle, exp) {
         for (var j = 1; j <= qr.totalPageNo; j++) {
             for (var i = 0; i < qr.curPageTotal; i++) {
                 sum = addObject(qr.data[i], sum);
+                if (eval(cond)) {
+                    json["明细"] = qr.data[i];
+                }
             }
             if (j < qr.totalPageNo) {
                 scrollNextPage();
                 qr = getQR2(getScrollView(-1, 0), firstTitle, lastTitle);
             }
         }
-        ret = isAnd(isEqual(exp["数量"], sum["数量"]),
-                isEqual(exp["已发"], sum["已发"]), isEqual(exp["差异数"], sum["差异数"]));
+        json["汇总"] = sum;
     } else {
-        logDebug("qr.hasError=false,未取到详细界面的值");
+        logDebug("hasError,未取到详细界面的值");
     }
 
     tapNaviLeftButton();
 
-    return ret;
+    return json;
 }
 
 function ts130007_08() {
@@ -663,8 +644,7 @@ function ts130007_08() {
     }
 
     tapMenu("货品管理", "货品查询");
-    var keys = { "款号名称" : r2, "上架从" : getToday(), 
-        "是否停用" : "否" };
+    var keys = { "款号名称" : r2, "上架从" : getToday(), "是否停用" : "否" };
     var fields = queryGoodsFields(keys);
     query(fields);
     qr = getQR();
@@ -748,11 +728,12 @@ function ts130011() {
     saveAndAlertOk();
     delay();
     tapPrompt();
-    var ret = isIn(alertMsg, "操作失败");
+    var ret = isIn(alertMsg, "客户或供应商信息不允许修改");
 
-    keys = { "厂商" : "" };
-    fields = purchaseOrderAddFields(keys);
-    setTFieldsValue(window, fields);
+    // keys = { "厂商" : "" };
+    // fields = purchaseOrderAddFields(keys);
+    // setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
     saveAndAlertOk();
     delay();
     tapPrompt();
@@ -1001,14 +982,58 @@ function ts130017() {
     return isEqualObject(json["输入框值"], act);
 }
 
+function ts130024() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell", "采购订货" : "yes", "onlytest" : "yes" };
+    var det = editOverLengthBillDet();
+    det["明细"]["goodsFieldIndex"] = -2;
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    var data = getQRDet();
+    editSalesBillSave({});
+
+    tapMenu2("按批次查");
+
+}
+
+function editOverLengthBillDet() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : "1" },
+                { "货品" : "kh001", "数量" : "2" }, { "货品" : "kh002", "数量" : "3" },
+                { "货品" : "kh003", "数量" : "4" }, { "货品" : "kh004", "数量" : "5" },
+                { "货品" : "kh005", "数量" : "6" }, { "货品" : "kh006", "数量" : "7" },
+                { "货品" : "kh007", "数量" : "8" }, { "货品" : "kh008", "数量" : "9" },
+                { "货品" : "kh009", "数量" : "10" },
+                { "货品" : "kh010", "数量" : "11" },
+                { "货品" : "kh011", "数量" : "12" },
+                { "货品" : "kh012", "数量" : "13" },
+                { "货品" : "kh013", "数量" : "14" },
+                { "货品" : "kh014", "数量" : "15" },
+                { "货品" : "kh015", "数量" : "16" } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : [ 1, 2, 3, 4, 5, 6 ] },
+                { "货品" : "kh001", "数量" : [ 1, 2, 3, 4, 5 ] },
+                { "货品" : "kh002", "数量" : [ 1, 2, 3, 4, 5 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+    return det;
+}
+
 function editPurOrderDet() {
     var det = {};
     switch (colorSize) {
     case "no":
-        det = { "名称" : "jkk", "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        det = { "名称" : "jkk", "颜色" : "均色", "尺码" : "均码",
+            "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
         break;
     case "yes":
-        det = { "名称" : "auto001",
+        det = { "名称" : "auto001", "颜色" : "花色", "尺码" : "L",
             "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ],
             "goodsFieldIndex" : -2 };
         break;

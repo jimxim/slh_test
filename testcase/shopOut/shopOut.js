@@ -340,11 +340,11 @@ function ts150003() {
 
 // 门店调出密码验证
 function ts150006() {
-    var det = editShopOutDet();
     tapMenu("门店调出", "批量调出+");
     var jo = { "调出人" : "200", "接收店" : "常青店", "onlytest" : "yes" };
+    var det = editShopOutDet();
     var json = mixObject(jo, det);
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json, colorSize);
 
     saveAndAlertOk();
     tapPrompt();
