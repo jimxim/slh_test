@@ -1419,32 +1419,46 @@ function test180037_180034_180035() {
 }
 function test180042Prepare() {
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
-    // var qo, o, ret = true;
-    // qo = { "备注" : "调拨是否启用密码验证" };
-    // o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+//     var qo, o, ret = true;
+//     qo = { "备注" : "调拨是否启用密码验证" };
+//     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+//     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
+    var fields = [ f0, f1 ];
+    setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 }
 function test180042() {
-    var p = "全局设置";
-    var cond = "p.isVisible()";
-    waitUntil(cond, 10);
-    
+    // var p = "全局设置";
+    // var cond = "p.isVisible()";
+    // waitUntil(cond, 10);
+
     var qo, o, ret = true;
     qo = { "备注" : "不允许修改盘点之前出入库流水" };
     o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "门店调拨" };
+    o = { "新值" : "0", "数值" : [ "没有价格", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     test180042Prepare();
@@ -1863,9 +1877,19 @@ function test180042_4() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
+    var fields = [ f0, f1 ];
+    setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("门店调出", "按批次查");
     query();
@@ -1957,9 +1981,19 @@ function test180042_5() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
+    var fields = [ f0, f1 ];
+    setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("门店调出", "按批次查");
     query();
@@ -2176,9 +2210,19 @@ function test180042_7() {
     var b = Number(qr.data[0]["库存"]);
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
+    var fields = [ f0, f1 ];
+    setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "k300", "门店" : "常青店" };
@@ -2271,10 +2315,10 @@ function test180048() {
     return ret;
 }
 function test180049_180036() {
-//    var p = "全局设置";
-//    var cond = "p.isVisible()";
-//    waitUntil(cond, 10);
-    
+    // var p = "全局设置";
+    // var cond = "p.isVisible()";
+    // waitUntil(cond, 10);
+
     var qo, o, ret = true;
     qo = { "备注" : "盘点核算价格" };
     o = { "新值" : "0", "数值" : [ "盘点按进货价核算", "in" ] };
@@ -2459,9 +2503,9 @@ function test180049_180036() {
     return ret && ret1;
 }
 function test180049_1() {
-//    var p = "全局设置";
-//    var cond = "p.isVisible()";
-//    waitUntil(cond, 10);
+    // var p = "全局设置";
+    // var cond = "p.isVisible()";
+    // waitUntil(cond, 10);
 
     var qo, o, ret = true;
     qo = { "备注" : "盘点核算价格" };

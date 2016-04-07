@@ -3,29 +3,33 @@ D=`dirname $0`
 
 SUITE=suite2
 ＃参数设置
-js_func="setSales001Params"
+#js_func="setSales001Params"
+
+js_func="testCheck180022_Prepare"
+js_func="$js_func  testCheck180022"
+
 #销售开单-开单
-js_func="$js_func test000SalesNoColorSize001"
+#js_func="$js_func test000SalesNoColorSize001"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSize002"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSize002"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSize004"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSize004"
 #js_func="$js_func test000SalesNoColorSize003"
 
 #销售开单-其它
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse003"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse003"
 
-js_func="$js_func setSales001Params"
+#js_func="$js_func setSales001Params"
 #js_func="$js_func test000SalesNoColorSizeElse004"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse005"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse005"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse002"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse002"
 
 #js_func="$js_func setSales001Params"
 #js_func="$js_func test000SalesNoColorSizeElse001"
@@ -51,10 +55,11 @@ js_func="$js_func test000SalesNoColorSizeElse002"
 #js_func="$js_func test000Check002"
 #js_func="$js_func test000Check001"
 
-#js_func="$js_func testCheck180022_Prepare"
-#js_func="$js_func testCheck180022"
 #js_func="$js_func testCheck180058_Prepare"
 #js_func="$js_func testCheck180058 
+
+#js_func="$js_func testCheck180022_Prepare"
+#js_func="$js_func testCheck180022"
 #js_func="$js_func testCheck180028_Prepare "
 #js_func="$js_func testCheck180028 "
 #统计图表

@@ -87,7 +87,7 @@ function sortByTitle3(dataView, firstTitle, lastTitle, title, isNum) {
 function compareQR3(title, type, order, dataView, firstTitle, lastTitle) {
     var t1 = getTimestamp();
     if (isUndefined(order)) {
-        order = "asc";// 升序 
+        order = "asc";// 升序
     }
     if (isUndefined(dataView)) {
         dataView = getTableView(-2);
@@ -130,5 +130,50 @@ function compareQR3(title, type, order, dataView, firstTitle, lastTitle) {
 
     logDebug(title + "," + type + "," + order + ",ret=" + ret + ","
             + getTakeTimeMsg(t1));
+    return ret;
+}
+/**
+ * approximately equals 近似等于,操作时间,格式 mm-dd hh:mm
+ * @param expected
+ * @param actual
+ * @param allow 允许偏差分钟数，默认1
+ */
+function isAqualOptime1(expected, actual, allow) {
+    var a1 = expected.split(" ");
+    var a2 = actual.split(" ");
+    var ret;
+
+    if (a1[0] == a2[0]) {
+        ret = same;
+    } else {
+        ret = diff;
+    }
+
+    switch (ret) {
+    case "same":
+        if (isDefined(a1[1]) && isDefined(a2[1])) {
+            var a11 = a1[1].split(":");
+            var a21 = a2[1].split(":");
+            ret = isAnd(ret, a11[0] == a21[0],
+                    isAqualNum(a11[1], a21[1], allow));
+        }
+        logDebug("expected=" + expected + ",actual=" + actual + ",allow="
+                + allow + ",ret=" + ret);
+        break;
+
+    case "diff":
+        if (isDefined(a1[1]) && isDefined(a2[1])) {
+            var a11 = a1[1].split(":");
+            var a21 = a2[1].split(":");
+            ret = isAnd(ret, a11[0] == a21[0], isAqualNum(a11[1], a21[1], 59));
+        }
+        logDebug("expected=" + expected + ",actual=" + actual + ",allow="
+                + allow + ",ret=" + ret);
+
+        break;
+
+    default:
+        logWarn("未知日期格式＝" + ret);
+    }
     return ret;
 }

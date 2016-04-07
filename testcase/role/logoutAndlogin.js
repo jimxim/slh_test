@@ -154,47 +154,93 @@ function test170429() {
 }
 function test180022_Prepare() {
     tapMenu("盘点管理", "新增盘点+");
+    debugElementTree(window);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "-11");
     var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
     var f11 = new TField("数量", TF, 11, "0");
+    var fields = [ f0, f3, f4, f7, f8, f11 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
 
-    var f12 = new TField("货品", TF_AC, 12, "3035", -1, 0);
+    var f12 = new TField("货品", TF_AC, 12, "8989", -1, 0);
     var f15 = new TField("数量", TF, 15, "12");
-    var f16 = new TField("货品", TF_AC, 16, "k200", -1, 0);
+    var fields = [ f12, f15 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
+    var f16 = new TField("货品", TF_AC, 16, "3035", -1, 0);
     var f19 = new TField("数量", TF, 19, "-11");
+    var fields = [ f16, f19 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f20 = new TField("货品", TF_AC, 20, "k300", -1, 0);
     var f23 = new TField("数量", TF, 23, "0");
+    var fields = [ f20, f23 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
 
     var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
     var f27 = new TField("数量", TF, 27, "10");
+    var fields = [ f24, f27 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f28 = new TField("货品", TF_AC, 28, "k200", -1, 0);
     var f31 = new TField("数量", TF, 31, "-11");
+    var fields = [ f28, f31 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f32 = new TField("货品", TF_AC, 32, "k300", -1, 0);
     var f35 = new TField("数量", TF, 35, "0");
+    var fields = [ f32, f35 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
 
     var f36 = new TField("货品", TF_AC, 36, "3035", -1, 0);
     var f39 = new TField("数量", TF, 39, "10");
+    var fields = [ f36, f39 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f40 = new TField("货品", TF_AC, 40, "k200", -1, 0);
     var f43 = new TField("数量", TF, 43, "-11");
+    var fields = [ f40, f43 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f44 = new TField("货品", TF_AC, 44, "k300", -1, 0);
     var f47 = new TField("数量", TF, 47, "0");
+    var fields = [ f44, f47 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay();
 
     var f48 = new TField("货品", TF_AC, 48, "3035", -1, 0);
     var f51 = new TField("数量", TF, 51, "10");
+    var fields = [ f48, f51 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
+
     var f52 = new TField("货品", TF_AC, 52, "k200", -1, 0);
     var f55 = new TField("数量", TF, 55, "-11");
+    var fields = [ f52, f55 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
     var f56 = new TField("货品", TF_AC, 56, "k300", -1, 0);
     var f59 = new TField("数量", TF, 59, "0");
+    var fields = [ f56, f59 ];
+    setTFieldsValue(getScrollView(), fields);
+    delay(2);
 
     var f60 = new TField("货品", TF_AC, 60, "3035", -1, 0);
     var f63 = new TField("数量", TF, 63, "20");
 
-    var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23, f24,
-            f27, f28, f31, f32, f35, f36, f39, f40, f43, f44, f47, f48, f51,
-            f52, f55, f56, f59, f60, f63 ];
+    var fields = [ f60, f63 ];
     setTFieldsValue(getScrollView(), fields);
 
 }
