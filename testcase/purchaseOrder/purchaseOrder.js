@@ -155,7 +155,7 @@ function ts130020_2() {
 }
 function ts130002_1() {
     tapMenu("采购订货", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday() };
+    var keys = { "日期从" : getDay(-15), "到" : getToday() };
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     // 点击翻页

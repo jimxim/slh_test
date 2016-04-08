@@ -45,6 +45,7 @@ function addProvider(keys) {
     delay();
     tapReturn();
 }
+
 /**
  * 获取开单界面window视图中的值,标题与文本框必须一一对应
  * @param firstTitle 起始标题
@@ -237,7 +238,7 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     var data = new Array();
     for (var i = firstIndex; i <= lastIndex; i++) {
         var v = texts[i].value();
-        var v1 = v.split("   ");
+        var v1 = v.split("\s");
         var t = v1[0];
         data[t] = v1[1];
     }
