@@ -19,7 +19,7 @@ function testShopOut001() {
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
     run(" 门店调入数据准备", "shopInPrepare");
-    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 必须放在最后，后面接150013
+    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 必须放在最后，后面接ts150013
 }
 
 function setShopOutParams() {
@@ -492,6 +492,16 @@ function ts150011() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
+}
+
+function ts150016() {
+    tapMenu("门店调出", "批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店","备注":"abc123" };
+    var det = editOverLengthBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    return checkCopyAndPaste("新增订货+");
 }
 
 function shopInPrepare() {

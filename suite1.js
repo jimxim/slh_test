@@ -14,7 +14,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 
- run("测试用例", "ts130004_05_06");
+ run("测试用例", "ts150007");
 // run("测试用例", "onlyTest");
 }
 

@@ -33,8 +33,8 @@ function testSalesOrder001() {
 
 function testSalesOrder002() {
     run("【销售订货－新增订货】新增订货单", "test160047");
-    run("【销售订货－新增订货】新增超长订单并打印", "test160048");
-    run("【销售订货－新增订货】整单复制/整单粘贴", "test160060");
+    run("【销售订货－新增订货】新增超长订单并打印", "ts160048");
+    run("【销售订货－新增订货】整单复制/整单粘贴", "ts160060");
     run("【销售订货－新增订货】订单修改界面内容检查_开单日期检查", "test160049_160052");
     run("【销售订货－新增订货】客户新增", "test160050");
     run("【销售订货－新增订货】客户名称和店员名称检查", "test160051");
@@ -96,85 +96,34 @@ function test160047() {
 
     return ret;
 }
-function test160048AddBill() {
+
+function ts160048() {
     tapMenu("销售订货", "新增订货+");
-    var json = {
-        "客户" : "xw",
-        "明细" : [ { "货品" : "kh000", "数量" : "10" },
-                { "货品" : "kh001", "数量" : "10" },
-                { "货品" : "kh002", "数量" : "10" },
-                { "货品" : "kh003", "数量" : "10" },
-                { "货品" : "kh004", "数量" : "10" },
-                { "货品" : "kh005", "数量" : "10" },
-                { "货品" : "kh006", "数量" : "10" },
-                { "货品" : "kh007", "数量" : "10" },
-                { "货品" : "kh008", "数量" : "10" },
-                { "货品" : "kh009", "数量" : "10" },
-                { "货品" : "kh010", "数量" : "10" },
-                { "货品" : "kh011", "数量" : "10" },
-                { "货品" : "kh012", "数量" : "10" },
-                { "货品" : "kh013", "数量" : "10" },
-                { "货品" : "kh014", "数量" : "10" },
-                { "货品" : "kh015", "数量" : "10" } ], "备注" : "123", "明细输入框个数" : 8 };
-    editSalesBillNoColorSize(json);
-}
-function test160048() {
-    test160048AddBill();
+    var jo = { "客户" : "xw", "onlytest" : "yes" };
+    var det = editOverLengthBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    var data1 = getQRDet().data;
+    editSalesBillSave({});
 
-    tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    var i, n = 8;
-    var ret1 = true;
-    var ret2 = true;
-    for (i = 0; i < 16; i++) {
-
-        ret1 = ret1
-                && isIn(getTextFieldValue(getScrollView(), 0 + n * i), "kh0");
-        ret2 = ret2
-                && isEqual("10", getTextFieldValue(getScrollView(), 3 + n * i));
-    }
-    tapButton(window, RETURN);
-
-    return isAnd(ret1, ret2);
-}
-
-function test160060() {
-    // 先跑160048可省该订货操作
-    // test160048AddBill();
-
-    tapMenu("销售订货", "按批次查");
+    tapMenu2("按批次查");
     query();
     tapFirstText();
-    tapButton(window, "整单复制");
-
-    tapMenu("销售订货", "新增订货+");
-    tapButton(window, "整单粘贴");
-    var jo1 = editSalesBillGetValue({});
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
+    var data2 = getQRDet().data;
     tapButton(window, RETURN);
 
-    tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    var jo2 = editSalesBillGetValue({});
-    var ret = isEqualObject(jo1, jo2);
-    var i, n = 8;
-    var ret1 = true, ret2 = true, ret3 = true, ret4 = true;
-    for (i = 0; i < 16; i++) {
-        ret1 = ret1
-                && isIn(getTextFieldValue(getScrollView(), 0 + n * i), "kh0");
-        ret2 = ret2
-                && isEqual("10", getTextFieldValue(getScrollView(), 3 + n * i));
-        ret3 = ret3
-                && isEqual("均色", getTextFieldValue(getScrollView(), 1 + n * i));
-        ret4 = ret4
-                && isEqual("均码", getTextFieldValue(getScrollView(), 2 + n * i));
+    return isEqualDyadicArray(data1, data2);
+}
 
-    }
-    tapButton(window, RETURN);
+function ts160060() {
+    // 先跑ts160048可省略开超长订单
+    // tapMenu("销售订货", "新增订货+");
+    // var jo = { "客户" : "xw" };
+    // var det = editOverLengthBillDet();
+    // var json = mixObject(jo, det);
+    // editSalesBill(json, colorSize);
 
-    return isAnd(ret, ret1, ret2, ret3, ret4);
+    return checkCopyAndPaste("新增订货+");
 }
 
 function test160049_160052() {
@@ -831,29 +780,36 @@ function test160009() {
 }
 
 function test160011() {
-    var ret = test160011Field("总经理");
-    return ret;
+    return test160011Field("总经理", "销售订货");
 }
 
 // 人员B 店长修改验证
 function test160011_1() {
-    var ret = test160011Field("店长");
-    return ret;
+    return test160011Field("店长", "销售订货");
 }
-function test160011Field(staff) {
-    tapMenu("销售订货", "按批次查");
+/**
+ * 验证查看修改日志
+ * @param staff 登陆角色
+ * @param menu1
+ * @returns
+ */
+function test160011Field(staff, menu1) {
+    tapMenu(menu1, "按批次查");
     var keys = { "日期从" : getDay(-30) };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
 
     tapFirstText();
     // 取首次订货人和首次订货时间
-    tapMenu("销售订货", "更多.", "查看修改日志");
+    tapMenu(menu1, "更多.", "查看修改日志");
     var texts = getStaticTexts(getPopOrView());
     var index = getArrayIndexIn(texts, "首次订货人");
-    var date0 = getStaticTextValue(getPopOrView(), index + 1);
-    index = getArrayIndexIn(texts, "首次订货时间");
-    var date1 = getStaticTextValue(getPopOrView(), index + 1);
+    // 采购订货没有首次订货人与首次订货时间
+    if (index >= 0) {
+        var date0 = getStaticTextValue(getPopOrView(), index + 1);
+        index = getArrayIndexIn(texts, "首次订货时间");
+        var date1 = getStaticTextValue(getPopOrView(), index + 1);
+    }
     tapButton(getPop(), OK);
 
     // 保存修改
@@ -864,12 +820,14 @@ function test160011Field(staff) {
     tapButton(window, RETURN);
 
     tapFirstText();
-    tapMenu("销售订货", "更多.", "查看修改日志");
+    tapMenu(menu1, "更多.", "查看修改日志");
     texts = getStaticTexts(getPopOrView());
     index = getArrayIndexIn(texts, "首次订货人");
-    var newDate0 = getStaticTextValue(getPopOrView(), index + 1);
-    index = getArrayIndexIn(texts, "首次订货时间");
-    var newDate1 = getStaticTextValue(getPopOrView(), index + 1);
+    if (index >= 0) {
+        var newDate0 = getStaticTextValue(getPopOrView(), index + 1);
+        index = getArrayIndexIn(texts, "首次订货时间");
+        var newDate1 = getStaticTextValue(getPopOrView(), index + 1);
+    }
     index = getArrayIndexIn(texts, "最后修改人");
     var date2 = getStaticTextValue(getPopOrView(), index + 1);
     index = getArrayIndexIn(texts, "最后修改时间");
@@ -877,8 +835,10 @@ function test160011Field(staff) {
     tapButton(getPop(), OK);
     tapButton(window, RETURN);
 
-    var ret = isAnd(isEqual(date0, newDate0), isEqual(date1, newDate1),
-            isEqual(staff, date2), isAqualOptime(opTime, date3));
+    var ret = isAnd(isEqual(staff, date2), isAqualOptime(opTime, date3));
+    if (isDefined(date0)) {
+        ret = isAnd(ret, isEqual(date0, newDate0), isEqual(date1, newDate1));
+    }  
     return ret;
 }
 

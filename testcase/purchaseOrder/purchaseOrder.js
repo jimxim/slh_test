@@ -1,4 +1,5 @@
 //LuXingXin <52619481 at qq.com> 20151012
+var xCache = {};
 
 function testPurchaseOrder001() {
     run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
@@ -15,10 +16,11 @@ function testPurchaseOrder001() {
     run("【采购订货-按汇总-按门店】翻页排序汇总", "ts130006_1");
     run("【采购订货-按汇总-按门店】查询清除", "ts130006_2");
     run("【采购订货-按汇总】数据验证", "ts130004_05_06");//
-
+    run("【采购订货-新增订货】取未保存数据准备", "ts130026Prepare");//
 }
 
 function testPurchaseOrder002() {
+    run("【采购订货-新增订货】取未保存", "ts130026");//不能单独跑
     run("【采购订货-新增订货】快速新增", "ts130007_08");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
@@ -29,6 +31,8 @@ function testPurchaseOrder002() {
     run("【采购订货-新增订货】订单终结-部分发货后终结", "ts130016_1");
     run("【采购订货-新增订货】订单终结-全部发货后终结", "ts130016_2");
     run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
+    run("【采购订货-新增订货】整单复制和整单粘贴", "ts130024");
+    run("【采购订货-按批次查】总经理查看修改日志", "ts130025_1");
 }
 
 // 翻页_排序
@@ -327,6 +331,31 @@ function ts130004_2() {
     var jo1 = get130004QR(fields, "厂商");
     var ret1 = isEqualObject(jo1, jo2);
     return ret && ret1;
+}
+/**
+ * 店长开单员只能看到本门店的数据
+ */
+function ts130004_05_06Staff() {
+    var det = editPurOrderDet();
+    tapMenu("采购订货", "按汇总", "按款号");
+    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
+    var fields = purchaseOrderCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length == 0;
+
+    tapMenu("采购订货", "按汇总", "按厂商");
+    fields = purchaseOrderProviderFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+
+    tapMenu("采购订货", "按汇总", "门店");
+    fields = purchaseOrderShopFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+    return ret;
 }
 
 function get130004QR(fields, title) {
@@ -889,7 +918,8 @@ function ts130015() {
     tapFirstText();
     runAndAlert("test130015End", OK);// 重复作废
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "不能重复结束"));
+    //本提示语经大师验证，若有不明改动，呵呵
+    ret = isAnd(ret, isIn(alertMsg, "采购订单已终结"));
     return ret;
 }
 function test130015End() {
@@ -984,18 +1014,102 @@ function ts130017() {
 
 function ts130024() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "采购订货" : "yes", "onlytest" : "yes" };
+    var jo = { "客户" : "vell", "采购订货" : "yes", "goodsFieldIndex" : -2 };
     var det = editOverLengthBillDet();
-    det["明细"]["goodsFieldIndex"] = -2;
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
-    var data = getQRDet();
+
+    return checkCopyAndPaste("新增订货+");
+}
+
+function ts130025_1() {
+    return test160011Field("总经理", "采购订货");
+}
+
+function ts130025_2() {
+    return test160011Field("店长", "采购订货");
+}
+
+function ts130026Prepare() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : "1" },
+                { "货品" : "kh001", "数量" : "2" }, { "货品" : "kh002", "数量" : "3" },
+                { "货品" : "kh003", "数量" : "4" }, { "货品" : "kh004", "数量" : "5" },
+                { "货品" : "kh005", "数量" : "6" }, { "货品" : "kh006", "数量" : "7" },
+                { "货品" : "kh007", "数量" : "8" }, { "货品" : "kh008", "数量" : "9" } ] }
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : [ 1, 2, 3 ] },
+                { "货品" : "kh001", "数量" : [ 1, 2, 3, 4, 5 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell", "onlytest" : "yes", "goodsFieldIndex" : -2 };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    xCache = getQRDet().data;
+    tapReturn();
+    return xCache;
+}
+// 暂时只能用终端跑
+function ts130026() {
+    tapMenu("采购订货", "新增订货+");
+    tapButton(window, "取未保存");
+    delay();
+    var data1 = getQRDet().data;
+    var ret = isEqualDyadicArray(xCache, data1);
+    var json = { "客户" : "vell" };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    var data2 = getQRDet().data;
+    ret = isAnd(ret, isEqualDyadicArray(data1, data2));
+    tapReturn();
+
+    xCache = {};
+    return ret;
+}
+
+/**
+ * 验证整单复制整单粘贴功能
+ * @param menu2 相应的新增菜单按钮
+ * @returns
+ */
+function checkCopyAndPaste(menu2) {
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    // delay();
+    var v1 = editSalesBillGetValue({});
+    var data1 = getQRDet().data;
+    tapButton(window, "整单复制");
+    delay();
+
+    tapMenu2(menu2);
+    tapButton(window, "整单粘贴");
     editSalesBillSave({});
 
     tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    var v2 = editSalesBillGetValue({});
+    var data2 = getQRDet().data;
+    tapButton(window, RETURN);
 
+    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(data1, data2));
 }
-
+/**
+ * 超长订单明细
+ * @returns
+ */
 function editOverLengthBillDet() {
     var det = {};
     switch (colorSize) {

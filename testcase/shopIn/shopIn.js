@@ -4,9 +4,9 @@
  * 常青店总经理验证
  */
 function testShopIn001() {
-    run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150007_1");// 接ts150007
+    run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
     run("【门店调入-在途调拨】在途调拨", "ts140001");
-    run("【门店调出-按批次查】调入已作废单", "ts150002_1"); 
+    run("【门店调出-按批次查】调入已作废单", "ts150002_1");
     run("【门店调出-在途调拨】门店调拨-在途调拨，默认日期检查", "ts140006");
     run("【门店调入-在途调拨】全部清除", "ts140010");
     run("【门店调入-在途调拨】返回", "ts140011");
@@ -73,57 +73,61 @@ function ts150002_1() {
     return ret;
 }
 
+// 调拨启用密码验证
 function ts150008() {
     tapMenu("门店调入", "在途调拨");
     query();
-    tapFirstText();
 
+    tapFirstText();
+    tapButtonAndAlert("调 入", OK);
+    delay();
+    tapPrompt();
+    var ret = isIn(alertMsg, "密码要填写");
+
+    tapFirstText();
+    editShopInFlitting("999999");
+    ret = isAnd(ret, isIn(alertMsg, "操作人/接收人密码错误"));
+
+    tapFirstText();
     editShopInFlitting("000000");
-    return isIn(alertMsg, "保存成功");
+    // 大师说是操作成功的，以后要是变成保存成功，就去打死大师
+    ret = isAnd(ret, isIn(alertMsg, "操作成功"));
+    return ret;
 }
 
 // 常青店登入，验证ts150007开的单子的明细备注并验证ts150013的相关内容
-function ts150007_1() {
+function ts150013() {
     tapMenu("门店调入", "在途调拨");
     query();
-    var qr = getQR();
-    var batch = qr.data[0]["批次"];
 
     tapFirstText();
     var title = getDetSizheadTitle();
-    var f = new TField("数量", TF, title["数量"], "30");
+    var ret = isEqual("abc123", getTextFieldValue(getScrollView(), title["备注"]));
+
+    var f = new TField("数量", TF, title["数量"], "20");
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
-    var ret = isIn(alertMsg, "调入明细和数量必须和调出一致");
+    ret = isAnd(ret, isIn(alertMsg, "调入明细和数量必须和调出一致"));
 
-    tapFirstText();
-    // 应该与最开始的一样
-    var det = ts150007Det();
-    var data1 = getQRDet().data;
-    ret = isAnd(ret, isEqualObject(det["调入明细"], data1[0]));
-
-    f = new TField("备注", TF, title["备注"], "abc");
-    setTFieldsValue(getScrollView(), [ f ]);
-    tapButtonAndAlert("调 入", OK);
-    delay();
-    tapPrompt();
-
-    tapMenu2("按批次查");
+    tapMenu("门店调出", "按批次查");
     query();
-    qr = getQR();
-    var exp = { "调出批次" : batch, "调出门店" : "中洲店", "调入门店" : "常青店",
-        "送货人" : "总经理200", "数量" : "-30", "金额" : "-4800", "操作人" : "总经理",
-        "备注" : "(0; -30)" };
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
+    tapFirstText();
+    title = getDetSizheadTitle();
+    setTFieldsValue(getScrollView(), [ f ]);
+    editShopOutSave({});
+
+    tapButton(window, QUERY);
+    var qr = getQR();
+    ret = isAnd(ret, isEqual("中洲店", qr.data[0]["调出门店"]));
 
     return ret;
 }
 
 function ts140001() {
     tapMenu("门店调出", "按批次查");
-    
+
 }
 
 function ts140006() {
@@ -259,8 +263,7 @@ function ts140016_20() {
 // 店长或开单员登录(后台设置 调拨入库单价和金额不要勾上,设定不允许店长或开单员查看调拨单的单价和金额)
 function ts140018() {
     tapMenu("门店调入", "按明细查");
-    
-    
+
 }
 
 function ts140021() {
