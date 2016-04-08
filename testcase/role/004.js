@@ -33,7 +33,7 @@ function test210043_4() {
         ret = true;
     }
 
-    target.frontMostApp().mainWindow().popover().dismiss();
+    window.popover().dismiss();
     return ret;
 }
 function test210038() {
