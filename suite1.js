@@ -14,15 +14,17 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 
- run("测试用例", "ts130004_2");
-// run("测试用例", "onlyTest");
+// run("测试用例", "ts130004_2");
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
+// debugElementTree(window);
     var qr = getQR2(getScrollView(-1, 0), "厂商", "差异数");
-    debugObject(qr.titles);
-    debugObject(qr.data[0]);
+    debugObject(qr.titles,"titles=");
+    for(var i=0;i<qr.data.length;i++){
+        debugObject(qr.data[i]);
+    }
    return qr.data[0];
 }
 

@@ -14,14 +14,61 @@ function addCustomer(keys, check) {
 
     var ret = true;
     if (isDefined(check) && check == "yes") {
-        tapMenu("往来管理", "客户查询");
+        tapMenu2("客户查询");
         var qKeys = { "客户名称" : keys["名称"] };
         fields = queryCustomerFields(qKeys);
+        query(fields);
         var qr = getQR();
         ret = isEqual(keys["名称"], qr.data[0]["名称"]);
     }
     return ret;
 }
+
+/**
+ * 新增货品
+ * @param keys
+ * @param colorSize "yes":颜色尺码 "no":均色均码
+ * @param price "yes":默认价格模式 "no":省代价格模式
+ * @param day 上架日期
+ */
+function addGoods(keys, colorSize, price, day) {
+    var colorSizeStartIndex = 0, priceStartIndex = 0;
+
+    switch (colorSize) {
+    case "no":
+        colorSizeStartIndex = 0;
+        break;
+    case "yes":
+        colorSizeStartIndex = 4;
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
+    if (isUndefined(price) || price == "no") {
+        priceStartIndex = 0;
+    } else {
+        if (price == "yes") {
+            priceStartIndex = -1;
+        } else {
+            logDebug("未知price" + price);
+        }
+    }
+
+    tapMenu("货品管理", "新增货品+");
+    if (isDefined(day)) {
+        changeMarketTime(day);
+    }
+    var fields = editGoodsFields(keys, false, colorSizeStartIndex,
+            priceStartIndex);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    delay();
+    tapReturn();
+}
+
 /**
  * 库存调整单 r:调整后库存
  */
@@ -32,6 +79,49 @@ function addGoodsStockAdjustment(r) {
     runAndAlert("test100090Field", OK);
     tapNaviLeftButton();
 }
+
+function addLogisticsVerify(o) {
+    tapMenu("销售开单", "核销+");
+    logisticsVerifySetField(o, "物流");
+    logisticsVerifySetField(o, "店员");
+    logisticsVerifySetField(o, "日期");
+    logisticsVerifySetField(o, "备");
+
+    editLogisticsVerify(o);
+
+    logisticsVerifySetField(o, "现金");
+    editSalesBillCard(o);
+    editSalesBillRemit(o);
+    editSalesBillSave(o);
+    return o;
+}
+
+/**
+ * 对象相加
+ * @param jo1
+ * @param jo2
+ * @returns
+ */
+function addObject(jo1, jo2) {
+    // debugObject(jo2, "jo2");
+    // debugObject(jo1, "jo1");
+    var ret = {};
+    for ( var i in jo1) {
+        var v = jo1[i];
+        if (isNaN(v)) {
+            ret[i] = v;
+        } else {
+            var v1 = 0;
+            if (isDefined(jo2) && !isNaN(jo2[i])) {
+                v1 = jo2[i];
+            }
+            ret[i] = Number(v) + Number(v1);
+        }
+    }
+    debugObject(ret, "addObject result=");
+    return ret;
+}
+
 /**
  * 新增厂商
  * @param keys
@@ -43,6 +133,29 @@ function addProvider(keys) {
     tapButton(window, SAVE);
 
     delay();
+    tapReturn();
+}
+
+/**
+ * 新增积分兑换
+ * @param customer
+ * @param points 兑换积分
+ * @param money 兑换金额
+ */
+function addRedeemPoints(customer, points, money) {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : customer };
+    editSalesBillCustomer(json);
+
+    tapButton(window, "核销");
+    tapButton(getScrollView(-1, 0), "积分兑换");
+    var g0 = new TField("兑换积分", TF, 0, points);
+    var g1 = new TField("兑换金额", TF, 1, money);
+    setTFieldsValue(getPopView(), [ g0, g1 ]);
+    tapButton(getPop(), OK);
+    // tapButton(getPop(), CLOSE);
+    tapNaviLeftButton();
+
     tapReturn();
 }
 
@@ -246,49 +359,6 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
 }
 
 /**
- * 新增货品
- * @param keys
- * @param colorSize "yes":颜色尺码 "no":均色均码
- * @param price "yes":默认价格模式 "no":省代价格模式
- * @param day 上架日期
- */
-function addGoods(keys, colorSize, price, day) {
-    var colorSizeStartIndex, priceStartIndex;
-
-    if (isUndefined(colorSize) || colorSize == "no") {
-        colorSizeStartIndex = 0;
-    } else {
-        if (colorSize == "yes") {
-            colorSizeStartIndex = 4;
-        } else {
-            logDebug("未知colorSize" + colorSize);
-        }
-    }
-
-    if (isUndefined(price) || price == "no") {
-        priceStartIndex = 0;
-    } else {
-        if (price == "yes") {
-            priceStartIndex = -1;
-        } else {
-            logDebug("未知price" + price);
-        }
-    }
-
-    tapMenu("货品管理", "新增货品+");
-    if (isDefined(day)) {
-        changeMarketTime(day);
-    }
-    var fields = editGoodsFields(keys, false, colorSizeStartIndex,
-            priceStartIndex);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-
-    delay();
-    tapReturn();
-}
-
-/**
  * 根据第一个标题，点击静态文本，默认为序号1
  * @param name 第一个标题的内容
  * @param view1
@@ -486,25 +556,25 @@ function totalAndPageCheck() {
  * 等待loading图 有问题，待改
  * @param maxTime最大等待时间，默认60s
  */
-function waitForLoad(maxTime) {
-    if (isUndefined(maxTime)) {
-        maxTime = 60;
-    }
-    var times = 0;
-    while (times < maxTime) {
-        var indicator = window.activityIndicators()[0];
-        if (indicator != "[object UIAElementNil]") {
-            // UIALogger.logMessage("loading");
-            times += 1;
-        } else {
-            break;
-        }
-        delay();
-    }
-    if (times == maxTime) {
-        logDebug("加载超时" + maxTime + "s");
-    }
-}
+// function waitForLoad(maxTime) {
+// if (isUndefined(maxTime)) {
+// maxTime = 60;
+// }
+// var times = 0;
+// while (times < maxTime) {
+// var indicator = window.activityIndicators()[0];
+// if (indicator != "[object UIAElementNil]") {
+// // UIALogger.logMessage("loading");
+// times += 1;
+// } else {
+// break;
+// }
+// delay();
+// }
+// if (times == maxTime) {
+// logDebug("加载超时" + maxTime + "s");
+// }
+// }
 
 /**
  * 跳转到指定页面(输入值)
@@ -619,9 +689,9 @@ function goPageCheckField() {
 
     var index = getTextFieldIndex(window, -1);
     var tf = window.textFields()[index].textFields()[0];
-    tf.setValue("1");
+    tf.setValue("1");//随意输入数字
     tapKeyboardHide();
-    tapButton(window, CANCEL);
+    tapButton(window, CANCEL);//取消跳转
 
     qr = getQR();
     var arr2 = qr.data;
@@ -671,7 +741,7 @@ function isDifferentArray(data1, data2, n) {
         s1 = arrayToString(data1[j]);
         for (i = n; i < data2.length; i++) {
             s2 = arrayToString(data2[i]);
-            if (isEqual(s1, s2)) {
+            if (s1==s2) {
                 ret = false;
                 logDebug("s1=" + s1 + "   s2=" + s2 + " 内容相同");
                 break;
@@ -879,7 +949,7 @@ function dropDownListCheck2(index, value, expected, o) {
     }
     delay();
     tapKeyboardHide();
-    if (window.buttons()[CLEAR].isVisible) {
+    if (window.buttons()[CLEAR].isVisible()) {
         tapButton(window, CLEAR);
     }
 
@@ -1001,45 +1071,6 @@ function fuzzyQueryCheckField(index, title, value, title1) {
     tapButton(window, CLEAR);
     return ret1;
 }
-/**
- * 积分兑换
- * @param customer
- * @param points
- * @param money
- */
-function addRedeemPoints(customer, points, money) {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : customer };
-    editSalesBillCustomer(json);
-
-    tapButton(window, "核销");
-    tapButton(getScrollView(-1, 0), "积分兑换");
-    var g0 = new TField("兑换积分", TF, 0, points);
-    var g1 = new TField("兑换金额", TF, 1, money);
-    var fields = [ g0, g1 ];
-    setTFieldsValue(getPopView(), fields);
-    tapButton(getPop(), OK);
-    // tapButton(getPop(), CLOSE);
-    tapNaviLeftButton();
-
-    tapReturn();
-}
-
-function addLogisticsVerify(o) {
-    tapMenu("销售开单", "核销+");
-    logisticsVerifySetField(o, "物流");
-    logisticsVerifySetField(o, "店员");
-    logisticsVerifySetField(o, "日期");
-    logisticsVerifySetField(o, "备");
-
-    editLogisticsVerify(o);
-
-    logisticsVerifySetField(o, "现金");
-    editSalesBillCard(o);
-    editSalesBillRemit(o);
-    editSalesBillSave(o);
-    return o;
-}
 
 function logisticsVerifySetField(o, key) {
     var v = o[key];
@@ -1143,7 +1174,7 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
 }
 
 /**
- * 静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
+ * 期望界面的静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
  * @param texts
  * @param value
  * @param f1
@@ -1271,24 +1302,4 @@ function isPositiveNumber(n) {
 
 function isNegativeNumber(n) {
     return Number(n) <= 0;
-}
-
-function addObject(jo1, jo2) {
-    // debugObject(jo2, "jo2");
-    // debugObject(jo1, "jo1");
-    var ret = {};
-    for ( var i in jo1) {
-        var v = jo1[i];
-        if (isNaN(v)) {
-            ret[i] = v;
-        } else {
-            var v1 = 0;
-            if (isDefined(jo2) && !isNaN(jo2[i])) {
-                v1 = jo2[i];
-            }
-            ret[i] = Number(v) + Number(v1);
-        }
-    }
-    debugObject(ret, "addObject result=");
-    return ret;
 }
