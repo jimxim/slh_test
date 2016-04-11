@@ -162,23 +162,29 @@ function ts130002_1() {
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    var ret = goPageCheck();
-
-    ret = ret && sortByTitle("批次", IS_NUM);
-    ret = ret && sortByTitle("厂商");
-    ret = ret && sortByTitle("款号");
-    ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("颜色");
-    ret = ret && sortByTitle("尺码");
-    ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("单价", IS_NUM);
-    ret = ret && sortByTitle("金额", IS_NUM);
-    ret = ret && sortByTitle("已入库", IS_NUM);
-    ret = ret && sortByTitle("操作日期", IS_OPTIME);
-    ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("备注");
-
+    // var ret = goPageCheck();
+    //
+    // ret = ret && sortByTitle("批次", IS_NUM);
+    // ret = ret && sortByTitle("厂商");
+    // ret = ret && sortByTitle("款号");
+    // ret = ret && sortByTitle("名称");
+    // ret = ret && sortByTitle("颜色");
+    // ret = ret && sortByTitle("尺码");
+    // ret = ret && sortByTitle("数量", IS_NUM);
+    // ret = ret && sortByTitle("单价", IS_NUM);
+    // ret = ret && sortByTitle("金额", IS_NUM);
+    // ret = ret && sortByTitle("已入库", IS_NUM);
+    // ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    // ret = ret && sortByTitle("操作人");
+    // ret = ret && sortByTitle("备注");
+    var ret = true;
     var arr = [ "数量", "金额", "已入库" ];
+    if (ipadVer >= 7.01) {
+        ret = ret && sortByTitle("图像");
+        ret = ret && sortByTitle("差异数", IS_NUM);
+        arr.push("差异数");
+    }
+
     ret = ret && isEqualCounts(arr);
     return ret;
 }
@@ -294,6 +300,9 @@ function ts130004_1() {
     query(fields);
     var ret = goPageCheck();
 
+    if (ipadVer >= 7.01) {
+        ret = ret && sortByTitle("图像");
+    }
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1094,7 +1103,16 @@ function checkCopyAndPaste(menu2) {
     var v1 = editSalesBillGetValue({});
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
+    
+    var o1 = { "确定复制吗" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
     delay();
+    // 门店调出不会自动返回
+    var btn = getButton(window, RETURN);
+    if (isUIAButton(btn)) {
+        tapButton(window, RETURN);
+        delay();
+    }
 
     tapMenu2(menu2);
     tapButton(window, "整单粘贴");

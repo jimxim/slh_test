@@ -15,7 +15,7 @@ js_func="$js_func login200GoodsPrepare login000Goods001 login000Goods002 "
 #往来管理
 js_func="$js_func login200CustomerPrepare login000Customer002 login000Customer001 "
 #门店调出、门店调入
-js_func="$js_func login200ShopOut001 login000ShopIn001"
+js_func="$js_func login200ShopOut001 login200ShopOut003 login000ShopIn001"
 #采购订货
 js_func="$js_func login000PurchaseOrder001 login000PurchaseOrder002"
 #采购入库

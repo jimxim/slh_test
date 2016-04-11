@@ -1,4 +1,6 @@
 //ZhangY <15068165765 at 139.com> 20151013
+var outBatch = {};//调出批次
+var xCache = {};
 
 /**
  * 中洲店总经理验证
@@ -19,7 +21,13 @@ function testShopOut001() {
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
     run(" 门店调入数据准备", "shopInPrepare");
-    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 必须放在最后，后面接ts150013
+    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
+    run("【门店调出-批量调出】整单复制和整单粘贴", "ts150016");
+    run("【门店调出-批量调出】取未保存数据准备", "ts150017Prepare");
+}
+
+function testShopOut003() {
+    run("【门店调出-批量调出】取未保存", "ts150017");
 }
 
 function setShopOutParams() {
@@ -426,6 +434,11 @@ function ts150007() {
     }
     editShopOutSave({});
 
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    outBatch["ts150007"] = qr.data[0]["批次"];
+
     return ret;
 }
 
@@ -496,12 +509,61 @@ function ts150011() {
 
 function ts150016() {
     tapMenu("门店调出", "批量调出+");
-    var jo = { "调出人" : "200", "接收店" : "常青店","备注":"abc123" };
+    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123" };
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
+
+    return checkCopyAndPaste("批量调出+");
+}
+
+function ts150017Prepare() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : "1" },
+                { "货品" : "kh001", "数量" : "2" }, { "货品" : "kh002", "数量" : "3" },
+                { "货品" : "kh003", "数量" : "4" }, { "货品" : "kh004", "数量" : "5" },
+                { "货品" : "kh005", "数量" : "6" }, { "货品" : "kh006", "数量" : "7" },
+                { "货品" : "kh007", "数量" : "8" }, { "货品" : "kh008", "数量" : "9" } ] }
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "kh000", "数量" : [ 1, 2, 3 ] },
+                { "货品" : "kh001", "数量" : [ 1, 2, 3, 4, 5 ] } ] };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
+    tapMenu("门店调出", "批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店", "onlytest" : "yes" };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    xCache = getQRDet().data;
+    tapReturn();
+    return xCache;
+}
+
+// 暂时只能用终端跑
+function ts150017() {
+    tapMenu("门店调出", "批量调出+");
+    tapButton(window, "取未保存");
+    delay();
+    var data1 = getQRDet().data;
+    var ret = isEqualDyadicArray(xCache, data1);
+    var json = { "调出人" : "200", "接收店" : "常青店" };
     editSalesBill(json, colorSize);
 
-    return checkCopyAndPaste("新增订货+");
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    var data2 = getQRDet().data;
+    ret = isAnd(ret, isEqualDyadicArray(data1, data2));
+    tapReturn();
+
+    xCache = {};
+    return ret;
 }
 
 function shopInPrepare() {
@@ -524,6 +586,11 @@ function shopInPrepare() {
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "inPre" };
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
+    
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    outBatch["inPre"] = qr.data[0]["批次"];
 
     return true;
 }

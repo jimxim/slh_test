@@ -143,3 +143,58 @@ function shopInQueryParticularField(key, show) {
 	}
 	return f;
 }
+
+//按款号汇总
+function testShopInCodeFields() {
+    var keys = [ "code", "name", "day1", "day2", "shop-out", "shop-in", "brand" ];
+    var fields = shopInCodeFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = shopInCodeFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function shopInCodeFields(keys, show) {
+    return getTFields("shopInCodeFields", keys, show);
+}
+function shopInCodeField(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "3035", -1, 0);
+        if (show) {
+            f.value = "3035,jkk,200元,Adidas";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "jkk");
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 2, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("到", TF_DT, 3, getToday());
+        break;
+    case "shop-out":
+    case "调出门店":
+        f = new TField("调出门店", TF_SC, 4, "中洲店");
+        break;
+    case "shop-in":
+    case "调入门店":
+        f = new TField("调入门店", TF_SC, 5, "常青店");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 5, "1", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}

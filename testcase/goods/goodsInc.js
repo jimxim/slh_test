@@ -1172,7 +1172,12 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
     logDebug("index=" + index);
     return index;
 }
-
+function getIpadVer(){
+    //主界面倒数第二个静态文本中包含版本号
+    var value = getStaticTextValue(window,-2);
+    var ipadVer=value.slice(-6);
+    return ipadVer;
+}
 /**
  * 期望界面的静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
  * @param texts

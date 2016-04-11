@@ -9,23 +9,19 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer = "6.59";
+    ipadVer = "6.59";//
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
-
- run("测试用例", "ts130020_1");
+  var outBatch={"inPre":167};
+ run("测试用例", "ts140001");
 // run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
-    var qr = getQR2(getScrollView(-1, 0), "厂商", "差异数");
-    debugObject(qr.titles,"titles=");
-    for(var i=0;i<qr.data.length;i++){
-        debugObject(qr.data[i]);
-    }
-   return qr.data[0];
+// debugElementTree(window);
+    var idx=shopOutQueryBatchField("调入门店").index;
+    return idx;
 }
 
 function prepare200All(){
@@ -214,6 +210,15 @@ function login200ShopOut001(){
     if( ok ) {
         run("【往来管理-积分查询】数据验证", "test110036_2");
         testShopOut001();    
+       logout();
+    }   
+}
+
+function login200ShopOut003(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("200","000000",p1);
+    if( ok ) {
+        testShopOut003();    
        logout();
     }   
 }

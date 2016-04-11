@@ -98,6 +98,8 @@ function ts150008() {
 // 常青店登入，验证ts150007开的单子的明细备注并验证ts150013的相关内容
 function ts150013() {
     tapMenu("门店调入", "在途调拨");
+    var keys = { "批次从" : outBatch["ts150007"], "批次到" : outBatch["ts150007"] };
+    var fields = shopInFlitFields(keys);
     query();
 
     tapFirstText();
@@ -126,7 +128,21 @@ function ts150013() {
 }
 
 function ts140001() {
-    tapMenu("门店调出", "按批次查");
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "调出门店" : "中洲店", "批次从" : outBatch["inPre"],
+        "批次到" : outBatch["inPre"] };
+    var fields = shopInFlitFields(keys);
+    query(fields);
+    var qr=getQR();
+    var ret=false;
+    if(qr.data.length>0){
+        var exp={"批次":outBatch["inPre"],"调出门店":"中洲店","数量":40,};
+    }
+   
+    
+
+    tapFirstText();
+    qr = getQRDet();
 
 }
 
@@ -224,7 +240,6 @@ function ts140015() {
 
     tapFirstText();
     tapButton(window, RETURN);
-    delay();
 
     var ret = window.buttons()["在途调拨"].isVisible();
     waitUntil(cond, 10);
