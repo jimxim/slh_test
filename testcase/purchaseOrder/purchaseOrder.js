@@ -20,7 +20,7 @@ function testPurchaseOrder001() {
 }
 
 function testPurchaseOrder002() {
-    run("【采购订货-新增订货】取未保存", "ts130026");//不能单独跑
+    run("【采购订货-新增订货】取未保存", "ts130026");// 不能单独跑
     run("【采购订货-新增订货】快速新增", "ts130007_08");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
@@ -52,6 +52,9 @@ function ts130020_1() {
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
     ret = ret && sortByTitle("差异数");// 目前不支持排序
+    if (ipadVer >= 7.01) {
+        ret = ret && sortByTitle("发货状态", IS_NUM);
+    }
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
@@ -918,7 +921,7 @@ function ts130015() {
     tapFirstText();
     runAndAlert("test130015End", OK);// 重复作废
     tapPrompt();
-    //本提示语经大师验证，若有不明改动，呵呵
+    // 本提示语经大师验证，若有不明改动，呵呵
     ret = isAnd(ret, isIn(alertMsg, "采购订单已终结"));
     return ret;
 }
