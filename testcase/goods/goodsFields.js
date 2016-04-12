@@ -175,6 +175,35 @@ function queryGoodsDistributionField(key, show) {
     return f;
 }
 
+//库存分布二级界面
+function testQueryGoodsDistributionDetFields() {
+    var keys = [ "code"];
+    var fields = queryGoodsDistributionDetFields(keys);
+    setTFieldsValue(getScrollView(-1,0), fields);
+    var showFields = queryGoodsDistributionDetFields(keys, true);
+    return checkShowFields(getScrollView(-1,0), showFields);
+}
+
+function queryGoodsDistributionDetFields(keys, show) {
+    return getTFields("queryGoodsDistributionDetField", keys, show);
+}
+
+function queryGoodsDistributionDetField(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "3035",-1,0);
+        if(show){
+            f.value="3035,jkk,200元,Adidas"
+        }
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
 // 货品进销存
 function testQueryGoodsInOutFields() {
     var keys = [ "shop", "code", "name", "provider", "market1", "market2",

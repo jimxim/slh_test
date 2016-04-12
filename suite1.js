@@ -13,15 +13,17 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
-  var outBatch={"inPre":167};
+ outBatch={"inPre":"174"};
  run("测试用例", "ts140001");
 // run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    var idx=shopOutQueryBatchField("调入门店").index;
-    return idx;
+    var exp = { "库存" : 30, "价值" : 6000, "常青店" : 30 };
+    var de1 = { "序号" : 30, "名称" : "登山服", "库存" : 30, "常青店" : 30,
+        "中洲店" : 0 };
+   return isEqualObject(exp,de1);
 }
 
 function prepare200All(){

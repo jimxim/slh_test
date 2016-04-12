@@ -1,5 +1,5 @@
 //ZhangY <15068165765 at 139.com> 20151013
-var outBatch = {};//调出批次
+var outBatch={};// 调出批次
 var xCache = {};
 
 /**
@@ -231,7 +231,7 @@ function ts150001_09() {
     tapFirstText();
     tapButtonAndAlert("作 废");
     // 作废后会自动返回按批次查界面，但是有点慢
-    var cond = " window.buttons()['按批次查'].isVisible()";
+    var cond = "window.buttons()['按批次查'].isVisible()";
     waitUntil(cond, 10);
     // tapButton(window, RETURN);
 
@@ -586,12 +586,12 @@ function shopInPrepare() {
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "inPre" };
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
-    
+
     tapMenu2("按批次查");
     query();
     var qr = getQR();
     outBatch["inPre"] = qr.data[0]["批次"];
-
+    logDebug("outBatch['inPre']=" + outBatch["inPre"]);
     return true;
 }
 

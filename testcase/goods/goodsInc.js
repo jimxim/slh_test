@@ -98,7 +98,7 @@ function addLogisticsVerify(o) {
 
 /**
  * 对象相加
- * @param jo1
+ * @param jo1 不能为空
  * @param jo2
  * @returns
  */
@@ -575,7 +575,6 @@ function totalAndPageCheck() {
 // logDebug("加载超时" + maxTime + "s");
 // }
 // }
-
 /**
  * 跳转到指定页面(输入值)
  * @param page
@@ -689,9 +688,9 @@ function goPageCheckField() {
 
     var index = getTextFieldIndex(window, -1);
     var tf = window.textFields()[index].textFields()[0];
-    tf.setValue("1");//随意输入数字
+    tf.setValue("1");// 随意输入数字
     tapKeyboardHide();
-    tapButton(window, CANCEL);//取消跳转
+    tapButton(window, CANCEL);// 取消跳转
 
     qr = getQR();
     var arr2 = qr.data;
@@ -714,6 +713,36 @@ function isEqualDyadicArray(data1, data2) {
         var arr2 = data2[i];
         ret = ret && isEqualObject(arr1, arr2);
     }
+    return ret;
+}
+
+/**
+ * 2个对象相同属性的值是否相等
+ * @param expected
+ * @param actual
+ * @param allow 操作时间允许的误差值，默认为1分钟
+ * @returns {Boolean}
+ */
+function isEqualObject2(expected, actual, allow) {
+    debugObject(expected, "expected");
+    debugObject(actual, "actual");
+    if (isUndefined(allow)) {
+        allow = 1;
+    }
+    var ret = true;
+    var v1, v2;
+    for ( var i in expected) {
+        if (actual.hasOwnProperty(expected[i])) {
+            v1 = expected[i];
+            v2 = actual[i];
+            if (i != "操作日期") {
+                ret = ret && (v1 == v2);
+            } else {
+                ret = ret && isAqualOptime(v1, v2, allow)
+            }
+        }
+    }
+    logDebug(" ret=" + ret);
     return ret;
 }
 
@@ -741,7 +770,7 @@ function isDifferentArray(data1, data2, n) {
         s1 = arrayToString(data1[j]);
         for (i = n; i < data2.length; i++) {
             s2 = arrayToString(data2[i]);
-            if (s1==s2) {
+            if (s1 == s2) {
                 ret = false;
                 logDebug("s1=" + s1 + "   s2=" + s2 + " 内容相同");
                 break;
@@ -970,8 +999,8 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
     var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
 
     var sum = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             sum = addObject(qr.data[i], sum);
         }
         if (j < qr.totalPageNo) {
@@ -1016,7 +1045,7 @@ function isEqualDropDownList(expected, view1) {
     var ret = true;
     for (var i = 0; i < expected.length; i++) {
         // 下拉框奇数行内容为空
-        ret = isAnd(ret, isEqual(expected[i], getStaticTextValue(view1, i * 2)));
+        ret = ret && isEqual(expected[i], getStaticTextValue(view1, i * 2));
     }
     target.frontMostApp().mainWindow().popover().dismiss();
     return ret;
@@ -1172,10 +1201,10 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
     logDebug("index=" + index);
     return index;
 }
-function getIpadVer(){
-    //主界面倒数第二个静态文本中包含版本号
-    var value = getStaticTextValue(window,-2);
-    var ipadVer=value.slice(-6);
+function getIpadVer() {
+    // 主界面倒数第二个静态文本中包含版本号
+    var value = getStaticTextValue(window, -2);
+    var ipadVer = value.slice(-6);
     return ipadVer;
 }
 /**

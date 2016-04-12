@@ -170,7 +170,7 @@ function testGoods001() {
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
-    // run("【货品管理-库存分布】库存分布", "test100006");
+    run("【货品管理-库存分布】库存分布", "ts100006");
     run("【货品管理-库存分布】库存分布_汇总", "test100006_1");// 都不支持排序
     run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "test100008_1")
     run("【货品管理-货品进销存】货品进销存", "test100008");
@@ -772,112 +772,53 @@ function test100005_3() {
     return ret;
 }
 
-function test100006() {
+function ts100006() {
+    var det = editPurOrderDet();
+    var code = det["明细"][0]["货品"];
     tapMenu("货品管理", "库存分布");
     var i, j;
     var keys = { "类别" : "登山服", "厂商" : "vell", "是否停用" : "否" };
     var fields = queryGoodsDistributionFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqualQRData1ByTitle(qr, "名称", "登山服");
-    var jo1 = qr.data[0];// 只有一条数据
-
-    ret = isAnd(ret, isEqual(qr.data[0]["库存"], qr.counts["库存"]), isEqual(
-            qr.data[0]["价值"], qr.counts["价值"]), isEqual(qr.data[0]["常青店"],
-            qr.counts["常青店"]));
-    if (isDefined(qr.data[0]["仓库店"])) {
-        ret = ret && isEqual(qr.data[0]["仓库店"], qr.counts["仓库店"]);
-    }
-    if (isDefined(qr.data[0]["中洲店"])) {
-        ret = ret && isEqual(qr.data[0]["中洲店"], qr.counts["中洲店"]);
-    }
-    if (isDefined(qr.data[0]["文一店"])) {
-        ret = ret && isEqual(qr.data[0]["文一店"], qr.counts["文一店"]);
-    }
+    var jo1 = qr.data[0];// 这里查询结果应该唯一
+    var data1 = getDetTS100006(code);
+    var ret = isAnd(isEqual("登山服", jo1["名称"]), isEqualCounts());
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
+    var jo = { "客户" : "vell" };
+    var json = mixObject(jo, det);
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "库存分布");
     tapButton(window, QUERY);
     qr = getQR();
-    var a = qr.data[0]["库存"];
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expectedObj1 = { "名称" : "登山服", "库存" : 50, "价值" : 10000, "常青店" : 50 }
-    var de1 = { "序号" : 0, "名称" : 0, "库存" : 0, "价值" : 0, "仓库店" : 0, "常青店" : 0,
-        "文一店" : 0, "中洲店" : 0 };
-    var expected = mixObject(de1, expectedObj1);
-    ret = isAnd(ret, isEqualObject(expected, actual));
+    // 库存按销价1计算--零批价200
+    var exp = { "库存" : 30, "价值" : 6000, "常青店" : 30 };
+    var de1 = { "序号" : 0, "名称" : "登山服", "库存" : 0, "价值" : 0, "常青店" : 0,
+        "中洲店" : 0 };
+    var expected = mixObject(de1, exp);
+    var data2 = getDetTS100006(code, "no");
 
-    tapFirstText(getScrollView(), "序号", 8);
-    var qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var a1 = qr1.data[0]["库存"];
-    logDebug("a1=" + a1);
-
-    tapFirstText(getScrollView(-1, 0), "名称", 8);
-    var qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var sum2 = 0;
-    for (j = 1; j <= qr2.totalPageNo; j++) {
-        for (i = 0; i < qr2.curPageTotal; i++) {
-            if (qr2.data[i]["仓库店"] == undefined) {
-                qr2.data[i]["仓库店"] = 0;
-            }
-            if (qr2.data[i]["文一店"] == undefined) {
-                qr2.data[i]["文一店"] = 0;
-            }
-            if (qr2.data[i]["中洲店"] == undefined) {
-                qr2.data[i]["中洲店"] = 0;
-            }
-            sum2 += Number(qr.data[i]["库存"]);
-            if (Number(qr2.data[i]["库存"]) != Number(qr2.data[i]["仓库店"])
-                    + Number(qr2.data[i]["常青店"]) + Number(qr2.data[i]["文一店"])
-                    + Number(qr2.data[i]["中洲店"])) {
-                ret = false;
-                break;
-            }
+    tapFirstText(getScrollView(-1, 0), "名称");
+    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    var sum = {};
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum = addObject(qr.data[i], sum);
         }
-        if (j < qr2.totalPageNo) {
+        if (j < qr.totalPageNo) {
             scrollNextPage();
-            qr2 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+            qr = getQR2(view, "名称", "中洲店");
         }
     }
-    ret = isAnd(ret, isEqual(sum2, a1));
-    // logDebug("sum2=" + sum2);
     tapNaviLeftButton();
-    delay();
-
-    qr1 = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var sum1 = 0;
-    for (j = 1; j <= qr1.totalPageNo; j++) {
-        for (i = 0; i < qr1.curPageTotal; i++) {
-            if (qr1.data[i]["仓库店"] == undefined) {
-                qr1.data[i]["仓库店"] = 0;
-            }
-            if (qr1.data[i]["文一店"] == undefined) {
-                qr1.data[i]["文一店"] = 0;
-            }
-            if (qr1.data[i]["中洲店"] == undefined) {
-                qr1.data[i]["中洲店"] = 0;
-            }
-            sum1 += Number(qr1.data[i]["库存"]);
-            if (Number(qr1.data[i]["库存"]) != Number(qr1.data[i]["仓库店"])
-                    + Number(qr1.data[i]["常青店"]) + Number(qr2.data[i]["文一店"])
-                    + Number(qr1.data[i]["中洲店"])) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr1.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-        }
-    }
-
-    ret = isAnd(ret, isEqual(sum1, a));
-    // logDebug("sum1=" + sum1);
     tapNaviLeftButton();
+    ret = isAnd(ret, isEqualObject(expected, actual),
+            isEqualObject2(data2, sum), isEqualObject(exp, subObject(data2,
+                    data1)));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
@@ -885,6 +826,25 @@ function test100006() {
             window, 2)));
 
     return ret;
+}
+
+function getDetTS100006(code, close) {
+    tapFirstText();
+    var keys = { "款号" : code };
+    var fields = queryGoodsDistributionDetFields(keys);
+    var view = getScrollView(-1, 0);
+    setTFieldsValue(view, fields);
+    tapButton(view, QUERY);
+
+    var qr = getQR2(view, "名称", "中洲店");
+    //查询结果唯一
+    var data = qr.data[0];
+
+    if (isUndefined(close)) {
+        tapNaviLeftButton();
+    }
+
+    return data;
 }
 
 function test100006_1() {
