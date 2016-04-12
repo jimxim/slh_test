@@ -154,7 +154,7 @@ function test170429() {
 }
 function test180022_Prepare() {
     tapMenu("盘点管理", "新增盘点+");
-    debugElementTree(window);
+//    debugElementTree(window);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
