@@ -255,6 +255,7 @@ function getQRDet(view) {
             data.push(data1);
         }
     }
+    var titles = title;
     var total = data.length;
     var qResult = new QResult(titles, data, total);
     return qResult;

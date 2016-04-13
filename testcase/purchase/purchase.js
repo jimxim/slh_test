@@ -48,7 +48,7 @@ function testPurchase002() {
     run("【采购入库-按批次查】按批次查->作废", "test120003");
     run("【采购入库-按批次查】按批次查->作废、挂单操作和查询", "test120044");
     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
-    run("【采购入库-按批次查】输入不存在的款号提示信息", "test120005");
+    run("【采购入库】输入不存在的款号提示信息", "ts120005");
     run("【采购入库-按批次查】将供应商修改从无到有", "test120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "test120060");
     run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");
@@ -271,41 +271,74 @@ function test120003Field(json, s1, s2) {
     return ret;
 }
 
-function test120005() {
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "未付" : "yes" };
-    editSalesBillNoColorSize(json);
+// 只需要在均色均码下执行
+function ts120005() {
+    if (colorSize == "no") {
+        // 输入不存在的款号
+        var det = { "明细" : [ { "货品" : "zwlyttwj", "数量" : "10" } ] };
 
-    tapMenu("采购入库", "按批次查");
-    query();
-    var qr = getQR();
-    var a = qr.data[0]["总数"];
+        tapMenu("采购入库", "新增入库+");
+        var jo = { "客户" : "vell", "onlytest" : "yes" };
+        var json1 = mixObject(jo, det);
+        editSalesBill(json1, colorSize);
+        var ret = ts120005Field();
 
-    tapFirstText();
-    var r = getTimestamp(6);
-    var f8 = new TField("货品", TF, 8, "不存在货品" + r);
-    var f11 = new TField("数量", TF, 11, "30");
-    var fields = [ f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
+        tapMenu2("批量入库+");
+        editPurchaseBatch(json1, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu2("按订货入库");
+        var keys = { "日期从" : getDay(-30) };
+        var fields = purchaseOrderFields(keys);
+        query(fields);
+        // 按门店排序，应该是常青店
+        tapTitle(getScrollView(), "门店");
+        delay();
+        tapFirstText();
+        jo = { "按订货" : "yes", "onlytest" : "yes" };
+        var json2 = mixObject(jo, det);
+        editSalesBill(json2, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu("采购订货", "新增订货+");
+        editSalesBill(json1, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu("门店调出", "批量调出+");
+        jo = { "调出人" : "000", "接收店" : "常青店", "onlytest" : "yes" };
+        json2 = mixObject(jo, det);
+        editShopOutDecruitIn(json2, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu("销售订货", "新增订货+");
+        editSalesBill(json1, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu("销售开单", "开  单+");
+        json1["客户"] = "xw";
+        editSalesBill(json1, colorSize);
+        ret = isAnd(ret, ts120005Field());
+
+        tapMenu2("按订货开单");
+        var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+        var fields = salesBillOrderFields(keys);
+        query(fields);
+        tapFirstText();
+        jo = { "按订货" : "yes", "onlytest" : "yes" };
+        json2 = mixObject(jo, det);
+        editSalesBill(json2, colorSize);
+        ret = isAnd(ret, ts120005Field());
+        return ret;
+    } else {
+        return true;
+    }
+}
+
+function ts120005Field() {
     saveAndAlertOk();
-    delay();
     tapPrompt();
     var ret = isIn(alertMsg, "货品 必须从下拉列表选择");
-    tapButton(getScrollView(), 1);
-
-    f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
-    fields = [ f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    delay();
-    tapPrompt();
-    tapButton(window, RETURN);
-
-    tapButton(window, QUERY);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(30, sub(qr.data[0]["总数"], a)));
-
+    tapReturn();
     return ret;
 }
 
@@ -2990,10 +3023,15 @@ function test120061() {
  * 新增批量入库
  * @param o
  */
-function editPurchaseBatch(o) {
+function editPurchaseBatch(o, colorSize) {
     editPurchaseBatchStaff(o);
-    editPurchaseBatchDet(o);
-
+    if (colorSize == "yes") {
+        // goodsFieldIndex=-2
+        editSalesBillDetColorSize(o);
+    }
+    if (colorSize == "no") {
+        editPurchaseBatchDet(o);
+    }
     editPurchaseBatchSave(o)
 }
 
@@ -3010,7 +3048,6 @@ function editPurchaseBatchStaff(o) {
 function editPurchaseBatchDet(o) {
     var details = o["明细"];
     for ( var i in details) {
-
         var tfNum = getSalesBillDetTfNum(o);
         var start = tfNum * i;
         var d = details[i];

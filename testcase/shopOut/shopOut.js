@@ -583,7 +583,8 @@ function shopInPrepare() {
     }
 
     tapMenu("门店调出", "批量调出+");
-    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "inPre" };
+    //美式键盘首字母会变成大写，这里就直接输入大写字母
+    var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "InPre" };
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
 

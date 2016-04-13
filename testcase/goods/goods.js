@@ -433,7 +433,7 @@ function test100001_3() {
 
     tapMenu("采购入库", "批量入库+");
     json = { "店员" : "000", "明细" : [ { "货品" : "4562", "数量" : "18" } ] };
-    editPurchaseBatch(json);
+    editPurchaseBatch(json,colorSize);
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "5" } ] };

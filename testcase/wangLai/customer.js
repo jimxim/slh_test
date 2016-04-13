@@ -2199,7 +2199,7 @@ function test110040() {
         "店员" : "000",
         "明细" : [ { "货品" : "g" + r1, "数量" : 10 }, { "货品" : "g" + r2, "数量" : 10 } ],
         "onlytest" : "yes" };
-    editPurchaseBatch(json);
+    editPurchaseBatch(json,colorSize);
     ret = isAnd(ret, isEqual("100", getTextFieldValue(getScrollView(-1), 5)),
             isEqual("100", getTextFieldValue(getScrollView(-1), 12)));
     editPurchaseBatchSave({});

@@ -1382,7 +1382,7 @@ function test190035() {
     json = {
         "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "15" }, { "货品" : "4562", "数量" : "25" } ] };
-    editPurchaseBatch(json);
+    editPurchaseBatch(json,colorSize);
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "10" } ],
