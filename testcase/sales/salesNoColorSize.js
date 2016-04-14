@@ -77,7 +77,7 @@ function testSalesNoColorSizeAll() {
 
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
     run("【销售开单】底部汇总统一检查", "test170423");
-    // run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");//(用例需要修改)
+    run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");// (用例要修改)
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
     run("【销售开单-开单】明细备注特殊字符检查", "test170536");
@@ -2369,7 +2369,7 @@ function test170080_170084() {
     var r = "newkh" + getTimestamp(6);
     var r1 = "0." + getTimestamp(3);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "产品折扣" : r1 };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "1" } ],
@@ -2377,6 +2377,7 @@ function test170080_170084() {
     editSalesBillNoColorSize(json);
 
     var k3 = getTextFieldValue(window, 3);
+    var k7 = getTextFieldValue(window, 7);
 
     var num = getTextFieldValue(getScrollView(), 3);
     var price = getTextFieldValue(getScrollView(), 4);
@@ -2402,8 +2403,8 @@ function test170080_170084() {
     var qr = getQR();
 
     var ret2 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isEqual("李四",
-            qr.data[0]["客户"]), isEqual("0", qr.data[0]["未结"]), isAqualOptime(
-            getOpTime(), qr.data[0]["操作日期"], 2));
+            qr.data[0]["客户"]), isEqual(sub(k7, k3), qr.data[0]["未结"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "10" } ],
@@ -2440,6 +2441,10 @@ function test170080_170084() {
     var qr1 = getQR();
     var b = qr1.data[0]["发货状态"];
     var ret5 = isEqual("部分发货", b);
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
@@ -4404,10 +4409,10 @@ function test170139_2() {
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "newCs" + getTimestamp(6);
+    var r = "newCus2" + getTimestamp(6);
     var r1 = "0." + getTimestamp(3);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "产品折扣" : r1 };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
@@ -4484,7 +4489,7 @@ function test170139_3() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "newkehu" + getTimestamp(6);
+    var r = "newCuS3" + getTimestamp(6);
     var r1 = "0." + getTimestamp(3);
     var keys = { "名称" : r, "适用价格" : "零批价", "拿货折扣" : r1 };
     addCustomer(keys);
@@ -4495,7 +4500,8 @@ function test170139_3() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var ret1 = isAqualNum(r1, getTextFieldValue(getScrollView(), 5));
+    var ret1 = isEqual(Number(r1),
+            Number(getTextFieldValue(getScrollView(), 5)));
 
     var k2 = getTextFieldValue(window, 2);
 
@@ -8128,7 +8134,8 @@ function test170443() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "操作失败，[本单余额计算有误，请随意修改表单内容重新汇总");
+    // var ret = isIn(alertMsg, "操作失败，[本单余额计算有误，请随意修改表单内容重新汇总");
+    var ret = isIn(alertMsg, "保存成功");
 
     tapReturn();
 
@@ -8137,9 +8144,9 @@ function test170443() {
     qr = getQR();
     var batch1 = qr.data[0]["批次"];
 
-    ret = isAnd(ret, isEqual(batch1, batch));
+    var ret1 = isEqual(batch1, add(batch, 1));
 
-    return ret;
+    return ret && ret1;
 }
 function test170445() {
     // var qo, o, ret = true;
