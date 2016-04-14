@@ -9,19 +9,19 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer = "6.59";//
+    ipadVer = "7.01";//
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
- run("测试用例", "ts120005");// 
-// run("测试用例", "onlyTest");
+// run("测试用例", "ts120001_2");// 
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
-// debugElementTree(window);
+ debugElementTree(window);
   
-    return index;
+//    return index;
   
 }
 

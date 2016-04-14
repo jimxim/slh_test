@@ -2992,9 +2992,6 @@ function test100090Field1(r) {
     case "6.59":
         index = 15;
         break;
-    case "6.61":
-        index = 16;
-        break;
     default:
         index = 16;
         logWarn("未知版本号＝" + ipadVer);
