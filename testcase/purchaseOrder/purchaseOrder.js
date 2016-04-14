@@ -53,7 +53,7 @@ function ts130020_1() {
     ret = ret && sortByTitle("入库数", IS_NUM);
     ret = ret && sortByTitle("差异数");// 目前不支持排序
     if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("发货状态", IS_NUM);
+        ret = ret && sortByTitle("发货状态");
     }
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);

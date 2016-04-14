@@ -115,6 +115,59 @@ function salesOrderQueryParticularField(key, show) {
     return f;
 }
 
+//按挂单
+function testSalesOrderHangFields() {
+    var keys = [ "customer", "day1", "day2", "staff", "shop", "mode" ];
+    var fields = salesOrderHangFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = salesOrderHangFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function salesOrderHangFields(keys, show) {
+    return getTFields("salesOrderHangField", keys, show);
+}
+function salesOrderHangField(key, show) {
+    var f;
+    switch (key) {
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "xw",-1,0);{
+            if (show) {
+                f.value = "小王";
+            }  
+        }
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 1, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("到", TF_DT, 2, getToday());
+        break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 3, "000", -1, 0);
+        if (show) {
+            f.value = "000,管理员";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 4, "1");
+        break;
+    //这个发货状态没有意义，挂单只有未发货状态
+    case "mode":
+    case "发货状态":
+        f = new TField("发货状态", TF, 5, "20");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
 // 按款号图像
 function testSalesOrderPictureFields() {
     var view1 = getTableViews()[2].groups()["日期"];

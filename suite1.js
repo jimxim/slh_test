@@ -15,7 +15,7 @@ function test000All() {
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts120001_2");// 
- run("测试用例", "onlyTest");
+ run("测试用例", "ts120060");
 }
 
 function onlyTest(){

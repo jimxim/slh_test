@@ -143,12 +143,12 @@ function testGoodsPrepare001() {
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 
     tapMenu("门店调出", "批量调出+");
     json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "4562", "数量" : "50" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 
     // 使3035在中洲店有库存，主要是防止帐套清理之后 相关查询用例的运行
     tapMenu("采购入库", "新增入库+");
@@ -442,7 +442,7 @@ function test100001_3() {
     tapMenu("门店调出", "批量调出+");
     json = { "调出人" : "000", "接收店" : "中洲店",
         "明细" : [ { "货品" : "4562", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 
     // 调入数据准备中的4562 50件
     tapMenu("门店调入", "在途调拨");
@@ -2377,7 +2377,7 @@ function test100079_100080_100081() {
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店",
         "明细" : [ { "货品" : r, "数量" : "15" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 
     tapMenu("货品管理", "更多", "超储统计");
     tapButton(window, QUERY);
@@ -2493,7 +2493,7 @@ function test100087_100088_100089() {
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店",
         "明细" : [ { "货品" : r, "数量" : "15" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 
     tapMenu("货品管理", "更多", "缺货统计");
     tapButton(window, QUERY);
@@ -2994,7 +2994,7 @@ function test100090Field1(r) {
         break;
     default:
         index = 16;
-        logWarn("未知版本号＝" + ipadVer);
+        break;
     }
     var f = new TField("调整后库存", TF, index, r);
     setTFieldsValue(window, [ f ]);

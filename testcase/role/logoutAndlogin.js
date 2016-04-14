@@ -296,7 +296,7 @@ function test180028Prepare() {
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
-    editShopOutDecruitIn(json);
+    editShopOutDecruitIn(json,colorSize);
 }
 // 需要存在在途数
 function test180028() {

@@ -2102,7 +2102,7 @@ function test180042_6() {
     // tapMenu("门店调出", "批量调出+");
     // var json = { "调出人" : "000", "接收店" : "中洲店",
     // "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    // editShopOutDecruitIn(json);
+    // editShopOutDecruitIn(json,colorSize);
 
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "k300", "门店" : "常青店" };
