@@ -38,8 +38,8 @@ js_func="$js_func testSalesNoColorSize170429_Params"
 js_func="$js_func testSalesNoColorSize170429"
 js_func="$js_func testSalesNoColorSize170125_Params"
 js_func="$js_func testSalesNoColorSize170125"
-js_func="test SalesNoColorSize170240_Prepare"
-js_func="test SalesNoColorSize170240"
+js_func="$js_functest SalesNoColorSize170240_Prepare"
+js_func="$js_functest SalesNoColorSize170240"
 
 #销售开单-特殊模块
 js_func="$js_func setSales001Params"

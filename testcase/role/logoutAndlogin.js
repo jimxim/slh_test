@@ -154,7 +154,7 @@ function test170429() {
 }
 function test180022_Prepare() {
     tapMenu("盘点管理", "新增盘点+");
-//    debugElementTree(window);
+    // debugElementTree(window);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
@@ -296,7 +296,7 @@ function test180028Prepare() {
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "200", "接收店" : "常青店",
         "明细" : [ { "货品" : "jkk", "数量" : "10" } ] };
-    editShopOutDecruitIn(json,colorSize);
+    editShopOutDecruitIn(json, colorSize);
 }
 // 需要存在在途数
 function test180028() {
@@ -329,6 +329,16 @@ function test180028() {
     }
     delay();
     tapReturn();
+
+    tapMenu("门店调入", "在途调拨");
+    keys = { "日期从" : "2015-01-01" };
+    fields = shopInFlitFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    tapButtonAndAlert("调 入");
+    tapPrompt();
 
     logDebug(" ret1=" + ret1);
     return ret && ret1;

@@ -110,7 +110,7 @@ function test180001_180003_180005() {
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-1), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-1) };
     var fields = queryCheckBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
