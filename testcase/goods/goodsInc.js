@@ -704,13 +704,20 @@ function stringToDate(str){
     return new Date(str);
 }
 
+/**
+ * 操作时间是否相等 格式 mm-dd hh:mm
+ * @param expected 
+ * @param actual
+ * @param allow 允许的误差值，默认1分钟
+ * @returns {Boolean}
+ */
 function isAqualOptimeX(expected, actual, allow) {
     if(isUndefined(allow)){
         allow=1;
     }
     var a1 = stringToDate(expected);
     var a2 = stringToDate(actual);
-    var result=(t21-t11)/60000;// 精确到分
+    var result=(a2-a1)/60000;// 精确到分
     var ret = result<=allow;
     logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
             + ",ret=" + ret);

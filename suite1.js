@@ -23,7 +23,7 @@ function onlyTest(){
  var t1="04-15 14:59";
  var t2="04-15 15:01";
  
- return isAqualOptime(t1,t2);
+ return isAqualOptimeX(t1,t2,2);
 }
 
 
