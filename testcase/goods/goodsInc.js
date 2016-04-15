@@ -699,6 +699,23 @@ function goPageCheckField() {
             qr.curPageNo));
     return ret;
 }
+function stringToDate(str){
+    str = str.replace(/-/g,"/");
+    return new Date(str);
+}
+
+function isAqualOptimeX(expected, actual, allow) {
+    if(isUndefined(allow)){
+        allow=1;
+    }
+    var a1 = stringToDate(expected);
+    var a2 = stringToDate(actual);
+    var result=(t21-t11)/60000;// 精确到分
+    var ret = result<=allow;
+    logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
+            + ",ret=" + ret);
+    return ret;
+}
 
 /**
  * 二维数组是否相等

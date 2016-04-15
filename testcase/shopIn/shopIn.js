@@ -409,7 +409,7 @@ function ts140015() {
     tapFirstText();
     tapButton(window, RETURN);
 
-    var ret = window.buttons()["在途调拨"].isVisible();
+    var cond = window.buttons()["在途调拨"].isVisible();
     waitUntil(cond, 10);
 
     tapButton(window, QUERY);

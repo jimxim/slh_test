@@ -275,20 +275,18 @@ function ts170557_2_1() {
 }
 
 function ts170557_2_2() {
-    return isAnd(check170557Alert(120, "[3035]价格输入错误，因为启用了价格验证价格类型[2]"),
-            check170557Alert(200, "保存成功"));
+    return isAnd(check170557Alert(120, "销售价已低于指定低价"), check170557Alert(200,
+            "保存成功"));
 }
 
 function ts170557_3_2() {
-    return isAnd(check170557Alert(90, "[3035]价格输入错误，因为启用了价格验证价格类型[0]"),
-            check170557Alert(120, "第1行价格错误，不允许改低"), check170557Alert(200,
-                    "保存成功"));
+    return isAnd(check170557Alert(90, "销售价已低于指定低价"), check170557Alert(120,
+            "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
 }
 
 function ts170557_4_2() {
-    return isAnd(check170557Alert(90, "[3035]价格输入错误，因为启用了价格验证价格类型[3]"),
-            check170557Alert(170, "第1行价格错误，不允许改低"), check170557Alert(200,
-                    "保存成功"));
+    return isAnd(check170557Alert(90, "销售价已低于指定低价"), check170557Alert(170,
+            "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
 }
 function ts170557_5_1() {
     return isAnd(check170557Alert(90, "销售价不允许低于底价"), check170557Alert(170,
@@ -296,7 +294,7 @@ function ts170557_5_1() {
 }
 function ts170557_5_2() {
     return isAnd(check170557Alert(90, "销售价不允许低于底价"), check170557Alert(170,
-            "[3035]价格输入错误，因为启用了价格验证价格类型[2]"));
+            "销售价已低于指定低价"));
 }
 
 function check170557Alert(price, expMsg) {

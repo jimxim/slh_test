@@ -158,26 +158,26 @@ function ts130020_2() {
 }
 function ts130002_1() {
     tapMenu("采购订货", "按明细查");
-    var keys = { "日期从" : getDay(-15), "到" : getToday() };
+    var keys = { "日期从" : getDay(-7), "到" : getToday() };
     var fields = purchaseOrderQueryParticularFields(keys);
     query(fields);
     // 点击翻页
-    // var ret = goPageCheck();
-    //
-    // ret = ret && sortByTitle("批次", IS_NUM);
-    // ret = ret && sortByTitle("厂商");
-    // ret = ret && sortByTitle("款号");
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("颜色");
-    // ret = ret && sortByTitle("尺码");
-    // ret = ret && sortByTitle("数量", IS_NUM);
-    // ret = ret && sortByTitle("单价", IS_NUM);
-    // ret = ret && sortByTitle("金额", IS_NUM);
-    // ret = ret && sortByTitle("已入库", IS_NUM);
-    // ret = ret && sortByTitle("操作日期", IS_OPTIME);
-    // ret = ret && sortByTitle("操作人");
-    // ret = ret && sortByTitle("备注");
-    var ret = true;
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("单价", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+    ret = ret && sortByTitle("已入库", IS_NUM);
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("备注");
+
     var arr = [ "数量", "金额", "已入库" ];
     if (ipadVer >= 7.01) {
         ret = ret && sortByTitle("图像");
@@ -1103,7 +1103,7 @@ function checkCopyAndPaste(menu2) {
     var v1 = editSalesBillGetValue({});
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
-    
+
     var o1 = { "确定复制吗" : OK };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay();

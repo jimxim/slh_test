@@ -41,8 +41,8 @@ function testCustomer002() {
     run("【往来管理】往来管理-厂商查询，查询条件客户只显示了未停用的客户/厂商，未显示全部", "test110012");
     run("【往来管理-客户查询】上下级客户模式下不允许设置客户分店", "test110053");// 上下级客户模式
     run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
-    run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "test110057_1");
-    run("【往来管理-新增客户】客户编码", "test110056");
+    run("【往来管理-客户查询】总经理修改有欠款或余款的客户的名称", "ts110057_1");
+    run("【往来管理-新增客户】客户编码", "ts110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "ts110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
 
@@ -559,29 +559,39 @@ function test110012() {
 }
 
 function ts110013() {
-    var r = "add" + getTimestamp(6);
+    var r = getTimestamp(6);
+    var name = "n" + r;
+    var phone = "p" + r;
+    var code = "c" + r;
     tapMenu("往来管理", "新增客户+");
     var keys = [ "名称", "区域", "手机", "微信", "门店", "生日", "店员", "上级客户", "客户类别",
             "客户代码", "允许退货", "适用价格", "传真号", "备注", "地址", "信用额度", "欠款报警" ];
     var fields = editCustomerFields(keys);
-    changeTFieldValue(fields["名称"], r);
-    changeTFieldValue(fields["手机"], r);
-    changeTFieldValue(fields["客户代码"], r);
+    changeTFieldValue(fields["名称"], name);
+    changeTFieldValue(fields["手机"], phone);
+    changeTFieldValue(fields["客户代码"], code);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     delay();
     tapReturn();
 
-    tapMenu("往来管理", "客户查询");
-    query();
-    tapFirstText();
-    fields = editCustomerFields(keys, true);
-    changeTFieldValue(fields["名称"], r);
-    changeTFieldValue(fields["手机"], r);
-    changeTFieldValue(fields["客户代码"], r);
-    var ret = checkShowFields(getScrollView(), fields);
-    tapButton(window, RETURN);
+    tapMenu2("客户查询");
+    var qKeys = { "客户" : name, "客户名称" : name, "手机" : phone, "是否停用" : "否",
+        "客户类别" : fields["客户类别"].value, "店员" : "000" };
+    fields = queryCustomerFields(qKeys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
 
+    if (ret) {
+        tapFirstText();
+        fields = editCustomerFields(keys, true);
+        changeTFieldValue(fields["名称"], name);
+        changeTFieldValue(fields["手机"], phone);
+        changeTFieldValue(fields["客户代码"], code);
+        ret = checkShowFields(getScrollView(), fields);
+        tapButton(window, RETURN);
+    }
     return ret;
 }
 
@@ -839,7 +849,7 @@ function test110018() {
     return ret;
 }
 
-// 上下级模式
+// 上下级模式 接口改成无欠余款的不显示
 function ts110019() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     var keys = { "客户名称" : "下级客户1" };
@@ -864,25 +874,19 @@ function ts110019() {
     fields = queryCustomerSuperFields(keys);
     query(fields);
     qr = getQR();
-    // if (qr.data.length > 0) {
-    ret1 = isAnd(ret1, isEqual("上级客户1", qr.data[0]["名称"]));
-    // } else {
-    // logDebug("往来管理-客户账款-按上级单位中未找到 上级客户1 的数据");
-    // ret1 = false;
-    // }
+    if (qr.data.length > 0) {
+        ret1 = isEqual("上级客户1", qr.data[0]["名称"]);
+    } else {
+        logDebug("往来管理-客户账款-按上级单位中未找到 上级客户1 的数据");
+        ret1 = false;
+    }
 
     keys = { "客户名称" : "上级不开单客户" };// 不开单客户，无欠余款
     fields = queryCustomerSuperFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     qr = getQR();
-    // if (qr.data.length > 0) {
-    var exp = { "名称" : "上级不开单客户", "账户余额" : 0 };
-    ret1 = isAnd(ret1, isEqualObject(exp, qr.data[0]));
-    // } else {
-    // logDebug("往来管理-客户账款-按上级单位中未找到 上级不开单客户 的数据");
-    // ret1 = false;
-    // }
+    ret = isAnd(ret, qr.data.length == 0);
 
     keys = { "客户名称" : "小王" };
     fields = queryCustomerSuperFields(keys);
@@ -2189,17 +2193,17 @@ function test110040() {
     tapReturn();
 
     keys = { "款号" : "g" + r1, "名称" : "g" + r1, "进货价" : 100, "厂商" : r1 };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     keys = { "款号" : "g" + r2, "名称" : "g" + r2, "进货价" : 100, "厂商" : r2 };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("采购入库", "批量入库+");
     json = {
         "店员" : "000",
         "明细" : [ { "货品" : "g" + r1, "数量" : 10 }, { "货品" : "g" + r2, "数量" : 10 } ],
         "onlytest" : "yes" };
-    editPurchaseBatch(json,colorSize);
+    editPurchaseBatch(json, colorSize);
     ret = isAnd(ret, isEqual("100", getTextFieldValue(getScrollView(-1), 5)),
             isEqual("100", getTextFieldValue(getScrollView(-1), 12)));
     editPurchaseBatchSave({});
@@ -3173,7 +3177,7 @@ function test110054() {
     return ret;
 }
 
-function test110056() {
+function ts110056() {
     tapMenu("往来管理", "客户查询");
     query();
     tapFirstText();
@@ -3204,87 +3208,36 @@ function test110056() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
 
+    var index = fields["客户代码"].index;
     delay();
     tapFirstText();
-    ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 11)));
+    ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), index)));
     tapButton(window, RETURN);
 
     return ret;
 }
-
-// 除总经理的其他店员
-function test110057() {
-    tapMenu("往来管理", "客户查询");
-    var keys = { "客户" : "xw" };
-    var fields = queryCustomerFields(keys);
-    query(fields);
-    tapFirstText();
-
-    keys = { "名称" : "xiaowang123" };
-    fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");
-    tapPrompt();
-    var ret = isIn(alertMsg, "该客户欠款或余额，不可修改信息");
-
-    if (!ret) {
-        keys = { "客户" : "xiaowang123" };
-        fields = queryCustomerFields(keys);
-        query(fields);
-        tapFirstText();
-        keys = { "名称" : "小王" };
-        fields = editCustomerFields(keys);
-        setTFieldsValue(getScrollView(), fields);
-        tapButton(window, "修改保存");
-        tapPrompt();
-    }
-
-    keys = { "客户" : "qkkh" };// 欠款客户
-    fields = queryCustomerFields(keys);
-    query(fields);
-    delay();
-    var qr = getQR();
-
-    // 找不到就新增
-    if (isEqual(0, qr.data.length)) {
-        tapMenu("销售开单", "开  单+");
-        tapButton(window, "新增+");
-        var f = new TField("名称", TF, 0, "欠款客户");
-        setTFieldsValue(getPopView(), [ f ]);
-        tapButton(getPop(), OK);
-        tapButton(getPop(), CLOSE);
-        var json = { "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
-        editSalesBillNoColorSize(json);
-
-        tapMenu("往来管理", "客户查询");
-        keys = { "客户" : "qkkh" };
-        fields = queryCustomerFields(keys);
-        query(fields);
-    }
-
-    tapFirstText();
-    var r = "c" + getTimestamp(5);
-    keys = { "名称" : r };
-    fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "该客户欠款或余额，不可修改信息"));
-    return ret;
+// 总经理外角色
+function ts110057() {
+    var cond = "isInArray(alertMsgs, '该客户欠款或余额，不可修改信息')";
+    return ts110057Field(cond);
 }
 // 总经理
-function test110057_1() {
+function ts110057_1() {
+    var cond = "!isInArray(alertMsgs, '该客户欠款或余额，不可修改信息')";
+    return ts110057Field(cond);
+}
+
+function ts110057Field(cond) {
     var r = "kh" + getTimestamp(6);
 
     // 欠款
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增+");
-    var f = new TField("名称", TF, 0, r);
-    setTFieldsValue(getPopView(), [ f ]);
-    tapButton(getPop(), OK);
-    tapButton(getPop(), CLOSE);
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
-    editSalesBillNoColorSize(json);
+    var o = { "名称" : r };
+    editSalesBillAddCustomer(o);
+    var jo = { "未付" : "yes" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户查询");
     var keys = { "客户" : r };
@@ -3297,19 +3250,21 @@ function test110057_1() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
     tapPrompt();
-    // 弹窗内容是必须从下拉列表选择
-    var ret = !isIn(alertMsg, "该客户欠款或余额，不可修改信息");
+    // 弹窗内容是必须从下拉列表选择，这里会自动返回客户查询界面
+    var ret = eval(cond);
+    tapReturn();// 防止停留在新增界面
 
     tapButton(window, QUERY);
+    tapPrompt();// 必须从下拉列表选择
     var qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
     tapButton(window, CLEAR);
 
     // 余款
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : r + "a", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "现金" : "5000" };
-    editSalesBillNoColorSize(json);
+    jo = { "客户" : r + "a", "现金" : "5000" };
+    json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r + "a" };
@@ -3321,16 +3276,16 @@ function test110057_1() {
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
-    tapPrompt();
-    ret = isAnd(ret, !isIn(alertMsg, "该客户欠款或余额，不可修改信息"));
-    delay();
+    tapPrompt();// 保存成功，弹窗内容是必须从下拉列表选择
+    ret = isAnd(ret, eval(cond));
+    tapReturn();// 防止停留在新增界面
 
     tapButton(window, QUERY);
+    tapPrompt();
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
     tapButton(window, CLEAR);
-
     return ret;
 }
 

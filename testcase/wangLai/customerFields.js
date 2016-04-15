@@ -305,7 +305,7 @@ function queryCustomerShopAccountField(key, show) {
 
 // 按上级单位
 function testQueryCustomerSuperFields() {
-    var keys = [ "name", "customer" ]
+    var keys = [ "name", "customer","shop" ]
     var fields = queryCustomerSuperFields(keys);
     setTFieldsValue(window, fields);
     var showFields = queryCustomerSuperFields(keys, true);
@@ -328,6 +328,10 @@ function queryCustomerSuperField(key, show) {
         if (show) {
             f.value = "Qaq";
         }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 2, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);

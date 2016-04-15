@@ -2340,7 +2340,7 @@ function test190083() {
     var r = "dc" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
         "产品折扣" : "0.9" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "10" } ] };

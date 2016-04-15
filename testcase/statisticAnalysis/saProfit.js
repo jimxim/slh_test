@@ -29,7 +29,7 @@ function setParamFin_price_base2() {
 function textFin_price_base2_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("统计分析", "利润表");
     var keys = { "门店" : "常青店" };
@@ -57,7 +57,7 @@ function textFin_price_base2_1() {
 function textFin_price_base2_2() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("统计分析", "利润表");
     var keys = { "门店" : "常青店" };
@@ -92,7 +92,7 @@ function textFin_price_base2_2() {
 function textFin_price_base2_3() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("统计分析", "利润表");
     var keys = { "门店" : "常青店" };
@@ -166,7 +166,7 @@ function setParamFin_price_base3() {
 function textFin_price_base3_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("统计分析", "利润表");
     var keys = { "门店" : "常青店" };
@@ -222,7 +222,7 @@ function setParamFin_price_base0() {
 function textFin_price_base0_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys);
+    addGoods(keys,colorSize);
 
     tapMenu("统计分析", "利润表");
     var keys = { "门店" : "常青店" };

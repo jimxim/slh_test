@@ -54,7 +54,7 @@ function setSASynthesisParams() {
     o = { "新值" : "0", "数值" : [ "不合并", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "颜色尺码模式开单更便捷" };
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
     o = { "新值" : "0", "数值" : [ "不支持", "in" ], "授权码" : [] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

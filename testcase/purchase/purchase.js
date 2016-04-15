@@ -12,7 +12,7 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按厂商返货,翻页/排序/汇总", "test120009");
     run("【采购入库-采购汇总】采购汇总->按厂商返货,条件查询/清除/下拉框", "test120009_1");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总,查询清除数据验证", "test120010");
-    run("【采购入库-采购汇总】采购汇总->按厂商汇总，翻页排序汇总", "test120010_1");
+    run("【采购入库-采购汇总】采购汇总->按厂商汇总，翻页排序汇总", "ts120010_1");// 实进数暂不支持排序
     run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/查询/清除", "test120011_1");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,数据验证", "test120011_2");
     run("【采购入库-采购汇总】采购汇总->汇总", "test120011_3");
@@ -77,7 +77,7 @@ function testPurchase002() {
     run("【采购入库-按订货入库】按订货入库", "test120025");
     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
-    // run("【采购入库-按订货入库】修改供应商名称", "test120028");//5。58版本可测，之后的版本清除按钮灰化
+    run("【采购入库-按订货入库】修改供应商名称", "test120028");// 5。58版本可测，之后的版本清除按钮灰化
     run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");
     run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
 
@@ -89,7 +89,7 @@ function testPurchase002() {
     // run("【采购入库-批量入库】批量入库实现退货功能+颜色尺码 (开单尺码头部暂不支持)", "test120041");//颜色尺码模式
     run("【采购入库-批量入库】批量入库后店员检查", "test120048");
     run("【采购订货-按订货入库】检查备注", "test120051");
-    run("【采购订货-按订货入库】核销", "test120061");
+    run("【采购订货-按订货入库】核销", "ts120061");
 
 }
 
@@ -713,7 +713,7 @@ function test120010() {
     return ret;
 }
 
-function test120010_1() {
+function ts120010_1() {
     tapMenu("采购入库", "按汇总", "按厂商汇总");
     var keys = { "日期从" : getDay(-30) };
     var fields = purchaseProviderFields(keys);
@@ -727,31 +727,11 @@ function test120010_1() {
     ret = ret && sortByTitle("汇款", IS_NUM);
     ret = ret && sortByTitle("进货数", IS_NUM);
     ret = ret && sortByTitle("退货数", IS_NUM);
-    ret = ret && sortByTitle("实进数");
+    ret = ret && sortByTitle("实进数");// 本列暂不支持排序
     ret = ret && sortByTitle("实进额", IS_NUM);
 
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["现金"]);
-            sum2 += Number(qr.data[i]["刷卡"]);
-            sum3 += Number(qr.data[i]["汇款"]);
-            sum4 += Number(qr.data[i]["进货数"]);
-            sum5 += Number(qr.data[i]["退货数"]);
-            sum6 += Number(qr.data[i]["实进数"]);
-            sum7 += Number(qr.data[i]["实进额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["进货数"],
-            sum4), isEqual(qr.counts["退货数"], sum5), isEqual(qr.counts["实进数"],
-            sum6), isEqual(qr.counts["实进额"], sum7));
-
+    var arr = [ "现金", "刷卡", "汇款", "进货数", "退货数", "实进数", "实进额" ]
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 
@@ -1007,7 +987,7 @@ function test120013_3() {
     var r = getTimestamp(6);
     var code = "g" + r;
     var keys = { "款号" : code, "名称" : "货品" + r, "进货价" : "100", "类别" : "登山服" };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : code, "数量" : "-5" } ] };
@@ -1899,9 +1879,9 @@ function test120027() {
 
 // 6.58后的版本，按订货入库的厂商，与新增清楚按钮已经灰化
 function test120028() {
-    if (ipadVer != 6.58) {
+    if (ipadVer > 6.58) {
         logDebug("6.58后的版本，按订货入库的厂商，与新增清楚按钮已经灰化");
-        return false;
+        return true;
     }
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "50" } ] };
@@ -2215,7 +2195,7 @@ function test120037() {
 function test120042() {
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100", "类别" : "登山服" };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("采购入库", "批量入库+");
     var keys = { "店员" : "000" };
@@ -2265,7 +2245,7 @@ function test120042() {
 function test120043() {
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100", "类别" : "登山服" };
-    addGoods(keys);
+    addGoods(keys, colorSize);
 
     tapMenu("采购入库", "批量入库+");
     var keys = { "店员" : "000" };
@@ -2279,9 +2259,7 @@ function test120043() {
     saveAndAlertOk();
     delay();
     tapButtonAndAlert("none", OK);
-    if (isIn(alertMsg, "从下拉列表选择")) {
-        var ret = true;
-    }
+    var ret = isIn(alertMsg, "从下拉列表选择");
 
     tapButton(getScrollView(), 0)
     f1 = new TField("货品", TF_AC, 1, "3035", -1, 0);
@@ -2620,14 +2598,14 @@ function test120047_2() {
 
 function test120052() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : getDay(-30),"门店":"常青店" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu2("新增入库+");
-    var jo = { "客户" : "vell","onlytest" : "yes"};
+    var jo = { "客户" : "vell", "onlytest" : "yes" };
     var det = editPurOrderDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -2636,7 +2614,7 @@ function test120052() {
     tapReturn();
 
     tapMenu2("按批次查");
-    tapButton(window,QUERY);
+    tapButton(window, QUERY);
     qr = getQR();
     var ret = isEqual(batch, qr.data[0]["批次"]);
 
@@ -3010,9 +2988,11 @@ function test120051() {
 
     return ret;
 }
-function test120061() {
+function ts120061() {
+    var det = editPurOrderDet();
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "2" } ] };
+    var jo = { "客户" : "vell" };
+    var json = mixObject(jo, det);
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
@@ -3022,11 +3002,11 @@ function test120061() {
 
     json = { "核销" : [ 4 ] };
     editSalesBillVerify(json);
-
-    var newObj = { "现金" : 0, "应" : 0, "核销" : 200, "代收/实付" : 0 };// 这里的代收是实付
-    var exp = mixObject(oldObj, newObj);
     var actual = editSalesBillGetValue({});
     tapReturn();
+
+    var newObj = { "现金" : 0, "应付" : 0, "核销" : 3000, "代收/实付" : 0 };// 这里的代收是实付
+    var exp = mixObject(oldObj, newObj);
     return isEqualObject(exp, actual);
 }
 

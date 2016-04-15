@@ -9,21 +9,23 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer = "7.01";//
+    ipadVer = "6.59";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
-// run("测试用例", "ts120001_2");// 
- run("测试用例", "ts120060");
+// run("测试用例", "ts110057_1");//
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
-  
-//    return index;
-  
+// debugElementTree(window);
+ var t1="04-15 14:59";
+ var t2="04-15 15:01";
+ 
+ return isAqualOptime(t1,t2);
 }
+
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来
