@@ -70,7 +70,8 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
     run("销售开单+产品折扣+代收】销售开单-销售汇总-按金额汇总，检查代收", "test170381");
     run("【销售开单+产品折扣+代收】统计分析-综合汇总，检查代收", "test170382");
-    // run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票", "test170383");//(用例已改)
+    // run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票",
+    // "test170383");//(用例已改)
     run("【销售开单-按明细查】折扣后价格的核算模式 四舍五入取整", "test170438");
     // run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");//
     run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442_170425");
@@ -649,6 +650,7 @@ function test170013() {
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
+    query();
     tapFirstText();
     var a = getTextFieldValue(getScrollView(), 0);
     var a1 = getTextFieldValue(getScrollView(), 3);
@@ -1019,7 +1021,7 @@ function test170031_170032_170033() {
     // 点击翻页
     // var ret = goPageCheck();
 
-    var ret=true;
+    var ret = true;
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -1226,6 +1228,11 @@ function test170030() {
     return ret && ret1;
 }
 function test170037() {
+    var qo, o, ret = true;
+    qo = { "备注" : "退货数" };
+    o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "按明细查");
     query();
     var qr = getQR();
@@ -1640,7 +1647,6 @@ function test170262() {
     tapMenu("销售订货", "按批次查");
     var keys2 = { "客户" : "lt" };
     var fields2 = salesOrderQueryBatchFields(keys2);
-    setTFieldsValue(window, fields2);
     query(fields2);
     var qr = getQR();
     var a = qr.data[0]["发货状态"];
@@ -1780,8 +1786,9 @@ function test170265() {
 }
 function test170266() {
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
-        "现金" : 500, "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ] };
+    var json = { "客户" : "lt", "店员" : "002,",
+        "明细" : [ { "货品" : "3035", "数量" : "5" } ], "现金" : 500,
+        "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");

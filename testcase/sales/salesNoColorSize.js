@@ -197,7 +197,7 @@ function setNoColorSize_1Params() {
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "更便捷" };
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
     o = { "新值" : "0", "数值" : [ "默认不支持" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -4614,14 +4614,14 @@ function test170164() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-2), "日期到" : getDay(-2), "作废挂单" : "正常" };
+    var keys = { "日期从" : getDay(-2), "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
 
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("1",
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
-            1);
+            2);
 
     tapButton(window, QUERY);
     tapFirstText();
@@ -7695,6 +7695,10 @@ function test170424() {
     o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "价格刷新" };
+    o = { "新值" : "1", "数值" : [ "默认刷新" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = "anewkhVip" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "客户类别" : "VIP客户", "适用价格" : "Vip价格", "允许退货" : "是" };
@@ -10339,9 +10343,10 @@ function test170536() {
     qr = getQR();
     var total2 = qr.total;
 
-    ret = isAnd(ret, isEqual(total1, total2));
+    var ret1 = isEqual(total1, total2);
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170542() {
     // 客户折扣
