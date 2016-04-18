@@ -75,7 +75,7 @@ function addGoods(keys, colorSize, price, day) {
 function addGoodsStockAdjustment(r) {
     tapFirstText();
     tapNaviButton("库存调整");
-    test100090Field1(r);
+    setValue100090(r);
     runAndAlert("test100090Field", OK);
     tapNaviLeftButton();
 }
@@ -699,26 +699,26 @@ function goPageCheckField() {
             qr.curPageNo));
     return ret;
 }
-function stringToDate(str){
-    str = str.replace(/-/g,"/");
+function stringToDate(str) {
+    str = str.replace(/-/g, "/");
     return new Date(str);
 }
 
 /**
  * 操作时间是否相等 格式 mm-dd hh:mm
- * @param expected 
+ * @param expected
  * @param actual
  * @param allow 允许的误差值，默认1分钟
  * @returns {Boolean}
  */
 function isAqualOptimeX(expected, actual, allow) {
-    if(isUndefined(allow)){
-        allow=1;
+    if (isUndefined(allow)) {
+        allow = 1;
     }
     var a1 = stringToDate(expected);
     var a2 = stringToDate(actual);
-    var result=(a2-a1)/60000;// 精确到分
-    var ret = result<=allow;
+    var result = (a2 - a1) / 60000;// 精确到分
+    var ret = result <= allow;
     logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
             + ",ret=" + ret);
     return ret;
@@ -1007,6 +1007,31 @@ function dropDownListCheck2(index, value, expected, o) {
         tapButton(window, CLEAR);
     }
 
+    return ret;
+}
+/**
+ * 下拉列表是否包含期望值的内容
+ * @param exp eg：exp = "进货价 零批价 打包价 大客户价 Vip价格"
+ * @param index 要验证的文本框下标
+ * @param view
+ * @returns {Boolean}
+ */
+function isEqualDropDownListByExp(exp, index, view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    tap(getTextField(view, index));
+    var view1 = getPopView(view, -1);
+    var ret = true;
+    var texts = getStaticTexts(view1);
+    for (var i = 0; i < texts.length; i++) {
+        v = texts[i].name();
+        if (v) {
+            ret = isAnd(ret, isIn(exp, v));
+        }
+    }
+    delay();
+    view.popover().dismiss();
     return ret;
 }
 /**

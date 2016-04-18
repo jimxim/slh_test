@@ -16,6 +16,7 @@ js_func="$js_func login200GoodsPrepare login000Goods001 login000Goods002 "
 js_func="$js_func login200CustomerPrepare login000Customer002 login000Customer001 "
 #门店调出、门店调入
 js_func="$js_func login200ShopOut001 login200ShopOut003 login000ShopIn001"
+js_func="$js_func login200ShopOut002 login000ShopIn002"
 #采购订货
 js_func="$js_func login000PurchaseOrder001 login000PurchaseOrder002"
 #采购入库
@@ -43,7 +44,7 @@ js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts
 js_func="$js_func ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4"
 js_func="$js_func ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"                 
 #用例测试
-js_func="$js_func login200ShopOut002 login000ShopIn002 login000SAProfit"
+#js_func="$js_func login000SAProfit"
 
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"

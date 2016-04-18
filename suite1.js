@@ -9,21 +9,20 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer = "6.59";// 7.01
+    ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
- run("测试用例", "onlyTest");
+ run("测试用例", "ts190110");
 }
 
 function onlyTest(){
 // debugElementTree(window);
- var t1="04-15 14:59";
- var t2="04-15 15:01";
- 
- return isAqualOptimeX(t1,t2,2);
+    var qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    debugObject(qr.data[0]);
+    return qr.data[0];
 }
 
 

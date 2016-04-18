@@ -340,8 +340,6 @@ function ts140007_09() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    var arr = [ "数量" ];
-    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 

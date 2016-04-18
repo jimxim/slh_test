@@ -6,7 +6,7 @@
 function testStatisticAnalysis001() {
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
     run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
-    
+
     run("【统计分析—新增收入】新增类别", "test190012");
     run("【统计分析—新增收入】保存", "test190013");
     run("【统计分析—新增收入】返回", "test190014");
@@ -19,7 +19,7 @@ function testStatisticAnalysis001() {
     run("【统计分析-新增支出】金额支持2位小数", "test190021");// 单价小数位元
 
     run("【统计分析—收支表】_翻页排序", "test190001");
-    run("【统计分析—收支表】查询汇总清除", "test190002_190003_190008");
+    // run("【统计分析—收支表】查询汇总清除", "test190002_190003_190008");
     run("【统计分析—收支表】详细信息", "test190004");
     run("【统计分析—收支表】详细信息-返回", "test190006");
 
@@ -34,7 +34,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");
     run("【统计分析—收支流水】底部数据检查", "test190026");
     run("【统计分析—收支类别】查看,排序,翻页", "test190027");
-    run("【统计分析—收支类别】保存", "test190028");//
+    // run("【统计分析—收支类别】保存", "test190028");//
     run("【统计分析—收支类别】返回", "test190029");
     run("【统计分析—收支流水】帐户余额允许为负", "test190090");
 
@@ -46,7 +46,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—汇总表-畅销表】权限检查", "test190097For000");
     run("【统计分析—汇总表-畅销表】翻页排序汇总", "test190074");
     run("【统计分析—汇总表-滞销表】滞销款号检查", "test190077");
-    run("【统计分析—汇总表-滞销表】查询清除", "test190078_190080");
+    // run("【统计分析—汇总表-滞销表】查询清除", "test190078_190080");
     run("【统计分析—汇总表-滞销表】翻页排序汇总", "test190079_190099");
     run("【统计分析—汇总表-滞销表】权限检查", "test190103For000");
 
@@ -54,7 +54,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—利润表】翻页排序", "test190088");// 利润额不作排序
     run("【统计分析—利润表】底部数据检查", "test190086");
     // run("【统计分析—利润表】成本额检查-最新进货价", "test190044");//先跳过成本额检查的4个用例
-    run("【统计分析—利润表】查看详细", "test190083");
+    // run("【统计分析—利润表】查看详细", "test190083");
     run("【统计分析—利润表】详细页面排序翻页", "test190042");
     run("【统计分析—利润表】详细页面-特殊货品", "test190043");
     run("【统计分析—利润表】查看明细-按单利润表", "test190084");// 3种成本核算
@@ -63,12 +63,12 @@ function testStatisticAnalysis001() {
 
     run("【统计分析—综合汇总】查询", "test190030");
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
-    run("【统计分析—综合汇总】排序", "test190031");//特殊货品 代收收款暂不支持排序
+    run("【统计分析—综合汇总】排序", "test190031");// 特殊货品 代收收款暂不支持排序
     run("【统计分析—综合汇总】清除", "test190032");
-    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");//
+    // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");//
     run("【统计分析—综合汇总】检查底部数据", "test190036");
-    run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");// 作废
-    run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
+    // run("【统计分析—综合汇总】进入详细-综合收支表", "test190037");// 作废
+    // run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037_1");
     run("【统计分析—综合汇总】进入详细-余款", "test190038");
     run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
     run("【统计分析—综合汇总】进入详细-欠款", "test190039");
@@ -357,8 +357,8 @@ function test190017() {
     tapMenu("统计分析", "收支流水");
     query();
     qr = getQR();
-    expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户", "金额" : -123.45,
-        "操作人" : "总经理" };
+    expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户",
+        "金额" : -123.45, "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     return ret;
@@ -625,7 +625,8 @@ function test190094() {
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "新增支出");
-    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物损", "金额" : 234.56 } ] };
+    json = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "物损", "金额" : 234.56 } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支汇总");
@@ -1134,6 +1135,24 @@ function test190104() {
 
     return ret;
 }
+// 常青店店长004登陆验证
+function ts190110() {
+    tapMenu("统计分析", "收支流水");
+    var keys = { "门店" : "常青店" };
+    var fields = statisticAnalysisInOutAccountFields(keys);
+
+    // 查询门店只有常青店，不能显示其他门店
+    var exp = "常青店";
+    var ret = isEqualDropDownListByExp(exp, fields["门店"].index);
+
+    query(fields);
+    var qr = getQR();
+    var total = qr.tatal;
+
+    query();
+    qr = getQR();
+    return isAnd(ret, isEqual(total, qr.total));
+}
 
 function test190090() {
     tapMenu("统计分析", "收支流水");
@@ -1382,7 +1401,7 @@ function test190035() {
     json = {
         "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "15" }, { "货品" : "4562", "数量" : "25" } ] };
-    editPurchaseBatch(json,colorSize);
+    editPurchaseBatch(json, colorSize);
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "10" } ],
@@ -2340,7 +2359,7 @@ function test190083() {
     var r = "dc" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
         "产品折扣" : "0.9" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "10" } ] };
