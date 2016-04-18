@@ -42,7 +42,7 @@ function testSystem001() {
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
-//  run("【系统设置—更多-删除所有缩略图】删除", "test210037");// (该功能已经去掉)
+    // run("【系统设置—更多-删除所有缩略图】删除", "test210037");// (该功能已经去掉)
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -56,9 +56,9 @@ function testSystem002() {
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052");//
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_1");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_2");
-    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
-    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
-    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
+    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
+    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
+    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
 }
 function testSystem002prepare() {
     tapMenu("盘点管理", "处理记录");
@@ -72,8 +72,8 @@ function testSystem002prepare() {
         tapButton(getScrollView(), 0);
         tapButton(window, "盘点撤销");
         delay(5);
-        
-        tapButton(window, QUERY);       
+
+        tapButton(window, QUERY);
     }
 
     qr = getQR();
@@ -1631,13 +1631,16 @@ function test210050() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "jkk", "数量" : "10" } ], "onlytest" : "yes" };
-    editShopOutDecruitIn(json);
-
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
     var f2 = new TField("日期", TF_DT, 2, getDay(1));
-    var fields = [ f2 ];
+    var fields = [ f0, f1, f2 ];
     setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1663,6 +1666,8 @@ function test210050() {
     var ret9 = isIn(alertMsg, "操作成功");
 
     tapReturn();
+
+    logDebug(" ret8=" + ret8 + ", ret9=" + ret9);
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
@@ -1848,13 +1853,16 @@ function test210051_1() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "jkk", "数量" : "10" } ], "onlytest" : "yes" };
-    editShopOutDecruitIn(json);
-
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
     var f2 = new TField("日期", TF_DT, 2, getDay(1));
-    var fields = [ f2 ];
+    var fields = [ f0, f1, f2 ];
     setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1943,13 +1951,16 @@ function test210052() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "000", "接收店" : "中洲店",
-        "明细" : [ { "货品" : "jkk", "数量" : "10" } ], "onlytest" : "yes" };
-    editShopOutDecruitIn(json);
-
+    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("数量", TF_SC, 1, "中洲店");
     var f2 = new TField("日期", TF_DT, 2, getDay(1));
-    var fields = [ f2 ];
+    var fields = [ f0, f1, f2 ];
     setTFieldsValue(window, fields);
+
+    var f2 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var fields = [ f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();

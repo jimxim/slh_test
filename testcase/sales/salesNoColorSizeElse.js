@@ -78,11 +78,11 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单－按汇总-按款号汇总】异地发货模式查询", "test170523");
 }
 function testSalesNoColorSizeElseAll() {
-    run("【销售开单－按批次查】是否未结", "test170005");// 修改
+    run("【销售开单－按批次查】是否未结", "test170005");
     run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
     run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
     run("【销售开单－按批次查】页面跳转检查", "test170013");
-    run("【销售开单－按批次查】退货并退款情况下实收金额检查", "test170019");
+    run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");
     run("【销售开单－按批次查】修改代收内容", "test170024");
     run("【销售开单-按批次查】打印作废单", "test170025");
@@ -179,7 +179,7 @@ function test170001_1_170010_170011_170012() {
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
-    ret = ret && sortByTitle("实收", IS_NUM);
+    ret = ret && sortByTitle("实付", IS_NUM);
     ret = ret && sortByTitle("代收", IS_NUM);
     ret = ret && sortByTitle("未结", IS_NUM);
     ret = ret && sortByTitle("还款/抵扣", IS_NUM);
@@ -201,7 +201,7 @@ function test170001_1_170010_170011_170012() {
             sum3 += Number(qr.data[i]["现金"]);
             sum4 += Number(qr.data[i]["刷卡"]);
             sum5 += Number(qr.data[i]["汇款"]);
-            sum6 += Number(qr.data[i]["实收"]);
+            sum6 += Number(qr.data[i]["实付"]);
             sum7 += Number(qr.data[i]["代收"]);
         }
         if (j < totalPageNo) {
@@ -211,7 +211,7 @@ function test170001_1_170010_170011_170012() {
     }
     var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
             sum2), isEqual(qr.counts["现金"], sum3), isEqual(qr.counts["刷卡"],
-            sum4), isEqual(qr.counts["汇款"], sum5), isEqual(qr.counts["实收"],
+            sum4), isEqual(qr.counts["汇款"], sum5), isEqual(qr.counts["实付"],
             sum6), isEqual(qr.counts["代收"], sum7));
 
     logDebug("sum1=" + sum1 + ", sum2=" + sum2 + ", sum3=" + sum3 + ", sum4="
@@ -531,7 +531,7 @@ function test170007() {
             sum4 += Number(qr.data[i]["代收"]);
             sum5 += Number(qr.data[i]["数量"]);
             sum6 += Number(qr.data[i]["金额"]);
-            sum7 += Number(qr.data[i]["实收"]);
+            sum7 += Number(qr.data[i]["实付"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
@@ -541,7 +541,7 @@ function test170007() {
     var ret = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
             sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
             sum4), isEqual(qr.counts["数量"], sum5), isEqual(qr.counts["金额"],
-            sum6), isEqual(qr.counts["实收"], sum7));
+            sum6), isEqual(qr.counts["实付"], sum7));
     logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3 + "sum4=" + sum4
             + "sum5=" + sum5 + "sum6=" + sum6 + "sum7=" + sum7);
 
@@ -568,7 +568,7 @@ function test170007() {
             sum4 += Number(qr.data[i]["代收"]);
             sum5 += Number(qr.data[i]["数量"]);
             sum6 += Number(qr.data[i]["金额"]);
-            sum7 += Number(qr.data[i]["实收"]);
+            sum7 += Number(qr.data[i]["实付"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
@@ -578,7 +578,7 @@ function test170007() {
     var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
             sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
             sum4), isEqual(qr.counts["数量"], sum5), isEqual(qr.counts["金额"],
-            sum6), isEqual(qr.counts["实收"], sum7));
+            sum6), isEqual(qr.counts["实付"], sum7));
 
     tapMenu("销售开单", "按批次查");
     var keys2 = { "日期从" : getDay(-10), "作废挂单" : "作废" };
@@ -603,7 +603,7 @@ function test170007() {
             sum4 += Number(qr.data[i]["代收"]);
             sum5 += Number(qr.data[i]["数量"]);
             sum6 += Number(qr.data[i]["金额"]);
-            sum7 += Number(qr.data[i]["实收"]);
+            sum7 += Number(qr.data[i]["实付"]);
         }
         if (j < totalPageNo) {
             scrollNextPage();
@@ -613,7 +613,7 @@ function test170007() {
     var ret2 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
             sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
             sum4), isEqual(qr.counts["数量"], sum5), isEqual(qr.counts["金额"],
-            sum6), isEqual(qr.counts["实收"], sum7));
+            sum6), isEqual(qr.counts["实付"], sum7));
 
     return ret && ret1 && ret2;
 }
@@ -783,7 +783,7 @@ function test170019() {
             Number(money), qr.data[0]["金额"]), isEqual(Number(money / 3),
             qr.data[0]["现金"]), isEqual(Number(money / 3), qr.data[0]["刷卡"]),
             isEqual(Number(money / 3), qr.data[0]["汇款"]), isEqual(
-                    Number(money), qr.data[0]["实收"]), isEqual(0,
+                    Number(money), qr.data[0]["实付"]), isEqual(0,
                     qr.data[0]["未结"]));
 
     tapMenu("统计分析", "收支流水");
@@ -3497,7 +3497,7 @@ function test170305_1() {
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
-    ret = ret && sortByTitle("实收", IS_NUM);
+    ret = ret && sortByTitle("实付", IS_NUM);
     ret = ret && sortByTitle("代收", IS_NUM);
     ret = ret && sortByTitle("未结", IS_NUM);
     ret = ret && sortByTitle("还款/抵扣", IS_NUM);
@@ -3522,7 +3522,7 @@ function test170305_1() {
             sum3 += Number(qr.data[i]["现金"]);
             sum4 += Number(qr.data[i]["刷卡"]);
             sum5 += Number(qr.data[i]["汇款"]);
-            sum6 += Number(qr.data[i]["实收"]);
+            sum6 += Number(qr.data[i]["实付"]);
             sum7 += Number(qr.data[i]["代收"]);
         }
         if (j < totalPageNo) {
@@ -3532,7 +3532,7 @@ function test170305_1() {
     }
     var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
             sum2), isEqual(qr.counts["现金"], sum3), isEqual(qr.counts["刷卡"],
-            sum4), isEqual(qr.counts["汇款"], sum5), isEqual(qr.counts["实收"],
+            sum4), isEqual(qr.counts["汇款"], sum5), isEqual(qr.counts["实付"],
             sum6), isEqual(qr.counts["代收"], sum7));
 
     logDebug("sum1=" + sum1 + " sum2=" + sum2 + " sum3=" + sum3 + "  sum4="
@@ -3595,7 +3595,7 @@ function test170305_2() {
     var a11 = qr.data[0]["现金"];
     var a12 = qr.data[0]["刷卡"];
     var a13 = qr.data[0]["汇款"];
-    var a14 = qr.data[0]["实收"];
+    var a14 = qr.data[0]["实付"];
     var a15 = qr.data[0]["代收"];
     var ret1 = isAnd(isEqual(getToday("yy"), a1), isEqual("常青店", a2), isEqual(
             "李四", a3), isEqual("总经理", a4), isEqual(je, a5), isEqual("3", a6),
@@ -5585,6 +5585,10 @@ function test170365() {
             isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(r,
                     a5), isEqual("常青店", a6), isEqual("否", a7));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
@@ -5669,6 +5673,10 @@ function test170366() {
             isEqual("zz", a3), isEqual("是", a4), isEqual("李响", a5), isEqual(
                     "常青店", a6), isEqual("否", a7));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     logDebug("zk=" + zk + ", num=" + num + ", price=" + ", zk1=" + zk1
             + ", num1=" + num1 + ", price1=" + price1 + ", ret=" + ret
             + ", ret1=" + ret1);
@@ -5688,7 +5696,7 @@ function test170368() {
         "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "3035", "数量" : "1" } ],
         "特殊货品" : { "抹零" : 6 }, "代收" : { "物流商" : "ht", "运单号" : r, "备注" : "a" } };
     editSalesBillNoColorSize(json);
-    var money = json["输入框值"]["代收/实收"];
+    var money = json["代收"]["代收金额"];
 
     tapMenu("销售开单", "物流单");
     var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
@@ -5736,6 +5744,10 @@ function test170368() {
     var a3 = qr1.data[0]["金额"];
     var ret2 = isAnd(isEqual(getToday("yy"), a1), isEqual("常青店", a2), isEqual(
             money, a3));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" money=" + money + ", ret=" + ret + ", ret1=" + ret1 + ", ret2="
             + ret2);
@@ -5804,6 +5816,10 @@ function test170368_1() {
     var a3 = qr1.data[0]["金额"];
     var ret2 = isAnd(isEqual(getToday("yy"), a1), isEqual("常青店", a2), isEqual(
             "654", a3));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret1 && ret2;
 }
@@ -5875,10 +5891,10 @@ function test170370() {
 }
 function test170371() {
     // 全局设置开单模式：18整单折扣+代收
-    // var qo, o, ret = true;
-    // qo = { "备注" : "开单模式" };
-    // o = { "新值" : "18", "数值" : [ "整单折扣+代收", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "18", "数值" : [ "整单折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -5915,7 +5931,11 @@ function test170371() {
     var b1 = qr1.data[0]["账户"];
     var ret = isAnd(isEqual(money, b), isEqual("东灵测试-现金账户", b1), isEqual(
             "代收收款", qr1.data[0]["类型"]), isAqualOptime(getOpTime(),
-            qr1.data[0]["操作日期"]));
+            qr1.data[0]["操作日期"], 2));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -6003,11 +6023,20 @@ function test170375() {
             isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
                     "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170376() {
     // 全局设置开单模式：2代收， 19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "特殊货品" : { "抹零" : 6 },
@@ -6020,7 +6049,7 @@ function test170376() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     delay();
 
     var f16 = new TField("货品", TF_AC, 16, "3035", -1, 0);
@@ -6050,7 +6079,7 @@ function test170376() {
     tapReturn();
 
     tapMenu("销售开单", "物流单");
-    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
+    var keys1 = { "运单号" : "423", "物流商" : "汇通快递" };
     var fields1 = salesQueryLogisticsFields(keys1);
     query(fields1);
 
@@ -6068,10 +6097,19 @@ function test170376() {
             isEqual("423", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
                     "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret && ret1;
 }
 function test170378() {
     // 全局设置开单模式为：19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "特殊货品" : { "抹零" : 6 },
@@ -6113,7 +6151,7 @@ function test170378() {
                     "李四", a5), isEqual("常青店", a6), isEqual("是", a7));
 
     tapMenu("销售开单", "更多.", "代收收款查询");
-    var keys = { "门店" : "常青店", "日期从" : getToday(), "日期到" : getToday() };
+    var keys = { "门店" : "常青店" };
     var fields = salesCollectionFields(keys);
     query(fields);
     var qr = getQR();
@@ -6121,10 +6159,19 @@ function test170378() {
     var a1 = qr.data[0]["金额"];
     var ret = isAnd(isEqual("230", a), isEqual("230", a1));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret && ret1;
 }
 function test170379() {
     // 全局设置开单模式为：19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "按汇总", "按店员汇总");
     var keys = { "门店" : "常青店", "店员" : "000,总经理" };
     var fields = salesStaffFields(keys);
@@ -6149,6 +6196,10 @@ function test170379() {
     var a1 = Number(qr1.data[0]["代收"]);
 
     var ret = isEqual(add(a, money), a1);
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -6193,10 +6244,19 @@ function test170380() {
     var ret = isAnd(isEqual(money, qr1.data[0]["金额"]), isEqual("代收收款",
             qr1.data[0]["类型"]), isEqual("东灵测试-现金账户", qr1.data[0]["账户"]));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 function test170381() {
     // 全局设置开单模式为：19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "按汇总", "按金额汇总");
     query();
 
@@ -6218,10 +6278,19 @@ function test170381() {
 
     var ret = isEqual(add(a, money), a1);
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 function test170382() {
     // 全局设置开单模式为：19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("统计分析", "综合汇总");
     query();
     var qr = getQR();
@@ -6241,10 +6310,19 @@ function test170382() {
 
     var ret = isEqual(add(a, money), a1);
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 function test170383() {
     // 全局设置开单模式为：19产品折扣+代收
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "特殊货品" : { "抹零" : 6 },
@@ -6278,6 +6356,10 @@ function test170383() {
     var ret1 = isAnd(isEqual(money, a), isEqual("汇通快递", a1),
             isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(
                     "李四", a5), isEqual("常青店", a6), isEqual("否", a7));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
 }
@@ -6341,6 +6423,7 @@ function test170400() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "无法打印"));
+
     tapReturn();
 
     return ret;
@@ -7597,9 +7680,19 @@ function test170503() {
     query(fields);
     var qr = getQR();
 
-    var kuc = add(add(add(qr.data[0]["库存"], qr.data[0]["在途数"]), add(
-            qr.data[1]["库存"], qr.data[1]["在途数"])), add(qr.data[2]["库存"],
-            qr.data[2]["在途数"]));
+    var sum1 = 0;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["在途数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var kuc = add(qr.counts["库存"], sum1);
 
     tapMenu("货品管理", "货品查询");
     var Keys = [ "款号名称" ];
@@ -7714,9 +7807,19 @@ function test170523() {
     query(fields);
     var qr = getQR();
 
-    var kuc = add(add(add(qr.data[0]["库存"], qr.data[0]["在途数"]), add(
-            qr.data[1]["库存"], qr.data[1]["在途数"])), add(qr.data[2]["库存"],
-            qr.data[2]["在途数"]));
+    var sum1 = 0;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum1 += Number(qr.data[i]["在途数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var kuc = add(qr.counts["库存"], sum1);
 
     tapMenu("销售开单", "按汇总", "按款号汇总");
     var keys = { "门店" : "常青店", "款号" : "3035" };
