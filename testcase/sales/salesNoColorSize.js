@@ -89,6 +89,8 @@ function testSalesNoColorSizeAll() {
     run("销售订货价格刷新", "test170445");
     run("销售开单价格刷新+上次价/代收2", "test170491");
     run("销售订货价格刷新+上次价/代收2", "test170492");
+    run("【  开单】快速新增客户时自动刷新检查", "test170538");
+
     // run("采购入库/采购订货价格刷新", "test170527");//
 
 }
@@ -10423,6 +10425,70 @@ function test170536() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
+function test170538() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    // tapButton(window, "新增+");
+    // var r = "anewSXkh" + getTimestamp(6);
+    // var r1 = getTimestamp(6);
+    // var g0 = new TField("名称", TF, 0, r);
+    // var g1 = new TField("手机", TF, 1, r1);
+    // var g3 = new TField("适用价格", BTN_SC, 0, "Vip价格", "", -1);
+    // var g4 = new TField("地址", TF, 4, r);
+    // var fields = [ g0, g1, g3, g4 ];
+    // delay();
+    // setTFieldsValue(getPopView(), fields);
+    // tapButton(getPop(), OK);
+    // tapButton(getPop(), "关 闭");
+    //
+    // var o1 = { "是否需要重新刷新明细价格等信息" : "保留当前" };
+    // setValueToCache(ALERT_MSG_KEYS, o1);
+    // delay(5);
+    //
+    // var ret = isEqual(200, getTextFieldValue(getScrollView(), 4));
+
+    tapButton(window, "新增+");
+    var r2 = "anewSXkh1" + getTimestamp(6);
+    var r3 = getTimestamp(6);
+    var g0 = new TField("名称", TF, 0, r2);
+    var g1 = new TField("手机", TF, 1, r3);
+    var g3 = new TField("适用价格", BTN_SC, 0, "Vip价格", "", -1);
+    var g4 = new TField("地址", TF, 4, r2);
+    var fields = [ g0, g1, g3, g4 ];
+    delay();
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var ret1 = isAnd(isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(200,
+            getTextFieldValue(getScrollView(), 4)));
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    ret1 = isAnd(ret1, isEqual(140, getTextFieldValue(getScrollView(), 4)));
+
+    return ret1;
+
+    // saveAndAlertOk();
+    // tapPrompt();
+    // tapReturn();
+    //
+    // tapMenu("销售开单", "按批次查");
+    // query();
+    //
+    // tapFirstText();
+    //
+    // var ret2 = isEqual(140, getTextFieldValue(getScrollView(), 4));
+    //
+    // tapReturn();
+
+    // logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    // return ret && ret1 && ret2;
+}
 function test170542() {
     // 客户折扣
     var qo, o, ret = true;
@@ -10840,4 +10906,71 @@ function test170556() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170558() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售单已配货的单子" };
+    o = { "新值" : "0", "数值" : [ "不限制" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "7" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapFirstText();
+    tapMenu("销售开单", "更多.", "设置已配货");
+    tapPrompt();
+
+    // 修改客户名称/付款方式/明细/明细备注和整单备注/店员 信息后分别点保存按钮
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapFirstText();
+
+    var keys = { "客户" : "anewkhVip2" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
+
+    tapReturn();
+    
+    
+    tapFirstText();
+
+    var f12 = new TField("货品", TF_AC, 12, "8989", -1, 0);
+    var f15 = new TField("数量", TF, 15, "12");
+    var fields = [ f12, f15 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
+
+    tapReturn();
+
+}
+function test170559() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售单已配货的单子" };
+    o = { "新值" : "1", "数值" : [ "只允许修改付款方式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapFirstText();
+    tapMenu("销售开单", "更多.", "设置已配货");
+    tapPrompt();
+
 }
