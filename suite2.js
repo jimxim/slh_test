@@ -16,14 +16,37 @@ function test000All() {
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("采购入库/采购订货价格刷新", "test170527");//
 // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户分店+均色均码", "test170210");
-//    run("【  开单】快速新增客户时自动刷新检查", "test170538");//
+// run("【 开单】快速新增客户时自动刷新检查", "test170538");//
+// run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");//
+// run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559");//
     
+    run("【销售开单-核销】物流单核销-查询结果检查", "test170570");
     
+// run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
+// run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
     
-// run("","checkPrepare");
+// run("","test2");
+ 
+function funcReal(){
+    if(ipadVer = "6.59"){
+        real="实付"       
+    }
+    else{
+        real="实收"
+    }
+
 }
 function test1(){
     debugElementTree(window);
+}
+function test2(){
+    var qo, o, ret = true;
+
+   qo = { "备注" : "童装模式是否批发零售分开(按组按件分开)" };
+   o = { "新值" : "1", "数值" : [ "1", "in" ] };
+   ret = isAnd(ret, setLocalParam(qo, o));
+   
+   return ret;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
@@ -335,4 +358,5 @@ function test004All() {
 // testCheckMenuAll();
      logout();
   }
+}
 }

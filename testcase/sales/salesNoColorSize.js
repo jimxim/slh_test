@@ -90,6 +90,7 @@ function testSalesNoColorSizeAll() {
     run("销售开单价格刷新+上次价/代收2", "test170491");
     run("销售订货价格刷新+上次价/代收2", "test170492");
     run("【  开单】快速新增客户时自动刷新检查", "test170538");
+    run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");
 
     // run("采购入库/采购订货价格刷新", "test170527");//
 
@@ -167,6 +168,7 @@ function testSalesNoColorSize001_1() {
     run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+均色均码", "test170211");
     run("【销售开单】补货退货验证+不允许继续输入+均色均码", "test170216");
     run("【销售开单】补货退货验证+允许继续输入+均色均码", "test170215");
+    run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559");
 
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430");// (改为做170429)//
     // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
@@ -10937,24 +10939,51 @@ function test170558() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(140,
+            getTextFieldValue(getScrollView(), 4)));
 
     tapReturn();
-    
-    
+
+    tapButton(window, QUERY);
     tapFirstText();
 
-    var f12 = new TField("货品", TF_AC, 12, "8989", -1, 0);
-    var f15 = new TField("数量", TF, 15, "12");
-    var fields = [ f12, f15 ];
+    tapStaticText(window, "代收");
+    var g0 = new TField("名称", TF_AC, 16, "tt");
+    var fields = [ g0 ];
+    setTFieldsValue(window, fields);
+
+    tapNaviRightButton();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    tapButton(window, QUERY);
+    tapFirstText();
+
+    var f7 = new TField("货品", TF_AC, 7, "8989", -1, 0);
+    var f10 = new TField("数量", TF, 10, "12");
+    var fields = [ f7, f10 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
+    var ret2 = isIn(alertMsg, "保存成功");
 
     tapReturn();
 
+    tapButton(window, QUERY);
+    // tapFirstText();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170559() {
     var qo, o, ret = true;
