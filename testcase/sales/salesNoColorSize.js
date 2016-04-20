@@ -91,6 +91,11 @@ function testSalesNoColorSizeAll() {
     run("销售订货价格刷新+上次价/代收2", "test170492");
     run("【  开单】快速新增客户时自动刷新检查", "test170538");
     run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");
+    
+    run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170580");
+    run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170581");
+    run("【销售开单－开单】汇款需填写客户", "test170582");
+    run("【销售开单－开单】汇款无需填写客户", "test170583");
 
     // run("采购入库/采购订货价格刷新", "test170527");//
 
@@ -10278,7 +10283,7 @@ function test170525() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("李四  52148899635963", v)) {
+        if (isIn(v, "李四")) {
             ret1 = true;
             break;
         }
@@ -10993,5 +10998,140 @@ function test170559() {
     tapFirstText();
     tapMenu("销售开单", "更多.", "设置已配货");
     tapPrompt();
+}
+function test170580() {
+    tapMenu("销售开单", "开  单+");
+    var r = getTimestamp(10);
+    var f0 = new TField("货品", TF_AC, 105, r, -1, 0);
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(), fields);
 
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "款号要从下拉列表选择");
+
+    tapReturn();
+
+    logDebug(" ret=" + ret);
+    return ret;
+}
+function test170581() {
+    tapMenu("销售开单", "按汇总", "按客户销售");
+    var keys = { "到" : getToday(), "客户" : "ls" };
+    var fields = salesCustomerConsumeFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var sxe = qr.data[0]["实销额"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xw", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+    var score = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a = score.split(": ");
+
+    tapButton(getScrollView(-1, 0), "积分兑换");
+    var r = "1" + getTimestamp(3);
+    var g0 = new TField("兑换积分*", TF, 0, r);
+    var g1 = new TField("兑换金额*", TF, 1, r);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapNaviLeftButton();
+    tapReturn();
+    delay(3);
+
+    tapMenu("销售开单", "按汇总", "按客户销售");
+    var keys = { "到" : getToday(), "客户" : "ls" };
+    var fields = salesCustomerConsumeFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var sxe1 = qr.data[0]["实销额"];
+
+    var ret = isEqual(sxe1, sxe);
+
+    return ret;
+}
+function test170582() {
+    var qo, o, ret = true;
+    qo = { "备注" : "汇款是否需要填写客户" };
+    o = { "新值" : "1", "数值" : [ "默认要填写", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
+        "备注" : "zy", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "必须输入客户名称");
+
+    tapButtonAndAlert("挂 单", OK);
+
+    var ret1 = isIn(alertMsg, "必须输入客户名称");
+
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+    tapButton(window, CLEAR);
+    tapStaticText(window, "汇款");
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "必须输入客户名称");
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170583() {
+    var qo, o, ret = true;
+    qo = { "备注" : "汇款是否需要填写客户" };
+    o = { "新值" : "0", "数值" : [ "可以不填写", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total1 = qr.total;
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
+        "备注" : "zy", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    tapButtonAndAlert("挂 单", OK);
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total2 = qr.total;
+
+    var ret1 = isEqual(total2, add(total1, 1));
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

@@ -152,11 +152,13 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单】均色均码模式下，开单输入款号之后的款号框不能修改", "test170406");
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单-核销】物流单核销-特殊货品", "test170569");
-    run("【销售开单-核销】物流单核销-查询结果检查", "test170570");
+    run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
     run("【销售开单-核销】物流单核销-按门店区分客户功能对物流间输入的影响", "test170572");
     run("【销售开单-核销】物流单核销-修改支付方式", "test170573");
     run("【销售开单-核销】开启-允许跨门店核销时，显示其他门店的物流代收单", "test170574");
     run("【销售开单-核销】核销时可以输入全部的物流商", "test170575");
+    run("【销售开单-核销】特殊货品", "test170576");
+    run("【销售开单-核销】物流核销时待核销物流单选择界面---排序", "test170578");
 
 }
 function test170001_1_170010_170011_170012() {
@@ -8356,159 +8358,23 @@ function test170576() {
     return ret && ret1 && ret2 && ret3;
 }
 function test170578() {
-    sortByTitle3();
-}
-function test170580() {
-    tapMenu("销售开单", "开  单+");
-    var r = getTimestamp(10);
-    var f0 = new TField("货品", TF_AC, 105, r, -1, 0);
-    var fields = [ f0 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "款号要从下拉列表选择");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret);
-    return ret;
-}
-function test170581() {
-    tapMenu("销售开单", "按汇总", "按客户销售");
-    var keys = { "到" : getToday(), "客户" : "ls" };
-    var fields = salesCustomerConsumeFields(keys);
-    query(fields);
-    var qr = getQR();
-
-    var sxe = qr.data[0]["实销额"];
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xw", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
+     tapMenu("销售开单", "核销+");
+     var f = new TField("物流", TF, 0, "tt");
+     var fields = [ f ];
+     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    var score = getStaticTextValue(getScrollView(-1, 0), 1);
-    var a = score.split(": ");
 
-    tapButton(getScrollView(-1, 0), "积分兑换");
-    var r = "1" + getTimestamp(3);
-    var g0 = new TField("兑换积分*", TF, 0, r);
-    var g1 = new TField("兑换金额*", TF, 1, r);
-    var fields = [ g0, g1 ];
-    setTFieldsValue(getPopView(), fields);
-    tapButton(getPop(), OK);
-    tapButton(getPop(), "关 闭");
+    var dataView = window.tableViews()[5].groups()["批次"];
+    var ret = sortByTitle3(dataView, "批次", "代收金额", "批次", IS_NUM);
+    ret = ret && sortByTitle3(dataView, "批次", "代收金额", "发生日期", IS_DATE2);
+    ret = ret && sortByTitle3(dataView, "批次", "代收金额", "物流商");
+    ret = ret && sortByTitle3(dataView, "批次", "代收金额", "门店");
+    ret = ret && sortByTitle3(dataView, "批次", "代收金额", "客户");
+    ret = ret && sortByTitle3(dataView, "批次", "代收金额", "代收金额", IS_NUM);
+
     tapNaviLeftButton();
+    
     tapReturn();
-    delay(3);
-
-    tapMenu("销售开单", "按汇总", "按客户销售");
-    var keys = { "到" : getToday(), "客户" : "ls" };
-    var fields = salesCustomerConsumeFields(keys);
-    query(fields);
-    var qr = getQR();
-
-    var sxe1 = qr.data[0]["实销额"];
-
-    var ret = isEqual(sxe1, sxe);
 
     return ret;
-}
-function test170582() {
-    var qo, o, ret = true;
-    qo = { "备注" : "汇款是否需要填写客户" };
-    o = { "新值" : "1", "数值" : [ "默认要填写", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
-        "备注" : "zy", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "必须输入客户名称");
-
-    tapButtonAndAlert("挂 单", OK);
-
-    var ret1 = isIn(alertMsg, "必须输入客户名称");
-
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-
-    tapFirstText();
-    tapButton(window, CLEAR);
-    tapStaticText(window, "汇款");
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret2 = isIn(alertMsg, "必须输入客户名称");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
-}
-function test170583() {
-    var qo, o, ret = true;
-    qo = { "备注" : "汇款是否需要填写客户" };
-    o = { "新值" : "0", "数值" : [ "可以不填写", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total1 = qr.total;
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
-        "备注" : "zy", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "保存成功");
-
-    tapButtonAndAlert("挂 单", OK);
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total2 = qr.total;
-
-    var ret1 = isEqual(total2, add(total1, 1));
-
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-
-    tapFirstText();
-    tapButton(window, CLEAR);
-    tapStaticText(window, "汇款");
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret2 = isIn(alertMsg, "必须输入客户名称");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
 }
