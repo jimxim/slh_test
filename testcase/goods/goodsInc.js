@@ -718,7 +718,7 @@ function isAqualOptimeX(expected, actual, allow) {
     var a1 = stringToDate(expected);
     var a2 = stringToDate(actual);
     var result = (a2 - a1) / 60000;// 精确到分
-    var ret = result <= allow;
+    var ret = Math.abs(result) <= allow;
     logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
             + ",ret=" + ret);
     return ret;
@@ -1021,17 +1021,19 @@ function isEqualDropDownListByExp(exp, index, view) {
         view = window;
     }
     tap(getTextField(view, index));
+    delay(0.5);//等待popover出现
     var view1 = getPopView(view, -1);
     var ret = true;
     var texts = getStaticTexts(view1);
     for (var i = 0; i < texts.length; i++) {
-        v = texts[i].name();
+        var v = texts[i].name();
         if (v) {
             ret = isAnd(ret, isIn(exp, v));
         }
     }
     delay();
     view.popover().dismiss();
+    tapKeyboardHide();
     return ret;
 }
 /**

@@ -110,18 +110,7 @@ function shopOutDecruitFields(keys, show) {
     return getTFields("shopOutDecruitField", keys, show);
 }
 function shopOutDecruitField(key, show) {
-    var f, startIdx;
-    switch (ipadVer) {
-    case "6.59":
-        startIdx = 0;
-        break;
-    case "7.01":
-        startIdx = 1;
-        break;
-    default:
-        logWarn("未知版本号＝" + ipadVer);
-        break;
-    }
+    var f;
     switch (key) {
     case "staff_out":
     case "调出人":
@@ -130,24 +119,17 @@ function shopOutDecruitField(key, show) {
             f.value = "000,管理员";
         }
         break;
-    case "staff_in":
-    case "接收人":
-        f = new TField("接收人", TF_AC, 1, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
-        break;
     case "shop":
     case "接收店":
-        f = new TField("接收店", TF_SC, startIdx + 1, "常青店");
+        f = new TField("接收店", TF_SC, 1, "常青店");
         break;
     case "day":
     case "日期":
-        f = new TField("日期", TF_DT, startIdx + 2, "2015-9-16");
+        f = new TField("日期", TF_DT, 2, "2015-9-16");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备", TF, startIdx + 3, "备注");
+        f = new TField("备", TF, 3, "备注");
         break;
     case "password":
     case "操作人密码":

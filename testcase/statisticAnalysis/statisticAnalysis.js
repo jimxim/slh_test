@@ -1,9 +1,23 @@
 //LuXingXin <52619481 at qq.com> 20151109
 
-//收入类别  订金 业务回扣1
-//支出类别  物业 物损
-//因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
+var menu_profit;
+
+function getMenu_profit() {
+    if (ipadVer >= 7.01) {
+        menu_profit = "日利润表";
+    } else {
+        menu_profit = "利润表";
+    }
+    return menu_profit;
+}
+
+// 收入类别 订金 业务回扣1
+// 支出类别 物业 物损
+// 因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
 function testStatisticAnalysis001() {
+    if(isUndefined(menu_profit)){
+        menu_profit=getMenu_profit();
+    }
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
     run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
 
@@ -1146,8 +1160,9 @@ function ts190110() {
     var ret = isEqualDropDownListByExp(exp, fields["门店"].index);
 
     query(fields);
+    delay();
     var qr = getQR();
-    var total = qr.tatal;
+    var total = qr.total;
 
     query();
     qr = getQR();
@@ -2296,7 +2311,7 @@ function test190084() {
     var batch1 = qr.data[0]["批次"];
     var batch2 = qr.data[1]["批次"];
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", getMenu_profit);
     query();
     tapFirstText();
     tapNaviRightButton();
@@ -2315,7 +2330,7 @@ function test190084() {
 
 function test190085() {
     var i, j, sum1 = 0, sum2 = 0;
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
     var qr = getQR();
     var a = qr.data[0]["利润额"];
@@ -2391,7 +2406,7 @@ function test190083() {
         "折扣" : "0.5", "销售额" : "-400", "进货价" : "100", "成本额" : "-500",
         "利润额" : "100" };
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
     tapFirstText();
     var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
@@ -2431,7 +2446,7 @@ function test190083() {
 }
 
 function test190086() {
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -2475,7 +2490,7 @@ function test190087_190101() {
         "特殊货品" : { "抹零" : 15, "打包费" : 20 } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     tapButton(window, QUERY);
     qr = getQR();
     var jo2 = qr.data[0];
@@ -2498,7 +2513,7 @@ function test190087_190101() {
 }
 
 function test190088() {
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "日期从" : getDay(-45) };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -2516,7 +2531,7 @@ function test190088() {
 }
 
 function test190042() {
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
 
     tapFirstText();
@@ -2543,7 +2558,7 @@ function test190043() {
         "特殊货品" : { "抹零" : 15, "打包费" : 20 } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
 
     tapFirstText();
@@ -2590,7 +2605,7 @@ function test190043() {
 }
 
 function test190102() {
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
 
     tapFirstText();

@@ -735,7 +735,7 @@ function test160008() {
 
     // 结束订单
     delay();
-    runAndAlert("test160008Field", OK);
+    runAndAlert("test130015EndBill", OK);
     tapPrompt();
     delay();
 
@@ -750,10 +750,6 @@ function test160008() {
     tapReturn();
 
     return ret;
-}
-
-function test160008Field() {
-    tapMenu("销售订货", "更多.", "终结订单");
 }
 
 function test160009() {
@@ -865,7 +861,7 @@ function test160012() {
             qr.data[0]["发货状态"]));
 
     tapFirstText();
-    runAndAlert("test160012Field", OK);
+    runAndAlert("test130015EndBill", OK);
     tapPrompt();
     delay();
     tapReturn();
@@ -882,11 +878,6 @@ function test160012() {
     return ret;
 
 }
-
-function test160012Field() {
-    tapMenu("销售订货", "更多.", "终结订单");
-}
-
 // 刷新图像已经删除
 // function test160013() {
 // tapMenu("销售订货", "按批次查");
@@ -1269,7 +1260,7 @@ function test160035() {
     tapMenu("销售订货", "按批次查");
     delay();
     tapFirstText(getScrollView(), "序号", 16);
-    runAndAlert("test160008Field", OK);// 终结订单
+    runAndAlert("test130015EndBill", OK);// 终结订单
     tapPrompt();
     delay();
 

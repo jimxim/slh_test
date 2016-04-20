@@ -2,6 +2,9 @@
 
 //成本核算
 function textFin_price_base() {
+    if (isUndefined(menu_profit)) {
+        menu_profit = getMenu_profit();
+    }
     var ret1 = false, ret2 = false, ret3 = false;
     if (setParamFin_price_base2()) {
         ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
@@ -29,9 +32,9 @@ function setParamFin_price_base2() {
 function textFin_price_base2_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -57,9 +60,9 @@ function textFin_price_base2_1() {
 function textFin_price_base2_2() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -92,9 +95,9 @@ function textFin_price_base2_2() {
 function textFin_price_base2_3() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -138,7 +141,7 @@ function testSAProfitFor005() {
     var qr = getQR();
     var r = qr.data[0]["款号"];
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     query();
     qr = getQR();
     var jo1 = qr.data[0];
@@ -166,9 +169,9 @@ function setParamFin_price_base3() {
 function textFin_price_base3_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -222,9 +225,9 @@ function setParamFin_price_base0() {
 function textFin_price_base0_1() {
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
-    addGoods(keys,colorSize);
+    addGoods(keys, colorSize);
 
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -290,7 +293,7 @@ function setFPBCheckPrice(r, price) {
 
 function textFin_price_baseField(r, jo1, exp1, exp2, exp3) {
     var ret1 = false, ret2 = false;
-    tapMenu("统计分析", "利润表");
+    tapMenu("统计分析", menu_profit);
     tapButton(window, QUERY);
     var qr = getQR();
     var jo2 = qr.data[0];

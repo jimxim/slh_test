@@ -213,7 +213,7 @@ function testCheckStatisticAnalysis() {
     var ret = true, menus2, menu2, menus3;
 
     tapMenu1("统计分析");
-    menus2 = { "收支表" : {}, "日营业表" : {}, "利润表" : {}, "综合汇总" : {}, "收支汇总" : {},
+    menus2 = { "收支表" : {}, "日营业表" : {}, "日利润表" : {}, "综合汇总" : {}, "收支汇总" : {},
         "新增收入" : {}, "新增支出" : {}, "收支流水" : {}, "收支类别" : {} };
     ret = isAnd(ret, checkMenus(menus2));
 

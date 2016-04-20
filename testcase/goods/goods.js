@@ -156,6 +156,7 @@ function testGoodsPrepare001() {
         "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
+    getMenu_profit();
     return json;
 }
 

@@ -21,6 +21,7 @@ function testPurchaseOrder001() {
 
 function testPurchaseOrder002() {
     run("【采购订货-新增订货】取未保存", "ts130026");// 不能单独跑
+    run("【采购订货-按批次查】增加发货状态列和发货状态查询条件", "ts130001");// 7.01新功能
     run("【采购订货-新增订货】快速新增", "ts130007_08");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
@@ -113,6 +114,123 @@ function ts130020Count() {
     count1 = qr.counts;
     ret = isAnd(ret, isEqualObject(count1, count2));
     return ret;
+}
+
+// 检验发货状态列和查询条件
+// 未发，少发，多发，全发，结束
+function ts130001() {
+    if (ipadVer >= 7.01) {
+        tapMenu("采购订货", "按批次查");
+        var keys = { "发货状态" : "未入库" };
+        var fields = purchaseOrderQueryBatchFields(keys);
+
+        // 验证下拉框内容
+        var exp = "未入库,部分入库,全部入库,结束,申请取消中";
+        var ret = isEqualDropDownListByExp(exp, fields["发货状态"].index);
+
+        query();
+        var qr = getQR();
+        var batch = Number(qr.data[0]["批次"]) + 1;
+
+        tapMenu2("新增订货+");
+        var jo = { "客户" : "rt", "采购订货" : "yes" };
+        var det = editPurOrderDet();
+        var json = mixObject(jo, det);
+        editSalesBill(json, colorSize);
+
+        tapMenu2("按批次查");
+        query(fields);
+        qr = getQR();
+        var exp = { "批次" : batch, "总数" : 30, "入库数" : 0, "差异数" : 30,
+            "发货状态" : "未入库" }
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(30));
+
+        tapMenu("采购入库", "按订货入库");
+        query();
+        tapFirstText();
+        json = { "入库明细" : [ { "数量" : 10 } ] };
+        editSalesBill(json, colorSize);
+
+        tapMenu("采购订货", "按批次查");
+        fields["发货状态"].value = "部分入库";
+        query(fields);
+        qr = getQR();
+        exp = { "批次" : batch, "总数" : 30, "入库数" : 10, "差异数" : 20,
+            "发货状态" : "部分入库" }
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(20));
+
+        tapMenu("采购入库", "按订货入库");
+        tapButton(window, QUERY);
+        tapFirstText();
+        saveAndAlertOk();
+        tapReturn();// 防止未自动返回
+
+        tapMenu("采购订货", "按批次查");
+        fields["发货状态"].value = "全部入库";
+        query(fields);
+        qr = getQR();
+        exp = { "批次" : batch, "总数" : 30, "入库数" : 30, "差异数" : 0, "发货状态" : "全部入库" }
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(0));
+
+        tapMenu2("新增订货+");
+        jo = { "客户" : "rt", "采购订货" : "yes" };
+        det = editPurOrderDet();
+        json = mixObject(jo, det);
+        editSalesBill(json, colorSize);
+        batch++;
+
+        tapMenu("采购入库", "按订货入库");
+        tapButton(window, QUERY);
+        tapFirstText();
+        json = { "入库明细" : [ { "数量" : 14 } ] };
+        editSalesBill(json, colorSize);
+
+        tapMenu("采购订货", "按批次查");
+        query();
+        tapFirstText();
+        runAndAlert("test130015EndBill", OK);
+        tapPrompt();
+        tapReturn();// 防止未自动返回
+
+        fields["发货状态"].value = "结束";
+        query(fields);
+        qr = getQR();
+        exp = { "批次" : batch, "总数" : 30, "入库数" : 14, "差异数" : 16, "发货状态" : "结束" }
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(16));
+
+        tapMenu2("新增订货+");
+        jo = { "客户" : "rt", "采购订货" : "yes" };
+        det = editPurOrderDet();
+        json = mixObject(jo, det);
+        editSalesBill(json, colorSize);
+        batch++;
+        // 多发
+        tapMenu("采购入库", "按订货入库");
+        tapButton(window, QUERY);
+        tapFirstText();
+        json = { "入库明细" : [ { "数量" : 50 } ] };
+        editSalesBill(json, colorSize);
+
+        tapMenu("采购订货", "按批次查");
+        fields["发货状态"].value = "全部入库";
+        query(fields);
+        qr = getQR();
+        exp = { "批次" : batch, "总数" : 30, "入库数" : 50, "差异数" : -20,
+            "发货状态" : "全部入库" }
+        ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(-20));
+
+        return ret;
+    } else {
+        logDebug("版本低于7.01，跳过验证");
+        return true;
+    }
+}
+// 在130001中顺带检验
+function ts130019(num) {
+    tapMenu2("按明细查");
+    query();
+    var qr = getQR();
+    return isEqual(num, qr.data[0]["差异数"])
 }
 
 // 条件查询，清除按钮
@@ -801,7 +919,12 @@ function ts130012() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "实付", "汇款" ];
+    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "汇款" ];
+    if (ipadVer < 7.01) {
+        exp.push("实付");
+    } else {
+        exp.push("实收");
+    }
     var titles = getDetSizheadTitle();
     var ret = isAnd(isHasStaticTexts(window, exp), titles.hasOwnProperty("单价"),
             titles.hasOwnProperty("小计"));
@@ -910,7 +1033,7 @@ function ts130015() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    runAndAlert("test130015End", OK);
+    runAndAlert("test130015EndBill", OK);
     tapPrompt();
     var ret = isIn(alertMsg, "订单终结成功");
 
@@ -928,13 +1051,13 @@ function ts130015() {
     tapMenu("采购订货", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    runAndAlert("test130015End", OK);// 重复作废
+    runAndAlert("test130015EndBill", OK);// 重复终结
     tapPrompt();
     // 本提示语经大师验证，若有不明改动，呵呵
     ret = isAnd(ret, isIn(alertMsg, "采购订单已终结"));
     return ret;
 }
-function test130015End() {
+function test130015EndBill() {
     tapMenu2("更多.");
     tapMenu3("终结订单");
 }
@@ -961,7 +1084,7 @@ function ts130016_1() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    runAndAlert("test130015End", OK);
+    runAndAlert("test130015EndBill", OK);
     tapPrompt();
     var ret = isIn(alertMsg, "订单终结成功");
 
@@ -995,7 +1118,7 @@ function ts130016_2() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    runAndAlert("test130015End", OK);
+    runAndAlert("test130015EndBill", OK);
     tapPrompt();
     var ret = isIn(alertMsg, "订单终结成功");
 

@@ -15,14 +15,13 @@ function test000All() {
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
- run("测试用例", "ts190110");
+  
+ run("测试用例", "ts130001");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    var qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
-    debugObject(qr.data[0]);
-    return qr.data[0];
+
 }
 
 
