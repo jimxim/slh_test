@@ -4,8 +4,8 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
-    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");//
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");//
     run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
     run("【销售开单－开单】客户输入框清除功能", "test170045");
     run("【销售开单－开单】结余文本框检查", "test170046");
@@ -2798,8 +2798,8 @@ function test170094() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
-    tapFirstText(getScrollView(), "序号", 20);
+
+    tapFirstText();
 
     var money = json["代收"]["代收金额"];
     var wls = json["代收"]["物流商"];
@@ -2846,7 +2846,7 @@ function test170095() {
     tapMenu("销售开单", "按明细查");
     query();
     qr = getQR();
-    var ret1 = isAnd(isEqual("mxbz", qr.data[0]["备注"]), isEqual("mxbz1",
+    var ret1 = isAnd(isEqual("mxbz1", qr.data[0]["备注"]), isEqual("mxbz",
             qr.data[1]["备注"]));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", 整单备注=" + b1 + ", 明细备注=" + b6
@@ -3919,9 +3919,7 @@ function test170129() {
     tapFirstText();
 
     var ret1 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("",
-                    getTextFieldValue(getScrollView(), 4)), isEqual(r1,
+            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 8)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 9)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
@@ -4000,9 +3998,7 @@ function test170131() {
 
     tapFirstText();
     var ret1 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("",
-                    getTextFieldValue(getScrollView(), 4)), isEqual(c,
+            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual(c,
                     getTextFieldValue(getScrollView(), 8)), isEqual(c,
                     getTextFieldValue(getScrollView(), 9)), isEqual(c,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
@@ -4022,9 +4018,7 @@ function test170131() {
 
     tapFirstText();
     var ret2 = isAnd(isEqual(r1, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r1, getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("",
-                    getTextFieldValue(getScrollView(), 4)), isEqual(c1,
+            isEqual(r1, getTextFieldValue(getScrollView(), 1)), isEqual(c1,
                     getTextFieldValue(getScrollView(), 8)), isEqual(c1,
                     getTextFieldValue(getScrollView(), 9)), isEqual(c1,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
@@ -4089,9 +4083,7 @@ function test170132() {
 
     tapFirstText();
     var ret1 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("",
-                    getTextFieldValue(getScrollView(), 4)), isEqual(c,
+            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual(c,
                     getTextFieldValue(getScrollView(), 8)), isEqual(c,
                     getTextFieldValue(getScrollView(), 9)), isEqual(c,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
