@@ -814,7 +814,7 @@ function ts130007_08() {
         ret2 = isEqualObject(exp, qr.data[0]);
         tapFirstText();
         delete joG["数量"];
-        fields = editGoodsFields(joG);
+        fields = editGoodsFields(joG,true);
         ret2 = isAnd(ret2, checkShowFields(getScrollView(-1), fields));
         tapButton(window, RETURN);
     } else {
@@ -955,7 +955,12 @@ function test130013() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "实付", "汇款" ];
+    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "汇款" ];
+    if (ipadVer < 7.01) {
+        exp.push("实付");
+    } else {
+        exp.push("实收");
+    }
     var titles = getDetSizheadTitle();
     var ret = isAnd(!isHasStaticTexts(window, exp), !titles
             .hasOwnProperty("单价"), !titles.hasOwnProperty("小计"));
@@ -1194,23 +1199,27 @@ function ts130026Prepare() {
 }
 // 暂时只能用终端跑
 function ts130026() {
-    tapMenu("采购订货", "新增订货+");
-    tapButton(window, "取未保存");
-    delay();
-    var data1 = getQRDet().data;
-    var ret = isEqualDyadicArray(xCache, data1);
-    var json = { "客户" : "vell" };
-    editSalesBill(json, colorSize);
+    if (!isEmptyObject(xCache)) {
+        tapMenu("采购订货", "新增订货+");
+        tapButton(window, "取未保存");
+        delay();
+        var data1 = getQRDet().data;
+        var ret = isEqualDyadicArray(xCache, data1);
+        var json = { "客户" : "vell" };
+        editSalesBill(json, colorSize);
 
-    tapMenu2("按批次查");
-    query();
-    tapFirstText();
-    var data2 = getQRDet().data;
-    ret = isAnd(ret, isEqualDyadicArray(data1, data2));
-    tapReturn();
-
-    xCache = {};
-    return ret;
+        tapMenu2("按批次查");
+        query();
+        tapFirstText();
+        var data2 = getQRDet().data;
+        ret = isAnd(ret, isEqualDyadicArray(data1, data2));
+        tapReturn();
+        xCache = {};
+        return ret;
+    } else {
+        logDebug("未取到未保存值");
+        return false;
+    }
 }
 
 /**

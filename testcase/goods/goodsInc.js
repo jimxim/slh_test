@@ -1021,7 +1021,7 @@ function isEqualDropDownListByExp(exp, index, view) {
         view = window;
     }
     tap(getTextField(view, index));
-    delay(0.5);//等待popover出现
+    delay(0.5);// 等待popover出现
     var view1 = getPopView(view, -1);
     var ret = true;
     var texts = getStaticTexts(view1);
@@ -1035,6 +1035,17 @@ function isEqualDropDownListByExp(exp, index, view) {
     view.popover().dismiss();
     tapKeyboardHide();
     return ret;
+}
+/**
+ * 是否空对象
+ * @param obj
+ * @returns {Boolean}
+ */
+function isEmptyObject(obj) {
+    for ( var key in obj) {
+        return false;
+    }
+    return true;
 }
 /**
  * 查询界面汇总值验证 会判断汇总栏有汇总值的标题的汇总值是否正确（没有作废数据影响的情况下）

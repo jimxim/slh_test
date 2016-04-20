@@ -5,8 +5,8 @@
  */
 function testShopIn001() {
     run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
+    run("【门店调出-按批次查】调入已作废单", "ts150002_1");// 6.59前版本适用
     run("【门店调入】数据验证", "ts140001");// 需要shopInPrepare的批次号
-    run("【门店调出-按批次查】调入已作废单", "ts150002_1");
     run("【门店调出-在途调拨】门店调拨-在途调拨，默认日期检查", "ts140006");
     run("【门店调入-在途调拨】全部清除", "ts140010");
     run("【门店调入-在途调拨】返回", "ts140011");
@@ -38,39 +38,43 @@ function editShopInFlitting(secure) {
     tapPrompt();
 }
 
+// 在途调拨这里没有办法操作作废, 如果调出方作废,那么在调入方,在途调拨里就直接不显示 这个界面作废没什么用,
 // 需要现在B店做一个调出单，并作废
 function ts150002_1() {
-    var batch = 0;
-    tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "调入门店" : "常青店" };
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
-    var qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (qr.data[i]["状态"] == "未接收" && qr.data[i]["备注"] == "作废") {
-                batch = qr.data[i]["批次"];
-                break;
+    if (ipadVer <= 6.59) {
+        var batch = 0;
+        tapMenu("门店调出", "按批次查");
+        var keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "调入门店" : "常青店" };
+        var fields = shopOutQueryBatchFields(keys);
+        query(fields);
+        var qr = getQR();
+        for (var j = 1; j <= qr.totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal; i++) {
+                if (qr.data[i]["状态"] == "未接收" && qr.data[i]["备注"] == "作废") {
+                    batch = qr.data[i]["批次"];
+                    break;
+                }
+            }
+            if (j < qr.totalPageNo) {
+                scrollNextPage();
+                qr = getQR();
             }
         }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
+
+        tapMenu("门店调入", "在途调拨");
+        keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "批次从" : batch,
+            "批次到" : batch }
+        fields = shopInFlitFields(keys);
+        query(fields);
+
+        tapFirstText();
+        editShopInFlitting();
+        tapButtonAndAlert("调 入");
+        tapPrompt();
+        return isIn(alertMsg, "调入错误，调出方已经作废该批次");
+    } else {
+        logDebug("7.01版本后在途调拨不再显示作废单据，跳过检验")
     }
-
-    tapMenu("门店调入", "在途调拨");
-    keys = { "日期从" : getDay(-100), "调出门店" : "中洲店", "批次从" : batch, "批次到" : batch }
-    fields = shopInFlitFields(keys);
-    query(fields);
-
-    tapFirstText();
-    editShopInFlitting();
-    tapButtonAndAlert("调 入");
-    tapPrompt();
-    var ret = isIn(alertMsg, "调入错误，调出方已经作废该批次");
-
-    return ret;
 }
 
 // 调拨启用密码验证
@@ -340,6 +344,23 @@ function ts140007_09() {
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
+    // 7。01起不显示作废数据
+    if (ipadVer >= 7.01) {
+        var arr = [ "数量" ];
+        ret = isAnd(ret, isEqualCounts(arr));
+    } else {
+        fields["日期从"].value = getDay(-365);
+        query(fields);
+        var qr = getQR();
+        var num = qr.counts["数量"];
+
+        tapMenu("货品管理", "当前库存");
+        keys = { "门店" : "常青店" };
+        fields = queryGoodsStockFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(num, qr.counts["在途数"]));
+    }
     return ret;
 }
 
@@ -402,7 +423,15 @@ function ts140012_19() {
 function ts140015() {
     tapMenu("门店调入", "按批次查");
     query();
-    var data1 = getQR().data;
+    var qr = getQR();
+    if (qr.data.length == 0) {
+        var keys = { "日期从" : getDay(-30) };
+        var fields = shopInQueryBatchFields(keys);
+        setTFieldsValue(window, fields);
+        tapButton(window, QUERY);
+        qr = getQR();
+    }
+    var data1 = qr.data;
 
     tapFirstText();
     tapButton(window, RETURN);

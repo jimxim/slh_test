@@ -16,14 +16,19 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "ts130001");
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-
+  tapButton(window,QUERY);
+  var qr=getQR();
+  for(var i=0;i<qr.data.length;i++){
+      debugObject(qr.data[i]);
+  }
+  debugObject(qr.titles);
+  return qr;
 }
-
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来
@@ -130,7 +135,9 @@ function login200CustomerPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
+        UIALogger.logStart("数据准备");
         testCustomerPrepare001();
+        UIALogger.logPass("数据准备完成");
        logout();
     }
   }
@@ -170,7 +177,9 @@ function login200PurchasePrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
+        UIALogger.logStart("数据准备");
         testPurchasePrepare002();
+        UIALogger.logPass("数据准备完成");     
        logout();
     }
   }
@@ -273,7 +282,9 @@ function login200SalesOrderPrepare(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
+        UIALogger.logStart("数据准备");
         testSalesOrderPrepare();
+        UIALogger.logPass("数据准备完成");
        logout();
     }
   }

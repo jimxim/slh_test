@@ -3005,7 +3005,7 @@ function ts120061() {
     var actual = editSalesBillGetValue({});
     tapReturn();
 
-    var newObj = { "现金" : 0, "应付" : 0, "核销" : 3000, "代收/实付" : 0 };// 这里的代收是实付
+    var newObj = { "现金" : 0, "应付" : 0, "核销" : 3000, "代收/实收" : 0 };// 这里的代收是实收
     var exp = mixObject(oldObj, newObj);
     return isEqualObject(exp, actual);
 }

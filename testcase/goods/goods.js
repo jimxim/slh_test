@@ -1061,7 +1061,7 @@ function test100010_100011_100013() {
     // debugQResult(qr);
     ret = isAnd(ret, isEqual(r, qr.data[0]["款号"]), isEqual(r, qr.data[0]["名称"]));
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 0)),
             isEqual(r, getTextFieldValue(getScrollView(), 1)));
     var r1 = "a" + r;
@@ -1098,7 +1098,7 @@ function test100010_100011_100013() {
     ret = ret && isEqualQRData1Object(qr, expected) && isEqual("1", qr.total)
             && isEqual("1", qr.totalPageNo);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
             200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "双", "A座六层", 1,
             200, "000,总经理", "否", 100, "常青店", "555555", 123);
@@ -1167,7 +1167,7 @@ function test100015_100017() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     ret = ret && test100015_100017Field();
 
     return ret;

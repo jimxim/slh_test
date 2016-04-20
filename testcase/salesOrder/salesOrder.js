@@ -36,7 +36,7 @@ function testSalesOrder002() {
     run("【销售订货－新增订货】新增超长订单并打印", "ts160048");
     run("【销售订货－新增订货】整单复制/整单粘贴", "ts160060");
     run("【销售订货－新增订货】订单修改界面内容检查_开单日期检查", "test160049_160052");
-    // run("【销售订货－新增订货】客户新增", "test160050");
+    run("【销售订货－新增订货】客户新增", "ts160050");
     run("【销售订货－新增订货】客户名称和店员名称检查", "test160051");
     run("【销售订货－新增订货】整单备注信息和明细备注", "test160053");
     run("【销售订货－新增订货】付款方式检查", "test160054");
@@ -152,7 +152,7 @@ function test160049_160052() {
     return ret;
 }
 
-function test160050() {
+function ts160050() {
     var r = "c" + getTimestamp(6);
     tapMenu("销售订货", "新增订货+");
     tapButton(window, "新增+");
@@ -169,32 +169,43 @@ function test160050() {
     tapButton(getPop(), OK);
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
+    tapButton(getPop(), CLOSE);
 
-    g1 = new TField("手机", TF, 1, r);
-    var g2 = new TField("店员", TF_AC, 2, "000", -1, 0);
-    var g4 = new TField("地址", TF, 4, r);
-    fields = [ g1, g2, g4 ];
-    setTFieldsValue(getPopOrView(), fields);
-    // tapButton(getPopView(), "选 择");
-    // tap
-    tapButton(getPop(), OK);
-    tapButton(getPop(), "关 闭");
+    var jo = { "名称" : r, "手机" : "p" + r, "店员" : "000", "适用价格" : "零批价",
+        "地址" : "a" };
+    editSalesBillAddCustomer(jo);
     ret = isAnd(ret, isEqual(r, getTextFieldValue(window, 0)));
 
-    var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
-    var f3 = new TField("数量", TF, 3, "10");
-    setTFieldsValue(getScrollView(), [ f0, f3 ]);
-    saveAndAlertOk();
-    delay();
-    tapReturn();
+    switch (colorSize) {
+    case "no":
+        jo = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        editSalesBillDetNoColorSize(jo);
+        break;
+    case "yes":
+        jo = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ],
+            "goodsFieldIndex" : -2 };
+        editSalesBillDetColorSize(jo);
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+    editSalesBillSave({});
 
     tapMenu("往来管理", "客户查询");
-    var qKeys = { "客户" : r };
-    var qfields = queryCustomerFields(qKeys);
-    query();
+    var keys = { "客户" : r };
+    fields = queryCustomerFields(keys);
+    query(fields);
     var qr = getQR();
-    var expected = { "名称" : r, "店员" : "总经理", "手机" : r };
-    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
+    var expected = { "名称" : r, "店员" : "总经理", "手机" : "p" + r, "地址" : "a",
+        "适用价格" : "零批价" };
+    ret = isAnd(ret, isEqualObject2(expected, qr.data[0]));
+
+    tapFirstText();
+    expected["店员"]="000,总经理";
+    fields = editCustomerFields(expected,true);
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields))
+    tapReturn();
 
     return ret;
 }

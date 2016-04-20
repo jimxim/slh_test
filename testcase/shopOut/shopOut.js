@@ -1,7 +1,6 @@
 //ZhangY <15068165765 at 139.com> 20151013
-var outBatch={};// 调出批次
+var outBatch = {};// 调出批次
 var xCache = {};
-
 /**
  * 中洲店总经理验证
  */
@@ -547,23 +546,28 @@ function ts150017Prepare() {
 
 // 暂时只能用终端跑
 function ts150017() {
-    tapMenu("门店调出", "批量调出+");
-    tapButton(window, "取未保存");
-    delay();
-    var data1 = getQRDet().data;
-    var ret = isEqualDyadicArray(xCache, data1);
-    var json = { "调出人" : "200", "接收店" : "常青店" };
-    editSalesBill(json, colorSize);
+    if (!isEmptyObject(xCache)) {
+        tapMenu("门店调出", "批量调出+");
+        tapButton(window, "取未保存");
+        delay();
+        var data1 = getQRDet().data;
+        var ret = isEqualDyadicArray(xCache, data1);
+        var json = { "调出人" : "200", "接收店" : "常青店" };
+        editSalesBill(json, colorSize);
 
-    tapMenu2("按批次查");
-    query();
-    tapFirstText();
-    var data2 = getQRDet().data;
-    ret = isAnd(ret, isEqualDyadicArray(data1, data2));
-    tapReturn();
+        tapMenu2("按批次查");
+        query();
+        tapFirstText();
+        var data2 = getQRDet().data;
+        ret = isAnd(ret, isEqualDyadicArray(data1, data2));
+        tapReturn();
 
-    xCache = {};
-    return ret;
+        xCache = {};
+        return ret;
+    } else {
+        logDebug("未取到未保存值");
+        return false;
+    }
 }
 
 function shopInPrepare() {
@@ -583,7 +587,7 @@ function shopInPrepare() {
     }
 
     tapMenu("门店调出", "批量调出+");
-    //美式键盘首字母会变成大写，这里就直接输入大写字母
+    // 美式键盘首字母会变成大写，这里就直接输入大写字母
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "InPre" };
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
