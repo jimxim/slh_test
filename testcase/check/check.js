@@ -819,11 +819,11 @@ function test180025() {
         ret = test180025_1();
 
     } else {
-        if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
+//        if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
             ret = false;
 
             tapReturn();
-        }
+//        }
     }
     return ret;
 }

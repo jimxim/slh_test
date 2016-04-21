@@ -91,11 +91,14 @@ function testSalesNoColorSizeAll() {
     run("销售订货价格刷新+上次价/代收2", "test170492");
     run("【  开单】快速新增客户时自动刷新检查", "test170538");
     run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");
-    
+
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170580");
-    run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170581");
     run("【销售开单－开单】汇款需填写客户", "test170582");
     run("【销售开单－开单】汇款无需填写客户", "test170583");
+    run("【销售开单-开单】特殊货品影响客户积分", "test170584");
+    run("【销售开单-开单】特殊货品不影响客户积分", "test170585");
+    run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
+    run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
 
     // run("采购入库/采购订货价格刷新", "test170527");//
 
@@ -11002,23 +11005,185 @@ function test170559() {
 function test170580() {
     tapMenu("销售开单", "开  单+");
     var r = getTimestamp(10);
-    var f0 = new TField("货品", TF_AC, 105, r, -1, 0);
-    var fields = [ f0 ];
+    var f0 = new TField("货品", TF, 0, r);
+    var f3 = new TField("货品", TF, 3, 3);
+    var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "款号要从下拉列表选择");
+    var ret = isIn(alertMsg, "必须从下拉列表选择");
 
     tapReturn();
 
     logDebug(" ret=" + ret);
     return ret;
 }
-function test170581() {
+function test170582() {
+    var qo, o, ret = true;
+    qo = { "备注" : "汇款是否需要填写客户" };
+    o = { "新值" : "1", "数值" : [ "默认要填写", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "汇款" : [ 200, "交" ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "必须输入客户名称");
+
+    tapButtonAndAlert("挂 单", OK);
+
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = (isIn(alertMsg1, "必须输入客户名称"));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+    tapButton(window, CLEAR);
+    tapStaticText(window, "汇款");
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "必须输入客户名称");
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170583() {
+    // var qo, o, ret = true;
+    // qo = { "备注" : "汇款是否需要填写客户" };
+    // o = { "新值" : "0", "数值" : [ "可以不填写", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // tapMenu("销售开单", "按挂单");
+    // query();
+    // var qr = getQR();
+    // var total1 = qr.total;
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "未付" : "yes",
+        "现金" : 0, "汇款" : [ 200, "交" ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    return ret;
+
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "未付" : "yes", "现金"
+    // : 0,
+    // "汇款" : [ 200, "交" ], "onlytest" : "yes" };
+    //
+    // tapButtonAndAlert("挂 单", OK);
+    //
+    // tapMenu("销售开单", "按挂单");
+    // query();
+    // var qr = getQR();
+    // var total2 = qr.total;
+    //
+    // var ret1 = isEqual(total2, add(total1, 1));
+    //
+    // tapReturn();
+    //
+    // logDebug(" ret=" + ret + ", ret1=" + ret1);
+    // return ret && ret1;
+}
+function test170584() {
+    // 后台设置特殊货品 名称：不核算到积分，核算到积分为是
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "核算积分" : 25 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a1 = qr.data[0]["当前积分"];
+
+    var ret = isEqual(155, sub(a1, a));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(-1, 0), 1);
+    tapNaviLeftButton();
+    
+    tapReturn();
+
+    var ret1 = isIn(b, a1);
+    logDebug(" a=" + a + " b=" + b + " ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
+}
+function test170585() {
+    // 后台设置特殊货品 名称：不核算到积分，核算到积分为否
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "不核算积分" : 25 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("往来管理", "客户查询");
+    var key = [ "customer" ];
+    var fields = queryCustomerFields(key);
+    changeTFieldValue(fields["customer"], "ls");
+    query(fields);
+    var qr = getQR();
+    var a1 = qr.data[0]["当前积分"];
+
+    var ret = isEqual(155, sub(a1, a));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(1), 1);
+    tapNaviLeftButton();
+
+    var ret1 = isIn(b, a1);
+    logDebug(" a=" + a + " b=" + b);
+    return ret && ret1;
+}
+function test170587() {
     tapMenu("销售开单", "按汇总", "按客户销售");
-    var keys = { "到" : getToday(), "客户" : "ls" };
+    var keys = { "日期从" : getDay(-1), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
     var qr = getQR();
@@ -11046,7 +11211,7 @@ function test170581() {
     delay(3);
 
     tapMenu("销售开单", "按汇总", "按客户销售");
-    var keys = { "到" : getToday(), "客户" : "ls" };
+    var keys = { "日期从" : getDay(-1), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
     var qr = getQR();
@@ -11056,82 +11221,4 @@ function test170581() {
     var ret = isEqual(sxe1, sxe);
 
     return ret;
-}
-function test170582() {
-    var qo, o, ret = true;
-    qo = { "备注" : "汇款是否需要填写客户" };
-    o = { "新值" : "1", "数值" : [ "默认要填写", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
-        "备注" : "zy", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "必须输入客户名称");
-
-    tapButtonAndAlert("挂 单", OK);
-
-    var ret1 = isIn(alertMsg, "必须输入客户名称");
-
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-
-    tapFirstText();
-    tapButton(window, CLEAR);
-    tapStaticText(window, "汇款");
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret2 = isIn(alertMsg, "必须输入客户名称");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
-}
-function test170583() {
-    var qo, o, ret = true;
-    qo = { "备注" : "汇款是否需要填写客户" };
-    o = { "新值" : "0", "数值" : [ "可以不填写", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total1 = qr.total;
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "刷卡" : [ 180, "交" ],
-        "备注" : "zy", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "保存成功");
-
-    tapButtonAndAlert("挂 单", OK);
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total2 = qr.total;
-
-    var ret1 = isEqual(total2, add(total1, 1));
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
 }
