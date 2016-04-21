@@ -175,13 +175,13 @@ function queryGoodsDistributionField(key, show) {
     return f;
 }
 
-//库存分布二级界面
+// 库存分布二级界面
 function testQueryGoodsDistributionDetFields() {
-    var keys = [ "code"];
+    var keys = [ "code" ];
     var fields = queryGoodsDistributionDetFields(keys);
-    setTFieldsValue(getScrollView(-1,0), fields);
+    setTFieldsValue(getScrollView(-1, 0), fields);
     var showFields = queryGoodsDistributionDetFields(keys, true);
-    return checkShowFields(getScrollView(-1,0), showFields);
+    return checkShowFields(getScrollView(-1, 0), showFields);
 }
 
 function queryGoodsDistributionDetFields(keys, show) {
@@ -193,9 +193,9 @@ function queryGoodsDistributionDetField(key, show) {
     switch (key) {
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 0, "3035",-1,0);
-        if(show){
-            f.value="3035,jkk,200元,Adidas"
+        f = new TField("款号", TF_AC, 0, "3035", -1, 0);
+        if (show) {
+            f.value = "3035,jkk,200元,Adidas"
         }
         break;
     default:
@@ -399,11 +399,11 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "size":
     case "尺码":
-        f = new TField("尺码", BTN_MC, 4, [ 0 ]);
+        f = new TField("尺码", BTN_MC, 4, [ 0, 1 ]);
         if (show) {
             f.type = TF;
             f.index = 4;
-            f.value = "T120,T130";
+            f.value = "S,M";
         }
         break;
     // tapButton(getScrollView(), "减量");也许要点击3次才能变成昨天

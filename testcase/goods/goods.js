@@ -1041,30 +1041,27 @@ function test100114() {
 
 // 照片无法验证
 function test100010_100011_100013() {
-    var qo, o, ret = true;
+    var qo, o, ok = true;
     // 开启这个参数，新增货品界面的门店才能修改保存成功
     qo = { "备注" : "款号是否按门店区分" };
     o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ok = isAnd(ok, setGlobalParam(qo, o));
 
-    var r = "g" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r };
+    var r = getTimestamp(8);
+    var keys = { "款号" : "g" + r, "名称" : "n" + r };
     addGoods(keys, colorSize);
 
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : r };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
-    // delay();
     var qr = getQR();
-    // delay();
-    // debugQResult(qr);
-    ret = isAnd(ret, isEqual(r, qr.data[0]["款号"]), isEqual(r, qr.data[0]["名称"]));
+    var ret = isEqualObject(keys, qr.data[0]);
 
     tapFirstText();
-    ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)));
-    var r1 = "a" + r;
+    var fields = editGoodsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
+
     // 改成昨天上架
     tapButton(getScrollView(), "减量");
     var day = getTextFieldValue(getScrollView(), 5);// 上架日期
@@ -1073,47 +1070,43 @@ function test100010_100011_100013() {
         tapButton(getScrollView(), "减量");
     }
     // 修改除了条码图片外所有内容
+    var color = "均色";
     var keys1 = [ "款号", "名称", "品牌", "吊牌价", "进货价", "零批价", "打包价", "大客户价",
             "Vip价格", "产品折扣", "季节", "类别", "厂商", "计量单位", "仓位", "最小库存", "最大库存",
             "经办人", "是否加工款", "加工价", "门店", "条码", "备注" ];
+    if (colorSize == "yes") {
+        keys1.push("颜色", "尺码");
+        color = "花色";
+    }
     var fields = editGoodsFields(keys1, false, 0, 0);
-    changeTFieldValue(fields["款号"], r1);
-    changeTFieldValue(fields["名称"], r1);
+    changeTFieldValue(fields["款号"], "g" + r + "a");
+    changeTFieldValue(fields["名称"], "n" + r + "a");
     changeTFieldValue(fields["仓位"], "A座六层");
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("修改保存");
+    tapButtonAndAlert("修改保存", OK);
     delay();
+    tapReturn();// 防止未自动返回
 
     tapMenu("货品管理", "货品查询");
-    qKeys = { "厂商" : "adida", "款号名称" : r1, "品牌" : "1010pp", "上架从" : getDay(-1),
-        "到" : getToday(), "颜色" : "均色", "经办人" : "000", "是否停用" : "否",
-        "类别" : "登山服", "季节" : "夏季" };
+    qKeys = { "厂商" : "adida", "款号名称" : "g" + r + "a", "品牌" : "1010pp",
+        "上架从" : getDay(-1), "到" : getToday(), "颜色" : color, "经办人" : "000",
+        "是否停用" : "否", "类别" : "登山服", "季节" : "夏季" };
     qFields = queryGoodsFields(qKeys);
     query(qFields);
     qr = getQR();
     delay();
-    var expected = { "厂商" : "Adida公司", "类别" : "登山服", "款号" : r1, "名称" : r1,
-        "进货价" : "100", "零批价" : "200", "打包价" : "180", "品牌" : "1010pp",
-        "总库存" : "0", "备注" : "123", "建档人" : "总经理" };
-    ret = ret && isEqualQRData1Object(qr, expected) && isEqual("1", qr.total)
-            && isEqual("1", qr.totalPageNo);
+    var expected = { "厂商" : "Adida公司", "类别" : "登山服", "款号" : "g" + r + "a",
+        "名称" : "n" + r + "a", "进货价" : "100", "零批价" : "200", "打包价" : "180",
+        "品牌" : "1010pp", "总库存" : "0", "备注" : "123", "建档人" : "总经理" };
+    ret = isAnd(ret, isEqualQRData1Object(qr, expected),
+            isEqual("1", qr.total), isEqual("1", qr.totalPageNo));
 
     tapFirstText();
-    var expected1 = new Array(r1, r1, "1010pp", "", "", getDay(-1), 200, 100,
-            200, 180, 160, 140, 0.888, "夏季", "登山服", "Adida公司", "双", "A座六层", 1,
-            200, "000,总经理", "否", 100, "常青店", "555555", 123);
-    for (var i = 0; i < expected1.length; i++) {
-        var j = i;
-        if (i >= 6) {
-            j = i + 1;
-        }
-        ret = isAnd(ret, isEqual(expected1[i], getTextFieldValue(
-                getScrollView(), j)));
-    }
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
     tapButton(window, RETURN);
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 10; i++) {
+    for (var i = 0; i < 10; i++) {
         if (i != 7) {
             // 是否停用无法删除
             ret = ret && isEqual("", getTextFieldValue(window, i));

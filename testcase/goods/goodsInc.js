@@ -31,7 +31,7 @@ function addCustomer(keys, check) {
  * @param price "yes":默认价格模式 "no":省代价格模式
  * @param day 上架日期
  */
-function addGoods(keys, colorSize, price, day) {
+function addGoods(keys, colorSize, price, isEdit, day) {
     var colorSizeStartIndex = 0, priceStartIndex = 0;
 
     switch (colorSize) {
@@ -56,7 +56,10 @@ function addGoods(keys, colorSize, price, day) {
         }
     }
 
-    tapMenu("货品管理", "新增货品+");
+    if (isUndefined(isEdit) || isEdit == "no") {
+        tapMenu("货品管理", "新增货品+");
+    }
+
     if (isDefined(day)) {
         changeMarketTime(day);
     }
@@ -1048,6 +1051,21 @@ function isEmptyObject(obj) {
     return true;
 }
 /**
+ * 是否相等 不考虑标点符号
+ * @param expected
+ * @param actual
+ * @returns {Boolean}
+ */
+function isEqual2(expected, actual) {
+    logDebug("expected=" + expected + ",actual=" + actual);
+    expected = deletePunctuation(expected);
+    actual = deletePunctuation(actual);
+    var ret = expected == actual;
+    logDebug("isEqual=" + ret);
+    return ret;
+}
+
+/**
  * 查询界面汇总值验证 会判断汇总栏有汇总值的标题的汇总值是否正确（没有作废数据影响的情况下）
  * @param arr 应该存在的汇总值的标题数组
  * @param pageInfoView
@@ -1362,6 +1380,18 @@ function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
             + getTakeTimeMsg(t1));
     return ret;
 }
+/**
+ * 去除字符串中的标点符号
+ * @param str
+ * @returns
+ */
+function deletePunctuation(str) {
+    return str
+            .replace(
+                    /[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g,
+                    "");
+}
+
 /**
  * 去除数组重复元素
  * @param arr

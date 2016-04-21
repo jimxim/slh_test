@@ -20,14 +20,8 @@ function test000All() {
 }
 
 function onlyTest(){
-// debugElementTree(window);
-  tapButton(window,QUERY);
-  var qr=getQR();
-  for(var i=0;i<qr.data.length;i++){
-      debugObject(qr.data[i]);
-  }
-  debugObject(qr.titles);
-  return qr;
+ debugElementTree(window);
+
 }
 
 function prepare200All(){

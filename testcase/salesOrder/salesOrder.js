@@ -204,7 +204,7 @@ function ts160050() {
     tapFirstText();
     expected["店员"]="000,总经理";
     fields = editCustomerFields(expected,true);
-    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields))
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
     tapReturn();
 
     return ret;
