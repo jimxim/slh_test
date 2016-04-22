@@ -139,22 +139,22 @@ function salesQueryParticularField(key, show) {
     case "类型":
         f = new TField("类型", TF_SC, 5, "退货");
         break;
-    case "day1":
-    case "日期从":
-        f = new TField("日期从", TF_DT, 6, "2015-9-11");
-        break;
-    case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 7, getToday());
+    case "pricetype":
+    case "适用价格":
+        f = new TField("适用价格", TF_SC, 6, "打包价");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 8, "备注");
+        f = new TField("备注", TF, 7, "备注");
+        break;   
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 8, "2015-9-11");
         break;
-    case "pricetype":
-    case "适用价格":
-        f = new TField("适用价格", TF_SC, 9, "打包价");
-        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 9, getToday());
+        break;    
     case "type":
     case "类别":
         f = new TField("备注", TF_SC, 10, "备注");

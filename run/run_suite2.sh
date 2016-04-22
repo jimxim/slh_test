@@ -31,6 +31,10 @@ js_func="$js_func test000SalesNoColorSizeElse002"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001"
 
+#销售开单-登出登进
+js_func="$js_func testSalesNoColorSize170125_Params"
+js_func="$js_func testSalesNoColorSize170125  testSalesNoColorSize170607"
+
 #销售开单-其它角色
 #js_func="$js_func testSalesNoColorSize170140_Params"
 #js_func="$js_func testSalesNoColorSize170140"
