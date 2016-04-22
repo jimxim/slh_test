@@ -14,6 +14,9 @@ function testShopIn001() {
     run("【门店调入-按批次查】翻页_排序_汇总", "ts140012_19");
     run("【门店调入-按批次查】返回按钮", "ts140015");
     run("【门店调入-按明细查】翻页_排序_汇总", "ts140016_20");
+    run("【门店调入-按款号汇总】按款号汇总功能检查", "ts140022");
+    run("【门店调入-按款号汇总】查询_清除", "ts140023_24");
+    run("【门店调入-按款号汇总】翻页_排序_汇总", "ts140025_26_27");
     run("【门店调入-按批次查-整单复制】", "ts140021");
 
 }
@@ -492,5 +495,74 @@ function ts140021() {
     for (var i = 0; i < data2.length; i++) {
         ret = isAnd(ret, isEqual("", data[i]["单价"]), isEqual("", data[i]["小计"]));
     }
+    return ret;
+}
+
+function ts140022() {
+    tapMenu("门店调入", "按明细查");
+    var keys = { "日期从" : getDay(-6) };
+    var fields = shopInQueryParticularFields(keys);
+    query(fields);
+    var det1 = ts150016Field();
+
+    tapMenu2("按款号汇总");
+    fields = shopInCodeFields(keys);
+    query(fields);
+    var det2 = ts150016Field();
+
+    var ret = true;
+    for ( var i in det1) {
+        if (i in det2) {
+            ret = ret && isEqualObject(det1[i], det2[i]);
+        } else {
+            logDebug("按款号汇总中未找到 i=" + i);
+            ret = false;
+        }
+    }
+
+    return ret;
+}
+
+function ts140023_24() {
+    var det = editShopOutDet();
+    tapMenu("门店调入", "按款号汇总");
+    var keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
+        "日期从" : getDay(-30), "调出门店" : "中洲店",
+        "调入门店" : "常青店", "品牌" : "Adidas" };
+    var fields = shopInCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqualObject2(keys, qr.data[0]);
+
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 7; i++) {
+        if (i == 2 || i == 3) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
+    }
+
+    return ret;
+}
+
+function ts140025_26_27() {
+    tapMenu("门店调入", "按款号汇总");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = shopInCodeFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("图像");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("调出门店");
+    ret = ret && sortByTitle("调入门店");
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+
+    var arr = [ "数量", "金额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }

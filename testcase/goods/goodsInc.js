@@ -754,19 +754,17 @@ function isEqualDyadicArray(data1, data2) {
 function isEqualObject2(expected, actual, allow) {
     debugObject(expected, "expected");
     debugObject(actual, "actual");
-    if (isUndefined(allow)) {
-        allow = 1;
-    }
+    var ok = isDefined(allow);
     var ret = true;
     var v1, v2;
     for ( var i in expected) {
         if (actual.hasOwnProperty(expected[i])) {
             v1 = expected[i];
             v2 = actual[i];
-            if (i != "操作日期") {
-                ret = ret && (v1 == v2);
+            if (ok && i == "操作日期") {
+                ret = ret && isAqualOptime(v1, v2, allow);
             } else {
-                ret = ret && isAqualOptime(v1, v2, allow)
+                ret = ret && (v1 == v2);
             }
         }
     }
@@ -778,7 +776,7 @@ function arrayToString(data) {
     var value, ret = "";
     for ( var i in data) {
         value = data[i];
-        ret = ret + "," + value;
+        ret += "," + value;
     }
     return ret;
 }
@@ -847,6 +845,17 @@ function isHasSame(arr1, arr2) {
         }
     }
     return ret;
+}
+
+/**
+ * 弹窗消息数组中是否包含希望内容
+ * @param str
+ * @returns
+ */
+function isInAlertMsgs(str) {
+    var msgs = arrayToString(alertMsgs);
+    msgs = msgs.replace(/[\ |\;|\；|\,|\，]/g, "");
+    return isIn(msgs, str);
 }
 
 /**

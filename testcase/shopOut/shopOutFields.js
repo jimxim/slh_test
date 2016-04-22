@@ -186,7 +186,7 @@ function shopOutCodeField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 5, "1", -1, 0);
+        f = new TField("品牌", TF_AC, 6, "1", -1, 0);
         if (show) {
             f.value = "1010pp";
         }

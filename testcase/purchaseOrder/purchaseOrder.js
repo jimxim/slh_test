@@ -260,7 +260,7 @@ function ts130020_2() {
         "门店" : "常青店", "总数" : 30, "金额" : 3000, "入库数" : 0, "差异数" : 30,
         "现金" : 1000, "刷卡" : 600, "汇款" : 300, "操作日期" : json["操作日期"],
         "操作人" : "总经理", "备注" : "xx" };
-    var ret = isEqualObject(expected, qr.data[0]);
+    var ret = isEqualObject(expected, qr.data[0],1);
 
     tapButton(window, CLEAR);
     var text = getTextFields(window);
@@ -398,13 +398,13 @@ function ts130003() {
     var ret = isIn(alertMsg, "作废成功");
 
     qr = getQR();
-    ret = isAnd(ret, isEqualObject(a1, qr.data[0]), isEqualObject(qr.counts,
+    ret = isAnd(ret, isEqualObject(a1, qr.data[0]), isEqualObject2(qr.counts,
             batchCounts));
 
     tapMenu2("按明细查");
     tapButton(window, QUERY);// 防止界面未刷新
     qr = getQR();
-    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", a1["批次"]), isEqualObject(
+    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", a1["批次"]), isEqualObject2(
             qr.counts, detCounts));
 
     return ret;
@@ -814,7 +814,7 @@ function ts130007_08() {
         ret2 = isEqualObject(exp, qr.data[0]);
         tapFirstText();
         delete joG["数量"];
-        fields = editGoodsFields(joG,true);
+        fields = editGoodsFields(joG, true);
         ret2 = isAnd(ret2, checkShowFields(getScrollView(-1), fields));
         tapButton(window, RETURN);
     } else {
@@ -944,7 +944,7 @@ function ts130012() {
 
     return ret;
 }
-function test130013() {
+function ts130013() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     var keys = { "厂商" : "vell" };
     var fields = queryProviderShopAccountFields(keys);
@@ -976,6 +976,8 @@ function test130013() {
         qr = getQR();
         // 应该不生成账款
         ret = isEqual(qr.data[0]["余额"], a);
+    } else {
+        tapReturn();
     }
 
     return ret;
@@ -1220,6 +1222,52 @@ function ts130026() {
         logDebug("未取到未保存值");
         return false;
     }
+}
+// 采购员003登陆
+function ts130037() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell", "订货门店" : "常青店", "采购订货" : "yes" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    var ret = isEqual("3000", json["输入框值"]["现金"]);
+
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    json = { "订货门店" : "中洲店", "采购订货" : "yes" };
+    editSalesBill(json, colorSize);
+    var msg = arrayToString(alertMsgs);
+    ret = isAnd(ret, isIn(msg, "目前暂不支持跨门店订货时的账号支付"));
+
+    // alertMsgs = [];
+    tapFirstText();
+    json = { "订货门店" : "中洲店", "采购订货" : "yes", "未付" : "yes" };
+    editSalesBill(json, colorSize);
+    msg = arrayToString(alertMsgs);
+    ret = isAnd(ret, isIn(msg, "不允许修改采购订单的订货门店"));
+    return ret;
+}
+
+// 采购员003登陆 ts130038已经开过本门店的订单，这里就只开中洲店的单据
+function ts130038() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell", "订货门店" : "中洲店", "采购订货" : "yes", "未付" : "yes" };
+    var det = editPurOrderDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    var keys = { "门店" : "中洲店" };
+    var fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+    if (ret) {
+        ret = checkQResult(qr, "门店", "中洲店");
+    }
+
+    return ret;
 }
 
 /**

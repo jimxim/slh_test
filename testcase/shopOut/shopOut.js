@@ -21,12 +21,16 @@ function testShopOut001() {
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
     run(" 门店调入数据准备", "shopInPrepare");
     run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
-    run("【门店调出-批量调出】整单复制和整单粘贴", "ts150016");
-    run("【门店调出-批量调出】取未保存数据准备", "ts150017Prepare");
+    run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
+    run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
+    run("【门店调出-按款号汇总】翻页_排序_汇总", "ts150019_20_21");
+    run("【门店调出-批量调出】整单复制和整单粘贴", "ts150024");
+    run("【门店调出-批量调出】删除所有款号明细", "ts150031");
+    run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
 }
 
 function testShopOut003() {
-    run("【门店调出-批量调出】取未保存", "ts150017");
+    run("【门店调出-批量调出】取未保存", "ts150025");
 }
 
 function setShopOutParams() {
@@ -507,6 +511,99 @@ function ts150011() {
 }
 
 function ts150016() {
+    tapMenu("门店调出", "按明细查");
+    var keys = { "日期从" : getDay(-6) };
+    var fields = shopOutQueryParticularFields(keys);
+    query(fields);
+    var det1 = ts150016Field();
+
+    tapMenu2("按款号汇总");
+    fields = shopOutCodeFields(keys);
+    query(fields);
+    var det2 = ts150016Field();
+
+    var ret = true;
+    for ( var i in det1) {
+        if (i in det2) {
+            ret = ret && isEqualObject(det1[i], det2[i]);
+        } else {
+            logDebug("按款号汇总中未找到 i=" + i);
+            ret = false;
+        }
+    }
+
+    return ret;
+}
+
+function ts150016Field() {
+    var det = {};
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.data.length; i++) {
+            var v = qr.data[i]["调出门店"] + qr.data[i]["调入门店"] + qr.data[i]["款号"];
+            if (!det.hasOwnProperty(v)) {
+                var data1 = {};
+                data1["数量"] = Number(qr.data[i]["数量"]);
+                data1["金额"] = Number(qr.data[i]["金额"]);
+                det[v] = data1;
+            } else {
+                det[v]["数量"] += Number(qr.data[i]["数量"]);
+                det[v]["金额"] += Number(qr.data[i]["金额"]);
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return det;
+}
+
+function ts150017_18() {
+    var det = editShopOutDet();
+    tapMenu("门店调出", "按款号汇总");
+    var keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
+        "日期从" : getDay(-30), "调出门店" : "中洲店",
+        "调入门店" : "常青店", "品牌" : "Adidas" };
+    var fields = shopOutCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqualObject2(keys, qr.data[0]);
+
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 7; i++) {
+        if (i == 2 || i == 3) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
+    }
+
+    return ret;
+}
+
+function ts150019_20_21() {
+    tapMenu("门店调出", "按款号汇总");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = shopOutCodeFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("图像");
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("调出门店");
+    ret = ret && sortByTitle("调入门店");
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+
+    var arr = [ "数量", "金额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
+}
+
+function ts150024() {
     tapMenu("门店调出", "批量调出+");
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123" };
     var det = editOverLengthBillDet();
@@ -516,7 +613,7 @@ function ts150016() {
     return checkCopyAndPaste("批量调出+");
 }
 
-function ts150017Prepare() {
+function ts150025Prepare() {
     var det = {};
     switch (colorSize) {
     case "no":
@@ -545,7 +642,7 @@ function ts150017Prepare() {
 }
 
 // 暂时只能用终端跑
-function ts150017() {
+function ts150025() {
     if (!isEmptyObject(xCache)) {
         tapMenu("门店调出", "批量调出+");
         tapButton(window, "取未保存");
@@ -568,6 +665,29 @@ function ts150017() {
         logDebug("未取到未保存值");
         return false;
     }
+}
+
+function ts150031() {
+    tapMenu("门店调出", "批量调出+");
+    var jo = { "调出人" : "200", "接收店" : "常青店" };
+    editShopOutDecruitField1(jo, "调出人");
+    editShopOutDecruitField1(jo, "接收店");
+    saveAndAlertOk();
+    // 这里提示语的标点有点坑，直接去掉再比较
+    var ret = isInAlertMsgs("空单不允许保存");
+
+    var det = editShopOutDet();
+    editShopOutDecruitIn(det, colorSize);// 默认点击未打印
+
+    alertMsgs = {};
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    tapButton(getScrollView(-1), 0);// 删除第一行数据
+    editShopOutSave({});
+    ret = isAnd(ret, isInAlertMsgs("空单不允许保存"));
+
+    return ret;
 }
 
 function shopInPrepare() {

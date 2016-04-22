@@ -92,7 +92,7 @@ function test160047() {
         "店员" : "总经理", "客户" : "小王", "数量" : "10", "已发数" : "0", "差异数" : "10",
         "发货状态" : "未发货", "总额" : "2000", "现金" : "1000", "刷卡" : "400",
         "汇款" : "600", "客户分店" : "", "操作日期" : json["操作日期"] };
-    var ret = isEqualObject(expected, qr.data[0]);
+    var ret = isEqualObject(expected, qr.data[0],1);
 
     return ret;
 }
@@ -696,7 +696,7 @@ function test160006() {
     change = { "订货数" : 20, "差异数" : 20, "订货额" : 6000, "已付" : 6000,
         "操作日期" : json["操作日期"] };
     var arr2 = mixObject(arr1, change);
-    ret = isAnd(ret, isEqualObject(qr.data[0], arr2));
+    ret = isAnd(ret, isEqualObject(qr.data[0], arr2,1));
 
     return ret;
 }

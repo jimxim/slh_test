@@ -16,12 +16,14 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "onlyTest");
+ run("测试用例", "ts150017_18");
 }
 
 function onlyTest(){
- debugElementTree(window);
-
+// debugElementTree(window);
+    tapButton(window,QUERY);
+  var det=ts150016Field();
+    return det;
 }
 
 function prepare200All(){

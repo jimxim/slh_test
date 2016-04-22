@@ -672,7 +672,11 @@ function test100005_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
     ret = ret && sortByTitle("上架日期", IS_DATE2);
-    ret = ret && sortByTitle("累计进");// 提示暂不支持排序
+    if(ipadVer>=7.01){
+        ret = ret && sortByTitle("累计进", IS_NUM);
+    }else{
+        ret = ret && sortByTitle("累计进");
+    }
     ret = ret && sortByTitle("在途数", IS_NUM);
 
     query();

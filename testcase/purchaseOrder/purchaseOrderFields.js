@@ -277,7 +277,7 @@ function purchaseOrderAddField(key, show) {
         break;
     case "shop":
     case "订货门店":
-        f = new TField("订货门店", TF, totalNumTFindex - 1, "123");
+        f = new TField("订货门店", TF_SC, totalNumTFindex - 1, "123");
         break;
     case "remit":
     case "汇款":
