@@ -582,13 +582,8 @@ function editGoodsBasicSetUp(keys, day, color) {
     query(qFields);
     var qr = getQR();
 
-    var colorSizeStartIndex = 0;
-    if (isDefined(color) && color == "yes") {
-        colorSizeStartIndex = 4;
-    }
-
     delay();
-    var fields = editGoodsFields(keys, false, colorSizeStartIndex, 0);
+    var fields = editGoodsFields(keys);
     if (qr.data.length > 0) {
         tapFirstText();
         if (isDefined(day)) {

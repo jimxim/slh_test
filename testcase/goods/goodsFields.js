@@ -351,25 +351,24 @@ function testEditGoodsFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 
-function editGoodsFields(keys, show, colorSizeStartIndex, priceStartIndex) {
-    return getTFields("editGoodsField", keys, show, colorSizeStartIndex,
-            priceStartIndex);
+function editGoodsFields(keys, show) {
+    var view = getScrollView();
+    var priceStartIndex = -1;
+    var texts = getStaticTexts(view);
+    if (isEqualsTexts1(texts, "吊牌价")) {
+        priceStartIndex = 0;
+    }
+    // 颜色尺码的选择新增按钮有时隐藏了还能取到，这里就根据上架日期的增量按钮来定位后续的按钮下标
+    var addIdx = getButtonIndex(view, "增量");
+
+    return getTFields("editGoodsField", keys, show, addIdx, priceStartIndex);
 }
 
-// colorSizeStartIndex 颜色尺码开始下标，非颜色尺码时＝0,颜色尺码时=4
-// priceStartIndex 货品建款的价格模式，省代模式时=0，默认价格模式时=-1
-function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
-    // logDebug("key=" + key+" show=" + show+" colorSizeStartIndex=" +
-    // colorSizeStartIndex);
+function editGoodsField(key, show, addIdx, priceStartIndex) {
     if (isUndefined(key)) {
         return;
     }
-    if (isUndefined(colorSizeStartIndex)) {
-        colorSizeStartIndex = 0;
-    }
-    if (isUndefined(priceStartIndex)) {
-        priceStartIndex = 0;
-    }
+
     var f;
     switch (key) {
     case "code":
@@ -409,7 +408,7 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
     // tapButton(getScrollView(), "减量");也许要点击3次才能变成昨天
     case "market":
     case "上架日期":
-        f = new TField("上架日期", BTN, colorSizeStartIndex + 2, getToday());
+        f = new TField("上架日期", BTN, addIdx, getToday());
         if (show) {
             f.type = TF;
             f.index = 5;
@@ -445,7 +444,7 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "season":
     case "季节":
-        f = new TField("季节", BTN_SC, colorSizeStartIndex + 4, "夏季");
+        f = new TField("季节", BTN_SC, addIdx + 1, "夏季");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 14;
@@ -453,7 +452,7 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别", BTN_SC, colorSizeStartIndex + 5, "登山服");
+        f = new TField("类别", BTN_SC, addIdx + 2, "登山服");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 15;
@@ -461,14 +460,14 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, priceStartIndex + 16, "a", -1, 0);
+        f = new TField("厂商", TF_AC, priceStartIndex + 11, "a", -1, 0);
         if (show) {
             f.value = "Vell";
         }
         break;
     case "measure":
     case "计量单位":
-        f = new TField("计量单位", BTN_SC, colorSizeStartIndex + 9, "双");
+        f = new TField("计量单位", BTN_SC, addIdx + 6, "双");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 17;
@@ -476,7 +475,7 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
         break;
     case "warehouse":
     case "仓位":
-        f = new TField("仓位", BTN_SC, colorSizeStartIndex + 10, "默认");
+        f = new TField("仓位", BTN_SC, addIdx + 7, "默认");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 18;
@@ -497,25 +496,42 @@ function editGoodsField(key, show, colorSizeStartIndex, priceStartIndex) {
             f.value = "000,总经理";
         }
         break;
+    case "allowReturn":
+    case "允许退货":
+        f = new TField("允许退货", BTN_SC, addIdx + 8, "否");
+        if (show) {
+            f.index = priceStartIndex + 22;
+        }
+        break;
     case "isProcess":
     case "是否加工款":
-        f = new TField("是否加工款", BTN_SC, colorSizeStartIndex + 11, "否");
+        f = new TField("是否加工款", BTN_SC, addIdx + 9, "否");
+        if (show) {
+            f.index = priceStartIndex + 23;
+        }
         break;
     case "processPrice":
     case "加工价":
-        f = new TField("加工价", TF, priceStartIndex + 23, "100");
+        f = new TField("加工价", TF, priceStartIndex + 24, "100");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", BTN_SC, colorSizeStartIndex + 12, "常青店");
+        f = new TField("门店", BTN_SC, addIdx + 10, "常青店");
+        if (show) {
+            f.index = priceStartIndex + 25;
+        }
+        break;
+    case "boxNum":
+    case "装箱数":
+        f = new TField("装箱数", TF, priceStartIndex + 26, "6");
         break;
     case "barcode":
     case "条码":
-        f = new TField("条码", TF, priceStartIndex + 25, "555555");
+        f = new TField("条码", TF, priceStartIndex + 27, "555555");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, priceStartIndex + 26, "123");
+        f = new TField("备注", TF, priceStartIndex + 28, "123");
         break;
 
     default:

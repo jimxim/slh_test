@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-    colorSize = "no";
+    colorSize = "yes";
     debug = true;
     ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -16,15 +16,15 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "ts150017_18");
+ run("测试用例", "test100033");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    tapButton(window,QUERY);
-  var det=ts150016Field();
-    return det;
+  var view=getScrollView();
+  var btn=getButtons(view);
 }
+
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来

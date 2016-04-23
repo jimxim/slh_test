@@ -11,7 +11,7 @@ function testCustomer001() {
     run("【往来管理-客户账款】客户账款->按上级单位", "test110018");// 账户余款暂不支持排序
     run("【往来管理-客户账款】客户总账", "test110020");
     run("【往来管理-客户账款】客户总账底部数据汇总", "test110021");
-    run("【往来管理-客户活跃度】客户活跃度", "test110033");
+    run("【往来管理-客户活跃度】客户活跃度", "ts110033");
     run("【往来管理-积分查询】积分查询", "test110036");
     run("【往来管理-积分查询】数据验证", "test110036_1");
     run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
@@ -58,8 +58,8 @@ function testCustomer002() {
     // run("【往来管理-客户账款】右上角的所有统计、未结统计详细界面", "test110060_1");
     run("【往来管理】是否欠款报警查询", "test110028");
 
-    run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "test110034");
-    // run("【往来管理-客户活跃度】未拿货天数", "test110035");//现在有bug，销售订货会影响未拿货天数
+    run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "ts110034");
+    run("【往来管理-客户活跃度】未拿货天数", "test110035");
     // run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
@@ -1630,9 +1630,9 @@ function test110031_110032Field() {
 }
 
 // 翻页，排序，查询，清除,验证
-function test110033() {
+function ts110033() {
     tapMenu("销售开单", "按明细查");
-    var keys = { "客户" : "xw", "日期从" : getDay(-30), "门店" : "常青店" };
+    var keys = { "客户" : "zbs", "日期从" : getDay(-60), "门店" : "常青店" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
@@ -1651,26 +1651,26 @@ function test110033() {
     ret = ret && sortByTitle("最后一次拿货", IS_DATE2);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
-    var keys = { "客户" : "xw", "门店" : "常青店" };
-    var fields = queryCustomerActiveFields(keys);
+    keys = { "客户" : "zbs", "门店" : "常青店" };
+    fields = queryCustomerActiveFields(keys);
     query(fields);
     var qr = getQR();
     // 确定结果只有一条
-    var expected = { "序号" : "1", "门店" : "常青店", "名称" : "小王", "手机" : "",
+    var expected = { "门店" : "常青店", "名称" : "赵本山", "手机" : "13922211121",
         "店员" : "总经理", "最后一次拿货" : day, "未拿货天数" : day1 }
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected), isEqual(1, qr.total),
+    ret = isAnd(ret, isEqualObject(expected, qr.data[0]), isEqual(1, qr.total),
             isEqual(1, qr.totalPageNo));
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 1)));
 
     // 未开过单的客户是查询不到的
-    var r = "c" + getTimestamp(6);
-    keys = { "名称" : r, "适用价格" : "零批价" };
-    addCustomer(keys);
+    // var r = "c" + getTimestamp(6);
+    // keys = { "名称" : r, "适用价格" : "零批价" };
+    // addCustomer(keys);
 
-    tapMenu("往来管理", "客户活跃度");
-    keys = { "客户" : r, "门店" : "常青店" };
+    tapMenu2("客户活跃度");
+    keys = { "客户" : "bkdhk", "门店" : "常青店" };// 不开单客户
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();
@@ -1680,14 +1680,16 @@ function test110033() {
     return ret;
 }
 
-function test110034() {
+function ts110034() {
     var r = "c" + getTimestamp(6);
     var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : r };
+    var det = addPOrderBillDet(15, -3);
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户活跃度");
     keys = { "客户" : r };
@@ -1697,15 +1699,14 @@ function test110034() {
     var ret = isEqual(r, qr.data[0]["名称"]);
 
     // 停用
-    tapMenu("往来管理", "客户查询");
-    keys = { "客户" : r };
+    tapMenu2("客户查询");
     fields = queryCustomerFields(keys);
     query(fields);
     tapFirstText();
     tapButtonAndAlert(STOP);
+    tapReturn();// 防止未自动返回
 
-    tapMenu("往来管理", "客户活跃度");
-    keys = { "客户" : r };
+    tapMenu2("客户活跃度");
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();
@@ -1713,26 +1714,46 @@ function test110034() {
             1, qr.totalPageNo));
 
     return ret;
-
 }
 
-function test110035() {
-    var r = "act" + getTimestamp(6);
+function ts110035() {
+    var r = "act" + getTimestamp(6), i;
     var keys = { "名称" : r };
     addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "日期" : getDay(-30),
-        "明细" : [ { "货品" : "k300", "数量" : "5" } ], "未付" : "yes" };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : r, "日期" : getDay(-30), "未付" : "yes" };
+    var det = addPOrderBillDet(20, -3);
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     // 销售订货应该对客户活跃度没有影响
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
+    jo = { "客户" : r, "goodsFieldIndex" : -2 };
+    json = mixObject(det, jo);
+    editSalesBill(json, colorSize);
 
-    var i;
     tapMenu("往来管理", "客户活跃度");
+    var keys = { "客户" : r, "门店" : "常青店" };
+    var fields = queryCustomerActiveFields(keys);
+    query(fields);
+    var qr = getQR();
+    var jo = qr.data[0];
+    var ret1 = isAnd(isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
+            jo["未拿货天数"]));
+
+    tapMenu("销售开单", "开  单+");
+    jo = { "客户" : r };
+    det = addPOrderBillDet(-10, -3);
+    json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("往来管理", "客户活跃度");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret1 = isAnd(ret, isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
+            jo["未拿货天数"]));
+
     query();
     // 标题 最后一次拿货内容不应该为空
     tapTitle(getScrollView(), "最后一次拿货");
@@ -1756,14 +1777,6 @@ function test110035() {
             }
         }
     }
-
-    var keys = { "客户" : r, "门店" : "常青店" };
-    var fields = queryCustomerActiveFields(keys);
-    query(fields);
-    var qr = getQR();
-    var jo = qr.data[0];
-    var ret1 = isAnd(isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
-            jo["未拿货天数"]));
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     keys = { "客户名称" : r, "门店" : "常青店" };
@@ -3235,7 +3248,7 @@ function ts110057Field(cond) {
     var o = { "名称" : r };
     editSalesBillAddCustomer(o);
     var jo = { "未付" : "yes" };
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet(30, -3);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 

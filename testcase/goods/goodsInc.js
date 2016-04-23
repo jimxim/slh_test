@@ -27,33 +27,12 @@ function addCustomer(keys, check) {
 /**
  * 新增货品
  * @param keys
- * @param colorSize "yes":颜色尺码 "no":均色均码
- * @param price "yes":默认价格模式 "no":省代价格模式
+ * @param isEdit 是否编辑模式
  * @param day 上架日期
  */
-function addGoods(keys, colorSize, price, isEdit, day) {
-    var colorSizeStartIndex = 0, priceStartIndex = 0;
-
-    switch (colorSize) {
-    case "no":
-        colorSizeStartIndex = 0;
-        break;
-    case "yes":
-        colorSizeStartIndex = 4;
-        break;
-    default:
-        logWarn("未知colorSize＝" + colorSize);
-        break;
-    }
-
-    if (isUndefined(price) || price == "no") {
-        priceStartIndex = 0;
-    } else {
-        if (price == "yes") {
-            priceStartIndex = -1;
-        } else {
-            logDebug("未知price" + price);
-        }
+function addGoods(keys, isEdit, day) {
+    if (isUndefined(keys)) {
+        return;
     }
 
     if (isUndefined(isEdit) || isEdit == "no") {
@@ -63,8 +42,7 @@ function addGoods(keys, colorSize, price, isEdit, day) {
     if (isDefined(day)) {
         changeMarketTime(day);
     }
-    var fields = editGoodsFields(keys, false, colorSizeStartIndex,
-            priceStartIndex);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
 
@@ -178,30 +156,6 @@ function getEditBillValue(firstTitle, arr) {
         }
     }
     return data;
-}
-
-/**
- * 获取新增货品界面输入框的值
- * @returns {Array}
- */
-function getEditGoodsValue() {
-    var arr = new Array();
-    // 现在有26个
-    for (var i = 0; i < 27; i++) {
-        var j = i;
-        // 上架日期和吊牌价之间有一个隐藏的
-        if (i >= 6) {
-            j = i + 1;
-        }
-        arr[i] = getTextFieldValue(getScrollView(), j);
-        if (isUndefined(getTextFieldValue(getScrollView(), j))) {
-            arr[i] = "";
-            logDebug("找不到下标为" + j + "的输入框");
-            break;
-        }
-    }
-
-    return arr;
 }
 /**
  * 获取开单界面明细界面的值
@@ -607,7 +561,11 @@ function goPage2(page, qr) {
 
 /**
  * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~ 最后会回到第一页
- * @param titleTotal 这个地方的标题数组很奇怪，有时候会重复好几遍，所以暂时弄成指定标题总数的方式
+ * @param pageInfoView
+ * @param dataView
+ * @param firstTitle
+ * @param titleTotal
+ * @returns {Boolean}
  */
 function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
     var pageInfoView = window;
@@ -628,7 +586,10 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
     if (totalPageNo > 1) {
         var page1 = qr.data;
         // 总页数验证
-        ret = isAnd(ret, isEqual(Math.ceil(qr.total / 15), totalPageNo));
+        ret = ret && isEqual(Math.ceil(qr.total / 15), totalPageNo);
+        if (!ret) {
+            logDebug("总页数错误");
+        }
 
         // 最后一页验证
         goPage(totalPageNo, qr);

@@ -160,7 +160,7 @@ function ts120001_2() {
     tapMenu2("新增入库+");
     var jo = { "客户" : "Rt", "店员" : "000", "现金" : "1000", "刷卡" : [ 200, "交" ],
         "汇款" : [ 300, "银" ], "备注" : "abc" }
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
     var time = json["操作日期"];
@@ -2289,7 +2289,7 @@ function test120043() {
 function ts120044() {
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "vell" };
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -2399,7 +2399,7 @@ function test120045() {
 // 单据是否允许修改客户或厂商--不允许
 function ts120046() {
     tapMenu("采购入库", "新增入库+");
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     editSalesBill(det, colorSize);
 
     tapMenu2("按批次查");
@@ -2427,7 +2427,7 @@ function ts120046() {
 function ts120060() {
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "rt" };
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -2606,7 +2606,7 @@ function test120052() {
 
     tapMenu2("新增入库+");
     var jo = { "客户" : "vell", "onlytest" : "yes" };
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
     runAndAlert("test120052Hang", OK);
@@ -2989,7 +2989,7 @@ function test120051() {
     return ret;
 }
 function ts120061() {
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "vell" };
     var json = mixObject(jo, det);

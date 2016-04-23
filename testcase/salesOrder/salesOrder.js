@@ -1332,7 +1332,7 @@ function test160063_1() {
     tapMenu("货品管理", "新增货品+");
     var r = "g" + getTimestamp(6);
     var keys = [ "款号", "名称", "进货价" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["款号"], r);
     changeTFieldValue(fields["名称"], r);
     setTFieldsValue(getScrollView(), fields);

@@ -209,7 +209,7 @@ function testGoods002() {
     run("【货品管理-货品进销存】特殊货品不能显示", "test100129");
     run("【货品管理-当前库存】上架天数检查", "test100116");
     // run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "test100114");
-    // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
+    run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "test100033");
     // run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "test100034");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "test100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "test100038_100039_100040");
@@ -672,9 +672,9 @@ function test100005_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
     ret = ret && sortByTitle("上架日期", IS_DATE2);
-    if(ipadVer>=7.01){
+    if (ipadVer >= 7.01) {
         ret = ret && sortByTitle("累计进", IS_NUM);
-    }else{
+    } else {
         ret = ret && sortByTitle("累计进");
     }
     ret = ret && sortByTitle("在途数", IS_NUM);
@@ -735,7 +735,7 @@ function test100005_3() {
         tapButton(getScrollView(), "减量");
     }
     var keys = { "款号" : code, "名称" : "货品" + r, "进货价" : "200", "厂商" : "Vell" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     delay();
@@ -779,7 +779,7 @@ function test100005_3() {
 }
 
 function ts100006() {
-    var det = editPurOrderDet();
+    var det = addPOrderBillDet();
     var code = det["明细"][0]["货品"];
     tapMenu("货品管理", "库存分布");
     var i, j;
@@ -858,9 +858,11 @@ function test100006_1() {
     query();
     var ret = goPageCheck();
 
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("库存", IS_NUM);
-    // ret = ret && sortByTitle("价值", IS_NUM);
+    if (ipadVer >= 7.01) {
+        ret = ret && sortByTitle("名称");
+        ret = ret && sortByTitle("库存", IS_NUM);
+        ret = ret && sortByTitle("价值", IS_NUM);
+    }
     // ret = ret && sortByTitle("仓库店", IS_NUM);
     // ret = ret && sortByTitle("常青店", IS_NUM);
     // ret = ret && sortByTitle("文一店", IS_NUM);
@@ -1082,7 +1084,7 @@ function test100010_100011_100013() {
         keys1.push("颜色", "尺码");
         color = "花色";
     }
-    var fields = editGoodsFields(keys1, false, 0, 0);
+    var fields = editGoodsFields(keys1, false);
     changeTFieldValue(fields["款号"], "g" + r + "a");
     changeTFieldValue(fields["名称"], "n" + r + "a");
     changeTFieldValue(fields["仓位"], "A座六层");
@@ -1193,7 +1195,7 @@ function test100019() {
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var ret = isEqual(100, getTextFieldValue(getScrollView(), 8))
@@ -1247,7 +1249,7 @@ function test100022() {
     var r = getTimestamp(8);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
@@ -1266,7 +1268,7 @@ function test100022() {
 function test100021() {
     tapMenu("货品管理", "新增货品+");
     var keys = [ "款号", "名称", "品牌", "吊牌价" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
@@ -1312,39 +1314,22 @@ function test100046() {
 
 function test100033() {
     var qo, o, ret = true;
-    // qo = { "备注" : "款号是否按门店区分" };
-    // o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200" };
-    addGoods(keys, colorSize);
+    addGoods(keys);
+    var price = { "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
+        "Vip价格" : "140" };
+    keys = mixObject(keys, price);
+    var fields = editGoodsFields(keys, true);
 
-    var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
-            200, 100, 200, 180, 160, 140, 1, "春季", "", "", "件", "默认", "0", "0",
-            "", "否", "0", "", "", "");
-    ret = isAnd(ret, test100033Field(expected));
-
-    // qo = { "备注" : "款号是否按门店区分" };
-    // o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    return ret;
-}
-
-function test100033Field(expected) {
-    tapMenu("货品管理", "货品查询");
+    tapMenu2("货品查询");
     var qKeys = { "款号名称" : expected[1] };
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
-
-    delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
-    var actual = getEditGoodsValue();
-    tapButton(window, RETURN);
-    var ret = isEqualObject(expected, actual);
-
-    query();
+    tapFirstText();
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
     return ret;
 }
 
@@ -1360,7 +1345,7 @@ function test100034() {
         "计量单位" : "双", "仓位" : "默认", "最小库存" : "0", "最大库存" : "1000",
         "经办人" : "000", "是否加工款" : "是", "加工价" : 150, "门店" : "常青店", "条码" : "111",
         "备注" : "123" };
-    addGoods(keys, colorSize);
+    addGoods(keys);
 
     // var f = editGoodsFields(keys);
     var expected = new Array("g" + r, "货品" + r, "1010pp", "", "", getToday(),
@@ -1445,7 +1430,7 @@ function test100035() {
     // tapMenu("货品管理", "新增货品+");
     // var r = getTimestamp(8);
     // var keys = [ "款号", "名称"];
-    // var fields = editGoodsFields(keys, false, 4, 0);
+    // var fields = editGoodsFields(keys, false);
     // changeTFieldValue(fields["款号"], r);
     // changeTFieldValue(fields["名称"], r);
     // setTFieldsValue(getScrollView(), fields);
@@ -1477,7 +1462,7 @@ function test100038_100039_100040() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var keys = [ "最小库存", "最大库存" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最小库存"], 90);
     changeTFieldValue(fields["最大库存"], 90);
     setTFieldsValue(getScrollView(), fields);
@@ -1525,7 +1510,7 @@ function test100102_100103() {
     tapFirstText(getScrollView(), TITLE_SEQ, 15);
     var code = getTextFieldValue(getScrollView(), 0);
     var keys = { "款号" : "款号" + code };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("修改保存", OK);
     delay();
@@ -1648,7 +1633,7 @@ function test100042_100045Field() {
 function test100092() {
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : "goods", "名称" : "goods" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     keys = { "最小库存" : "a" };
@@ -1675,7 +1660,7 @@ function test100092() {
 }
 
 function test100092Field(keys) {
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
@@ -1724,7 +1709,7 @@ function test100054_2() {
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = [ "款号", "名称" ];
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["款号"], "xxf002");
     changeTFieldValue(fields["名称"], "xxf002" + r);
     setTFieldsValue(getScrollView(), fields);
@@ -2349,7 +2334,7 @@ function test100079_100080_100081() {
     query();
     tapFirstText(getScrollView(), "序号", 15);
     var keys = { "最大库存" : "0" };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
     tapPrompt();
@@ -2366,7 +2351,7 @@ function test100079_100080_100081() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), "序号", 15);
     keys = [ "最大库存" ];
-    fields = editGoodsFields(keys, false, 0, 0);
+    fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最大库存"], 100);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
@@ -2382,7 +2367,7 @@ function test100079_100080_100081() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), "序号", 15);
     keys = [ "最大库存" ];
-    fields = editGoodsFields(keys, false, 0, 0);
+    fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最大库存"], 10);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
@@ -2467,7 +2452,7 @@ function test100087_100088_100089() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), "序号", 15);
     var keys = { "最小库存" : 100, "最大库存" : 200 };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
     tapPrompt();
@@ -2484,7 +2469,7 @@ function test100087_100088_100089() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), "序号", 15);
     keys = { "最小库存" : 90, "最大库存" : 120 };
-    fields = editGoodsFields(keys, false, 0, 0);
+    fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
     tapPrompt();
@@ -2499,7 +2484,7 @@ function test100087_100088_100089() {
     tapMenu("货品管理", "货品查询");
     tapFirstText(getScrollView(), "序号", 15);
     keys = { "最小库存" : 120, "最大库存" : 200 };
-    fields = editGoodsFields(keys, false, 0, 0);
+    fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE);
     tapPrompt();
@@ -2526,7 +2511,7 @@ function test100075_100076_100077_100078() {
     var stock = getRandomInt(50) + 50;
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "最大库存" : max };
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     delay(2);
