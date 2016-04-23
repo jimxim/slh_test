@@ -831,7 +831,7 @@ function test180025_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + getTimestamp(4);
     var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
@@ -1012,7 +1012,7 @@ function test180026_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewC" + getTimestamp(4);
     var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
@@ -2363,7 +2363,7 @@ function test180049_180036() {
     tapMenu("货品管理", "新增货品+");
     var r = "akhao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice1 = getTextFieldValue(getScrollView(), 8);
@@ -2376,7 +2376,7 @@ function test180049_180036() {
     tapMenu("货品管理", "新增货品+");
     var r1 = "akhao" + getTimestamp(8);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice2 = getTextFieldValue(getScrollView(), 8);
@@ -2551,7 +2551,7 @@ function test180049_1() {
     tapMenu("货品管理", "新增货品+");
     var r = "aCode1" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice1 = getTextFieldValue(getScrollView(), 9);
@@ -2564,7 +2564,7 @@ function test180049_1() {
     tapMenu("货品管理", "新增货品+");
     var r1 = "aCode2" + getTimestamp(8);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice2 = getTextFieldValue(getScrollView(), 9);

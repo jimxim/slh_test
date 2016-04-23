@@ -1915,7 +1915,7 @@ function test170074() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -1928,8 +1928,7 @@ function test170074() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "操作失败，[款号【" + r + "," + r,
-            "均色,均码】退货数量高于拿货总数量，请核对] ");
+    var ret = isIn(alertMsg, "款号【" + r + "," + r, "均色,均码】退货数量高于拿货总数量，请核对");
 
     var json = { "明细" : [ { "货品" : r, "数量" : "10" } ], "不返回" : "yes" };
     editSalesBillNoColorSize(json);
@@ -1941,8 +1940,7 @@ function test170074() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "操作失败，[款号【" + r + "," + r,
-            "均色,均码】退货数量高于拿货总数量，请核对] ");
+    var ret1 = isIn(alertMsg, "款号【" + r + "," + r, "均色,均码】退货数量高于拿货总数量，请核对");
 
     tapReturn();
 
@@ -2879,7 +2877,7 @@ function test170096() {
     tapMenu("货品管理", "新增货品+");
     var r = "anewCodeForReturn" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "268" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -2904,7 +2902,7 @@ function test170097() {
     tapMenu("货品管理", "新增货品+");
     var r = "anewCodeTip" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "148" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -3548,7 +3546,7 @@ function test170116() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
@@ -3591,7 +3589,7 @@ function test170117() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
@@ -3629,7 +3627,7 @@ function test170118() {
     var g = "2" + getTimestamp(2);
     var g1 = "3" + getTimestamp(2);
     var keys = [ "款号", "名称", "进货价", "零批价" ];
-    var fields = editGoodsFields(keys, false, 0, -1);
+    var fields = editGoodsFields(keys);
     changeTFieldValue(fields["款号"], r);
     changeTFieldValue(fields["名称"], r);
     changeTFieldValue(fields["进货价"], g);
@@ -3642,7 +3640,7 @@ function test170118() {
     tapMenu("货品管理", "新增货品+");
     var r1 = "h" + getTimestamp(8);
     var keys = [ "款号", "名称", "进货价", "零批价" ];
-    var fields = editGoodsFields(keys, false, 0, -1);
+    var fields = editGoodsFields(keys);
     changeTFieldValue(fields["款号"], r1);
     changeTFieldValue(fields["名称"], r1);
     changeTFieldValue(fields["进货价"], g);
@@ -3680,7 +3678,7 @@ function test170118() {
     tapButtonAndAlert("none", "打印(客户用)");
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isAnd(isIn(alertMsg1, "门店[常青店]中[" + r1 + "," + r1
             + ",均色,均码] 库存不足，差4件"));
 
@@ -3762,6 +3760,10 @@ function test170120() {
 
     var ret = isAnd(isEqual(kc2, sub(kc, 5)), isEqual(kc3, add(kc1, -6)),
             isEqual(zz, zz2), isEqual(zz1, zz3));
+    
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -4438,6 +4440,10 @@ function test170139_1() {
             isEqual(0.5, getTextFieldValue(window, 10)));
 
     tapReturn();
+    
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
@@ -6337,7 +6343,7 @@ function test170227() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -6449,7 +6455,7 @@ function test170229() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys, false, 0, 0);
+    var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -6472,7 +6478,7 @@ function test170229() {
 
     tapPrompt();
 
-    var ret = isIn(alertMsg, "操作失败，[销售价不能为零，请核对款号[k200]价格是否维护");
+    var ret = isIn(alertMsg, "销售价不能为零，请核对款号[k200]价格是否维护");
 
     var f4 = new TField("单价", TF, 4, "200");
     var f11 = new TField("单价", TF, 11, "0");
@@ -6487,7 +6493,7 @@ function test170229() {
 
     tapPrompt();
 
-    var ret = isAnd(ret, isIn(alertMsg, "操作失败，[销售价不能为零，请核对款号[" + r + "]价格是否维护"));
+    var ret = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[" + r + "]价格是否维护"));
 
     tapReturn();
 
@@ -7345,7 +7351,7 @@ function test170384() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret = (isIn(alertMsg1,
-            "操作失败，[当前客户欠款累计金额（包含本次销售）为4200.0, 大于信用额度金额1000.0]"));
+            "当前客户欠款累计金额（包含本次销售）为4200.0, 大于信用额度金额1000.0"));
 
     tapReturn();
 
@@ -7883,9 +7889,9 @@ function test170424_1() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // qo = { "备注" : "单据是否允许修改客户或厂商" };
-    // o = { "新值" : "1", "数值" : [ "允许" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+     qo = { "备注" : "单据是否允许修改客户或厂商" };
+     o = { "新值" : "1", "数值" : [ "允许" ] };
+     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewkhVip" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
@@ -8006,6 +8012,10 @@ function test170424_2() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "单据是否允许修改客户或厂商" };
+    o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewkhVip" + getTimestamp(5);
@@ -10168,9 +10178,7 @@ function test170509() {
     tapFirstText();
 
     var ret1 = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("",
-                    getTextFieldValue(getScrollView(), 4)), isEqual(r1,
+            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 8)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 9)), isEqual(r1,
                     getTextFieldValue(getScrollView(), 10)), isEqual(1,
@@ -11396,6 +11404,5 @@ function test170612() {
     tapFirstText();
 
     var r = getTimestamp(8);
-    
 
 }

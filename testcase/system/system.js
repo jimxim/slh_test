@@ -42,7 +42,6 @@ function testSystem001() {
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
-    // run("【系统设置—更多-删除所有缩略图】删除", "test210037");// (该功能已经去掉)
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -1068,27 +1067,6 @@ function test210036() {
 
     return ret && ret1;
 }
-function test210037() {
-    tapMenu1("系统设置");
-    tapMenu2("更多..");
-    tapMenu3("删除所有缩略图");
-
-    tapPrompt();
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isIn(alertMsg1, "操作成功");
-
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
-
-    var cond = "isIn(alertMsg, '清理和刷新成功')";
-    waitUntil(cond, 300);
-
-    var ret1 = isIn(alertMsg, "清理和刷新成功");
-
-    return ret && ret1;
-}
 function test210039() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -1135,42 +1113,42 @@ function test210039() {
 
     tapReturn();
 
-    qo = { "备注" : "是否显示颜色尺码字样" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "按批次查");
-    query();
-
-    var qr = getQR();
-    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(14,
-            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
-            0.5);
-
-    tapFirstText();
-    var ret1 = isAnd(
-            isEqual("X001,特步夹克", getTextFieldValue(getScrollView(), 0)),
-            isEqual("", getTextFieldValue(getScrollView(), 1)), isEqual("",
-                    getTextFieldValue(getScrollView(), 2)), isEqual(5,
-                    getTextFieldValue(getScrollView(), 3)), isEqual(
-                    "X001,特步夹克", getTextFieldValue(getScrollView(), 7)),
-            isEqual("", getTextFieldValue(getScrollView(), 8)), isEqual("",
-                    getTextFieldValue(getScrollView(), 9)), isEqual(6,
-                    getTextFieldValue(getScrollView(), 10)), isEqual(
-                    "X003,特步登山服", getTextFieldValue(getScrollView(), 14)),
-            isEqual("", getTextFieldValue(getScrollView(), 15)), isEqual("",
-                    getTextFieldValue(getScrollView(), 16)), isEqual(1,
-                    getTextFieldValue(getScrollView(), 17)), isEqual(
-                    "X003,特步登山服", getTextFieldValue(getScrollView(), 21)),
-            isEqual("", getTextFieldValue(getScrollView(), 22)), isEqual("",
-                    getTextFieldValue(getScrollView(), 23)), isEqual(2,
-                    getTextFieldValue(getScrollView(), 24)));
-
-    tapReturn();
-
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+//    qo = { "备注" : "是否显示颜色尺码字样" };
+//    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
+//
+//    tapMenu("销售开单", "按批次查");
+//    query();
+//
+//    var qr = getQR();
+//    var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(14,
+//            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
+//            0.5);
+//
+//    tapFirstText();
+//    var ret1 = isAnd(
+//            isEqual("X001,特步夹克", getTextFieldValue(getScrollView(), 0)),
+//            isEqual("", getTextFieldValue(getScrollView(), 1)), isEqual("",
+//                    getTextFieldValue(getScrollView(), 2)), isEqual(5,
+//                    getTextFieldValue(getScrollView(), 3)), isEqual(
+//                    "X001,特步夹克", getTextFieldValue(getScrollView(), 7)),
+//            isEqual("", getTextFieldValue(getScrollView(), 8)), isEqual("",
+//                    getTextFieldValue(getScrollView(), 9)), isEqual(6,
+//                    getTextFieldValue(getScrollView(), 10)), isEqual(
+//                    "X003,特步登山服", getTextFieldValue(getScrollView(), 14)),
+//            isEqual("", getTextFieldValue(getScrollView(), 15)), isEqual("",
+//                    getTextFieldValue(getScrollView(), 16)), isEqual(1,
+//                    getTextFieldValue(getScrollView(), 17)), isEqual(
+//                    "X003,特步登山服", getTextFieldValue(getScrollView(), 21)),
+//            isEqual("", getTextFieldValue(getScrollView(), 22)), isEqual("",
+//                    getTextFieldValue(getScrollView(), 23)), isEqual(2,
+//                    getTextFieldValue(getScrollView(), 24)));
+//
+//    tapReturn();
+//
+//    qo = { "备注" : "是否需要颜色尺码" };
+//    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
 }

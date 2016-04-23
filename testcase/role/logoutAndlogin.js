@@ -67,10 +67,10 @@ function test170125() {
     return ret;
 }
 function test170607() {
-//    var qo, o, ret = true;
-//    qo = { "备注" : "销售开单时同时订货" };
-//    o = { "新值" : "1", "数值" : [ "启用" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    // qo = { "备注" : "销售开单时同时订货" };
+    // o = { "新值" : "1", "数值" : [ "启用" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "按批次查");
     query();
