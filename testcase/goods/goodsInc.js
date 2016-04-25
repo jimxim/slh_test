@@ -42,7 +42,7 @@ function addGoods(keys, isEdit, day) {
     if (isDefined(day)) {
         changeMarketTime(day);
     }
-    var fields = editGoodsFields(keys);
+    var fields = editGoodsFields(keys,false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
 

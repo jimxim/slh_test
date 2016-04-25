@@ -1229,7 +1229,7 @@ function test100020() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
 
     var ret = isEqual(200, getTextFieldValue(getScrollView(), 9))
             && isEqual(180, getTextFieldValue(getScrollView(), 10))
@@ -1507,7 +1507,7 @@ function test100102_100103() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     var code = getTextFieldValue(getScrollView(), 0);
     var keys = { "款号" : "款号" + code };
     var fields = editGoodsFields(keys, false);
@@ -1523,7 +1523,7 @@ function test100102_100103() {
     setGlobalParam(qo, o);
 
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     tapButtonAndAlert("修改保存", OK);
     delay();
     tapPrompt();
@@ -1552,7 +1552,7 @@ function test100042_100045() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     tapButton(window, "重设条码");
     var f = new TField("品牌", TF_AC, 2, "y", -1);
     var ret2 = testCheckCustomerDropDownListField(f, view);
@@ -1801,7 +1801,7 @@ function test100058() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     tapButton(window, "显示条码");
     var qr = getQRtable1();
     // getTableViews(),"序号","条码"
@@ -1877,7 +1877,7 @@ function testGoodsPriceChangeField(keys, expected, All) {
         ret = ret && isEqual("100", qr.data[0]["进货价"]);
     }
     // isUndefined
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     ret = ret
             && isEqual("200", getTextFieldValue(getScrollView(), 7))
             && isEqual("100", getTextFieldValue(getScrollView(), 8))
@@ -2267,7 +2267,7 @@ function test100070() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     delay();
-    tapFirstText(getScrollView(), "序号", 2);
+    tapFirstText();
 
     clearTField(getScrollView(), f0);
     tapButtonAndAlert("保存修改");
@@ -2332,7 +2332,7 @@ function test100079_100080_100081() {
     // 修改最大库存为0
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     var keys = { "最大库存" : "0" };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2349,7 +2349,7 @@ function test100079_100080_100081() {
 
     // 修改最大库存为100
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     keys = [ "最大库存" ];
     fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最大库存"], 100);
@@ -2365,7 +2365,7 @@ function test100079_100080_100081() {
 
     // 修改最大库存为10
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     keys = [ "最大库存" ];
     fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最大库存"], 10);
@@ -2450,7 +2450,7 @@ function test100087_100088_100089() {
 
     // 库存=最小库存
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     var keys = { "最小库存" : 100, "最大库存" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2467,7 +2467,7 @@ function test100087_100088_100089() {
 
     // 最小库存<库存<最大库存
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     keys = { "最小库存" : 90, "最大库存" : 120 };
     fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2482,7 +2482,7 @@ function test100087_100088_100089() {
 
     // 库存<最小库存
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     keys = { "最小库存" : 120, "最大库存" : 200 };
     fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);

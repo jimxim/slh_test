@@ -168,7 +168,7 @@ function test190013() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -213,7 +213,7 @@ function test190013() {
     tapNaviLeftButton();
 
     tapMenu("统计分析", "综合汇总");
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -316,7 +316,7 @@ function test190017() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -354,7 +354,7 @@ function test190017() {
     tapNaviLeftButton();
 
     tapMenu("统计分析", "综合汇总");
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -1112,7 +1112,7 @@ function test190104() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s1 = test190037_1Field(qr, "支出", "销售单");
@@ -1138,7 +1138,7 @@ function test190104() {
 
     tapMenu("统计分析", "综合汇总");
     tapButton(window, QUERY);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     var s2 = test190037_1Field(qr, "支出", "销售单");
@@ -1569,7 +1569,7 @@ function getDataFor190037() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     tapNaviLeftButton();
@@ -1611,7 +1611,7 @@ function test190037_1() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s1 = test190037_1Field(qr, "收入", "销售单");
@@ -1624,7 +1624,7 @@ function test190037_1() {
 
     tapMenu("统计分析", "综合汇总");
     tapButton(window, QUERY);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s2 = test190037_1Field(qr, "收入", "销售单");
@@ -1714,7 +1714,7 @@ function test190038() {
     var qr = getQR();
     var a = qr.data[0]["余款"];
 
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     tapNaviButton("余款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1755,7 +1755,7 @@ function test190041() {
     var qr = getQR();
     var a = qr.data[0]["抵扣"];
 
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     tapNaviButton("抵扣");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1795,7 +1795,7 @@ function test190039() {
     var qr = getQR();
     var a = qr.data[0]["欠款"];
 
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     tapNaviButton("欠款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1836,7 +1836,7 @@ function test190040() {
     var qr = getQR();
     var a = qr.data[0]["还款"];
 
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
     tapNaviButton("还款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1866,7 +1866,7 @@ function test190046() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText();
 
     tapNaviButton("余款");
     var ret = test190046Field();

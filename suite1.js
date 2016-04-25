@@ -16,12 +16,16 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "test100038_100039_100040");
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- debugElementTree(window);
-
+// debugElementTree(window);
+    var r = getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200","进货价":"100","季节":"夏季" };
+    addGoods(keys, colorSize);
+    
+    
    return true;
 }
 

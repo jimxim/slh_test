@@ -1247,7 +1247,7 @@ function test160035() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     var f = new TField("数量", TF, 5, "10");
     setTFieldsValue(getScrollView(), [ f ]);
     test160073Save();
@@ -1270,7 +1270,7 @@ function test160035() {
 
     tapMenu("销售订货", "按批次查");
     delay();
-    tapFirstText(getScrollView(), "序号", 16);
+    tapFirstText();
     runAndAlert("test130015EndBill", OK);// 终结订单
     tapPrompt();
     delay();
@@ -1309,7 +1309,7 @@ function test160036() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     var f = new TField("数量", TF, 5, "50");
     setTFieldsValue(getScrollView(), [ f ]);
     test160073Save();
@@ -1391,7 +1391,7 @@ function test160090() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText(getScrollView(), "序号", 15);
+    tapFirstText();
     tapButtonAndAlert(STOP);
     tapPrompt();
 
@@ -1616,7 +1616,7 @@ function test160042() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     var f = new TField("数量", TF, 5, "10");
     setTFieldsValue(getScrollView(), [ f ]);
     test160073Save();
@@ -1629,7 +1629,7 @@ function test160042() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     f = new TField("数量", TF, 5, "15");
     setTFieldsValue(getScrollView(), [ f ]);
     test160073Save();
@@ -1736,7 +1736,7 @@ function test160044() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     var f1 = new TField("数量", TF, 5, "10");
     var f2 = new TField("数量", TF, 14, "10");
     setTFieldsValue(getScrollView(), [ f1, f2 ]);
@@ -1751,7 +1751,7 @@ function test160044() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     f1 = new TField("数量", TF, 5, "15");
     f2 = new TField("数量", TF, 14, "10");
     setTFieldsValue(getScrollView(), [ f1, f2 ]);
@@ -1836,7 +1836,7 @@ function test160046() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText(getScrollView(), "序号", 14);
+    tapFirstText();
     var f1 = new TField("数量", TF, 5, "10");
     var f2 = new TField("数量", TF, 14, "10");
     setTFieldsValue(getScrollView(), [ f1, f2 ]);
@@ -1884,7 +1884,7 @@ function test160066() {
     tapButton(window, RETURN);
 
     tapMenu("销售订货", "按批次查");
-    tapFirstText(getScrollView(), "序号", 16);
+    tapFirstText();
     ret = isAnd(ret, isEqual(a, getTextFieldValue(getScrollView(), 4)));
     tapButton(window, RETURN);
 
@@ -1950,7 +1950,7 @@ function test160065() {
     tapButton(window, RETURN);
 
     tapMenu("销售订货", "按批次查");
-    tapFirstText(getScrollView(), "序号", 16);
+    tapFirstText();
     ret = isAnd(ret, isEqual(a, getTextFieldValue(getScrollView(), 4)));
     tapButton(window, RETURN);
 
@@ -2088,7 +2088,7 @@ function test160073() {
     // 8.选择一条部分发货，但预付款被部分或全部核销了的订单，增加或修改款号订货数量后保存
     tapMenu("销售订货", "按批次查");
     query();
-    tapFirstText(getScrollView(), "序号", 16);//
+    tapFirstText();//
     f1 = new TField("数量", TF, 3, "30");
     f2 = new TField("数量", TF, 11, "10");
     setTFieldsValue(getScrollView(), [ f1, f2 ]);

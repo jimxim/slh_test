@@ -368,8 +368,6 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
     if (isUndefined(key)) {
         return;
     }
-    addIdx = Number(addIdx);
-    priceStartIndex = Number(priceStartIndex);
 
     var f;
     switch (key) {
