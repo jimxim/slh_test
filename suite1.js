@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-    colorSize = "yes";
+    colorSize = "no";
     debug = true;
     ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -16,13 +16,18 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "test100033");
+ run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-  var view=getScrollView();
-  var btn=getButtons(view);
+ tapMenu("采购订货","新增订货+");
+ var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
+     "汇款" : [ 300, "银" ], "备注" : "xx", "采购订货" : "yes" };
+ var det = editOverLengthBillDet();
+ var json = mixObject(jo, det);
+ editSalesBill(json, colorSize);
+   return true;
 }
 
 

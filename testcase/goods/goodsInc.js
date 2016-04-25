@@ -238,7 +238,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     if (isUndefined(dataView)) {
         dataView = getScrollView(-1);
     }
-    // 这里的标题在window里，而内容在getScrollView中
+    // 这里的标题在window里，而内容在scrollView中
     var firstIndex = 0;
     var lastIndex = 0;
     var texts = getStaticTexts(window);
