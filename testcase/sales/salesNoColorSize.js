@@ -99,6 +99,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
     run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170595");
+    run("【销售开单-开单】物流单修改", "test170612");
 
     // run("采购入库/采购订货价格刷新", "test170527");//
 
@@ -221,7 +222,7 @@ function setNoColorSize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否允许修改已发货的订单" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单时同时订货" };
@@ -3760,7 +3761,7 @@ function test170120() {
 
     var ret = isAnd(isEqual(kc2, sub(kc, 5)), isEqual(kc3, add(kc1, -6)),
             isEqual(zz, zz2), isEqual(zz1, zz3));
-    
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -4440,7 +4441,7 @@ function test170139_1() {
             isEqual(0.5, getTextFieldValue(window, 10)));
 
     tapReturn();
-    
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -7350,8 +7351,7 @@ function test170384() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret = (isIn(alertMsg1,
-            "当前客户欠款累计金额（包含本次销售）为4200.0, 大于信用额度金额1000.0"));
+    var ret = (isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为4200.0, 大于信用额度金额1000.0"));
 
     tapReturn();
 
@@ -7889,9 +7889,9 @@ function test170424_1() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-     qo = { "备注" : "单据是否允许修改客户或厂商" };
-     o = { "新值" : "1", "数值" : [ "允许" ] };
-     ret = isAnd(ret, setGlobalParam(qo, o));
+    qo = { "备注" : "单据是否允许修改客户或厂商" };
+    o = { "新值" : "1", "数值" : [ "允许" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewkhVip" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
@@ -8013,7 +8013,7 @@ function test170424_2() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "单据是否允许修改客户或厂商" };
     o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -10734,7 +10734,7 @@ function test170552() {
     query(fields);
     tapFirstText();
 
-    var md = getTextFieldValue(getScrollView(), 22);
+    var md = getTextFieldValue(getScrollView(), 23);
 
     tapReturn();
 
@@ -11394,15 +11394,6 @@ function test170608() {
 
     return ret;
 }
-function test170612() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
-        "代收" : { "物流商" : "yt", "代收金额" : "50" }, "备注" : "zy" };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售订货", "物流单+");
-    tapFirstText();
-
-    var r = getTimestamp(8);
+function test170619() {
 
 }
