@@ -7,9 +7,9 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-    colorSize = "no";
-    debug = true;
-    ipadVer = "7.01";// 7.01
+//    colorSize = "no";
+//    debug = true;
+//    ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
@@ -24,22 +24,9 @@ function onlyTest(){
 
 // var btn=window.tableViews()[0].image[0];
 // tap(btn);
- var image = getImages(window);
 
- return image;
+ return p;
 }
-function isUIAImage(obj) {
-    return isType(obj, "[object UIAImage]");
-}
-
-function getImages(){
-    var ret = [];
-    if (view1 && isDefined(view1)) {
-        ret = view1.images();
-    }
-    return ret;
-}
-
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来

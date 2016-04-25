@@ -14,7 +14,7 @@ function testShopIn001() {
     run("【门店调入-按批次查】翻页_排序_汇总", "ts140012_19");
     run("【门店调入-按批次查】返回按钮", "ts140015");
     run("【门店调入-按明细查】翻页_排序_汇总", "ts140016_20");
-    if(ipadVer>=7.01){
+    if (ipadVer >= 7.01) {
         run("【门店调入-按款号汇总】按款号汇总功能检查", "ts140022");
         run("【门店调入-按款号汇总】查询_清除", "ts140023_24");
         run("【门店调入-按款号汇总】翻页_排序_汇总", "ts140025_26_27");
@@ -106,6 +106,7 @@ function ts150008() {
 
 // 常青店登入，验证ts150007开的单子的明细备注并验证ts150013的相关内容
 function ts150013() {
+    logDebug(" outBatch['ts150007']=" + outBatch['ts150007']);
     tapMenu("门店调入", "在途调拨");
     var keys = { "批次从" : outBatch["ts150007"], "批次到" : outBatch["ts150007"] };
     var fields = shopInFlitFields(keys);
@@ -529,8 +530,7 @@ function ts140023_24() {
     var det = editShopOutDet();
     tapMenu("门店调入", "按款号汇总");
     var keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
-        "日期从" : getDay(-30), "调出门店" : "中洲店",
-        "调入门店" : "常青店", "品牌" : "Adidas" };
+        "日期从" : getDay(-30), "调出门店" : "中洲店", "调入门店" : "常青店", "品牌" : "Adidas" };
     var fields = shopInCodeFields(keys);
     query(fields);
     var qr = getQR();

@@ -42,7 +42,7 @@ function addGoods(keys, isEdit, day) {
     if (isDefined(day)) {
         changeMarketTime(day);
     }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
 
@@ -1276,6 +1276,18 @@ function isHasStaticTexts(view, arr) {
             logDebug("未找到内容为" + value + "的StaticTexts");
             break;
         }
+    }
+    return ret;
+}
+
+function isUIAImage(obj) {
+    return isType(obj, "[object UIAImage]");
+}
+
+function getImages(view1) {
+    var ret = [];
+    if (view1 && isDefined(view1)) {
+        ret = view1.images();
     }
     return ret;
 }
