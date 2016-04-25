@@ -16,17 +16,12 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "onlyTest");
+ run("测试用例", "test100038_100039_100040");
 }
 
 function onlyTest(){
-// debugElementTree(window);
- tapMenu("采购订货","新增订货+");
- var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
-     "汇款" : [ 300, "银" ], "备注" : "xx", "采购订货" : "yes" };
- var det = editOverLengthBillDet();
- var json = mixObject(jo, det);
- editSalesBill(json, colorSize);
+ debugElementTree(window);
+
    return true;
 }
 

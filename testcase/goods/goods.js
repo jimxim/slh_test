@@ -1460,7 +1460,7 @@ function test100035() {
 function test100038_100039_100040() {
     // 最小库存=最大库存
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     var keys = [ "最小库存", "最大库存" ];
     var fields = editGoodsFields(keys, false);
     changeTFieldValue(fields["最小库存"], 90);
@@ -1469,7 +1469,7 @@ function test100038_100039_100040() {
     tapButtonAndAlert("修改保存");
 
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     var ret1 = isEqual(90, getTextFieldValue(getScrollView(), 19))
             && isEqual(90, getTextFieldValue(getScrollView(), 20));
 
@@ -1479,7 +1479,7 @@ function test100038_100039_100040() {
     tapButtonAndAlert("修改保存");
 
     tapMenu("货品管理", "货品查询");
-    tapFirstText(getScrollView(), TITLE_SEQ, 15);
+    tapFirstText();
     var ret2 = isEqual(90, getTextFieldValue(getScrollView(), 19))
             && isEqual(95, getTextFieldValue(getScrollView(), 20));
 
