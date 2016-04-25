@@ -21,12 +21,23 @@ function test000All() {
 
 function onlyTest(){
 // debugElementTree(window);
-    var r = getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200","进货价":"100","季节":"夏季" };
-    addGoods(keys, colorSize);
-    
-    
-   return true;
+
+// var btn=window.tableViews()[0].image[0];
+// tap(btn);
+ var image = getImages(window);
+
+ return image;
+}
+function isUIAImage(obj) {
+    return isType(obj, "[object UIAImage]");
+}
+
+function getImages(){
+    var ret = [];
+    if (view1 && isDefined(view1)) {
+        ret = view1.images();
+    }
+    return ret;
 }
 
 

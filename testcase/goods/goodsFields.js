@@ -244,7 +244,7 @@ function queryGoodsInOutField(key, show) {
     case "厂商":
         f = new TField("厂商", TF_AC, 4, "a", -1, 0);
         if (show) {
-            f.value = "aa";
+            f.value = "Adidas";
         }
         break;
     case "market1":
@@ -261,6 +261,17 @@ function queryGoodsInOutField(key, show) {
         f = new TField("品牌", TF_AC, 7, "1010pp", -1, 0);
         if (show) {
             f.value = "1010pp";
+        }
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 8, "登山服", -1, 0);
+        break;
+    case "staff":
+    case "经办人":
+        f = new TField("经办人", TF_AC, 9, "000", -1, 0);
+        if (show) {
+            f.value = "000,总经理";
         }
         break;
     default:
@@ -353,6 +364,9 @@ function testEditGoodsFields() {
 
 function editGoodsFields(keys, show) {
     var view = getScrollView();
+    if (isUndefined(show)) {
+        show == false;
+    }
     var priceStartIndex = -1;
     var texts = getStaticTexts(view);
     if (isEqualsTexts1(texts, "吊牌价")) {

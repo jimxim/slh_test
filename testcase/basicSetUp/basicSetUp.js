@@ -583,7 +583,7 @@ function editGoodsBasicSetUp(keys, day, color) {
     var qr = getQR();
 
     delay();
-    var fields = editGoodsFields(keys);
+    var fields = editGoodsFields(keys, false);
     if (qr.data.length > 0) {
         tapFirstText();
         if (isDefined(day)) {
@@ -614,7 +614,8 @@ function setGoods001() {
     var keys = { "款号" : "3035", "名称" : "jkk", "品牌" : "Adidas", "吊牌价" : "200",
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
-        "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
+        "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0",
+        "经办人" : "000" };
     return editGoodsBasicSetUp(keys, "2015-10-13");
 }
 
@@ -734,7 +735,7 @@ function setAuto1GoodsColor002() {
         "零批价" : "200", "打包价" : "180", "大客户价" : "160", "Vip价格" : "140",
         "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys, "2014-03-14", "yes"); 
+    return editGoodsBasicSetUp(keys, "2014-03-14", "yes");
 
 }
 function setAuto1Goods003() {
@@ -751,5 +752,5 @@ function setAuto1GoodsColor004() {
         "零批价" : "200", "打包价" : "180", "大客户价" : "160", "Vip价格" : "140",
         "产品折扣" : "0.9", "季节" : "春季", "类别" : "登山服", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0", "是否加工款" : "是", "加工价" : 120 };
-    return editGoodsBasicSetUp(keys, "2016-04-01","yes");
+    return editGoodsBasicSetUp(keys, "2016-04-01", "yes");
 }
