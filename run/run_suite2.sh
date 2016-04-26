@@ -42,8 +42,8 @@ js_func="$js_func testSalesNoColorSize170125  testSalesNoColorSize170607"
 #js_func="$js_func testSalesNoColorSize170429"
 #js_func="$js_func testSalesNoColorSize170125_Params"
 #js_func="$js_func testSalesNoColorSize170125"
-#js_func="$js_functest SalesNoColorSize170240_Prepare"
-#js_func="$js_functest SalesNoColorSize170240"
+#js_func="$js_func testSalesNoColorSize170240_Prepare"
+#js_func="$js_func testSalesNoColorSize170240"
 
 #销售开单-特殊模块
 js_func="$js_func setSales001Params"
@@ -66,6 +66,7 @@ js_func="$js_func test000Check001"
 #统计图表
 js_func="$js_func test000testStatisticPicture001"
 js_func="$js_func test000testStatisticPicture002"
+
 #系统设置
 js_func="$js_func test000System001 test000System002"
 

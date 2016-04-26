@@ -146,7 +146,7 @@ function salesQueryParticularField(key, show) {
     case "remarks":
     case "备注":
         f = new TField("备注", TF, 7, "备注");
-        break;   
+        break;
     case "day1":
     case "日期从":
         f = new TField("日期从", TF_DT, 8, "2015-9-11");
@@ -154,7 +154,7 @@ function salesQueryParticularField(key, show) {
     case "day2":
     case "到":
         f = new TField("到", TF_DT, 9, getToday());
-        break;    
+        break;
     case "type":
     case "类别":
         f = new TField("备注", TF_SC, 10, "备注");
@@ -716,13 +716,20 @@ function salesProviderField(key, show) {
             f.value = "aa";
         }
         break;
+    case "shop":
+    case "常青店":
+        f = new TField("门店", TF_SC, 1, "常青店");
+        if (show) {
+            f.value = "aa";
+        }
+        break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 1, "2015-9-11");
+        f = new TField("日期从", TF_DT, 2, "2015-9-11");
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 2, getToday());
+        f = new TField("到", TF_DT, 3, getToday());
         break;
     default:
         logWarn("未知key＝" + key);
