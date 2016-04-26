@@ -8865,13 +8865,15 @@ function test170631() {
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "配货员" : "004" };
+        "配货" : "004" };
     editSalesBillNoColorSize(json);
 
     query();
     tapFirstText();
 
     var ret = isIn(getTextFieldValue(window, 8), "店长004");
+    
+    tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     query();

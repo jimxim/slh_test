@@ -66,9 +66,9 @@ function test000All() {
 //    run("【销售开单－开单】开启退货数验证时提示具体哪个款号的退货数超出", "test170074");
 //    run("【销售开单-开单】客户折扣下，输入客户，再新增货品，点保存时检查提示", "test170509");  
 //    run("【销售开单－销售汇总-按店员汇总】排序/翻页/快速翻页", "test170321_170322_170323");
-    run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
+//    run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
     
-// run("", "test1");
+ run("", "test1");
 }
     
 function funcSs(){
@@ -80,7 +80,11 @@ function funcSs(){
     }
 }
 function test1(){
-    debugElementTree(window);
+//    debugElementTree(window);
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "配货" : "004" };
+    editSalesBillNoColorSize(json);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 }
 function test2(){
