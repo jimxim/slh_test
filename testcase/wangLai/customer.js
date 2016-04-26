@@ -15,8 +15,8 @@ function testCustomer001() {
     run("【往来管理-积分查询】积分查询", "test110036");
     run("【往来管理-积分查询】数据验证", "test110036_1");
     run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
-    run("【往来管理-厂商账款】厂商门店账", "test110041");
-    run("【往来管理-厂商账款】厂商总账", "test110042");
+    run("【往来管理-厂商账款】厂商门店账", "ts110041");// 7.01版
+    run("【往来管理-厂商账款】厂商总账", "ts110042");// 7.01版
     run("【往来管理-物流商查询】物流商查询", "test110044");
     run("【往来管理-更多】客户回访", "test110048");
     run("【往来管理】下拉框验证", "testCheckCustomerDropDownList");
@@ -64,9 +64,9 @@ function testCustomer002() {
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
     run("【往来管理-新增厂商】新增厂商", "test110038");
-    run("【往来管理-新增厂商】厂商适用价格检查", "test110039");
+    run("【往来管理-新增厂商】厂商适用价格检查", "ts110039");
     // run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
-    run("【往来管理-厂商账款】总经理权限检查", "test110041Role000");
+    run("【往来管理-厂商账款】总经理权限检查", "ts110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
     // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
     run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
@@ -1751,7 +1751,7 @@ function ts110035() {
     tapMenu("往来管理", "客户活跃度");
     tapButton(window, QUERY);
     qr = getQR();
-    ret1 = isAnd(ret, isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
+    ret1 = isAnd(ret1, isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
             jo["未拿货天数"]));
 
     query();
@@ -2054,83 +2054,33 @@ function test110038Field(keys, msg) {
     return isIn(alertMsg, msg);
 }
 
-function test110039() {
+function ts110039() {
     var i, v;
     var p = "进货价 零批价 打包价 大客户价 Vip价格";
 
     tapMenu("货品管理", "新增货品+");
-    tapButton(getScrollView(), 8); // 厂商的新增+按钮
+    var addIdx = getButtonIndex(getScrollView(), "增量");// 日期的增量按钮
+    tapButton(getScrollView(), addIdx + 5); // 厂商的新增+按钮
     tapButton(getPopOrView(), "选 择");
-    var view1 = getPopView(window, -1);
-    var ret1 = true;
-    var texts = getStaticTexts(view1);
-    for (i = 0; i < texts.length; i++) {
-        v = texts[i].name();
-        if (v) {
-            ret1 = isAnd(ret1, isIn(p, v));
-        }
-    }
-    delay();
-    target.frontMostApp().mainWindow().popover().dismiss();
+    var ret = isEqualDropDownListByExp(p);
     tapButton(getPop(), CLOSE);
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("采购入库", "新增入库+");
     tapButton(window, "新增+"); // 厂商的新增+按钮
-    var ret2 = true;
     tapButton(getPopOrView(), "选 择");
-    view1 = getPopView(window, -1);
-    texts = getStaticTexts(view1);
-    for (i = 0; i < texts.length; i++) {
-        v = texts[i].name();
-        if (v) {
-            ret2 = isAnd(ret2, isIn(p, v));
-        }
-    }
-    delay();
-    target.frontMostApp().mainWindow().popover().dismiss();
+    ret = isAnd(ret, isEqualDropDownListByExp(p));
     tapButton(getPop(), CLOSE);
-    tapButton(window, RETURN);
-
-    // tapMenu("采购入库", "按订货入库");
-    // var keys = { "日期从" : "2015-10-1" };
-    // var fields = purchaseOrderFields(keys);
-    // query(fields);
-    // tapFirstText();
-    // tapButton(window, "新增+"); // 厂商的新增+按钮
-    // var ret3 = true;
-    // tapButton(getPopOrView(), "选 择");
-    // view1 = getPopView(window, -1);
-    // texts = getStaticTexts(view1);
-    // for (i = 0; i < texts.length; i++) {
-    // v = texts[i].name();
-    // if (v) {
-    // ret3 = isAnd(ret3, isIn(p, v));
-    // }
-    // }
-    // delay();
-    // target.frontMostApp().mainWindow().popover().dismiss();
-    // tapButton(getPop(), CLOSE);
-    // tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("采购订货", "新增订货+");
     tapButton(window, "新增+"); // 厂商的新增+按钮
-    var ret4 = true;
     tapButton(getPopOrView(), "选 择");
-    view1 = getPopView(window, -1);
-    texts = getStaticTexts(view1);
-    for (i = 0; i < texts.length; i++) {
-        v = texts[i].name();
-        if (v) {
-            ret4 = isAnd(ret4, isIn(p, v));
-        }
-    }
-    delay();
-    target.frontMostApp().mainWindow().popover().dismiss();
+    ret = isAnd(ret, isEqualDropDownListByExp(p));
     tapButton(getPop(), CLOSE);
-    tapButton(window, RETURN);
+    tapReturn();
 
-    return ret1 && ret2 && ret4;
+    return ret;
 }
 
 function test110040() {
@@ -2230,7 +2180,7 @@ function test110040Field(value) {
 }
 
 // 翻页，排序，查询，清除，汇总
-function test110041() {
+function ts110041() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
     // 翻页
@@ -2240,7 +2190,7 @@ function test110041() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = { "厂商" : "vell", "门店" : "常青店" };
+    var keys = { "厂商" : "vell", "厂商名称" : "vell", "门店" : "常青店" };
     var fields = queryProviderShopAccountFields(keys);
     query(fields);
     var qr = getQR();
@@ -2248,21 +2198,14 @@ function test110041() {
             isEqual(1, qr.totalPageNo), isEqual(qr.data[0]["余额"],
                     qr.counts["余额"]));
 
-    query();
+    ret = isAnd(ret, fuzzyQueryCheckField(fields["厂商名称"].index, "名称", "p"));
+    tapButton(window, QUERY);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
-            && isEqual("", getTextFieldValue(window, 1));
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual("", getTextFieldValue(window, 2));
 
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(sum, qr.counts["余额"]));
+    var arr = [ "余额" ];
+    ret = isAnd(ret, isEqualCounts["余额"]);
 
     return ret;
 
@@ -2300,15 +2243,13 @@ function test110041TitleCheck() {
     return isAnd(ret1, ret2);
 }
 
-function test110041Role000() {
+function ts110041Role000() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
+    // 应该显示其他门店
+    tapTitle(getScrollView(), "门店");
+    tapTitle(getScrollView(), "门店");
     var ret = !test110031_110032Field();
-
-    if (!ret) {
-        tapTitle(getScrollView(), "门店");
-        ret = !test110031_110032Field();
-    }
 
     var keys = { "门店" : "中洲店" };
     var fields = queryProviderShopAccountFields(keys);
@@ -2758,7 +2699,7 @@ function test110041Field(qr, arr) {
 }
 
 // 翻页，查询，清除，排序，汇总
-function test110042() {
+function ts110042() {
     tapMenu("往来管理", "厂商账款", "厂商总账");
     query();
     // 翻页
@@ -2767,7 +2708,7 @@ function test110042() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var keys = { "厂商" : "vell" };
+    var keys = { "厂商" : "vell", "厂商名称" : "v" };
     var fields = queryCustomerProviderAccountFields(keys);
     query(fields);
     var qr = getQR();
@@ -2775,23 +2716,15 @@ function test110042() {
             && isEqual(1, qr.totalPageNo)
             && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
 
-    query();
-    ret = ret && isEqual("", getTextFieldValue(window, 0));
+    ret = isAnd(ret, fuzzyQueryCheckField(fields["厂商名称"].index, "名称", "p"));
+    tapButton(window, QUERY);
+    ret = ret && isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1));
 
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = ret && isEqual(sum, qr.counts["余额"]);
+    var arr = [ "余额" ];
+    ret = ret && isEqualCounts(arr);
 
     return ret;
-
 }
 
 function test110043() {

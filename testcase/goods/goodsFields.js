@@ -71,6 +71,10 @@ function queryGoodsStockField(key, show) {
             f.value = "1010pp";
         }
         break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 11, "登山服");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -474,7 +478,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, priceStartIndex + 11, "a", -1, 0);
+        f = new TField("厂商", TF_AC, priceStartIndex + 16, "a", -1, 0);
         if (show) {
             f.value = "Vell";
         }
@@ -510,6 +514,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
             f.value = "000,总经理";
         }
         break;
+    // 这个不考虑与客户是否允许退货的组合情况
     case "allowReturn":
     case "允许退货":
         f = new TField("允许退货", BTN_SC, addIdx + 8, "否");

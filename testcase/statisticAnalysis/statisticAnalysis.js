@@ -1157,7 +1157,8 @@ function ts190110() {
 
     // 查询门店只有常青店，不能显示其他门店
     var exp = "常青店";
-    var ret = isEqualDropDownListByExp(exp, fields["门店"].index);
+    tap(getTextField(window, fields["门店"].index));
+    var ret = isEqualDropDownListByExp(exp);
 
     query(fields);
     delay();

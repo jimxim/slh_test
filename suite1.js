@@ -7,25 +7,26 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-//    colorSize = "no";
-//    debug = true;
-//    ipadVer = "7.01";// 7.01
+// colorSize = "no";
+    debug = true;
+// ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "onlyTest");
+ run("测试用例", "test100033");
 }
 
 function onlyTest(){
 // debugElementTree(window);
+    var oStockNum = getColorSizeStockNum();
+    for(var i in oStockNum){
+        logDebug("i="+i+"   num="+oStockNum[i]);
+    }
 
-// var btn=window.tableViews()[0].image[0];
-// tap(btn);
-
- return p;
+ return oStockNum;
 }
 
 function prepare200All(){

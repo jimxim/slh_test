@@ -126,7 +126,8 @@ function ts130001() {
 
         // 验证下拉框内容
         var exp = "未入库,部分入库,全部入库,结束,申请取消中";
-        var ret = isEqualDropDownListByExp(exp, fields["发货状态"].index);
+        tap(getTextField(window, fields["发货状态"].index));
+        var ret = isEqualDropDownListByExp(exp);
 
         query();
         var qr = getQR();
@@ -1343,7 +1344,7 @@ function editOverLengthBillDet() {
  * 简单的开单明细
  * @param num 数量
  * @param gIdx 颜色尺码模式时，货品文本框的下标
- * @returns 
+ * @returns
  */
 function addPOrderBillDet(num, gIdx) {
     if (isUndefined(num)) {

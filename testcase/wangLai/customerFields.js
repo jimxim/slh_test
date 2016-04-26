@@ -549,14 +549,18 @@ function queryProviderShopAccountField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 0, "Vell", -1, 0);
         if (show) {
-            f.value = "aa";
+            f.value = "Vell";
         }
+        break;   
+    case "providerName":
+    case "厂商名称":
+        f = new TField("厂商名称", TF, 1, "Vell");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 1, "常青店");
+        f = new TField("门店", TF_SC, 2, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -608,10 +612,14 @@ function queryCustomerProviderAccountField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 0, "vell", -1, 0);
         if (show) {
-            f.value = "aa";
+            f.value = "Vell";
         }
+        break;
+    case "providerName":
+    case "厂商名称":
+        f = new TField("厂商名称", TF, 1, "vell");
         break;
     default:
         logWarn("未知key＝" + key);

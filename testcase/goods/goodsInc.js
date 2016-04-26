@@ -985,15 +985,13 @@ function dropDownListCheck2(index, value, expected, o) {
 /**
  * 下拉列表是否包含期望值的内容
  * @param exp eg：exp = "进货价 零批价 打包价 大客户价 Vip价格"
- * @param index 要验证的文本框下标
  * @param view
  * @returns {Boolean}
  */
-function isEqualDropDownListByExp(exp, index, view) {
+function isEqualDropDownListByExp(exp,view) {
     if (isUndefined(view)) {
         view = window;
     }
-    tap(getTextField(view, index));
     delay(0.5);// 等待popover出现
     var view1 = getPopView(view, -1);
     var ret = true;
