@@ -16,7 +16,7 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "test100033");
+ run("测试用例", "test100104_100105");
 }
 
 function onlyTest(){
@@ -117,7 +117,7 @@ function loginGoodsParams002(){
        logout();
     }
 }
-// 均色均码 默认价格模式
+// 默认价格模式
 function login000Goods003() {
     var p1 = {"角色":"总经理"};
   var ok = login("000","000000",p1);

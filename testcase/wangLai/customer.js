@@ -2159,7 +2159,7 @@ function test110040() {
     addGoods(keys, colorSize);
 
     keys = { "款号" : "g" + r2, "名称" : "g" + r2, "进货价" : 100, "厂商" : r2 };
-    addGoods(keys, colorSize);
+    addGoods(keys);
 
     tapMenu("采购入库", "批量入库+");
     json = {

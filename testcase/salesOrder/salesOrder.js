@@ -1371,7 +1371,7 @@ function test160063_1() {
 function test160090() {
     var r = "g" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : 200 };
-    addGoods(keys, colorSize);
+    addGoods(keys);
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "20" } ] };
@@ -2335,7 +2335,7 @@ function test16_Stockout_2() {
     var r = "g" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : "a" + r, "品牌" : "1010pp", "吊牌价" : "200",
         "季节" : "春季", "厂商" : "vell" };
-    addGoods(keys, colorSize);
+    addGoods(keys);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : "10" } ] };

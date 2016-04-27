@@ -519,6 +519,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
     case "允许退货":
         f = new TField("允许退货", BTN_SC, addIdx + 8, "否");
         if (show) {
+            f.type=TF;
             f.index = priceStartIndex + 22;
         }
         break;
@@ -526,6 +527,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
     case "是否加工款":
         f = new TField("是否加工款", BTN_SC, addIdx + 9, "否");
         if (show) {
+            f.type=TF;
             f.index = priceStartIndex + 23;
         }
         break;
@@ -537,6 +539,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
     case "门店":
         f = new TField("门店", BTN_SC, addIdx + 10, "常青店");
         if (show) {
+            f.type=TF;
             f.index = priceStartIndex + 25;
         }
         break;

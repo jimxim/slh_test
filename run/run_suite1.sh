@@ -35,7 +35,7 @@ js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesO
 #总经理
 #js_func="$js_func login100Warehouse "
 
-#货品管理
+#货品管理默认价格模式
 #js_func="$js_func loginGoodsParams002 login000Goods003 "
 #js_func="$js_func loginGoodsParams003 loginStoreKeeper002_2 loginBillClerk005_2 "
 
