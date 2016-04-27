@@ -32,11 +32,15 @@ js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001"
 
 #销售开单-登出登进
+js_func="$js_func setSales001Params"
 js_func="$js_func testSalesNoColorSize170125_Params"
-js_func="$js_func testSalesNoColorSize170125  testSalesNoColorSize170607 testSalesNoColorSize170641_4"
+js_func="$js_func testSalesNoColorSize170125  testSalesNoColorSize170607"
 js_func="$js_func testSalesNoColorSize170641_4"
+js_func="$js_func testSalesNoColorSize170649_Prepare"
+js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
 #销售开单-其它角色
+#js_func="$js_func setSales001Params"
 #js_func="$js_func testSalesNoColorSize170140_Params"
 #js_func="$js_func testSalesNoColorSize170140"
 #js_func="$js_func testSalesNoColorSize170429_Params"

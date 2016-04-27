@@ -15,6 +15,10 @@ function test004() {
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170550_4");
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170551_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
+    run("【销售订货】异地+代收，店长权限", "test170649_Prepare");
+    run("【销售订货】异地+代收，店长权限", "test170649");
+    run("【销售订货】异地+代收，挂单+店长权限", "test170650");
+    run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170670");//
 
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -818,11 +822,113 @@ function test170641_4() {
 
     tapFirstText();
 
-    var ret = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 6)), isEqual("zz",
-            getTextFieldValue(getScrollView(), 10)));
+    var ret = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 6)), isEqual(
+            "zz", getTextFieldValue(getScrollView(), 10)));
 
     tapReturn();
 
     logDebug(" ret=" + ret);
     return ret;
+}
+function test170649_Prepare() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否门店过滤人员" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+}
+function test170649() {
+    tapMenu("销售订货", "按批次查");
+    query();
+
+    var qr = getQR();
+
+    var total1 = qr.total;
+    var batch = qr.data[0]["批次"];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "7" }, { "货品" : "k300", "数量" : "8" } ],
+        "发货" : "仓库店" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "按批次查");
+    query();
+
+    qr = getQR();
+    var total2 = qr.total;
+
+    var ret = isAnd(isEqual(1, sub(total2, total1)), isEqual(1, sub(
+            qr.data[0]["批次"], batch)),
+            isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("李四",
+                    qr.data[0]["客户"]), isEqual(15, qr.data[0]["数量"]));
+
+    return ret;
+}
+function test170650() {
+    tapMenu("销售订货", "按挂单");
+    query();
+
+    var qr = getQR();
+
+    var total1 = qr.total;
+    var batch = qr.data[0]["批次"];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "7" }, { "货品" : "k300", "数量" : "8" } ],
+        "发货" : "仓库店" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "按挂单");
+    query();
+
+    qr = getQR();
+    var total2 = qr.total;
+
+    var ret = isAnd(isEqual(1, sub(total2, total1)), isEqual(1, sub(
+            qr.data[0]["批次"], batch)),
+            isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("常青店",
+                    qr.data[0]["门店"]), isEqual("李四", qr.data[0]["客户"]),
+            isEqual(15, qr.data[0]["数量"]));
+
+    return ret;
+}
+function test170670() {
+    var qo, o, ret = true;
+    qo = { "备注" : "打印后不允许修改" };
+    o = { "新值" : "2", "数值" : [ "都不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : "20" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapButton(window, "打 印");
+
+    var o1 = { "保存成功,是否打印" : "打印(客户用)" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(6);
+
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = (isIn(alertMsg1, "不能修改"));
+
+    qo = { "备注" : "打印后不允许修改" };
+    o = { "新值" : "0", "数值" : [ "不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
