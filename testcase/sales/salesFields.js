@@ -736,6 +736,45 @@ function salesProviderField(key, show) {
     }
     return f;
 }
+// 按配货员汇总
+function testSalesProviderFields() {
+    var keys = [ "day1", "day2", "matcher", "shop" ];
+    var fields = salesProviderFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = salesProviderFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function salesMatcherFields(keys, show) {
+    return getTFields("salesMatcherField", keys, show);
+}
+function salesMatcherField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 1, "常青店");
+        break;
+    case "matcher":
+    case "配货员":
+        f = new TField("配货员", TF_AC, 2, "000", -1, 0);
+        if (show) {
+            f.value = "000,管理员";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 3, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 
 // 开单
 function testSalesBillFields() {

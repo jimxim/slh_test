@@ -232,6 +232,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "销售开单时同时订货" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "进货入库" };
+    o = { "新值" : "0", "数值" : [ "不更新","in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "询问打印" };
     o = { "新值" : "1", "数值" : [ "询问打印" ] };
@@ -1920,7 +1924,7 @@ function test170074() {
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys);
+    var fields = editGoodsFields(keys,false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();

@@ -14,6 +14,7 @@ function test004() {
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430_4");//
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170550_4");
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170551_4");
+    run("【销售开单-物流单】非总经理登录", "test170641_4");
 
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -755,7 +756,7 @@ function test170551_4() {
     var md = getTextFieldValue(getScrollView(), 22);
 
     tapReturn();
-    
+
     tapMenu("销售开单", "开  单+");
     var i;
     var ret3 = false;
@@ -771,15 +772,15 @@ function test170551_4() {
     }
     tapButton(window, CLEAR);
     tapReturn();
-    
+
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "特殊货品" : { "抹零" :19, "打包费" : 30 } };
+    var json = { "客户" : "ls", "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
     editSalesBillNoColorSize(json);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 =isAnd(isEqual("中洲店", md),  isIn(alertMsg1, "保存成功，是否打印"));
-    
+    var ret1 = isAnd(isEqual("中洲店", md), isIn(alertMsg1, "保存成功，是否打印"));
+
     tapMenu("货品管理", "当前库存");
     var ret2 = false;
     var f = new TField("客户", TF_AC, 0, "aaa0", -1);
@@ -796,4 +797,32 @@ function test170551_4() {
     tapButton(window, CLEAR);
 
     return ret && ret1;
+}
+function test170641_4() {
+    tapMenu("销售开单", "物流单");
+    var keys = { "日期从" : "2015-01-01" };
+    var fields = salesQueryLogisticsFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    var r = getTimestamp(8);
+    var f6 = new TField("运单号", TF, 6, r);
+    var f10 = new TField("备注", TF, 10, "zz");
+    var fields = [ f6, f10 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    query();
+
+    tapFirstText();
+
+    var ret = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 6)), isEqual("zz",
+            getTextFieldValue(getScrollView(), 10)));
+
+    tapReturn();
+
+    logDebug(" ret=" + ret);
+    return ret;
 }
