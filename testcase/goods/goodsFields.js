@@ -369,7 +369,7 @@ function testEditGoodsFields() {
 function editGoodsFields(keys, show) {
     var view = getScrollView();
     if (isUndefined(show)) {
-        show == false;
+        show = false;
     }
     var priceStartIndex = -1;
     var texts = getStaticTexts(view);
@@ -602,6 +602,7 @@ function goodsPricingField(key, show) {
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

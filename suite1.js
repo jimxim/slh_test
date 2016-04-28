@@ -16,17 +16,12 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "test100104_100105");
+ run("测试用例", "ts120007");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    var oStockNum = getColorSizeStockNum();
-    for(var i in oStockNum){
-        logDebug("i="+i+"   num="+oStockNum[i]);
-    }
-
- return oStockNum;
+    UIATarget.localTarget().frontMostApp().mainWindow().tableViews()[0].scrollToElementWithPredicate("name beginswith ‘品牌’");
 }
 
 function prepare200All(){

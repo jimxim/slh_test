@@ -5,7 +5,7 @@ function testPurchase001() {
     run("【采购入库-按批次查】条件查询，清除按钮", "ts120001_2");
     run("【采购入库-按明细查】界面功能检查,翻页/排序/汇总", "test120047_1");
     run("【采购入库-按明细查】界面功能检查,查询/清除", "test120047_2");
-    run("【采购入库-采购汇总】采购汇总->按金额汇总", "test120007");
+    run("【采购入库-采购汇总】采购汇总->按金额汇总", "ts120007");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,翻页/排序/汇总", "test120008");
     run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_1");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,条件查询/清除/下拉框", "test120008_2");
@@ -353,7 +353,7 @@ function ts120005Field() {
 }
 
 // 翻页，排序，汇总
-function test120007() {
+function ts120007() {
     tapMenu("采购入库", "按汇总", "按金额汇总");
     var keys = { "日期从" : getDay(-30) };
     var fields = purchasePriceFields(keys);
@@ -364,65 +364,37 @@ function test120007() {
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
-    ret = ret && sortByTitle("代收", IS_NUM);
 
-    query();
-    var qr = getQR();
-    var a = qr.data[0]["现金"];
-    var a1 = qr.data[0]["刷卡"];
-    var a2 = qr.data[0]["汇款"];
-    var a3 = qr.data[0]["代收"];
-
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "现金" : "500", "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购入库", "按汇总", "按金额汇总");
-    query();
-    qr = getQR();
-    var b = qr.data[0]["现金"];
-    var b1 = qr.data[0]["刷卡"];
-    var b2 = qr.data[0]["汇款"];
-    var b3 = qr.data[0]["代收"];
-
-    ret = isAnd(ret, isEqual("500", sub(b, a)), isEqual("500", sub(b1, a1)),
-            isEqual("400", sub(b2, a2)), isEqual("0", sub(b3, a3)), isEqual(
-                    getToday("yy"), qr.data[0]["日期"]));
-
-    keys = { "日期从" : getDay(-30) };
-    fields = purchasePriceFields(keys);
-    query(fields);
-    qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["现金"]);
-            sum2 += Number(qr.data[i]["刷卡"]);
-            sum3 += Number(qr.data[i]["汇款"]);
-            sum4 += Number(qr.data[i]["代收"]);
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
-            sum4));
+    var arr = [ "现金", "刷卡", "汇款" ];
+    ret = isAnd(ret, isEqualCounts(arr));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
             isEqual(getToday(), getTextFieldValue(window, 1)));
 
-    tapMenu("采购入库", "按批次查");
+    var qr = getQR();
+    var a1 = qr.counts;
+
+    tapMenu2("新增入库+");
+    var jo = { "客户" : "vell", "现金" : "500", "刷卡" : [ 400, "交" ],
+        "汇款" : [ 600, "农" ] };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json,colorSize);
+
+    tapMenu("采购入库", "按汇总", "按金额汇总");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var a2 = qr.counts;
+    var exp = { "现金" : 500, "刷卡" : "400", "汇款" : 600 };
+    ret = isAnd(ret, isEqualObject2(exp, subObject(a2, a1)));
+
+    tapMenu2("按批次查");
     keys = { "作废挂单" : "正常" };
     fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    ret = isAnd(ret, isEqual(b, qr.counts["现金"]), isEqual(b1, qr.counts["刷卡"]),
-            isEqual(b2, qr.counts["汇款"]));
+    ret = isAnd(ret, isEqualObject2(a2, qr.counts));
 
     return ret;
 }

@@ -59,7 +59,7 @@ function testCustomer002() {
     run("【往来管理】是否欠款报警查询", "test110028");
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "ts110034");
-    run("【往来管理-客户活跃度】未拿货天数", "test110035");
+    run("【往来管理-客户活跃度】未拿货天数", "ts110035");
     // run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
@@ -243,9 +243,9 @@ function test110005() {
     var json = { "客户" : r };
     editSalesBillCustomer(json);
     saveAndAlertOk();
-    tapPrompt();
-    var ret = isIn(alertMsg, "客户或厂商 必须从下拉列表选择");
     tapReturn();
+    var ret = isInAlertMsgs("客户或厂商 必须从下拉列表选择");
+
 
     tapMenu("往来管理", "客户查询");
     var qKeys = { "客户名称" : r, "是否停用" : "是" };
@@ -262,7 +262,7 @@ function test110005() {
 
     // 做欠款单 欠2000
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ], "现金" : 0 };
+    json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
@@ -318,7 +318,7 @@ function test110002() {
                 { "货品" : "4562", "数量" : -10, "备注" : "退货" },
                 { "货品" : "3035", "数量" : 15, "备注" : "3035进" } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json,colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -327,7 +327,7 @@ function test110002() {
                 { "货品" : "4562", "数量" : -10, "备注" : "退货" },
                 { "货品" : "3035", "数量" : 15, "备注" : "3035进" } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json,colorSize);
 
     query();
     var qr = getQR();
@@ -636,18 +636,8 @@ function test110015() {
     ret = ret && sortByTitle("余额", IS_NUM);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
-    var qr = getQR();
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["余额"], sum));
+    var arr=["余额"];
+    ret = isAnd(ret, isEqualCounts(arr));
 
     var keys = { "客户名称" : "赵本山", "客户" : "zbs", "门店" : "常青店", "店员" : "000",
         "客户类别" : "VIP客户", "是否欠款" : "否", "是否欠款报警" : "否" };
@@ -2205,7 +2195,7 @@ function ts110041() {
             && isEqual("", getTextFieldValue(window, 2));
 
     var arr = [ "余额" ];
-    ret = isAnd(ret, isEqualCounts["余额"]);
+    ret = isAnd(ret, isEqualCounts(arr));
 
     return ret;
 
@@ -2883,8 +2873,7 @@ function test110045_110046() {
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    delay();
-    // 保存后自动返回物流商查询页面
+    tapReturn();// 保存后自动返回物流商查询页面
 
     query();
     var qr = getQR();
@@ -2916,7 +2905,7 @@ function test110045_110046() {
 
     // 停用
     tapButtonAndAlert(STOP);
-    keys = { "名称" : r, "是否停用" : "是" };
+    keys = { "名称" : r + "a", "是否停用" : "是" };
     fields = queryCustomerLogisticsFields(keys);
     query(fields);
     var qr = getQR();
@@ -2924,7 +2913,7 @@ function test110045_110046() {
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
-    var josn = { "代收" : { "物流商" : r, "代收金额" : 90 } };
+    var josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "必须选择物流商"));
@@ -2944,7 +2933,7 @@ function test110045_110046() {
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
-    josn = { "代收" : { "物流商" : r, "代收金额" : 90 } };
+    josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     ret = isAnd(ret, !isIn(alertMsg, "必须选择物流商"));
     tapReturn();
