@@ -252,8 +252,9 @@ function ts130020_2() {
 
     tapMenu("采购订货", "按批次查");
     // "日期到" : getToday(),
-    keys = { "厂商" : "vell", "日期从" : getDay(-10), "批次从" : batch,
-        "批次到" : batch + 1, "门店" : "常青店", "备注" : "xx", "店员" : "000" };
+    keys = { "厂商" : "vell", "日期从" : getDay(-10), "日期到" : getToday(),
+        "批次从" : batch, "批次到" : batch + 1, "门店" : "常青店", "备注" : "xx",
+        "店员" : "000" };
     fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
@@ -263,10 +264,11 @@ function ts130020_2() {
         "操作人" : "总经理", "备注" : "xx" };
     var ret = isEqualObject(expected, qr.data[0], 1);
 
+    // 7.01新需求日期到默认为空
     tapButton(window, CLEAR);
     var text = getTextFields(window);
     for (var i = 0; i < text.length; i++) {
-        if (i == 1 || i == 2) {
+        if (i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -299,7 +301,7 @@ function ts130002_1() {
 
     var arr = [ "数量", "金额", "已入库" ];
     if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("图像");
+        ret = ret && sortByTitle("图");
         ret = ret && sortByTitle("差异数", IS_NUM);
         arr.push("差异数");
     }
@@ -357,7 +359,7 @@ function ts130002_2() {
     } else {
         ret = false;
     }
-
+    logDebug("ret="+ret);
     tapButton(window, CLEAR);
     var text = getTextFields(window);
     for (var i = 0; i < text.length; i++) {
@@ -420,7 +422,7 @@ function ts130004_1() {
     var ret = goPageCheck();
 
     if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("图像");
+        ret = ret && sortByTitle("图");
     }
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -754,8 +756,8 @@ function ts130007_08() {
         editSalesBillDetNoColorSize(det);
     }
 
-    var joG = { "款号" : r2, "名称" : r2, "进货价" : 100, "零批价" : 200, "打包价" : 140,
-        "大客户价" : 150, "Vip价格" : 160, "数量" : 20 };
+    var joG = { "款号" : r2, "名称" : r2, "进货价" : "100", "零批价" : "200", "打包价" : "140",
+        "大客户价" : "150", "Vip价格" : "160", "数量" : "20" };
     editSalesBillAddGoods(joG);
 
     var qr = getQRDet();
@@ -794,7 +796,7 @@ function ts130007_08() {
             "操作人" : "总经理" };
         ret1 = isEqualObject(exp, qr.data[0]);
         tapFirstText();
-        joP["备注"] = null;
+        joP["备注"] = "";
         delete joP["店员"];
         fields = editCustomerProviderFields(joP, true);
         ret1 = isAnd(ret1, checkShowFields(getScrollView(-1), fields));

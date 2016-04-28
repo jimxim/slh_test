@@ -154,7 +154,7 @@ function testShopInCodeFields() {
 }
 
 function shopInCodeFields(keys, show) {
-    return getTFields("shopInCodeFields", keys, show);
+    return getTFields("shopInCodeField", keys, show);
 }
 function shopInCodeField(key, show) {
     var f;

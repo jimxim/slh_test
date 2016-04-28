@@ -16,12 +16,12 @@ function test000All() {
 // outBatch={"inPre":"177"};
 // run("测试用例", "ts110057_1");//
   
- run("测试用例", "ts120007");
+ run("测试用例", "ts130007_08");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-    UIATarget.localTarget().frontMostApp().mainWindow().tableViews()[0].scrollToElementWithPredicate("name beginswith ‘品牌’");
+
 }
 
 function prepare200All(){

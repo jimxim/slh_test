@@ -13,7 +13,7 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按厂商返货,条件查询/清除/下拉框", "test120009_1");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总,查询清除数据验证", "test120010");
     run("【采购入库-采购汇总】采购汇总->按厂商汇总，翻页排序汇总", "ts120010_1");// 实进数暂不支持排序
-    // run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/查询/清除", "test120011_1");
+    run("【采购入库-采购汇总】采购汇总->出入库汇总,翻页/排序/查询/清除", "test120011_1");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,数据验证", "test120011_2");
     run("【采购入库-采购汇总】采购汇总->汇总", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总，翻页排序汇总", "test120013_1");
@@ -380,7 +380,7 @@ function ts120007() {
         "汇款" : [ 600, "农" ] };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
-    editSalesBill(json,colorSize);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按汇总", "按金额汇总");
     tapButton(window, QUERY);
@@ -471,20 +471,48 @@ function test120008() {
     return ret && ret1;
 }
 function test120008_1() {
+    var det = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "3035", "数量" : num } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ num ] } ],
+            "goodsFieldIndex" : -2 };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "款号" : "3035",
-        "厂商" : "vell" };
+    var keys = { "日期从" : getDay(-30) };
     var fields = purchaseCodeFields(keys);
     query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["数量"];
-    var a1 = qr.data[0]["拿货数"];
-    var a2 = qr.data[0]["退货数"];
+    var det1 = test120008Field();
 
-    var num1 = getRandomInt(100) + 1;
-    var retNum1 = getRandomInt(num1) + 1;
-    var difNum1 = num1 - retNum1;
-    tapMenu("采购入库", "新增入库+");
+    var keys1 = { "款号" : det["明细"][0]["货品"] };
+    fields = purchaseCodeFields(keys1);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var a1 = qr.counts;
+
+    tapMenu2("按明细查");
+    fields = purchaseQueryParticularFields(keys);
+    query(fields);
+    var det2 = test120008Field();
+    var ret = true;
+    for ( var i in det1) {
+        if (i in det2) {
+            ret = ret && isEqualObject(det1[i], det2[i]);
+        } else {
+            logDebug("按明细查中未找到 i=" + i);
+            ret = false;
+        }
+    }
+
+    tapMenu2("新增入库+");
     var json = {
         "客户" : "vell",
         "明细" : [ { "货品" : "3035", "数量" : num1 },
@@ -506,6 +534,28 @@ function test120008_1() {
             -retNum1));
 
     return ret;
+}
+
+function test120008Field() {
+    var det = {};
+    var qr = getQR();
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.data.length; i++) {
+            var v = qr.data[i]["款号"];
+            if (!det.hasOwnProperty(v)) {
+                var data1 = {};
+                data1["数量"] = Number(qr.data[i]["数量"]);
+                det[v] = data1;
+            } else {
+                det[v]["数量"] += Number(qr.data[i]["数量"]);
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return det;
 }
 
 function test120008_2() {
@@ -646,27 +696,19 @@ function test120010() {
 
     var qr = getQR();
     var jo1 = qr.data[0];
-    var ret = isAnd(isEqual("Vell", qr.data[0]["名称"]), isEqual(qr.counts["现金"],
-            qr.data[0]["现金"]), isEqual(qr.counts["刷卡"], qr.data[0]["刷卡"]),
-            isEqual(qr.counts["汇款"], qr.data[0]["汇款"]), isEqual(
-                    qr.counts["进货数"], qr.data[0]["进货数"]), isEqual(
-                    qr.counts["退货数"], qr.data[0]["退货数"]), isEqual(
-                    qr.counts["实进数"], qr.data[0]["实进数"]), isEqual(
-                    qr.counts["实进额"], qr.data[0]["实进额"]));
+    var ret = isAnd(isEqual("Vell", qr.data[0]["名称"]), isEqualCounts());
 
-    tapMenu("采购入库", "新增入库+");
+    tapMenu2("新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "3035", "数量" : "2" } ],
         "现金" : "200", "刷卡" : [ 200, "工" ], "汇款" : [ 500, "建" ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "新增入库+");
+    tapMenu2("新增入库+");
     var json = {
         "客户" : "vell",
         "明细" : [ { "货品" : "3035", "数量" : "12" }, { "货品" : "3035", "数量" : "-5" } ],
         "现金" : "100", "刷卡" : [ 600, "交" ], "汇款" : [ 400, "农" ] };
     editSalesBillNoColorSize(json);
-    delay();
-    tapButton(window, RETURN);
 
     tapMenu("采购入库", "按汇总", "按厂商汇总");
     tapButton(window, QUERY);
@@ -709,7 +751,7 @@ function ts120010_1() {
 
 function test120011_1() {
     tapMenu("采购入库", "按汇总", "出入库汇总");
-    var keys = { "日期从" : getDay(-30) }
+    var keys = { "日期从" : getDay(-15) }
     var fields = purchaseInOutFields(keys);
     query(fields);
     // 翻页
@@ -723,17 +765,17 @@ function test120011_1() {
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
-    logDebug("ret=" + ret);
+    // logDebug("ret=" + ret);
 
     // 变成升序
     tapTitle(getScrollView(), "日期");
     tapFirstText();// 详细界面的日期有年份
     var a = getStaticTextValue(getScrollView(-1, 0), 1);
     var day1 = toDate(a.substr(3));
-    var day2 = toDate(getDay(-30));
-    // logDebug("day1=" + day1 + " day2=" + day2);
+    var day2 = toDate(getDay(-15));
     if (day1 < day2) {
         ret = false;
+        logDebug("日期错误 day1=" + day1 + "超过日期范围");
     }
     tapNaviLeftButton();
 
@@ -797,8 +839,6 @@ function test120011_2() {
 
     return ret;
 }
-
-// 汇总，作废数据影响，因此按照新增数据的方式验证
 function test120011_3() {
     return isAnd(test120011_3Field(50), test120011_3Field(-50));
 }
@@ -822,7 +862,6 @@ function test120011_3Field(num) {
     var exp = { "金额" : num * 100, "总数" : num };
     return isEqualObject(exp, subObject(counts2, counts1));
 }
-
 function test120031_120032() {
     tapMenu("采购入库", "按汇总", "按类别汇总");
     var a1 = 0, a2 = 0, i, j, ret = true;
@@ -1497,7 +1536,7 @@ function test120022() {
     // 欠款单
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
-        "现金" : "0" };
+        "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     // 核销欠款单，不输入任何款号，然后点未付，保存

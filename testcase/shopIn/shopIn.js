@@ -555,7 +555,7 @@ function ts140025_26_27() {
     query(fields);
     var ret = goPageCheck();
 
-    ret = ret && sortByTitle("图像");
+    ret = ret && sortByTitle("图");
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("调出门店");
