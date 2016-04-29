@@ -20,7 +20,7 @@ function repealWarehouseSalesBill() {
         tapButtonAndAlert("作 废", OK);
         tapButton(window, QUERY);
         qr = getQR();
-        if (qr.data.length == length) {
+        if (qr.data.length == 0) {
             break;
         }
     }

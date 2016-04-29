@@ -246,7 +246,6 @@ function test110005() {
     tapReturn();
     var ret = isInAlertMsgs("客户或厂商 必须从下拉列表选择");
 
-
     tapMenu("往来管理", "客户查询");
     var qKeys = { "客户名称" : r, "是否停用" : "是" };
     var qFields = queryCustomerFields(qKeys);
@@ -318,7 +317,7 @@ function test110002() {
                 { "货品" : "4562", "数量" : -10, "备注" : "退货" },
                 { "货品" : "3035", "数量" : 15, "备注" : "3035进" } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
-    editSalesBill(json,colorSize);
+    editSalesBill(json, colorSize);
 
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -327,7 +326,7 @@ function test110002() {
                 { "货品" : "4562", "数量" : -10, "备注" : "退货" },
                 { "货品" : "3035", "数量" : 15, "备注" : "3035进" } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
-    editSalesBill(json,colorSize);
+    editSalesBill(json, colorSize);
 
     query();
     var qr = getQR();
@@ -636,7 +635,7 @@ function test110015() {
     ret = ret && sortByTitle("余额", IS_NUM);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
-    var arr=["余额"];
+    var arr = [ "余额" ];
     ret = isAnd(ret, isEqualCounts(arr));
 
     var keys = { "客户名称" : "赵本山", "客户" : "zbs", "门店" : "常青店", "店员" : "000",
@@ -1092,14 +1091,14 @@ function test110022() {
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
 
-    tapFirstTextByTitle("门店", "常青店");
+    tapTextByFirstWithName("常青店", getScrollView());
     var qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret = isAnd(!isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3));
     tapNaviLeftButton();
 
     delay();
-    tapFirstTextByTitle("门店", "中洲店");
+    tapTextByFirstWithName("中洲店", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, b1), isInQRData1Object(qr, b2),
             isInQRData1Object(qr, b3));
@@ -1109,7 +1108,7 @@ function test110022() {
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
 
-    tapFirstTextByTitle("门店", "常青店");
+    tapTextByFirstWithName("常青店", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
             !isInQRData1Object(qr, a3), !isInQRData1Object(qr, c1),
@@ -1117,7 +1116,7 @@ function test110022() {
     tapNaviLeftButton();
 
     delay();
-    tapFirstTextByTitle("门店", "中洲店");
+    tapTextByFirstWithName("中洲店", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret = isAnd(ret, !isInQRData1Object(qr, b1), !isInQRData1Object(qr, b2),
             !isInQRData1Object(qr, b3), !isInQRData1Object(qr, d1),
@@ -1143,7 +1142,7 @@ function test110022() {
     fields = queryCustomerAccountFields(keys);
     query(fields);
 
-    tapFirstTextByTitle("名称", "上级客户1");
+    tapTextByFirstWithName("上级客户1", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret3 = isAnd(!isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
             !isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
@@ -1154,7 +1153,7 @@ function test110022() {
     tapNaviLeftButton();
 
     delay();
-    tapFirstTextByTitle("名称", "下级客户1");
+    tapTextByFirstWithName("下级客户1", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     ret3 = isAnd(ret3, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
@@ -2403,7 +2402,7 @@ function test110041Verify_1() {
         }
     }
 
-    tapFirstTextByTitle("门店", "常青店");
+    tapTextByFirstWithName("常青店", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var b1 = batch3 + 2, b2 = batch3 + 3;
     var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
@@ -2418,7 +2417,7 @@ function test110041Verify_1() {
     tapNaviLeftButton();
     delay();
 
-    tapFirstTextByTitle("门店", "中洲店");
+    tapTextByFirstWithName("中洲店", getScrollView());
     var a1, a2;// 异地核销批次号
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -2555,7 +2554,7 @@ function test110041Verify_2() {
         }
     }
 
-    tapFirstTextByTitle("门店", "常青店");
+    tapTextByFirstWithName("常青店", getScrollView());
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var b1 = batch3 + 2, b2 = batch3 + 3;
     var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "800",
@@ -2570,7 +2569,7 @@ function test110041Verify_2() {
     tapNaviLeftButton();
     delay();
 
-    tapFirstTextByTitle("门店", "中洲店");
+    tapTextByFirstWithName("中洲店", getScrollView());
     var a1, a2;// 异地核销批次号
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     for (i = 0; i < qr.curPageTotal; i++) {

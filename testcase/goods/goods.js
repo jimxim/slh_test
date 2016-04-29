@@ -242,7 +242,7 @@ function testGoods002() {
     // 开单模式5
     // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
     // "test10_fuzzyQueryAndDropDownListCheck");
-
+    run("【货品管理-基础设置-价格名称】修改价格名称重复", "ts100122");
 }
 
 function setGoodsParams002() {
@@ -1278,9 +1278,10 @@ function ts100033() {
     var r = getTimestamp(8);
     var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200" };
-    var keys2 = { "颜色" : "均色", "尺码" : "均码", "进货价" : "100", "零批价" : "200",
-        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140" };
 
+    var keys2 = { "颜色" : "均色", "尺码" : "均码", "进货价" : "100", "零批价" : "200",
+        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140", "经办人" : "" };
+    // 如果新增款号时没有输经办人,则经办人保持为空
     return ts100033Field(keys1, keys2);
 }
 
@@ -1343,7 +1344,7 @@ function ts100031() {
     var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "颜色" : "0,1", "尺码" : "0,1", "吊牌价" : "200" };
     var keys2 = { "颜色" : "花色,黑色", "尺码" : "S,M", "进货价" : "100", "零批价" : "200",
-        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140" };
+        "打包价" : "180", "大客户价" : "160", "Vip价格" : "140", "经办人" : "" };
 
     return ts100033Field(keys1, keys2);
 }
@@ -1869,6 +1870,15 @@ function ts100132() {
     arr2 = getUnique(arr2).sort();
 
     return isEqualObject(arr1, arr2);
+}
+
+function ts100140() {
+    var qo, o, ok = true;
+    qo = { "备注" : "销售异地发货开单模式" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    
+    
 }
 
 function ts100157() {
@@ -2562,26 +2572,13 @@ function test100082_100083_100084_100085_100093() {
     ret = ret && sortByTitle("最小库存", IS_NUM);
     ret = ret && sortByTitle("缺货数", IS_NUM);
 
-    var qr = getQR();
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum1 = sum1 + Number(qr.data[i]["现有库存"]);
-            sum2 = sum2 + Number(qr.data[i]["最小库存"]);
-            sum3 = sum3 + Number(qr.data[i]["缺货数"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = ret && isEqual(qr.counts["现有库存"], sum1)
-            && isEqual(qr.counts["最小库存"], sum2)
-            && isEqual(qr.counts["缺货数"], sum3);
+    var arr = [ "现有库存", "最小库存", "缺货数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
 
     var keys = { "款号" : r, "款号名称" : r, "上架从" : getToday(), "到" : getToday() };
     var fields = goodsStatisticFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     ret = ret && isEqual(r, qr.data[0]["款号"]) && isEqual(r, qr.data[0]["名称"])
             && isEqual(getToday("yy"), qr.data[0]["上架日期"])
             && isEqual(stock, qr.data[0]["现有库存"])
@@ -2635,14 +2632,6 @@ function test10_price() {
     ret = ret
             && sortByTitle("进货价比例", IS_NUM, window, getScrollView(), TITLE_SEQ,
                     4);
-    // 第一次跑也许会报错
-    // if (ret == false) {
-    // ret = true;
-    // ret = ret && sortByTitle("名称");
-    // ret = ret && sortByTitle("启用");
-    // delay();
-    // ret = ret && sortByTitle("进货价比例", IS_NUM);
-    // }
 
     return ret;
 }
@@ -3047,6 +3036,10 @@ function ts100106() {
 
     var arr = [ "调整前数量", "调整后数量", "调整数量" ];
     ret = isAnd(ret, isEqualCounts(arr));
+
+    tapButton(window, QUERY);
+    var qr = getQR();
+    ret = isAnd(ret, isEqual(qr.counts["调整数量", sub("调整前数量", "调整后数量")]));
     return ret;
 }
 
@@ -3110,7 +3103,26 @@ function test100120() {
     ret = isAnd(ret, isEqual(qr.data.length, 0));
     return ret;
 }
+function ts100122() {
+    tapMenu("货品管理", "基本设置", "价格名称");
+    tapFirstText();
+    var keys = { "名称" : "打包价" };
+    var fields = goodsPriceNameFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();// 若是保存成功会自动返回，失败则停留在二级页面
+    var ret = isInAlertMsgs("相同记录已存在");
 
+    if (!ret) {
+        tapFirstText();
+        fields["名称"].value = "零批价";
+        setTFieldsValue(getScrollView(), fields);
+        saveAndAlertOk();
+        tapReturn();// 防止未自动返回
+    }
+
+    return ret;
+}
 function ts100123() {
     var keys = { "是否停用" : "是" };
     var stock1 = test100123Field(keys);

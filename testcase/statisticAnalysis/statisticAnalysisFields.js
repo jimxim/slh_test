@@ -376,7 +376,7 @@ function statisticAnalysisInOutAccountField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "到":
@@ -390,8 +390,13 @@ function statisticAnalysisInOutAccountField(key, show) {
     case "门店":
         f = new TField("门店", TF_SC, 3, "常青店");
         break;
+    case "remark":
+    case "备注":
+        f = new TField("备注", TF, 4, "常青店");
+        break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

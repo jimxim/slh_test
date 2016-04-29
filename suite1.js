@@ -2,7 +2,7 @@
 //测试套具，集合测试用例
 
 #import "all.js"
- 
+
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
@@ -14,15 +14,16 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
-// run("测试用例", "ts110057_1");//
+ run("测试用例", "test190017");
   
- run("测试用例", "ts130007_08");
 }
 
 function onlyTest(){
 // debugElementTree(window);
-
+    tapTextByFirstWithName("订金",getScrollView());
+  return true;
 }
+
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来
@@ -212,7 +213,7 @@ function login200ShopOut001(){
     var p1 = {"角色":"总经理"};
     var ok = login("200","000000",p1);
     if( ok ) {
-        run("【往来管理-积分查询】数据验证", "test110036_2");
+// run("【往来管理-积分查询】数据验证", "test110036_2");
         testShopOut001();    
        logout();
     }   

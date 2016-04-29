@@ -1,33 +1,33 @@
 //ZhangY <15068165765 at 139.com> 20151013
 var outBatch = {};// 调出批次
-var xCache = {};
+var xCache;
 /**
  * 中洲店总经理验证
  */
 // 调拨不启用密码验证
 function testShopOut001() {
-    run("【门店调出-按批次查】翻页_排序", "ts150001_1");
-    run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
-    run("【门店调出-按批次查】作废", "ts150002");
-    var ok = setShopOutParams();
-    if (ok) {
-        run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "ts150001_2");
-        run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "ts150010_2");
-        run("【门店调出-按批次查】按批次查作废，汇总", "ts150001_09");
-        run("【门店调出-批量调出】批量调出", "ts150003");
-    } else {
-        UIALogger.logFail("修改参数失败");
-    }
-    run("【门店调出-按明细查】加工商品单价检查", "ts150011");
-    run(" 门店调入数据准备", "shopInPrepare");
-    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
-    if(ipadVer>=7.01){
-        run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
-        run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
-        run("【门店调出-按款号汇总】翻页_排序_汇总", "ts150019_20_21");
-    }
-    run("【门店调出-批量调出】整单复制和整单粘贴", "ts150024");
-    run("【门店调出-批量调出】删除所有款号明细", "ts150031");
+    // run("【门店调出-按批次查】翻页_排序", "ts150001_1");
+    // run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
+    // run("【门店调出-按批次查】作废", "ts150002");
+    // var ok = setShopOutParams();
+    // if (ok) {
+    // run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "ts150001_2");
+    // run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "ts150010_2");
+    // run("【门店调出-按批次查】按批次查作废，汇总", "ts150001_09");
+    // run("【门店调出-批量调出】批量调出", "ts150003");
+    // } else {
+    // UIALogger.logFail("修改参数失败");
+    // }
+    // run("【门店调出-按明细查】加工商品单价检查", "ts150011");
+    // run(" 门店调入数据准备", "shopInPrepare");
+    // run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
+    // if (ipadVer >= 7.01) {
+    // run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
+    // run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
+    // run("【门店调出-按款号汇总】翻页_排序_汇总", "ts150019_20_21");
+    // }
+    // run("【门店调出-批量调出】整单复制和整单粘贴", "ts150024");
+    // run("【门店调出-批量调出】删除所有款号明细", "ts150031");
     run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
 }
 
@@ -278,7 +278,7 @@ function ts150002() {
 
     tapTitle(getScrollView(), "状态");
     tapTitle(getScrollView(), "状态");
-    tapFirstTextByTitle("状态", "已接收");
+    tapTextByFirstWithName("已接收", getScrollView());
 
     tapButtonAndAlert("作 废");
     tapPrompt();
@@ -565,8 +565,7 @@ function ts150017_18() {
     var det = editShopOutDet();
     tapMenu("门店调出", "按款号汇总");
     var keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
-        "日期从" : getDay(-30), "调出门店" : "中洲店",
-        "调入门店" : "常青店", "品牌" : "Adidas" };
+        "日期从" : getDay(-30), "调出门店" : "中洲店", "调入门店" : "常青店", "品牌" : "Adidas" };
     var fields = shopOutCodeFields(keys);
     query(fields);
     var qr = getQR();
@@ -640,10 +639,10 @@ function ts150025Prepare() {
     editSalesBill(json, colorSize);
     xCache = getQRDet().data;
     tapReturn();
-    return xCache;
+
+    return true;
 }
 
-// 暂时只能用终端跑
 function ts150025() {
     if (!isEmptyObject(xCache)) {
         tapMenu("门店调出", "批量调出+");
@@ -651,17 +650,24 @@ function ts150025() {
         delay();
         var data1 = getQRDet().data;
         var ret = isEqualDyadicArray(xCache, data1);
-        var json = { "调出人" : "200", "接收店" : "常青店" };
-        editSalesBill(json, colorSize);
+        logDebug("length=" + xCache.length);
+        if (ret) {
+            var json = { "调出人" : "200", "接收店" : "常青店" };
+            editShopOutDecruitField1(json, "调出人");
+            editShopOutDecruitField1(json, "接收店");
+            editShopOutSave({});
 
-        tapMenu2("按批次查");
-        query();
-        tapFirstText();
-        var data2 = getQRDet().data;
-        ret = isAnd(ret, isEqualDyadicArray(data1, data2));
-        tapReturn();
+            tapMenu2("按批次查");
+            query();
+            tapFirstText();
+            var data2 = getQRDet().data;
+            tapReturn();
+            ret = isAnd(ret, isEqualDyadicArray(data1, data2));
+        } else {
+            tapReturn();
+        }
 
-        xCache = {};
+        xCache = null;
         return ret;
     } else {
         logDebug("未取到未保存值");

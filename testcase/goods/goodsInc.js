@@ -317,8 +317,8 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
 }
 
 /**
- * 根据第一个标题，点击静态文本，默认为序号1
- * @param name 第一个标题的内容
+ * 点击第一个内容为希望值的静态文本
+ * @param name 默认为1，即点击第一条数据
  * @param view1
  */
 function tapTextByFirstWithName(name, view1) {
@@ -330,6 +330,9 @@ function tapTextByFirstWithName(name, view1) {
     }
     var texts = getStaticTexts(view1);
     var ok = tap(texts.firstWithName(name), true);
+    if (!ok) {
+        logDebug("未找到name为" + name + "的StaticText");
+    }
     delay();
 }
 /**
@@ -366,7 +369,7 @@ function tapFirstTextByTitle(title, value, view1, title2, value2, qr) {
         logDebug("当前页没有找到" + title + "的内容为" + value);
     }
 
-    var name = qr.data[a]["序号"];
+    var seq = qr.data[a]["序号"];
     tapTextByFirstWithName(name, view1);
 
     return a;
@@ -988,7 +991,7 @@ function dropDownListCheck2(index, value, expected, o) {
  * @param view
  * @returns {Boolean}
  */
-function isEqualDropDownListByExp(exp,view) {
+function isEqualDropDownListByExp(exp, view) {
     if (isUndefined(view)) {
         view = window;
     }

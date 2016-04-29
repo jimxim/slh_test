@@ -1,5 +1,4 @@
 //LuXingXin <52619481 at qq.com> 20151012
-var xCache = {};
 
 function testPurchaseOrder001() {
     run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
@@ -796,7 +795,6 @@ function ts130007_08() {
             "操作人" : "总经理" };
         ret1 = isEqualObject(exp, qr.data[0]);
         tapFirstText();
-        joP["备注"] = "";
         delete joP["店员"];
         fields = editCustomerProviderFields(joP, true);
         ret1 = isAnd(ret1, checkShowFields(getScrollView(-1), fields));
