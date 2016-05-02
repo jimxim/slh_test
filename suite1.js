@@ -14,7 +14,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
- run("测试用例", "test190017");
+ run("测试用例", "test190102");
   
 }
 

@@ -193,26 +193,26 @@ function statisticAnalysisGoodMarketField(key, show) {
     switch (key) {
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 0, "a", -1, 0);
+        f = new TField("款号", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 1, "2015-9-11");
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 2, getToday());
+        f = new TField("到", TF_DT, 1, getToday());
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");
+        f = new TField("门店", TF_SC, 4, "常青店");
         break;
     case "name":
     case "款号名称":
-        f = new TField("款号名称", TF, 4, "aaa");
+        f = new TField("款号名称", TF, 3, "aaa");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -237,7 +237,7 @@ function statisticAnalysisUnsalableField(key, show) {
     switch (key) {
     case "day1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 0, "2015-9-11");
+        f = new TField("上架从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "到":
