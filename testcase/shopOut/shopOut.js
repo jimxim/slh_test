@@ -687,7 +687,7 @@ function ts150031() {
     var det = editShopOutDet();
     editShopOutDecruitIn(det, colorSize);// 默认点击未打印
 
-    alertMsgs = {};
+    alertMsgs = [];
     tapMenu2("按批次查");
     query();
     tapFirstText();

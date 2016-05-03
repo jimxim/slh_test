@@ -162,11 +162,11 @@ function purchaseCodeField(key, show) {
 
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 1, "2015-9-15");
+        f = new TField("到", TF_DT, 1, getToday());
         break;
     case "market1":
     case "上架从":
@@ -174,7 +174,7 @@ function purchaseCodeField(key, show) {
         break;
     case "market2":
     case "上架到":
-        f = new TField("到", TF_DT, 3, "2015-8-15");
+        f = new TField("到", TF_DT, 3, getToday());
         break;
     case "code":
     case "款号":
@@ -189,9 +189,9 @@ function purchaseCodeField(key, show) {
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 6, "a", -1, 0);
+        f = new TField("厂商", TF_AC, 6, "ve", -1, 0);
         if (show) {
-            f.value = "A.k";
+            f.value = "Vell";
         }
         break;
     case "shop":

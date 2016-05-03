@@ -92,7 +92,7 @@ function test160047() {
         "店员" : "总经理", "客户" : "小王", "数量" : "10", "已发数" : "0", "差异数" : "10",
         "发货状态" : "未发货", "总额" : "2000", "现金" : "1000", "刷卡" : "400",
         "汇款" : "600", "客户分店" : "", "操作日期" : json["操作日期"] };
-    var ret = isEqualObject(expected, qr.data[0],1);
+    var ret = isEqualObject(expected, qr.data[0], 1);
 
     return ret;
 }
@@ -105,6 +105,11 @@ function ts160048() {
     editSalesBill(json, colorSize);
     var data1 = getQRDet().data;
     editSalesBillSave({});
+
+    // 保存前已发为空，保存点击进入明细后已发变成0
+    for (var i = 0; i < data1.length; i++) {
+        data1[i]["已发"] = 0;
+    }
 
     tapMenu2("按批次查");
     query();
@@ -136,17 +141,21 @@ function test160049_160052() {
     var jo1 = json["输入框值"];
 
     tapMenu("销售订货", "按批次查");
-    var keys = { "日期从" : getDay(-1) };
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
     tapFirstText();
     var jo2 = editSalesBillGetValue({});
+    var tfNum = getDetSizheadTitle();
     var ret = isAnd(isEqualObject(jo1, jo2), isIn(getTextFieldValue(
             getScrollView(), 0), "3035"), isEqual("10", getTextFieldValue(
-            getScrollView(), 3)), isIn(getTextFieldValue(getScrollView(), 8),
-            "抹零"), isEqual("9", getTextFieldValue(getScrollView(), 12)), isIn(
-            getTextFieldValue(getScrollView(), 16), "打包费"), isEqual("10",
-            getTextFieldValue(getScrollView(), 20)));
+            getScrollView(), tfNum["数量"])), isIn(getTextFieldValue(
+            getScrollView(), tfNum["明细输入框个数"] + tfNum["货品"]), "抹零"), isEqual(
+            "9", getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
+                    + tfNum["单价"])), isIn(getTextFieldValue(getScrollView(),
+            tfNum["明细输入框个数"] * 2 + tfNum["货品"]), "打包费"), isEqual("10",
+            getTextFieldValue(getScrollView(), tfNum["明细输入框个数"] * 2
+                    + tfNum["单价"])));
     tapReturn();
 
     return ret;
@@ -202,8 +211,8 @@ function ts160050() {
     ret = isAnd(ret, isEqualObject2(expected, qr.data[0]));
 
     tapFirstText();
-    expected["店员"]="000,总经理";
-    fields = editCustomerFields(expected,true);
+    expected["店员"] = "000,总经理";
+    fields = editCustomerFields(expected, true);
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
     tapReturn();
 
@@ -696,7 +705,7 @@ function test160006() {
     change = { "订货数" : 20, "差异数" : 20, "订货额" : 6000, "已付" : 6000,
         "操作日期" : json["操作日期"] };
     var arr2 = mixObject(arr1, change);
-    ret = isAnd(ret, isEqualObject(qr.data[0], arr2,1));
+    ret = isAnd(ret, isEqualObject(qr.data[0], arr2, 1));
 
     return ret;
 }

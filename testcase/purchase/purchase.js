@@ -48,7 +48,7 @@ function testPurchase002() {
     run("【采购入库-按批次查】按批次查->作废", "ts120003");
     run("【采购入库-按批次查】按批次查->作废、挂单操作和查询", "ts120044");
     run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
-    // run("【采购入库】输入不存在的款号提示信息", "ts120005");
+    run("【采购入库】输入不存在的款号提示信息", "ts120005");
     run("【采购入库-按批次查】将供应商修改从无到有", "ts120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "ts120060");
     run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");
@@ -321,11 +321,11 @@ function ts120005() {
         ret = isAnd(ret, ts120005Field());
 
         tapMenu("销售订货", "新增订货+");
+        json1["客户"] = "xw";
         editSalesBill(json1, colorSize);
         ret = isAnd(ret, ts120005Field());
 
         tapMenu("销售开单", "开  单+");
-        json1["客户"] = "xw";
         editSalesBill(json1, colorSize);
         ret = isAnd(ret, ts120005Field());
 
@@ -346,9 +346,9 @@ function ts120005() {
 
 function ts120005Field() {
     saveAndAlertOk();
-    tapPrompt();
-    var ret = isIn(alertMsg, "货品 必须从下拉列表选择");
     tapReturn();
+    var ret = isInAlertMsgs("货品必须从下拉列表选择");
+    alertMsgs = [];
     return ret;
 }
 
@@ -409,6 +409,9 @@ function test120008() {
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("类别");
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("季节");
     ret = ret && sortByTitle("上架日期", IS_DATE2);
     ret = ret && sortByTitle("颜色");
     ret = ret && sortByTitle("尺码");
@@ -416,15 +419,13 @@ function test120008() {
     ret = ret && sortByTitle("拿货数", IS_NUM);
     ret = ret && sortByTitle("退货数", IS_NUM);
 
-    tapMenu("采购入库", "按汇总", "按款号汇总");
     var keys = { "款号" : "3035" };
     // "day1" : getToday(), "day2" : getToday(),
     var fields = purchaseCodeFields(keys);
-    query(fields);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     var qr = getQR();
-    var a = Number(qr.data[0]["数量"]);
-    var a1 = Number(qr.data[0]["拿货数"]);
-    var a2 = Number(qr.data[0]["退货数"]);
+    var a = qr.data[0];
 
     tapMenu("采购入库", "新增入库+");
     var json = {
@@ -433,16 +434,12 @@ function test120008() {
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys1 = { "day1" : getToday(), "day2" : getToday(), "款号" : "3035" };
-    var fields1 = purchaseCodeFields(keys1);
-    query(fields1);
-    var qr1 = getQR();
-    var b = Number(qr1.data[0]["数量"]);
-    var b1 = Number(qr1.data[0]["拿货数"]);
-    var b2 = Number(qr1.data[0]["退货数"]);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var b = qr.data[0];
 
-    ret = isAnd(ret, isEqual("4", sub(b, a)), isEqual("5", sub(b1, a1)),
-            isEqual("1", sub(b2, a2)));
+    var exp = { "数量" : "4", "拿货数" : "5", "退货数" : "1" };
+    ret = isAnd(ret, isEqualObject(exp, subObject(b, a)));
 
     query();
     qr = getQR();
@@ -470,33 +467,13 @@ function test120008() {
 
     return ret && ret1;
 }
-function test120008_1() {
-    var det = {};
-    switch (colorSize) {
-    case "no":
-        det = { "明细" : [ { "货品" : "3035", "数量" : num } ] };
-        break;
-    case "yes":
-        det = { "明细" : [ { "货品" : "agc001", "数量" : [ num ] } ],
-            "goodsFieldIndex" : -2 };
-        break;
-    default:
-        logWarn("未知colorSize＝" + colorSize);
-        break;
-    }
-
+function ts120008_1() {
+    // 按款号汇总中的款号应该与按明细查中相同，但不包括特殊货品
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys = { "日期从" : getDay(-30) };
+    var keys = { "日期从" : getDay(-15) };
     var fields = purchaseCodeFields(keys);
     query(fields);
     var det1 = test120008Field();
-
-    var keys1 = { "款号" : det["明细"][0]["货品"] };
-    fields = purchaseCodeFields(keys1);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
-    var qr = getQR();
-    var a1 = qr.counts;
 
     tapMenu2("按明细查");
     fields = purchaseQueryParticularFields(keys);
@@ -504,34 +481,22 @@ function test120008_1() {
     var det2 = test120008Field();
     var ret = true;
     for ( var i in det1) {
+        if (i == "00000" || i == "00001") {
+            logDebug("按款号汇总中存在特殊货品，款号为" + i);
+            ret = false;
+        }
         if (i in det2) {
-            ret = ret && isEqualObject(det1[i], det2[i]);
+            var ok = det1[i] == det2[i];
+            if (!ok) {
+                logDebug("i=" + i + "  按款号汇总中数量=" + det1[i] + "  按明细查中数量="
+                        + det2[i])
+            }
+            ret = ret && ok;
         } else {
             logDebug("按明细查中未找到 i=" + i);
             ret = false;
         }
     }
-
-    tapMenu2("新增入库+");
-    var json = {
-        "客户" : "vell",
-        "明细" : [ { "货品" : "3035", "数量" : num1 },
-                { "货品" : "3035", "数量" : -retNum1 } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购入库", "按汇总", "按款号汇总");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var num = num1 - retNum1;
-    var ret = isAnd(isEqual(a, sub(qr.data[0]["数量"], difNum1)), isEqual(a1,
-            sub(qr.data[0]["拿货数"], num1)), isEqual(a2, sub(qr.data[0]["退货数"],
-            retNum1)));
-
-    tapMenu("采购入库", "按明细查");
-    query();
-    qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[1]["数量"], num1), isEqual(qr.data[0]["数量"],
-            -retNum1));
 
     return ret;
 }
@@ -543,11 +508,9 @@ function test120008Field() {
         for (var i = 0; i < qr.data.length; i++) {
             var v = qr.data[i]["款号"];
             if (!det.hasOwnProperty(v)) {
-                var data1 = {};
-                data1["数量"] = Number(qr.data[i]["数量"]);
-                det[v] = data1;
+                det[v] = Number(qr.data[i]["数量"]);
             } else {
-                det[v]["数量"] += Number(qr.data[i]["数量"]);
+                det[v] += Number(qr.data[i]["数量"]);
             }
         }
         if (j < qr.totalPageNo) {
@@ -560,42 +523,27 @@ function test120008Field() {
 
 function test120008_2() {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    var det = addPOrderBillDet();
+    var jo = { "客户" : "vell" };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var i;
-    var ret = false;
-    var f = new TField("款号", TF_AC, 4, "303", -1);
-    var cells = getTableViewCells(window, f);
-    if (cells.length > 0) {
-        for (i = 0; i < cells.length; i++) {
-            var cell = cells[i];
-            var v = cell.name();
-            if (isIn(v, "3035,jkk,")) {
-                ret = true;
-                break;
-            }
-            delay();
-            tapKeyboardHide();
-        }
-    } else {
-        ret = isIn(getTextFieldValue(window, 4), "3035,jkk,");
-    }
-
     var keys = { "日期从" : getDay(-3), "日期到" : getToday(), "上架从" : "2015-10-1",
-        "上架到" : getToday(), "款号" : "3035", "厂商" : "vell", "门店" : "常青店" }
+        "上架到" : getToday(), "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
+        "厂商" : "vell", "门店" : "常青店", "类别" : "登山服", "品牌" : "Adidas", "季节" : "春季" }
     var fields = purchaseCodeFields(keys);
+
+    var ret = dropDownListCheck(fields["款号"].index, "303", "3035,jkk");
+
     query(fields);
     var qr = getQR();
-
-    ret = isAnd(ret, isEqual("3035", qr.data[0]["款号"]), isEqual("jkk",
-            qr.data[0]["名称"]), isEqual("Vell", qr.data[0]["厂商"]), isEqual(
-            "15-10-13", qr.data[0]["上架日期"]), isEqual("均色", qr.data[0]["颜色"]),
-            isEqual("均码", qr.data[0]["尺码"]));
+    for (var i = 0; i < qr.data.length; i++) {
+        ret = isAnd(ret, isEqualObject2(keys, qr.data[i]));
+    }
 
     tapButton(window, CLEAR);
-    for (i = 0; i < 7; i++) {
+    for (var i = 0; i < 11; i++) {
         if (i == 0 || i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -2962,11 +2910,11 @@ function test120051() {
 
     tapMenu("采购入库", "按订货入库");
     query();
-
     var qr = getQR();
     var ret = isEqual("zdbz", qr.data[0]["备注"]);
 
     tapFirstText();
+    delay();// 网络原因延迟
     var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
     // 备注为总数的前一个
     ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window,

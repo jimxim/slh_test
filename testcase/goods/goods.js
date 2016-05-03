@@ -1631,7 +1631,7 @@ function test100054_1() {
     delay();
     runAndAlert("test10_tapBatchStop", OK);
     var ret = !isInAlertMsgs("操作失败");
-    alertMsgs = {};
+    alertMsgs = [];
 
     // 新增相同款号, 名称不同
     keys = { "款号" : r, "名称" : "a" + r };
@@ -2044,6 +2044,7 @@ function ts100047_48_49_50_51_52All() {
 
     // 统一减，结果为负
     tapButton(window, ALL);
+    tapMenu2("批量调价");
     keys = { "统一加减" : "-10000" };
     var fields = goodsPricingFields(keys);
     setTFieldsValue(getScrollView(-1, 0), fields);

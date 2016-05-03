@@ -950,7 +950,7 @@ function dropDownListCheck(index, value, expected, o) {
         ret = isEqual(getTextFieldValue(window, index), expected);
     }
 
-    if (window.buttons()[CLEAR].isVisible) {
+    if (window.buttons()[CLEAR].isVisible()) {
         tapButton(window, CLEAR);
     }
 

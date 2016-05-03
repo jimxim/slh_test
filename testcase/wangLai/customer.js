@@ -234,17 +234,18 @@ function test110005() {
     tapMenu("往来管理", "客户查询");
     query();
     tapFirstText();
-    tapButtonAndAlert("停 用");
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();// 防止未自动返回
     delay();
-    // 需要刷新
-    tapRefresh();
+    tapRefresh(); // 需要刷新
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r };
     editSalesBillCustomer(json);
     saveAndAlertOk();
     tapReturn();
-    var ret = isInAlertMsgs("客户或厂商 必须从下拉列表选择");
+    // 这里输入客户后会等待一会儿，下拉框
+    var ret = isInAlertMsgs("客户或厂商必须从下拉列表选择");
 
     tapMenu("往来管理", "客户查询");
     var qKeys = { "客户名称" : r, "是否停用" : "是" };
@@ -254,8 +255,8 @@ function test110005() {
     ret = isAnd(ret, isEqual(r, qr.data[0]["名称"]));
 
     tapFirstText();
-    tapButtonAndAlert("启 用");
-    tapButton(window, RETURN);
+    tapButtonAndAlert(START, OK);
+    tapReturn();
     delay();
     tapRefresh();
 
@@ -267,12 +268,11 @@ function test110005() {
     tapMenu("往来管理", "客户查询");
     query();
     tapFirstText();
-    tapButtonAndAlert("停 用");
-    tapButtonAndAlert("none", OK, true);
-    ret = isAnd(ret, isIn(alertMsg, "还存在余额或欠款"));
-    delay();
-    tapButton(window, RETURN);
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();
+    ret = isAnd(ret, isInAlertMsgs("还存在余额或欠款"));
 
+    alertMsgs = [];
     // 做余款单 余1000
     tapMenu("销售开单", "开  单+");
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ], "现金" : 5000 };
@@ -280,11 +280,9 @@ function test110005() {
 
     tapMenu("往来管理", "客户查询");
     tapFirstText();
-    tapButtonAndAlert("停 用");
-    tapButtonAndAlert("none", OK, true);
-    ret = isAnd(ret, isIn(alertMsg, "还存在余额或欠款"));
-    delay();
-    tapButton(window, RETURN);
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();
+    ret = isAnd(ret, isInAlertMsgs("还存在余额或欠款"));
 
     return ret;
 }
@@ -1710,6 +1708,7 @@ function ts110035() {
     var keys = { "名称" : r };
     addCustomer(keys);
 
+    // 开一个月前的欠款单
     tapMenu("销售开单", "开  单+");
     var jo = { "客户" : r, "日期" : getDay(-30), "未付" : "yes" };
     var det = addPOrderBillDet(20, -3);
@@ -1727,9 +1726,9 @@ function ts110035() {
     var fields = queryCustomerActiveFields(keys);
     query(fields);
     var qr = getQR();
-    var jo = qr.data[0];
-    var ret1 = isAnd(isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
-            jo["未拿货天数"]));
+    var arr = qr.data[0];
+    var ret1 = isAnd(isEqual(getDay(-30, "yy"), arr["最后一次拿货"]), isEqual(30,
+            arr["未拿货天数"]));
 
     tapMenu("销售开单", "开  单+");
     jo = { "客户" : r };
@@ -1740,8 +1739,8 @@ function ts110035() {
     tapMenu("往来管理", "客户活跃度");
     tapButton(window, QUERY);
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual(getDay(-30, "yy"), jo["最后一次拿货"]), isEqual(30,
-            jo["未拿货天数"]));
+    ret1 = isAnd(ret1, isEqual(getDay(-30, "yy"), arr["最后一次拿货"]), isEqual(30,
+            arr["未拿货天数"]));
 
     query();
     // 标题 最后一次拿货内容不应该为空
@@ -1772,7 +1771,7 @@ function ts110035() {
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual(qr.data[0]["未拿货天数"], jo["未拿货天数"]));
+    ret1 = isAnd(ret1, isEqual(qr.data[0]["未拿货天数"], arr["未拿货天数"]));
 
     return isAnd(ret, ret1);
 }
@@ -2860,7 +2859,7 @@ function test110045_110046() {
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    var ret = isIn(alertMsg, "相同名称已存在");
+    var ret = isInAlertMsgs("相同名称已存在");
 
     keys = { "名称" : r, "电话" : "13833331112" };
     fields = editCustomerLogisticsFields(keys);
@@ -2878,32 +2877,26 @@ function test110045_110046() {
     var qr = getQR();
     var expected = { "区域" : "华北", "名称" : r, "门店" : "中洲店", "店员" : "店长",
         "电话" : r, "地址" : "abc", "账号" : "123", "备注" : "备注" }
-    ret = isAnd(ret, isEqualQRData1Object(qr, expected));
+    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
     // 修改物流商信息并验证
-    tapFirstText(getScrollView(), TITLE_SEQ, 9);
-    keys = [ "名称", "店员", "区域", "电话", "邮编", "地址", "账号", "门店", "备注" ];
+    tapFirstText();
+    keys = { "名称" : r + "a", "店员" : "000", "区域" : "客户", "电话" : r,
+        "邮编" : "310000", "地址" : "地址", "账号" : "abc", "门店" : "常青店",
+        "备注" : "备注abc123" };
     fields = editCustomerLogisticsFields(keys);
-    changeTFieldValue(fields["名称"], r + "a");
-    changeTFieldValue(fields["电话"], r);
-    changeTFieldValue(fields["区域"], "客户");
     setTFieldsValue(getScrollView(), fields);
+    fields = editCustomerLogisticsFields(keys, true);
+    fields["店员"].value = "000,总经理";
     tapButton(window, SAVE);
     delay();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 9);
-    ret = isAnd(ret, isEqual(r + "a", getTextFieldValue(getScrollView(), 0)),
-            isEqual("000,总经理", getTextFieldValue(getScrollView(), 1)), isEqual(
-                    "客户", getTextFieldValue(getScrollView(), 2)), isEqual(r,
-                    getTextFieldValue(getScrollView(), 3)) // 电话
-            , isEqual("310000", getTextFieldValue(getScrollView(), 4)),
-            isEqual("地址", getTextFieldValue(getScrollView(), 5)), isEqual(
-                    "abc", getTextFieldValue(getScrollView(), 6))// 账号
-            , isEqual("常青店", getTextFieldValue(getScrollView(), 7)), isEqual(
-                    "备注abc123", getTextFieldValue(getScrollView(), 8)));
+    tapFirstText();// getScrollView(), TITLE_SEQ, 9
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
 
     // 停用
-    tapButtonAndAlert(STOP);
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();// 防止未自动返回
     keys = { "名称" : r + "a", "是否停用" : "是" };
     fields = queryCustomerLogisticsFields(keys);
     query(fields);
@@ -2915,14 +2908,16 @@ function test110045_110046() {
     var josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "必须选择物流商"));
     tapNaviLeftButton();
     tapReturn();
+    ret = isAnd(ret, isInAlertMsgs("必须选择物流商"));
+    alertMsgs = [];
 
     // 启用
     tapMenu("往来管理", "更多.", "物流商查询");
-    tapFirstText(getScrollView(), TITLE_SEQ, 9);
-    tapButtonAndAlert(START);
+    tapButton(window, QUERY);
+    tapFirstText();// getScrollView(), TITLE_SEQ, 9
+    tapButtonAndAlert(START, OK);
     keys = { "是否停用" : "否" };
     fields = queryCustomerLogisticsFields(keys);
     setTFieldsValue(window, fields);
@@ -2934,8 +2929,8 @@ function test110045_110046() {
     tapMenu("销售开单", "开  单+");
     josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
-    ret = isAnd(ret, !isIn(alertMsg, "必须选择物流商"));
     tapReturn();
+    ret = isAnd(ret, !isInAlertMsgs("必须选择物流商"));
 
     return ret;
 }
