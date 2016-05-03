@@ -38,8 +38,8 @@ function testCheckAll() {
     run("【盘点管理—盘点撤销】", "test180033");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
-//    run("【盘点管理—盘点处理】处理日期设置", "test180027");
-//    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+    // run("【盘点管理—盘点处理】处理日期设置", "test180027");
+    // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -82,17 +82,17 @@ function checkPrepare() {
     query(fields);
 
     var qr = getQR();
-    var total1 = qr.total;
-    for (var i = 0; i < total1; i++) {
+    var t1 = qr.total;
+    for (var i = 0; i < t1; i++) {
         tapFirstText();
         runAndAlert("checkPrepare_Off", OK);
         delay();
     }
 
     qr = getQR();
-    var total2 = qr.total;
+    var t2 = qr.total;
     var ret = false;
-    if (total2 < 1) {
+    if (t2 < 1) {
         ret = true;
     }
 
@@ -819,11 +819,11 @@ function test180025() {
         ret = test180025_1();
 
     } else {
-//        if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
-            ret = false;
+        // if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
+        ret = false;
 
-            tapReturn();
-//        }
+        tapReturn();
+        // }
     }
     return ret;
 }
@@ -831,7 +831,7 @@ function test180025_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + getTimestamp(4);
     var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
@@ -1012,7 +1012,7 @@ function test180026_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewC" + getTimestamp(4);
     var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
@@ -1268,7 +1268,7 @@ function test180029_180031_180032() {
 
     tapButton(window, CLEAR);
     var ret1 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+            isEqual("", getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)), isEqual("",
                     getTextFieldValue(window, 3)), isEqual("",
                     getTextFieldValue(window, 4)), isEqual("",
@@ -1419,10 +1419,10 @@ function test180037_180034_180035() {
 }
 function test180042Prepare() {
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
-//     var qo, o, ret = true;
-//     qo = { "备注" : "调拨是否启用密码验证" };
-//     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
-//     ret = isAnd(ret, setGlobalParam(qo, o));
+    // var qo, o, ret = true;
+    // qo = { "备注" : "调拨是否启用密码验证" };
+    // o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
@@ -2363,7 +2363,7 @@ function test180049_180036() {
     tapMenu("货品管理", "新增货品+");
     var r = "akhao" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice1 = getTextFieldValue(getScrollView(), 8);
@@ -2376,7 +2376,7 @@ function test180049_180036() {
     tapMenu("货品管理", "新增货品+");
     var r1 = "akhao" + getTimestamp(8);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice2 = getTextFieldValue(getScrollView(), 8);
@@ -2551,7 +2551,7 @@ function test180049_1() {
     tapMenu("货品管理", "新增货品+");
     var r = "aCode1" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice1 = getTextFieldValue(getScrollView(), 9);
@@ -2564,7 +2564,7 @@ function test180049_1() {
     tapMenu("货品管理", "新增货品+");
     var r1 = "aCode2" + getTimestamp(8);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : "200" }
-    var fields = editGoodsFields(keys,false);
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
     var inprice2 = getTextFieldValue(getScrollView(), 9);

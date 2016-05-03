@@ -29,7 +29,7 @@ function salesOrderQueryBatchField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 2, getToday());
+        f = new TField("日期到", TF_DT, 2, getToday());
         break;
     case "staff":
     case "店员":

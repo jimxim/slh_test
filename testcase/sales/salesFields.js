@@ -36,7 +36,7 @@ function salesQueryBatchField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 3, getToday());
+        f = new TField("日期到", TF_DT, 3, getToday());
         break;
     case "shop":
     case "门店":
@@ -696,7 +696,7 @@ function salesTypeField(key, show) {
 
 // 按厂商汇总
 function testSalesProviderFields() {
-    var keys = [ "provider", "day1", "day2" ];
+    var keys = [ "provider", "shop", "day1", "day2" ];
     var fields = salesProviderFields(keys);
     setTFieldsValue(window, fields);
     var showFields = salesProviderFields(keys, true);
@@ -717,11 +717,8 @@ function salesProviderField(key, show) {
         }
         break;
     case "shop":
-    case "常青店":
+    case "门店":
         f = new TField("门店", TF_SC, 1, "常青店");
-        if (show) {
-            f.value = "aa";
-        }
         break;
     case "day1":
     case "日期从":
@@ -957,7 +954,7 @@ function salesBillOrderField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 1, getToday());
+        f = new TField("日期到", TF_DT, 1, getToday());
         break;
     case "code":
     case "款号":
@@ -1151,7 +1148,7 @@ function salesCollectionField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 5, getToday());
+        f = new TField("日期到", TF_DT, 5, getToday());
         break;
     case "invalid":
     case "是否作废":

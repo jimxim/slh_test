@@ -9,6 +9,12 @@ js_func="setSales001Params"
 js_func="$js_func test000SalesNoColorSize001"
 
 js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSize001_1"
+
+js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSize001_2"
+
+js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize002"
 
 js_func="$js_func setSales001Params"
