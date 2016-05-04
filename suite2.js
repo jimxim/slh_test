@@ -18,28 +18,18 @@ function test000All() {
 // run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
 //    run("【销售开单－按明细查】翻页_排序_汇总", "test170031_170032_170033");//
-//    run("【销售开单-开单】异地+代收， 挂单", "test170674_170675");
-//    run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");
+
+//    run("【销售开单－按汇总-按款号汇总】异地发货模式查询", "test170523");//（在途数bug)
+//    run("【销售开单-按汇总-按店员汇总】每日业绩", "test170708");
+    run("【销售开单-按批次查】修改界面显示当前结余", "test170712");
     
 // run("", "test1");
 }
     
-function funcSs(){
-    var ss;
-    if (ipadVer >= "7.01") {
-        ss = "实收";
-    } else {
-        ss = "实付";
-    }
-}
 function test1(){
-// debugElementTree(window);
+ debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 
-    tapButton(window, "打 印");
-
-//  tapButtonAndAlert("none", "打印(客户用)", 3);
-  tap(app.alert().buttons()[1]);
 }
 function test2(){
     var qo, o, ret = true;

@@ -538,6 +538,14 @@ function salesCustomerSupplyField(key, show) {
     case "日期到":
         f = new TField("到", TF_DT, 6, getToday());
         break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 7, "登山服");
+        break;
+    case "season":
+    case "季节":
+        f = new TField("季节", TF_SC, 8, "春季");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
