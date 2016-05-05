@@ -1877,8 +1877,7 @@ function ts100140() {
     qo = { "备注" : "销售异地发货开单模式" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ok = isAnd(ok, setGlobalParam(qo, o));
-    
-    
+
 }
 
 function ts100157() {
@@ -3041,6 +3040,35 @@ function ts100106() {
     tapButton(window, QUERY);
     var qr = getQR();
     ret = isAnd(ret, isEqual(qr.counts["调整数量", sub("调整前数量", "调整后数量")]));
+    return ret;
+}
+
+function ts100108() {
+    tapMenu("货品管理", "货品查询");
+    var qKeys = { "款号名称" : "g" };
+    var qFields = queryGoodsFields(qKeys);
+    query(qFields);
+    var qr = getQR();
+    var name = qr.data[0]["名称"];
+
+    tapChoose(getScrollView(), [ 0 ]);
+    tapMenu2("批量操作");
+    delay();
+    runAndAlert("test10_tapBatchStop", OK);
+    var ret = !isInAlertMsgs("操作失败");
+
+    qKeys = { "是否停用" : "是" };
+    qFields = queryGoodsFields(qKeys);
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(name, qr.data[0]["名称"]));
+
+    tapChoose(getScrollView(), [ 0 ]);
+    tapMenu2("批量操作");
+    delay();
+    runAndAlert("test10_tapBatchStop", OK);
+    ret = isAnd(ret, !isInAlertMsgs("操作失败"));
     return ret;
 }
 

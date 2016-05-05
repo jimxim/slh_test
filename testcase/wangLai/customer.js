@@ -48,7 +48,7 @@ function testCustomer002() {
 
     run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "ts110019");
-    // run("【往来管理-客户账款】详细页面_上下级模式", "test110022");//
+    run("【往来管理-客户账款】详细页面_上下级模式", "test110022");//
     run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
     run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
     run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
@@ -65,7 +65,7 @@ function testCustomer002() {
 
     run("【往来管理-新增厂商】新增厂商", "test110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "ts110039");
-    // run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
+     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
     run("【往来管理-厂商账款】总经理权限检查", "ts110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
     // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
@@ -969,7 +969,8 @@ function test110021() {
 
     var keys = { "客户" : "xw" };
     var fields = queryCustomerAccountFields(keys);
-    query(fields);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
     var a = qr.counts["余额"];
     ret = isEqual(qr.data[0]["余额"], a);
@@ -980,7 +981,8 @@ function test110021() {
     ret = isAnd(ret, isEqual(qr.counts["余额"], sum));
 
     fields = queryCustomerShopAccountFields(keys);
-    query(fields);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(qr.counts["余额"], a));
 
@@ -1011,7 +1013,7 @@ function editBillForCustomerAccount1() {
         "代收" : { "物流商" : "sfkd", "代收金额" : 1000 } };
     editSalesBillNoColorSize(json);
 
-    return json;
+    return true;
 }
 
 // 下级客户1开单
@@ -1036,7 +1038,7 @@ function editBillForCustomerAccount2() {
         "代收" : { "物流商" : "sfkd", "代收金额" : 1700 } };
     editSalesBillNoColorSize(json);
 
-    return json;
+    return true;
 }
 
 function test110022() {
@@ -1089,37 +1091,37 @@ function test110022() {
     var fields = queryCustomerShopAccountFields(keys);
     query(fields);
 
-    tapTextByFirstWithName("常青店", getScrollView());
+    tapTextByFirstWithName("常青店");
     var qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     var ret = isAnd(!isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3));
-    tapNaviLeftButton();
 
     delay();
-    tapTextByFirstWithName("中洲店", getScrollView());
+    tapTextByFirstWithName("中洲店");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     ret = isAnd(ret, !isInQRData1Object(qr, b1), isInQRData1Object(qr, b2),
             isInQRData1Object(qr, b3));
-    tapNaviLeftButton();
 
     keys = { "客户名称" : "上级客户1" };
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
 
-    tapTextByFirstWithName("常青店", getScrollView());
+    tapTextByFirstWithName("常青店");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     ret = isAnd(ret, !isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
             !isInQRData1Object(qr, a3), !isInQRData1Object(qr, c1),
             isInQRData1Object(qr, c2), isInQRData1Object(qr, c3));
-    tapNaviLeftButton();
 
     delay();
-    tapTextByFirstWithName("中洲店", getScrollView());
+    tapTextByFirstWithName("中洲店");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     ret = isAnd(ret, !isInQRData1Object(qr, b1), !isInQRData1Object(qr, b2),
             !isInQRData1Object(qr, b3), !isInQRData1Object(qr, d1),
             isInQRData1Object(qr, d2), isInQRData1Object(qr, d3));
-    tapNaviLeftButton();
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     keys = { "客户名称" : "上级客户1" };
@@ -1127,36 +1129,36 @@ function test110022() {
     query(fields);
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     var ret2 = isAnd(!isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             isInQRData1Object(qr, b2), isInQRData1Object(qr, b3),
             !isInQRData1Object(qr, c1), isInQRData1Object(qr, c2),
             isInQRData1Object(qr, c3), !isInQRData1Object(qr, d1),
             isInQRData1Object(qr, d2), isInQRData1Object(qr, d3));
-    tapNaviLeftButton();
 
     tapMenu("往来管理", "客户账款", "客户总账");
     keys = { "客户名称" : "级客户1" };
     fields = queryCustomerAccountFields(keys);
     query(fields);
 
-    tapTextByFirstWithName("上级客户1", getScrollView());
+    tapTextByFirstWithName("上级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     var ret3 = isAnd(!isInQRData1Object(qr, a1), !isInQRData1Object(qr, a2),
             !isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             !isInQRData1Object(qr, b2), !isInQRData1Object(qr, b3),
             !isInQRData1Object(qr, c1), isInQRData1Object(qr, c2),
             isInQRData1Object(qr, c3), !isInQRData1Object(qr, d1),
             isInQRData1Object(qr, d2), isInQRData1Object(qr, d3));
-    tapNaviLeftButton();
 
     delay();
-    tapTextByFirstWithName("下级客户1", getScrollView());
+    tapTextByFirstWithName("下级客户1");
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    tapNaviLeftButton();
     ret3 = isAnd(ret3, !isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), !isInQRData1Object(qr, b1),
             isInQRData1Object(qr, b2), isInQRData1Object(qr, b3));
-    tapNaviLeftButton();
 
     return isAnd(ret, ret2, ret3);
 }
@@ -2097,7 +2099,8 @@ function test110040() {
     editSalesBillSave({});
 
     query();
-    tapTextByFirstWithName("1");
+    //
+    tapFirstText();
     ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
             getScrollView(-1), 4)));
     tapReturn();
@@ -2401,7 +2404,7 @@ function test110041Verify_1() {
         }
     }
 
-    tapTextByFirstWithName("常青店", getScrollView());
+    tapTextByFirstWithName("常青店");
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var b1 = batch3 + 2, b2 = batch3 + 3;
     var jo1 = { "批次" : b1, "日期" : getToday("yy"), "类型" : "进货单", "金额" : "0",
@@ -2416,7 +2419,7 @@ function test110041Verify_1() {
     tapNaviLeftButton();
     delay();
 
-    tapTextByFirstWithName("中洲店", getScrollView());
+    tapTextByFirstWithName("中洲店");
     var a1, a2;// 异地核销批次号
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     for (i = 0; i < qr.curPageTotal; i++) {

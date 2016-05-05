@@ -7,7 +7,7 @@ function testPurchase001() {
     run("【采购入库-按明细查】界面功能检查,查询/清除", "test120047_2");
     run("【采购入库-采购汇总】采购汇总->按金额汇总", "ts120007");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,翻页/排序/汇总", "test120008");
-    run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "test120008_1");
+    run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "ts120008_1");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,条件查询/清除/下拉框", "test120008_2");
     run("【采购入库-采购汇总】采购汇总->按厂商返货,翻页/排序/汇总", "test120009");
     run("【采购入库-采购汇总】采购汇总->按厂商返货,条件查询/清除/下拉框", "test120009_1");
@@ -1007,7 +1007,7 @@ function test120014() {
 }
 
 function test120019() {
-    var i, r = "g" + getTimestamp(8), jo1, jo2;
+    var i, r = "g" + getTimestamp(5), jo1, jo2;
     tapMenu("货品管理", "库存分布");
     query();
     var qr = getQR();
@@ -1020,18 +1020,13 @@ function test120019() {
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell",
-        "新增货品" : { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300 },
+        "新增货品" : { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300, "数量" : 20 },
         "明细" : [ { "货品" : "3035", "数量" : "30" } ], "现金" : 300,
-        "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ] };
-    editSalesBillCustomer(json);
-    editSalesBillDetNoColorSize(json);
-    editPurchaseBillAddGoods(json);
-    var f = new TField("数量", TF, 11, "20");
-    setTFieldsValue(getScrollView(), [ f ]);
-    editSalesBillCash(json);
-    editSalesBillCard(json);
-    editSalesBillRemit(json);
-    editSalesBillSave(json);
+        "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    // tapKeyboardHide();
+    editSalesBillAddGoods(json);
+    editSalesBillSave({});
 
     tapMenu("采购入库", "按批次查");
     query();
@@ -1071,13 +1066,13 @@ function test120019() {
         "文一店" : 0, "中洲店" : 0 };
     ret = isAnd(ret, isEqualObject2(jo, expected));
 
-    tapFirstTextByTitle("名称", "");
+    tapFirstText();
     var f = new TField("款号", TF_AC, 0, r, -1, 0);
     setTFieldsValue(getScrollView(-1, 0), [ f ]);
     tapButton(getScrollView(-1, 0), QUERY);
     qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    var today = getToday("");
-    today = today.replace("-", "月");
+    var today = getToday("yy");
+    // today = today.replace("-", "月");
     expected = { "名称" : r + "," + r, "上架日期" : today, "库存" : 20, "价值" : 6000,
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
     var ret1 = isEqualObject2(expected, qr.data[0]);
@@ -2245,7 +2240,7 @@ function ts120044() {
     var qr = getQR();
     var jo = qr.data[0];
     tapFirstText();
-    tapButtonAndAlert("作 废");
+    tapButtonAndAlert("作 废", OK);
     delay();
 
     var keys = { "作废挂单" : "作废" };
@@ -2270,11 +2265,10 @@ function ts120044() {
 
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
-    tapFirstTextByTitle("备注", "预付款");
-    tapButtonAndAlert("作 废");
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "本批次是采购订货预付款单"));
-    tapButton(window, RETURN);
+    tapTextByFirstWithName("预付款");
+    tapButtonAndAlert("作 废", OK);
+    tapReturn();
+    ret = isAnd(ret, isInAlertMsgs("本批次是采购订货预付款单"));
 
     return ret;
 }

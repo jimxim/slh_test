@@ -14,16 +14,16 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
- run("测试用例", "test120008_2");
+// run("测试用例", "");
+ run("测试用例", "test120019");
 
 }
 
 function onlyTest(){
-// debugElementTree(window);
-    tapTextByFirstWithName("订金",getScrollView());
-  return true;
+    var texts = getTextFields(getScrollView());
+    var ok=texts[0].doubleTap()
+    return ok;
 }
-
 
 function prepare200All(){
     // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来

@@ -278,7 +278,7 @@ function ts150002() {
 
     tapTitle(getScrollView(), "状态");
     tapTitle(getScrollView(), "状态");
-    tapTextByFirstWithName("已接收", getScrollView());
+    tapTextByFirstWithName("已接收");
 
     tapButtonAndAlert("作 废");
     tapPrompt();

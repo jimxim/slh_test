@@ -335,45 +335,6 @@ function tapTextByFirstWithName(name, view1) {
     }
     delay();
 }
-/**
- * 点击第一个标题内容为value的静态文本
- * @param title
- * @param value
- * @param view1
- * @param title2
- * @param value2
- */
-function tapFirstTextByTitle(title, value, view1, title2, value2, qr) {
-    if (isUndefined(view1)) {
-        view1 = getScrollView();
-    }
-    if (isUndefined(qr)) {
-        qr = getQR();
-    }
-    var a;
-    for (var i = 0; i < qr.curPageTotal; i++) {
-        if (isDefined(title2) && isDefined(value2)) {
-            if (qr.data[i][title] == value && qr.data[i][title2] == value2) {
-                a = i;
-                break;
-            }
-        } else {
-            if (qr.data[i][title] == value) {
-                a = i;
-                break;
-            }
-        }
-    }
-
-    if (isUndefined(a)) {
-        logDebug("当前页没有找到" + title + "的内容为" + value);
-    }
-
-    var seq = qr.data[a]["序号"];
-    tapTextByFirstWithName(name, view1);
-
-    return a;
-}
 
 /**
  * 修改密码
@@ -1072,6 +1033,7 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
     if (!ret) {
         debugObject(sum, "sum=");
         debugObject(qr.counts, "qr.counts=");
+        logDebug("汇总值错误");
     }
     var ret1 = true;
     if (isDefined(arr)) {

@@ -204,7 +204,7 @@ function test190013() {
     qr = getQR();
     ret = isAnd(ret, isAqualNum(counts + rm, qr.counts["金额"], 0.001));
 
-    tapTextByFirstWithName("订金", getScrollView());
+    tapTextByFirstWithName("订金");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : rm,
         "操作人" : "总经理" };
@@ -351,7 +351,7 @@ function test190017() {
     qr = getQR();// window, getScrollView(), "序号", 3
     ret = isAnd(ret, isAqualNum(counts - 123.45, qr.counts["金额"], 0.001));
 
-    tapTextByFirstWithName("物业", getScrollView());
+    tapTextByFirstWithName("物业");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : 123.45,
         "操作人" : "总经理" };
@@ -778,7 +778,7 @@ function test190010() {
         }
     }
 
-    tapTextByFirstWithName("订金", getScrollView());
+    tapTextByFirstWithName("订金");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     var ret = isAnd(isEqualQRData1Object(qr, earning1), isEqualQRData1Object(
             qr, earning2));
@@ -808,7 +808,7 @@ function test190010() {
         }
     }
 
-    tapTextByFirstWithName("物业", getScrollView());
+    tapTextByFirstWithName("物业");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     ret = isAnd(ret, isEqualQRData1Object(qr, payout1), isEqualQRData1Object(
             qr, payout2));
@@ -860,7 +860,7 @@ function test190005Field(type, x) {
             break;
         }
     }
-    tapTextByFirstWithName(type, getScrollView());
+    tapTextByFirstWithName(type);
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     var ret = isEqualQRData1Object(qr, expected);
     tapNaviLeftButton();
@@ -881,7 +881,7 @@ function test190005Field(type, x) {
             break;
         }
     }
-    tapTextByFirstWithName(type, getScrollView());
+    tapTextByFirstWithName(type);
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
     // 收支表底部数据不包含金额，收支汇总金额和详细信息不包含此作废数据
     ret = isAnd(ret, !isEqualQRData1Object(qr, expected), isAqualNum(m2, sub(
