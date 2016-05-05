@@ -400,7 +400,12 @@ function testPurchaseEditFields() {
     var showFields = purchaseEditFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 采购入库-新增入库+
+ * @param keys
+ * @param show
+ * @returns
+ */
 function purchaseEditFields(keys, show) {
     return getTFields("purchaseEditField", keys, show);
 }

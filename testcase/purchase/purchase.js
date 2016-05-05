@@ -69,7 +69,7 @@ function testPurchase002() {
     run("【采购入库-新增入库】检查核销", "test120022");
     run("【采购入库-新增入库】新增入库+不付款", "test120023");
     run("【采购入库】新增入库单修改保存", "test120033");
-    run("【采购入库】客户或供应商信息不允许修改", "test120034");
+    run("【采购入库】客户或供应商信息不允许修改", "ts120034");
     run("【采购入库-新增入库】新增入库和新增订货页面，厂商输入中文后，检查下拉列表", "test120035");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
 
@@ -257,7 +257,7 @@ function test120003Field(json, s1, s2) {
     var jo = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert("作 废");
+    tapButtonAndAlert(REPEAL, OK);
     delay();
     // 这里作废后会自动返回上级页面
 
@@ -1019,14 +1019,11 @@ function test120019() {
     }
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell",
-        "新增货品" : { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300, "数量" : 20 },
-        "明细" : [ { "货品" : "3035", "数量" : "30" } ], "现金" : 300,
-        "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ], "onlytest" : "yes" };
+    var joG = { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300, "数量" : 20 };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "现金" : 300, "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ] };
+    editSalesBillAddGoods(joG);
     editSalesBillNoColorSize(json);
-    // tapKeyboardHide();
-    editSalesBillAddGoods(json);
-    editSalesBillSave({});
 
     tapMenu("采购入库", "按批次查");
     query();
@@ -2078,24 +2075,21 @@ function test120033() {
 
 }
 
-function test120034() {
+function ts120034() {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    var jo = { "客户" : "vell" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu2("按批次查");
+    query();
     tapFirstText();
-    var keys = { "厂商" : "lx" };
-    var fields = purchaseEditFields(keys);
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    delay();
-    tapButtonAndAlert("none", OK);
-    var ret = isIn(alertMsg, "操作失败");
-    delay();
-    tapButton(window, RETURN);
+    jo = { "客户" : "rt" };
+    editSalesBillCustomer(jo);
+    editSalesBillSave({});
 
-    return ret;
+    return isInAlertMsgs("客户或供应商信息不允许修改");
 }
 
 function test120035() {
@@ -2235,14 +2229,15 @@ function ts120044() {
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu2("按批次查");
     query();
     var qr = getQR();
     var jo = qr.data[0];
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);
-    delay();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();
 
+    tapMenu2("按批次查");
     var keys = { "作废挂单" : "作废" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -2266,7 +2261,7 @@ function ts120044() {
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
     tapTextByFirstWithName("预付款");
-    tapButtonAndAlert("作 废", OK);
+    tapButtonAndAlert(REPEAL, OK);
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("本批次是采购订货预付款单"));
 
@@ -2688,12 +2683,13 @@ function test120017_1() {
     var jo = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);// 作废后会自动返回
-    var cond = "getButton(window, '按批次查').isVisible()";
-    waitUntil(cond, 10);
-    if (!eval(cond)) {
-        tapButton(window, RETURN);
-    }
+    tapButtonAndAlert(REPEAL, OK);// 作废后会自动返回
+    tapReturn();
+    // var cond = "getButton(window, '按批次查').isVisible()";
+    // waitUntil(cond, 10);
+    // if (!eval(cond)) {
+    // tapButton(window, RETURN);
+    //    }
 
     tapButton(window, QUERY);
     qr = getQR();

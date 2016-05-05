@@ -105,9 +105,10 @@ function ts130020Count() {
     tapMenu2("按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);
-    delay();
-    // tapPrompt();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();
+
+    tapMenu2("按批次查");
     tapButton(window, QUERY);
     qr = getQR();
     count1 = qr.counts;
@@ -358,7 +359,7 @@ function ts130002_2() {
     } else {
         ret = false;
     }
-    logDebug("ret="+ret);
+    logDebug("ret=" + ret);
     tapButton(window, CLEAR);
     var text = getTextFields(window);
     for (var i = 0; i < text.length; i++) {
@@ -395,9 +396,9 @@ function ts130003() {
     var a1 = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);
-    tapPrompt();
-    var ret = isIn(alertMsg, "作废成功");
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();// 防止未自动返回
+    var ret = isInAlertMsgs("作废成功");
 
     qr = getQR();
     ret = isAnd(ret, isEqualObject(a1, qr.data[0]), isEqualObject2(qr.counts,
@@ -755,8 +756,8 @@ function ts130007_08() {
         editSalesBillDetNoColorSize(det);
     }
 
-    var joG = { "款号" : r2, "名称" : r2, "进货价" : "100", "零批价" : "200", "打包价" : "140",
-        "大客户价" : "150", "Vip价格" : "160", "数量" : "20" };
+    var joG = { "款号" : r2, "名称" : r2, "进货价" : "100", "零批价" : "200",
+        "打包价" : "140", "大客户价" : "150", "Vip价格" : "160", "数量" : "20" };
     editSalesBillAddGoods(joG);
 
     var qr = getQRDet();
@@ -843,8 +844,8 @@ function ts130009() {
 
     tapMenu("采购订货", "按批次查");
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);
-    tapPrompt();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();// 防止未自动返回
 
     return isIn(alertMsg, "订单已入库，不允许作废");
 }

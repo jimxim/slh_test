@@ -76,7 +76,9 @@ function textFin_price_base2_2() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    tapButtonAndAlert("作 废", OK);
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();// 防止未自动返回
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);

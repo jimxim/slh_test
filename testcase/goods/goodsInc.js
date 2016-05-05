@@ -315,6 +315,20 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     }
     return data;
 }
+/**
+ * 取指定范围内的随机数
+ * @param min
+ * @param max
+ * @param dn 小数位
+ * @returns
+ */
+function getRandomNum(min, max, dn) {
+    if (isUndefined(dn)) {
+        dn = 0;
+    }
+    var num = min + Math.random() * (max - min);
+    return Number(num.toFixed(dn));
+}
 
 /**
  * 点击第一个内容为希望值的静态文本
@@ -1172,12 +1186,16 @@ function editPurInByOrderDet(o) {
     var details = o["入库明细"];
     if (isDefined(details)) {
         var tfNum = getDetSizheadTitle();
+        var title_num = "入库数";// 采购为入库数，销售为数量
+        if (!tfNum.hasOwnProperty("入库数")) {
+            title_num = "数量";
+        }
         var fields = [];
         for ( var i in details) {
             var d = details[i];
             if (isDefined(d["数量"])) {
                 fields.push(new TField("入库数", TF, tfNum["明细输入框个数"] * i
-                        + tfNum["入库数"], d["数量"]));
+                        + tfNum[title_num], d["数量"]));
             }
 
             if (isDefined(d["单价"])) {

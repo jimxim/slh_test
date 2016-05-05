@@ -4,7 +4,6 @@
  * 均色均码 省代价格模式 价格模式2 不支持自动生成款号
  */
 function setGoodsParams001() {
-    colorSize = "no";// 均色均码模式
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
@@ -156,7 +155,6 @@ function testGoodsPrepare001() {
         "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
-    getMenu_profit();
     return json;
 }
 

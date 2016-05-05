@@ -17,7 +17,10 @@ function repealWarehouseSalesBill() {
     var length = qr.data.length;
     while (length > 0) {
         tapFirstText();
-        tapButtonAndAlert("作 废", OK);
+        tapButtonAndAlert(REPEAL, OK);
+        tapReturn();// 防止未自动返回
+
+        tapMenu2("按批次查");
         tapButton(window, QUERY);
         qr = getQR();
         if (qr.data.length == 0) {

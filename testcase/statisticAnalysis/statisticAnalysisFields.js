@@ -107,7 +107,12 @@ function testStatisticAnalysisSynthesisFields() {
     var showFields = statisticAnalysisSynthesisFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 统计分析-综合汇总
+ * @param keys
+ * @param show
+ * @returns
+ */
 function statisticAnalysisSynthesisFields(keys, show) {
     return getTFields("statisticAnalysisSynthesisField", keys, show);
 }

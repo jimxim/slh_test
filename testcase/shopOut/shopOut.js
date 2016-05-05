@@ -6,7 +6,7 @@ var xCache;
  */
 // 调拨不启用密码验证
 function testShopOut001() {
-     run("【门店调出-按批次查】翻页_排序", "ts150001_1");
+    run("【门店调出-按批次查】翻页_排序", "ts150001_1");
     run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
     run("【门店调出-按批次查】作废", "ts150002");
     var ok = setShopOutParams();
@@ -234,12 +234,11 @@ function ts150001_09() {
     ret = isAnd(ret, isEqualObject(exp, subObject(count2, count1)));
 
     tapFirstText();
-    tapButtonAndAlert("作 废");
-    // 作废后会自动返回按批次查界面，但是有点慢
-    var cond = "window.buttons()['按批次查'].isVisible()";
-    waitUntil(cond, 10);
-    // tapButton(window, RETURN);
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();// 防止未自动返回
 
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
     qr = getQR();
     count2 = qr.counts;
     ret = isAnd(ret, isEqualObject(count1, count2));
@@ -280,12 +279,10 @@ function ts150002() {
     tapTitle(getScrollView(), "状态");
     tapTextByFirstWithName("已接收");
 
-    tapButtonAndAlert("作 废");
-    tapPrompt();
-    var ret = isIn(alertMsg, "调入方已确认接收");
-    tapReturn();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();// 防止未自动返回
 
-    return ret;
+    return isInAlertMsgs("调入方已确认接收");
 }
 
 // 与ts140002_140003成对

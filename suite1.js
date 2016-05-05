@@ -15,14 +15,12 @@ function test000All() {
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
 // run("测试用例", "");
- run("测试用例", "test120019");
+ run("测试用例", "test160053");
 
 }
 
 function onlyTest(){
-    var texts = getTextFields(getScrollView());
-    var ok=texts[0].doubleTap()
-    return ok;
+    return getRandomNum(10,100);
 }
 
 function prepare200All(){
