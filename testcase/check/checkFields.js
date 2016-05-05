@@ -252,7 +252,7 @@ function checkProfitAndLossField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 1, "a",-1, 0);
+        f = new TField("款号", TF_AC, 1, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
@@ -266,6 +266,69 @@ function checkProfitAndLossField(key, show) {
         f = new TField("到", TF_DT, 3, getToday());
         break;
 
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+// 盘点计划表
+function testCheckPlanFields() {
+    var keys = [ "shop", "operate" ];
+    var fields = testCheckPlanFields(keys);
+    setTFieldsValue(window, fields);
+    var showFields = testCheckPlanFields(keys, true);
+    return checkShowFields(window, showFields);
+}
+
+function checkPlanFields(keys, show) {
+    return getTFields("checkCheckPlanField", keys, show);
+}
+function checkPlanField(key, show) {
+    var f;
+    switch (key) {
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 0, "常青店");
+        break;
+    case "operate":
+    case "是否处理":
+        f = new TField("款号", TF_SC, 1, "是");
+        break;
+
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+// 盘点计划+ 按品牌
+function testCheckPlanAddFields() {
+    var keys = [ "shop", "brand" ];
+    var fields = testCheckPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    var showFields = testCheckPlanAddFields(keys, true);
+    return checkShowFields(getScrollView(), showFields);
+}
+
+function checkPlanAddFields(keys, show) {
+    return getTFields("checkPlanAddField", keys, show);
+}
+function checkPlanAddField(key, show) {
+    var f;
+    switch (key) {
+    case "shop":
+    case "门店":
+        f = new TField("门店", BTN_SC, 0, "常青店");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_SC, 0, "Addidas");
+        if (show) {
+            f.type = TF;
+            f.index = 1
+        }
+        break;
     default:
         logWarn("未知key＝" + key);
     }

@@ -40,6 +40,10 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     // run("【盘点管理—盘点处理】处理日期设置", "test180027");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+    run("【盘点管理-处理记录-撤销记录】存在新的盘点计划时，不允许撤销处理记录", "test180060");
+    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
+    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
+    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -2808,4 +2812,347 @@ function test180057() {
 
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
     return ret1 && ret2 && ret3;
+}
+function testAddBrandCheck() {
+    tapButton(getScrollView(), 1);
+
+    var view1 = getPopOrView(window, -1);
+    var table1 = getTableViews(view1)[1];
+    var cells = table1.cells();
+//    tap(getStaticText(cells["Adidas"], 0));
+//    tap(getStaticText(cells["Adidas"], 0));
+
+    tapButton(view1, 2);
+}
+function test180060() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理");
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapReturn();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
+    tapButtonAndAlert("全盘处理");
+
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapReturn();
+
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
+    var ret = isIn(alertMsg, "盘点计划正在执行中，盘点处理无法撤销");
+
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    tapFirstText();
+
+    tapButtonAndAlert("删除计划", OK);
+
+    tapPrompt();
+
+    return ret;
+}
+function test180061() {
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "门店不能为空");
+
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "盘点内容不能为空");
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+
+    testAddBrandCheck();
+    
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "门店不能为空");
+
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButton(getScrollView(), 1);
+
+    var view1 = getPopOrView(window, -1);
+    var table1 = getTableViews(view1)[1];
+    var cells = table1.cells();
+    // tap(getStaticText(cells["Adidas"], 0));
+    // tap(getStaticText(cells["Adidas"], 0));
+
+    tapButton(view1, 2);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    var qr = getQR();
+
+    var ret3 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按品牌",
+            qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("",
+                    qr.data[0]["盘点类别"]), isEqual("Adidas", qr.data[0]["盘点品牌"]),
+            isEqual("", qr.data[0]["盘点厂商"]));
+
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
+    return ret1 && ret2 && ret3;
+}
+function test180062() {
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "盘点计划正在执行中，请等盘点处理完毕后新增计划");
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    tapFirstText();
+
+    tapButtonAndAlert("删除计划", OK);
+
+    tapPrompt();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "请处理完毕后新增计划");
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理");
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, "50");
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "请等盘点处理完毕后新增计划");
+
+    var keys = { "门店" : "中洲店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+
+    testAddBrandCheck();
+    
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    var qr = getQR();
+
+    var ret3 = isAnd(isEqual("中洲店", qr.data[0]["门店"]), isEqual("按品牌",
+            qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("",
+                    qr.data[0]["盘点类别"]), isEqual("Adidas", qr.data[0]["盘点品牌"]),
+            isEqual("", qr.data[0]["盘点厂商"]));
+
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
+    return ret1 && ret2 && ret3;
+}
+function test180064() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理");
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+
+    var total1 = qr.total;
+
+    tapMenu("盘点管理", "新增盘点+");
+    var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
+    var f3 = new TField("数量", TF, 3, "10");
+    var f4 = new TField("货品", TF_AC, 4, "3035", -1, 0);
+    var f7 = new TField("数量", TF, 7, "20");
+    var fields = [ f0, f3, f4, f7 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "不属于本次盘点计划");
+
+    tapButton(getScrollView(), 0);
+
+    saveAndAlertOk();
+
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    query();
+    qr = getQR();
+
+    var total2 = qr.total;
+
+    var ret1 = isEqual(1, sub(total2, total1));
+
+    tapFirstText();
+
+    var f4 = new TField("货品", TF_AC, 4, "4562", -1, 0);
+    var f7 = new TField("数量", TF, 7, "20");
+    var fields = [ f4, f7 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "不属于本次盘点计划");
+
+    tapReturn();
+
+    logDebug(+" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test180065() {
+    
 }

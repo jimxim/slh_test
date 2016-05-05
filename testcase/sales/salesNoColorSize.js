@@ -261,7 +261,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "现金" };
     o = { "新值" : "1", "数值" : [ "自动汇总现金栏", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "销售开单未付单子" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -4522,10 +4522,12 @@ function test170139_2() {
 
     tapFirstText();
 
-    tapButtonAndAlert("复 制", OK);
+//    tapButtonAndAlert("复 制", OK);
+    tapButton(window,"复 制");
 
     tapMenu("销售开单", "开  单+");
-    tapButtonAndAlert("粘 贴", OK);
+//    tapButtonAndAlert("粘 贴", OK);
+    tapButton(window,"粘 贴");
 
     var k0 = getTextFieldValue(getScrollView(), 0);
     var k1 = getTextFieldValue(getScrollView(), 1);
@@ -4603,10 +4605,12 @@ function test170139_3() {
 
     tapFirstText();
 
-    tapButtonAndAlert("复 制", OK);
+//    tapButtonAndAlert("复 制", OK);
+    tapButton(window,"复 制");
 
     tapMenu("销售开单", "开  单+");
-    tapButtonAndAlert("粘 贴", OK);
+//    tapButtonAndAlert("粘 贴", OK);
+    tapButton(window,"粘 贴");
 
     var k0 = getTextFieldValue(getScrollView(), 0);
     var k1 = getTextFieldValue(getScrollView(), 1);
@@ -5832,7 +5836,7 @@ function test170191() {
     o = { "新值" : "2", "数值" : [ "代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170195() {
@@ -12041,7 +12045,7 @@ function test170672() {
         "发货" : "仓库店" };
     editSalesBillNoColorSize(json);
 
-    var zj1 = json["输入框值"]["总计"];
+    // var zj1 = json["输入框值"]["总计"]; isEqual(zj1, qr.data[0]["金额"]),
 
     var money1 = json["代收"]["代收金额"];
     var wls1 = json["代收"]["物流商"];
@@ -12054,9 +12058,8 @@ function test170672() {
     var qr = getQR();
 
     var ret2 = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
-            qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(
-            zj1, qr.data[0]["金额"]), isEqual(0, qr.data[0]["实收"]), isEqual(
-            money1, qr.data[0]["代收"]));
+            qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
+            qr.data[0]["实收"]), isEqual(money1, qr.data[0]["代收"]));
 
     tapMenu("销售开单", "物流单");
     var keys = { "物流商" : "圆通速递", "运单号" : r1 };
@@ -12161,8 +12164,8 @@ function test170674_170675() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "7" }, { "货品" : "k300", "数量" : "8" } ],
-        "代收" : { "物流商" : "yt", "运单号" : r, "备注" : "a" + r, "代收金额" : "3500"},
-            "onlytest" : "yes" };
+        "代收" : { "物流商" : "yt", "运单号" : r, "备注" : "a" + r, "代收金额" : "3500" },
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButtonAndAlert("挂 单", OK);
@@ -12239,7 +12242,7 @@ function test170674_170675() {
 
     var ret5 = isAnd(isEqual(5500, b), isEqual("天天物流", b1), isEqual(r1, b2),
             isEqual("a" + r1, b3), isEqual("是", b4), isEqual("否", b5));
-    
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
