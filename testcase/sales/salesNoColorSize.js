@@ -99,11 +99,7 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170595");
     run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
-    run("【销售开单-开单】异地+代收，检查库存变化", "test170671");
-    run("【销售开单-开单】异地+代收", "test170672");
-    run("【销售开单-开单】异地+代收，物流核销", "test170673");
-    run("【销售开单-开单】异地+代收， 挂单", "test170674_170675");
-    run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");
+    
     // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     // run("【销售开单－开单】汇款需填写客户", "test170582");//
     // run("【销售开单－开单】汇款无需填写客户", "test170583");//
@@ -190,7 +186,11 @@ function testSalesNoColorSize001_1() {
     run("【销售开单】补货退货验证+不允许继续输入+均色均码", "test170216");
     run("【销售开单】补货退货验证+允许继续输入+均色均码", "test170215");
     run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559");
-
+    run("【销售开单-开单】异地+代收，检查库存变化", "test170671");
+    run("【销售开单-开单】异地+代收", "test170672");
+    run("【销售开单-开单】异地+代收，物流核销", "test170673");
+    run("【销售开单-开单】异地+代收， 挂单", "test170674_170675");
+    run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");
     run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
     run("【销售开单-开单】配货员业绩统计-销售开单", "test170632_170633");
     // run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");//
@@ -4522,12 +4522,12 @@ function test170139_2() {
 
     tapFirstText();
 
-//    tapButtonAndAlert("复 制", OK);
-    tapButton(window,"复 制");
+    // tapButtonAndAlert("复 制", OK);
+    tapButton(window, "复 制");
 
     tapMenu("销售开单", "开  单+");
-//    tapButtonAndAlert("粘 贴", OK);
-    tapButton(window,"粘 贴");
+    // tapButtonAndAlert("粘 贴", OK);
+    tapButton(window, "粘 贴");
 
     var k0 = getTextFieldValue(getScrollView(), 0);
     var k1 = getTextFieldValue(getScrollView(), 1);
@@ -4605,12 +4605,12 @@ function test170139_3() {
 
     tapFirstText();
 
-//    tapButtonAndAlert("复 制", OK);
-    tapButton(window,"复 制");
+    // tapButtonAndAlert("复 制", OK);
+    tapButton(window, "复 制");
 
     tapMenu("销售开单", "开  单+");
-//    tapButtonAndAlert("粘 贴", OK);
-    tapButton(window,"粘 贴");
+    // tapButtonAndAlert("粘 贴", OK);
+    tapButton(window, "粘 贴");
 
     var k0 = getTextFieldValue(getScrollView(), 0);
     var k1 = getTextFieldValue(getScrollView(), 1);
@@ -12004,8 +12004,6 @@ function test170672() {
         "代收" : { "物流商" : "yt", "运单号" : r, "备注" : "a" + r, "代收金额" : "50" } };
     editSalesBillNoColorSize(json);
 
-    var zj = json["输入框值"]["总计"];
-
     var money = json["代收"]["代收金额"];
     var wls = json["代收"]["物流商"];
     var ydh = json["代收"]["运单号"];
@@ -12017,9 +12015,8 @@ function test170672() {
     var qr = getQR();
 
     var ret = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
-            qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(
-            zj, qr.data[0]["金额"]), isEqual(0, qr.data[0]["实收"]), isEqual(money,
-            qr.data[0]["代收"]));
+            qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(0,
+            qr.data[0]["实收"]), isEqual(money, qr.data[0]["代收"]));
 
     tapMenu("销售开单", "物流单");
     var keys = { "物流商" : "圆通速递", "运单号" : r };

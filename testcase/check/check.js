@@ -44,6 +44,7 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
+    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180065");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -887,7 +888,7 @@ function test180025_1() {
     tapButtonAndAlert("全盘处理");
 
     var cond = "isIn(alertMsg, '处理完成')";
-    waitUntil(cond, 300);
+    waitUntil(cond, 30);
 
     var ret = false;
     if (isIn(alertMsg, "处理完成")) {
@@ -1066,7 +1067,7 @@ function test180026_1() {
     tapButtonAndAlert("部分处理", OK);
 
     var cond = "isIn(alertMsg, '处理完成')";
-    waitUntil(cond, 300);
+    waitUntil(cond, 10);
 
     var ret = isIn(alertMsg, "处理完成");
 
@@ -2353,7 +2354,9 @@ function test180049_180036() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    delay(3);
+    
+    var cond = "isIn(alertMsg, '处理完成')";
+    waitUntil(cond, 30);
 
     tapReturn();
 
@@ -2387,7 +2390,6 @@ function test180049_180036() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2428,7 +2430,10 @@ function test180049_180036() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    delay(3);
+    
+    tapPrompt();
+    var cond = "isIn(alertMsg, '处理完成')";
+    waitUntil(cond, 30);
 
     tapReturn();
 
@@ -2541,7 +2546,9 @@ function test180049_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    delay(3);
+    
+    var cond = "isIn(alertMsg, '处理完成')";
+    waitUntil(cond, 30);
 
     tapReturn();
 
@@ -2562,7 +2569,6 @@ function test180049_1() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
@@ -2575,7 +2581,6 @@ function test180049_1() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2602,7 +2607,6 @@ function test180049_1() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
@@ -2616,7 +2620,9 @@ function test180049_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    delay(3);
+    
+    var cond = "isIn(alertMsg, '处理完成')";
+    waitUntil(cond, 30);
 
     tapReturn();
 

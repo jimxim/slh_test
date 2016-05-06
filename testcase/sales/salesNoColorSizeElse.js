@@ -131,11 +131,11 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按客户销售】点击查询记录后页面检查", "test170331");
     run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
     run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
+    run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
 }
 function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
-    run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");
     run("【销售开单－代收收款】清除功能", "test170286");
     run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// 综合收支表界面需要修改取值
@@ -8601,8 +8601,7 @@ function test170588_1() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
-        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "现金" : 511, "刷卡" : [ 100, "交" ],
-        "汇款" : [ 200, "建" ], };
+        "现金" : 511, "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ]};
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
@@ -9150,6 +9149,10 @@ function test170637() {
         }
     }
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     return ret && ret1;
 }
 function test170638() {
@@ -9530,6 +9533,10 @@ function test170669() {
 }
 function test170682() {
     var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -9599,6 +9606,10 @@ function test170682() {
 }
 function test170683() {
     var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     qo = { "备注" : "开单模式" };
     o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
