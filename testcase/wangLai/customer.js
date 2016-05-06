@@ -65,7 +65,7 @@ function testCustomer002() {
 
     run("【往来管理-新增厂商】新增厂商", "test110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "ts110039");
-     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
+    run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
     run("【往来管理-厂商账款】总经理权限检查", "ts110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
     // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
@@ -2011,8 +2011,9 @@ function test110038() {
     ret = isAnd(ret, test110038Field(keys, "手机号码重复"));
     delay();
 
-    keys = { "手机" : "13922211121" };// 客户的手机号码
-    ret = isAnd(ret, test110038Field(keys, "手机号码重复"));
+    // 现在可以与客户的手机号一样
+    // keys = { "手机" : "13922211121" };// 客户的手机号码
+    // ret = isAnd(ret, test110038Field(keys, "手机号码重复"));
 
     keys = { "手机" : r, "地址" : "地址", "适用价格" : "零批价", "备注" : "备注abc123" };
     var fields = editCustomerProviderFields(keys);
@@ -2031,7 +2032,7 @@ function test110038() {
                     getTextFieldValue(getScrollView(), 2)), isEqual("零批价",
                     getTextFieldValue(getScrollView(), 3)), isEqual("备注abc123",
                     getTextViewValue(getScrollView(), 0)));
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }

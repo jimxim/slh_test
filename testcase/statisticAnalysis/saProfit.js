@@ -1,24 +1,25 @@
 //luxingxin <52619481 at qq.com> 20160218
 
+//7.01二级界面数据合并，59则为分开显示
 //成本核算
 function textFin_price_base() {
     if (isUndefined(menu_profit)) {
         menu_profit = getMenu_profit();
     }
-    var ret1 = false, ret2 = false, ret3 = false;
+
     if (setParamFin_price_base2()) {
-        ret1 = isAnd(textFin_price_base2_1(), textFin_price_base2_2(),
-                textFin_price_base2_3());
+//        run("按移动加权平均价_1", "textFin_price_base2_1");
+//        run("按移动加权平均价_2", "textFin_price_base2_2");
+        run("按移动加权平均价_3", "textFin_price_base2_3");
     }
 
-    if (setParamFin_price_base3()) {
-        ret2 = textFin_price_base3_1();
-    }
-
-    if (setParamFin_price_base0()) {
-        ret3 = textFin_price_base0_1();
-    }
-    return isAnd(ret1, ret2, ret3);
+    // if (setParamFin_price_base3()) {
+    // run("默认按当时进货价", "textFin_price_base3_1");
+    // }
+    //
+    // if (setParamFin_price_base0()) {
+    // run("按最新进货价", "textFin_price_base0_1");
+    //    }
 }
 
 function setParamFin_price_base2() {
@@ -48,8 +49,8 @@ function textFin_price_base2_1() {
 
     var exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 2, "金额" : 400,
         "成本额" : 207, "利润额" : 193 };
-    var exp2 = { "款号" : r, "名称" : r, "数量" : 1, "单价" : 200, "折扣" : 1,
-        "销售额" : 200, "进货价" : 107, "成本额" : 107, "利润额" : 93 };
+    var exp2 = { "款号" : r, "名称" : r, "数量" : 2, "单价" : 200, "折扣" : 1,
+        "销售额" : 400, "进货价" : 100, "成本额" : 207, "利润额" : 193 };
     var exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,
         "成本额" : 107, "利润额" : 93 };
     var ret = textFin_price_baseField(r, jo1, exp1, exp2, exp3);
@@ -86,7 +87,7 @@ function textFin_price_base2_2() {
     var exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 2, "金额" : 400,
         "成本额" : 200, "利润额" : 200 };
     var exp2 = { "款号" : r, "名称" : r, "数量" : 2, "单价" : 200, "折扣" : 1,
-        "销售额" : 200, "进货价" : 100, "成本额" : 100, "利润额" : 100 };
+        "销售额" : 400, "进货价" : 100, "成本额" : 200, "利润额" :200 };
     var exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,
         "成本额" : 100, "利润额" : 100 };
     var ret = textFin_price_baseField(r, jo1, exp1, exp2, exp3);
@@ -124,7 +125,7 @@ function textFin_price_base2_3() {
     arr = { "货品" : r, "数量" : 32, "单价" : 130, "salesBill" : "yes" };
     addBillSAProfit(arr);
     exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 1, "金额" : 200,
-        "成本额" : 130, "利润额" : 70 };
+        "成本额" : 130, "利润额" : 70 };   
     exp2 = { "款号" : r, "名称" : r, "数量" : 1, "单价" : 200, "折扣" : 1, "销售额" : 200,
         "进货价" : 130, "成本额" : 130, "利润额" : 70 };
     exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,

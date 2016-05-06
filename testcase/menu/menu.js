@@ -34,12 +34,13 @@ function testCheckGoods() {
     var menu2 = "基本设置";
     var menus3 = { "价格名称" : {}, "货品类别" : {}, "新增类别+" : {}, "所有品牌折扣" : {},
         "新增品牌折扣+" : {}, "所有颜色" : {}, "新增颜色+" : {}, "所有尺码" : {}, "新增尺码+" : {},
-        "所有品牌" : {}, "新增品牌+" : {}, "所有尺码组" : {}, "新增尺码组+" : {}, "所有品牌折扣" : {}, "新增品牌折扣+" : {} };
+        "所有品牌" : {}, "新增品牌+" : {}, "所有尺码组" : {}, "新增尺码组+" : {}, "所有品牌折扣" : {},
+        "新增品牌折扣+" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
     menu2 = "更多";
-    menus3 = { "库存调整单" : {}, "款号管理" : {"navi_close" : "yes"}, "打印条码" : {}, "仓位列表" : {},
-        "新增仓位+" : {}, "超储统计" : {}, "缺货统计" : {} };
+    menus3 = { "库存调整单" : {}, "款号管理" : { "navi_close" : "yes" }, "打印条码" : {},
+        "仓位列表" : {}, "新增仓位+" : {}, "超储统计" : {}, "缺货统计" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
     ret = isAnd(ret, !hasAlerts());
@@ -272,7 +273,7 @@ function testCheckHelp() {
     var ret = true, menus2, menu2, menus3;
 
     tapMenu1("用户帮助");
-    menus2 = { "帮助中心" : {}, "版本信息" : {}, "用户信息" : {},
+    menus2 = { "帮助中心" : {}, "版本信息" : {}, "用户信息" : {}, "按批次查" : {},
         "快速入门" : { "navi_close" : "yes" }, "常见问题" : { "navi_close" : "yes" } };
     ret = isAnd(ret, checkMenus(menus2));
 
@@ -317,7 +318,7 @@ function checkMenus(menus, menu2) {
             msg += "-";
             menuOk = tapMenu2(menu);
         }
-        msg += menu + "-";
+        // msg += menu + "-";
 
         if (menuOk) {
             if ("yes" == oMenu["navi_close"]) {
@@ -325,7 +326,11 @@ function checkMenus(menus, menu2) {
             }
             tapButton(window, QUERY);
             tapReturn();
+        } else {
+            UIALogger.logMessage("点击菜单" + msg + "失败");
+            ret = false;
         }
+        msg = gMenu1;
     }
 
     return ret;

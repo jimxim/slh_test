@@ -14,13 +14,13 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"177"};
-// run("测试用例", "");
- run("测试用例", "test160053");
+ run("测试用例", "textFin_price_base");
+// run("测试用例", "testCheckHelp");
 
 }
 
 function onlyTest(){
-    return getRandomNum(10,100);
+    UIATarget.localTarget().logElementTree();
 }
 
 function prepare200All(){

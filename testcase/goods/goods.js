@@ -679,7 +679,7 @@ function test100005_1() {
     }
     ret = ret && sortByTitle("在途数", IS_NUM);
 
-    var arr = [ "库存", "代发货", "累计进", "在途数", "待入库" ];
+    var arr = [ "库存", "待发货", "累计进", "在途数", "待入库" ];
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }

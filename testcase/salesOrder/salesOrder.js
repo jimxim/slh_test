@@ -1641,9 +1641,8 @@ function test160042() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f = new TField("数量", TF, 5, "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : "10" } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");// 有时还是停留在销售开单
     tapMenu("销售订货", "新增订货+");
@@ -1654,9 +1653,8 @@ function test160042() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    f = new TField("数量", TF, 5, "15");
-    setTFieldsValue(getScrollView(), [ f ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : "15" } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
     tapMenu("销售订货", "按汇总", "按店员");
@@ -1761,10 +1759,8 @@ function test160044() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f1 = new TField("数量", TF, 5, "10");
-    var f2 = new TField("数量", TF, 14, "10");
-    setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
     tapMenu("销售订货", "新增订货+");
@@ -1776,10 +1772,8 @@ function test160044() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    f1 = new TField("数量", TF, 5, "15");
-    f2 = new TField("数量", TF, 14, "10");
-    setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : "15" }, { "数量" : "10" } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
     tapMenu("销售订货", "按汇总", "按客户");
@@ -1861,10 +1855,8 @@ function test160046() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f1 = new TField("数量", TF, 5, "10");
-    var f2 = new TField("数量", TF, 14, "10");
-    setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
     tapMenu("销售订货", "按汇总", "按门店");

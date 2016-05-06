@@ -249,7 +249,7 @@ function test190014() {
     var json = { "账户" : "现", "明细" : [ { "收入类别" : "订金", "金额" : r } ],
         "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
-    tapButtonAndAlert(RETURN);
+    tapRerurn();
     delay();
 
     qr = getQR(window, getScrollView(), "序号", 9);
@@ -2469,7 +2469,6 @@ function test190087_190101() {
         "金额" : 2000, "成本额" : 1000, "利润额" : 1000 };
     var ret = isEqualObject(expected, actual);
 
-    var ret = true;
     tapButton(window, CLEAR);
     for (var i = 0; i < 8; i++) {
         if (i == 0) {
@@ -2520,16 +2519,16 @@ function test190042() {
 
     tapFirstText();
     var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "款号", "利润额");
-
+    // 本列暂不支持排序
     ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "款号");
     ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "名称");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "单价", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "折扣", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "进货价", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");// 本列暂不支持排序
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "单价");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "折扣");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "进货价");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额");
+    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");
 
     tapNaviLeftButton();
 

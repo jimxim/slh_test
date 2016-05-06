@@ -122,7 +122,7 @@ function ts150001_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
-        if (i == 0 || i == 1) {
+        if (i == 0) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -178,8 +178,8 @@ function ts150010_2() {
     var ret = isHasStaticTexts(getPopView(), [ "常青店", "中洲店" ]);
     window.popover().dismiss();
 
-    keys = { "款号" : det["明细"][0]["货品"], "名称" : det["名称"], "日期从" : getDay(-30),
-        "日期到" : getToday(), "调出门店" : "中洲店", "调入门店" : "常青店" }
+    keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
+        "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店", "调入门店" : "常青店" }
     fields = shopOutQueryParticularFields(keys);
     query(fields);
     qr = getQR();
@@ -678,8 +678,9 @@ function ts150031() {
     editShopOutDecruitField1(jo, "调出人");
     editShopOutDecruitField1(jo, "接收店");
     saveAndAlertOk();
+    tapPrompt();
     // 这里提示语的标点有点坑，直接去掉再比较
-    var ret = isInAlertMsgs("空单不允许保存");
+    var ret = isInAlertMsgs("空单无法保存");
 
     var det = editShopOutDet();
     editShopOutDecruitIn(det, colorSize);// 默认点击未打印

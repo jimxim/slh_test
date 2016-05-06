@@ -1094,14 +1094,13 @@ function ts130016_1() {
 
     tapFirstText();
     runAndAlert("test130015EndBill", OK);
-    tapPrompt();
-    var ret = isIn(alertMsg, "订单终结成功");
+    tapReturn();
+    var ret = isInAlertMsgs("订单终结成功");
 
     tapMenu("采购入库", "按订货入库");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch), isEqual("1", sub(
-            total, qr.total)));
+    ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch));
 
     return ret;
 }
@@ -1128,8 +1127,8 @@ function ts130016_2() {
 
     tapFirstText();
     runAndAlert("test130015EndBill", OK);
-    tapPrompt();
-    var ret = isIn(alertMsg, "订单终结成功");
+    tapReturn();
+    var ret = isInAlertMsgs("订单终结成功");
 
     tapMenu("采购入库", "按订货入库");
     tapButton(window, QUERY);
@@ -1185,7 +1184,7 @@ function ts130026Prepare() {
                 { "货品" : "kh007", "数量" : "8" }, { "货品" : "kh008", "数量" : "9" } ] }
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "kh000", "数量" : [ 1, 2, 3 ] },
+        det = { "明细" : [ { "货品" : "kh000", "数量" : [ 1, 2, 3, 4 ] },
                 { "货品" : "kh001", "数量" : [ 1, 2, 3, 4, 5 ] } ] };
         break;
     default:

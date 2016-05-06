@@ -275,18 +275,18 @@ function ts170557_2_1() {
 }
 
 function ts170557_2_2() {
-    return isAnd(check170557Alert(120, "因为启用了价格验证价格类型[2]"), check170557Alert(200,
-            "保存成功"));
+    return isAnd(check170557Alert(120, "因为启用了价格验证价格类型[2]"), check170557Alert(
+            200, "保存成功"));
 }
 
 function ts170557_3_2() {
-    return isAnd(check170557Alert(90, "因为启用了价格验证价格类型[0]"), check170557Alert(120,
-            "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
+    return isAnd(check170557Alert(90, "因为启用了价格验证价格类型[0]"), check170557Alert(
+            120, "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
 }
 
 function ts170557_4_2() {
-    return isAnd(check170557Alert(90, "因为启用了价格验证 价格类型[3]"), check170557Alert(170,
-            "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
+    return isAnd(check170557Alert(90, "因为启用了价格验证 价格类型[3]"), check170557Alert(
+            170, "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
 }
 function ts170557_5_1() {
     return isAnd(check170557Alert(90, "销售价不允许低于底价"), check170557Alert(170,
@@ -327,7 +327,7 @@ function setSPCParams(key1, key2) {
         value1 = "销售价不能低于零批价";
         break;
     case "2":
-        value1 = "不检查(店长权限)";
+        value1 = "店长权限";// 不检查 (店长权限)
         break;
     default:
         logWarn("未知数值＝" + key1);
@@ -358,7 +358,7 @@ function setSPCParams(key1, key2) {
         logWarn("未知数值＝" + key2);
     }
     qo = { "备注" : "销售价格允许改高不允许改低" };
-    o = { "新值" : key1, "数值" : [ value1 ] };
+    o = { "新值" : key1, "数值" : [ value1, "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单价不能低于指定的价格类型" };
