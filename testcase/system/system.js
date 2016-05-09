@@ -2220,8 +2220,6 @@ function test210053_2() {
 function test210055() {
     tapMenu("系统设置", "打印机");
 
-    // "IP地址错误"不显示，slh——Bug
-    //    
     // tapTextByFirstWithName("4");
     // var r = getRandomInt(10000);
     var ip = getRandomInt(100) + ".0.0.1";
@@ -2269,7 +2267,30 @@ function test210056() {
     var ret1 = isEqual(r, getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
-    return ret && ret1;
+    tapFirstText(getScrollView(), "4", 4);
+
+    ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
+
+    var r1 = "876;";
+    var f = new TField("数值", TF, 2, r1);
+    setTFieldsValue(getScrollView(), [ f ]);
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapPrompt();
+    tapReturn();
+
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -1);
+    // var ret1 = isIn(isIn(alertMsg1, "填入的值必须是数字"));
+
+    // tapReturn();
+
+    var qr = getQR();
+    var ret2 = isEqual(r, qr.data[4]["数值"]);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210057() {
     tapMenu("系统设置", "打印机");
@@ -2286,7 +2307,26 @@ function test210057() {
     var ret1 = isEqual(r, getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
-    return ret && ret1;
+    tapFirstText(getScrollView(), "5", 4);
+
+    ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
+
+    var r1 = "8。";
+    var f = new TField("数值", TF, 2, r1);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+
+//    debugArray(alertMsgs);
+//    var alertMsg1 = getArray1(alertMsgs, -1);
+//    var ret1 = isIn(isIn(alertMsg1, "填入的值必须是数字"));
+    
+    tapReturn();
+
+    var qr = getQR();
+    var ret2 = isEqual(r, qr.data[5]["数值"]);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210061() {
     tapMenu1("系统设置");

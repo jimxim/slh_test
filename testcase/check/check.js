@@ -39,12 +39,11 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     // run("【盘点管理—盘点处理】处理日期设置", "test180027");
-    // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
-    run("【盘点管理-处理记录-撤销记录】存在新的盘点计划时，不允许撤销处理记录", "test180060");
+    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");//修改
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
-    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180065");
 }
 function setIgnorecolorsize_1Params() {
     var qo, o, ret = true;
@@ -1254,8 +1253,8 @@ function test180029_180031_180032() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : add(batch, 1),
-        "是否撤销" : "否" };
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店",
+        "批次从" : batch, "批次到" : add(batch, 1), "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
     var qr = getQR();
@@ -1299,6 +1298,15 @@ function test180033() {
 
     var ret1 = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
 
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
+    ret1 = isAnd(ret1, isIn(alertMsg, "只能撤销最近一次盘点处理"));
+
+    delay(2);
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
     var qr = getQR();
     var batch = qr.data[0]["批次"];
     var shop = qr.data[0]["门店"];
@@ -1323,7 +1331,9 @@ function test180033() {
             qr.data[0]["操作日期"], 2), isEqual(tip, qr.data[0]["备注"]));
 
     tapMenu("盘点管理", "盈亏表");
-    query();
+    var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-0101", "到" : getToday() };
+    var fields = checkProfitAndLossFields(keys);
+    query(fields);
     qr = getQR();
 
     var ret3 = sortByTitle("批次", IS_NUM);
@@ -2188,9 +2198,9 @@ function test180042_7() {
     //
     // tapReturn();
 
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
+    // tapMenu("采购入库", "新增入库+");
+    // var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
+    // editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     query();
@@ -2257,9 +2267,9 @@ function test180042_7() {
     // query(fields);
     // qr = getQR();
 
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+    // tapMenu("销售开单", "开 单+");
+    // var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    // editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2354,7 +2364,7 @@ function test180049_180036() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    
+
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 30);
 
@@ -2430,7 +2440,7 @@ function test180049_180036() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    
+
     tapPrompt();
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 30);
@@ -2546,7 +2556,7 @@ function test180049_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    
+
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 30);
 
@@ -2620,7 +2630,7 @@ function test180049_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    
+
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 30);
 
@@ -2825,8 +2835,8 @@ function testAddBrandCheck() {
     var view1 = getPopOrView(window, -1);
     var table1 = getTableViews(view1)[1];
     var cells = table1.cells();
-//    tap(getStaticText(cells["Adidas"], 0));
-//    tap(getStaticText(cells["Adidas"], 0));
+    // tap(getStaticText(cells["Adidas"], 0));
+    // tap(getStaticText(cells["Adidas"], 0));
 
     tapButton(view1, 2);
 }
@@ -2846,7 +2856,7 @@ function test180060() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -2878,7 +2888,7 @@ function test180060() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -2928,7 +2938,7 @@ function test180061() {
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
 
     testAddBrandCheck();
-    
+
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
@@ -2973,7 +2983,7 @@ function test180062() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -3006,7 +3016,7 @@ function test180062() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -3031,7 +3041,7 @@ function test180062() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -3052,7 +3062,7 @@ function test180062() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -3066,7 +3076,7 @@ function test180062() {
     setTFieldsValue(getScrollView(), fields);
 
     testAddBrandCheck();
-    
+
     tapButtonAndAlert(SAVE, OK);
 
     tapPrompt();
@@ -3102,7 +3112,7 @@ function test180064() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-    
+
     testAddBrandCheck();
 
     tapButtonAndAlert(SAVE, OK);
@@ -3159,6 +3169,91 @@ function test180064() {
     logDebug(+" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test180065() {
-    
+function test180066() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理");
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapReturn();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
+    var f3 = new TField("数量", TF, 3, r);
+    var fields = [ f0, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("全盘处理");
+
+    var cond = "isIn(alertMsg, '处理完成')";
+    waitUntil(cond, 30);
+
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
+    testAddBrandCheck();
+
+    tapButtonAndAlert(SAVE, OK);
+
+    tapReturn();
+
+    tapMenu("盘点管理", "处理记录");
+    query();
+    var qr = getQR();
+    var total1 = qr.total;
+
+    tapButton(getScrollView(), 0);
+
+    tapButton(window, "盘点撤销");
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "盘点计划正在执行中，盘点处理无法撤销");
+
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    tapFirstText();
+
+    tapButtonAndAlert("删除计划", OK);
+
+    tapPrompt();
+
+    tapMenu("盘点管理", "处理记录");
+    query();
+    var qr = getQR();
+    var total2 = qr.total;
+
+    tapButton(getScrollView(), 0);
+
+    tapButton(window, "盘点撤销");
+
+    tapPrompt();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
