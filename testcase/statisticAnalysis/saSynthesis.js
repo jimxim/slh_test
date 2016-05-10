@@ -417,7 +417,7 @@ function getStatisticAnalysisSynthesis() {
     tapMenu2("综合汇总");
     query();
     var ret;
-    var qr = getQResult();
+    var qr = getQR();
     if (qr.data.length > 0) {
         ret = qr.data[0]; // 当天汇总数据只有一条
     }

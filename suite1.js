@@ -13,8 +13,9 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
-// outBatch={"inPre":"177"};
- run("测试用例", "textFin_price_base");
+// outBatch={"inPre":"269","ts150007":"268"};
+// menu_profit = "日利润表";
+ run("测试用例", "ts140028");
 // run("测试用例", "testCheckHelp");
 
 }

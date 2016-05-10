@@ -4,9 +4,9 @@
  * 常青店总经理验证
  */
 function testShopIn001() {
-    // run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
+    run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
     run("【门店调出-按批次查】调入已作废单", "ts150002_1");// 6.59前版本适用
-    // run("【门店调入】数据验证", "ts140001");// 需要shopInPrepare的批次号
+    run("【门店调入】数据验证", "ts140001");// 需要shopInPrepare的批次号
     run("【门店调出-在途调拨】门店调拨-在途调拨，默认日期检查", "ts140006");
     run("【门店调入-在途调拨】全部清除", "ts140010");
     run("【门店调入-在途调拨】返回", "ts140011");
@@ -567,5 +567,25 @@ function ts140025_26_27() {
 
     var arr = [ "数量", "金额" ];
     ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
+}
+
+function ts140028() {
+    tapMenu("门店调入", "按款号汇总");
+    var keys = { "调入门店" : "常青店", "日期从" : getDay(-365) };
+    var fields = shopInCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = true;
+    if (qr.data.length > 0) {
+        ret = qr.counts["数量"] != 0;
+    }
+
+    keys = { "调入门店" : "中洲店" };
+    fields = shopInCodeFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0, qr.counts["数量"] == 0);
     return ret;
 }
