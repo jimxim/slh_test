@@ -333,7 +333,7 @@ function test170001_2_170002_170003_170004_170008_170020_170485() {
 function test170005() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "现金" : "100", "备注" : "zdbz", "onlytest" : "yes" };
+        "未付" : "yes", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var ys = getTextFieldValue(window, 3);
@@ -4287,10 +4287,11 @@ function test170319_1() {
             sk1, sk)), isEqual("2000", sub(hk1, hk)), isEqual("50",
             sub(ds1, ds)), isEqual("300", sub(te1, te)), isEqual("4", sub(xs1,
             xs)), isEqual("1", sub(ts1, ts)), isEqual("3", sub(sxs1, sxs)),
-            isEqual("431", sub(sxe1, sxe)), isEqual("19", sub(ml1, ml)),
-            isEqual("401", sub(sxe21, sxe2)), isEqual("30", sub(qt1, qt)),
-            isEqual(qk1, sub(sxe1, add(ds1, add(xj1, add(sk1, hk1))))),
-            isEqual(sxe21, sub(sxe1, qt1)), isEqual(xs1, add(sxs1, ts1)));
+            isEqual("431", sub(sxe1, sxe)), isEqual("19", Math.round(sub(ml1,
+                    ml))), isEqual("401", sub(sxe21, sxe2)), isEqual("30", sub(
+                    qt1, qt)), isEqual(qk1, sub(sxe1, add(ds1, add(xj1, add(
+                    sk1, hk1))))), isEqual(sxe21, sub(sxe1, qt1)), isEqual(xs1,
+                    add(sxs1, ts1)));
 
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : getDay(-2), "门店" : "常青店", "店员" : "000" };
@@ -8601,7 +8602,7 @@ function test170588_1() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
-        "现金" : 511, "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ]};
+        "现金" : 511, "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
@@ -9152,7 +9153,7 @@ function test170637() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     return ret && ret1;
 }
 function test170638() {
@@ -9609,7 +9610,7 @@ function test170683() {
     qo = { "备注" : "支持异地仓库" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -9875,8 +9876,8 @@ function test170708() {
 
     var ret = isAnd(isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk, sum3),
             isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6), isEqual(
-                    ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9), isEqual(
-                    ml, sum10), isEqual(sxe2, sum11), isEqual(qt, sum12),
+                    ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
+            isAqualNum(ml, sum10), isEqual(sxe2, sum11), isEqual(qt, sum12),
             isEqual(qk, sum13));
 
     return ret;

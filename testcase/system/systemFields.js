@@ -305,3 +305,61 @@ function editSystemPasswordField(key, show) {
     }
     return f;
 }
+//门店列表
+function testSystemShopFields() {
+    var fields = testSystemShopFields("name", "section");
+    setTFieldsValue(window, fields);
+    return true;
+}
+
+function editSystemShopFields(keys, show) {
+    return getTFields("editSystemShopField", keys, show);
+}
+function editSystemShopField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 0, "常青店");
+        break;
+    case "section":
+    case "部门":
+        f = new TField("部门", TF_SC, 1, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+//账户列表
+function testSystemAccountFields() {
+    var fields = testSystemAccountFields("name", "section");
+    setTFieldsValue(window, fields);
+    return true;
+}
+
+function editSystemAccountFields(keys, show) {
+    return getTFields("editSystemAccountField", keys, show);
+}
+function editSystemAccountField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 0, "");
+        break;
+    case "section":
+    case "部门":
+        f = new TField("部门", TF_SC, 1, "常青店");
+        break;
+    case "stop":
+    case "是否停用":
+        f = new TField("是否停用", TF_SC, 2, "否");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+
+

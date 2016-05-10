@@ -40,7 +40,7 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     // run("【盘点管理—盘点处理】处理日期设置", "test180027");
     run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
-    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");//修改
+    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");// 修改
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
@@ -1287,27 +1287,11 @@ function test180033() {
         "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-
-    tapButton(window, "盘点撤销");
-
-    var ret = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
-
-    tapButton(getScrollView(), 0);
-    tapButton(getScrollView(), 1);
-    tapButton(window, "盘点撤销");
-
-    var ret1 = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
-
-    tapButton(getScrollView(), 0);
-    tapButton(window, "盘点撤销");
-
-    ret1 = isAnd(ret1, isIn(alertMsg, "只能撤销最近一次盘点处理"));
-
-    delay(2);
-    tapButton(getScrollView(), 0);
-    tapButton(window, "盘点撤销");
-
     var qr = getQR();
+
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
     var batch = qr.data[0]["批次"];
     var shop = qr.data[0]["门店"];
     var opStaff = qr.data[0]["操作人"];
@@ -1315,14 +1299,14 @@ function test180033() {
     var opTime = qr.data[0]["操作日期"];
     var tip = qr.data[0]["备注"];
 
-    tapButton(getScrollView(), 1);
-    tapButton(window, "盘点撤销");
-
     tapMenu("盘点管理", "处理记录");
-    keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
-        "批次从" : batch, "批次到" : batch, "是否撤销" : "是" };
+    keys = [ "批次从", "批次到", "是否撤销" ];
     fields = checkProcessRecordFields(keys);
-    query(fields);
+    changeTFieldValue(fields["批次从"], batch);
+    changeTFieldValue(fields["批次到"], batch);
+    changeTFieldValue(fields["是否撤销"], "是");
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
     qr = getQR();
 
     var ret2 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(ckTime,
@@ -1341,6 +1325,30 @@ function test180033() {
     qr = getQR();
 
     ret3 = ret3 && !isEqual(batch, qr.data[0]["批次"]);
+
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+
+    tapButton(window, "盘点撤销");
+
+    var ret = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
+
+    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(), 1);
+    tapButton(window, "盘点撤销");
+
+    var ret1 = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
+
+    tapButton(getScrollView(), 0);
+    tapButton(window, "盘点撤销");
+
+    ret1 = isAnd(ret1, isIn(alertMsg, "只能撤销最近一次盘点处理"));
+
+    var cond = "isIn(alertMsg, '只能撤销最近一次盘点处理')";
+    waitUntil(cond, 5);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -2840,83 +2848,7 @@ function testAddBrandCheck() {
 
     tapButton(view1, 2);
 }
-function test180060() {
-    tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : "常青店" };
-    var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    delay();
-    tapButtonAndAlert("部分处理");
-    tapPrompt();
 
-    tapReturn();
-
-    tapMenu("盘点管理", "盘点计划+", "按品牌+");
-    var keys = { "门店" : "常青店" };
-    var fields = checkPlanAddFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    delay();
-
-    testAddBrandCheck();
-
-    tapButtonAndAlert(SAVE, OK);
-
-    tapReturn();
-
-    tapMenu("盘点管理", "新增盘点+");
-    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "50");
-    var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapReturn();
-
-    tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : "常青店" };
-    var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    delay();
-
-    tapButtonAndAlert("全盘处理");
-
-    tapPrompt();
-
-    tapReturn();
-
-    tapMenu("盘点管理", "盘点计划+", "按品牌+");
-    var keys = { "门店" : "常青店" };
-    var fields = checkPlanAddFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    delay();
-
-    testAddBrandCheck();
-
-    tapButtonAndAlert(SAVE, OK);
-
-    tapReturn();
-
-    tapMenu("盘点管理", "处理记录");
-    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
-        "是否撤销" : "否" };
-    var fields = checkProcessRecordFields(keys);
-    query(fields);
-
-    tapButton(getScrollView(), 0);
-    tapButton(window, "盘点撤销");
-
-    var ret = isIn(alertMsg, "盘点计划正在执行中，盘点处理无法撤销");
-
-    tapMenu("盘点管理", "盘点计划表");
-    query();
-
-    tapFirstText();
-
-    tapButtonAndAlert("删除计划", OK);
-
-    tapPrompt();
-
-    return ret;
-}
 function test180061() {
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
     tapButtonAndAlert(SAVE, OK);
@@ -3177,6 +3109,7 @@ function test180066() {
     delay();
     tapButtonAndAlert("部分处理");
     tapPrompt();
+
     tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
@@ -3192,9 +3125,8 @@ function test180066() {
     tapReturn();
 
     tapMenu("盘点管理", "新增盘点+");
-    var r = "1" + getRandomInt(100);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, r);
+    var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -3204,10 +3136,13 @@ function test180066() {
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
+    delay();
+
     tapButtonAndAlert("全盘处理");
 
-    var cond = "isIn(alertMsg, '处理完成')";
-    waitUntil(cond, 30);
+    tapPrompt();
+
+    tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
     var keys = { "门店" : "常青店" };
@@ -3222,15 +3157,16 @@ function test180066() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    query();
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+
     var qr = getQR();
     var total1 = qr.total;
 
     tapButton(getScrollView(), 0);
-
     tapButton(window, "盘点撤销");
-
-    tapPrompt();
 
     var ret = isIn(alertMsg, "盘点计划正在执行中，盘点处理无法撤销");
 
@@ -3244,13 +3180,26 @@ function test180066() {
     tapPrompt();
 
     tapMenu("盘点管理", "处理记录");
-    query();
-    var qr = getQR();
-    var total2 = qr.total;
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
 
     tapButton(getScrollView(), 0);
-
     tapButton(window, "盘点撤销");
+
+    tapButton(window, QUERY);
+    qr = getQR();
+    var total2 = qr.total;
+
+    var ret1 = isEqual(1, sub(total1, total2));
+    
+    tapMenu("盘点管理", "盘点计划表");
+    query();
+
+    tapFirstText();
+
+    tapButtonAndAlert("删除计划", OK);
 
     tapPrompt();
 

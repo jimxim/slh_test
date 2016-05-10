@@ -7,11 +7,11 @@ function testSystem001() {
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
     run("【系统设置—全局设置】查询/清除", "test210010_210011");
     run("【系统设置—打印机】保存/返回/参数生效", "test210012_210013_210014");
-    run("【系统设置—打印机】翻页/页码切换", "test210015_210016");
+    run("【系统设置—全局设置】翻页", "test210015_210016");
     run("【系统设置—打印机】条码打印机IP", "test210055");
     run("【系统设置—打印机】条码打印机端口", "test210056");
     run("【系统设置—打印机】快递单打印端口", "test210057");
-    run("【系统设置—小票信息】门店信息", "test210017");//
+    run("【系统设置—小票信息】门店信息", "test210017");
     run("【系统设置—小票信息】保存", "test210018_1");
     run("【系统设置—小票信息】保存", "test210018_2");
     run("【系统设置—小票信息】保存", "test210018_3");
@@ -24,7 +24,7 @@ function testSystem001() {
     run("【系统设置—刷新图像】刷新大图", "test210023");
     run("【系统设置—人员列表】查询", "test210024");
     run("【系统设置—人员列表】清除", "test210025");
-    run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");//
+    run("【系统设置—人员列表】【系统设置—人员列表】详细-修改保存", "test210027");
     run("【系统设置—人员列表】详细-启用/停用", "test210028_210029");
     run("【系统设置—人员列表】详细-返回", "test210031");
     run("【系统设置—新增人员】新增人员", "test210032");
@@ -38,10 +38,14 @@ function testSystem001() {
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
 
-    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039");
-    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1");
+    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
+    run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
+    run("【系统设置-更多】门店停用规则", "test210067");
+    run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
+    run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
+
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -154,14 +158,13 @@ function test210003() {
     var i = getArrayIndexIn(texts, "sc_remote_mac");
     var ok = tap(texts[i]);
 
-    // 商路花Bug
-    // var r = "ac:29:3a:9f:22";
-    // var f = new TField("数值", TF, 2, r);
-    // setTFieldsValue(getScrollView(), [ f ]);
-    // delay();
-    // tapButtonAndAlert(SAVE, OK);
-    // tapPrompt();
-    // var ret2 = isIn(alertMsg, "MAC地址非法");
+//     var r = "ac:29:3a:9f:22";
+//     var f = new TField("数值", TF, 2, r);
+//     setTFieldsValue(getScrollView(), [ f ]);
+//     delay();
+//     tapButtonAndAlert(SAVE, OK);
+//     tapPrompt();
+//     var ret2 = isIn(alertMsg, "MAC地址非法");
 
     var ip = "ac:29:3a:9f:22:3b";
     var f = new TField("数值", TF, 2, ip);
@@ -709,6 +712,16 @@ function test210028_210029() {
     return ret;
 }
 function test210030() {
+    tapMenu("系统设置", "改密码");
+    var f0 = new TField("原密码", TF_S, 0, "000000");
+    var f1 = new TField("新密码", TF_S, 1, "222222");
+    var f2 = new TField("确认密码", TF_S, 2, "222222");
+    var fields = [ f0, f1, f2 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, OK);
+    tapPrompt();
+
     tapMenu("系统设置", "人员列表");
     var keys = { "工号" : "000", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
@@ -1068,7 +1081,7 @@ function test210036() {
 
     return ret && ret1;
 }
-function test210039() {
+function test210039_210068() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
@@ -1090,8 +1103,7 @@ function test210039() {
 
     var qr = getQR();
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(14,
-            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
-            0.5);
+            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
     var ret1 = isAnd(
@@ -1111,6 +1123,33 @@ function test210039() {
             isEqual("黄色", getTextFieldValue(getScrollView(), 22)), isEqual(
                     "XL", getTextFieldValue(getScrollView(), 23)), isEqual(2,
                     getTextFieldValue(getScrollView(), 24)));
+
+    tapReturn();
+
+    delay(3);
+
+    tapMenu("系统设置", "全局设置");
+
+    var f1 = new TField("备注", TF, 1, "是否显示颜色尺码字样");
+    var fields = [ f1 ];
+    setTFieldsValue(window, fields);
+
+    tapButton(window, QUERY);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "0,不显示" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret2 = false;
+    if (isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式")) {
+        ret2 = true;
+    }
 
     tapReturn();
 
@@ -1151,9 +1190,10 @@ function test210039() {
     // o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
 
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
-function test210039_1() {
+function test210039_1_210068() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
@@ -1538,7 +1578,7 @@ function test210050() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f9 = new TField("日期", TF_DT, 9, getDay(1));
@@ -1575,7 +1615,7 @@ function test210050() {
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f9 = new TField("日期", TF_DT, 8, getDay(1));
@@ -1650,14 +1690,14 @@ function test210050() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
 
-    var f8 = new TField("日期", TF_DT, 8, getDay(-1));
+    var f8 = new TField("日期", TF_DT, 8, getDay(1));
     var fields = [ f8 ];
     setTFieldsValue(window, fields);
 
@@ -1849,8 +1889,30 @@ function test210051_1() {
     var ret3 = isIn(alertMsg, "保存成功");
 
     tapReturn();
+    
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "Rt", "店员" : "000",
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json);
 
-    return ret && ret1 && ret2 && ret3;
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+
+    var f8 = new TField("日期", TF_DT, 8, getDay(1));
+    var fields = [ f8 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret4 = false;
+    if (isIn(alertMsg, "保存成功")) {
+        ret4 = true;
+    }
+    tapReturn();
+
+    return ret && ret1 && ret2 && ret3&& ret4;
 }
 function test210052() {
     var qo, o, ret = true;
@@ -2220,36 +2282,38 @@ function test210053_2() {
 function test210055() {
     tapMenu("系统设置", "打印机");
 
-    // tapTextByFirstWithName("4");
-    // var r = getRandomInt(10000);
+    tapTextByFirstWithName("4");
+    var r = ";/";
     var ip = getRandomInt(100) + ".0.0.1";
-    // var f = new TField("数值", TF, 2, r);
-    // setTFieldsValue(getScrollView(), [ f ]);
-    // tapButtonAndAlert(SAVE, OK);
-    // tapPrompt();
-    // var ret = isIn(alertMsg, "IP地址错误");
+    var f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "填入的值必须是数字");
 
     tapFirstText(getScrollView(), "3", 4);
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
     var qr = getQR();
-    var ret = isEqual(ip, qr.data[3]["数值"]);
+    var ret1 = isEqual(ip, qr.data[3]["数值"]);
 
     tapMenu("系统设置", "打印机");
     tapFirstText(getScrollView(), "3", 4);
     tapButton(getScrollView(), "本 机");
-    var ret1 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
 
     qr = getQR();
     ret = isAnd(ret, isEqual("127.0.0.1", qr.data[3]["数值"]));
 
     tapFirstText(getScrollView(), "3", 4);
-    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    var ret3 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test210056() {
     tapMenu("系统设置", "打印机");
@@ -2271,13 +2335,15 @@ function test210056() {
 
     ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
 
-    var r1 = "876;";
+    var r1 = ";/";
     var f = new TField("数值", TF, 2, r1);
     setTFieldsValue(getScrollView(), [ f ]);
 
     tapButtonAndAlert(SAVE, OK);
 
     tapPrompt();
+    ret1 = isAnd(ret1, isIn(alertMsg, "填入的值必须是数字"));
+
     tapReturn();
 
     // debugArray(alertMsgs);
@@ -2311,15 +2377,14 @@ function test210057() {
 
     ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
 
-    var r1 = "8。";
+    var r1 = "<>/";
     var f = new TField("数值", TF, 2, r1);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
 
-//    debugArray(alertMsgs);
-//    var alertMsg1 = getArray1(alertMsgs, -1);
-//    var ret1 = isIn(isIn(alertMsg1, "填入的值必须是数字"));
-    
+    tapPrompt();
+    ret1 = isAnd(ret1, isIn(alertMsg, "填入的值必须是数字"));
+
     tapReturn();
 
     var qr = getQR();
@@ -2381,4 +2446,127 @@ function test210063() {
     tapReturn();
 
     return ret;
+}
+function test210067() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("门店列表");
+
+    query();
+
+    tapFirstText();
+
+    tapButtonAndAlert("停 用", OK);
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "该门店下还存在款号库存，无法停用");
+
+    return ret;
+}
+function test210069_210070() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("新增门店＋");
+
+    var m = "test" + getTimestamp(8);
+
+    var f0 = new TField("店名", TF, 0, m);
+    var f1 = new TField("类型", BTN_SC, 0, "门店");
+    var f2 = new TField("门店类型", BTN_SC, 1, "加盟店");
+    var f3 = new TField("地址", TF, 3, "江城路889号");
+    var f5 = new TField("联系电话", TF, 5, "3003008");
+    var fields = [ f0, f1, f2, f3, f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("门店列表");
+
+    query();
+
+    var qr = getQR();
+
+    var ret = isEqual(m, qr.data[0]["门店"]);
+
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("新增账户＋");
+
+    var r = "zh" + getTimestamp(4);
+    var r1 = getTimestamp(4);
+
+    var f0 = new TField("账户全称", TF, 0, r);
+    var f1 = new TField("账户简称", TF, 1, r1);
+    var f2 = new TField("门店", BTN_SC, 0, m);
+    var f3 = new TField("刷卡/汇款", BTN_SC, 1, "通用");
+    var fields = [ f0, f1, f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2");
+
+    var r2 = getTimestamp(2);
+    var f1 = new TField("账户简称", TF, 1, r2);
+    var fields = [ f1 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    tapReturn();
+
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("账户列表");
+
+    query();
+
+    var qr = getQR();
+
+    var ret2 = isEqual(r, qr.data[0]["账户名称"]);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test210071() {
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("新增账户＋");
+
+    var r = "zh" + getTimestamp(4);
+    var r1 = getTimestamp(2);
+
+    var f0 = new TField("账户全称", TF, 0, r);
+    var f1 = new TField("账户简称", TF, 1, r1);
+    var f2 = new TField("门店", BTN_SC, 0, "常青店");
+    var f3 = new TField("刷卡/汇款", BTN_SC, 1, "通用");
+    var fields = [ f0, f1, f2, f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+
+    tapReturn();
+
+    tapMenu1("系统设置");
+    tapMenu2("更多..");
+    tapMenu3("账户列表");
+
+    query();
+
+    var qr = getQR();
+
+    var ret1 = !isEqual(r, qr.data[0]["账户名称"]);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
