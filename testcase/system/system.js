@@ -11,6 +11,7 @@ function testSystem001() {
     run("【系统设置—打印机】条码打印机IP", "test210055");
     run("【系统设置—打印机】条码打印机端口", "test210056");
     run("【系统设置—打印机】快递单打印端口", "test210057");
+    run("【系统设置—打印机】打印机端口", "test210065");
     run("【系统设置—小票信息】门店信息", "test210017");
     run("【系统设置—小票信息】保存", "test210018_1");
     run("【系统设置—小票信息】保存", "test210018_2");
@@ -58,7 +59,8 @@ function testSystem002() {
     run("【系统设置-全局参数】是否允许修改单据日期--限制修改销售单日期", "test210051_1");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_1");
-    run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_2");
+    // run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期",
+    // "test210052_2");(已合并入test210052_1)
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
@@ -158,13 +160,13 @@ function test210003() {
     var i = getArrayIndexIn(texts, "sc_remote_mac");
     var ok = tap(texts[i]);
 
-//     var r = "ac:29:3a:9f:22";
-//     var f = new TField("数值", TF, 2, r);
-//     setTFieldsValue(getScrollView(), [ f ]);
-//     delay();
-//     tapButtonAndAlert(SAVE, OK);
-//     tapPrompt();
-//     var ret2 = isIn(alertMsg, "MAC地址非法");
+    // var r = "ac:29:3a:9f:22";
+    // var f = new TField("数值", TF, 2, r);
+    // setTFieldsValue(getScrollView(), [ f ]);
+    // delay();
+    // tapButtonAndAlert(SAVE, OK);
+    // tapPrompt();
+    // var ret2 = isIn(alertMsg, "MAC地址非法");
 
     var ip = "ac:29:3a:9f:22:3b";
     var f = new TField("数值", TF, 2, ip);
@@ -1889,7 +1891,7 @@ function test210051_1() {
     var ret3 = isIn(alertMsg, "保存成功");
 
     tapReturn();
-    
+
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
         "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
@@ -1912,7 +1914,7 @@ function test210051_1() {
     }
     tapReturn();
 
-    return ret && ret1 && ret2 && ret3&& ret4;
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test210052() {
     var qo, o, ret = true;
@@ -2060,6 +2062,26 @@ function test210052_1() {
     }
     tapReturn();
 
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "发货状态" : "未发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    var f10 = new TField("日期", TF_DT, 10, getDay(-1));
+    var fields = [ f10 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret5 = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret5 = true;
+    }
+    tapReturn();
+
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
         "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
@@ -2079,6 +2101,23 @@ function test210052_1() {
     var ret2 = false;
     if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
         ret2 = true;
+    }
+    tapReturn();
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+
+    var f8 = new TField("日期", TF_DT, 8, getDay(-1));
+    var fields = [ f8 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret4 = false;
+    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
+        ret4 = true;
     }
     tapReturn();
 
@@ -2105,8 +2144,8 @@ function test210052_1() {
     tapReturn();
 
     logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test210052_2() {
     var qo, o, ret = true;
@@ -2446,6 +2485,42 @@ function test210063() {
     tapReturn();
 
     return ret;
+}
+function test210065() {
+    tapMenu("系统设置", "打印机");
+
+    tapTextByFirstWithName("2");
+    var r = ";/";
+    var ip = getRandomInt(100) + ".0.0.1";
+    var f = new TField("数值", TF, 2, r);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "填入的值必须是数字");
+
+    tapFirstText(getScrollView(), "1", 4);
+    var f = new TField("数值", TF, 2, ip);
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(SAVE, OK);
+    var qr = getQR();
+    var ret1 = isEqual(ip, qr.data[3]["数值"]);
+
+    tapMenu("系统设置", "打印机");
+    tapFirstText(getScrollView(), "1", 4);
+    tapButton(getScrollView(), "本 机");
+    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapButtonAndAlert(SAVE, OK);
+
+    qr = getQR();
+    ret = isAnd(ret, isEqual("127.0.0.1", qr.data[2]["数值"]));
+
+    tapFirstText(getScrollView(), "1", 4);
+    var ret3 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test210067() {
     tapMenu1("系统设置");
