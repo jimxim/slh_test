@@ -318,7 +318,7 @@ function checkMenus(menus, menu2) {
             msg += "-";
             menuOk = tapMenu2(menu);
         }
-        // msg += menu + "-";
+        msg += menu + "-";
 
         if (menuOk) {
             if ("yes" == oMenu["navi_close"]) {

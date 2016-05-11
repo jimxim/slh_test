@@ -601,6 +601,28 @@ function ts150019_20_21() {
     return ret;
 }
 
+//常青店总经理以外的角色登陆验证,需要有按款号汇总的权限
+function ts150022() {
+    tapMenu("门店调出", "按款号汇总");
+    var keys = { "调出门店" : "常青店", "日期从" : getDay(-365) };
+    var fields = shopOutCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = true;
+    if (qr.data.length > 0) {
+        ret = qr.counts["数量"] != 0;
+    }
+
+    keys = { "调出门店" : "中洲店" };
+    fields = shopOutCodeFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();// 有时标题栏会循环显示，这里因为明细为空，所以汇总值可能会取不到
+    ret = isAnd(ret, qr.data.length == 0, qr.counts["数量"] == 0
+            || qr.counts["数量"] == undefined);
+    return ret;
+}
+
 function ts150024() {
     tapMenu("门店调出", "批量调出+");
     var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "abc123" };
@@ -671,6 +693,8 @@ function ts150025() {
         return false;
     }
 }
+
+
 
 function ts150031() {
     tapMenu("门店调出", "批量调出+");

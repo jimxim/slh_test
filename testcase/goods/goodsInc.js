@@ -1042,7 +1042,6 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
         if (v1 != "") {
             ret = ret && (v1 == v2);
         }
-        // logDebug("v1=" + v1 + " v2=" + v2 + " ret=" + ret);
     }
     if (!ret) {
         debugObject(sum, "sum=");

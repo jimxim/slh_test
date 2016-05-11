@@ -14,14 +14,17 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();
 // testCheckMenuAll();
 // outBatch={"inPre":"269","ts150007":"268"};
-// menu_profit = "日利润表";
- run("测试用例", "ts140028");
-// run("测试用例", "testCheckHelp");
+
+// run("测试用例", "test120013_3");
+ run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
-    UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
+    var det = ts120050Det();
+    tapMenu2("批量入库+");
+    editPurchaseBatch(det, colorSize);
 }
 
 function prepare200All(){

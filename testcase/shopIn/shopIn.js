@@ -569,7 +569,7 @@ function ts140025_26_27() {
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
-
+// 常青店总经理以外的角色登陆验证,需要有按款号汇总的权限
 function ts140028() {
     tapMenu("门店调入", "按款号汇总");
     var keys = { "调入门店" : "常青店", "日期从" : getDay(-365) };
@@ -585,7 +585,8 @@ function ts140028() {
     fields = shopInCodeFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0, qr.counts["数量"] == 0);
+    var qr = getQR();// 有时标题栏会循环显示，这里因为明细为空，所以汇总值可能会取不到
+    ret = isAnd(ret, qr.data.length == 0, qr.counts["数量"] == 0
+            || qr.counts["数量"] == undefined);
     return ret;
 }

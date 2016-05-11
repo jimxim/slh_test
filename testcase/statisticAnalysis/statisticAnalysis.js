@@ -1,23 +1,9 @@
 //LuXingXin <52619481 at qq.com> 20151109
 
-var menu_profit;
-
-function getMenu_profit() {
-    if (ipadVer >= 7.01) {
-        menu_profit = "日利润表";
-    } else {
-        menu_profit = "利润表";
-    }
-    return menu_profit;
-}
-
 // 收入类别 订金 业务回扣1
 // 支出类别 物业 物损
 // 因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
 function testStatisticAnalysis001() {
-    if (isUndefined(menu_profit)) {
-        menu_profit = getMenu_profit();
-    }
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
     // run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
 
@@ -45,7 +31,9 @@ function testStatisticAnalysis001() {
 
     run("【统计分析—收支流水】查询清除", "test190022_190023");
     run("【统计分析—收支流水】翻页排序", "test190024");
-    run("【统计分析—收支流水】流水检查/金额正负检查", "test190025");
+    run("【统计分析—收支流水/综合汇总】销售数据检查", "test190025_1");
+    run("【统计分析—收支流水/综合汇总】采购数据检查", "test190025_2");
+    run("【统计分析—收支流水/综合汇总】积分兑换代收核销数据检查", "test190025_3");
     run("【统计分析—收支流水】底部数据检查", "test190026");
     run("【统计分析—收支类别】查看,排序,翻页", "test190027");
     run("【统计分析—收支类别】保存", "test190028");
@@ -80,14 +68,14 @@ function testStatisticAnalysis001() {
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
     run("【统计分析—综合汇总】排序", "test190031");// 特殊货品 代收收款暂不支持排序
     run("【统计分析—综合汇总】清除", "test190032");
-    // run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");//
+    run("【统计分析—综合汇总】检查汇总各项数值正确性", "test190035");
     run("【统计分析—综合汇总】检查底部数据", "test190036");
     run("【统计分析—综合汇总】进入详细-综合收支表_汇总、刷卡汇款显示", "test190037");
     run("【统计分析—综合汇总】进入详细-余款", "test190038");
     run("【统计分析—综合汇总】进入详细-抵扣", "test190041");
     run("【统计分析—综合汇总】进入详细-欠款", "test190039");
     run("【统计分析—综合汇总】进入详细-还款", "test190040");
-    // run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
+    run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
 }
 
 // 中洲店店长数据准备
@@ -972,7 +960,7 @@ function test190025_1() {
     var exp = { "销数" : 15, "销额" : 3000, "实销数" : 15, "实销额" : 3000, "现金" : 3000 };
     var jo1 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("现", "收入", "销售单");
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(3000, n2 - n1),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(3000, n2 - n1),
             isEqualObject(exp, subObject(jo1, jo)));
 
     logDebug("------销售订货预付款 正值------");
@@ -993,7 +981,7 @@ function test190025_1() {
     exp = { "销数" : 20, "销额" : 4000, "实销数" : 20, "实销额" : 4000, "现金" : 6000,
         "欠款" : 2000, "余款" : 4000 };
     expected = { "类型" : "销售单", "金额" : "2000", "操作人" : "总经理" };
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(2000, n1 - n2),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(2000, n1 - n2),
             isEqualObject(exp, subObject(jo2, jo1)));
 
     return ret;
@@ -1014,7 +1002,7 @@ function test190025_2() {
     var exp = { "进数" : 20 };
     var jo1 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("现", "支出", "采购单");
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(2000, n2 - n1),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(2000, n2 - n1),
             isEqualObject(exp, subObject(jo1, jo)));
 
     logDebug("------采购订货预付款 负值------");
@@ -1034,7 +1022,7 @@ function test190025_2() {
     n1 = getSACountsQR("现", "支出", "采购单");
     exp = { "进数" : 50 };
     expected = { "类型" : "采购单", "金额" : "-1000", "操作人" : "总经理" };
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(2000, n1 - n2),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(2000, n1 - n2),
             isEqualObject(exp, subObject(jo2, jo1)));
     return ret;
 }
@@ -1049,7 +1037,7 @@ function test190025_3() {
     var n2 = getSACountsQR("现", "支出", "积分兑换");
     var expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
     ret = isAnd(ret, test190025Field1(expected), isEqualObject(jo1, jo2),
-            isEqualObject(1000, n2 - n1));
+            isEqual(1000, n2 - n1));
 
     logDebug("------代收核销收入 正值------");
     tapMenu2("综合汇总");
@@ -1063,9 +1051,10 @@ function test190025_3() {
     addLogisticsVerify(json);
     jo1 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("代", "收入", "销售单");
-    var exp = { "销数" : 8, "销额" : 1600 };
+    var exp = { "销数" : 8, "销额" : 1600, "实销数" : 8, "实销额" : 1600, "代收" : 1600,
+        "代收收款" : 1600 };
     expected = { "类型" : "代收收款", "金额" : 1600, "操作人" : "总经理" };
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(1600, n2 - n1),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(1600, n2 - n1),
             isEqualObject(exp, subObject(jo1, jo2)));
     return ret;
 }
@@ -1136,7 +1125,7 @@ function test190104() {
 function test190106() {
     var jo1 = getStatisticAnalysisSynthesis();// 取综合汇总起始值
 
-    tapMenu("统计分析", getMenu_profit);
+    tapMenu("统计分析", menu_profit);
     query();
     var qr = getQR();
     var jo1 = qr.data[0];
@@ -1473,7 +1462,7 @@ function getDataFor190037() {
 }
 
 /**
- * 获取综合收支表指定内容的金额
+ * 获取综合收支表指定内容的金额,需要已经在综合汇总界面
  * @param name 银行
  * @param type 收入or支出
  * @param value 单据类型
@@ -1484,8 +1473,8 @@ function getSACountsQR(name, type, value) {
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     tapNaviLeftButton();
-    var arr = qr.data;
 
+    var arr = qr.data;
     var length = arr.length - 1// 最后一行为合计
     var i, j, bank = "现", ret = 0;
     for (i = 0; i < length; i++) {
@@ -1809,14 +1798,20 @@ function test190046Field() {
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
         }
     }
-
-    var counts = {};
-    // 获取汇总栏的值,最后一个汇总值的staticText下标为-3
-    for (i = 2; i < qr.titles.length; i++) {
-        var title = qr.titles[i];
-        counts[title] = getStaticTextValue(getScrollView(-1, 0), i - 12);
+    var ret = true;
+    for ( var i in qr.counts) {
+        var v1 = qr.counts[i];
+        var v2 = sum[i];
+        if (v1 != "") {
+            ret = ret && (v1 == v2);
+        }
     }
-    return isEqualObject(counts, arr);
+    if (!ret) {
+        debugObject(sum, "sum=");
+        debugObject(qr.counts, "qr.counts=");
+        logDebug("汇总值错误");
+    }
+    return ret;
 }
 
 function test190068_190070() {
@@ -2180,7 +2175,7 @@ function test190084() {
     var batch1 = qr.data[0]["批次"];
     var batch2 = qr.data[1]["批次"];
 
-    tapMenu("统计分析", getMenu_profit);
+    tapMenu("统计分析", menu_profit);
     query();
     tapFirstText();
     tapNaviRightButton();
@@ -2343,7 +2338,7 @@ function test190086() {
 
 }
 function test190087_190101() {
-    tapMenu("统计分析", getMenu_profit);
+    tapMenu("统计分析", menu_profit);
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035", "客户" : "xw",
         "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
     var fields = statisticAnalysisProfitFields(keys);

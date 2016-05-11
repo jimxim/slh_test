@@ -15,6 +15,7 @@ function testPurchaseOrder001() {
     run("【采购订货-按汇总-按门店】翻页排序汇总", "ts130006_1");
     run("【采购订货-按汇总-按门店】查询清除", "ts130006_2");
     run("【采购订货-按汇总】数据验证", "ts130004_05_06");//
+    run("【采购订货-按汇总】总经理可以查看其他门店数据", "ts130004_05_06For000");
     run("【采购订货-新增订货】取未保存数据准备", "ts130026Prepare");//
 }
 
@@ -466,10 +467,38 @@ function ts130004_2() {
     return ret && ret1;
 }
 /**
+ * 总经理可以看到其他门店的数据
+ */
+function ts130004_05_06For000() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell", "未付" : "yes" };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购订货", "按汇总", "按款号");
+    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
+    var fields = purchaseOrderCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+
+    tapMenu("采购订货", "按汇总", "按厂商");
+    fields = purchaseOrderProviderFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length > 0);
+
+    tapMenu("采购订货", "按汇总", "门店");
+    fields = purchaseOrderShopFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length > 0);
+    return ret;
+}
+/**
  * 店长开单员只能看到本门店的数据
  */
 function ts130004_05_06Staff() {
-    var det = addPOrderBillDet();
     tapMenu("采购订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
     var fields = purchaseOrderCodeFields(keys);
@@ -1344,7 +1373,6 @@ function editOverLengthBillDet() {
  * 简单的开单明细
  * @param num 数量
  * @param gIdx 颜色尺码模式时，货品文本框的下标
- * @returns
  */
 function addPOrderBillDet(num, gIdx) {
     if (isUndefined(num)) {
@@ -1371,3 +1399,4 @@ function addPOrderBillDet(num, gIdx) {
     }
     return det;
 }
+

@@ -152,7 +152,12 @@ function testPurchaseCodeFields() {
     var showFields = purchaseCodeFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 按款号汇总
+ * @param keys
+ * @param show
+ * @returns
+ */
 function purchaseCodeFields(keys, show) {
     return getTFields("purchaseCodeField", keys, show);
 }

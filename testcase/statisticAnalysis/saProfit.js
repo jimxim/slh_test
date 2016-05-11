@@ -3,23 +3,19 @@
 //7.01二级界面数据合并，59则为分开显示
 //成本核算
 function textFin_price_base() {
-    if (isUndefined(menu_profit)) {
-        menu_profit = getMenu_profit();
-    }
-
     if (setParamFin_price_base2()) {
-//        run("按移动加权平均价_1", "textFin_price_base2_1");
-//        run("按移动加权平均价_2", "textFin_price_base2_2");
+        run("按移动加权平均价_1", "textFin_price_base2_1");
+        run("按移动加权平均价_2", "textFin_price_base2_2");
         run("按移动加权平均价_3", "textFin_price_base2_3");
     }
 
-    // if (setParamFin_price_base3()) {
-    // run("默认按当时进货价", "textFin_price_base3_1");
-    // }
-    //
-    // if (setParamFin_price_base0()) {
-    // run("按最新进货价", "textFin_price_base0_1");
-    //    }
+    if (setParamFin_price_base3()) {
+        run("默认按当时进货价", "textFin_price_base3_1");
+    }
+
+    if (setParamFin_price_base0()) {
+        run("按最新进货价", "textFin_price_base0_1");
+    }
 }
 
 function setParamFin_price_base2() {
