@@ -448,7 +448,7 @@ function test170040_170041() {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual(v, "李四")) {
+        if (isIn(v, "李四")) {
             var ret = true;
             break;
         }
@@ -562,7 +562,7 @@ function test170043() {
     tapPrompt();
 
     var r = "anewkh" + getTimestamp(7);
-    var r1 = getTimestamp(6);
+    var r1 = getTimestamp(3);
     var g0 = new TField("名称", TF, 0, r);
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);

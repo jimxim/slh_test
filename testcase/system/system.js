@@ -2498,21 +2498,27 @@ function test210065() {
     tapPrompt();
     var ret = isIn(alertMsg, "填入的值必须是数字");
 
+    tapReturn();
+
     tapFirstText(getScrollView(), "1", 4);
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
     var qr = getQR();
-    var ret1 = isEqual(ip, qr.data[3]["数值"]);
+    var ret1 = isEqual(ip, qr.data[1]["数值"]);
 
     tapMenu("系统设置", "打印机");
     tapFirstText(getScrollView(), "1", 4);
+
+    ret1 = isAnd(ret1, isEqual(ip, getTextFieldValue(getScrollView(),
+            2)));
+
     tapButton(getScrollView(), "本 机");
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
 
     qr = getQR();
-    ret = isAnd(ret, isEqual("127.0.0.1", qr.data[2]["数值"]));
+    ret2 = isAnd(ret2, isEqual("127.0.0.1", qr.data[1]["数值"]));
 
     tapFirstText(getScrollView(), "1", 4);
     var ret3 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));

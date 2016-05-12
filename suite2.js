@@ -14,10 +14,9 @@ function test000All() {
 // run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
 // run("【销售开单－代收收款】核销代收收款功能", "test170287");//
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
-// run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     
-    run("【系统设置—打印机】打印机端口", "test210065");
+    run("【销售开单－开单】客户新增按钮", "test170043");
     
 // run("", "test1");
 }
@@ -28,6 +27,13 @@ function test1(){
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
+    
+    var g1 = new TField("手机", TF, 1, 1);
+    var g2 = new TField("店员", TF_AC, 2, "000,", -1, 0);
+    var g3 = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
+    var g4 = new TField("地址", TF, 4, 22);
+    var fields = [ g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
     
 }
 function test2(){
