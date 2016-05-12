@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "no";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -16,7 +16,7 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "test120013_3");
- run("测试用例", "onlyTest");
+ run("测试用例", "ts120005");
 
 }
 
