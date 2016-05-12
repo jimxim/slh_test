@@ -4,8 +4,8 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
-    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");//
-    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");//
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
+    run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
     run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
     run("【销售开单－开单】客户输入框清除功能", "test170045");
     run("【销售开单－开单】结余文本框检查", "test170046");
@@ -57,7 +57,6 @@ function testSalesNoColorSizeAll_1() {
     run("【销售开单－开单】收款（新增界面）", "test170163");
     run("【销售开单－开单】查看修改日志(修改记录)", "test170166");
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
-    // // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
     run("【销售开单－开单】挂单保存", "test170169");
     run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
     run("【销售开单－开单】挂单转销售单", "test170171");
@@ -71,6 +70,7 @@ function testSalesNoColorSizeAll_1() {
     run("【销售开单－开单】设置已配货", "test170180");
     run("【销售开单-开单】客户不允许退货", "test170181");
     run("【销售开单－核销】物流单核销不能销售单里的修改日志", "test170251");
+    // // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
 }
 function testSalesNoColorSizeAll_2() {
     run("【销售开单】底部汇总统一检查", "test170423");
@@ -84,7 +84,7 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【开单  】积分兑换时输入负数", "test170545");
-    run("【销售开单－开单】兑换记录", "test170189");//
+    run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
 
     run("【销售开单－开单】收款（修改界面）", "test170164");
@@ -99,7 +99,7 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170595");
     run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
-    
+
     // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     // run("【销售开单－开单】汇款需填写客户", "test170582");//
     // run("【销售开单－开单】汇款无需填写客户", "test170583");//
@@ -130,7 +130,6 @@ function testSalesNoColorSize001() {
     run("【 开单 】开单模式6客户折扣模式增加物流商代收功能", "test170542");
     run("【销售开单－开单】客户折扣下，查看上次成交价", "test170105_1");
     run("【销售开单－开单】产品折扣支持3位小数", "test170080_170084");
-    //
     run("【销售开单－开单】产品折扣,复制-粘贴", "test170139_2");
     run("【销售开单－开单】整单折扣下使用折扣3位小数", "test170078");// (整单折扣三位小数时，商路花程序暂不支持)
     run("【销售开单－开单】整单折扣,复制-粘贴", "test170139_1");
@@ -156,7 +155,7 @@ function testSalesNoColorSize001_1() {
     run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
     run("【销售开单-开单】客户折扣模式下自动取上次折扣值", "test170461");
     run("【销售开单－开单】异地发货－－后台不绑仓库，开单时不选择发货仓库", "test170120");
-    // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");//
+    run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
     run("【销售开单】销售开单错开款号导致不能退货情况", "test170226");
     run("【销售开单】单据修改状态下退货验证问题", "test170227");
     run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
@@ -201,6 +200,19 @@ function testSalesNoColorSize001_1() {
 
 }
 function testSalesNoColorSize002() {
+    // 折扣大于1相关用例
+    run("【销售订货-新增订货】/【销售开单-开单】开单不允许折扣大于1+客户折扣+大于1的折扣", "test240002_240004");
+    run("【销售订货-新增订货】/【销售开单-开单】开单允许折扣大于1+客户折扣+大于1的折扣", "test240003_240007");
+    run("【销售开单-按订货开单】开单允许折扣大于1+客户折扣+大于1的折扣", "test240006");
+    run("【销售开单-新增开单】开单允许折扣大于1，客户折扣模式+销售开单界面输入客户后快速新增货品", "test240009");
+    run("【往来管理-客户查询】开单允许折扣大于1，客户资料修改折扣大于1", "test240010");
+    run("【销售开单】开单允许折扣大于1+整单折扣+整单折扣输入大于1的折扣", "test240011");
+    run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+客户折扣+大于1的折扣", "test240008");
+    run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+整单折扣+大于1的折扣", "test240013");
+    run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+产品折扣+大于1的折扣", "test240014");
+
+}
+function testSalesNoColorSize003() {
     run("【销售开单-开单】积分跨门店共享", "test170183");
     run("【销售开单-开单】积分是否跨门店共享 －开启", "test170185");
     run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");
@@ -1048,6 +1060,7 @@ function test170054_1() {
 
     saveAndAlertOk();
     tapPrompt();
+    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -10498,7 +10511,7 @@ function test170536() {
         "特殊货品" : { "抹零" : 9 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var f6 = new TField("备注", TF, 6, "?");
+    var f6 = new TField("备注", TF, 6, "?&");
     var fields = [ f6 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -12349,4 +12362,579 @@ function test170676() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+}
+function test240002_240004() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    o = { "新值" : "0", "数值" : [ "默认小于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : "1.5" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = (isIn(alertMsg1, "折扣必须小于等于1"));
+
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = (isIn(alertMsg1, "折扣必须小于等于1"));
+
+    tapPrompt();
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test240003_240007() {
+    tapMenu("系统设置", "全局设置");
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : "1.6" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "保存成功"));
+
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = (isIn(alertMsg1, "保存成功"));
+
+    tapPrompt();
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test240006() {
+    tapMenu("系统设置", "全局设置");
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : "1.6" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "保存成功"));
+
+    tapPrompt();
+
+    tapReturn();
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+
+    var f5 = new TField("数量", TF, 5, "3");
+    var fields = [ f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = (isIn(alertMsg1, "保存成功"));
+
+    query();
+
+    tapFirstText();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = (isIn(alertMsg1, "保存成功"));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test240008() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus6" + getTimestamp(6);
+    var r1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : r1 };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f5 = new TField("数量", TF, 5, "1");
+    var fields = [ f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "输入的折扣低于拿货折扣 " + r1);
+
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f5 = new TField("数量", TF, 5, "1");
+    var fields = [ f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isIn(alertMsg1, "输入的折扣低于拿货折扣 " + r1);
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test240009() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    var s = "anewCus6" + getTimestamp(6);
+    var s1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : s, "拿货折扣" : s1 };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : s };
+    editSalesBillCustomer(json);
+
+    tapButton(window, "新增货品");
+    var r = "anewkhao" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("进货价", TF, 2, r1);
+    var g3 = new TField("零批价", TF, 3, r1);
+    var g4 = new TField("打包价", TF, 4, r1);
+    var fields = [ g0, g1, g2, g3, g4 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var ret1 = isAnd(isIn(getTextFieldValue(getScrollView(), 8), r), isEqual(s,
+            getTextFieldValue(window, 0)), isEqual(s1, getTextFieldValue(
+            getScrollView(), 13)));
+
+    var f11 = new TField("数量", TF, 11, "1");
+    var fields = [ f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test240010() {
+    tapMenu("系统设置", "全局设置");
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay(2);
+
+    var r = "anewCus" + getTimestamp(7);
+    var r1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("往来管理", "客户查询");
+    keys = { "客户" : r };
+    var fields = queryCustomerFields(keys);
+    query(fields);
+
+    tapFirstText();
+
+    keys = [ "拿货折扣" ];
+    fields = editCustomerFields(keys);
+    changeTFieldValue(fields["拿货折扣"], r1);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, EDIT_SAVE);
+
+    tapMenu("往来管理", "客户查询");
+    query();
+    tapFirstText();
+    var ret = isEqual(r1, getTextFieldValue(getScrollView(), 18));
+
+    tapReturn();
+
+    return ret;
+}
+function test240011() {
+    tapMenu("系统设置", "全局设置");
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay(2);
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus" + getTimestamp(7);
+    var r1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : r1 };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功");
+
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    // var ret2 = isIn(alertMsg1, "保存成功");
+
+    var ret2 = false;
+    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
+        ret2 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test240013() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus" + getTimestamp(7);
+    var r1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : r1 };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f10 = new TField("折扣", TF, 10, "1");
+    var fields = [ f10 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功");
+
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f10 = new TField("数量", TF, 10, "0.8");
+    var fields = [ f10 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    // var ret2 = isIn(alertMsg1, "保存成功");
+
+    var ret2 = false;
+    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
+        ret2 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test240014() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否允许折扣大于1" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCus6" + getTimestamp(6);
+    var r1 = "1." + getTimestamp(2);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "拿货折扣" : r1 };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f5 = new TField("数量", TF, 5, "1");
+    var fields = [ f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功");
+
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f5 = new TField("数量", TF, 5, "1");
+    var fields = [ f5 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+
+    var ret2 = false;
+    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
+        ret2 = true;
+    }
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
