@@ -365,7 +365,11 @@ function testEditGoodsFields() {
     var showFields = editGoodsFields(keys, true);
     return checkShowFields(getScrollView(), showFields);
 }
-
+/**
+ * 新增货品
+ * @param keys
+ * @param show
+ */
 function editGoodsFields(keys, show) {
     var view = getScrollView();
     if (isUndefined(show)) {

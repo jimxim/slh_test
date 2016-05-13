@@ -16,15 +16,13 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "test120013_3");
- run("测试用例", "ts120005");
+ run("测试用例", "test100071_100072");
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
-    var det = ts120050Det();
-    tapMenu2("批量入库+");
-    editPurchaseBatch(det, colorSize);
+ UIATarget.localTarget().logElementTree();
+   
 }
 
 function prepare200All(){

@@ -306,10 +306,7 @@ function ts120005() {
         var keys = { "日期从" : getDay(-30) };
         var fields = purchaseOrderFields(keys);
         query(fields);
-        // 按门店排序，应该是常青店
-        tapTitle(getScrollView(), "门店");
-        delay();
-        tapFirstText();
+        tapTextByFirstWithName("常青店");// 点击一条常青店的订货单
         jo = { "按订货" : "yes", "onlytest" : "yes" };
         var json2 = mixObject(jo, det);
         editSalesBill(json2, colorSize);
@@ -751,15 +748,15 @@ function test120011_2() {
     editShopOutDecruitIn(json, colorSize);
 
     tapMenu("门店调入", "在途调拨");
-    keys = { "日期从" : getDay(-3), "调出门店" : "中洲店" };
-    fields = shopInFlitFields(keys);
+    var keys = { "日期从" : getDay(-3), "调出门店" : "中洲店" };
+    var fields = shopInFlitFields(keys);
     query(fields);
     tapFirstText();
     editShopInFlitting();
 
     tapMenu("门店调入", "按批次查");
     query();
-    qr = getQR();
+    var qr = getQR();
     var jo2 = { "批次" : qr.data[0]["批次"], "类型" : "调拨入库",
         "门店" : qr.data[0]["调入门店"], "日期" : getToday(""),
         "金额" : qr.data[0]["金额"], "总数" : qr.data[0]["数量"],
@@ -1117,7 +1114,7 @@ function test120019() {
 }
 
 function test120023() {
-    var i, r = "g" + getTimestamp(8), jo1, jo2;
+    var i, r = "g" + getTimestamp(6), jo1, jo2;
     tapMenu("货品管理", "库存分布");
     query();
     var qr = getQR();
@@ -1139,31 +1136,23 @@ function test120023() {
     keys = { "厂商" : "vell" };
     fields = purchaseShopAccountFields(keys);
     query(fields);
+    var z1 = 0, z2 = 0;
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
-            var z1 = qr.data[i]["余额"];
+            z1 = qr.data[i]["余额"];
         }
         if (qr.data[i]["门店"] == "中洲店") {
-            var z2 = qr.data[i]["余额"];
+            z2 = qr.data[i]["余额"];
         }
     }
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "店员" : "000",
-        "新增货品" : { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200 },
-        "明细" : [ { "货品" : "3035", "数量" : "30" } ], "未付" : "yes" };
-    editSalesBillCustomer(json);
-    editSalesBillField1(json, "店员");
-    editSalesBillDetNoColorSize(json);
-    editPurchaseBillAddGoods(json);
-    var f = new TField("数量", TF, 11, "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    editSalesBillCash(json);
-    editSalesBillCard(json);
-    editSalesBillRemit(json);
-    editSalesBillUnpay(json);
-    editSalesBillSave(json);
+    var joG = { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200, "数量" : 10 };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "未付" : "yes" };
+    editSalesBillAddGoods(joG);
+    editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     query();
@@ -1177,8 +1166,8 @@ function test120023() {
 
     tapFirstText();
     var exp = editSalesBillGetValue({});
-    var ret1 = isEqualObject2(exp, json["输入框值"]);
     tapReturn();
+    var ret1 = isEqualObject2(exp, json["输入框值"]);
 
     tapMenu("货品管理", "当前库存");
     delay();
@@ -2506,32 +2495,66 @@ function test120064() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
 
+    tapMenu("采购入库", "按批次查");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var josn = { "入库明细" : [ { "数量" : 10 } ] };
+    var jo = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 4 ] };
+    editSalesBillVerify(jo);
+    editPurInByOrderDet(jo);
+    editSalesBillSave({});
 
-    tapMenu2("按批次查");
-    query();
-    var qr = getQR();
-    var jo1 = qr.data[0];
-    editSalesBillNoColorSize(josn);
+    tapMenu2("按订货入库");
+    tapButton(window, QUERY);
+    tapFirstText();
+    var qr = editSalesBillGetValue({});
+    tapReturn();
+    var ret = isEqual(qr["现金"], 4000);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ],
-        "核销" : [ 4 ] };
-    editSalesBillNoColorSize(josn);
-
-    tapMenu("采购入库", "新增入库+");
+    editSalesBillCustomer(json);
     tapButton(window, "核销");
     tapNaviLeftButton();
     tapReturn();
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
+    exp = { "入库数" : 10, "差异数" : 40 };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
-    return a["现金"] == 4000;
+    return ret;
+}
+
+function test120065() {
+    var det = ts120050Det();
+    // 是否启用加工价需要清理本地以后才能生效
+    var qo = { "备注" : "是否启用加工价" };
+    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    var ret = setGlobalParam(qo, o);
+
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    var cond = "isInAlertMsgs('清理和刷新成功')";
+    waitUntil(cond, 300);
+
+    ret = isAnd(ret, test120050Field(100));
+
+    qo = { "备注" : "是否启用加工价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    var cond = "isInAlertMsgs('清理和刷新成功')";
+    waitUntil(cond, 300);
+    tapMenu1("货品管理");// 随便点击一个菜单触发自动处理弹窗
+
+    return ret;
 }
 
 function test120083() {
@@ -2800,7 +2823,11 @@ function test120017_1() {
 
     return ret;
 }
+
 function test120050() {
+    return test120050Field(120);
+}
+function test120050Field(price) {
     var det = ts120050Det();
 
     tapMenu("采购入库", "新增入库+");
@@ -2810,7 +2837,7 @@ function test120050() {
     editSalesBill(json, colorSize);
     var qr1 = json["明细值"];
     var ret = isAnd(isEqual(qr1.data[0]["单价"], 100), isEqual(qr1.data[1]["单价"],
-            120))
+            price))
 
     tapMenu2("按批次查");
     query();
@@ -2827,7 +2854,7 @@ function test120050() {
     tapFirstText();
     var qr = getQRDet();
     tapReturn();
-    ret = isAnd(ret, isEqual(qr.data[0]["单价"], 120));
+    ret = isAnd(ret, isEqual(qr.data[0]["单价"], price));
 
     tapTextByFirstWithName("2");// 序号2
     qr = getQRDet();
@@ -2838,7 +2865,7 @@ function test120050() {
     editSalesBill(json, colorSize);
     qr1 = json["明细值"];
     ret = isAnd(ret, isEqual(qr1.data[0]["单价"], 100), isEqual(
-            qr1.data[1]["单价"], 120))
+            qr1.data[1]["单价"], price))
 
     tapMenu("采购入库", "按订货入库");
     query();
@@ -2846,7 +2873,7 @@ function test120050() {
     qr1 = getQRDet();
     tapReturn();
     ret = isAnd(ret, isEqual(qr1.data[0]["单价"], 100), isEqual(
-            qr1.data[1]["单价"], 120));
+            qr1.data[1]["单价"], price));
     return ret;
 }
 
