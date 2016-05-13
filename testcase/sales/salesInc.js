@@ -233,3 +233,33 @@ function isAqualOptime1(expected, actual, allow) {
             + ",ret=" + ret);
     return ret;
 }
+
+/**
+ * 获取弹出表格的行数组
+ * @param view1 TextField所在视图
+ * @param f TF_AC的TField
+ * @param o 输入中文 eg：o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] }
+ * @returns 弹出的Tabelview cells
+ */
+function getTableViewCells1(view1, f, o) {
+    var i = f.index, value;
+    i = getTextFieldIndex(view1, i);
+    var tf = view1.textFields()[i].textFields()[0];
+
+    if (isDefined(o)) {
+        value = o;
+        setTextFieldValueByPinyin(tf, value);
+    } else {
+        value = f.value;
+        setTextFieldValueByKeyboard(tf, value);
+    }
+
+    var tableViewIndex = f.p1;
+    if (tableViewIndex < 0) {
+        tableViewIndex = getTableViews().length + tableViewIndex;
+    }
+    var ret = window.tableViews()[Number(tableViewIndex / 2)].cells();
+
+    logDebug(" tableViewIndex=" + tableViewIndex + " ret=" + ret);
+    return ret;
+}

@@ -246,6 +246,10 @@ function salesPriceField(key, show) {
     case "day2":
     case "到":
         f = new TField("到", TF_DT, 1, getToday());
+        break;        
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 2, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);

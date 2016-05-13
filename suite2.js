@@ -15,7 +15,8 @@ function test000All() {
 // run("【销售开单－代收收款】核销代收收款功能", "test170287");//
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
-    run("【销售开单+整单折扣+代收】收支流水界面检查代收款核销单", "test170371");
+    
+    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
     
 // run("", "test1");
 }
@@ -26,6 +27,7 @@ function test1(){
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
+// debugElements(window);
     
 }
 function test2(){
