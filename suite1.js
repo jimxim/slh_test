@@ -16,13 +16,14 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "test120013_3");
- run("测试用例", "test100071_100072");
+ run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
  UIATarget.localTarget().logElementTree();
-   
+// tapFirstText(getScrollView(-1, 0), "名称",8);
+
 }
 
 function prepare200All(){

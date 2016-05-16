@@ -7,11 +7,11 @@ function testBasicSetUpAll() {
     run("赵本山", "setZhaoBenShan");
     run("上级客户1", "setCustomer001");
     run("下级客户1", "setCustomer002");
-     run("李四", "setCustomer003");
-     run("李响", "setCustomer004");
-     run("李天", "setCustomer005");
-     run("李六", "setCustomer006");
-     run("韩红", "setCustomer007");
+    run("李四", "setCustomer003");
+    run("李响", "setCustomer004");
+    run("李天", "setCustomer005");
+    run("李六", "setCustomer006");
+    run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");// 新综合汇总
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
     run("上级不开单客户", "setCustomer009_1");// 不做开单操作，无欠余款
@@ -92,7 +92,10 @@ function subTime(day1, day2) {
     logDebug("subTime   date1=" + date1 + "   date2=" + date2 + "   ret=" + ret);
     return ret;
 }
-
+/**
+ * 新增货品界面修改上架日期
+ * @param day2
+ */
 function changeMarketTime(day2) {
     var i, day, arr1;
     var day1 = getTextFieldValue(getScrollView(), 5);

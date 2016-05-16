@@ -1158,14 +1158,17 @@ function repealRecordsForCheck(day) {
     } while (qr.data.length > 0);
 }
 
-function editLogisticsVerify(o) {
+function editLogisticsVerify(o, idx) {
     if (isDefined(o["核销"])) {
+        if (isUndefined(i)) {
+            idx = -2;
+        }
         tapButton(window, "核销");
         var a1 = o["核销"];
         // debugElementTree(window);
         // 坐标偏移8 ,8
         // tableView是倒数第二个
-        var qr = getQRtable1(window, 8, -2);
+        var qr = getQRtable1(window, 8, idx);
         // debugQResult(qr);
         // debugObject(qr.data[0], "qr.data[0]=");
         var batch;
