@@ -40,24 +40,30 @@ js_func="$js_func test000SalesNoColorSizeElse001"
 
 #销售开单-登出登进
 js_func="$js_func setSales001Params"
-js_func="$js_func testSalesNoColorSize170125_Params"
-js_func="$js_func testSalesNoColorSize170125  testSalesNoColorSize170607"
-js_func="$js_func testSalesNoColorSize170641_4"
-#js_func="$js_func testSalesNoColorSize170649_Prepare"
-#js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
-
-#销售开单-其它角色
-#js_func="$js_func setSales001Params"
-#js_func="$js_func testSalesNoColorSize170140_Params"
-#js_func="$js_func testSalesNoColorSize170140"
+#获取未保存
+js_func="$js_func testSalesNoColorSize170140_Params"
+js_func="$js_func testSalesNoColorSize170140"
+#加工货品
 #js_func="$js_func testSalesNoColorSize170429_Params"
 #js_func="$js_func testSalesNoColorSize170429"
-#js_func="$js_func testSalesNoColorSize170125_Params"
-#js_func="$js_func testSalesNoColorSize170125"
-#js_func="$js_func testSalesNoColorSize170240_Prepare"
-#js_func="$js_func testSalesNoColorSize170240"
+#销售开单同时订货
+js_func="$js_func testSalesNoColorSize170125_Params"
+js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"
+#店长权限——异地＋代收
+js_func="$js_func testSalesNoColorSize170649_Prepare"
+js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
-#销售开单-特殊模块
+#店长权限
+js_func="$js_func testSalesNoColorSize170240_Prepare"
+js_func="$js_func testSalesNoColorSize170240 testSalesNoColorSize170586_4 testSalesNoColorSize170641_4
+testSalesNoColorSize170641_4 testSalesNoColorSize170649_Prepare testSalesNoColorSize170649 testSalesNoColorSize170650 
+testSalesNoColorSize170709_4 testSalesNoColorSize170685 testSalesNoColorSize170670  testSalesNoColorSize170679_170680  
+testSalesNoColorSize170699_4"
+
+#开单员权限
+js_func="$js_func testSalesNoColorSize170586_5"
+
+#销售开单-特殊模块（改高改低）
 #js_func="$js_func setSales001Params"
 #js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2"
 #js_func="$js_func ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4"

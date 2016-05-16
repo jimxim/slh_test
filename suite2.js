@@ -16,18 +16,26 @@ function test000All() {
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     
-    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
+// run("【销售开单-开单】允许店长改低价格", "test170586_4");
+// run("【销售开单-开单】允许店长改低价格", "test170586_5");   
+// run("【销售开单-开单】异地+代收，物流核销", "test170673");
+    run("【销售开单-按批次查】增加款号或减少款号检查代收金额", "test170701");
+    run("【销售开单-按批次查】修改界面显示当前结余", "test170712");
     
 // run("", "test1");
 }
     
 function test1(){
-// debugElementTree(window);
+ debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+    
+// tapButton(window, "核销");
+// json = { "核销" : [ 0 ] };
+// editLogisticsVerify(json);
     
 }
 function test2(){
@@ -132,7 +140,7 @@ function testSalesNoColorSize170607() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("【销售开单－开单】开单的同时订货", "test170607");
+        run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");
         
         logout();
     }
@@ -245,6 +253,24 @@ function testSalesNoColorSize170240() {
         logout();
     }
 }
+function testSalesNoColorSize170586_4() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单】允许店长改低价格", "test170586_4");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170586_5() {
+    var p1 = {"角色":"开单员005"};
+    var ok = login("005","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单】允许店长改低价格", "test170586_5");
+        
+        logout();
+    }
+}
 function testSalesNoColorSize170641_4() {
     var p1 = {"角色":"店长004"};
     var ok = login("004","000000",p1);
@@ -277,6 +303,51 @@ function testSalesNoColorSize170650() {
     var ok = login("004","000000",p1);
     if( ok ) {
         run("【销售订货】异地+代收，挂单+店长权限", "test170650");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170670() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170670");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170679_170680() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单】异地+代收，店员权限/异地+代收，+挂单+ 店员权限", "test170679_170680");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170685() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单-按汇总-按配货员汇总】查看权限", "test170685");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170699_4() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170709_4() {
+    var p1 = {"角色":"店长004"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+        run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_4");
         
         logout();
     }

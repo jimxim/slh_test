@@ -1,4 +1,53 @@
 //zhangY <2397655091 at qq.com> 20151229
+
+//常青店000
+//店长：厂商敏感字段勾选
+function testSalesPrepare001() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "2", "备注" : "mxbz" },
+                { "货品" : "3035", "数量" : "-1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f10 = new TField("数量", TF, 10, "-1");
+    var f13 = new TField("备注", TF_SC, 13, "换码");
+    var fields = [ f10, f13 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+    tapReturn();
+
+}
+// 仓库店、中洲店
+function testSalesPrepare002() {
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "2", "备注" : "mxbz" },
+                { "货品" : "3035", "数量" : "-1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f10 = new TField("数量", TF, 10, "-1");
+    var f13 = new TField("备注", TF_SC, 13, "换码");
+    var fields = [ f10, f13 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+    tapReturn();
+
+}
+
 function test170064getQR() {
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10, 1);
     return qr;

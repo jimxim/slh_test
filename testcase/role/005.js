@@ -13,6 +13,7 @@ function test005() {
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_5");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_5");
     run("【销售开单-开单】整单折扣模式下修改单价后总是报价格验证错误", "test170422");
+    run("【销售开单-开单】允许店长改低价格", "test170586_5");
 
 }
 function test210043_5() {
@@ -655,5 +656,66 @@ function test170450_5() {
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
 
+    return ret && ret1;
+}
+function test170586_5() {
+    var qo, o, ret = true;
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单价不能低于指定的价格类型" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var lprice = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "k300", "数量" : "18" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isIn(alertMsg1, "[第*行][款号]价格输入错误，因为启用了价格验证 价格类型[*]");
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "[第*行][款号]价格输入错误，因为启用了价格验证 价格类型[*]");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }

@@ -21,7 +21,7 @@ function test210043_7() {
     return ret;
 }
 function test170119Prepare() {
- // 常青店 先开启异地仓库，再设置异地发货开单模式
+    // 常青店 先开启异地仓库，再设置异地发货开单模式
     var qo, o, ret = true;
     qo = { "备注" : "支持异地仓库" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
@@ -57,13 +57,13 @@ function test170119() {
 
     tapReturn();
 
-//    qo = { "备注" : "支持异地仓库" };
-//    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
-//
-//    qo = { "备注" : "开单模式" };
-//    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "支持异地仓库" };
+    // o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "代收", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug("ret=" + ret);
     return ret;

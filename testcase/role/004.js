@@ -14,11 +14,17 @@ function test004() {
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430_4");//
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170550_4");
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170551_4");
+    run("【销售开单-开单】允许店长改低价格", "test170586_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
     run("【销售订货】异地+代收，店长权限", "test170649_Prepare");
     run("【销售订货】异地+代收，店长权限", "test170649");
     run("【销售订货】异地+代收，挂单+店长权限", "test170650");
     run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170670");//
+    run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_4");
+    run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");
+    run("【销售开单-按汇总-按配货员汇总】查看权限", "test170685");
+    run("【销售开单-开单】异地+代收，店员权限/异地+代收，+挂单+ 店员权限", "test170679_170680");
+    run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
 
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -802,6 +808,67 @@ function test170551_4() {
 
     return ret && ret1;
 }
+function test170586_4() {
+    var qo, o, ret = true;
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单价不能低于指定的价格类型" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "k300" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var lprice = getTextFieldValue(getScrollView(), 9);
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "k300", "数量" : "18" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isIn(alertMsg1, "保存成功，是否打印");
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
+
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
 function test170641_4() {
     tapMenu("销售开单", "物流单");
     var keys = { "日期从" : "2015-01-01" };
@@ -931,4 +998,150 @@ function test170670() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
+}
+function test170679_170680() {
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = getTimestamp(8);
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "7" }, { "货品" : "k300", "数量" : "8" } ],
+        "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "tian," }, "发货" : "中洲店" };
+    editSalesBillNoColorSize(json);
+
+    var money = json["代收"]["代收金额"];
+    var wls = json["代收"]["物流商"];
+    var ydh = json["代收"]["运单号"];
+    var bz = json["代收"]["备注"];
+
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    var qr = getQR();
+
+    var ret = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
+            qr.data[0]["开单门店"]), isEqual("中洲店", qr.data[0]["发货门店"]), isEqual(0,
+            qr.data[0]["实收"]), isEqual(money, qr.data[0]["代收"]));
+
+    tapFirstText();
+
+    ret = isAnd(ret, isEqual("中洲店", getTextFieldValue(window, 6)), isEqual(
+            5500, getTextFieldValue(window, 9)));
+
+    tapReturn();
+
+    var r1 = getTimestamp(8);
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "10" }, { "货品" : "k300", "数量" : "20" } ],
+        "代收" : { "物流商" : "tt", "运单号" : r1, "备注" : "a" + r1, "代收金额" : "3500" },
+        "发货" : "仓库店", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+
+    var qr = getQR();
+
+    var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
+            qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(0,
+            qr.data[0]["实收"]), isEqual(3500, qr.data[0]["代收"]));
+
+    tapFirstText();
+
+    ret1 = isAnd(ret1, isEqual("仓库店", getTextFieldValue(window, 6)));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test170684() {
+    // 店员权限只能看本门店数据
+
+}
+function test170685() {
+    // 店员权限只能看本门店数据
+    tapMenu("销售开单", "按汇总", "按配货员汇总");
+    var keys = { "日期从" : "2015-01-01", "门店" : "常青店" };
+    var fields = salesMatcherFields(keys);
+    query(fields);
+
+    var qr = getQR();
+
+    var keys = { "日期从" : "2015-01-01", "门店" : "中洲店" };
+    var fields = salesMatcherFields(keys);
+    query(fields);
+
+    var qr1 = getQR();
+
+    var keys = { "日期从" : "2015-01-01", "门店" : "仓库店" };
+    var fields = salesMatcherFields(keys);
+    query(fields);
+
+    var qr2 = getQR();
+
+    var ret = isAnd(!isEqual(0, qr.data.length), isEqual(0, qr1.data.length),
+            isEqual(0, qr2.data.length));
+
+    return ret;
+}
+function test170699_4() {
+    tapMenu("销售开单", "按明细查");
+    var keys = { "厂商" : "vell" };
+    var fields = salesQueryParticularFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var ret = isEqual("Vell", qr.data[0]["厂商"]);
+
+    var ret1 = false;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            qr = getQR();
+            var code = qr.data[i]["款号"];
+
+            if (code = "3035") {
+                ret1 = true;
+                break;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test170709_4() {
+    // 按店员汇总－店长权限
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys = { "日期从" : "2015-01-01", "门店" : "中洲店" };
+    var fields = salesStaffFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys = { "日期从" : getDay(-2), "门店" : "仓库店" };
+    var fields = salesStaffFields(keys);
+    query(fields);
+    var qr1 = getQR();
+
+    var ret = isAnd(isEqual(0, qr.data.length), isEqual(0, qr1.data.length));
+
+    return ret;
 }

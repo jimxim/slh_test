@@ -12186,7 +12186,7 @@ function test170673() {
     var fields = [ f ];
     setTFieldsValue(window, fields);
 
-    tapButton(window, "核销");
+//    tapButton(window, "核销");
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
