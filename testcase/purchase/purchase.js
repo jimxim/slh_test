@@ -159,7 +159,7 @@ function ts120001_2() {
 
     tapMenu2("新增入库+");
     var jo = { "客户" : "Rt", "店员" : "000", "现金" : "1000", "刷卡" : [ 200, "交" ],
-        "汇款" : [ 300, "银" ], "备注" : "abc" }
+        "汇款" : [ 300, "银" ], "备注" : "abc" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -3276,7 +3276,7 @@ function editPurchaseBillAddGoods(o) {
     var ot = o["新增货品"];
     if (isDefined(ot)) {
         delay();
-        if (window.buttons()["新增货品+"].isVisible) {
+        if (window.buttons()["新增货品+"].isVisible()) {
             tapButton(window, "新增货品+");
         } else {
             tapButton(window, "新增货品");

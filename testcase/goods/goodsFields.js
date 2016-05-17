@@ -1102,3 +1102,74 @@ function goodsStatisticField(key, show) {
     }
     return f;
 }
+function getColorSort(type) {
+    var f;
+    switch (type) {
+    case "花色":
+        f = "01";
+        break;
+    case "黑色":
+        f = "02";
+        break;
+    case "白色":
+        f = "03";
+        break;
+    case "均色":
+        f = "04";
+        break;
+    default:
+        logWarn("未知颜色＝" + type);
+        f = "99";
+    }
+    return f;
+}
+function getSizeSort(type) {
+    var f;
+    switch (type) {
+    case "S":
+        f = "01";
+        break;
+    case "M":
+        f = "02";
+        break;
+    case "均码":
+        f = "03";
+        break;
+    case "L":
+        f = "04";
+        break;
+    case "XL":
+        f = "05";
+        break;
+    case "2XL":
+        f = "06";
+        break;
+    default:
+        logWarn("未知尺码＝" + type);
+        f = "99";
+        break;
+    }
+    return f;
+}
+function getShopSort(type) {
+    var f;
+    switch (type) {
+    case "仓库店":
+        f = "01";
+        break;
+    case "常青店":
+        f = "02";
+        break;
+    case "文一店":
+        f = "03";
+        break;
+    case "中洲店":
+        f = "04";
+        break;
+    default:
+        logWarn("未知门店＝" + type);
+        f = "99";
+        break;
+    }
+    return f;
+}

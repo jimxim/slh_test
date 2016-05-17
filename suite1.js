@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -15,14 +15,18 @@ function test000All() {
 // testCheckMenuAll();
 // outBatch={"inPre":"269","ts150007":"268"};
 
-// run("测试用例", "test120013_3");
+// run("测试用例", "ts100144");
  run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // tapFirstText(getScrollView(-1, 0), "名称",8);
+ tapMenu("采购入库", "新增入库+");
+ var json = { "客户" : "Rt", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
+     "goodsFieldIndex" : "-2" };
+ editSalesBill(json, colorSize);
 
 }
 
