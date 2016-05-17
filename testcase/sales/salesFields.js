@@ -246,7 +246,7 @@ function salesPriceField(key, show) {
     case "day2":
     case "到":
         f = new TField("到", TF_DT, 1, getToday());
-        break;        
+        break;
     case "shop":
     case "门店":
         f = new TField("门店", TF_SC, 2, "常青店");
@@ -661,13 +661,17 @@ function salesQueryCustomerField(key, show) {
     case "门店":
         f = new TField("门店", TF_SC, 1, "常青店");
         break;
+    case "sortord":
+    case "对账单排序方式":
+        f = new TField("对账单排序方式", TF_SC, 2, "日期优先");
+        break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        f = new TField("日期从", TF_DT, 3, "2015-9-11");
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 3, getToday());
+        f = new TField("到", TF_DT, 4, getToday());
         break;
     default:
         logWarn("未知key＝" + key);

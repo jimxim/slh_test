@@ -245,6 +245,10 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "默认显示零批价或打包价" };
     o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "销售允许单价为0" };
+    o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否允许修改已发货的订单" };
     o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
@@ -260,6 +264,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "询问打印" };
     o = { "新值" : "1", "数值" : [ "询问打印" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "刷新窗口" };
@@ -799,7 +807,6 @@ function test170047() {
 
     return ret;
 }
-
 function test170048() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],

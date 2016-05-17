@@ -17,16 +17,16 @@ function test000All() {
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
-// run("【销售开单-开单】允许店长改低价格", "test170586_5");   
-// run("【销售开单-开单】异地+代收，物流核销", "test170673");
-//  run("销售开单-按挂单和开单-更多-所有挂单", "test170645");//
-//  run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
+// run("【销售开单-开单】允许店长改低价格", "test170586_5");
+// run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
     
- run("", "test1");
+    run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
+  
+// run("", "test1");
 }
     
 function test1(){
- debugElementTree(window);
+// debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");

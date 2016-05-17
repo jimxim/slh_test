@@ -13,6 +13,7 @@ function testCheck001() {
     run("【盘点管理—库存表】清除", "test180054");
 }
 function testCheckAll() {
+    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
     run("【盘点管理—按批次查】", "checkPrepare");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
@@ -39,47 +40,15 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     // run("【盘点管理—盘点处理】处理日期设置", "test180027");
-    run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
-    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
-    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
-    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
-    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
-    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
-    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
-    run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
-    run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
-    run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
-}
-function setIgnorecolorsize_1Params() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "显示颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    var qo, o, ret = true;
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    checkPrepare();
-
-    return ret;
+//    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
+//    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
+//    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
+//    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
+//    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
+//    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
+//    run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
+//    run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
+//    run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
 }
 function checkPrepare_Off() {
     tapMenu(window, "作 废");
@@ -356,7 +325,7 @@ function test180008() {
     tapPrompt();
 
     delay();
-    if (isIn(alertMsg, "操作失败，[盘点单已处理，不允许更改]")) {
+    if (isIn(alertMsg, "盘点单已处理，不允许更改")) {
         var ret = true;
     }
     delay();
@@ -567,7 +536,8 @@ function test180015() {
             "Adidas", qr.data[0]["品牌"]));
 
     tapMenu("盘点管理", "按明细查");
-    var keys = { "品牌" : "Adidas", "类别" : "登山服" };
+    var keys = { "日期从" : "2015-01-02", "日期到" : getToday(), "品牌" : "Adidas",
+        "类别" : "登山服" };
     var fields = queryCheckParticularFields(keys);
     query(fields);
     var qr = getQR();
@@ -2778,7 +2748,7 @@ function test180057() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
+    var keys = { "日期从" : "2015-01-01", "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -2848,12 +2818,11 @@ function testAddBrandCheck() {
     var view1 = getPopOrView(window, -1);
     var table1 = getTableViews(view1)[1];
     var cells = table1.cells();
-    // tap(getStaticText(cells["Adidas"], 0));
+    tap(getStaticText(cells["Adidas"], 0));
     // tap(getStaticText(cells["Adidas"], 0));
 
     tapButton(view1, 2);
 }
-
 function test180061() {
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
     tapButtonAndAlert(SAVE, OK);
@@ -3227,6 +3196,17 @@ function test180066() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
+function testAddTypeCheck() {
+    tapButton(getScrollView(), 1);
+
+    var view1 = getPopOrView(window, -1);
+    var table1 = getTableViews(view1)[1];
+    var cells = table1.cells();
+    tap(getStaticText(cells["登山服"], 0));
+    // tap(getStaticText(cells["Adidas"], 0));
+
+    tapButton(view1, 2);
+}
 function test180067() {
     tapMenu("盘点管理", "盘点计划+", "按类别+");
     tapButtonAndAlert(SAVE, OK);
@@ -3247,7 +3227,7 @@ function test180067() {
 
     tapMenu("盘点管理", "盘点计划+", "按类别+");
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3258,7 +3238,7 @@ function test180067() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3286,7 +3266,7 @@ function test180068() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3319,7 +3299,7 @@ function test180068() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3344,7 +3324,7 @@ function test180068() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3365,7 +3345,7 @@ function test180068() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3377,7 +3357,7 @@ function test180068() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3415,7 +3395,7 @@ function test180070() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddTypeCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3471,6 +3451,17 @@ function test180070() {
     logDebug(+" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
+function testAddProviderCheck() {
+    tapButton(getScrollView(), 1);
+
+    var view1 = getPopOrView(window, -1);
+    var table1 = getTableViews(view1)[1];
+    var cells = table1.cells();
+    tap(getStaticText(cells["Vell"], 0));
+    // tap(getStaticText(cells["Adidas"], 0));
+
+    tapButton(view1, 2);
+}
 function test180073() {
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
     tapButtonAndAlert(SAVE, OK);
@@ -3491,7 +3482,7 @@ function test180073() {
 
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3502,7 +3493,7 @@ function test180073() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3530,7 +3521,7 @@ function test180074() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3563,7 +3554,7 @@ function test180074() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3588,7 +3579,7 @@ function test180074() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3609,7 +3600,7 @@ function test180074() {
     setTFieldsValue(getScrollView(), fields);
     delay();
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
@@ -3621,7 +3612,7 @@ function test180074() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
-    testAddBrandCheck();
+    testAddProviderCheck();
 
     tapButtonAndAlert(SAVE, OK);
 
