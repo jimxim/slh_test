@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -16,18 +16,33 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "ts100144");
- run("测试用例", "onlyTest");
+ run("测试用例", "ts100142_143");
 
 }
 
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // tapFirstText(getScrollView(-1, 0), "名称",8);
- tapMenu("采购入库", "新增入库+");
- var json = { "客户" : "Rt", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
-     "goodsFieldIndex" : "-2" };
- editSalesBill(json, colorSize);
+    var keys = { "统一乘" : "10" };
+    tapMenu2("批量调价");
+    var cond = app.navigationBar().leftButton().isVisible();// 等待导航栏的关闭按钮出现
+    waitUntil(cond, 10);
+    var fields = goodsPricingFields(keys);
+    setTFieldsValue(getScrollView(-1, 0), fields);
+    // 选中款号时为确定，不选时为所有调价，需要输入授权码
+    alertRet=true;
+    tapButton(getScrollView(-1, 0), 0);// OK
 
+    var ok=isIn(alertMsg,"所有调价");
+    if (ok) {
+        // app.keyboard().typeString("slh000");
+        app.alert().scrollViews()[0].tableViews()[0].cells()[0].textFields()[0].textFields()[0].setValue("slh000");
+        tapKeyboardHide();// 有时键盘会遮住警告框
+        app.alert().buttons()["确定"].tap();
+        tapButtonAndAlert("none","确定",true);
+    }
+    alertRet=false;
+    return ok;
 }
 
 function prepare200All(){

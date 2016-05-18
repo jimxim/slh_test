@@ -366,7 +366,7 @@ function testEditGoodsFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 /**
- * 新增货品
+ * 新增货品界面
  * @param keys
  * @param show
  */
@@ -428,7 +428,7 @@ function editGoodsField(key, show, addIdx, priceStartIndex) {
         }
         break;
     // tapButton(getScrollView(), "减量");也许要点击3次才能变成昨天
-    case "market":
+    case "marketdate":
     case "上架日期":
         f = new TField("上架日期", BTN, addIdx, getToday());
         if (show) {
