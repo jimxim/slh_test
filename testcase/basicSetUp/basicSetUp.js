@@ -81,6 +81,8 @@ function testBasicSetUpAll() {
 
     run("均色均码模式", "setGoodsNoColorParams");
 
+    // 特价商品 9528
+
 }
 
 function subTime(day1, day2) {

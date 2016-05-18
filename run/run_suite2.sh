@@ -32,7 +32,7 @@ js_func="$js_func test000SalesNoColorSizeElse004"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse005"
 
-js_func="$js_func setSales001Params"
+js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
 js_func="$js_func test000SalesNoColorSizeElse002"
 
 js_func="$js_func setSales001Params"
@@ -55,13 +55,16 @@ js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
 #店长权限
 js_func="$js_func testSalesNoColorSize170240_Prepare"
-js_func="$js_func testSalesNoColorSize170240 testSalesNoColorSize170586_4 testSalesNoColorSize170641_4
+js_func="$js_func testSalesNoColorSize170240 testSalesNoColorSize170586_4  testSalesNoColorSize170641_4
 testSalesNoColorSize170641_4 testSalesNoColorSize170649_Prepare testSalesNoColorSize170649 testSalesNoColorSize170650 
 testSalesNoColorSize170709_4 testSalesNoColorSize170685 testSalesNoColorSize170670  testSalesNoColorSize170679_170680  
 testSalesNoColorSize170699_4"
 
 #开单员权限
 js_func="$js_func testSalesNoColorSize170586_5"
+
+#配货员权限
+js_func="$js_func testSalesNoColorSize170568Prepare testSalesNoColorSize170568"
 
 #销售开单-特殊模块（改高改低）
 #js_func="$js_func setSales001Params"

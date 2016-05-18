@@ -19,8 +19,7 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
-    
-    run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
+ run("【销售开单－开单】跨门店核销后检查本单已核销和所有已核销", "test170496");
   
 // run("", "test1");
 }
@@ -36,6 +35,59 @@ function test1(){
 // tapButton(window, "核销");
 // json = { "核销" : [ 0 ] };
 // editLogisticsVerify(json);
+    
+    tapMenu("销售开单", "按批次查");
+    query();
+
+    tapFirstText();
+
+    tapButton(window, "核销");
+    tapNaviRightButton();
+    // 本单已核销
+
+    var qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
+    var len = qr.data.length;
+    var batch = qr.data[0]["批次"];
+    var a1 = qr.data[0]["日期"];
+    var a3 = qr.data[0]["店员"];
+    var a4 = qr.data[0]["数量"];
+    var a5 = qr.data[0]["金额"];
+
+    tapNaviLeftButton();
+
+    var ret = isAnd(!isEqual(0, len));
+
+    tapButton(app.navigationBar(), "所有已核销");
+    // 所有已核销
+    qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
+
+    var total = qr.total;
+
+    var ret1 = false;
+    for (var i = 0; i < total - 1; i++) {
+        var pc = qr.data[i]["批次"];
+
+        if (isEqual(batch, pc)) {
+            ret1 = true;
+
+            qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
+            var b1 = qr.data[i]["日期"];
+            var b3 = qr.data[i]["店员"];
+            var b4 = qr.data[i]["数量"];
+            var b5 = qr.data[i]["金额"];
+
+            break;
+        }
+    }
+
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+    tapReturn(); 
+
+    var ret2 = isAnd(isEqual(b1, a1), isEqual(b3, a3), isEqual(b4, a4),
+            isEqual(b5, a5));
+    
+    return ret&&ret1&&ret2;
     
 }
 function test2(){
@@ -226,6 +278,14 @@ function test000SalesNoColorSizeElse005() {
         logout();
     }
 }
+function test100SalesNoColorSizeElsePrepare003() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("100","000000",p1);
+    if( ok ) {
+        run("仓库店准备代收单", "testSalesPrepare003");
+        logout();
+    }
+}
 function testSalesNoColorSize170240_Prepare() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -352,6 +412,24 @@ function testSalesNoColorSize170709_4() {
         logout();
     }
 }
+function testSalesNoColorSize170568Prepare() {
+    var p1 = {"角色":"配货员"};
+    var ok = login("007","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568Prepare");
+        
+        logout();
+    }
+}
+function testSalesNoColorSize170568() {
+    var p1 = {"角色":"配货员"};
+    var ok = login("007","000000",p1);
+    if( ok ) {
+        run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568");
+        
+        logout();
+    }
+}
 // 采购入库
  function test000Purchase001() {
     var p1 = {"角色":"总经理"};
@@ -406,7 +484,6 @@ function testSalesNoColorSize170709_4() {
      var ok = login("200","000000",p1);
      if( ok ) {
          run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058_Prepare");
-         
          logout();
      }
  }

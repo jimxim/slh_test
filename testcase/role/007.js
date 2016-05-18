@@ -5,6 +5,9 @@ function test007() {
     run("【销售开单－开单】异地发货－－配货员可查看内容", "test170119");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_7");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_7");
+    run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568Prepare");
+    run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568");
+
 }
 function test210043_7() {
     // 配货员007登录
@@ -395,4 +398,48 @@ function test170241_7() {
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
+}
+function test170568Prepare() {
+    // 仓库店要有订货单
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+}
+function test170568() {
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "日期从" : "2015-01-01", "日期到" : getToday(), "门店" : "仓库店",
+        "发货状态" : "未发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    var batch = qr.data[0]["批次"];
+    var md = qr.data[0]["门店"];
+
+    tapFirstText();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    keys = { "日期从" : "2015-01-01", "日期到" : getToday(), "门店" : "仓库店",
+        "发货状态" : "全部发货", "批次从" : batch, "批次到" : batch };
+    fields = salesBillOrderFields(keys);
+    query(fields);
+    qr = getQR();
+
+    var ret = isAnd(isEqual("仓库店", md), isEqual("仓库店", qr.data[0]["门店"]),
+            isEqual(batch, qr.data[0]["批次"]));
+
+    tapMenu("销售订货", "按批次查");
+    keys = { "日期从" : "2015-01-01", "日期到" : getToday(), "批次从" : batch,
+        "批次到" : batch };
+    fields = salesOrderQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+
+    var ret1 = isAnd(isEqual("仓库店", qr.data[0]["门店"]), isEqual(batch,
+            qr.data[0]["批次"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }

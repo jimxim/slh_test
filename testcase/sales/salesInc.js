@@ -1,5 +1,7 @@
 //zhangY <2397655091 at qq.com> 20151229
 
+//    run("【销售开单－更多-代收收款查询】底部数据汇总检查", "testSalesPrepare003");
+
 //常青店000
 //店长：厂商敏感字段勾选
 function testSalesPrepare001() {
@@ -46,6 +48,13 @@ function testSalesPrepare002() {
     tapPrompt();
     tapReturn();
 
+}
+function testSalesPrepare003() {
+    // 仓库店、中洲店// 要有物流单
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
+        "代收" : { "物流商" : "tt" }, "备注" : "zy" };
+    editSalesBillNoColorSize(json);
 }
 
 function test170064getQR() {
