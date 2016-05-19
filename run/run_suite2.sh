@@ -20,7 +20,7 @@ js_func="$js_func test000SalesNoColorSize002"
 
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize004"
-js_func="$js_func test000SalesNoColorSize003"
+#js_func="$js_func test000SalesNoColorSize003"
 
 #销售开单-其它
 js_func="$js_func setSales001Params"

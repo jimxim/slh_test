@@ -18,8 +18,11 @@ function test000All() {
     
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
-// run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
- run("【销售开单－开单】跨门店核销后检查本单已核销和所有已核销", "test170496");
+// run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//    
+    
+//    run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");//
+    run("【销售开单-开单】均色均码款号合并", "test170103");
+    
   
 // run("", "test1");
 }
@@ -35,60 +38,7 @@ function test1(){
 // tapButton(window, "核销");
 // json = { "核销" : [ 0 ] };
 // editLogisticsVerify(json);
-    
-    tapMenu("销售开单", "按批次查");
-    query();
-
-    tapFirstText();
-
-    tapButton(window, "核销");
-    tapNaviRightButton();
-    // 本单已核销
-
-    var qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
-    var len = qr.data.length;
-    var batch = qr.data[0]["批次"];
-    var a1 = qr.data[0]["日期"];
-    var a3 = qr.data[0]["店员"];
-    var a4 = qr.data[0]["数量"];
-    var a5 = qr.data[0]["金额"];
-
-    tapNaviLeftButton();
-
-    var ret = isAnd(!isEqual(0, len));
-
-    tapButton(app.navigationBar(), "所有已核销");
-    // 所有已核销
-    qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
-
-    var total = qr.total;
-
-    var ret1 = false;
-    for (var i = 0; i < total - 1; i++) {
-        var pc = qr.data[i]["批次"];
-
-        if (isEqual(batch, pc)) {
-            ret1 = true;
-
-            qr = getQResult2(getScrollView(-1, 0), "日期", "金额");
-            var b1 = qr.data[i]["日期"];
-            var b3 = qr.data[i]["店员"];
-            var b4 = qr.data[i]["数量"];
-            var b5 = qr.data[i]["金额"];
-
-            break;
-        }
-    }
-
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-    tapReturn(); 
-
-    var ret2 = isAnd(isEqual(b1, a1), isEqual(b3, a3), isEqual(b4, a4),
-            isEqual(b5, a5));
-    
-    return ret&&ret1&&ret2;
-    
+ 
 }
 function test2(){
     var qo, o, ret = true;
