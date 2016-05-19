@@ -1882,14 +1882,23 @@ function ts100142_143() {
     var code = qr.data[0]["款号"];
 
     tapFirstText();
-    var keys = { "允许退货" : "否" };
+    var keys = { "厂商" : "rt", "允许退货" : "是" };// 不输入厂商无法触发界面滑动，则改不了允许退货
     addGoods(keys, "yes");
 
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "vell", "明细" : [ { "货品" : code, "数量" : "15" } ] };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : -5 } ] };
     editSalesBill(json, colorSize);
-    var ret = isInAlertMsgs("不允许退货");
+    var ret = !isInAlertMsgs("不允许退货");
 
+    tapMenu("货品管理", "货品查询");
+    tapButton(window, QUERY);
+    tapFirstText();
+    var keys = { "厂商" : "rt", "允许退货" : "否" };
+    addGoods(keys, "yes");
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isInAlertMsgs("不允许退货"));
     return ret;
 }
 
@@ -3409,6 +3418,24 @@ function ts100108() {
     return ret;
 }
 
+function ts100110() {
+    var qo, o, ok;
+    qo = { "备注" : "是否启用加工价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "新增货品+");
+    var texts = getStaticTexts(getScrollView());
+    var ret = isAnd(!isEqualsTexts1(texts, "是否加工款"), !isEqualsTexts1(texts,
+            "加工价"));
+    tapReturn();
+
+    qo = { "备注" : "是否启用加工价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return ret;
+}
+
 function ts100116() {
     var keys = addGoodsSimple();
     var code = keys["款号"];
@@ -3491,16 +3518,39 @@ function test100120() {
     return ret;
 }
 function ts100121() {
-    var qo, o, ret = true;
+    var qo, o, ok = true;
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    var r = "b" + getTimestamp(6);
 
     tapMenu("货品管理", "基本设置", "新增品牌折扣+");
+    tapButton(getScrollView(), "新增+");
+    var f = new TField("品牌名称", TF, 0, r);
+    setTFieldsValue(getPopView(), [ f ]);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), CLOSE);
+
+    var keys = { "进货价折扣" : 0.567, "零批价" : 0.987, "打包价" : 0.876, "大客户价" : 0.765,
+        "Vip价格" : 0.654 };
+    var fields = editGoodsBrandDiscountFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "款号" : "goods", "名称" : "goods", "品牌" : r, "吊牌价" : 1000 };
+    var fields = editGoodsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    keys = { "进货价" : 567, "零批价" : 987, "打包价" : 876, "大客户价" : 765, "Vip价格" : 654 };
+    fields = editGoodsFields(keys);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
 
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ok = isAnd(ok, setGlobalParam(qo, o));
     return ret;
 }
 function ts100122() {
@@ -3586,6 +3636,64 @@ function ts100125() {
             break;
         }
     }
+
+    return ret;
+}
+
+function ts100131() {
+    tapMenu("货品管理", "新增货品+");
+}
+
+// 中洲店新增品牌
+function ts100150() {
+    tapMenu("货品管理", "基本设置", "所有品牌");
+    var keys = { "名称" : "中洲店品牌" };
+    var fields = editGoodsBrandFields(keys);
+    query(fields);
+    var qr = getQR();
+    return qr.data[0]["名称"] == "中洲店品牌";
+}
+// 中洲店新增类别
+function ts100151() {
+    tapMenu("货品管理", "基本设置", "货品类别");
+    var keys = { "名称" : "中洲店类别" };
+    var fields = goodsTypeFields(keys);
+    query(fields);
+    var qr = getQR();
+    return qr.data[0]["名称"] == "中洲店类别";
+}
+// 在后台增加 执行标准、安全类别、等级、洗涤说明
+function test100152() {
+    var qo, o, ok = true;
+    qo = { "备注" : "是否允许款号设置扩展条码打印" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    var r = "g" + getTimestamp(6);
+    var keys = { "款号" : r, "名称" : r };
+    addGoods(keys);
+
+    tapMenu2("货品查询");
+    query();
+    tapFirstText();
+    var keys1 = { "厂商" : "Rt", "面料" : "纯棉", "执行标准" : "执行标准A", "安全类别" : "安全类别A",
+        "等级" : "一等品", "洗涤说明" : "0,1" };
+    addGoods(keys1, "yes");
+
+    var cond = "window.buttons()['货品查询'].isVisible()";
+    waitUntil(cond);
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = mixObject(keys, keys1);
+    var fields = editGoodsFields(keys, true);
+    fields["洗涤说明"].value = "可以机洗,适宜手洗";
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+
+    qo = { "备注" : "是否允许款号设置扩展条码打印" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
 
     return ret;
 }

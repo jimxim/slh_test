@@ -35,8 +35,11 @@ function addGoods(keys, isEdit, day) {
         return;
     }
 
+    var btn = SAVE;
     if (isUndefined(isEdit) || isEdit == "no") {
         tapMenu("货品管理", "新增货品+");
+    } else {
+        btn = EDIT_SAVE;
     }
 
     if (isDefined(day)) {
@@ -44,7 +47,7 @@ function addGoods(keys, isEdit, day) {
     }
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
+    tapButtonAndAlert(btn, OK);
 
     delay();
     tapReturn();
