@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -15,14 +15,15 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // outBatch={"inPre":"269","ts150007":"268"};
 
+ run("测试用例", "ts100131");
 // run("测试用例", "onlyTest");
- run("测试用例", "ts100121");
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
+
 
 }
 

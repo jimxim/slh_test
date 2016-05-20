@@ -1171,16 +1171,20 @@ function test100015_100017Field() {
     tapButton(window, RETURN);
     return ret;
 }
-
+// 004店长登陆验证 默认店长权限
 function test100019() {
+    var qo, o, ret = true;
+    qo = { "备注" : "店长权限类别" };
+    o = { "新值" : "0", "数值" : [ "默认店长权限" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isEqual(100, getTextFieldValue(getScrollView(), 8))
-            && isEqual(200, getTextFieldValue(getScrollView(), 9))
+    var ret = isEqual(200, getTextFieldValue(getScrollView(), 9))
             && isEqual(180, getTextFieldValue(getScrollView(), 10))
             && isEqual(160, getTextFieldValue(getScrollView(), 11))
             && isEqual(140, getTextFieldValue(getScrollView(), 12));
@@ -1191,10 +1195,10 @@ function test100019() {
 
     tapMenu("货品管理", "货品查询");
     keys = { "款号名称" : r };
-    fields = queryGoodsFields(qKeys);
+    fields = queryGoodsFields(keys);
     query(fields);
     var qr = getQR();
-    ret = isAnd(ret, isEqual(100, qr.data[0]["进货价"]));
+    ret = isAnd(ret, isEqual(200, qr.data[0]["零批价"]));
 
     return ret;
 }
@@ -1773,6 +1777,51 @@ function ts100058() {
 
     return ret;
 }
+// 配码 X1自带对应尺码25 数量8件
+function ts100095_96() {
+    tapMenu("货品管理", "基本设置", "所有尺码");
+    var keys = { "尺码组" : "配码", "名称" : "x1" };
+    var fields = goodsSizeFields(keys);
+    query(fields);
+
+    tapFirstText();
+    tapButton(window, "新增配码+");
+
+    var view = getScrollView(-1);
+    tapButton(view, SELECT);
+    var text = getStaticTexts(getPopView(window, 0));
+    window.popover().dismiss();
+
+    ts100095Field("26", 10);
+
+    // 新增配码后直接点击保存
+    tapNaviRightButton();// 保存
+    var ret = isInAlertMsgs("单据重复保存");
+
+    // 选择上述一样的尺码、不同的数量，点保存
+    ts100095Field("26", 15);
+    ret = isAnd(ret, isInAlertMsgs("同一尺码下配码不能相同"));
+
+    // 选择与尺码一样的配码M、数量，点保存
+    ts100095Field("X1", 10);
+    ret = isAnd(ret, isInAlertMsgs("对应尺码不能设置成本尺码"));
+    tapNaviLeftButton();
+
+    var exp = { "对应尺码" : "25", "对应数量" : 8 };
+    tapButton(window, "显示配码");
+    tapTextByFirstWithName("26", getScrollView(-1, 0));
+    tapNaviLeftButton();// 返回
+    tapTextByFirstWithName("26", getScrollView(-1, 0));
+    tapNaviRightButton();// 删除
+    var qr = getQR2(getScrollView(-1, 0), "对应尺码", "对应数量");
+    tapNaviLeftButton();// 返回
+    tapReturn();
+
+    // 不显示已作废的尺码
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), !isEqualsTexts1(text,
+            "停用尺码"));
+    return ret;
+}
 
 function ts100124() {
     // 检查货品管理-当前库存、款号库存、库存分布、货品查询界面的查询条件 “是否停用”
@@ -1939,7 +1988,7 @@ function ts100145_146() {
     if (colorSize == "yes") {
         var qo, o, ok = true;
         qo = { "备注" : "取消颜色尺码时判断库存是否为零" };
-        o = { "新值" : "0", "数值" : [ "默认判断" ] };
+        o = { "新值" : "1", "数值" : [ "默认判断" ] };
         ok = isAnd(ok, setGlobalParam(qo, o));
 
         var r = "g" + getTimestamp(8);
@@ -2999,7 +3048,7 @@ function test10_size() {
     ret = ret && sortByTitle("类别");
     ret = ret && sortByTitle("名称");
 
-    var keys = { "尺码组" : "衣服尺码", "名称" : "x" };
+    var keys = { "尺码组" : "配码", "名称" : "x" };
     var fields = goodsSizeFields(keys);
     query(fields);
     qr = getQR();
@@ -3540,10 +3589,11 @@ function ts100121() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : "goods", "名称" : "goods", "品牌" : r, "吊牌价" : 1000 };
+    var keys = { "款号" : "goods", "名称" : "goods", "品牌" : r, "吊牌价" : 1 };
     var fields = editGoodsFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    keys = { "进货价" : 567, "零批价" : 987, "打包价" : 876, "大客户价" : 765, "Vip价格" : 654 };
+    keys = { "进货价" : 0.567, "零批价" : 0.987, "打包价" : 0.876, "大客户价" : 0.765,
+        "Vip价格" : 0.654 };
     fields = editGoodsFields(keys);
     var ret = checkShowFields(getScrollView(), fields);
     tapReturn();
@@ -3642,6 +3692,34 @@ function ts100125() {
 
 function ts100131() {
     tapMenu("货品管理", "新增货品+");
+    var f = new TField("款号", TF_AC, 0, "a", -1);
+    var cells = getTableViewCells(getScrollView(), f);
+    var ret = true;
+    for (var i = 0; i < cells.length; i++) {
+        var v = cells[i].name();
+        var value = CC2PY(v).toUpperCase();
+        ret = ret && value.indexOf("A") != -1;
+        if (!ret) {
+            logDebug("value=" + value + "   中不包含a")
+            break;
+        }
+    }
+    tapReturn();
+
+    tapMenu("货品管理", "新增货品+");
+    var f = new TField("款号", TF_AC, 0, "5", -1);
+    var cells2 = getTableViewCells(getScrollView(), f);
+    var ret2 = true;
+    for (var i = 0; i < cells2.length; i++) {
+        var value = String(cells2[i].name());
+        ret2 = ret2 && value.indexOf("5") != -1;
+        if (!ret2) {
+            logDebug("value=" + value + "   中不包含1")
+            break;
+        }
+    }
+    tapReturn();
+    return ret && ret2;
 }
 
 // 中洲店新增品牌
@@ -3662,12 +3740,12 @@ function ts100151() {
     var qr = getQR();
     return qr.data[0]["名称"] == "中洲店类别";
 }
-// 在后台增加 执行标准、安全类别、等级、洗涤说明
+// 在后台增加 执行标准、安全类别、等级、洗涤说明 需查询登陆
 function test100152() {
     var qo, o, ok = true;
-    qo = { "备注" : "是否允许款号设置扩展条码打印" };
-    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
-    ok = isAnd(ok, setGlobalParam(qo, o));
+    // qo = { "备注" : "是否允许款号设置扩展条码打印" };
+    // o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
+    // ok = isAnd(ok, setGlobalParam(qo, o));
 
     var r = "g" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r };

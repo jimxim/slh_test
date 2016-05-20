@@ -832,6 +832,20 @@ function goodsSizeField(key, show) {
     return f;
 }
 
+/**
+ * 新增配码
+ * @param size 对应尺码
+ * @param num 对应数量
+ */
+function ts100095Field(size, num) {
+    var fields = [];
+    fields.push(new TField("对应尺码", BTN_SC, 0, size, "in"));
+    fields.push(new TField("对应数量", TF, 1, num));
+    setTFieldsValue(getScrollView(-1), fields);
+    tapNaviRightButton();
+    tapAlertButton(OK);
+}
+
 // 新增尺码
 function testEditGoodsSizeFields() {
     var keys = [ "type", "code", "name", "sequence", "number" ];
