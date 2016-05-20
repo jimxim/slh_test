@@ -3,6 +3,8 @@
 function testOutAndIn_Check001() {
     run("【销售开单－开单】开单的同时订货", "test170125_Prepare");
     run("【销售开单－开单】开单的同时订货", "test170125");
+    run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");
+
     run("【销售开单－开单】取未保存", "test170140_Prepare");
     run("【销售开单－开单】取未保存", "test170140");
     run("【销售开单-开单-加工货品】加工货品", "test170429Prepare");
@@ -65,49 +67,6 @@ function test170125() {
 
     logDebug("ret=" + ret);
     return ret;
-}
-function test170607() {
-    var qo, o, ret = true;
-    // qo = { "备注" : "销售开单时同时订货" };
-    // o = { "新值" : "1", "数值" : [ "启用" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "按批次查");
-    query();
-    var qr = getQR();
-    var total1 = qr.total;
-
-    tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "k300", "数量" : "10" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    var f4 = new TField("订货数", TF, 4, "2");
-    var f10 = new TField("订货数", TF, 10, "10");
-    var fields = [ f4, f10 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret = isIn(alertMsg, "操作失败,[客户不能为空]");
-
-    tapReturn();
-
-    tapMenu("销售开单", "按批次查");
-    query();
-    var qr = getQR();
-    var total2 = qr.total;
-
-    var ret1 = isEqual(total1, total2);
-
-    qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret && ret1;
 }
 function test170140Prepare() {
     tapMenu("销售开单", "开  单+");
@@ -194,6 +153,49 @@ function test170429() {
 
     logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
+}
+function test170607() {
+    var qo, o, ret = true;
+    // qo = { "备注" : "销售开单时同时订货" };
+    // o = { "新值" : "1", "数值" : [ "启用" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var total1 = qr.total;
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "k300", "数量" : "10" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f4 = new TField("订货数", TF, 4, "2");
+    var f10 = new TField("订货数", TF, 10, "10");
+    var fields = [ f4, f10 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "操作失败,[客户不能为空]");
+
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var total2 = qr.total;
+
+    var ret2 = isEqual(total1, total2);
+
+    qo = { "备注" : "销售开单时同时订货" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret && ret1 && ret2;
 }
 function test180022_Prepare() {
     tapMenu("盘点管理", "新增盘点+");

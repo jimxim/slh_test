@@ -101,6 +101,9 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170595");
     run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
+    run("【开单  】同款不同价提醒", "test170539");
+    run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");
+    run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");
 
     // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
     // run("【销售开单－开单】汇款需填写客户", "test170582");//
@@ -196,6 +199,7 @@ function testSalesNoColorSize001_1() {
     run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
     run("【销售开单-开单】配货员业绩统计-销售开单", "test170632_170633");
     run("【销售开单-开单】积分抵现（异地发货模式）", "test170692");
+    run("【销售开单-开单】各个开单界面快速新增货品 款号调用的苹果键盘", "test170593");
     // run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");//
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430");// (改为做170429)//
     // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
@@ -3531,11 +3535,11 @@ function test170116() {
     ret = isAnd(ret, isIn(alertMsg1, "操作失败"), isIn(alertMsg1, "库存不足，差2件"));
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : "10" } ] };
+    json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "2" } ],
+    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "2" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -5380,7 +5384,9 @@ function test170179() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "保存成功，是否打印");
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
 
     tapReturn();
 
@@ -8664,7 +8670,7 @@ function test170450() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isIn(alertMsg1, "保存成功，是否打印");
+    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
 
     tapMenu("销售订货", "新增订货+");
     var json = {
@@ -8684,14 +8690,14 @@ function test170450() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
+    var ret2 = isIn(alertMsg1, "保存成功，是否打印");
 
     qo = { "备注" : "允许改高" };
     o = { "新值" : "0", "数值" : [ "不检查" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170452() {
     // 有欠款单客户
@@ -8801,27 +8807,27 @@ function test170460() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
         "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var ret = isAqualNum(R, getTextFieldValue(getScrollView(), 5), 0);
+    var ret1 = isAqualNum(R, getTextFieldValue(getScrollView(), 5), 0);
     var price = getTextFieldValue(getScrollView(), 4);
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var ret1 = isAnd(isEqual(Math.round(price * R + 1), qr.data[0]["金额"]),
+    var ret2 = isAnd(isEqual(Math.round(price * R + 1), qr.data[0]["金额"]),
             isEqual(Math.round(price * R + 1), qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["未结"]));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", price=" + price);
-    return ret && ret1;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", price="
+            + price);
+    return ret && ret1 && ret2;
 }
 function test170461() {
     var qo, o, ret = true;
@@ -10545,6 +10551,115 @@ function test170527() {
             + ret3);
     return ret && ret1 && ret2 && ret3;
 }
+function test170533() {
+    // 设置免单的最高比例为10％，抹零为0
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "抹零" : 200 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret = isIn(alertMsg, "保存成功");
+
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "未付" : "yes", "不返回" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    json = { "客户" : "lt", "核销" : [ 5 ], "特殊货品" : { "免单" : 20 },
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "保存成功");
+
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "未付" : "yes", "不返回" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    json = { "客户" : "lt", "核销" : [ 5 ], "特殊货品" : { "免单" : 21 },
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = isIn(alertMsg, "特殊货品[00002,免单]金额超出最高比例");
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "免单" : 20 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret3 = isIn(alertMsg, "保存成功");
+
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "免单" : 21 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret4 = isIn(alertMsg, "特殊货品[00002,免单]金额超出最高比例");
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "未付" : "yes", "不返回" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    json = { "客户" : "lt", "核销" : [ 5 ],
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "特殊货品" : { "免单" : 40 },
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret5 = isIn(alertMsg, "保存成功");
+
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "未付" : "yes", "不返回" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    json = { "客户" : "lt", "核销" : [ 5 ],
+        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "特殊货品" : { "免单" : 41 },
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret6 = isIn(alertMsg, "特殊货品[00002,免单]金额超出最高比例");
+
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "特殊货品" : { "打包费" : 200, "免单" : 41 }, "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret7 = isIn(alertMsg, "特殊货品[00002,免单]金额超出最高比例");
+
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
+}
 function test170536() {
     tapMenu("销售开单", "按批次查");
     query();
@@ -10640,6 +10755,69 @@ function test170538() {
 
     // logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     // return ret && ret1 && ret2;
+}
+function test170539() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单是否合并重复的款号" };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "K300", "数量" : "1" }, { "货品" : "K300", "数量" : "1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var r = 9 + getTimestamp(2);
+    var f4 = new TField("单价", TF, 4, r);
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "同款不同价");
+
+    tapReturn();
+
+    return ret && ret1;
+}
+function test170541() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单是否合并重复的款号" };
+    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "K300", "数量" : "-1" }, { "货品" : "K300", "数量" : "1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var r = 9 + getTimestamp(2);
+    var r1 = 8 + getTimestamp(2);
+    var f4 = new TField("单价", TF, 4, r);
+    var f11 = new TField("单价", TF, 4, r1);
+    var fields = [ f4, f11 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+
+    var o1 = { "是否继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapButtonAndAlert("none", "仍然保存");
+
+    tapPrompt();
+
+    var ret1 = isIn(alertMsg, "同款不同价");
+
+    tapReturn();
+
+    return ret && ret1;
 }
 function test170542() {
     // 客户折扣
@@ -11503,6 +11681,169 @@ function test170587() {
     var ret = isEqual(sxe1, sxe);
 
     return ret;
+}
+function test170593() {
+    // 检查能输入中文
+    var qo, o, ret = true;
+    qo = { "备注" : "是否启用自定义键盘" };
+    o = { "新值" : "2", "数值" : [ "允许输入中文", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkhao" + getTimestamp(3);
+    var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret1 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret2 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret3 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    qo = { "备注" : "是否启用自定义键盘" };
+    o = { "新值" : "1", "数值" : [ "默认启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret4 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret5 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret6 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    qo = { "备注" : "是否启用自定义键盘" };
+    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret7 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret8 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    tapButton(window, "新增货品+");
+
+    g0 = new TField("款号", TF, 0, r);
+    fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+
+    var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret9 = isIn(getTextFieldValue(getPopView(), 1), "李");
+
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
+            && ret9;
 }
 function test170595() {
     tapMenu("销售开单", "开  单+");

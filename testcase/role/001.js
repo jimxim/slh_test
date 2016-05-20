@@ -21,7 +21,7 @@ function test210043_1() {
     target.frontMostApp().mainWindow().popover().dismiss();
     return ret;
 }
-function test170240_1Prepare() {
+function test170240_1() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "1", "数值" : [ "支持，开启后店员只显示本门店人员", "in" ] };
@@ -32,8 +32,7 @@ function test170240_1Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170240_1() {
+
     tapMenu("销售开单", "开  单+");
     var ret = true;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -185,7 +184,19 @@ function test170240_1() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
-function test170241_1Prepare() {
+// function test170241_1Prepare() {
+// var qo, o, ret = true;
+// qo = { "备注" : "开单是否门店过滤人员" };
+// o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+// ret = isAnd(ret, setGlobalParam(qo, o));
+//
+// runAndAlert("test210020Clear", OK);
+// tapPrompt();
+//
+// var cond = "isIn(alertMsg, '清理和刷新成功')";
+// waitUntil(cond, 300);
+// }
+function test170241_1() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
@@ -196,8 +207,7 @@ function test170241_1Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170241_1() {
+
     tapMenu("销售开单", "开  单+");
     var ret = false;
     var f = new TField("店员", TF_AC, 5, "1", -1);

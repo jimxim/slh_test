@@ -186,7 +186,7 @@ function test170237() {
     logDebug("ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test170239_5Prepare() {
+function test170240_5() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "1", "数值" : [ "支持，开启后店员只显示本门店人员", "in" ] };
@@ -197,8 +197,7 @@ function test170239_5Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170240_5() {
+    
     tapMenu("销售开单", "开  单+");
     var ret = true;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -350,7 +349,7 @@ function test170240_5() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
-function test170241_5Prepare() {
+function test170241_5() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
@@ -361,8 +360,7 @@ function test170241_5Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170241_5() {
+    
     tapMenu("销售开单", "开  单+");
     var ret = false;
     var f = new TField("店员", TF_AC, 5, "1", -1);

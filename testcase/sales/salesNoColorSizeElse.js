@@ -190,6 +190,7 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按批次查】增加款号或减少款号检查代收金额", "test170701");
     run("【销售开单-按批次查】修改界面显示当前结余", "test170712");
     run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170713");
+    run("【销售开单－销售汇总-按厂商汇总】键盘输入检查", "test170362");
 
     // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 
@@ -5454,8 +5455,21 @@ function test170356() {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "k200", "数量" : "5" },
                 { "货品" : "k300", "数量" : "-1" } ],
-        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "现金" : "1500" };
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+
+    var totalMoney = add(add(getTextFieldValue(getScrollView(), 5),
+            getTextFieldValue(getScrollView(), 12)), getTextFieldValue(
+            getScrollView(), 19));
+
+    saveAndAlertOk();
+
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "按汇总", "按类别汇总");
     var keys = { "日期从" : "2015-01-01" };
@@ -5469,7 +5483,7 @@ function test170356() {
     var sxe1 = qr.counts["实销额"];
 
     var ret = isAnd(isEqual(10, sub(xs1, xs)), isEqual(1, sub(ts1, ts)),
-            isEqual(9, sub(sxs1, sxs)), isEqual(1450, sub(sxe1, sxe)));
+            isEqual(9, sub(sxs1, sxs)), isEqual(totalMoney, sub(sxe1, sxe)));
 
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
 
@@ -5660,6 +5674,19 @@ function test170361_1() {
     // }
 
     logDebug("ret=" + ret);
+    return ret;
+}
+function test170362() {
+    // 验证可以输入中文就行
+    tapMenu("销售开单", "按汇总", "按厂商汇总");
+
+    var o = { "键盘" : "简体拼音", "拼音" : [ "lianxiang" ], "汉字" : [ "联想" ] };
+
+    var tf = window.textFields()[0].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret = isEqual("联想", getTextFieldValue(window, 0));
+
     return ret;
 }
 function test170363_170361_170648() {

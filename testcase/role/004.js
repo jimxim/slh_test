@@ -198,7 +198,7 @@ function test170177() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test170240_4Prepare() {
+function test170240_4() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "1", "数值" : [ "支持，开启后店员只显示本门店人员", "in" ] };
@@ -209,8 +209,7 @@ function test170240_4Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170240_4() {
+
     tapMenu("销售开单", "开  单+");
     var ret = true;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -362,7 +361,7 @@ function test170240_4() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
-function test170241_4Prepare() {
+function test170241_4() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
@@ -373,8 +372,7 @@ function test170241_4Prepare() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-}
-function test170241_4() {
+
     tapMenu("销售开单", "开  单+");
     var ret = false;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -1070,7 +1068,24 @@ function test170679_170680() {
 }
 function test170684() {
     // 店员权限只能看本门店数据
+    tapMenu("销售开单", "按汇总", "按客户上货");
+    var keys = { "日期从" : getDay(-30), "客户" : "ls", "款号" : "k300" };
+    var fields = salesCustomerSupplyFields(keys);
+    query(fields);
+    var qr = getQR();
+    var totalNum = qr.counts["实销数"];
+    var totalMoney = qr.counts["实销额"];
 
+    tapMenu("销售开单", "按明细查");
+    var keys = { "日期从" : getDay(-30), "客户" : "ls", "款号" : "k300", "门店" : "常青店" };
+    var fields = salesQueryParticularFields(keys);
+    query(fields);
+    var qr2 = getQR();
+
+    var ret = isAnd(isEqual(totalNum, qr2.counts["数量"]), isEqual(totalMoney,
+            qr2.counts["小计"]));
+
+    return ret;
 }
 function test170685() {
     // 店员权限只能看本门店数据
