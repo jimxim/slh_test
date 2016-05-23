@@ -3850,7 +3850,7 @@ function testCs170251() {
         "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a", "代收金额" : "200" } };
     editSalesBillColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);

@@ -65,7 +65,7 @@ function addGoodsStockAdjustment(r) {
 }
 
 function addLogisticsVerify(o) {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     logisticsVerifySetField(o, "物流");
     logisticsVerifySetField(o, "店员");
     logisticsVerifySetField(o, "日期");

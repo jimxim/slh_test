@@ -120,7 +120,7 @@ function setPurchase_type_1Params() {
 // 翻页_排序_汇总
 function ts120001_1() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店",
+    var keys = { "日期从" : getDay(-15), "日期到" : getToday(), "门店" : "常青店",
         "作废挂单" : "正常" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
@@ -2524,7 +2524,7 @@ function test120064() {
     tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
-    exp = { "入库数" : 10, "差异数" : 40 };
+    var exp = { "入库数" : 10, "差异数" : 40 };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     return ret;
@@ -2592,7 +2592,7 @@ function test120083() {
 
 function test120047_1() {
     tapMenu("采购入库", "按明细查");
-    var keys = { "日期从" : getDay(-30), "到" : getToday() };
+    var keys = { "日期从" : getDay(-15), "到" : getToday() };
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     // 点击翻页

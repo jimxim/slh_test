@@ -1,4 +1,8 @@
 // JinXinhua <79202792 at qq.com> 20150922
+/** 开 单+ */
+var ADDBILL = "开  单+";
+/** 物流核销 */
+var LogisticsVerify = "物流核销+";
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");

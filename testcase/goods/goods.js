@@ -3691,13 +3691,14 @@ function ts100125() {
 }
 
 function ts100131() {
+    // 字母a判定
     tapMenu("货品管理", "新增货品+");
     var f = new TField("款号", TF_AC, 0, "a", -1);
     var cells = getTableViewCells(getScrollView(), f);
     var ret = true;
     for (var i = 0; i < cells.length; i++) {
-        var v = cells[i].name();
-        var value = CC2PY(v).toUpperCase();
+        var v = String(cells[i].name());
+        var value = CC2PY(v).toUpperCase();// 中文转拼音
         ret = ret && value.indexOf("A") != -1;
         if (!ret) {
             logDebug("value=" + value + "   中不包含a")
@@ -3706,19 +3707,29 @@ function ts100131() {
     }
     tapReturn();
 
+    // 数字1判定
     tapMenu("货品管理", "新增货品+");
-    var f = new TField("款号", TF_AC, 0, "5", -1);
-    var cells2 = getTableViewCells(getScrollView(), f);
+    var view1 = getScrollView();
+    var i = getTextFieldIndex(view1, 0);
+    var tf = view1.textFields()[i].textFields()[0];
+
+    tf.setValue("");//
+    var kb = app.keyboard();
+    kb.typeString("1");// 这里不能输入回车，输入后下拉列表就没了
+    var tableViewIndex = getTableViews().length - 1;
+
+    var cells2 = window.tableViews()[tableViewIndex].cells();
     var ret2 = true;
     for (var i = 0; i < cells2.length; i++) {
         var value = String(cells2[i].name());
-        ret2 = ret2 && value.indexOf("5") != -1;
+        ret2 = ret2 && value.indexOf("1") != -1;
         if (!ret2) {
-            logDebug("value=" + value + "   中不包含1")
+            logDebug("i=" + i + " value=" + value + " 中不包含1")
             break;
         }
     }
     tapReturn();
+
     return ret && ret2;
 }
 
