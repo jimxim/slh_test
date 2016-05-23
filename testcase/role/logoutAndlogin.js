@@ -1,15 +1,17 @@
 //zhangy <2397655091 at qq.com> 20160120
 
-function testOutAndIn_Check001() {
+function testOutAndIn() {
     run("【销售开单－开单】开单的同时订货", "test170125_Prepare");
     run("【销售开单－开单】开单的同时订货", "test170125");
     run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");
+    // run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170678");
 
-    run("【销售开单－开单】取未保存", "test170140_Prepare");
+    run("【销售开单－开单】取未保存", "test170140Prepare");
     run("【销售开单－开单】取未保存", "test170140");
     run("【销售开单-开单-加工货品】加工货品", "test170429Prepare");
     run("【销售开单-开单-加工货品】加工货品", "test170429");
 
+    run("【盘点管理—按批次查】", "checkPrepare");
     run("【盘点管理—新增盘点】获取未保存数据准备", "test180022_Prepare");
     run("【盘点管理—新增盘点】获取未保存", "test180022");
     run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058Prepare");
@@ -30,6 +32,8 @@ function test170125_Prepare() {
     qo = { "备注" : "销售开单时同时订货" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
 }
 function test170125() {
     tapMenu("销售开单", "开  单+");
@@ -119,6 +123,7 @@ function test170429() {
     var keys = { "款号名称" : "gg55" };
     var fields = queryGoodsFields(keys);
     query(fields);
+
     tapFirstText();
 
     var jprice = getTextFieldValue(getScrollView(), 8);
@@ -167,20 +172,19 @@ function test170607() {
 
     tapMenu("销售开单", "开  单+");
     var json = {
-        "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "k300", "数量" : "10" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("订货数", TF, 4, "2");
-    var f10 = new TField("订货数", TF, 10, "10");
-    var fields = [ f4, f10 ];
+    var f12 = new TField("订货数", TF, 12, "10");
+    var fields = [ f4, f12 ];
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "操作失败,[客户不能为空]");
+    var ret1 = isIn(alertMsg, "客户不能为空");
 
     tapReturn();
 
@@ -195,6 +199,7 @@ function test170607() {
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test180022_Prepare() {
@@ -388,7 +393,7 @@ function test180028() {
     logDebug(" ret1=" + ret1);
     return ret && ret1;
 }
-function test180058_Prepare() {
+function test180058Prepare() {
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);

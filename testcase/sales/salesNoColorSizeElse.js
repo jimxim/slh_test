@@ -84,13 +84,14 @@ function testSalesNoColorSizeElse002() {
     // "test170383");//(用例已改)
 }
 function testSalesNoColorSizeElseAll() {
-    run("【销售开单－按批次查】是否未结", "test170005");
-    run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
-    run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
+//    run("【销售开单－按批次查】是否未结", "test170005");
+//    run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
+//    run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
     run("【销售开单－按批次查】页面跳转检查", "test170013");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");
     run("【销售开单－按批次查】修改代收内容", "test170024");
     run("【销售开单-按明细查】作废开单后内容检查", "test170030");
+    run("【销售开单－按明细查】键盘检查", "test170034");
     run("【销售开单－按明细查】类型输入条件检查", "test170037");
     run("【销售开单-按明细查】检查类别 查询条件", "test170566");
     run("【销售开单－按订货开单】单据查询", "test170252");
@@ -1285,6 +1286,19 @@ function test170030() {
     var ret1 = !isEqual(batch, batch1);
 
     return ret && ret1;
+}
+function test170034() {
+ // 验证可以输入中文就行
+    tapMenu("销售开单", "按明细查");
+
+    var o = { "键盘" : "简体拼音", "拼音" : [ "hanhong" ], "汉字" : [ "韩红" ] };
+
+    var tf = window.textFields()[0].textFields()[2];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret = isEqual("韩红", getTextFieldValue(window, 2));
+
+    return ret;
 }
 function test170037() {
     var qo, o, ret = true;

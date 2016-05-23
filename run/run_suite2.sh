@@ -71,6 +71,9 @@ js_func="$js_func testSalesNoColorSize170586_5"
 #配货员权限
 js_func="$js_func testSalesNoColorSize170568Prepare testSalesNoColorSize170568"
 
+#登进登出
+js_func="$js_func testSalesNoColorSizeOutAndIn"
+
 #销售开单-特殊模块（改高改低）
 #js_func="$js_func setSales001Params"
 #js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2"
