@@ -360,7 +360,7 @@ function synthesis1(editObj1, expectedObj1, menus) {
     var jo1 = getStatisticAnalysisSynthesis();
 
     if (isUndefined(menus)) {
-        tapMenu("销售开单", "开  单+");
+        tapMenu("销售开单", ADDBILL);
     } else {
         tapMenu(menus[0], menus[1]);
     }

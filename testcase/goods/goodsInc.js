@@ -127,7 +127,7 @@ function addProvider(keys) {
  * @param money 兑换金额
  */
 function addRedeemPoints(customer, points, money) {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : customer };
     editSalesBillCustomer(json);
 

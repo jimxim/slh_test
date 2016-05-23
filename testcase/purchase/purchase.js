@@ -327,7 +327,7 @@ function ts120005() {
         editSalesBill(json1, colorSize);
         ret = isAnd(ret, ts120005Field());
 
-        tapMenu("销售开单", "开  单+");
+        tapMenu("销售开单", ADDBILL);
         editSalesBill(json1, colorSize);
         ret = isAnd(ret, ts120005Field());
 

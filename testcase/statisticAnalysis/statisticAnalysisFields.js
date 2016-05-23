@@ -1,8 +1,6 @@
 //LuXingXin <52619481 at qq.com> 20150917
-/**
- * 日利润表
- */
-var menu_profit = "日利润表";// 5.69前为利润表
+/** 日利润表 */
+var Menu_Profit = "日利润表";// 5.69前为利润表
 // 收支表
 function testStatisticAnalysisInOutFields() {
     var keys = [ "day1", "day2", "type" ];
@@ -71,30 +69,34 @@ function statisticAnalysisProfitField(key, show) {
             f.value = "5880,kha,210元";
         }
         break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 4, "3035");
+        break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 4, "a", -1, 0);
+        f = new TField("客户", TF_AC, 5, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 5, "000", -1, 0);
+        f = new TField("店员", TF_AC, 6, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 6, "z", -1, 0);
+        f = new TField("厂商", TF_AC, 7, "z", -1, 0);
         if (show) {
             f.value = "杭州";
         }
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 7, "1010pp");
+        f = new TField("品牌", TF_AC, 8, "1010pp");
         break;
     default:
         logWarn("未知key＝" + key);

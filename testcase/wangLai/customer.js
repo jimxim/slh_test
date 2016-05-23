@@ -239,7 +239,7 @@ function test110005() {
     delay();
     tapRefresh(); // 需要刷新
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r };
     editSalesBillCustomer(json);
     saveAndAlertOk();
@@ -261,7 +261,7 @@ function test110005() {
     tapRefresh();
 
     // 做欠款单 欠2000
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -274,7 +274,7 @@ function test110005() {
 
     alertMsgs = [];
     // 做余款单 余1000
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ], "现金" : 5000 };
     editSalesBillNoColorSize(json);
 
@@ -308,7 +308,7 @@ function test110002() {
 
     // 1.上级客户有自己的数据和下级的数据
     // 2.下级客户不能显示上级的数据，只能显示自己的数据
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = {
         "客户" : "xjkh1",
         "明细" : [ { "货品" : "4562", "数量" : 20, "备注" : "4562进" },
@@ -317,7 +317,7 @@ function test110002() {
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
     editSalesBill(json, colorSize);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = {
         "客户" : "sjkh1",
         "明细" : [ { "货品" : "4562", "数量" : 20, "备注" : "4562进" },
@@ -489,12 +489,12 @@ function test110008() {
     var keys = { "名称" : r, "允许退货" : "是" };
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
 
     // 做退货单,退货数小于拿货数
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "-10" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -512,7 +512,7 @@ function test110009() {
     var keys = { "名称" : r, "允许退货" : "否" };
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : -1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -662,19 +662,19 @@ function test110015() {
 // 已删除
 function test110055() {
     // 欠款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
 
     // 余款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "现金" : "10000" };
     editSalesBillNoColorSize(json);
 
     // 没有结余
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
     editSalesBillNoColorSize(json);
 
@@ -912,7 +912,7 @@ function test110020() {
     if (qr.data.length > 0) {
         ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
     } else {
-        tapMenu("销售开单", "开  单+");
+        tapMenu("销售开单", ADDBILL);
         f.index = 0;
         setTextFieldACValue(window, f);
         var json = { "明细" : [ { "货品" : "3035", "数量" : "15" } ], "未付" : "yes" };
@@ -993,21 +993,21 @@ function test110021() {
 // 上级客户1开单
 function editBillForCustomerAccount1() {
     // 欠款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "200", "刷卡" : [ "800", "交" ], "汇款" : [ "1000", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 500 } };
     editSalesBillNoColorSize(json);
 
     // 余款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "2000", "刷卡" : [ "1000", "交" ], "汇款" : [ "500", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 1500 } };
     editSalesBillNoColorSize(json);
 
     // 没有结余
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "现金" : "1000", "刷卡" : [ "1000", "交" ], "汇款" : [ "1000", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 1000 } };
@@ -1019,20 +1019,20 @@ function editBillForCustomerAccount1() {
 // 下级客户1开单
 function editBillForCustomerAccount2() {
     // 欠款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "500", "刷卡" : [ "1000", "交" ], "汇款" : [ "700", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 800 } };
     editSalesBillNoColorSize(json);
     // 余款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "1500", "刷卡" : [ "800", "交" ], "汇款" : [ "1200", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 3000 } };
     editSalesBillNoColorSize(json);
 
     // 没有结余
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "2000", "刷卡" : [ "1000", "交" ], "汇款" : [ "1300", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 1700 } };
@@ -1224,7 +1224,7 @@ function test110022Field(i) {
 // （1）上级核销下级欠款100，付款100保存，则目前上级余款1600，下级余款2500
 // （2）上级核销下级欠款100，付款50保存，则目前上级余款1550，下级余款2500
 function test110022Verify1() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "现金" : 100 };
     editSalesBillNoColorSize(json);
@@ -1232,7 +1232,7 @@ function test110022Verify1() {
     var jo1 = getQR110022V1();
 
     // 上级核销下级欠款100，付款100
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
         "核销" : [ 5 ] };
     editSalesBillNoColorSize(json);
@@ -1240,12 +1240,12 @@ function test110022Verify1() {
     var jo2 = getQR110022V1();
     var ret = isAnd(isEqual(100, sub(jo2[0], jo1[0])), isEqual(jo1[1], jo2[1]));
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "现金" : 100 };
     editSalesBillNoColorSize(json);
     // 上级核销下级欠款100，付款50
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "核销" : [ 5 ], "现金" : 50 };
     editSalesBillNoColorSize(json);
     delay();
@@ -1288,7 +1288,7 @@ function getQR110022V1() {
 }
 
 function test110022Verify2() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "现金" : 300 };
     editSalesBillNoColorSize(json);
@@ -1296,7 +1296,7 @@ function test110022Verify2() {
     var jo1 = getQR110022V1();
 
     // 上级核销下级余款款100，抵扣100
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "核销" : [ 5 ] };
     editSalesBillNoColorSize(json);
@@ -1304,12 +1304,12 @@ function test110022Verify2() {
     var jo2 = getQR110022V1();
     var ret = isAnd(isEqual(100, sub(jo1[0], jo2[0])), isEqual(jo1[1], jo2[1]));
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "现金" : 300 };
     editSalesBillNoColorSize(json);
     // 上级核销下级余款款100，抵扣50
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "核销" : [ 5 ], "现金" : -50 };
     editSalesBillNoColorSize(json);
     delay();
@@ -1339,7 +1339,7 @@ function test110022Verify3() {
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "sjkh1" };
     editSalesBillCustomer(json);
 
@@ -1390,7 +1390,7 @@ function test110022Verify4() {
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "sjkh1" };
     editSalesBillCustomer(json);
 
@@ -1517,7 +1517,7 @@ function test110028() {
     addCustomer(keys);
 
     // 开欠款单，不触发欠款报警
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "5" } ], "现金" : 0 };
     editSalesBillNoColorSize(json);
 
@@ -1536,7 +1536,7 @@ function test110028() {
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
     // 开欠款单，触发欠款报警
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ], "现金" : 0 };
     editSalesBillNoColorSize(json);
 
@@ -1674,7 +1674,7 @@ function ts110034() {
     var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : r };
     var det = addPOrderBillDet(15, -3);
     var json = mixObject(jo, det);
@@ -1711,7 +1711,7 @@ function ts110035() {
     addCustomer(keys);
 
     // 开一个月前的欠款单
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : r, "日期" : getDay(-30), "未付" : "yes" };
     var det = addPOrderBillDet(20, -3);
     var json = mixObject(jo, det);
@@ -1732,7 +1732,7 @@ function ts110035() {
     var ret1 = isAnd(isEqual(getDay(-30, "yy"), arr["最后一次拿货"]), isEqual(30,
             arr["未拿货天数"]));
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     jo = { "客户" : r };
     det = addPOrderBillDet(-10, -3);
     json = mixObject(jo, det);
@@ -1780,7 +1780,7 @@ function ts110035() {
 
 // 翻页，汇总，条件查询，清除，排序
 function test110036() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "zbs", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
@@ -1841,7 +1841,7 @@ function test110036_1() {
         }
     }
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
@@ -1880,7 +1880,7 @@ function test110036_2() {
         a = 0;
     }
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
@@ -1922,7 +1922,7 @@ function test110036_3() {
     qr = getQR();
     var ret = isEqual(a, qr.data[0]["当前积分"]);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButton(window, "核销");
@@ -2908,7 +2908,7 @@ function test110045_110046() {
     ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
     tapRefresh();
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     tapPrompt();
@@ -2930,7 +2930,7 @@ function test110045_110046() {
     ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
     tapRefresh();
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     tapReturn();
@@ -3072,7 +3072,7 @@ function test110054() {
     var keys = { "名称" : name, "上级客户" : "zbs" };// 赵本山
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : name, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
@@ -3093,7 +3093,7 @@ function test110054() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "核销" : [ 5 ] };
     editSalesBillNoColorSize(json);
@@ -3164,7 +3164,7 @@ function ts110057Field(cond) {
     var r = "kh" + getTimestamp(6);
 
     // 欠款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var o = { "名称" : r };
     editSalesBillAddCustomer(o);
     var jo = { "未付" : "yes" };
@@ -3194,7 +3194,7 @@ function ts110057Field(cond) {
     tapButton(window, CLEAR);
 
     // 余款
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     jo = { "客户" : r + "a", "现金" : "5000" };
     json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -3228,7 +3228,7 @@ function test110058_1() {
     var keys = { "名称" : r };
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "日期" : getDay(-30),
         "明细" : [ { "货品" : "3035", "数量" : "5" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
@@ -3238,7 +3238,7 @@ function test110058_1() {
         "未拿货天数" : 30 };
     var ret = test110058Field(exp, exp1, "文一店");
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
     editSalesBillNoColorSize(json);
 
@@ -3285,7 +3285,7 @@ function test110058() {
     var keys = { "名称" : r };
     addCustomer(keys);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r, "发货" : "中洲店", "日期" : getDay(-30),
         "明细" : [ { "货品" : "3035", "数量" : "5" } ], "未付" : "yes" };
     editSalesBillNoColorSize(json);
@@ -3295,7 +3295,7 @@ function test110058() {
         "未拿货天数" : 30 };
     var ret = test110058Field(exp, exp1, "中洲店");
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : r, "发货" : "中洲店", "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
     editSalesBillNoColorSize(json);
 
@@ -3364,7 +3364,7 @@ function test110060() {
 }
 
 function test110060_1() {
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = {
         "客户" : "sjkh1",
         "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "4562", "数量" : "10" } ],
@@ -3802,7 +3802,7 @@ function stopStartCustomer(cmd) {
     tapRefresh();
     delay();
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var value = "tyq"; // 停用启
     var f = new TField("客户", TF, 0, value)
     setTextFieldValue(window, f);

@@ -442,7 +442,7 @@ function test100001_3() {
     json = { "店员" : "000", "明细" : [ { "货品" : "4562", "数量" : "18" } ] };
     editPurchaseBatch(json, colorSize);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : "5" } ] };
     editSalesBillNoColorSize(json);
 
@@ -1005,7 +1005,7 @@ function ts100009() {
 
 function ts100114() {
     var r = "g" + getTimestamp(6);
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw" };
     editSalesBillCustomer(json);
     var o = { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200, "数量" : 10 };

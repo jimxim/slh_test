@@ -15,9 +15,9 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // outBatch={"inPre":"269","ts150007":"268"};
 
-// run("测试用例", "ts100145_146");//
+ run("测试用例", "test190104");//
 // run("测试用例", "onlyTest");
-    testStatisticAnalysis001();
+
 }
 
 function onlyTest(){

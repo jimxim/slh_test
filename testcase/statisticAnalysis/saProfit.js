@@ -31,7 +31,7 @@ function textFin_price_base2_1() {
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -59,7 +59,7 @@ function textFin_price_base2_2() {
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -76,7 +76,7 @@ function textFin_price_base2_2() {
     tapButtonAndAlert(REPEAL, OK);
     tapReturn();// 防止未自动返回
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
@@ -96,7 +96,7 @@ function textFin_price_base2_3() {
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
@@ -140,7 +140,7 @@ function testSAProfitFor005() {
     var qr = getQR();
     var r = qr.data[0]["款号"];
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     query();
     qr = getQR();
     var jo1 = qr.data[0];
@@ -170,20 +170,20 @@ function textFin_price_base3_1() {
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
     var qr = getQR();
     var jo1 = qr.data[0];
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
     setFPBCheckPrice(r, 110);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
@@ -226,20 +226,20 @@ function textFin_price_base0_1() {
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
 
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
     var qr = getQR();
     var jo1 = qr.data[0];
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
     setFPBCheckPrice(r, 110);
 
-    tapMenu("销售开单", "开  单+");
+    tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };
     editSalesBillNoColorSize(json);
 
@@ -271,7 +271,7 @@ function addBillSAProfit(o) {
     editSalesBillNoColorSize(json);
 
     if (isDefined(o["salesBill"]) && o["salesBill"] == "yes") {
-        tapMenu("销售开单", "开  单+");
+        tapMenu("销售开单", ADDBILL);
         json = { "客户" : "xw", "明细" : [ { "货品" : o["货品"], "数量" : "1" } ] };
         editSalesBillNoColorSize(json);
     }
@@ -292,7 +292,7 @@ function setFPBCheckPrice(r, price) {
 
 function textFin_price_baseField(r, jo1, exp1, exp2, exp3) {
     var ret1 = false, ret2 = false;
-    tapMenu("统计分析", menu_profit);
+    tapMenu("统计分析", Menu_Profit);
     tapButton(window, QUERY);
     var qr = getQR();
     var jo2 = qr.data[0];
