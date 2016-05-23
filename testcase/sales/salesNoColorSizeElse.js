@@ -84,9 +84,9 @@ function testSalesNoColorSizeElse002() {
     // "test170383");//(用例已改)
 }
 function testSalesNoColorSizeElseAll() {
-//    run("【销售开单－按批次查】是否未结", "test170005");
-//    run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
-//    run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
+    // run("【销售开单－按批次查】是否未结", "test170005");
+    // run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
+    // run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
     run("【销售开单－按批次查】页面跳转检查", "test170013");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");
     run("【销售开单－按批次查】修改代收内容", "test170024");
@@ -892,7 +892,7 @@ function test170023() {
         "代收" : { "物流商" : "tt" } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f0 = new TField("物流", TF, 0, "tt");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -928,7 +928,7 @@ function test170023() {
             qr.data[0]["物流备注"]), isEqual("是", qr.data[0]["代收货款"]), isEqual("否",
             qr.data[0]["货款收讫"]), isEqual(getToday("yy"), qr.data[0]["日期"]));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f0 = new TField("物流", TF, 0, "tt");
     fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -961,7 +961,7 @@ function test170023() {
             qr.data[0]["物流备注"]), isEqual("是", qr.data[0]["代收货款"]), isEqual("否",
             qr.data[0]["货款收讫"]), isEqual(getToday("yy"), qr.data[0]["日期"]));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f0 = new TField("物流", TF, 0, "tt");
     fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -1288,7 +1288,7 @@ function test170030() {
     return ret && ret1;
 }
 function test170034() {
- // 验证可以输入中文就行
+    // 验证可以输入中文就行
     tapMenu("销售开单", "按明细查");
 
     var o = { "键盘" : "简体拼音", "拼音" : [ "hanhong" ], "汉字" : [ "韩红" ] };
@@ -1742,6 +1742,7 @@ function test170262() {
     var len = qr3.data.length;
     var ret1 = isEqual(0, len);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170264() {
@@ -2759,7 +2760,7 @@ function test170285_2() {
     return ret;
 }
 function test170286() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f0 = new TField("物流", TF, 0, "tt");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -2795,7 +2796,7 @@ function test170287() {
         "代收" : { "物流商" : "tt", "运单号" : r, "备注" : r + "tt", "代收金额" : "200" } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -2900,7 +2901,7 @@ function test170288() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, r);
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -2985,7 +2986,7 @@ function test170288() {
     return ret && ret1 && ret2;
 }
 function test170289() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f0 = new TField("物流", TF_AC, 0, "yt");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
@@ -3027,7 +3028,7 @@ function test170290() {
         "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a", "代收金额" : "200" } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -3057,7 +3058,7 @@ function test170291() {
     o = { "新值" : "0", "数值" : [ "默认不允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -3184,7 +3185,7 @@ function test170293() {
 
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -3270,7 +3271,7 @@ function test170293() {
     return ret && ret1 && ret2 && ret3;
 }
 function test170294_170609() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -3462,7 +3463,7 @@ function test170298_1() {
     return ret && ret1 && ret2;
 }
 function test170300_170410() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -3482,7 +3483,7 @@ function test170300_170410() {
     query();
     qr = getQR();
 
-    var ret1 = isAnd(isEqual("汇通快递", qr.data[0]["物流商"]), isIn(getToday(),
+    var ret1 = isAnd(isEqual("汇通快递", qr.data[0]["物流商"]), isIn(getToday("yy"),
             qr.data[0]["日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(money,
             qr.data[0]["金额"]));
 
@@ -3738,6 +3739,11 @@ function test170304() {
     return ret;
 }
 function test170306() {
+    // var qo, o, ret = true;
+    // qo = { "备注" : "支持异地仓库" };
+    // o = { "新值" : "1", "数值" : [ "启用" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+
     // tapMenu("销售开单", "开 单+");
     // var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
     // "现金" : "1500" };
@@ -5974,7 +5980,7 @@ function test170368() {
     var fields1 = salesQueryLogisticsFields(keys1);
     query(fields1);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -6046,7 +6052,7 @@ function test170368_1() {
         "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a222", "代收金额" : "654" } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -6176,7 +6182,7 @@ function test170371() {
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -6402,7 +6408,7 @@ function test170378() {
         "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -6504,7 +6510,7 @@ function test170380() {
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -7399,7 +7405,7 @@ function test170441() {
     o = { "新值" : "10", "数值" : [ "童装+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -7419,7 +7425,7 @@ function test170441() {
     var money = json["代收"]["代收金额"];
     var wls = json["代收"]["物流商"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -7800,7 +7806,7 @@ function test170472() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, r);
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8309,7 +8315,7 @@ function test170569() {
 
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8385,7 +8391,7 @@ function test170570_170577_170579() {
 
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8454,7 +8460,7 @@ function test170572() {
     var money = json["代收"]["代收金额"];
 
     // 顺丰快递 已设置为属于中洲店
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var ret = false;
     var f = new TField("物流", TF_AC, 0, "s", -1);
     var cells = getTableViewCells(window, f);
@@ -8508,7 +8514,7 @@ function test170573() {
         "代收" : { "物流商" : "tt", "运单号" : r } };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8547,7 +8553,7 @@ function test170574() {
     o = { "新值" : "1", "数值" : [ "允许跨门核销" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8632,7 +8638,7 @@ function test170575() {
     // setTFieldsValue(getScrollView(), fields);
     // tapButton(window, SAVE);
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var ret = false;
     var f = new TField("物流", TF_AC, 0, "s", -1);
     var cells = getTableViewCells(window, f);
@@ -8648,7 +8654,7 @@ function test170575() {
     tapKeyboardHide();
     tapButton(window, CLEAR);
 
-    // tapMenu("销售开单", "核销+");
+    // tapMenu("销售开单", LogisticsVerify);
     // var ret1 = false;
     // var f = new TField("物流", TF_AC, 0, "akd1", -1);
     // var cells = getTableViewCells(window, f);
@@ -8718,7 +8724,7 @@ function test170576() {
 
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8788,7 +8794,7 @@ function test170576() {
     return ret && ret1 && ret2 && ret3;
 }
 function test170577() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8850,7 +8856,7 @@ function test170577() {
     return ret && ret1 && ret2;
 }
 function test170578() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -8873,7 +8879,7 @@ function test170578() {
     return ret;
 }
 function test170579() {
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -10030,7 +10036,7 @@ function test170686() {
     query(fields);
     var qr = getQR();
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -10061,7 +10067,7 @@ function test170687() {
     o = { "新值" : "1", "数值" : [ "允许跨门核销" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -10126,7 +10132,7 @@ function test170688() {
     query(fields);
     var qr = getQR();
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "tt");
     var fields = [ f ];
     setTFieldsValue(window, fields);
@@ -10157,7 +10163,7 @@ function test170689() {
     o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "核销+");
+    tapMenu("销售开单", LogisticsVerify);
     var f = new TField("物流", TF, 0, "yt");
     var fields = [ f ];
     setTFieldsValue(window, fields);

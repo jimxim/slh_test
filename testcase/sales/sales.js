@@ -3,6 +3,7 @@
 var ADDBILL = "开  单+";
 /** 物流核销 */
 var LogisticsVerify = "物流核销+";
+var More = "更多..";
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");
