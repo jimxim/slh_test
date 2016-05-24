@@ -15,8 +15,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // outBatch={"inPre":"269","ts150007":"268"};
 
- run("测试用例", "test190104");//
-// run("测试用例", "onlyTest");
+// run("测试用例", "test160046");//
+ run("测试用例", "onlyTest");
 
 }
 
@@ -24,7 +24,8 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // tapMenu("货品管理", "新增货品+");
-
+    
+    return isDisabledTField(3);
 }
 
 function prepare200All(){

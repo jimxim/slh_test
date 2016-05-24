@@ -326,6 +326,7 @@ function test110002() {
         "特殊货品" : { "抹零" : 15, "打包费" : 25 } };
     editSalesBill(json, colorSize);
 
+    tapMenu2("按批次查");
     query();
     var qr = getQR();
     var batch1 = qr.data[1]["批次"];

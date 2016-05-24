@@ -114,3 +114,281 @@ function testBillClerk005_2() {
     // 全局参数 仓管员是否可以根据吊牌价生成价格 为 支持,部分客户需要
     run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
 }
+// 敏感字段检查 有
+function login008() {
+    var p1 = { "角色" : "008" };
+    var ok = login("008", "000000", p1);
+    if (ok) {
+
+        logout();
+    }
+}
+
+// http://jira.hzdlsoft.com:7082/browse/SLH-7083
+function checkLimitsToRights() {
+    run("货品管理", "checkRightsGoods");
+    run("往来管理", "checkRightsCustomer");
+    run("采购入库", "checkRightsPurchase");
+    run("采购订货", "checkRightsPurchaseOrder");
+    run("门店调入", "checkRightsShopIn");
+    run("门店调出", "checkRightsShopOut");
+    run("盘点管理", "checkRightsCheck");
+    run("统计分析", "checkRightsStatisticAnalysis");
+}
+
+function checkRightsGoods() {
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var arr = [ "厂商", "单价", "核算金额" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapFirstText();
+    arr = [ "单价", "小计" ];
+    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    tapNaviLeftButton();
+
+    tapMenu2("款号库存");
+    tapButton(window, QUERY);
+    arr = [ "厂商" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("库存分布");
+    tapButton(window, QUERY);
+    arr = [ "价值" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("货品进销存");
+    tapButton(window, QUERY);
+    arr = [ "厂商" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("货品查询");
+    tapButton(window, QUERY);
+    arr = [ "进货价", "厂商" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("新增货品+");
+    ret = ret && checkRightsField(getScrollView(), arr);
+    tapReturn();
+    return ret;
+}
+
+function checkRightsCustomer() {
+    tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
+    arr = [ "手机" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapMenu2("新增客户+");
+    arr = [ "信用额度", "欠款报警" ];
+    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    tapReturn();
+
+    tapMenu2("客户账款");
+    tapMenu3("客户门店账");
+    tapButton(window, QUERY);
+    arr = [ "手机" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("客户活跃度");
+    tapButton(window, QUERY);
+    arr = [ "手机" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("积分查询");
+    tapButton(window, QUERY);
+    arr = [ "电话" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("厂商查询");
+    tapButton(window, QUERY);
+    arr = [ "名称", "手机" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("厂商账款");
+    tapMenu3("厂商门店账");
+    tapButton(window, QUERY);
+    arr = [ "名称" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("厂商账款");
+    tapMenu3("厂商总账");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(getScrollView(), arr);
+    return ret;
+}
+function checkRightsPurchase() {
+    tapMenu("采购入库", "按批次查");
+    tapButton(window, QUERY);
+    arr = [ "厂商", "现金", "刷卡", "汇款" ];// 金额
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapFirstText();
+    arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
+    ret = ret && checkRightsField(window, arr);
+    tapReturn();
+
+    tapMenu2("按明细查");
+    tapButton(window, QUERY);
+    arr = [ "厂商", "单价", "小计" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("按汇总");
+    tapMenu3("出入库汇总");
+    tapButton(window, QUERY);
+    arr = [ "金额" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("按汇总");
+    tapMenu3("按类别汇总");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("新增入库+");
+    arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
+    ret = ret && checkRightsField(window, arr);
+    tapReturn();
+
+    tapMenu2("批量入库+");
+    arr = [ "单价" ];// 厂商
+    ret = ret && checkRightsField(getScrollView(), arr);
+    tapReturn();
+
+    tapMenu2("按订货入库");
+    tapButton(window, QUERY);
+    arr = [ "厂商" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapFirstText();
+    arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
+    ret = ret && checkRightsField(window, arr);
+    tapReturn();
+
+    tapMenu2("厂商账款");
+    tapMenu3("厂商门店账");
+    tapButton(window, QUERY);
+    arr = [ "名称" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("厂商账款");
+    tapMenu3("厂商总账");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    return ret;
+}
+function checkRightsPurchaseOrder() {
+    tapMenu("采购订货", "按批次查");
+    tapButton(window, QUERY);
+    arr = [ "厂商", "金额", "现金", "刷卡", "汇款" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapMenu2("按明细查");
+    arr = [ "厂商", "单价", "金额" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("新增订货");
+    arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
+    ret = ret && checkRightsField(window, arr);
+    tapReturn();
+
+    return ret;
+}
+function checkRightsShopIn() {
+    tapMenu("门店调入", "按批次查");
+    tapButton(window, QUERY);
+    arr = [ "金额" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapMenu2("按明细查");
+    arr = [ "单价", "金额" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    return ret;
+}
+function checkRightsShopOut() {
+    tapMenu("门店调出", "按批次查");
+    tapButton(window, QUERY);
+    arr = [ "金额" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapMenu2("按明细查");
+    arr = [ "单价", "金额" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("批量调出+");
+    arr = [ "单价", "小计", "总额" ];
+    ret = ret && checkRightsField(window, arr);
+    return ret;
+}
+function checkRightsCheck() {
+    tapMenu("盘点管理", "盈亏表");
+    tapButton(window, QUERY);
+    arr = [ "盈亏金额" ];
+    var ret = checkRightsField(getScrollView(), arr);
+    return ret;
+}
+function checkRightsStatisticAnalysis() {
+    tapMenu("统计分析", Menu_Profit);
+    tapButton(window, QUERY);
+    arr = [ "成本额", "利润额" ];
+    var ret = checkRightsField(getScrollView(), arr);
+
+    tapFirstText();
+    arr = [ "进货价", "成本额", "利润额" ];
+    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+
+    tapNaviRightButton();
+    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    tapNaviLeftButton();
+    tapNaviLeftButton();
+
+    tapMenu2("汇总表");
+    tapMenu3("款号利润表");
+    tapButton(window, QUERY);
+    arr = [ "厂商", "成本价", "成本额", "利润" ];
+    ret = ret && checkRightsField(getScrollView(), arr);
+
+    tapMenu2("汇总表");
+    tapMenu3("颜色销售表");
+
+    return ret;
+}
+function checkRightsField(view, arr) {
+    var texts = getStaticTexts(view);
+    var ret = true;
+    for (var i = 0; i < arr.length; i++) {
+        var v, ok = false;
+        for (var j = 0; j < texts.length; j++) {
+            var t = texts[j];
+            try {
+                v = eval("t." + "name" + "()");
+            } catch (e) {
+                logError(e);
+            }
+            if (arr[i] == v) {
+                ok = true;
+                break;
+            }
+        }
+        ret = ret && !ok;
+        if (ok) {
+            logDebug("---------" + gMenu1 + "-" + gMenu2 + "显示列表字断 " + arr[i]
+                    + " ok=false---------");
+        }
+    }
+    return ret;
+}
+/**
+ * 验证textField是否灰化
+ * @param idx
+ * @param view
+ */
+function isDisabledTField(idx, view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    var obj = view.textFields()[idx].textFields().firstWithPredicate(
+            "isEnabled == 1");
+    return isUIAElementNil(obj);
+}

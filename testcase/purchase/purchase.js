@@ -1817,7 +1817,7 @@ function test120027() {
     tapFirstText();
     b = getTextFieldValue(getScrollView(), 7);
     c = getTextFieldValue(getScrollView(), 10);
-    ret = isAnd(ret, isEqual("", b), isEqual("", c));
+    ret = isAnd(ret, b == "" || b == null, isEqual("", c));
     delay();
     tapButton(window, RETURN);
 
@@ -2068,8 +2068,9 @@ function test120033() {
     var a = qr.data[0]["总数"];
 
     tapFirstText();
-    var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
-    var f11 = new TField("数量", TF, 11, "10");
+    var tfNum = getSalesBillDetTfNum({});
+    var f8 = new TField("货品", TF_AC, tfNum, "k300", -1, 0);
+    var f11 = new TField("数量", TF, tfNum + 3, "10");
     var fields = [ f8, f11 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -2422,7 +2423,7 @@ function test120079() {
 
     json = { "客户" : "tbscs" };// 特步生产商 适用价格零批价
     editSalesBillCustomer(json);
-    tapButtonAndAlert("none", "刷新价格");// SLH-5834 刷新价格的bug
+    tapButtonAndAlert("none", "刷新价格");// 注:采购入库和采购订货界面不会出现价格刷新窗口
     // 刷新后应该依然为进货价100
     ret = isAnd(ret, isEqual(100, getTextFieldValue(getScrollView(), 4)),
             isEqual(getTextFieldValue(getScrollView(), 5), getTextFieldValue(

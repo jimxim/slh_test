@@ -454,28 +454,17 @@ function test160068_160069() {
 
     tapMenu("销售订货", "按批次查");
     tapFirstText();
-    var keys = { "客户" : "zbs" };
-    var fields = salesOrderAddFields(keys);
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    tapButtonAndAlert("none", OK, true);
-    var ret = isIn(alertMsg, "操作失败");
-    delay();
-    tapButtonAndAlert(RETURN);
+    json = { "客户" : "zbs" };
+    editSalesBillNoColorSize(json);
+    var ret = isInAlertMsgs("不允许修改");
 
     tapMenu("销售开单", "按订货开单");
+    query();
     tapFirstText();
-    keys = { "客户" : "zbs" };
-    fields = salesOrderAddFields(keys);
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    tapButtonAndAlert("none", OK, true);
-    var ret1 = isIn(alertMsg, "操作失败");
-    delay();
-    tapButtonAndAlert(RETURN);
+    editSalesBillNoColorSize(json);
+    ret = isAnd(ret, isInAlertMsgs("客户信息须与订单中的客户信息一致"));
 
-    // logDebug(" ret=" + ret+" ret1=" + ret1);
-    return isAnd(ret, ret1);
+    return ret;
 }
 
 function test160015_160016() {
