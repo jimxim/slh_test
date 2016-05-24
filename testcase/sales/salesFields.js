@@ -1002,6 +1002,10 @@ function salesBillOrderField(key, show) {
     case "发货状态":
         f = new TField("发货状态", TF_SC, 7, "未发货");
         break;
+    case "ventory":
+    case "按库存":
+        f = new TField("按库存", TF_SC, 8, "否");
+        break;
     default:
         logWarn("未知key＝" + key);
     }

@@ -901,6 +901,8 @@ function test170649_Prepare() {
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
 }
 function test170649() {
     tapMenu("销售订货", "按批次查");

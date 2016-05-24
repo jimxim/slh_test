@@ -36,12 +36,13 @@ function testSystem001() {
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置】紧急模式上传异常", "test210061");
     run("【系统设置-全局参数】异地发货参数互斥", "test210063");
-    run("【系统设置】设置本地参数为默认", "test210062");
-    run("【系统设置】数据清理授权", "test210043");
+    run("【系统设置】设置本地参数为默认", "test210062");//
+    run("【系统设置】数据清理授权", "test210043");//
 
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
+    
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置-更多】门店停用规则", "test210067");
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
@@ -1345,7 +1346,7 @@ function test210042() {
 }
 function test210043() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("数据清理授权");
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权");
@@ -2434,7 +2435,7 @@ function test210057() {
 }
 function test210061() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("紧急模式上传异常");
 
     tapButton(getScrollView(1), "删除紧急模式数据");
@@ -2449,7 +2450,7 @@ function test210061() {
 }
 function test210062() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("设置本地参数为默认");
 
     var cond = "isIn(alertMsg, '操作成功')";
@@ -2530,7 +2531,7 @@ function test210065() {
 }
 function test210067() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("门店列表");
 
     query();
@@ -2547,7 +2548,7 @@ function test210067() {
 }
 function test210069_210070() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("新增门店＋");
 
     var m = "test" + getTimestamp(8);
@@ -2564,7 +2565,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("门店列表");
 
     query();

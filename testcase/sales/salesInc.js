@@ -55,6 +55,42 @@ function testSalesPrepare003() {
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
         "代收" : { "物流商" : "tt" }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
+
+    query();
+    var qr = getQR();
+
+    var ret = qr;
+
+    return ret;
+}
+function testSalesPrepare003() {
+    // 仓库店、中洲店,要有积分兑换单
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButton(window, "核销");
+
+    var b = getStaticTextValue(getScrollView(-1, 0), 1);
+
+    tapButton(getScrollView(-1, 0), "积分兑换");
+    var r = "9" + getTimestamp(6);
+    var g0 = new TField("兑换积分*", TF, 0, r);
+    var g1 = new TField("兑换金额*", TF, 1, r);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    delay();
+
+    tapNaviLeftButton();
+    tapReturn();
+    
+    query();
+    var qr = getQR();
+
+    var ret = qr;
+
+    return ret;
 }
 
 function test170064getQR() {

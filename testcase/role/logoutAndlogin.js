@@ -12,7 +12,7 @@ function testOutAndIn() {
     run("【销售开单-开单-加工货品】加工货品", "test170429");
 
     run("【盘点管理—按批次查】", "checkPrepare");
-    run("【盘点管理—新增盘点】获取未保存数据准备", "test180022_Prepare");
+    run("【盘点管理—新增盘点】获取未保存数据准备", "test180022Prepare");
     run("【盘点管理—新增盘点】获取未保存", "test180022");
     run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058Prepare");
     run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058");
@@ -25,6 +25,8 @@ function test170239_Params() {
     qo = { "备注" : "开单是否门店过滤人员" };
     o = { "新值" : "1", "数值" : [ "开启后店员只显示本门店人员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    return ret;
 }
 function test170125_Prepare() {
     // 开启参数 销售开单的同时订货功能，需退出重新登陆
@@ -117,6 +119,8 @@ function test170429Prepare() {
     qo = { "备注" : "加工价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    return ret;
 }
 function test170429() {
     tapMenu("货品管理", "货品查询");
@@ -202,7 +206,7 @@ function test170607() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test180022_Prepare() {
+function test180022Prepare() {
     tapMenu("盘点管理", "新增盘点+");
     // debugElementTree(window);
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
@@ -406,6 +410,12 @@ function test180058Prepare() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
+
+    query();
+    var qr = getQR();
+    var ret = qr;
+
+    return ret;
 }
 function test180058() {
     tapMenu("盘点管理", "按批次查");

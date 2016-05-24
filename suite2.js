@@ -8,7 +8,7 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer ="7.01"; // "6.59";// 7.01
+    ipadVer ="7.10"; // "6.59";// 7.01// 7.10
 	
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 // run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
@@ -21,22 +21,11 @@ function test000All() {
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
     
 //    run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559_170697");
-//    run("【销售开单－按明细查】键盘检查", "test170034");
 //    run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");
+//  run("【销售开单－开单】收款（修改界面）", "test170164");
+//  run("销售开单价格刷新+上次价/代收2", "test170491");
     
-    run("【销售开单－开单】结余文本框检查", "test170046");
-    run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【销售开单-开单】已作废的抵现单不能再显示", "test170693");
-    run("【销售开单－开单】收款（修改界面）", "test170164");
-    run("销售开单价格刷新+上次价/代收2", "test170491");
-    run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");
-    run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
-    run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
-    run("【开单  】同款不同价提醒", "test170539");
-    run("【销售开单－按明细查】键盘检查", "test170034");
-    run("【销售开单－按订货开单】已终结的订单检查", "test170262");
-    run("【销售开单－更多-代收收款查询】进入代收收款内容明细/检查代收收款金额", "test170300_170410");
       
 // run("", "test1");
 }
@@ -49,7 +38,33 @@ function test1(){
 // debugQResult(qr);
 // debugElements(window);
     
+//    tapMenu("销售开单", "按汇总", "按配货员汇总");
+//    var i;
+//    var ret2 = false;
+//    var f = new TField("配货员", TF_AC, 2, "00", -1);
+//    var cells = getTableViewCells1(window, f);
+//    for (i = 0; i < cells.length; i++) {
+//        var cell = cells[i];
+//        var v = cell.name();
+//        if (isIn(v, "店长004")) {
+//            ret2 = true;
+//            break;
+//        }
+//    }
+//    tapKeyboardHide();
+//    tapButton(window, CLEAR);
     
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt" };
+    editSalesBillCustomer(json);
+
+    json = { "特殊货品" : { "积分抵现" : 1 } };
+    editSalesBillSpecial(json);
+    
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
 }
 function test2(){
     var qo, o, ret = true;
@@ -135,7 +150,7 @@ function testSalesNoColorSize170125_Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("【销售开单－开单】开单的同时订货", "test170125_Prepare");
+        run("【销售开单－开单】开单的同时订货", "test170125Prepare");
         
         logout();
     }
@@ -162,7 +177,7 @@ function testSalesNoColorSize170140_Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        run("【销售开单－开单】取未保存", "test170140_Prepare");
+        run("【销售开单－开单】取未保存", "test170140Prepare");
         
         logout();
     }
@@ -552,7 +567,7 @@ function testSalesNoColorSizeOutAndIn() {
      var p1 = {"角色":"总经理"};
      var ok = login("000","000000",p1);
      if( ok ) {
-         run("【盘点管理—新增盘点】获取未保存", "test180022_Prepare");
+         run("【盘点管理—新增盘点】获取未保存", "test180022Prepare");
          
          logout();
      }
@@ -570,7 +585,7 @@ function testSalesNoColorSizeOutAndIn() {
      var p1 = {"角色":"总经理"};
      var ok = login("200","000000",p1);
      if( ok ) {
-         run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058_Prepare");
+         run("【盘点管理-按批次查】修改其他门店的未处理盘点单后，该盘点单的门店检查", "test180058Prepare");
          logout();
      }
  }
@@ -588,7 +603,7 @@ function testSalesNoColorSizeOutAndIn() {
      var p1 = {"角色":"总经理"};
      var ok = login("200","000000",p1);
      if( ok ) {
-         run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028Prepare()");
+         run("【盘点管理—盘点处理】存在在途数的门店进行盘点处理", "test180028Prepare");
          
          logout();
      }
