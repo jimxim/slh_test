@@ -1449,11 +1449,10 @@ function ts100035() {
     var addIdx = getButtonIndex(getScrollView(), "增量");
     var f = new TField("款号", TF, 0, "goods" + r);
     var f2 = new TField("名称", TF, 1, "goods" + r);
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(), [ f, f2 ]);
 
-    var btnIdx = addIdx - 6;
     var f = new TField("品牌", TF, 0, "b" + r);
-    ts100035Field(btnIdx, [ f ]);
+    ts100035Field(1, [ f ]);
 
     // var btnIdx = addIdx - 4;
     // var f = new TField("颜色组", BTN_SC, 0, "黄", -1, -1);
@@ -1463,7 +1462,7 @@ function ts100035() {
     // var btnIdx = addIdx - 2;
     // var f = new TField("尺码组", BTN_SC, 0, "球类", -1, -1);
     // var f2 = new TField("尺码", TF, 1, "s" + r);
-    //    ts100035Field(btnIdx, [ f, f2 ]);
+    // ts100035Field(btnIdx, [ f, f2 ]);
 
     var btnIdx = addIdx + 4;
     var f = new TField("类别", TF, 0, "t" + r);
@@ -1484,10 +1483,14 @@ function ts100035() {
     var ret = isEqualObject2(keys, qr.data[0]);
 
     tapFirstText();
+    keys = { "厂商" : "p" + r, "品牌" : "b" + r, "类别" : "t" + r }
+    fields = editGoodsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
     tapReturn();
     return ret;
 }
 function ts100035Field(btnIdx, fields) {
+    delay();// 延迟，防止不触发后续操作
     tapButton(getScrollView(), btnIdx);
     setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
@@ -3171,8 +3174,8 @@ function test100095() {
     tapFirstText();
 
 }
-function test100097(){
-    
+function test100097() {
+
 }
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");

@@ -769,6 +769,20 @@ function isDifferentArrayField(arr1, arr2) {
 }
 
 /**
+ * 验证textField是否灰化
+ * @param idx textField下标
+ * @param view 默认window
+ */
+function isDisabledTField(idx, view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    var obj = view.textFields()[idx].textFields().firstWithPredicate(
+            "isEnabled == 1");// isEnabled =0为灰化
+    return isUIAElementNil(obj);
+}
+
+/**
  * 判断2个数组是否有相同数据
  * @param arr1
  * @param arr2

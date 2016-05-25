@@ -141,7 +141,71 @@ function statisticAnalysisSynthesisField(key, show) {
     }
     return f;
 }
-
+// 款号利润表
+function statisticAnalysisCodeProfitFields(keys, show) {
+    return getTFields("statisticAnalysisCodeProfitField", keys, show);
+}
+function statisticAnalysisCodeProfitField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 2, "常青店");
+        break;
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 3, "a", -1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 4, "aaa");
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 5, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "day1":
+    case "上架从":
+        f = new TField("上架从", TF_DT, 6, getToday());
+        break;
+    case "day2":
+    case "上架到":
+        f = new TField("上架到", TF_DT, 7, getToday());
+        break;
+    case "season":
+    case "季节":
+        f = new TField("季节", TF_SC, 8, "春季");
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 9, "登山服");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 10, "1010pp", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 // 退货表
 function testStatisticAnalysisReturnFields() {
     var keys = [ "day1", "day2", "code", "name" ];
@@ -269,7 +333,171 @@ function statisticAnalysisUnsalableField(key, show) {
     }
     return f;
 }
+// 颜色销售表
+function statisticAnalysColorFields(keys, show) {
+    return getTFields("statisticAnalysColorField", keys, show);
+}
+function statisticAnalysColorField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "market1":
+    case "上架从":
+        f = new TField("上架从", TF_DT, 2, getToday());
+        break;
+    case "market2":
+    case "上架到":
+        f = new TField("上架到", TF_DT, 3, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
+    case "color":
+    case "颜色":
+        f = new TField("颜色", TF_SC, 5, "花色");
+        break;
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 6, "a", -1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 7, "aaa");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 8, "1010pp", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 9, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 10, "登山服");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
 
+// 尺码销售表
+function statisticAnalysSizeFields(keys, show) {
+    return getTFields("statisticAnalysSizeField", keys, show);
+}
+function statisticAnalysSizeField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "market1":
+    case "上架从":
+        f = new TField("上架从", TF_DT, 2, getToday());
+        break;
+    case "market2":
+    case "上架到":
+        f = new TField("上架到", TF_DT, 3, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 4, "常青店");
+        break;
+    case "size":
+    case "尺码":
+        f = new TField("尺码", TF_SC, 5, "S");
+        break;
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 6, "a", -1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 7, "aaa");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 8, "1010pp", -1, 0);
+        if (show) {
+            f.value = "1010pp";
+        }
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 9, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 10, "登山服");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+// 厂商销售表
+function statisticAnalysProviderFields(keys, show) {
+    return getTFields("statisticAnalysProviderField", keys, show);
+}
+function statisticAnalysProviderField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 2, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 3, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
 // 收支汇总
 function testStatisticAnalysisInOutSummaryFields() {
     var keys = [ "day1", "day2", "type" ];
@@ -287,7 +515,7 @@ function statisticAnalysisInOutSummaryField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "到":

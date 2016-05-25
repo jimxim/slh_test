@@ -16,7 +16,7 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "test160046");//
- run("测试用例", "onlyTest");
+ run("测试用例", "ts100035");
 
 }
 
@@ -24,8 +24,13 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // tapMenu("货品管理", "新增货品+");
-    
-    return isDisabledTField(3);
+ tapMenu2("按汇总");
+ tapMenu3("厂商对账单");
+ var arr = [];
+ var f2 = new TField("厂商", TF, -2, "");
+ var ret =  checkRightsField(getScrollView(), arr, window, [ f2 ]);
+ tapNaviLeftButton();
+ return ret;
 }
 
 function prepare200All(){
