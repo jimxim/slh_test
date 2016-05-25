@@ -77,7 +77,7 @@ function testBasicSetUpAll() {
     // 加工款
     run("GG55", "setGoods014");
     // 中洲店款
-    run("Aaa002", "setGoods015");
+    run("Aaa002", "setGoods015");//设置门店为中洲店
 
     run("均色均码模式", "setGoodsNoColorParams");
 

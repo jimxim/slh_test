@@ -19,14 +19,14 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
-    
-//    run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559_170697");
-//    run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");
-//  run("【销售开单－开单】收款（修改界面）", "test170164");
-//  run("销售开单价格刷新+上次价/代收2", "test170491");
-    
-    run("【销售开单-开单】已作废的抵现单不能再显示", "test170693");
-      
+
+ run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1");
+// run("【销售开单-按汇总-按厂商汇总】增加门店查询", "test170648");
+// run("【销售开单-按汇总】按配货员汇总--在既退货又拿货的情况下检查配货员业绩", "test170634");
+// run("【销售开单-按汇总】按配货员汇总", "test170633");
+// run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
+// run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
+
 // run("", "test1");
 }
     
@@ -38,33 +38,59 @@ function test1(){
 // debugQResult(qr);
 // debugElements(window);
     
-//    tapMenu("销售开单", "按汇总", "按配货员汇总");
-//    var i;
-//    var ret2 = false;
-//    var f = new TField("配货员", TF_AC, 2, "00", -1);
-//    var cells = getTableViewCells1(window, f);
-//    for (i = 0; i < cells.length; i++) {
-//        var cell = cells[i];
-//        var v = cell.name();
-//        if (isIn(v, "店长004")) {
-//            ret2 = true;
-//            break;
-//        }
-//    }
-//    tapKeyboardHide();
-//    tapButton(window, CLEAR);
-    
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt" };
-    editSalesBillCustomer(json);
+// tapMenu("销售开单", "按汇总", "按配货员汇总");
+// var i;
+// var ret2 = false;
+// var f = new TField("配货员", TF_AC, 2, "00", -1);
+// var cells = getTableViewCells1(window, f);
+// for (i = 0; i < cells.length; i++) {
+// var cell = cells[i];
+// var v = cell.name();
+// if (isIn(v, "店长004")) {
+// ret2 = true;
+// break;
+// }
+// }
+// tapKeyboardHide();
+// tapButton(window, CLEAR);
+    var qo, o, ret = true;
+    qo = { "备注" : "跨门店核销" };
+    o = { "新值" : "1", "数值" : [ "允许跨门核销" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    json = { "特殊货品" : { "积分抵现" : 1 } };
-    editSalesBillSpecial(json);
-    
+    tapMenu("销售开单", LogisticsVerify);
+    var f = new TField("物流", TF, 0, "tt");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, "核销");
+
+    var qr = getQRtable1(window, 8, -2);
+
+    if (qr.data[0]["门店"] == "常青店") {
+        var dataView = window.tableViews()[5].groups()["批次"];
+        tapTitle(dataView, "门店");
+        tapTitle(dataView, "门店");
+    }
+
+    qr = getQRtable1(window, 8, -2);
+
+    if (qr.data[0]["门店"] != "常青店" && qr.data[7]["门店"] == "常青店") {
+
+        var batch = qr.data[0]["批次"];
+        var batch1 = qr.data[7]["批次"];
+        getTableView(window, -2).cells().firstWithName(batch).tap();
+        getTableView(window, -2).cells().firstWithName(batch1).tap();
+
+    } else {
+        ret = isAnd(ret, ret = false);
+    }
+
+    tapNaviButton("完成");
+
     saveAndAlertOk();
-    tapPrompt();
     tapReturn();
-
+    
+    return ret;
 }
 function test2(){
     var qo, o, ret = true;
