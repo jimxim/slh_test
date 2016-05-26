@@ -2575,7 +2575,7 @@ function test210069_210070() {
     var ret = isEqual(m, qr.data[0]["门店"]);
 
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2604,7 +2604,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("账户列表");
 
     query();
@@ -2618,7 +2618,7 @@ function test210069_210070() {
 }
 function test210071() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2640,7 +2640,7 @@ function test210071() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2(More);
     tapMenu3("账户列表");
 
     query();

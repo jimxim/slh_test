@@ -19,13 +19,16 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
-
- run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1");
-// run("【销售开单-按汇总-按厂商汇总】增加门店查询", "test170648");
-// run("【销售开单-按汇总】按配货员汇总--在既退货又拿货的情况下检查配货员业绩", "test170634");
-// run("【销售开单-按汇总】按配货员汇总", "test170633");
-// run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
-// run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
+    
+// run("【销售订货-新增订货】/【销售开单-开单】开单不允许折扣大于1+客户折扣+大于1的折扣", "test240002_240004");
+// run("【销售订货-新增订货】/【销售开单-开单】开单允许折扣大于1+客户折扣+大于1的折扣",
+// "test240003_240007_240006");
+// run("【销售开单-新增开单】开单允许折扣大于1，客户折扣模式+销售开单界面输入客户后快速新增货品", "test240009");
+// run("【往来管理-客户查询】开单允许折扣大于1，客户资料修改折扣大于1", "test240010");
+// run("【销售开单】开单允许折扣大于1+整单折扣+整单折扣输入大于1的折扣", "test240011");
+// run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+客户折扣+大于1的折扣", "test240008");
+ run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+整单折扣+大于1的折扣", "test240013");
+// run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+产品折扣+大于1的折扣", "test240014");
 
 // run("", "test1");
 }
@@ -37,60 +40,15 @@ function test1(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+// tapMenu("销售开单", "开 单+");
+// tapButton(window,"图片选款");
+// tap(window.tableViews()[5].cells()["anewC0648 anewC0648"]);
+// target.frontMostApp().mainWindow().tableViews()[5].cells()["anewC0648
+// anewC0648"].doubleTap();
+// target.frontMostApp().mainWindow().tableViews()[5].cells()["anewC0648
+// anewC0648"].tap();
     
-// tapMenu("销售开单", "按汇总", "按配货员汇总");
-// var i;
-// var ret2 = false;
-// var f = new TField("配货员", TF_AC, 2, "00", -1);
-// var cells = getTableViewCells1(window, f);
-// for (i = 0; i < cells.length; i++) {
-// var cell = cells[i];
-// var v = cell.name();
-// if (isIn(v, "店长004")) {
-// ret2 = true;
-// break;
-// }
-// }
-// tapKeyboardHide();
-// tapButton(window, CLEAR);
-    var qo, o, ret = true;
-    qo = { "备注" : "跨门店核销" };
-    o = { "新值" : "1", "数值" : [ "允许跨门核销" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "tt");
-    var fields = [ f ];
-    setTFieldsValue(window, fields);
-    tapButton(window, "核销");
-
-    var qr = getQRtable1(window, 8, -2);
-
-    if (qr.data[0]["门店"] == "常青店") {
-        var dataView = window.tableViews()[5].groups()["批次"];
-        tapTitle(dataView, "门店");
-        tapTitle(dataView, "门店");
-    }
-
-    qr = getQRtable1(window, 8, -2);
-
-    if (qr.data[0]["门店"] != "常青店" && qr.data[7]["门店"] == "常青店") {
-
-        var batch = qr.data[0]["批次"];
-        var batch1 = qr.data[7]["批次"];
-        getTableView(window, -2).cells().firstWithName(batch).tap();
-        getTableView(window, -2).cells().firstWithName(batch1).tap();
-
-    } else {
-        ret = isAnd(ret, ret = false);
-    }
-
-    tapNaviButton("完成");
-
-    saveAndAlertOk();
-    tapReturn();
-    
-    return ret;
+ 
 }
 function test2(){
     var qo, o, ret = true;

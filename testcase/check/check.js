@@ -14,7 +14,6 @@ function testCheck001() {
 }
 function testCheckAll() {
     run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
-    run("【盘点管理—按批次查】", "checkPrepare");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
     run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
@@ -212,21 +211,17 @@ function test180001_2_180004() {
 }
 function test180002() {
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : "2015-1-1" };
+    var keys = { "日期从" : "2015-01-01" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "批次从" : Number(batch - 29), "批次到" : batch };
+    var keys = { "日期从" : "2015-01-01", "批次从" : Number(batch - 29), "批次到" : batch };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     qr = getQR();
-
-    // var keys = { "日期从" : "2015-1-1" };
-    // var fields = queryCheckBatchFields(keys);
-    // query(fields);
 
     var ret = true;
     var len = qr.data.length;
@@ -2757,7 +2752,6 @@ function test180057() {
     tapFirstText();
 
     tapButtonAndAlert("待作废", OK);
-    tapButtonAndAlert(OK);
 
     tapPrompt();
 
@@ -2789,7 +2783,7 @@ function test180057() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getDay(1), "作废挂单" : "待作废" };
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "作废挂单" : "待作废" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
 

@@ -97,7 +97,12 @@ function testSalesColorSize001() {
     run("【销售开单－开单】款号合并（既拿货又退货", "testCs170102");
 
 }
+// 窜码发货
 function testSalesColorSize002() {
+    run("【销售开单-开单】1.1窜码发货，库存总数为正", "test170651");
+
+}
+function testSalesColorSize003() {
     run("【销售开单-开单】积分跨门店共享", "testCs170183");
     run("【销售开单-开单】积分是否跨门店共享 －不开启", "testCs170184");
     run("【销售开单-开单】积分是否跨门店共享 －开启", "testCs170185");//
@@ -146,6 +151,10 @@ function setNoColorSize_2Params() {
     o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "销售允许单价为0" };
+    o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否允许修改已发货的订单" };
     o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -160,6 +169,10 @@ function setNoColorSize_2Params() {
 
     qo = { "备注" : "询问打印" };
     o = { "新值" : "1", "数值" : [ "询问打印" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "刷新窗口" };
@@ -316,6 +329,18 @@ function setNoColorSize_2Params() {
 
     qo = { "备注" : "是否启用自定义键盘" };
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否启用积分功能" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售单已配货的单子" };
+    o = { "新值" : "0", "数值" : [ "不限制" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "跨门店核销" };
+    o = { "新值" : "0", "数值" : [ "默认不允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
@@ -1288,7 +1313,7 @@ function testCs170072() {
     tapPrompt();
     tapPrompt();
 
-//    tapButtonAndAlert("none", OK, true);
+    // tapButtonAndAlert("none", OK, true);
     var ret1 = false;
     if (isIn(alertMsg, "[第1行] 单价或金额不能为负数")) {
         ret1 = true;
@@ -1588,14 +1613,14 @@ function testCs170094() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    
+
     var money = json["代收"]["代收金额"];
     var wls = json["代收"]["物流商"];
     var ydh = json["代收"]["运单号"];
     var bz = json["代收"]["备注"];
-    
+
     tapFirstText();
-   
+
     var ret = isAnd(isEqual("8880", money), isEqual("圆通速递", wls), isEqual(
             "123", ydh), isEqual("a", bz));
 
@@ -3887,4 +3912,53 @@ function testCs170251() {
 
     logDebug(" ret" + ret);
     return ret;
+}
+function test170651() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkhao" + getTimestamp(3);
+    var r1 = "1" + getTimestamp(3);
+    tapMenu("销售开单", "开  单+");
+    tapButton(window, "新增货品");
+
+    var g0 = new TField("款号", TF, 0, r);
+    var g1 = new TField("名称", TF, 1, r);
+    var g2 = new TField("颜色", BNT_SC, 2, r);
+    var g3 = new TField("尺码", BNT_SC, 3, r);
+    var g4 = new TField("零批价", TF, 4, r1);
+    var g5 = new TField("打包价", TF, 5, r1);
+    var fields = [ g0, g1, g2, g3, g4, g5 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    var f4 = new TField("数量", TF, 10, "2");
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    tapButtonAndAlert(SAVE, OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+
+    var ret = isAnd(isIn(getTextFieldValue(getScrollView(), 0), r), isEqual(
+            "均色", getTextFieldValue(getScrollView(), 1)), isEqual("均码",
+            getTextFieldValue(getScrollView(), 2)));
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], r);
+    query(qFields);
+    var qr = getQR();
+    var ret1 = isAnd(isEqual(r, qr.data[0]["款号"]), isEqual(r, qr.data[0]["名称"]));
+
+    logDebug("ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
 }
