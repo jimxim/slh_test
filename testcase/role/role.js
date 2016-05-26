@@ -119,13 +119,13 @@ function login008() {
     var p1 = { "角色" : "008" };
     var ok = login("008", "000000", p1);
     if (ok) {
-
+        checkLimitsToRights_NO();
         logout();
     }
 }
 
 // http://jira.hzdlsoft.com:7082/browse/SLH-7083
-function checkLimitsToRights() {
+function checkLimitsToRights_NO() {
     run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");
@@ -143,37 +143,48 @@ function checkRightsGoods() {
     var f = queryGoodsStockFields([ "厂商" ]);
     var ret = checkRightsField(getScrollView(), arr, window, f);
 
-    tapFirstText();
-    arr = [ "单价", "小计" ];
-    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
-    tapNaviLeftButton();
+    // tapFirstText();
+    // tapFirstText(getScrollView(-1, 0), "批次", 6);
+    // delay(0.5);
+    // var text = getStaticTexts();
+    // var qr = getQR3(getScrollView(-1), "序号", "小计");
+    // ret = isAnd(ret, qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");//
+    // 这里单价小计标题显示，但是无内容
+    // tapNaviLeftButton();
+    // tapNaviLeftButton();
 
     tapMenu2("款号库存");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = queryGoodsCodeStockFields([ "厂商" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
 
     tapMenu2("库存分布");
     tapButton(window, QUERY);
     arr = [ "价值" ];
     f = queryGoodsDistributionFields([ "厂商" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    ret = isAnd(ret, qr.data[0]["价值"] == "");// 这里价值标题显示，但是无内容
+    tapNaviLeftButton();
 
     tapMenu2("货品进销存");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = queryGoodsInOutFields([ "厂商" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
 
     tapMenu2("货品查询");
     tapButton(window, QUERY);
     arr = [ "进货价", "厂商" ];
     f = queryGoodsFields([ "厂商" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
 
     tapMenu2("新增货品+");
-    ret = ret && checkRightsField(getScrollView(), arr);
+    arr = [ "厂商" ];// "进货价",
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
     tapReturn();
     return ret;
 }
@@ -333,7 +344,7 @@ function checkRightsPurchaseOrder() {
     arr = [ "厂商", "单价", "金额" ];
     f = purchaseOrderQueryParticularFields([ "厂商" ]);
     ret = ret && checkRightsField(getScrollView(), arr, window, f);
-    
+
     tapMenu2("按汇总");
     tapMenu3("按厂商");
     tapButton(window, QUERY);

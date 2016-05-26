@@ -1780,53 +1780,90 @@ function ts100057() {
 function test100111() {
     tapMenu("货品管理", "基本设置", "新增品牌+");
     var keys1 = { "名称" : "'" };
-    var ret = test100111Field(keys1);
+    var ret = test100111Field("品牌", keys1);
     var keys2 = { "名称" : "," };
-    ret = ret && test100111Field(keys2);
+    ret = isAnd(ret, test100111Field("品牌", keys2));
     var keys3 = { "名称" : "&" };
-    ret = ret && test100111Field(keys3);
+    ret = isAnd(ret, test100111Field("品牌", keys3));
+    var keys4 = { "名称" : "Adidas" };
+    ret = isAnd(ret, test100111Field("品牌", keys4, "相同记录已存在"));
     tapReturn();
 
     tapMenu("货品管理", "基本设置", "所有品牌");
     tapFirstText();
-    ret = ret && test100111Field(keys1);
-    ret = ret && test100111Field(keys2);
-    ret = ret && test100111Field(keys3);
+    ret = isAnd(ret, test100111Field("品牌", keys1));
+    ret = isAnd(ret, test100111Field("品牌", keys2));
+    ret = isAnd(ret, test100111Field("品牌", keys3));
+    ret = isAnd(ret, test100111Field("品牌", keys4, "相同记录已存在"));
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    tapButton(getScrollView(), 1);
-    var f = new TField("品牌名称", TF, 0, "'");
-    setTFieldsValue(getPopView(), [ f ]);
-    tapButton(getPop(), OK);
-    tapPrompt();
-    ret = ret && isIn(alertMsg, "不能有非法符号");
+    var f = new TField("品牌", TF, 0, "'");
+    ts100035Field(1, [ f ]);
+    ret = ret && isInAlertMsgs("不能有非法符号");
+    alertMsgs = [];
 
-    f = new TField("品牌名称", TF, 0, "&");
-    setTFieldsValue(getPopView(), [ f ]);
-    tapButton(getPop(), OK);
-    tapPrompt();
-    ret = ret && isIn(alertMsg, "不能有非法符号");
+    f = new TField("品牌", TF, 0, "&");
+    ts100035Field(1, [ f ]);
+    ret = ret && isInAlertMsgs("不能有非法符号");
+    alertMsgs = [];
 
-    f = new TField("品牌名称", TF, 0, ",");
-    setTFieldsValue(getPopView(), [ f ]);
-    tapButton(getPop(), OK);
-    tapPrompt();
-    ret = ret && isIn(alertMsg, "不能有非法符号");
-    tapButton(getPop(), CLOSE);
+    f = new TField("品牌", TF, 0, ",");
+    ts100035Field(1, [ f ]);
+    ret = ret && isInAlertMsgs("不能有非法符号");
+    alertMsgs = [];
+
+    f = new TField("品牌", TF, 0, "Adidas");
+    ts100035Field(1, [ f ]);
+    ret = ret && isInAlertMsgs("相同记录已存在");
     tapReturn();
 
     return ret;
 }
+/**
+ * 基本设置新增功能弹窗消息验证
+ * @param label
+ * @param keys
+ * @param msg
+ */
+function test100111Field(label, keys, msg) {
 
-function test100111Field(keys) {
-    var fields = editGoodsBrandFields(keys);
+    if (isDefined(msg)) {
+        msg = "不能有非法符号";
+    }
+    var fields = {};
+    switch (label) {
+    case "类别":
+        fields = editGoodsTypeFields(keys);
+        break;
+    case "颜色":
+        fields = editGoodsColorFields(keys);
+        break;
+    case "尺码":
+        fields = editGoodsSizeFields(keys);
+        break;
+    case "品牌":
+        fields = editGoodsBrandFields(keys);
+        break;
+    case "尺码组":
+        fields = editGoodsSizeidsFields(keys);
+        break;
+    case "品牌折扣":
+        fields = editGoodsBrandDiscountFields(keys);
+        break;
+    default:
+        break;
+    }
     setTFieldsValue(getScrollView(), fields);
-
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "不能有非法符号");
+    var ret = isIn(alertMsg, msg);
 
+    ts100145_146Field1();// 防止正常保存,返回一级界面
+
+    if (!ret) {
+        logDebug("-------新增" + label + "  未出现msg" + msg);
+    }
     return ret;
 }
 
@@ -1872,6 +1909,79 @@ function ts100058() {
 
     return ret;
 }
+function ts100059Type() {
+    var r = getTimestamp(5);
+    tapMenu("货品管理", "基本设置", "新增类别+");
+    var keys = { "名称" : "type" + r };
+    var fields = editGoodsTypeFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    fields = goodsTypeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqual("type" + r, qr.data[0]["名称"]);
+
+    return ret;
+}
+function ts100059Color() {
+    var r = getTimestamp(5);
+    tapMenu("货品管理", "基本设置", "新增颜色+");
+    var keys = { "颜色类别" : "杂色", "名称" : "color" + r };
+    var fields = editGoodsColorFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    keys = { "名称" : "color" + r };
+    fields = goodsColorFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isEqual("color" + r, qr.data[0]["名称"]);
+
+    return ret;
+}
+function ts100059Msg() {
+    tapMenu("货品管理", "基本设置", "新增类别+");
+    var keys = { "名称" : "'" };
+    var ret = test100111Field("类别", keys, "非法字符");
+    keys = { "名称" : "登山服" };
+    ret = isAnd(ret, test100111Field("类别", keys, "相同记录已存在"));
+    tapReturn();
+
+    tapMenu2("基本设置");
+    tapMenu3("新增颜色+");
+    keys = { "颜色类别" : "杂色", "名称" : "'" };
+    ret = isAnd(ret, test100111Field("颜色", keys));
+    keys = { "颜色类别" : "杂色", "名称" : "黄色" };
+    ret = isAnd(ret, test100111Field("颜色", keys, "相同记录已存在"));
+    tapReturn();
+
+    tapMenu2("基本设置");
+    tapMenu3("新增尺码+");
+    keys = { "颜色类别" : "裤子尺码", "名称" : "'" };
+    ret = isAnd(ret, test100111Field("尺码", keys));
+    keys = { "颜色类别" : "杂色", "名称" : "黄色" };
+    ret = isAnd(ret, test100111Field("尺码", keys, "相同记录已存在"));
+    tapReturn();
+
+    tapMenu2("基本设置");
+    tapMenu3("新增尺码组+");
+    keys = { "名称" : "'" };
+    ret = isAnd(ret, test100111Field("尺码组", keys));
+    keys = { "名称" : "裤子尺码" };
+    ret = isAnd(ret, test100111Field("尺码组", keys, "相同记录已存在"));
+    tapReturn();
+
+    tapMenu2("基本设置");
+    tapMenu3("新增品牌折扣+");
+    keys = { "品牌" : "Ck公司" };
+    ret = isAnd(ret, test100111Field("品牌折扣", keys, "品牌重复"));
+    tapReturn();
+    return ret;
+}
+
 // 配码 X1自带对应尺码25 数量8件
 function ts100095_96() {
     tapMenu("货品管理", "基本设置", "所有尺码");
@@ -2146,7 +2256,9 @@ function ts100145_146Field(keys) {
     tapPrompt();
     return isIn(alertMsg, "存在库存不能取消");
 }
-
+/**
+ * 若显示当前库存按钮，则点击第一个静态文本
+ */
 function ts100145_146Field1() {
     if (window.buttons()["当前库存"].isVisible()) {
         tapFirstText();
@@ -3175,7 +3287,12 @@ function test100095() {
 
 }
 function test100097() {
+    if (colorSize == "yes") {
+        tapMenu("货品管理", "新增货品+");
 
+    } else {
+        return true;
+    }
 }
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");
