@@ -20,28 +20,25 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 
-    run("【销售开单-开单】异地+代收，物流核销", "test170673");
+// run("【销售开单-开单】异地+代收，物流核销", "test170673");//   
+    run("【销售订货-新增订货】/【销售开单-开单】开单不允许折扣大于1+客户折扣+大于1的折扣", "test240002_240004");
+    run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
 
 // run("", "test1");
 }
     
 function test1(){
-// debugElementTree(window);
+ debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-// tapMenu("销售开单", "开 单+");
-// tapButton(window,"图片选款");
-// tap(window.tableViews()[5].cells()["anewC0648 anewC0648"]);
-// target.frontMostApp().mainWindow().tableViews()[5].cells()["anewC0648
-// anewC0648"].doubleTap();
-// target.frontMostApp().mainWindow().tableViews()[5].cells()["anewC0648
-// anewC0648"].tap();
-    target.frontMostApp().mainWindow().tableViews()[5].cells()["khao11940469 khao11940469"].doubleTap();
-
  
+var dataView= window.tableViews()[5];
+dataView.tapWithOptions({tapOffset:{x:0.15, y:0.36}});
+dataView.tapWithOptions({tapOffset:{x:0.01, y:0.35}});
+
 }
 function test2(){
     var qo, o, ret = true;

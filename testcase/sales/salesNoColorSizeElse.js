@@ -9996,16 +9996,31 @@ function test170682() {
         "发货" : "仓库店" };
     editSalesBillNoColorSize(json);
 
+    tapFirstText();
+
+    ret = isAnd(ret, isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(20, getTextFieldValue(getScrollView(), 3)), isEqual("李四",
+                    getTextFieldValue(window, 0)), isEqual("仓库店",
+                    getTextFieldValue(window, 6)));
+
+    tapReturn();
+
     tapMenu("销售开单", "按订货开单");
     query();
 
     tapFirstText();
 
+    var ret4 = isAnd(isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(20, getTextFieldValue(getScrollView(), 3)), isEqual(0,
+                    getTextFieldValue(getScrollView(), 4)), isEqual(20,
+                    getTextFieldValue(getScrollView(), 5)), isEqual("李四",
+                    getTextFieldValue(window, 0)));
+
     var f5 = new TField("数量", TF, 5, "10");
     var fields = [ f5 ];
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isAnd(isEqual("仓库店", getTextFieldValue(window, 7)));
+    ret4 = isAnd(ret4, isEqual("仓库店", getTextFieldValue(window, 7)));
 
     saveAndAlertOk();
     tapPrompt();
@@ -10033,12 +10048,21 @@ function test170682() {
     var ret2 = isAnd(!isEqual(0, qr1.data[0]["批次"]), isEqual(10,
             qr1.data[0]["数量"]));
 
+    tapFirstText();
+
+    var ret3 = isAnd(isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(10, getTextFieldValue(getScrollView(), 3)), isEqual("仓库店",
+                    getTextFieldValue(window, 6)), isEqual("李四",
+                    getTextFieldValue(window, 0)));
+    tapReturn();
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170683() {
     var qo, o, ret = true;
