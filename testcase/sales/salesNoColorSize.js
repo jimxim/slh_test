@@ -13249,7 +13249,7 @@ function test240008() {
 
     var tip = getTextFieldValue(getScrollView(), 5);
 
-    var f5 = new TField("数量", TF, 5, sub(tip, 0.01));
+    var f5 = new TField("折扣", TF, 5, sub(tip, 0.01));
     var fields = [ f5 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -13269,7 +13269,7 @@ function test240008() {
 
     var tip1 = getTextFieldValue(getScrollView(), 5);
 
-    var f5 = new TField("数量", TF, 5, sub(tip1, 0.01));
+    var f5 = new TField("折扣", TF, 5, sub(tip1, 0.01));
     var fields = [ f5 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -13418,16 +13418,6 @@ function test240011() {
     o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // var r = "anewCus" + getTimestamp(7);
-    // var r1 = "1." + getTimestamp(2);
-    // tapMenu("往来管理", "新增客户+");
-    // var keys = { "名称" : r, "拿货折扣" : r1 };
-    // var fields = editCustomerFields(keys);
-    // setTFieldsValue(getScrollView(), fields);
-    // tapButton(window, SAVE);
-    // delay();
-    // tapReturn();
-
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
@@ -13439,6 +13429,19 @@ function test240011() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isIn(alertMsg1, "保存成功");
+
+    tapReturn();
+
+    query();
+    tapFirstText();
+    
+    ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(10, getTextFieldValue(getScrollView(), 3)), isIn(
+                    getTextFieldValue(getScrollView(), 8), "抹零"), isEqual("-1",
+                    getTextFieldValue(getScrollView(), 11)), isIn(
+                    getTextFieldValue(getScrollView(), 16), "打包费"), isEqual(1,
+                    getTextFieldValue(getScrollView(), 19)), isIn(
+                    getTextFieldValue(window, 10), "1."));
 
     tapReturn();
 
@@ -13461,6 +13464,34 @@ function test240011() {
     }
 
     tapReturn();
+    
+    query();
+    tapFirstText();
+
+    ret2 = isAnd(ret2, isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(10, getTextFieldValue(getScrollView(), 3)), isIn(
+                    getTextFieldValue(getScrollView(), 9), "抹零"), isEqual("-1",
+                    getTextFieldValue(getScrollView(), 12)), isIn(
+                    getTextFieldValue(getScrollView(), 18), "打包费"), isEqual(1,
+                    getTextFieldValue(getScrollView(), 21)), isIn(
+                    getTextFieldValue(window, 10), "1."));
+
+    tapReturn();
+    
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+
+    ret2 = isAnd(ret2, isIn(getTextFieldValue(getScrollView(), 0), "3035"),
+            isEqual(10, getTextFieldValue(getScrollView(), 5)), isIn(
+                    getTextFieldValue(getScrollView(), 10), "抹零"), isEqual(
+                    "-1", getTextFieldValue(getScrollView(), 15)), isIn(
+                    getTextFieldValue(getScrollView(), 20), "打包费"), isEqual(1,
+                    getTextFieldValue(getScrollView(), 25)), isIn(
+                            getTextFieldValue(window, 11), "1."));
+    tapReturn();
+    
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -13492,16 +13523,6 @@ function test240013() {
     o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // var r = "anewCus" + getTimestamp(7);
-    // var r1 = "1." + getTimestamp(2);
-    // tapMenu("往来管理", "新增客户+");
-    // var keys = { "名称" : r, "拿货折扣" : r1 };
-    // var fields = editCustomerFields(keys);
-    // setTFieldsValue(getScrollView(), fields);
-    // tapButton(window, SAVE);
-    // delay();
-    // tapReturn();
-
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
@@ -13529,7 +13550,7 @@ function test240013() {
 
     var tip1 = getTextFieldValue(window, 10);
 
-    var f10 = new TField("数量", TF, 10, sub(tip1, 0.01));
+    var f10 = new TField("折扣", TF, 10, sub(tip1, 0.01));
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
 
@@ -13574,28 +13595,37 @@ function test240014() {
         delay(2);
     }
 
+    qo = { "备注" : "建款" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
     qo = { "备注" : "开单模式" };
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewCus6" + getTimestamp(6);
     var r1 = "1." + getTimestamp(2);
-    tapMenu("往来管理", "新增客户+");
-    var keys = { "名称" : r, "拿货折扣" : r1 };
-    var fields = editCustomerFields(keys);
+    tapMenu("货品管理", "新增货品+");
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : 200, "零批价" : 190 }
+    var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
+
+    var f14 = new TField("产品折扣", TF, 14, r1);
+    fields = [ f14 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : "5" } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    
+
     var tip = getTextFieldValue(getScrollView(), 5);
 
-    var f5 = new TField("数量", TF, 5, sub(tip,0.01));
+    var f5 = new TField("折扣", TF, 5, sub(tip, 0.01));
     fields = [ f5 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -13609,13 +13639,13 @@ function test240014() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : "10" } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    
+
     var tip1 = getTextFieldValue(getScrollView(), 5);
 
-    var f5 = new TField("数量", TF, 5, sub(tip1,0.01));
+    var f5 = new TField("折扣", TF, 5, sub(tip1, 0.01));
     fields = [ f5 ];
     setTFieldsValue(getScrollView(), fields);
 

@@ -717,17 +717,17 @@ function test170014() {
 
     tapButton(window, CLEAR);
 
-     var o = { "键盘" : "简体拼音", "拼音" : [ "cangku" ], "汉字" : [ "仓库" ] };
-    
-     var tf = window.textFields()[1].textFields()[0];
-     setTextFieldValueByPinyin(tf, o);
-    
-     var ret1 = isEqual("仓库", getTextFieldValue(window, 1));
-    
-     tapButton(window, CLEAR);
+    var o = { "键盘" : "简体拼音", "拼音" : [ "cangku" ], "汉字" : [ "仓库" ] };
 
-     logDebug(" ret=" + ret + ", ret1=" + ret1);
-     return ret && ret1;
+    var tf = window.textFields()[1].textFields()[0];
+    setTextFieldValueByPinyin(tf, o);
+
+    var ret1 = isEqual("仓库", getTextFieldValue(window, 1));
+
+    tapButton(window, CLEAR);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170018() {
     tapMenu("销售开单", "按批次查");
@@ -8480,12 +8480,12 @@ function test170570_170577_170579() {
 
     var ret1 = isEqual(0, qr1.data.length);
 
-    var f15 = new TField("数量", TF_DT, 15, getToday());
-    var f16 = new TField("数量", TF_DT, 16, getToday());
+    var f15 = new TField("日期", TF_DT, 15, getToday());
+    var f16 = new TField("到", TF_DT, 16, getToday());
     var fields = [ f15, f16 ];
     setTFieldsValue(window, fields);
 
-    tapButton(window, "查 询");
+    tapButton(window, QUERY);
 
     var qr = getQRtable1(window, 8, -2);
 
