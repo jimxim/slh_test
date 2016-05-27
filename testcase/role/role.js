@@ -190,6 +190,16 @@ function checkRightsGoods() {
     arr = [ "厂商" ];// "进货价",
     ret = isAnd(ret, checkRightsField(getScrollView(), arr));
     tapReturn();
+
+    tapMenu2("基本设置");
+    tapMenu3("价格名称");
+    arr = [ "进货价比例" ];
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+
+    tapMenu2("基本设置");
+    tapMenu3("所有品牌折扣");
+    arr = [ "进货价折扣" ];
+    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
     return ret;
 }
 
@@ -200,7 +210,6 @@ function checkRightsCustomer() {
     var f = queryCustomerFields([ "手机" ]);
     var ret = checkRightsField(getScrollView(), arr, window, f);
 
-    // 销售明细
     var keys = { "客户" : "zbs" };
     var fields = queryCustomerFields(keys);
     query(fields);

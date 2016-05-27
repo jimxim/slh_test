@@ -16,7 +16,7 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 // run("测试用例", "test100111");//
- run("测试用例", "checkRightsCustomer");
+ run("测试用例", "checkRightsGoods");
 
 }
 
