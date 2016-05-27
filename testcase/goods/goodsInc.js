@@ -1181,6 +1181,7 @@ function editLogisticsVerify(o, idx) {
             idx = -2;
         }
         tapButton(window, "核销");
+        tapButton(window, QUERY);// 刷新界面
         var a1 = o["核销"];
         // debugElementTree(window);
         // 坐标偏移8 ,8
