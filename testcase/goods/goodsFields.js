@@ -762,7 +762,9 @@ function goodsColorField(key, show) {
         f = new TField("名称", TF, 0, "q");
         break;
     default:
-        logWarn("未知key＝" + key);
+        f = "";
+        logDebug("未知key＝" + key);
+        break;
     }
     return f;
 }

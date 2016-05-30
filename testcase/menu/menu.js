@@ -38,7 +38,7 @@ function testCheckGoods() {
         "新增品牌折扣+" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
-    menu2 = "更多";
+    menu2 = More;
     menus3 = { "库存调整单" : {}, "款号管理" : { "navi_close" : "yes" }, "打印条码" : {},
         "仓位列表" : {}, "新增仓位+" : {}, "超储统计" : {}, "缺货统计" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
@@ -65,7 +65,7 @@ function testCheckWangLai() {
     menus3 = { "厂商门店账" : {}, "厂商总账" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
-    menu2 = "更多.";
+    menu2 = More;
     menus3 = { "新增物流商+" : {}, "物流商查询" : {}, "客户回访" : {}, "新增回访+" : {},
         "客户标签" : {}, "新增标签+" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
@@ -179,7 +179,7 @@ function testCheckSales() {
         "按类别汇总" : {}, "按厂商汇总" : {}, "按配货员汇总" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
-    menu2 = "更多.";
+    menu2 = More;
     menus3 = { "代收收款查询" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
@@ -235,7 +235,7 @@ function testCheckStatisticPicture() {
         "按类别" : {} };
     ret = isAnd(ret, checkMenus(menus2));
 
-    menu2 = "更多..";
+    menu2 = More;
     menus3 = { "按单笔" : {}, "按品牌" : {}, "按滞销" : {} };
     ret = isAnd(ret, checkMenus(menus3, menu2));
 
@@ -258,7 +258,7 @@ function testCheckSystem() {
     var cond = "isIn(alertMsg,'清理和刷新成功')";
     waitUntil(cond);
 
-    menu2 = "更多..";
+    menu2 = More;
     menus3 = { "切换线路" : { "navi_close" : "yes" },
         "蓝牙4.0打印机配置" : { "navi_close" : "yes" },
         "数据清理授权" : { "navi_close" : "yes" },

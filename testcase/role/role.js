@@ -57,8 +57,10 @@ function testShopkeeper004All() {
 
     // goods.js
     run("【货品管理-货品进销存】店长权限查看货品进销存-查看范围", "test100120");// 后台PAD店长权限里勾上货品进销存
+    run("【货品管理-当前库存】 库存这一列受门店库存是否允许跨门店查询参数影响", "ts100012");// 后台勾选当前库存款号库存全局设置权限
+    run("【货品管理-基础设置-所有品牌】品牌不应该区分门店显示", "ts100150");
+    run("【货品管理-基础设置-所有类别】类别不应该区分门店显示", "ts100151");
     run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");// 默认店长权限
-    run("【货品管理-当前库存】门店库存是否允许跨门店查询 对店员的权限", "ts100100");// 后台勾选当前库存款号库存全局设置权限
 
     // purchase
     run("【采购入库-按汇总】按款号汇总,检查明细值", "test120080");
@@ -115,9 +117,18 @@ function testBillClerk005_2() {
     run("【货品管理-新增货品】省代模式+开单员新增货品", "test100022");
 }
 // 敏感字段检查 有
-function login008() {
+function login008Rights() {
     var p1 = { "角色" : "008" };
     var ok = login("008", "000000", p1);
+    if (ok) {
+        checkLimitsToRights_YES();
+        logout();
+    }
+}
+// 敏感字段检查 无
+function login009Rights() {
+    var p1 = { "角色" : "009" };
+    var ok = login("009", "000000", p1);
     if (ok) {
         checkLimitsToRights_NO();
         logout();
@@ -125,8 +136,24 @@ function login008() {
 }
 
 // http://jira.hzdlsoft.com:7082/browse/SLH-7083
+function checkLimitsToRights_YES() {
+    var hasRights = true;
+    run("货品管理", "checkRightsGoods");
+    run("往来管理", "checkRightsCustomer");
+    run("采购入库", "checkRightsPurchase");
+    run("采购订货", "checkRightsPurchaseOrder");
+    run("门店调入", "checkRightsShopIn");
+    run("门店调出", "checkRightsShopOut");
+    run("销售订货", "checkRightsSalesOrder");
+    run("销售开单", "checkRightsSales");
+    run("盘点管理", "checkRightsCheck");
+    run("统计分析", "checkRightsStatisticAnalysis");
+    run("统计图表", "checkRightsStatisticPicture");
+}
+
 function checkLimitsToRights_NO() {
-    run("货品管理", "checkRightsGoods");// 价格名称 所有品牌折扣
+    var hasRights = false;
+    run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");
     run("采购订货", "checkRightsPurchaseOrder");
@@ -144,62 +171,73 @@ function checkRightsGoods() {
     tapButton(window, QUERY);
     var arr = [ "厂商", "单价", "核算金额" ];
     var f = queryGoodsStockFields([ "厂商" ]);
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     // 分单据类型判断
-    // tapFirstText();
-    // tapFirstText(getScrollView(-1, 0), "批次", 6);
-    // delay(0.5);
-    // var text = getStaticTexts();
-    // var qr = getQR3(getScrollView(-1), "序号", "小计");
-    // ret = isAnd(ret, qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");//
-    // 这里单价小计标题显示，但是无内容
-    // tapNaviLeftButton();
-    // tapNaviLeftButton();
+    tapFirstText();
+    tapFirstText(getScrollView(-1, 0), "批次", 6);
+    delay(0.5);
+    var text = getStaticTexts(getScrollView(-1));
+    var qr = getQR3(getScrollView(-1), "序号", "小计");
+    if (hasRights) {
+        ret = isAnd(ret, qr.data[0]["单价"] != "", qr.data[0]["小计"] != "");
+    } else {
+        ret = isAnd(ret, qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");// 这里单价小计标题显示，但是无内容
+    }
+    tapNaviLeftButton();
+    tapNaviLeftButton();
 
     tapMenu2("款号库存");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = queryGoodsCodeStockFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("库存分布");
     tapButton(window, QUERY);
     arr = [ "价值" ];
     f = queryGoodsDistributionFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapFirstText();
     var qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    ret = isAnd(ret, qr.data[0]["价值"] == "");// 这里价值标题显示，但是无内容
+    if (hasRights) {
+        ret = isAnd(ret, qr.data[0]["价值"] != "");
+    } else {
+        ret = isAnd(ret, qr.data[0]["价值"] == "");// 这里价值标题显示，但是无内容
+    }
     tapNaviLeftButton();
 
     tapMenu2("货品进销存");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = queryGoodsInOutFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("货品查询");
     tapButton(window, QUERY);
     arr = [ "进货价", "厂商" ];
     f = queryGoodsFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("新增货品+");
     arr = [ "厂商" ];// "进货价",
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapReturn();
 
     tapMenu2("基本设置");
     tapMenu3("价格名称");
     arr = [ "进货价比例" ];
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("基本设置");
     tapMenu3("所有品牌折扣");
     arr = [ "进货价折扣" ];
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     return ret;
 }
 
@@ -208,20 +246,21 @@ function checkRightsCustomer() {
     tapButton(window, QUERY);
     var arr = [ "手机" ];
     var f = queryCustomerFields([ "手机" ]);
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     var keys = { "客户" : "zbs" };
     var fields = queryCustomerFields(keys);
     query(fields);
     tapFirstText();
     tapButton(window, "销售明细");
-    ret = isAnd(ret, !isHasStaticTexts(getScrollView(-1, 0), [ "13922211121" ]));
+    ret = isAnd(ret, !isHasStaticTexts(hasRights, getScrollView(-1, 0),
+            [ "13922211121" ]));
     tapNaviLeftButton();
     tapReturn();
 
     tapMenu2("新增客户+");
     arr = [ "信用额度", "欠款报警" ];
-    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
     tapReturn();
 
     tapMenu2("客户账款");
@@ -229,38 +268,38 @@ function checkRightsCustomer() {
     tapButton(window, QUERY);
     arr = [ "手机" ];
     f = queryCustomerShopAccountFields([ "是否欠款报警" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("客户活跃度");
     tapButton(window, QUERY);
     arr = [ "手机" ];
-    ret = ret && checkRightsField(getScrollView(), arr);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
 
     tapMenu2("积分查询");
     tapButton(window, QUERY);
     arr = [ "电话" ];
     f = queryCustomerScoreFields([ "手机" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("厂商查询");
     tapButton(window, QUERY);
     arr = [ "手机" ];// "名称",
     f = queryCustomerProviderFields([ "厂商", "手机" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("厂商账款");
     tapMenu3("厂商门店账");
     tapButton(window, QUERY);
     arr = [];// "名称"
     f = queryProviderShopAccountFields([ "厂商", "厂商名称" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("厂商账款");
     tapMenu3("厂商总账");
     tapButton(window, QUERY);
     arr = [];// "名称"
     f = queryCustomerProviderAccountFields([ "厂商", "厂商名称" ]);
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
     return ret;
 }
 function checkRightsPurchase() {
@@ -270,84 +309,92 @@ function checkRightsPurchase() {
     tapButton(window, QUERY);
     var arr = [ "厂商", "现金", "刷卡", "汇款" ];
     var f = purchaseQueryBatchFields([ "厂商" ]);
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapFirstText();
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
-    ret = ret && checkRightsField(window, arr);
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("按明细查");
     tapButton(window, QUERY);
     arr = [ "厂商", "单价", "小计" ];
     f = purchaseQueryParticularFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按金额汇总");
     tapButton(window, QUERY);
     arr = [ "现金", "刷卡", "汇款" ];
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按款号汇总");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = purchaseCodeFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按厂商返货");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = purchaseProviderReturnFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按厂商汇总");
     tapButton(window, QUERY);
     arr = [ "现金", "刷卡", "汇款", "实进额" ];// "名称",
     f = purchaseProviderFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("出入库汇总");
     tapButton(window, QUERY);
     arr = [];// "金额"
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
-    // tapMenu2("按汇总");
-    // tapMenu3("厂商对账单");
-    // arr = [];
-    // var f2 = new TField("厂商", TF, -2, "");
-    // ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, [ f2 ]));
-    // tapNaviLeftButton();
+    tapMenu2("按汇总");
+    tapMenu3("厂商对账单");
+    arr = [];
+    var f2 = new TField("厂商", TF, -2, "");
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            [ f2 ]));
+    tapNaviLeftButton();
 
     tapMenu2("按汇总");
     tapMenu3("按类别汇总");
     tapButton(window, QUERY);
     arr = [ "总额" ];// 
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("新增入库+");
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("批量入库+");
     arr = [ "单价", "小计" ];// 
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapReturn();
 
     tapMenu2("按订货入库");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = purchaseOrderFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
+    // 若是无数据则跳过判断
     tapFirstText();
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("厂商账款");
@@ -355,13 +402,15 @@ function checkRightsPurchase() {
     tapButton(window, QUERY);
     arr = [];// "名称"
     f = purchaseProviderAccountFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("厂商账款");
     tapMenu3("厂商总账");
     tapButton(window, QUERY);
     f = purchaseShopAccountFields([ "厂商", "厂商名称" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     return ret;
 }
@@ -370,28 +419,30 @@ function checkRightsPurchaseOrder() {
     tapButton(window, QUERY);
     var f = purchaseOrderQueryBatchFields([ "厂商" ]);
     var arr = [ "厂商", "金额", "现金", "刷卡", "汇款" ];
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapFirstText();
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("按明细查");
     arr = [ "厂商", "单价", "金额" ];
     f = purchaseOrderQueryParticularFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按厂商");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = purchaseOrderProviderFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("新增订货+");
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     return ret;
@@ -400,42 +451,50 @@ function checkRightsShopIn() {
     tapMenu("门店调入", "按批次查");
     tapButton(window, QUERY);
     var arr = [];// "金额"
-    var ret = checkRightsField(getScrollView(), arr);
+    var ret = checkRightsField(hasRights, getScrollView(), arr);
 
     tapMenu2("按明细查");
     arr = [ "单价" ];// , "金额"
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("按款号汇总");
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, qr.counts["金额"] == 0);// !qr.counts.hasOwnProperty("金额")
+    if (hasRights) {
+        ret = isAnd(ret, qr.counts["金额"] != 0);
+    } else {
+        ret = isAnd(ret, qr.counts["金额"] == 0);// !qr.counts.hasOwnProperty("金额")
+    }
     return ret;
 }
 function checkRightsShopOut() {
     tapMenu("门店调出", "按批次查");
     tapButton(window, QUERY);
     var arr = [ "金额" ];
-    var ret = checkRightsField(getScrollView(), arr);
+    var ret = checkRightsField(hasRights, getScrollView(), arr);
 
     tapFirstText();
     arr = [ "结余", "总额", "单价", "小计" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("按明细查");
     arr = [ "单价", "金额" ];
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("批量调出+");
     arr = [ "单价", "小计", "总额" ];
-    ret = isAnd(ret, checkRightsField(window, arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("按款号汇总");
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, qr.counts["金额"] == 0);
+    if (hasRights) {
+        ret = isAnd(ret, qr.counts["金额"] != 0);
+    } else {
+        ret = isAnd(ret, qr.counts["金额"] == 0);
+    }
     return ret;
 }
 function checkRightsSalesOrder() {
@@ -443,19 +502,21 @@ function checkRightsSalesOrder() {
     tapButton(window, QUERY);
     var arr = [ "厂商" ];
     var f = salesOrderCodeFields([ "厂商" ]);
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("按厂商报单");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = salesOrderCompanyFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按缺货查");
     tapButton(window, QUERY);
     arr = [];
     f = salesOrderCompanyFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
     return ret;
 }
 
@@ -464,21 +525,23 @@ function checkRightsSales() {
     tapButton(window, QUERY);
     var arr = [ "厂商" ];
     var f = salesQueryParticularFields([ "厂商" ]);
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("按汇总");
     tapMenu3("按款号汇总");
     tapButton(window, QUERY);
     arr = [];
     f = salesCodeFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     tapMenu2("按汇总");
     tapMenu3("按厂商汇总");
     tapButton(window, QUERY);
     arr = [ "厂商" ];
     f = salesProviderFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
 
     return ret;
 }
@@ -486,12 +549,13 @@ function checkRightsCheck() {
     tapMenu("盘点管理", "盈亏表");
     tapButton(window, QUERY);
     var arr = [ "盈亏金额" ];
-    var ret = checkRightsField(getScrollView(), arr);
+    var ret = checkRightsField(hasRights, getScrollView(), arr);
 
     tapMenu2("库存表");
     arr = [];
     var f = checkMaterialFields([ "厂商" ]);
-    ret = isAnd(ret, checkRightsField(getScrollView(), arr, window, f));
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
     return ret;
 }
 function checkRightsStatisticAnalysis() {
@@ -499,14 +563,14 @@ function checkRightsStatisticAnalysis() {
     tapButton(window, QUERY);
     var f = statisticAnalysisProfitFields([ "厂商" ]);
     var arr = [ "成本额", "利润额" ];
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapFirstText();
     arr = [ "进货价", "成本额", "利润额" ];
-    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
 
     tapNaviRightButton();
-    ret = ret && checkRightsField(getScrollView(-1, 0), arr);
+    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
     tapNaviLeftButton();
     tapNaviLeftButton();
 
@@ -515,25 +579,25 @@ function checkRightsStatisticAnalysis() {
     tapButton(window, QUERY);
     f = statisticAnalysisCodeProfitFields([ "厂商" ]);
     arr = [ "厂商", "成本价", "成本额", "利润" ];
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("汇总表");
     tapMenu3("颜色销售表");
     f = statisticAnalysColorFields([ "厂商" ]);
     arr = [];
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("汇总表");
     tapMenu3("尺码销售表");
     f = statisticAnalysSizeFields([ "厂商" ]);
     arr = [];
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("汇总表");
     tapMenu3("厂商销售表");
     f = statisticAnalysProviderFields([ "厂商" ]);
     arr = [];
-    ret = ret && checkRightsField(getScrollView(), arr, window, f);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     return ret;
 }
@@ -542,17 +606,22 @@ function checkRightsStatisticPicture() {
     tapButton(window, QUERY);
     var f = pictureCodeFields([ "厂商" ]);
     var arr = [];
-    var ret = checkRightsField(getScrollView(), arr, window, f);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
+    return ret;
 }
 /**
  * 角色权限检验
+ * @param hasRights 是否具有权限
  * @param view 列表字段所在视图
  * @param arr 需要验证的列表字段
  * @param view2 查询字段所在视图
  * @param f 需要验证的查询字段
  * @returns {Boolean}
  */
-function checkRightsField(view, arr, view2, f) {
+function checkRightsField(hasRights, view, arr, view2, f) {
+    if (isUndefined(hasRights)) {
+        hasRights == false;
+    }
     var i, j;
     var texts = getStaticTexts(view);
     var ret = true;
@@ -570,10 +639,18 @@ function checkRightsField(view, arr, view2, f) {
                 break;
             }
         }
-        ret = ret && !ok;
-        if (ok) {
-            logDebug("---------" + gMenu1 + "-" + gMenu2 + "显示列表字断 " + arr[i]
-                    + " ok=false---------");
+        if (hasRights) {
+            ret = ret && ok;
+            if (!ok) {
+                logDebug("---------" + gMenu1 + "-" + gMenu2 + "未显示列表字断 "
+                        + arr[i] + " ok=false---------");
+            }
+        } else {
+            ret = ret && !ok;
+            if (ok) {
+                logDebug("---------" + gMenu1 + "-" + gMenu2 + "显示列表字断 "
+                        + arr[i] + " ok=false---------");
+            }
         }
     }
     if (isDefined(view2)) {
@@ -584,7 +661,15 @@ function checkRightsField(view, arr, view2, f) {
                 idx = text.length + idx;
             }
             var ok = isDisabledTField(idx, view2);
+        }
+        if (hasRights) {
             ret = ret && ok;
+            if (!ok) {
+                logDebug("---------" + f[i].label + "的下标为" + idx
+                        + " textField灰化---------");
+            }
+        } else {
+            ret = ret && !ok;
             if (ok) {
                 logDebug("---------" + f[i].label + "的下标为" + idx
                         + " textField未灰化---------");

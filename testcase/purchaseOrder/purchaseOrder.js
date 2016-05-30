@@ -1096,7 +1096,7 @@ function ts130015() {
     return ret;
 }
 function test130015EndBill() {
-    tapMenu2("更多.");
+    tapMenu2(More);
     tapMenu3("终结订单");
 }
 

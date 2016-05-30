@@ -2821,7 +2821,7 @@ function test110043Field(qr, shop) {
 }
 
 function test110044() {
-    tapMenu("往来管理", "更多.", "物流商查询");
+    tapMenu("往来管理", More, "物流商查询");
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("区域");
@@ -2857,7 +2857,7 @@ function test110044() {
 }
 
 function test110045_110046() {
-    tapMenu("往来管理", "更多.", "新增物流商+");
+    tapMenu("往来管理", More, "新增物流商+");
     var r = "kd" + getTimestamp(6);
     var keys = { "名称" : "天天物流", "店员" : "004", "区域" : "华北", "电话" : r,
         "邮编" : "312000", "地址" : "abc", "账号" : "123", "门店" : "中洲店", "备注" : "备注" };
@@ -2919,7 +2919,7 @@ function test110045_110046() {
     alertMsgs = [];
 
     // 启用
-    tapMenu("往来管理", "更多.", "物流商查询");
+    tapMenu("往来管理", More, "物流商查询");
     tapButton(window, QUERY);
     tapFirstText();// getScrollView(), TITLE_SEQ, 9
     tapButtonAndAlert(START, OK);
@@ -2941,7 +2941,7 @@ function test110045_110046() {
 }
 
 function test110047() {
-    tapMenu("往来管理", "更多.", "新增回访+");
+    tapMenu("往来管理", More, "新增回访+");
     var r = "主题" + getTimestamp(6);
     var keys = [ "客户", "经办人", "回访类型", "主题", "反馈及建议" ];
     var fields = editCustomerBackFields(keys);
@@ -2952,7 +2952,7 @@ function test110047() {
     delay();
     // tapButton(window, RETURN);
 
-    // tapMenu("往来管理", "更多.", "客户回访");
+    // tapMenu("往来管理", More, "客户回访");
     var qr = getQR(window, getScrollView(), "序号", 7);
     var expected = { "回访日期" : getToday("yy"), "名称" : "小王", "主题" : r,
         "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议" };
@@ -2972,7 +2972,7 @@ function test110047() {
 }
 
 function test110048() {
-    tapMenu("往来管理", "更多.", "新增回访+");
+    tapMenu("往来管理", More, "新增回访+");
     var r = "主题" + getTimestamp(6);
     var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
         "反馈及建议" : r };
@@ -2982,7 +2982,7 @@ function test110048() {
     delay();
     tapReturn();
 
-    tapMenu("往来管理", "更多.", "客户回访");
+    tapMenu("往来管理", More, "客户回访");
     query();
     var qr = getQR();
     var ret = goPageCheck();
@@ -3014,7 +3014,7 @@ function test110048() {
 }
 
 function test110049() {
-    tapMenu("往来管理", "更多.", "新增回访+");
+    tapMenu("往来管理", More, "新增回访+");
     var r = "主题" + getTimestamp(6);
     var keys = [ "客户", "经办人", "回访类型", "主题" ];
     var fields = editCustomerBackFields(keys);
@@ -3025,7 +3025,7 @@ function test110049() {
     delay();
     // tapButton(window, RETURN);
 
-    // tapMenu("往来管理", "更多.", "客户回访");
+    // tapMenu("往来管理", More, "客户回访");
     var qr = getQR();
     tapFirstText();
     keys = { "客户" : "zbs", "经办人" : "004", "回访类型" : "定期回访", "主题" : r + "a",
@@ -3035,7 +3035,7 @@ function test110049() {
     tapButtonAndAlert("保存修改");
     delay();
 
-    // tapMenu("往来管理", "更多.", "客户回访");
+    // tapMenu("往来管理", More, "客户回访");
     qr = getQR();
     var expected = { "回访日期" : getToday("yy"), "名称" : "赵本山", "主题" : r + "a",
         "回访类型" : "定期回访", "反馈及建议" : "反馈及建议a" };
@@ -3462,12 +3462,12 @@ function testCheckCustomerDropDownList() {
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
-    tapMenu("往来管理", "更多.", "物流商查询");
+    tapMenu("往来管理", More, "物流商查询");
     f = new TField("店员", TF_AC, 1, "y", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
-    tapMenu("往来管理", "更多.", "客户回访");
+    tapMenu("往来管理", More, "客户回访");
     f = new TField("客户", TF_AC, 2, "yun", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
@@ -3483,13 +3483,13 @@ function testCheckCustomerDropDownList() {
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
-    tapMenu("往来管理", "更多.", "新增物流商+");
+    tapMenu("往来管理", More, "新增物流商+");
     view = getScrollView();
     f = new TField("店员", TF_AC, 1, "y", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
-    tapMenu("往来管理", "更多.", "新增回访+");
+    tapMenu("往来管理", More, "新增回访+");
     view = getScrollView();
     f = new TField("客户", TF_AC, 1, "yun", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));

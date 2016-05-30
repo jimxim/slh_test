@@ -46,6 +46,9 @@ js_func="$js_func ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts
 #成本核算
 js_func="$js_func login000SAProfit"
 
+#敏感字段测试目前只有auto1test可以跑
+js_func="$js_func login008Rights login009Rights"
+
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 

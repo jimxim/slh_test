@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -15,22 +15,17 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // outBatch={"inPre":"269","ts150007":"268"};
 
-// run("测试用例", "test100111");//
- run("测试用例", "checkRightsGoods");
+
+ run("测试用例", "ts100059Color");//
+// run("测试用例", "ts100114");
 
 }
 
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// tapMenu("货品管理", "新增货品+");
- tapMenu2("按汇总");
- tapMenu3("厂商对账单");
- var arr = [];
- var f2 = new TField("厂商", TF, -2, "");
- var ret =  checkRightsField(getScrollView(), arr, window, [ f2 ]);
- tapNaviLeftButton();
- return ret;
+    var f = new TField("名称", TF, 0, "q");
+   return isObject(f);
 }
 
 function prepare200All(){
