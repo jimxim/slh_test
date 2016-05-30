@@ -153,7 +153,7 @@ function testSalesNoColorSize001() {
     run("【开单 】开单时，款号是否按门店区分--总经理权限", "test170552");
 }
 function testSalesNoColorSize001_1() {
-    run("【销售开单－开单】开单时不允许负库存", "test170116");
+    run("【销售开单－开单】开单时不允许负库存", "test170116_170660");
     run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
     run("【销售开单－开单】开单时允许负库存", "test170117");
     run("【销售开单－开单】待作废参数与二次挂单功能检查", "test170172");
@@ -439,9 +439,9 @@ function setNoColorSize_1Params() {
     o = { "新值" : "0", "数值" : [ "不限制" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "跨门店核销" };
-    o = { "新值" : "0", "数值" : [ "默认不允许" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "跨门店核销" };
+    // o = { "新值" : "0", "数值" : [ "默认不允许" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
@@ -3516,7 +3516,7 @@ function test170107() {
     logDebug("c=" + c + "c1=" + c1);
     return ret && ret1;
 }
-function test170116() {
+function test170116_170660() {
     // 设置是否允许负库存为 “检查，必须先入库再出库”
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
@@ -3545,7 +3545,7 @@ function test170116() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "2" } ],
+    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "10" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -3556,8 +3556,58 @@ function test170116() {
 
     tapReturn();
 
-    logDebug("alertMsg1=" + alertMsg1 + ", ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f = new TField("数量", TF, 3, 8);
+    var fields = [ f ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret2 = isAnd(isIn(alertMsg, "操作成功"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : r, "门店" : "常青店" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var k = qr.data[0]["库存"];
+
+    var ret3 = isEqual(-2, k);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f = new TField("数量", TF, 3, 11);
+    var fields = [ f ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    var ret4 = isAnd(isIn(alertMsg, "操作成功"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : r, "门店" : "常青店" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var k1 = qr.data[0]["库存"];
+
+    var ret5 = isEqual(1, k1);
+
+    logDebug("alertMsg1=" + alertMsg1 + ", ret=" + ret + ", ret1=" + ret1
+            + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4=" + ret4
+            + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170117() {
     // 设置是否允许负库存为 “不检查，允许负库存”
@@ -3581,7 +3631,7 @@ function test170117() {
 
     tapMenu("货品管理", "款号库存");
     keys = [ "款号" ];
-    fields = queryGoodsStockFields(keys);
+    fields = queryGoodsCodeStockFields(keys);
     changeTFieldValue(fields["款号"], r);
     query(fields);
     var qr = getQR();
@@ -13347,6 +13397,10 @@ function test240002_240004() {
     tapNaviRightButton();
 
     saveAndAlertOk();
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
     tapPrompt();
 
     debugArray(alertMsgs);
@@ -13520,6 +13574,10 @@ function test240005() {
     tapNaviRightButton();
 
     saveAndAlertOk();
+    var o1 = { "继续开单保存" : "仍然保存" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
     tapPrompt();
 
     debugArray(alertMsgs);

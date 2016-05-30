@@ -84,13 +84,19 @@ function testSalesPrepare003() {
 
     tapNaviLeftButton();
     tapReturn();
-    
+
     query();
     var qr = getQR();
 
     var ret = qr;
 
     return ret;
+}
+function testSalesPrepare004() {
+    // "Aaa002"中洲店入库10件
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "Aaa002", "数量" : [ 10 ] } ] };
+    editSalesBillColorSize(json);
 }
 
 function test170064getQR() {

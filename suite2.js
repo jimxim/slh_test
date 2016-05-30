@@ -19,26 +19,22 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_4");
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
-
-// run("【销售开单-开单】异地+代收，物流核销", "test170673");//   
-    run("【销售订货-新增订货】/【销售开单-开单】开单不允许折扣大于1+客户折扣+大于1的折扣", "test240002_240004");
-    run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
+// run("【销售开单-开单】异地+代收，物流核销", "test170673");//
+// run("【销售开单－开单】开单时不允许负库存", "test170116_170660");//
+    
+    
 
 // run("", "test1");
 }
     
 function test1(){
- debugElementTree(window);
+// debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
  
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
  
-var dataView= window.tableViews()[5];
-dataView.tapWithOptions({tapOffset:{x:0.15, y:0.36}});
-dataView.tapWithOptions({tapOffset:{x:0.01, y:0.35}});
-
 }
 function test2(){
     var qo, o, ret = true;
@@ -493,6 +489,15 @@ function testSalesNoColorSize170568() {
     var ok = login("007","000000",p1);
     if( ok ) {
         run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568");
+        
+        logout();
+    }
+}
+function test000SalesColorSize002() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesColorSize002();
         
         logout();
     }

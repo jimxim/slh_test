@@ -38,6 +38,9 @@ js_func="$js_func test000SalesNoColorSizeElse002"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001"
 
+js_func="$js_func setSales002Params"
+js_func="$js_func test000SalesColorSize002"
+
 js_func="$js_func setSales001Params"
 #获取未保存
 js_func="$js_func testSalesNoColorSize170140_Params"
