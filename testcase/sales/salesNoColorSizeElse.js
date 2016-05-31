@@ -2399,7 +2399,7 @@ function test170275() {
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("选择");
-    ret = ret && sortByTitle("记账日期");
+    ret = ret && sortByTitle("记账日期", IS_DATE2);
     ret = ret && sortByTitle("开始批次", IS_NUM);
     ret = ret && sortByTitle("截止批次", IS_NUM);
     ret = ret && sortByTitle("门店");
@@ -3848,6 +3848,10 @@ function test170306_1() {
     o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "按汇总", "按金额汇总");
     var keys = { "day1" : getDay(-10), "day2" : getToday(), "门店" : "常青店" };
     var fields = salesPriceFields(keys);
@@ -4304,8 +4308,8 @@ function test170313() {
     var xj2 = qr.counts["小计"];
 
     ret = isAnd(ret, isEqual(add(totalReturn, totalReturn1), -add(sl, sl1)),
-            isAqualNum(Math.round(add(totalMoney, totalMoney1)), Math
-                    .round(-sub(add(xj, xj1), xj2))));
+            isAqualNum(Number(add(totalMoney, totalMoney1)), Number(-sub(add(
+                    xj, xj1), xj2))));
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "day1" : getDay(-10), "shop" : "常青店" };
