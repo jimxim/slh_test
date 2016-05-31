@@ -16,16 +16,25 @@ function test000All() {
 // outBatch={"inPre":"269","ts150007":"268"};
 
 
- run("测试用例", "ts100059Color");//
-// run("测试用例", "ts100114");
+// run("测试用例", "ts100059Color");//
+ run("测试用例", "onlyTest");
 
+// run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
+//
+// run("【往来管理-新增客户】客户编码", "ts110056");
 }
 
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-    var f = new TField("名称", TF, 0, "q");
-   return isObject(f);
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035", "客户" : "xw",
+            "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
+        var fields = statisticAnalysisProfitFields(keys);
+   for(var i in fields){
+       logDebug("idx="+fields[i].index+"   val="+fields[i].value);
+   }
+   
+   return true;
 }
 
 function prepare200All(){

@@ -518,7 +518,7 @@ function editCustomerProviderField(key, show) {
         f = new TField("适用价格", BTN_SC, 0, "打包价");
         if (show) {
             f.type = TF;
-            f.index = 3;
+            f.index = 4;
         }
         break;
     case "remarks":

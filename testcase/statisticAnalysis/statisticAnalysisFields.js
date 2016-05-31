@@ -48,6 +48,10 @@ function statisticAnalysisProfitFields(keys, show) {
     return getTFields("statisticAnalysisProfitField", keys, show);
 }
 function statisticAnalysisProfitField(key, show) {
+    var idx = 0;
+    if (ipadVer < 7.10) {
+        idx = -1;
+    }
     var f;
     switch (key) {
     case "day1":
@@ -71,32 +75,34 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "name":
     case "款号名称":
-        f = new TField("款号名称", TF, 4, "3035");
+        if (ipadVer < 7.10) {
+            f = new TField("款号名称", TF, 4, "3035");
+        }
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 5, "a", -1, 0);
+        f = new TField("客户", TF_AC, 5 + idx, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 6, "000", -1, 0);
+        f = new TField("店员", TF_AC, 6 + idx, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 7, "z", -1, 0);
+        f = new TField("厂商", TF_AC, 7 + idx, "z", -1, 0);
         if (show) {
             f.value = "杭州";
         }
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 8, "1010pp");
+        f = new TField("品牌", TF_AC, 8 + idx, "1010pp");
         break;
     default:
         logWarn("未知key＝" + key);

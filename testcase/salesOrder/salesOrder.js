@@ -1261,9 +1261,8 @@ function test160035() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f = new TField("数量", TF, 5, "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : 5 } ] };
+    editSalesBillNoColorSize(json);
 
     delay();
     tapMenu1("销售订货");
@@ -1323,9 +1322,8 @@ function test160036() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f = new TField("数量", TF, 5, "50");
-    setTFieldsValue(getScrollView(), [ f ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : 50 } ] };
+    editSalesBillNoColorSize(json);
 
     delay();
     tapMenu1("销售订货");
@@ -2112,14 +2110,14 @@ function ts160073_74() {
     editPurInByOrderDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("订单预付款被核销");
-    logDebug("选择一条部分发货，但预付款被核销了的订单 修改款号订货数量后保存 ok=" + ok);
+    logDebug("------选择一条部分发货，但预付款被核销了的订单 修改款号订货数量后保存 ok=" + ok);
     ret = ret && ok;
 
     alertMsgs = [];// 清空
     tapFirstText();
     editSalesBill(addDet, colorSize);
     ok = isInAlertMsgs("订单预付款被核销");
-    logDebug("选择一条部分发货，但预付款被核销了的订单 增加款号后保存 ok=" + ok);
+    logDebug("------选择一条部分发货，但预付款被核销了的订单 增加款号后保存 ok=" + ok);
     ret = ret && ok;
 
     // 部分入库单
@@ -2132,7 +2130,7 @@ function ts160073_74() {
     tapButton(getScrollView(), 0);
     editSalesBillSave({});
     ok = isInAlertMsgs("已发货的明细不允许删除");
-    logDebug("选择一条部分发货的款号，删除已发货的款号，保存 ok=" + ok);
+    logDebug("------选择一条部分发货的款号，删除已发货的款号，保存 ok=" + ok);
     ret = ret && ok;
 
     //
@@ -2141,7 +2139,7 @@ function ts160073_74() {
     editPurInByOrderDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("保存成功");
-    logDebug("选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存 ok=" + ok);
+    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存 ok=" + ok);
     ret = ret && ok;
 
     // 部分入库单
@@ -2153,7 +2151,7 @@ function ts160073_74() {
     editPurInByOrderDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("保存成功");
-    logDebug("选择一条部分发货的订单，将所有款号的订货数修改成比已发数大，点保存 ok=" + ok);
+    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成比已发数大，点保存 ok=" + ok);
     ret = ret && ok;
 
     // 全部发货
@@ -2166,7 +2164,7 @@ function ts160073_74() {
     tapFirstText();
     editSalesBill(addDet, colorSize);// 新增货品
     ok = isInAlertMsgs("订单已全部发货");
-    logDebug("选择一条全部发货的款号，增加款号，点保存 ok=" + ok);
+    logDebug("------选择一条全部发货的款号，增加款号，点保存 ok=" + ok);
     ret = ret && ok;
 
     alertMsgs = [];// 清空
@@ -2174,7 +2172,7 @@ function ts160073_74() {
     tapButton(getScrollView(), 0);// 删除款号
     editSalesBillSave({});
     ok = isInAlertMsgs("订单已全部发货");
-    logDebug("选择一条全部发货的款号，删除款号，点保存 ok=" + ok);
+    logDebug("------选择一条全部发货的款号，删除款号，点保存 ok=" + ok);
     ret = ret && ok;
 
     // 
@@ -2184,7 +2182,7 @@ function ts160073_74() {
     editPurInByOrderDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("订单已全部发货");
-    logDebug("选择一条全部发货的款号，订货数修改成比已发数小，点保存 ok=" + ok);
+    logDebug("------选择一条全部发货的款号，订货数修改成比已发数小，点保存 ok=" + ok);
     ret = ret && ok;
 
     // 
@@ -2192,7 +2190,7 @@ function ts160073_74() {
     tapFirstText();
     editSalesBill(addDet, colorSize);// 新增货品
     ok = isInAlertMsgs("订单已全部发货");
-    logDebug("选择一条全部发货的款号，增加订货数，点保存 ok=" + ok);
+    logDebug("------选择一条全部发货的款号，增加订货数，点保存 ok=" + ok);
     ret = ret && ok;
 
     //
@@ -2207,7 +2205,7 @@ function ts160073_74() {
     tapFirstText();
     editSalesBill(addDet, colorSize);// 新增货品
     ok = isInAlertMsgs("已结束的订单不允许修改");
-    logDebug("选择一条已结束的订单，增加款号，点保存 ok=" + ok);
+    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
     ret = ret && ok;
 
     alertMsgs = [];// 清空
@@ -2215,7 +2213,7 @@ function ts160073_74() {
     editPurInByOrderDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("已结束的订单不允许修改");
-    logDebug("选择一条已结束的订单，增加款号，点保存 ok=" + ok);
+    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
     ret = ret && ok;
 
     qo = { "备注" : "是否允许修改已发货的订单" };
@@ -2273,10 +2271,8 @@ function test160087() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f1 = new TField("数量", TF, 5, "10");
-    var f2 = new TField("数量", TF, 14, "10");
-    setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    test160073Save();
+    json = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    editSalesBillNoColorSize(json);
     ret = isAnd(ret, test160087Field("3035", "不许修改部分发货"));
 
     tapMenu("销售开单", "按订货开单");

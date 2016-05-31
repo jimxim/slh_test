@@ -981,7 +981,7 @@ function test190025_1() {
     exp = { "销数" : 20, "销额" : 4000, "实销数" : 20, "实销额" : 4000, "现金" : 6000,
         "欠款" : 2000, "余款" : 4000 };
     expected = { "类型" : "销售单", "金额" : "2000", "操作人" : "总经理" };
-    ret = isAnd(ret, test190025Field1(expected), isEqual(2000, n1 - n2),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(6000, n1 - n2),
             isEqualObject(exp, subObject(jo2, jo1)));
 
     return ret;
@@ -1022,7 +1022,7 @@ function test190025_2() {
     n1 = getSACountsQR("现", "支出", "采购单");
     exp = { "进数" : 50 };
     expected = { "类型" : "采购单", "金额" : "-1000", "操作人" : "总经理" };
-    ret = isAnd(ret, test190025Field1(expected), isEqual(2000, n1 - n2),
+    ret = isAnd(ret, test190025Field1(expected), isEqual(6000, n1 - n2),
             isEqualObject(exp, subObject(jo2, jo1)));
     return ret;
 }
@@ -1070,7 +1070,7 @@ function test190104() {
     var s1 = test190037_1Field(qr, "支出", "销售退款");
     var p1 = test190037_1Field(qr, "收入", "采购退款");
     tapNaviLeftButton();
-    
+
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-3" } ],
         "现金" : -100, "刷卡" : [ -200, "银" ], "汇款" : [ -300, "银" ] };

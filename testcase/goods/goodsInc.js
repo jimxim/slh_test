@@ -1053,7 +1053,7 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
         }
     }
     var ret = true;
-    for (i in qr.counts) {
+    for ( var i in qr.counts) {
         var v1 = qr.counts[i];
         var v2 = sum[i];
         if (v1 != "") {

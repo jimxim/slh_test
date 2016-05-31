@@ -470,11 +470,6 @@ function ts130004_2() {
  * 总经理可以看到其他门店的数据
  */
 function ts130004_05_06For000() {
-    tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "未付" : "yes" };
-    var json = mixObject(jo, det);
-    editSalesBill(json, colorSize);
-
     tapMenu("采购订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
     var fields = purchaseOrderCodeFields(keys);
@@ -488,7 +483,7 @@ function ts130004_05_06For000() {
     qr = getQR();
     ret = isAnd(ret, qr.data.length > 0);
 
-    tapMenu("采购订货", "按汇总", "门店");
+    tapMenu("采购订货", "按汇总", "按门店");
     fields = purchaseOrderShopFields(keys);
     query(fields);
     qr = getQR();
