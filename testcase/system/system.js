@@ -1,5 +1,6 @@
 //zhangy <2397655091 at qq.com> 20151215
 function testSystem001() {
+    var menu_More = getMenu_More();
     run("【系统设置—打印机】保存", "test210001");
     run("【系统设置—打印机】返回", "test210002");
     run("【系统设置—打印机】远程打印参数", "test210003");
@@ -42,21 +43,12 @@ function testSystem001() {
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
-    
+
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置-更多】门店停用规则", "test210067");
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
 
-}
-function(){
-    var menu;
-    if(ipadVer >="7.10"){
-        menu=MORE;
-    }
-    else{
-        menu=MORE;
-    }
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -1355,7 +1347,7 @@ function test210042() {
 }
 function test210043() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("数据清理授权");
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权");
@@ -2444,7 +2436,7 @@ function test210057() {
 }
 function test210061() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("紧急模式上传异常");
 
     tapButton(getScrollView(1), "删除紧急模式数据");
@@ -2459,7 +2451,7 @@ function test210061() {
 }
 function test210062() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("设置本地参数为默认");
 
     var cond = "isIn(alertMsg, '操作成功')";
@@ -2520,8 +2512,7 @@ function test210065() {
     tapMenu("系统设置", "打印机");
     tapFirstText(getScrollView(), "1", 4);
 
-    ret1 = isAnd(ret1, isEqual(ip, getTextFieldValue(getScrollView(),
-            2)));
+    ret1 = isAnd(ret1, isEqual(ip, getTextFieldValue(getScrollView(), 2)));
 
     tapButton(getScrollView(), "本 机");
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
@@ -2540,7 +2531,7 @@ function test210065() {
 }
 function test210067() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("门店列表");
 
     query();
@@ -2557,7 +2548,7 @@ function test210067() {
 }
 function test210069_210070() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("新增门店＋");
 
     var m = "test" + getTimestamp(8);
@@ -2574,7 +2565,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("门店列表");
 
     query();
@@ -2584,7 +2575,7 @@ function test210069_210070() {
     var ret = isEqual(m, qr.data[0]["门店"]);
 
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2613,7 +2604,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("账户列表");
 
     query();
@@ -2627,7 +2618,7 @@ function test210069_210070() {
 }
 function test210071() {
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2649,7 +2640,7 @@ function test210071() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(MORE);
+    tapMenu2(menu_More);
     tapMenu3("账户列表");
 
     query();

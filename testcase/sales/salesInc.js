@@ -363,3 +363,32 @@ function getTableViewCells1(view1, f, o) {
     logDebug(" tableViewIndex=" + tableViewIndex + " ret=" + ret);
     return ret;
 }
+
+/**
+ * 获取更多按钮 7.10之前版本不统一
+ * @returns
+ */
+function getMenu_More() {
+    var menu;
+    if (ipadVer >= 7.10) {
+        menu = MORE;
+    } else {
+        switch (gMenu1) {
+        case "往来管理":
+        case "采购入库":
+        case "采购订货":
+        case "销售订货":
+        case "销售开单":
+            menu = MORE1;
+            break;
+        case "系统设置":
+        case "统计图表":
+            menu = MORE2;
+            break;
+        default:
+            menu = MORE;
+            break;
+        }
+        return menu;
+    }
+}
