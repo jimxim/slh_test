@@ -49,6 +49,15 @@ function testSystem001() {
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
 
 }
+function(){
+    var menu;
+    if(ipadVer >="7.10"){
+        menu=MORE;
+    }
+    else{
+        menu=MORE;
+    }
+}
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
@@ -1346,7 +1355,7 @@ function test210042() {
 }
 function test210043() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("数据清理授权");
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权");
@@ -2435,7 +2444,7 @@ function test210057() {
 }
 function test210061() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("紧急模式上传异常");
 
     tapButton(getScrollView(1), "删除紧急模式数据");
@@ -2450,7 +2459,7 @@ function test210061() {
 }
 function test210062() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("设置本地参数为默认");
 
     var cond = "isIn(alertMsg, '操作成功')";
@@ -2531,7 +2540,7 @@ function test210065() {
 }
 function test210067() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("门店列表");
 
     query();
@@ -2548,7 +2557,7 @@ function test210067() {
 }
 function test210069_210070() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("新增门店＋");
 
     var m = "test" + getTimestamp(8);
@@ -2565,7 +2574,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("门店列表");
 
     query();
@@ -2575,7 +2584,7 @@ function test210069_210070() {
     var ret = isEqual(m, qr.data[0]["门店"]);
 
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2604,7 +2613,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("账户列表");
 
     query();
@@ -2618,7 +2627,7 @@ function test210069_210070() {
 }
 function test210071() {
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2640,7 +2649,7 @@ function test210071() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("账户列表");
 
     query();

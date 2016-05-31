@@ -299,9 +299,9 @@ function test200048() {
 }
 function test200053() {
     tapMenu1("统计图表");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("按品牌");
-    tapMenu2(More, "按品牌");
+    tapMenu2(MORE, "按品牌");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureBrandFields(keys);
     query(fields);
@@ -323,7 +323,7 @@ function test200053() {
 }
 function test200058() {
     tapMenu1("统计图表");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("按滞销");
     var keys = { "上架从" : getDay(-300), "到" : getToday() };
     var fields = pictureUnsalableFields(keys);
@@ -340,7 +340,7 @@ function test200058() {
             getToday(), getTextFieldValue(window, 1)));
 
     tapMenu1("统计图表");
-    tapMenu2(More);
+    tapMenu2(MORE);
     tapMenu3("按单笔");
 
     var keys = { "日期从" : getDay(-300), "到" : getToday(), "门店" : "常青店" };

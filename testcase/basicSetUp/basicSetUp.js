@@ -77,7 +77,7 @@ function testBasicSetUpAll() {
     // 加工款
     run("GG55", "setGoods014");
     // 中洲店款
-    run("Aaa002", "setGoods015");//设置门店为中洲店,入库10件
+    run("Aaa002", "setGoods015");// 设置门店为中洲店,入库10件
 
     run("均色均码模式", "setGoodsNoColorParams");
 
@@ -528,7 +528,13 @@ function setGoodsBrandDiscount001() {
 }
 
 function setLogisticsBasicSetUp(name, keys) {
-    tapMenu("往来管理", More, "物流商查询");
+    var menu_More;
+    if (ipadVer >= "7.10") {
+        menu_More = MORE;
+    } else {
+        menu_More = MORE2;
+    }
+    tapMenu("往来管理", menu_More, "物流商查询");
     var qKeys = { "名称" : name };
     var qFields = queryCustomerLogisticsFields(qKeys);
     query(qFields);
