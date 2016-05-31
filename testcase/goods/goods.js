@@ -371,7 +371,7 @@ function test100107() {
     var jo = qr.data[0];
     jo["门店"] = qr.data[0]["仓库/门店"];
 
-    tapMenu("货品管理", More, "库存调整单");
+    tapMenu("货品管理", menu_More, "库存调整单");
     query();
     qr = getQR();
     return isEqualObject2(jo, qr.data[0]);
@@ -2727,7 +2727,7 @@ function test100060() {
 function test100071_100072Prepare() {
     var name = "start" + getToday("yy");
 
-    tapMenu("货品管理", More, "新增仓位+");
+    tapMenu("货品管理", menu_More, "新增仓位+");
     var f0 = new TField("名称", TF, 0, name);
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
@@ -2735,7 +2735,7 @@ function test100071_100072Prepare() {
     tapReturn();
 
     name = "stop" + getToday("yy");
-    tapMenu2(More);
+    tapMenu2(menu_More);
     tapMenu3("新增仓位+");
     fields[0].value = name;
     setTFieldsValue(getScrollView(), fields);
@@ -2779,7 +2779,7 @@ function test100071_100072() {
     return isAnd(ret1, ret2);
 }
 function test100073_100074() {
-    tapMenu("货品管理", More, "新增仓位+");
+    tapMenu("货品管理", menu_More, "新增仓位+");
     saveAndAlertOk();
     tapPrompt();
     var ret = isInAlertMsgs("名称不能为空");
@@ -2813,7 +2813,7 @@ function test100073_100074() {
 }
 
 function test100068_100069() {
-    tapMenu("货品管理", More, "新增仓位+");
+    tapMenu("货品管理", menu_More, "新增仓位+");
     var r = "cw" + getTimestamp(6);
     var f0 = new TField("名称", TF, 0, r);
     var fields = [ f0 ];
@@ -2822,7 +2822,7 @@ function test100068_100069() {
     delay();
     tapButton(window, RETURN);
 
-    tapMenu("货品管理", More, "仓位列表");
+    tapMenu("货品管理", menu_More, "仓位列表");
     query();
     var ret = goPageCheck();
 
@@ -2839,7 +2839,7 @@ function test100068_100069() {
 }
 
 function test100070() {
-    tapMenu("货品管理", More, "新增仓位+");
+    tapMenu("货品管理", menu_More, "新增仓位+");
     var r = "cw" + getTimestamp(6);
     var f0 = new TField("名称", TF, 0, r);
     var fields = [ f0 ];
@@ -2847,7 +2847,7 @@ function test100070() {
     saveAndAlertOk();
     tapReturn();
 
-    tapMenu("货品管理", More, "仓位列表");
+    tapMenu("货品管理", menu_More, "仓位列表");
     query(fields);
     delay();
 
@@ -2873,7 +2873,7 @@ function test100070() {
     tapButtonAndAlert("保存修改", OK);
     tapReturn();
 
-    tapMenu("货品管理", More, "仓位列表");
+    tapMenu("货品管理", menu_More, "仓位列表");
     tapButton(window, CLEAR);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
@@ -2907,7 +2907,7 @@ function test100079_100080_100081() {
     tapButtonAndAlert(EDIT_SAVE, OK);
     delay();
 
-    tapMenu("货品管理", More, "超储统计");
+    tapMenu("货品管理", menu_More, "超储统计");
     var keys = { "款号" : r };
     var fields = goodsStatisticFields(keys);
     query(fields);
@@ -2924,7 +2924,7 @@ function test100079_100080_100081() {
     tapButtonAndAlert(EDIT_SAVE, OK);
     delay();
 
-    tapMenu("货品管理", More, "超储统计");
+    tapMenu("货品管理", menu_More, "超储统计");
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
@@ -2944,7 +2944,7 @@ function test100079_100080_100081() {
         "明细" : [ { "货品" : r, "数量" : "15" } ] };
     editShopOutDecruitIn(json, colorSize);
 
-    tapMenu("货品管理", More, "超储统计");
+    tapMenu("货品管理", menu_More, "超储统计");
     tapButton(window, QUERY);
     qr = getQR();
     var expected = { "款号" : r, "名称" : r, "上架日期" : getToday("yy"),
@@ -2963,7 +2963,7 @@ function test100086() {
     editSalesBillAddGoods(joG);
     editSalesBillSave(json);
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     var keys = { "款号" : r };
     var fields = goodsStatisticFields(keys);
     query(fields);
@@ -2990,7 +2990,7 @@ function test100087_100088_100089() {
     tapButtonAndAlert(EDIT_SAVE, OK);
     tapReturn();
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     var keys = { "款号" : r };
     var fields = goodsStatisticFields(keys);
     query(fields);
@@ -3007,7 +3007,7 @@ function test100087_100088_100089() {
     tapButtonAndAlert(EDIT_SAVE, OK);
     tapReturn();
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
@@ -3027,7 +3027,7 @@ function test100087_100088_100089() {
         "明细" : [ { "货品" : r, "数量" : "15" } ] };
     editShopOutDecruitIn(json, colorSize);
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     tapButton(window, QUERY);
     var qr = getQR();
     var expected = { "款号" : r, "名称" : r, "上架日期" : getToday("yy"),
@@ -3053,7 +3053,7 @@ function test100075_100076_100077_100078() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : stock } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("货品管理", More, "超储统计");
+    tapMenu("货品管理", menu_More, "超储统计");
     var i, j;
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
@@ -3107,7 +3107,7 @@ function test100082_100083_100084_100085_100093() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : stock } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     var i, j;
     var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
@@ -3141,7 +3141,7 @@ function test100082_100083_100084_100085_100093() {
     json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : -stock } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(r, qr.data[0]["款号"])
@@ -3154,7 +3154,7 @@ function test100082_100083_100084_100085_100093() {
     json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : -stock } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("货品管理", More, "缺货统计");
+    tapMenu("货品管理", menu_More, "缺货统计");
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(r, qr.data[0]["款号"]),
@@ -3544,7 +3544,7 @@ function test100104_100105() {
     var qr = getQR();
     var shop = qr.data[0]["仓库/门店"];
 
-    tapMenu2(More);
+    tapMenu2(menu_More);
     tapMenu3("库存调整单");
     var keys = { "日期从" : getDay(-30), "门店" : shop };
     var fields = goodsStockAdjustmentFields(keys);
@@ -3560,7 +3560,7 @@ function test100104_100105() {
     var r = getRandomNum(1, 100);// 调整后数量
     addGoodsStockAdjustment(r);
 
-    tapMenu2(More);
+    tapMenu2(menu_More);
     tapMenu3("库存调整单");
     var keys = { "批次从" : batch, "批次到" : batch + 1 };
     var fields = goodsStockAdjustmentFields(keys);
@@ -3584,7 +3584,7 @@ function test100104_100105() {
 
 // 翻页_排序_汇总
 function ts100106() {
-    tapMenu("货品管理", More, "库存调整单");
+    tapMenu("货品管理", menu_More, "库存调整单");
     var keys = { "日期从" : getDay(-30) };
     var fields = goodsStockAdjustmentFields(keys);
     query(fields);

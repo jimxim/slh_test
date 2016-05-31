@@ -1091,7 +1091,7 @@ function ts130015() {
     return ret;
 }
 function test130015EndBill() {
-    tapMenu2(More);
+    tapMenu2(menu_More);
     tapMenu3("终结订单");
 }
 
