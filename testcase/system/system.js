@@ -1,7 +1,5 @@
 //zhangy <2397655091 at qq.com> 20151215
 function testSystem001() {
-    gMenu1 = "系统设置";
-    menu_More = getMenu_More();
     run("【系统设置—打印机】保存", "test210001");
     run("【系统设置—打印机】返回", "test210002");
     run("【系统设置—打印机】远程打印参数", "test210003");
@@ -38,8 +36,8 @@ function testSystem001() {
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置】紧急模式上传异常", "test210061");
     run("【系统设置-全局参数】异地发货参数互斥", "test210063");
-    run("【系统设置】设置本地参数为默认", "test210062");//
-    run("【系统设置】数据清理授权", "test210043");//
+    run("【系统设置】设置本地参数为默认", "test210062");
+    run("【系统设置】数据清理授权", "test210043");
 
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
@@ -52,8 +50,6 @@ function testSystem001() {
 
 }
 function testSystem002() {
-    gMenu1 = "系统设置";
-    menu_More = getMenu_More();
     run("【系统设置】", "testSystem002prepare");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
@@ -1346,11 +1342,12 @@ function test210042() {
 
     var ret3 = isIn(alertMsg, "清理和刷新成功");
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret3=" + ret3);
     return ret && ret1 && ret3;
 }
 function test210043() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("数据清理授权");
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权");
@@ -2439,7 +2436,7 @@ function test210057() {
 }
 function test210061() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("紧急模式上传异常");
 
     tapButton(getScrollView(1), "删除紧急模式数据");
@@ -2454,7 +2451,7 @@ function test210061() {
 }
 function test210062() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("设置本地参数为默认");
 
     var cond = "isIn(alertMsg, '操作成功')";
@@ -2534,7 +2531,7 @@ function test210065() {
 }
 function test210067() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("门店列表");
 
     query();
@@ -2551,7 +2548,7 @@ function test210067() {
 }
 function test210069_210070() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("新增门店＋");
 
     var m = "test" + getTimestamp(8);
@@ -2568,17 +2565,20 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("门店列表");
 
-    query();
+    f0 = new TField("名称", TF, 0, m);
+    var fields = [ f0 ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
 
     var qr = getQR();
 
     var ret = isEqual(m, qr.data[0]["门店"]);
 
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2586,7 +2586,7 @@ function test210069_210070() {
 
     var f0 = new TField("账户全称", TF, 0, r);
     var f1 = new TField("账户简称", TF, 1, r1);
-    var f2 = new TField("门店", BTN_SC, 0, m);
+    var f2 = new TField("门店", BTN_SC, 0, "test210069");
     var f3 = new TField("刷卡/汇款", BTN_SC, 1, "通用");
     var fields = [ f0, f1, f2, f3 ];
     setTFieldsValue(getScrollView(), fields);
@@ -2607,7 +2607,7 @@ function test210069_210070() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("账户列表");
 
     query();
@@ -2621,7 +2621,7 @@ function test210069_210070() {
 }
 function test210071() {
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
 
     var r = "zh" + getTimestamp(4);
@@ -2643,7 +2643,7 @@ function test210071() {
     tapReturn();
 
     tapMenu1("系统设置");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("账户列表");
 
     query();

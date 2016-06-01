@@ -1,7 +1,7 @@
 //luxingxin <52619481 at qq.com> 20151014
 
 function testCheck001() {
-    run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "checkPrepare");
+    run("处理掉待作废", "checkPrepare");
     run("【盘点管理—按批次查】翻页_排序_汇总", "test180001_180003_180005");
     run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2_180004");
     run("【盘点管理—按明细查】翻页_排序_汇总", "test180013_1_180055");
@@ -12,7 +12,8 @@ function testCheck001() {
     run("【盘点管理—盈亏表】条件查询，清除按钮,下拉框", "test180037_180034_180035");
     run("【盘点管理—库存表】清除", "test180054");
 }
-function testCheckAll() {
+function testCheckAll() { 
+    run("处理掉待作废", "checkPrepare");
     run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
@@ -823,16 +824,14 @@ function test180025_1() {
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "中洲店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : "3035", "门店" : "中洲店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var b = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : s, "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : s, "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var c = qr.data[0]["库存"];
@@ -885,23 +884,20 @@ function test180025_1() {
     var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
             !isEqual(a, qr.data[0]["库存"]));
 
-    tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "中洲店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : "3035", "门店" : "中洲店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
-    tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : s, "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : s, "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret4 = isAnd(isEqual(0, qr.data[0]["库存"]), !isEqual(0, c));
 
-    tapMenu("货品管理", "款号库存");
-    var keys = { "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var m = qr.counts["库存"];
@@ -1004,14 +1000,14 @@ function test180026_1() {
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    var keys = { "款号" : "4562", "门店" : "中洲店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : "4562", "门店" : "中洲店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var b = qr.data[0]["库存"];
 
-    var keys = { "款号" : s, "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : s, "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var c = qr.data[0]["库存"];
@@ -1054,21 +1050,21 @@ function test180026_1() {
             qr.data[0]["操作日期"], 2));
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "4562", "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : "4562", "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
             !isEqual(a, qr.data[0]["库存"]));
 
-    var keys = { "款号" : "4562", "门店" : "中洲店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : "4562", "门店" : "中洲店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
-    var keys = { "款号" : s, "门店" : "常青店" };
-    var fields = queryGoodsCodeStockFields(keys);
+    keys = { "款号" : s, "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret4 = isAnd(isEqual(c, qr.data[0]["库存"]),

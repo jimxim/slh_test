@@ -20,45 +20,31 @@ function test000All() {
 // run("【销售开单-开单】允许店长改低价格", "test170586_5");
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】异地+代收，物流核销", "test170673");//
-// run("【销售开单－开单】开单时不允许负库存", "test170116_170660");//
-// run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
+ // run("【系统设置】参数互斥检查", "test210042");//
     
-// menu_More = getMenu_More();
-// run("【销售开单+整单折扣+代收】整单折扣+代收后核销物流单", "test170368");
-// run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170368_1");
-// run("【销售开单+产品折扣+代收】产品折扣+代 收后核销物流单", "test170378");
-// run("【销售开单-按明细查】折扣后价格的核算模式 四舍五入取整", "test170438");
-// run("【销售开单-核销】开启-允许跨门店核销时，显示其他门店的物流代收单", "test170574");
-// run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");
-// run("【销售开单-核销】开启跨门店核销核销不同门店的物流单", "test170687");
-// run("【销售开单-核销】开启-不允许跨门店核销时，不显示其他门店的物流代收单", "test170291");//
-// (帐套存在跨门店核销数据，关闭参数失败)
-// run("【销售开单-核销】不开启允许跨门店核销时，显示本门店的余款", "test170688");
-
- run("", "test1");
+  run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
+    
+// run("", "test1");
 }
     
 function test1(){
 // debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
- 
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
     
-    gMenu1 = "销售开单";
-    menu_More = getMenu_More();
-    tapMenu("销售开单", menu_More, "代收收款查询");
- 
-}
-function test2(){
-    var qo, o, ret = true;
+    tapNaviButton("全 选");
 
-   qo = { "备注" : "童装模式是否批发零售分开(按组按件分开)" };
-   o = { "新值" : "1", "数值" : [ "1", "in" ] };
-   ret = isAnd(ret, setLocalParam(qo, o));
-   
-   return ret;
+    for (var i = 0; i < 3; i++) {
+        var texts = getStaticTexts(app.navigationBar());
+        var index = getArrayIndexIn(texts, ".");
+        var money = getStaticTextValue(app.navigationBar(), index);
+    }
+
+    tapNaviButton("完成");
+    
+    return money;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

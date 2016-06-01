@@ -4557,31 +4557,31 @@ function test170660() {
     query();
     tapFirstText();
 
-    var f = new TField("数量", TF, 3, 8);
+    var f = new TField("数量", TF, 11, 8);
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
     tapPrompt();
 
-    var ret2 = isAnd(isIn(alertMsg, "操作成功"));
+    var ret2 = isAnd(isIn(alertMsg, "库存不足"));
 
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店" };
+    var keys = { "款号" : r, "门店" : "常青店", "尺码" : "M" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var k = qr.data[0]["库存"];
 
-    var ret3 = isEqual(-2, k);
+    var ret3 = isEqual(0, k);
 
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
 
-    var f = new TField("数量", TF, 3, 11);
+    var f = new TField("数量", TF, 11, 11);
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -4593,9 +4593,7 @@ function test170660() {
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    tapButton(window, QUERY);
     var qr = getQR();
     var k1 = qr.data[0]["库存"];
 

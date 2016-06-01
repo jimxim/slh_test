@@ -1,8 +1,6 @@
 //Zhangy <2397655091 at qq.com> 20151217
 
 function testStatisticPictureAll() {
-    gMenu1 = "统计图表";
-    menu_More = getMenu_More();
     run("【统计图表—按门店】清除", "test200003");
     run("【统计图表—按门店汇总】查询", "test200017");
     run("【统计图表—按门店汇总】清除", "test200018");
@@ -301,9 +299,9 @@ function test200048() {
 }
 function test200053() {
     tapMenu1("统计图表");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("按品牌");
-    tapMenu2(menu_More, "按品牌");
+    tapMenu2("getMenu_More", "按品牌");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureBrandFields(keys);
     query(fields);
@@ -325,7 +323,7 @@ function test200053() {
 }
 function test200058() {
     tapMenu1("统计图表");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("按滞销");
     var keys = { "上架从" : getDay(-300), "到" : getToday() };
     var fields = pictureUnsalableFields(keys);
@@ -342,7 +340,7 @@ function test200058() {
             getToday(), getTextFieldValue(window, 1)));
 
     tapMenu1("统计图表");
-    tapMenu2(menu_More);
+    tapMenu2("getMenu_More");
     tapMenu3("按单笔");
 
     var keys = { "日期从" : getDay(-300), "到" : getToday(), "门店" : "常青店" };
