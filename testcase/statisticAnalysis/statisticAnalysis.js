@@ -1666,8 +1666,7 @@ function test190041() {
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
         }
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     var expected = { "客户" : "小王", "抵扣" : 1000, "销额" : 4000, "退额" : 1000,
         "现金" : 1000, "刷卡" : 200, "汇款" : 800, "代收" : 0, "核销" : 1000 };

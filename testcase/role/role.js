@@ -184,8 +184,7 @@ function checkRightsGoods() {
     } else {
         ret = isAnd(ret, qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");// 这里单价小计标题显示，但是无内容
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu2("款号库存");
     tapButton(window, QUERY);

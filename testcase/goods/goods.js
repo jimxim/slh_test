@@ -198,7 +198,7 @@ function testGoods001() {
 function testGoods002() {
     // 均色均码 开单模式2 省代模式
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证", "test100071_100072");
-    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "ts100101_118");
     run("【货品管理-当前库存】默认排序", "ts100125");// 检验agc几个款号的默认排序
     run("【货品管理-当前库存】增加类别查询条件", "ts100132");
@@ -267,7 +267,8 @@ function testGoods002() {
     // 开单模式5
     // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
     // "test10_fuzzyQueryAndDropDownListCheck");
-
+    run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
+    run("开单模式2", "setPaymethod2");
 }
 
 function setGoodsParams002() {
@@ -2129,9 +2130,29 @@ function ts100132() {
 
 function ts100140() {
     var qo, o, ok = true;
-    qo = { "备注" : "销售异地发货开单模式" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "15", "数值" : [ "异地发货开单模式" ] };
     ok = isAnd(ok, setGlobalParam(qo, o));
+
+    var goods = addGoodsSimple();
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "zbs", "发货" : "中洲店",
+        "明细" : [ { "货品" : goods["款号"], "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : goods["款号"] };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var exp = { "仓库/门店" : "中洲店", "款号" : goods["款号"], "库存" : -20, "累计销" : 20 };
+    var ret = isEqualObject(exp, qr.data[0]);
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return ret;
 }
 
 function ts100142_143() {
@@ -3999,7 +4020,9 @@ function test100152() {
 
     return ret;
 }
-
+/**
+ * 简单的新增货品
+ */
 function addGoodsSimple() {
     var r = getTimestamp(6);
     var keys = {};

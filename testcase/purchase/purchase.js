@@ -2121,7 +2121,8 @@ function test120037() {
     addProvider(keys);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
-    var ret = isEqual("进货价", getTextFieldValue(getScrollView(), 3));
+    var f = editCustomerProviderField("适用价格");
+    var ret = isEqual("进货价", getTextFieldValue(getScrollView(), f.index));
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2133,7 +2134,7 @@ function test120037() {
     var a = getTextFieldValue(getScrollView(), 4);
     ret = isAnd(ret, isEqual("100", a));
     // window.segmentedControls()[2].buttons()["进货价"].isVisible();
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }
@@ -2703,7 +2704,7 @@ function test120052() {
 }
 
 function test120052Hang() {
-    tapMenu2( "getMenu_More");
+    tapMenu2("getMenu_More");
     tapMenu3("挂 单");
 }
 

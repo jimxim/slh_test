@@ -17,7 +17,7 @@ function test000All() {
 
 
 // run("测试用例", "ts100059Color");//
- run("测试用例", "onlyTest");
+ run("测试用例", "test120037");
 
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //
@@ -31,10 +31,9 @@ function onlyTest(){
 // "客户" : "xw",
 // "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
 // var fields = statisticAnalysisProfitFields(keys);
+// query(fields);
 
- tapMenu("往来管理", "getMenu_More","客户回访");
-    return true;
-
+    return ;
 }
 
 function prepare200All(){

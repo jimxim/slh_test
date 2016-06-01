@@ -305,7 +305,7 @@ function queryCustomerShopAccountField(key, show) {
 
 // 按上级单位
 function testQueryCustomerSuperFields() {
-    var keys = [ "name", "customer","shop" ]
+    var keys = [ "name", "customer", "shop" ]
     var fields = queryCustomerSuperFields(keys);
     setTFieldsValue(window, fields);
     var showFields = queryCustomerSuperFields(keys, true);
@@ -513,6 +513,9 @@ function editCustomerProviderField(key, show) {
     case "地址":
         f = new TField("地址", TF, 2, "地址");
         break;
+    case "厂商编码":
+        f = new TField("厂商编码", TF, 3, "aaa");
+        break;
     case "price":
     case "适用价格":
         f = new TField("适用价格", BTN_SC, 0, "打包价");
@@ -553,7 +556,7 @@ function queryProviderShopAccountField(key, show) {
         if (show) {
             f.value = "Vell";
         }
-        break;   
+        break;
     case "providerName":
     case "厂商名称":
         f = new TField("厂商名称", TF, 1, "Vell");

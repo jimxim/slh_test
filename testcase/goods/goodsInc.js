@@ -332,7 +332,23 @@ function getRandomNum(min, max, dn) {
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
-
+/**
+ * 点击导航栏左按钮，防止用例出错卡界面
+ * @param max 最大尝试次数
+ */
+function tapNaviClose(max) {
+    if (isUndefined(max)) {
+        max = 5;// 一般最多有3级页面，至少点击2次才能回到主界面
+    }
+    for (var i = 0; i < max; i++) {
+        var btn = app.navigationBar().leftButton();
+        if (isUIAButton(btn)) {
+            btn.tap();
+        } else {
+            break;
+        }
+    }
+}
 /**
  * 点击第一个内容为希望值的静态文本
  * @param name 默认为1，即点击第一条数据
