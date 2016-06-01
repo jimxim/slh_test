@@ -528,8 +528,6 @@ function setGoodsBrandDiscount001() {
 }
 
 function setLogisticsBasicSetUp(name, keys) {
-    var menu_More = getMenu_More();
-
     tapMenu("往来管理", menu_More, "物流商查询");
     var qKeys = { "名称" : name };
     var qFields = queryCustomerLogisticsFields(qKeys);

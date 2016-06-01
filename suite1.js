@@ -27,14 +27,14 @@ function test000All() {
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035", "客户" : "xw",
-            "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
-        var fields = statisticAnalysisProfitFields(keys);
-   for(var i in fields){
-       logDebug("idx="+fields[i].index+"   val="+fields[i].value);
-   }
-   
-   return true;
+// var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035","款号名称" : "jkk",
+// "客户" : "xw",
+// "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
+// var fields = statisticAnalysisProfitFields(keys);
+
+ tapMenu("往来管理", "getMenu_More","客户回访");
+    return true;
+
 }
 
 function prepare200All(){

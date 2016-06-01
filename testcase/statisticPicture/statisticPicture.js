@@ -1,7 +1,8 @@
 //Zhangy <2397655091 at qq.com> 20151217
 
 function testStatisticPictureAll() {
-    var menu_More = getMenu_More();
+    gMenu1 = "统计图表";
+    menu_More = getMenu_More();
     run("【统计图表—按门店】清除", "test200003");
     run("【统计图表—按门店汇总】查询", "test200017");
     run("【统计图表—按门店汇总】清除", "test200018");

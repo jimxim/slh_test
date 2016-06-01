@@ -1,7 +1,8 @@
 // Zhangy <15068165765 at 139.com>  2015.11.5
 
 function testSalesNoColorSizeElse001() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1_170010_170011_170012");
     run("【销售开单－按批次查】条件查询，清除按钮,下拉框",
             "test170001_2_170002_170003_170004_170008_170020_170485");
@@ -46,9 +47,11 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－更多-代收收款查询】单项查询", "test170295_170296_170297");
     run("【销售开单－更多-代收收款查询】底部数据汇总检查", "test170298");
     run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
+    run("【统计分析—利润表】详细页面排序翻页", "test190042");
 }
 function testSalesNoColorSizeElse002() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306_1");
     run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
     run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
@@ -85,7 +88,8 @@ function testSalesNoColorSizeElse002() {
     // "test170383");//(用例已改)
 }
 function testSalesNoColorSizeElseAll() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－按批次查】是否未结", "test170005");
     run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
     run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
@@ -111,7 +115,8 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单-按批次查】打印作废单", "test170025");
 }
 function testSalesNoColorSizeElseAll_1() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
     run("【销售开单-按订货开单】修改界面检查明细内容输入区域", "test170419");
     run("【销售开单-按订货开单】通过代收方式收钱", "test170421");
@@ -154,7 +159,8 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
 }
 function testSalesNoColorSizeElseAll_2() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");

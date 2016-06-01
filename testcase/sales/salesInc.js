@@ -363,7 +363,7 @@ function getTableViewCells1(view1, f, o) {
     logDebug(" tableViewIndex=" + tableViewIndex + " ret=" + ret);
     return ret;
 }
-
+var menu_More;
 /**
  * 获取更多按钮 7.10之前版本不统一
  * @returns
@@ -389,6 +389,6 @@ function getMenu_More() {
             menu = MORE;
             break;
         }
-        return menu;
     }
+    return menu;
 }

@@ -1,6 +1,4 @@
 //LuXingXin <52619481 at qq.com> 20150917
-/** 日利润表 */
-var Menu_Profit = "日利润表";// 5.69前为利润表
 // 收支表
 function testStatisticAnalysisInOutFields() {
     var keys = [ "day1", "day2", "type" ];
@@ -75,7 +73,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "name":
     case "款号名称":
-        if (ipadVer < 7.10) {
+        if (ipadVer >= 7.10) {
             f = new TField("款号名称", TF, 4, "3035");
         }
         break;

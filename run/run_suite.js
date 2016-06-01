@@ -1,3 +1,3 @@
-#import "/Users/sunway/Documents/slh_test/suite1.js"
+#import "/Users/hzdlmac/Documents/slh_test/suite2.js"
 
-login000SAProfit();
+test000System002();

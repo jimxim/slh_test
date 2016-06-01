@@ -3926,6 +3926,10 @@ function test170651() {
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = "anewCuanMa" + getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "0,1", "尺码" : "0,1",
@@ -4088,11 +4092,37 @@ function test170651() {
 function test170652() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCuanMa" + getTimestamp(6);
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "0,1", "尺码" : "0,1",
+        "吊牌价" : "200", "进货价" : "100" };
+    var fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 20 ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
+    editSalesBillColorSize(json);
+
+    qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4106,7 +4136,7 @@ function test170652() {
     var k1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "anewCuanMa", "数量" : [ 1 ] } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ],
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
@@ -4138,11 +4168,37 @@ function test170652() {
 function test170653() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewCuanMa" + getTimestamp(6);
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "0,1", "尺码" : "0,1",
+        "吊牌价" : "200", "进货价" : "100" };
+    var fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 20 ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
+    editSalesBillColorSize(json);
+
+    qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4157,7 +4213,7 @@ function test170653() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "anewCuanMa", "数量" : [ add(add(k, k1), 1) ] } ],
+        "明细" : [ { "货品" : r, "数量" : [ add(add(k, k1), 1) ] } ],
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 

@@ -1,6 +1,7 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
     run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
@@ -27,7 +28,8 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】跨门店核销后检查本单已核销和所有已核销", "test170496");
 }
 function testSalesNoColorSizeAll_1() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－开单】 核销界面第一条记录选择性勾选检查", "test170452");
     run("【销售开单－开单】核销记录很多时底端记录选择[客户trfd]", "test170061");
     run("【销售开单－开单】连续核销后核销界面检查", "test170062");
@@ -75,7 +77,8 @@ function testSalesNoColorSizeAll_1() {
     // // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
 }
 function testSalesNoColorSizeAll_2() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");// (用例要修改)
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
@@ -120,7 +123,8 @@ function testSalesNoColorSizeAll_2() {
 
 }
 function testSalesNoColorSize001() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单】客户或供应商信息不允许修改", "test170063");
     run("【销售开单－开单】快速新增客户后折扣值检查", "test170067");
     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
@@ -157,7 +161,8 @@ function testSalesNoColorSize001() {
     run("【开单 】开单时，款号是否按门店区分--总经理权限", "test170552");
 }
 function testSalesNoColorSize001_1() {
-    var menu_More = getMenu_More();
+    gMenu1 = "销售开单";
+    menu_More = getMenu_More();
     run("【销售开单－开单】开单时不允许负库存", "test170116_170660");
     run("【销售开单－开单】库存不足时开单修改界面不能打印", "test170118");
     run("【销售开单－开单】开单时允许负库存", "test170117");

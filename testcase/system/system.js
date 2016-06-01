@@ -1,6 +1,7 @@
 //zhangy <2397655091 at qq.com> 20151215
 function testSystem001() {
-    var menu_More = getMenu_More();
+    gMenu1 = "系统设置";
+    menu_More = getMenu_More();
     run("【系统设置—打印机】保存", "test210001");
     run("【系统设置—打印机】返回", "test210002");
     run("【系统设置—打印机】远程打印参数", "test210003");
@@ -51,6 +52,8 @@ function testSystem001() {
 
 }
 function testSystem002() {
+    gMenu1 = "系统设置";
+    menu_More = getMenu_More();
     run("【系统设置】", "testSystem002prepare");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--验证", "test210045");
     run("【系统设置】开单代收模式下,输入了代收金额,是否验证一定要选择物流商--不验证", "test210046");
