@@ -820,7 +820,7 @@ function test160011Field(staff, menu1) {
 
     tapFirstText();
     // 取首次订货人和首次订货时间
-    tapMenu(menu1, menu_More, "查看修改日志");
+    tapMenu(menu1, "getMenu_More", "查看修改日志");
     var texts = getStaticTexts(getPopOrView());
     var index = getArrayIndexIn(texts, "首次订货人");
     // 采购订货没有首次订货人与首次订货时间
@@ -839,7 +839,7 @@ function test160011Field(staff, menu1) {
     tapButton(window, RETURN);
 
     tapFirstText();
-    tapMenu(menu1, menu_More, "查看修改日志");
+    tapMenu(menu1, "getMenu_More", "查看修改日志");
     texts = getStaticTexts(getPopOrView());
     index = getArrayIndexIn(texts, "首次订货人");
     if (index >= 0) {
@@ -918,7 +918,7 @@ function test160012() {
 // }
 
 // function test160013Field() {
-// tapMenu("销售订货", menu_More, "刷新图像");
+// tapMenu("销售订货", "getMenu_More", "刷新图像");
 // }
 
 function test160023_160024() {
@@ -1359,7 +1359,7 @@ function test160063_1() {
     tapMenu("销售订货", "按批次查");
     tapFirstText();
     delay();
-    tapMenu("销售订货", menu_More, "终结订单");
+    tapMenu("销售订货", "getMenu_More", "终结订单");
     tapButtonAndAlert("none", OK);
     tapPrompt();
     delay();

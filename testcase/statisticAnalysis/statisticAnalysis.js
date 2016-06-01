@@ -58,7 +58,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—利润表】翻页排序", "test190088");// 利润额不作排序
     run("【统计分析—利润表】底部数据检查", "test190086");
     run("【统计分析—利润表】查看详细", "test190083");
-    run("【统计分析—利润表】详细页面排序翻页", "test190042");
+    run("【统计分析—利润表】详细页面排序翻页", "test190042");// 放到zy那跑
     run("【统计分析—利润表】详细页面-特殊货品", "test190043");
     run("【统计分析—利润表】查看明细-按单利润表", "test190084");// 3种成本核算
     run("【统计分析—利润表】按单利润表排序翻页", "test190102");
@@ -2409,11 +2409,13 @@ function test190089() {
 
 function test190042() {
     tapMenu("统计分析", Menu_Profit);
-    query();
+    var keys = { "日期从" : getDay(-10), "日期到" : getToday() };
+    var fields = statisticAnalysisProfitFields(keys);
+    query(fields);
 
     tapFirstText();
     var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "款号", "利润额");
-    // 本列暂不支持排序
+
     ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "款号");
     ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "名称");
     ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量");

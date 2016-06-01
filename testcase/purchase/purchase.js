@@ -2703,7 +2703,7 @@ function test120052() {
 }
 
 function test120052Hang() {
-    tapMenu2(menu_More);
+    tapMenu2( "getMenu_More");
     tapMenu3("挂 单");
 }
 

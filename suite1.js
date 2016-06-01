@@ -32,8 +32,8 @@ function onlyTest(){
 // "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
 // var fields = statisticAnalysisProfitFields(keys);
 
- tapMenu("销售开单", "按明细查");
-    
+ tapMenu("往来管理", "getMenu_More","客户回访");
+    return true;
 
 }
 
