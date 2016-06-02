@@ -2116,12 +2116,12 @@ function test120035() {
 }
 
 function test120037() {
-    var r = "p" + getTimestamp(8);
+    var r = "p" + getTimestamp(6);
     var keys = { "名称" : r };
     addProvider(keys);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
-    var f = editCustomerProviderField("适用价格");
+    var f = editCustomerProviderField("适用价格", true);
     var ret = isEqual("进货价", getTextFieldValue(getScrollView(), f.index));
     tapReturn();
 
@@ -2129,9 +2129,10 @@ function test120037() {
     var jo = { "客户" : r, "onlytest" : "yes" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
-    var a = getTextFieldValue(getScrollView(), 4);
+    var title = getDetSizheadTitle({});
+    var a = getTextFieldValue(getScrollView(), title["单价"]);
     ret = isAnd(ret, isEqual("100", a));
     // window.segmentedControls()[2].buttons()["进货价"].isVisible();
     tapReturn();

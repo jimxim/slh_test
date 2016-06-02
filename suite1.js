@@ -11,13 +11,11 @@ function test000All() {
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
-// TITLE_SXE = getTitleSXE();//新综合汇总
+// TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// outBatch={"inPre":"269","ts150007":"268"};
 
+ run("测试用例", "test120051");//
 
-// run("测试用例", "ts100059Color");//
- run("测试用例", "test120037");
 
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //

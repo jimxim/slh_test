@@ -34,6 +34,7 @@ function testCustomerPrepare001() {
 
 function testCustomer002() {
     run("【往来管理-客户查询】客户查询->消费明细", "test110002");// 开单5，产品折扣
+    run("开单模式2", "setPaymethod2");
     run("【往来管理-客户查询】客户查询->修改保存", "test110004");
     run("【往来管理-客户查询】客户查询->客户停用", "test110005");
     run("【往来管理】允许退货－－是", "test110008");
@@ -63,7 +64,7 @@ function testCustomer002() {
     // run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
-    run("【往来管理-新增厂商】新增厂商", "test110038");
+    run("【往来管理-新增厂商】新增厂商", "ts110038");
     run("【往来管理-新增厂商】厂商适用价格检查", "ts110039");
     run("【往来管理-新增厂商】厂商适用价格检查", "test110040");
     run("【往来管理-厂商账款】总经理权限检查", "ts110041Role000");
@@ -304,6 +305,10 @@ function test110002() {
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
     o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 1.上级客户有自己的数据和下级的数据
@@ -1983,7 +1988,7 @@ function test1100_QueryProvider() {
     return ret;
 }
 
-function test110038() {
+function ts110038() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var qr = getQR();
     var arr = new Array();
@@ -1993,7 +1998,6 @@ function test110038() {
         }
     }
     arr.splice(0, 0, "进货价");
-    // logDebug("arr=" + arr);
 
     tapMenu("往来管理", "新增厂商+");
     // 适用价格下拉框内容验证
@@ -2019,7 +2023,7 @@ function test110038() {
     keys = { "手机" : r, "地址" : "地址", "适用价格" : "零批价", "备注" : "备注abc123" };
     var fields = editCustomerProviderFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(SAVE);
+    saveAndAlertOk();
     tapReturn();
 
     query();
@@ -2028,11 +2032,9 @@ function test110038() {
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("cs" + r, getTextFieldValue(getScrollView(), 0)),
-            isEqual(r, getTextFieldValue(getScrollView(), 1)), isEqual("地址",
-                    getTextFieldValue(getScrollView(), 2)), isEqual("零批价",
-                    getTextFieldValue(getScrollView(), 3)), isEqual("备注abc123",
-                    getTextViewValue(getScrollView(), 0)));
+    keys["名称"] = "cs" + r;
+    fields = editCustomerProviderFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
     tapReturn();
 
     return ret;

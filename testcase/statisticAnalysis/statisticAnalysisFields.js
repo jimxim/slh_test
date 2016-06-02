@@ -57,8 +57,8 @@ function statisticAnalysisProfitField(key, show) {
         f = new TField("日期从", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 1, getToday());
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
         break;
     case "shop":
     case "门店":

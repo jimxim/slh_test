@@ -122,6 +122,10 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "默认零批价" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret;
 }
 
@@ -198,7 +202,7 @@ function testGoods001() {
 function testGoods002() {
     // 均色均码 开单模式2 省代模式
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证", "test100071_100072");
-    run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
+    // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "ts100101_118");
     run("【货品管理-当前库存】默认排序", "ts100125");// 检验agc几个款号的默认排序
     run("【货品管理-当前库存】增加类别查询条件", "ts100132");
@@ -231,7 +235,6 @@ function testGoods002() {
     run("【货品管理-货品查询】待入库数", "ts100148");
     run("【货品管理-货品查询】显示条码功能", "ts100058");
     run("【货品管理-货品查询】查询条件“是否停用 ”需要默认为“否", "ts100124");
-    run("【货品管理-新增货品】款号修改界面吊牌价显示检查", "ts100057");
     run("【货品管理-新增货品】在建款时出现下拉列表，用来提醒款号重复", "ts100131");
     run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "ts100035");
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
@@ -1204,21 +1207,21 @@ function ts100015_100017() {
 }
 
 function test100015_100017Field() {
+    var keys = { "品牌" : "p" };
+    var fields = editGoodsFields(keys);
+    var cells = getTableViewCells(getScrollView(), fields["品牌"]);
     var ret = true;
-    var i, v, cell;
-    var f = new TField("品牌", TF_AC, 2, "pp", -1);
-    var cells = getTableViewCells(getScrollView(), f);
-    for (i = 0; i < cells.length; i++) {
-        cell = cells[i];
-        v = cell.name();
-        v = v.toLowerCase(v);
-        if ((!isIn(v, "pp")) && (!isIn(v, "品牌"))) {
-            ret = false;
+    for (var i = 0; i < cells.length; i++) {
+        var v = String(cells[i].name());
+        var value = CC2PY(v).toUpperCase();// 中文转拼音
+        ret = ret && value.indexOf("P") != -1;
+        if (!ret) {
+            logDebug("品牌 value=" + value + "   中不包含p")
             break;
         }
     }
     tapKeyboardHide();
-    tapButton(window, RETURN);
+    tapReturn();
     return ret;
 }
 // 004店长登陆验证 默认店长权限
