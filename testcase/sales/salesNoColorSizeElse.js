@@ -89,7 +89,6 @@ function testSalesNoColorSizeElseAll() {
     run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
     run("【销售开单－按批次查】页面跳转检查", "test170013");
     run("【销售开单－按批次查】键盘检查", "test170014");
-    run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");
     run("【销售开单－按批次查】修改代收内容", "test170024");
     run("【销售开单-按明细查】作废开单后内容检查", "test170030");
     run("【销售开单－按明细查】键盘检查", "test170034");
@@ -107,6 +106,7 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】开单日期检查", "test170272");
     run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
     run("【销售开单-按批次查】打印作废单", "test170025");
+    run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");//
 }
 function testSalesNoColorSizeElseAll_1() {
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
@@ -1447,7 +1447,7 @@ function test170252() {
 
     saveAndAlertOk();
     tapPrompt();
-    tapReturn();
+    // tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     keys = { "发货状态" : "部分发货" };
@@ -1464,7 +1464,7 @@ function test170252() {
 
     saveAndAlertOk();
     tapPrompt();
-    tapReturn();
+    // tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     keys = { "发货状态" : "全部发货" };
@@ -2392,7 +2392,7 @@ function test170275() {
 
     var ret = goPageCheck();
 
-    ret = ret && sortByTitle("选择");
+    // ret = ret && sortByTitle("选择");
     ret = ret && sortByTitle("记账日期", IS_DATE2);
     ret = ret && sortByTitle("开始批次", IS_NUM);
     ret = ret && sortByTitle("截止批次", IS_NUM);
@@ -6347,13 +6347,15 @@ function test170375() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    tapButton(window, QUERY);
+    query();
     tapFirstText();
 
-    var k3 = getTextFieldValue(window, 3);
-    var k4 = getTextFieldValue(window, 4);
+    for (var i = 0; i < 3; i++) {
+        var k3 = getTextFieldValue(window, 3);
+        var k4 = getTextFieldValue(window, 4);
+    }
 
-    var ret = isAnd(isEqual("310", k4));
+    var ret1 = isAnd(isEqual("310", k4));
 
     tapReturn();
 
@@ -6372,7 +6374,7 @@ function test170375() {
     var a6 = qr.data[0]["门店"];
     var a7 = qr.data[0]["货款收讫"];
 
-    var ret1 = isAnd(isEqual("310", a), isEqual("汇通快递", a1), isEqual(r, a2),
+    var ret2 = isAnd(isEqual("310", a), isEqual("汇通快递", a1), isEqual(r, a2),
             isEqual("aht", a3), isEqual("是", a4), isEqual("李四", a5), isEqual(
                     "常青店", a6), isEqual("否", a7));
 
@@ -6380,8 +6382,8 @@ function test170375() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170376() {
     // 全局设置开单模式：2代收， 19产品折扣+代收
@@ -10189,31 +10191,39 @@ function test170687() {
     tapButton(window, "核销");
 
     var qr = getQRtable1(window, 8, -2);
-
-    if (qr.data[0]["门店"] == "常青店") {
-        var dataView = window.tableViews()[5].groups()["批次"];
-        tapTitle(dataView, "门店");
-        delay();
-        // tapTitle(dataView, "门店");
-    }
-
-    qr = getQRtable1(window, 8, -2);
-
-    if (qr.data[0]["门店"] != "常青店" && qr.data[7]["门店"] == "常青店") {
-
-        var batch = qr.data[0]["批次"];
-        var batch1 = qr.data[7]["批次"];
-        getTableView(window, -2).cells().firstWithName(batch).tap();
-        getTableView(window, -2).cells().firstWithName(batch1).tap();
+    if (qr.data[0]["门店"] == null) {
+        tapNaviLeftButton();
+        tapReturn();
+        logDebug(" qr=" + null);
+        ret = isAnd(ret, ret = false);
 
     } else {
-        ret = isAnd(ret, ret = false);
+
+        if (qr.data[0]["门店"] == "常青店") {
+            var dataView = window.tableViews()[5].groups()["批次"];
+            tapTitle(dataView, "门店");
+            delay();
+        }
+
+        qr = getQRtable1(window, 8, -2);
+
+        if (qr.data[0]["门店"] != "常青店" && qr.data[7]["门店"] == "常青店") {
+
+            var batch = qr.data[0]["批次"];
+            var batch1 = qr.data[7]["批次"];
+            getTableView(window, -2).cells().firstWithName(batch).tap();
+            getTableView(window, -2).cells().firstWithName(batch1).tap();
+
+            tapNaviButton("完成");
+            saveAndAlertOk();
+            tapReturn();
+
+        } else {
+            tapNaviLeftButton();
+            tapReturn();
+            ret = isAnd(ret, ret = false);
+        }
     }
-
-    tapNaviButton("完成");
-
-    saveAndAlertOk();
-    tapReturn();
 
     tapMenu("统计分析", "收支流水");
     var keys = { "门店" : "仓库店", "账户" : "现" };

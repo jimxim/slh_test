@@ -97,7 +97,7 @@ js_func="$js_func testCheck180058"
 #js_func="$js_func testCheck180028"
 #统计图表
 js_func="$js_func test000testStatisticPicture001"
-js_func="$js_func test000testStatisticPicture002"
+#js_func="$js_func test000testStatisticPicture002"
 
 #系统设置
 js_func="$js_func test000System001 test000System002"

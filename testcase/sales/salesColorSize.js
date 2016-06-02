@@ -4144,8 +4144,10 @@ function test170652() {
     tapPrompt();
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功");
+    var alertMsg1 = getArray1(alertMsgs, -1), alertMsg2 = getArray1(alertMsgs,
+            -2), alertMsg3 = getArray1(alertMsgs, -3);
+    var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")
+            || isIn(alertMsg3, "保存成功");
 
     tapReturn();
 
@@ -4162,8 +4164,112 @@ function test170652() {
 
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k3 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "S");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k2 = qr.data[0]["库存"];
+
+    var ret3 = isAnd(isEqual("-11", k2), isEqual(20, k3));
+
+    // 采购退货/门店调出/紧急模式上传 都要测一遍
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ -1 ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret4 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
+
+    tapReturn();
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, -add(add(k2, k3), 1));
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    ret4 = isAnd(ret4, isIn(alertMsg, "差1"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k4 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "M");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k5 = qr.data[0]["库存"];
+
+    ret4 = isAnd(ret4, isEqual("-12", k4), isEqual(20, k5));
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "客户" : "000", "明细" : [ { "货品" : r, "数量" : [ 2 ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var f1 = new TField("接收店", TF_SC, 1, "中洲店");
+    var fields = [ f1 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret5 = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    tapMenu("门店调出", "按批次查");
+    var keys = { "日期到" : getToday() };
+    var fields = shopOutQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+
+    var f3 = new TField("数量", TF, 3, add(add(k4, k5), 1));
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(), fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    ret5 = isAnd(ret5, isIn(alertMsg, "差1"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k7 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "S");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k6 = qr.data[0]["库存"];
+
+    ret5 = isAnd(ret5, isEqual("-14", k6), isEqual(20, k7));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170653() {
     var qo, o, ret = true;
@@ -4226,8 +4332,111 @@ function test170653() {
 
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k3 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "S");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k2 = qr.data[0]["库存"];
+
+    var ret2 = isAnd(isEqual("-10", k2), isEqual(20, k3));
+    // 按订货开单/采购退货/门店调出/紧急模式上传 都要测一遍
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "lt",
+        "明细" : [ { "货品" : r, "数量" : [ add(add(k2, k3), 1) ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = isIn(alertMsg1, "差1");
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k4 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "M");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k5 = qr.data[0]["库存"];
+
+    ret3 = isAnd(ret3, isEqual("-10", k4), isEqual(20, k5));
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : r, "数量" : [ -add(add(k4, k5), 1) ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret4 = isAnd(isIn(alertMsg, "差1"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k7 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "S");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k6 = qr.data[0]["库存"];
+
+    ret4 = isAnd(ret4, isEqual("-10", k6), isEqual(20, k7));
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "客户" : "000",
+        "明细" : [ { "货品" : r, "数量" : [ add(add(k6, k7), 1) ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var f1 = new TField("接收店", TF_SC, 1, "中洲店");
+    var fields = [ f1 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret5 = isIn(alertMsg, "差1");
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k8 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "M");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k9 = qr.data[0]["库存"];
+
+    ret5 = isAnd(ret5, isEqual("-10", k8), isEqual(20, k9));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170654() {
     var qo, o, ret = true;
@@ -4284,8 +4493,113 @@ function test170654() {
 
     var ret2 = isAnd(isEqual(-1, k2), isEqual(k1, k3));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    // 按订货开单/采购退货/门店调出/紧急模式上传 都要测一遍
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : "anewCuanMa", "数量" : [ Number(-k2 * 2) ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : [ add(-k2, 1) ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+
+    tapFirstText();
+
+    saveAndAlertOk();
+    tapPrompt();
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = isIn(alertMsg1, "保存成功");
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k4 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "M");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k5 = qr.data[0]["库存"];
+
+    ret3 = isAnd(ret3, isEqual(-1, k4), isEqual(20, k5));
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : "anewCuanMa", "数量" : [ Number(-k4 * 2) ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ add(-k4, 1) ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret4 = isAnd(isIn(alertMsg, "保存成功"));
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k7 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "S");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k6 = qr.data[0]["库存"];
+
+    ret4 = isAnd(ret4, isEqual(-1, k6), isEqual(20, k7));
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt",
+        "明细" : [ { "货品" : "anewCuanMa", "数量" : [ Number(-k6 * 2) ] } ],
+        "goodsFieldIndex" : -2 };
+    editSalesBillColorSize(json);
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "客户" : "000", "明细" : [ { "货品" : r, "数量" : [ add(-k6, 1) ] } ],
+        "goodsFieldIndex" : -2, "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var f1 = new TField("接收店", TF_SC, 1, "中洲店");
+    var fields = [ f1 ];
+    setTFieldsValue(window, fields);
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret5 = isIn(alertMsg, "保存成功");
+
+    tapReturn();
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k8 = qr.data[0]["库存"];
+
+    var f = new TField("尺码", TF_SC, 5, "M");
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var k9 = qr.data[0]["库存"];
+
+    ret5 = isAnd(ret5, isEqual("-1", k8), isEqual(20, k9));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170655() {
     var qo, o, ret = true;

@@ -207,6 +207,7 @@ function test210004_210005_210006() {
     o = { "新值" : "2", "数值" : [ "2", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test210007_210008() {
@@ -336,6 +337,7 @@ function test210018_1() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE, OK);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test210018_2() {
@@ -648,10 +650,7 @@ function test210027() {
     tapButtonAndAlert("修改保存", OK);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "工号已存在")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "工号已存在");
 
     var r = getRandomInt(10000);
     f1 = new TField("工号", TF, 0, "y" + r);
@@ -733,10 +732,7 @@ function test210030() {
     tapFirstText();
     tapButtonAndAlert("密码重置", OK);
 
-    var ret = false;
-    if (isIn(alertMsg, "密码会重置为000000")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "密码会重置为000000");
 
     tapMenu("系统设置", "改密码");
     var f0 = new TField("原密码", TF_S, 0, "000000");
@@ -748,10 +744,8 @@ function test210030() {
     tapButton(window, OK);
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "操作成功")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "操作成功");
+
     tapButton(window, "关 闭");
 
     tapMenu("系统设置", "改密码");
@@ -810,10 +804,7 @@ function test210032() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "工号已存在，请选择另外一个")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "工号已存在，请选择另外一个");
 
     var r = getTimestamp(4);
     f0 = new TField("工号", TF, 0, "y" + r);
@@ -922,10 +913,7 @@ function test210034() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "工号不能为0")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "工号不能为0");
 
     tapReturn();
 
@@ -942,10 +930,7 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "密码必须为6位")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "密码必须为6位");
 
     tapButton(window, "关 闭");
     delay();
@@ -960,9 +945,8 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    if (isIn(alertMsg, "密码必须为6位")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "密码必须为6位");
+
     tapButton(window, "关 闭");
 
     tapMenu("系统设置", "改密码");
@@ -975,9 +959,8 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    if (isIn(alertMsg, "请确认原密码是否正确")) {
-        ret = true;
-    }
+    var ret2 = isIn(alertMsg, "请确认原密码是否正确");
+
     tapButton(window, "关 闭");
 
     tapMenu("系统设置", "改密码");
@@ -990,9 +973,8 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    if (isIn(alertMsg, "再次输入都密码不同")) {
-        ret = true;
-    }
+    var ret3 = isIn(alertMsg, "再次输入都密码不同");
+
     tapButton(window, "关 闭");
 
     tapMenu("系统设置", "改密码");
@@ -1005,9 +987,8 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    if (isIn(alertMsg, "操作成功")) {
-        ret = true;
-    }
+    var ret4 = isIn(alertMsg, "操作成功");
+
     tapButton(window, "关 闭");
 
     tapMenu("系统设置", "改密码");
@@ -1020,7 +1001,7 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "操作成功");
+    var ret5 = isIn(alertMsg, "操作成功");
 
     tapButton(window, "关 闭");
 
@@ -1032,7 +1013,9 @@ function test210035() {
     // tapFirstText();
     // tapButtonAndAlert("密码重置", OK);
 
-    return ret && ret1;
+    logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test210036() {
     tapMenu("系统设置", "改密码");
@@ -1149,10 +1132,7 @@ function test210039_210068() {
 
     tapPrompt();
 
-    var ret2 = false;
-    if (isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式");
 
     tapReturn();
 
@@ -1218,7 +1198,7 @@ function test210039_1_210068() {
     var fields = salesQueryBatchFields(keys);
 
     tapFirstText();
-    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(), 1)),
+    var ret1 = isAnd(isEqual("", getTextFieldValue(getScrollView(), 1)),
             isEqual("", getTextFieldValue(getScrollView(), 2)), isEqual("",
                     getTextFieldValue(getScrollView(), 8)), isEqual("",
                     getTextFieldValue(getScrollView(), 9)));
@@ -1232,14 +1212,15 @@ function test210039_1_210068() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var ret1 = isAnd(isEqual("均色", getTextFieldValue(getScrollView(), 1)),
+    var ret2 = isAnd(isEqual("均色", getTextFieldValue(getScrollView(), 1)),
             isEqual("均码", getTextFieldValue(getScrollView(), 2)), isEqual("均色",
                     getTextFieldValue(getScrollView(), 8)), isEqual("均码",
                     getTextFieldValue(getScrollView(), 9)));
 
     tapReturn();
 
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 
 function test210041() {
@@ -1293,10 +1274,7 @@ function test210042() {
 
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]");
     delay();
     tapReturn();
 
@@ -1322,10 +1300,7 @@ function test210042() {
 
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]")) {
-        ret1 = true;
-    }
+    var ret2 = isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]");
 
     tapReturn();
 
@@ -1343,7 +1318,7 @@ function test210042() {
     var ret3 = isIn(alertMsg, "清理和刷新成功");
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret3=" + ret3);
-    return ret && ret1 && ret3;
+    return ret && ret1 && ret2 && ret3;
 }
 function test210043() {
     tapMenu1("系统设置");
@@ -1365,10 +1340,7 @@ function test210043() {
     tapButton(window, "保存");
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "操作成功")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "操作成功");
     tapReturn();
 
     tapNaviLeftButton();
@@ -1394,14 +1366,11 @@ function test210045() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "必须选择物流商")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "必须选择物流商");
 
     tapReturn();
 
-    return ret;
+    return ret && ret1;
 }
 function test210046() {
     var qo, o, ret = true;
@@ -1422,14 +1391,11 @@ function test210046() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "保存成功")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "保存成功");
 
     tapReturn();
 
-    return ret;
+    return ret && ret1;
 }
 function test210049() {
     var qo, o, ret = true;
@@ -1833,7 +1799,7 @@ function test210051_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "保存成功");
+    ret = isAnd(ret, isIn(alertMsg, "保存成功"));
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
@@ -1936,10 +1902,8 @@ function test210052() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret = true;
-    }
+    ret = isAnd(ret, isIn(alertMsg, "系统设定不允许修改开单日期"));
+
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -1954,10 +1918,8 @@ function test210052() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
@@ -1971,10 +1933,8 @@ function test210052() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret2 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -1989,10 +1949,8 @@ function test210052() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret3 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret3 = true;
-    }
+    var ret3 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
@@ -2037,10 +1995,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret = true;
-    }
+    ret = isAnd(ret, isIn(alertMsg, "系统设定不允许修改开单日期"));
+
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -2058,10 +2014,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
@@ -2078,10 +2032,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret5 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret5 = true;
-    }
+    var ret5 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
@@ -2100,10 +2052,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret2 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购入库", "按订货入库");
@@ -2117,10 +2067,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret4 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret4 = true;
-    }
+    var ret4 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2139,10 +2087,8 @@ function test210052_1() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret3 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret3 = true;
-    }
+    var ret3 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
@@ -2173,10 +2119,8 @@ function test210052_2() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
@@ -2195,13 +2139,12 @@ function test210052_2() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "系统设定不允许修改开单日期")) {
-        ret1 = true;
-    }
+    var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
+
     tapReturn();
 
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210053() {
     var qo, o, ret = true;
@@ -2227,10 +2170,7 @@ function test210053() {
 
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "操作失败，[开启启用上次成交价作为本次开单单价时，必须先开启颜色尺码下，开单显示上次单价] ")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "操作失败，[开启启用上次成交价作为本次开单单价时，必须先开启颜色尺码下，开单显示上次单价] ");
 
     tapReturn();
 
@@ -2260,14 +2200,11 @@ function test210053_1() {
 
     tapPrompt();
 
-    var ret1 = false;
-    if (isIn(alertMsg, "操作失败，[关闭颜色尺码下，开单显示上次单价时，必须先关闭启用上次成交价作为本次开单单价]")) {
-        ret1 = true;
-    }
+    var ret1 = isIn(alertMsg, "操作失败，[关闭颜色尺码下，开单显示上次单价时，必须先关闭启用上次成交价作为本次开单单价]");
 
     tapReturn();
 
-    return ret && ret1
+    return ret && ret1;
 }
 function test210053_2() {
     var qo, o, ret = true;
@@ -2289,10 +2226,7 @@ function test210053_2() {
 
     tapPrompt();
 
-    var ret1 = true;
-    if (isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ")) {
-        ret1 = false;
-    }
+    var ret1 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
 
     tapReturn();
 
@@ -2310,14 +2244,11 @@ function test210053_2() {
 
     tapPrompt();
 
-    var ret2 = true;
-    if (isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ")) {
-        ret2 = false;
-    }
+    var ret2 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
 
     tapReturn();
 
-    logDebug("ret=" + ret + ", ret1=" + ret1);
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test210055() {
@@ -2482,11 +2413,12 @@ function test210063() {
 
     tapPrompt();
 
-    var ret = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
+    var ret1 = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
 
     tapReturn();
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test210065() {
     tapMenu("系统设置", "打印机");

@@ -21,8 +21,8 @@ function test000All() {
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】异地+代收，物流核销", "test170673");//
  // run("【系统设置】参数互斥检查", "test210042");//
-    
-  run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
+// run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
+    run("【销售开单-开单】1.3窜码发货，开单时超过总库存时", "test170654");
     
 // run("", "test1");
 }
@@ -33,18 +33,7 @@ function test1(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    
-    tapNaviButton("全 选");
 
-    for (var i = 0; i < 3; i++) {
-        var texts = getStaticTexts(app.navigationBar());
-        var index = getArrayIndexIn(texts, ".");
-        var money = getStaticTextValue(app.navigationBar(), index);
-    }
-
-    tapNaviButton("完成");
-    
-    return money;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

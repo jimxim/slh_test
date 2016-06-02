@@ -9227,8 +9227,8 @@ function test170491_1() {
     delay(5);
 
     ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(r1,
-            getTextFieldValue(getScrollView(), 4)), isEqual(r2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(r2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9247,8 +9247,8 @@ function test170491_1() {
     delay(5);
 
     ret1 = isAnd(ret1, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(j1,
-            getTextFieldValue(getScrollView(), 4)), isEqual(z1,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(z1),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9267,8 +9267,8 @@ function test170491_1() {
     setTFieldsValue(window, fields);
 
     ret2 = isAnd(ret2, !isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(r1,
-            getTextFieldValue(getScrollView(), 4)), isEqual(r2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(r2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9308,8 +9308,8 @@ function test170491_1() {
     delay(5);
 
     ret3 = isAnd(ret3, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(j2,
-            getTextFieldValue(getScrollView(), 4)), isEqual(z2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(z2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9410,8 +9410,8 @@ function test170491_2() {
     delay(5);
 
     ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(r1,
-            getTextFieldValue(getScrollView(), 4)), isEqual(r2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(r2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9430,8 +9430,8 @@ function test170491_2() {
     delay(5);
 
     ret1 = isAnd(ret1, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(j1,
-            getTextFieldValue(getScrollView(), 4)), isEqual(z1,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(z1),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9450,8 +9450,8 @@ function test170491_2() {
     setTFieldsValue(window, fields);
 
     ret2 = isAnd(ret2, !isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(Number(r1),
-            getTextFieldValue(getScrollView(), 4)), isEqual(r2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(r2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -9491,8 +9491,8 @@ function test170491_2() {
     delay(5);
 
     ret3 = isAnd(ret3, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(j2,
-            getTextFieldValue(getScrollView(), 4)), isEqual(z2,
-            getTextFieldValue(getScrollView(), 5)));
+            getTextFieldValue(getScrollView(), 4)), isEqual(Number(z2),
+            Number(getTextFieldValue(getScrollView(), 5))));
 
     saveAndAlertOk();
     tapPrompt();
@@ -10874,7 +10874,9 @@ function test170539() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "同款不同价");
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "同款不同价");
 
     tapReturn();
 
