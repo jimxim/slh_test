@@ -133,12 +133,14 @@ function ts160060() {
 
 function test160049_160052() {
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "日期" : getDay(-1),
-        "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var jo = { "客户" : "xw", "日期" : getDay(-1),
         "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 1201, "刷卡" : [ 200, "交" ],
         "汇款" : [ 600, "交" ], "备注" : "xx" };
-    editSalesBillNoColorSize(json);
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
     var jo1 = json["输入框值"];
+    var det1 = json["明细值"];
 
     tapMenu("销售订货", "按批次查");
     var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
@@ -146,16 +148,8 @@ function test160049_160052() {
     query(fields);
     tapFirstText();
     var jo2 = editSalesBillGetValue({});
-    var tfNum = getDetSizheadTitle();
-    var ret = isAnd(isEqualObject(jo1, jo2), isIn(getTextFieldValue(
-            getScrollView(), 0), "3035"), isEqual("10", getTextFieldValue(
-            getScrollView(), tfNum["数量"])), isIn(getTextFieldValue(
-            getScrollView(), tfNum["明细输入框个数"] + tfNum["货品"]), "抹零"), isEqual(
-            "9", getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
-                    + tfNum["单价"])), isIn(getTextFieldValue(getScrollView(),
-            tfNum["明细输入框个数"] * 2 + tfNum["货品"]), "打包费"), isEqual("10",
-            getTextFieldValue(getScrollView(), tfNum["明细输入框个数"] * 2
-                    + tfNum["单价"])));
+    var det2 = getQRDet(getScrollView());
+    var ret = isAnd(isEqualObject(jo1, jo2), isEqualDyadicArray(det1, det2));
     tapReturn();
 
     return ret;
@@ -182,7 +176,7 @@ function ts160050() {
 
     var jo = { "名称" : r, "手机" : "p" + r, "店员" : "000", "适用价格" : "零批价",
         "地址" : "a" };
-    editSalesBillAddCustomer(jo);
+    editSalesBillAddCustomer(jo);// 店员不稳定 tap TF3 莫名其妙为空
     ret = isAnd(ret, isEqual(r, getTextFieldValue(window, 0)));
 
     switch (colorSize) {

@@ -73,9 +73,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "name":
     case "款号名称":
-        if (ipadVer >= 7.10) {
-            f = new TField("款号名称", TF, 4, "3035");
-        }
+        f = new TField("款号名称", TF, 4, "3035");
         break;
     case "customer":
     case "客户":

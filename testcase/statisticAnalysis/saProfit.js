@@ -19,10 +19,16 @@ function textFin_price_base() {
 }
 
 function setParamFin_price_base2() {
-    var qo, o, i, j, ret = true;
-    qo = { "备注" : "财务中货品成本价的核算方法" };
-    o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    UIALogger.logStart("设置按移动加权平均价");
+    var qo = { "备注" : "财务中货品成本价的核算方法" };
+    var o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
+    var ret = setGlobalParam(qo, o);
+
+    if (ret) {
+        UIALogger.logPass("设置按移动加权平均价  成功");
+    } else {
+        UIALogger.logFail("设置按移动加权平均价  失败");
+    }
     return ret;
 }
 
@@ -83,7 +89,7 @@ function textFin_price_base2_2() {
     var exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 2, "金额" : 400,
         "成本额" : 200, "利润额" : 200 };
     var exp2 = { "款号" : r, "名称" : r, "数量" : 2, "单价" : 200, "折扣" : 1,
-        "销售额" : 400, "进货价" : 100, "成本额" : 200, "利润额" :200 };
+        "销售额" : 400, "进货价" : 100, "成本额" : 200, "利润额" : 200 };
     var exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,
         "成本额" : 100, "利润额" : 100 };
     var ret = textFin_price_baseField(r, jo1, exp1, exp2, exp3);
@@ -121,7 +127,7 @@ function textFin_price_base2_3() {
     arr = { "货品" : r, "数量" : 32, "单价" : 130, "salesBill" : "yes" };
     addBillSAProfit(arr);
     exp1 = { "日期" : getToday("yy"), "门店" : "常青店", "数量" : 1, "金额" : 200,
-        "成本额" : 130, "利润额" : 70 };   
+        "成本额" : 130, "利润额" : 70 };
     exp2 = { "款号" : r, "名称" : r, "数量" : 1, "单价" : 200, "折扣" : 1, "销售额" : 200,
         "进货价" : 130, "成本额" : 130, "利润额" : 70 };
     exp3 = { "日期" : getToday("yy"), "客户" : "小王", "数量" : 1, "销售额" : 200,
@@ -158,10 +164,16 @@ function testSAProfitFor005() {
 }
 
 function setParamFin_price_base3() {
-    var qo, o, i, j, ret = true;
-    qo = { "备注" : "财务中货品成本价的核算方法" };
-    o = { "新值" : "3", "数值" : [ "默认按当时进货价", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    UIALogger.logStart("设置默认按当时进货价");
+    var qo = { "备注" : "财务中货品成本价的核算方法" };
+    var o = { "新值" : "3", "数值" : [ "默认按当时进货价", "in" ] };
+    var ret = setGlobalParam(qo, o);
+
+    if (ret) {
+        UIALogger.logPass("默认按当时进货价  成功");
+    } else {
+        UIALogger.logFail("默认按当时进货价  失败");
+    }
     return ret;
 }
 
@@ -214,10 +226,16 @@ function textFin_price_base3_1() {
 }
 
 function setParamFin_price_base0() {
-    var qo, o, i, j, ret = true;
-    qo = { "备注" : "财务中货品成本价的核算方法" };
-    o = { "新值" : "0", "数值" : [ "按最新进货价", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    UIALogger.logStart("设置按最新进货价");
+    var qo = { "备注" : "财务中货品成本价的核算方法" };
+    var o = { "新值" : "0", "数值" : [ "按最新进货价", "in" ] };
+    var ret = setGlobalParam(qo, o);
+
+    if (ret) {
+        UIALogger.logPass("设置按最新进货价  成功");
+    } else {
+        UIALogger.logFail("设置按最新进货价  失败");
+    }
     return ret;
 }
 

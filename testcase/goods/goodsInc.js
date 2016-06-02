@@ -332,6 +332,7 @@ function getRandomNum(min, max, dn) {
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
+
 /**
  * 点击导航栏左按钮，防止用例出错卡界面
  * @param max 最大尝试次数
@@ -1275,6 +1276,7 @@ function getIpadVer() {
     var ipadVer = value.slice(-6);
     return ipadVer;
 }
+
 /**
  * 期望界面的静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
  * @param texts

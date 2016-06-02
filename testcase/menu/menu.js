@@ -170,7 +170,7 @@ function testCheckSales() {
 
     tapMenu1("销售开单");
     menus2 = { "按批次查" : {}, "按明细查" : {}, "按挂单" : {}, "开  单+" : {},
-        "按订货配货" : {}, "收款单" : {} };
+        "按订货开单" : {}, "收款单" : {} };
     ret = isAnd(ret, checkMenus(menus2));
 
     menu2 = "按汇总";

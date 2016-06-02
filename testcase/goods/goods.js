@@ -1196,17 +1196,17 @@ function test100016() {
 
 function ts100015_100017() {
     tapMenu("货品管理", "新增货品+");
-    var ret = test100015_100017Field();
+    var ret = test100015Field();
 
     tapMenu("货品管理", "货品查询");
     query();
     tapFirstText();
-    ret = ret && test100015_100017Field();
+    ret = ret && test100015Field();
 
     return ret;
 }
 
-function test100015_100017Field() {
+function test100015Field() {
     var keys = { "品牌" : "p" };
     var fields = editGoodsFields(keys);
     var cells = getTableViewCells(getScrollView(), fields["品牌"]);

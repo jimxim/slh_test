@@ -14,8 +14,12 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "test120051");//
-
+// run("测试用例", "testGoodsPrepare001");//
+    if (setParamFin_price_base2()) {
+        run("按移动加权平均价_1", "textFin_price_base2_1");
+        run("按移动加权平均价_2", "textFin_price_base2_2");
+        run("按移动加权平均价_3", "textFin_price_base2_3");
+    }
 
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //
@@ -28,20 +32,13 @@ function onlyTest(){
 // var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035","款号名称" : "jkk",
 // "客户" : "xw",
 // "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
-// var fields = statisticAnalysisProfitFields(keys);
+ var keys={"款号" : "jkk"};
+ var fields = statisticAnalysisProfitFields(keys);
 // query(fields);
 
-    return ;
+    return isArray(fields[0]);
 }
 
-function prepare200All(){
-    // 帐套数据被清理的话，跑一遍中洲店的数据准备，造点数据出来
-    run("GoodsPrepare", "testGoodsPrepare001");
-    testCustomerPrepare001();
-    run("PurchasePrepare", "testPurchasePrepare002");
-    run("SalesOrderPrepare", "testSalesOrderPrepare");
-    run("StatisticAnalysisPrepare", "testStatisticAnalysisPrepare");
-}
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};

@@ -136,8 +136,9 @@ function login009Rights() {
 }
 
 // http://jira.hzdlsoft.com:7082/browse/SLH-7083
+var hasRights;
 function checkLimitsToRights_YES() {
-    var hasRights = true;
+    hasRights = true;
     run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");
@@ -152,7 +153,7 @@ function checkLimitsToRights_YES() {
 }
 
 function checkLimitsToRights_NO() {
-    var hasRights = false;
+    hasRights = false;
     run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");
@@ -641,13 +642,13 @@ function checkRightsField(hasRights, view, arr, view2, f) {
         if (hasRights) {
             ret = ret && ok;
             if (!ok) {
-                logDebug("---------" + gMenu1 + "-" + gMenu2 + "未显示列表字断 "
+                logDebug("---------" + gMenu1 + "-" + gMenu2 + "未显示列表字段 "
                         + arr[i] + " ok=false---------");
             }
         } else {
             ret = ret && !ok;
             if (ok) {
-                logDebug("---------" + gMenu1 + "-" + gMenu2 + "显示列表字断 "
+                logDebug("---------" + gMenu1 + "-" + gMenu2 + "显示列表字段 "
                         + arr[i] + " ok=false---------");
             }
         }

@@ -521,7 +521,7 @@ function setGoodsBrandDiscount001() {
     return basicSetUpByBrandDiscount(keys);
 }
 
-function setGoodsBrandDiscount001() {
+function setGoodsBrandDiscount002() {
     var keys = { "品牌" : "Ck公司", "进货价折扣" : "0.5", "零批价" : "1", "打包价" : "0.9",
         "大客户价" : "0.8", "Vip价格" : "0.7" };
     return basicSetUpByBrandDiscount(keys);
