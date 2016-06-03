@@ -810,11 +810,11 @@ function test170551_4() {
 function test170586_4() {
     var qo, o, ret = true;
     qo = { "备注" : "允许改高" };
-    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    o = { "新值" : "2", "数值" : [ "店长权限", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单价不能低于指定的价格类型" };
-    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "货品查询");
@@ -843,7 +843,7 @@ function test170586_4() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isIn(alertMsg1, "保存成功，是否打印");
+    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
 
     tapMenu("销售订货", "新增订货+");
     var json = {
@@ -863,10 +863,10 @@ function test170586_4() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
+    var ret2 = isIn(alertMsg1, "保存成功，是否打印");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170641_4() {
     tapMenu("销售开单", "物流单");

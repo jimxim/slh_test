@@ -1093,7 +1093,6 @@ function test180027() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");

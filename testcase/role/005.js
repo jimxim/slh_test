@@ -197,7 +197,7 @@ function test170240_5() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-    
+
     tapMenu("销售开单", "开  单+");
     var ret = true;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -360,7 +360,7 @@ function test170241_5() {
 
     var cond = "isIn(alertMsg, '清理和刷新成功')";
     waitUntil(cond, 300);
-    
+
     tapMenu("销售开单", "开  单+");
     var ret = false;
     var f = new TField("店员", TF_AC, 5, "1", -1);
@@ -659,11 +659,11 @@ function test170450_5() {
 function test170586_5() {
     var qo, o, ret = true;
     qo = { "备注" : "允许改高" };
-    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    o = { "新值" : "2", "数值" : [ "店长权限", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "销售开单价不能低于指定的价格类型" };
-    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "货品查询");
@@ -691,8 +691,9 @@ function test170586_5() {
     tapReturn();
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isIn(alertMsg1, "[第*行][款号]价格输入错误，因为启用了价格验证 价格类型[*]");
+    var alertMsg1 = getArray1(alertMsgs, -1), alertMsg2 = getArray1(alertMsgs,
+            -2);
+    var ret1 = isIn(alertMsg1, "价格输入错误") || isIn(alertMsg2, "价格输入错误");
 
     tapMenu("销售订货", "新增订货+");
     var json = {
@@ -711,9 +712,10 @@ function test170586_5() {
     tapReturn();
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "[第*行][款号]价格输入错误，因为启用了价格验证 价格类型[*]");
+    var alertMsg1 = getArray1(alertMsgs, -1), alertMsg2 = getArray1(alertMsgs,
+            -2);
+    var ret2 = isIn(alertMsg1, "价格输入错误") || isIn(alertMsg2, "价格输入错误");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

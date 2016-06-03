@@ -340,7 +340,7 @@ function setNoColorSize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "允许折扣大于1" };
-    o = { "新值" : "1", "数值" : [ "允许折扣大于1", "in" ] };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否检查折扣" };
@@ -437,6 +437,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "销售单已配货的单子" };
     o = { "新值" : "0", "数值" : [ "不限制" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "销售开单价不能低于指定的价格类型" };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // qo = { "备注" : "跨门店核销" };
@@ -3552,7 +3556,9 @@ function test170116_170660() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret1 = isAnd(isIn(alertMsg, "保存成功"));
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isAnd(isIn(alertMsg1, "保存成功"));
 
     tapReturn();
 
@@ -3564,10 +3570,14 @@ function test170116_170660() {
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
 
+    tapStaticText(window, "刷卡");
+
     saveAndAlertOk();
     tapPrompt();
 
-    var ret2 = isAnd(isIn(alertMsg, "库存不足"));
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isAnd(isIn(alertMsg1, "库存不足"));
 
     tapReturn();
 
@@ -3587,11 +3597,15 @@ function test170116_170660() {
     var f = new TField("数量", TF, 3, 11);
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
+    
+    tapStaticText(window, "刷卡");
 
     saveAndAlertOk();
     tapPrompt();
 
-    var ret4 = isAnd(isIn(alertMsg, "操作成功"));
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var ret4 = isAnd(isIn(alertMsg1, "操作成功"));
 
     tapReturn();
 
@@ -3731,28 +3745,42 @@ function test170120() {
     tapMenu("货品管理", "款号库存");
     query();
     var keys = { "款号" : "3035", "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
+    var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var kc = qr.data[0]["库存"];
 
-    keys = { "款号" : "3035", "门店" : "中洲店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    var qKeys = [ "门店" ];
+    var qFields = queryGoodsCodeStockFields(qKeys);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var zz = qr.data[0]["库存"];
 
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var cc = qr.data[0]["库存"];
+
     keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var kc1 = qr.data[0]["库存"];
 
-    keys = { "款号" : "k300", "门店" : "中洲店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var zz1 = qr.data[0]["库存"];
+
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var cc1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
@@ -3761,32 +3789,45 @@ function test170120() {
 
     tapMenu("货品管理", "款号库存");
     query();
-    keys = { "款号" : "3035", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var kc2 = qr.data[0]["库存"];
 
-    keys = { "款号" : "3035", "门店" : "中洲店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var zz2 = qr.data[0]["库存"];
 
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var cc2 = qr.data[0]["库存"];
+
     keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var kc3 = qr.data[0]["库存"];
 
-    keys = { "款号" : "k300", "门店" : "中洲店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var zz3 = qr.data[0]["库存"];
 
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var cc3 = qr.data[0]["库存"];
+
     ret = isAnd(ret, isEqual(kc2, sub(kc, 5)), isEqual(kc3, add(kc1, -6)),
-            isEqual(zz, zz2), isEqual(zz1, zz3));
+            isEqual(zz, zz2), isEqual(zz1, zz3), isEqual(cc, cc2), isEqual(cc1,
+                    cc3));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -3807,30 +3848,28 @@ function test170121() {
     tapMenu("货品管理", "款号库存");
     query();
     var keys = { "款号" : "3035", "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
+    var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var kc = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    query();
-    keys = { "款号" : "3035", "门店" : "仓库店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    var qKeys = [ "门店" ];
+    var qFields = queryGoodsCodeStockFields(qKeys);
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var stock = qr.data[0]["库存"];
 
     keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var kc1 = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    query();
-    keys = { "款号" : "k300", "门店" : "仓库店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var stock1 = qr.data[0]["库存"];
 
@@ -3843,40 +3882,32 @@ function test170121() {
 
     tapMenu("货品管理", "款号库存");
     query();
-    keys = { "款号" : "3035", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var kc2 = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    query();
-    keys = { "款号" : "3035", "门店" : "仓库店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var stock2 = qr.data[0]["库存"];
 
     keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
+    fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var kc3 = qr.data[0]["库存"];
 
-    tapMenu("货品管理", "款号库存");
-    query();
-    keys = { "款号" : "k300", "门店" : "仓库店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    changeTFieldValue(qFields["门店"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var stock3 = qr.data[0]["库存"];
 
     ret = isAnd(ret, isEqual(kc2, kc), isEqual(kc3, kc1), isEqual(stock2, sub(
             stock, 7)), isEqual(stock3, add(stock1, -8)));
-
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -13139,9 +13170,9 @@ function test170692() {
 
     tapMenu("往来管理", "客户查询");
     var key = [ "customer" ];
-    var fields = queryCustomerFields(key);
-    changeTFieldValue(fields["customer"], "lt");
-    query(fields);
+    var qFields = queryCustomerFields(key);
+    changeTFieldValue(qFields["customer"], "lt");
+    query(qFields);
     var qr = getQR();
     var a = qr.data[0]["当前积分"];
 
@@ -13150,17 +13181,14 @@ function test170692() {
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
-    var key = [ "customer" ];
-    var fields = queryCustomerFields(key);
-    changeTFieldValue(fields["customer"], "lt");
-    query(fields);
-    var qr = getQR();
+    tapButton(window, QUERY);
+    qr = getQR();
     var a1 = qr.data[0]["当前积分"];
 
     var ret1 = isEqual(200, sub(a, a1));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
@@ -13175,14 +13203,11 @@ function test170692() {
 
     saveAndAlertOk();
     tapPrompt();
-    // tapReturn();
 
     tapMenu("往来管理", "客户查询");
-    var key = [ "customer" ];
-    var fields = queryCustomerFields(key);
-    changeTFieldValue(fields["customer"], "lt");
-    query(fields);
-    var qr = getQR();
+    changeTFieldValue(qFields["customer"], "lt");
+    query(qFields);
+    qr = getQR();
     var a2 = qr.data[0]["当前积分"];
 
     var ret2 = isEqual(1900, sub(a2, a1));
@@ -13413,24 +13438,10 @@ function test240002_240004() {
     return ret && ret1 && ret2 && ret3;
 }
 function test240003_240007_240006() {
-    tapMenu("系统设置", "全局设置");
     var qo, o, ret = true;
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
@@ -13531,24 +13542,10 @@ function test240003_240007_240006() {
     return ret && ret1 && ret2 && ret3;
 }
 function test240005() {
-    tapMenu("系统设置", "全局设置");
     var qo, o, ret = true;
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
@@ -13601,22 +13598,9 @@ function test240008() {
     o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
@@ -13672,22 +13656,9 @@ function test240009() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "anewCus" };
@@ -13722,24 +13693,10 @@ function test240009() {
     return ret && ret1;
 }
 function test240010() {
-    tapMenu("系统设置", "全局设置");
     var qo, o, ret = true;
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewCus" + getTimestamp(7);
     var r1 = "1." + getTimestamp(2);
@@ -13775,24 +13732,10 @@ function test240010() {
     return ret;
 }
 function test240011() {
-    tapMenu("系统设置", "全局设置");
     var qo, o, ret = true;
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
@@ -13881,22 +13824,9 @@ function test240013() {
     o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
@@ -13957,22 +13887,9 @@ function test240014() {
     o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单是否允许折扣大于1" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-    var qr = getQR();
-    var num = qr.data[0]["数值"];
-
-    if (!isIn(num, "允许折扣大于1")) {
-        tapFirstText();
-        var setObj = {};
-        setObj["数值"] = [ "1,允许折扣大于1，加税点原因" ];
-        setObj["授权码"] = [];
-        var fields = editSystemGlobalFields(setObj);
-        setTFieldsValue(getScrollView(), fields);
-        saveAndAlertOk();
-        delay(2);
-    }
+    qo = { "备注" : "允许折扣大于1" };
+    o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "建款" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
