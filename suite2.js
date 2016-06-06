@@ -8,7 +8,7 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer ="7.01"; // "6.59";// 7.01// 7.10
+    ipadVer ="7.10"; // "6.59";// 7.01// 7.10
 	
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 // run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
@@ -19,23 +19,54 @@ function test000All() {
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
 
-//    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
- run("", "test1");
+// run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
+//    run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
+
+//    run("【销售开单-开单】异地+代收", "test170672");
+//    run("【销售开单-开单】异地+代收， 挂单", "test170674_170675");
+//    run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");
+//    run("【销售开单+整单折扣+代收】挂单转为销售单", "test170365");
+//    run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
+//    run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");
+//    run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
+//    run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
+//    run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
+    
+//    run("【销售开单-按订货开单】订货额、已付、未付检查--部分发货", "test170433");
+//    run("【销售开单-按订货开单】订货额、已付、未付检查--全部发货", "test170434");    
+    run("【销售开单－开单】代收模式2", "test170092");
+//    run("【销售开单－开单】代收模式2", "test170093");
+//    run("【销售开单－开单】退货时明细备注框操作", "test170097");//
+    
+// run("", "test1");
 }
     
 function test1(){
- debugElementTree(window);
+// debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
     
-//    tapMenu("销售开单", "开  单+");
-//    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-//        "代收" : { "物流商" : "yt", "运单号" : "1234", "代收金额" : "100" }, "现金" : "500",
-//        "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
-//    editSalesBillNoColorSize(json);
-
+//    tapMenu("销售开单", "按订货开单");
+//    query();
+//    var qr = getQR();
+//
+//    tapFirstText();
+//
+//    var f5 = new TField("数量", TF, 5, "0");
+//    var fields = [ f5 ];
+//    setTFieldsValue(getScrollView(-1), fields);
+//
+//    var money = getTextFieldValue(window, 5);
+//    var r = getTimestamp(8);
+//    tapStaticText(window, "代收");
+//    var f0 = new TField("物流商*", TF, 17, "天天物流");
+//    var f1 = new TField("运单号", TF, 18, r);
+//    var f2 = new TField("备注", TF, 19, r);
+//    var fields = [ f0, f1, f2 ];
+//    setTFieldsValue(window, fields);
+//    tapNaviRightButton();
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

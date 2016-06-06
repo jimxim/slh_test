@@ -438,7 +438,7 @@ function setNoColorSize_1Params() {
     qo = { "备注" : "销售单已配货的单子" };
     o = { "新值" : "0", "数值" : [ "不限制" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "销售开单价不能低于指定的价格类型" };
     o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -2969,8 +2969,8 @@ function test170095() {
     tapFirstText();
 
     var b1 = getTextFieldValue(window, 10);
-    var b6 = getTextFieldValue(getScrollView(), 6);
-    var b13 = getTextFieldValue(getScrollView(), 13);
+    var b6 = getTextFieldValue(getScrollView(-1), 6);
+    var b13 = getTextFieldValue(getScrollView(-1), 13);
     delay();
     tapReturn();
     var ret = isAnd(isEqual("zdbz", b1), isEqual("mxbz", b6), isEqual("mxbz1",
@@ -3027,17 +3027,19 @@ function test170097() {
                 { "货品" : "3035", "数量" : "-1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    target.frontMostApp().mainWindow().scrollViews()[0].textFields()[13]
-            .textFields()[0].tap();
+    getTextField(getScrollView(-1), 13);
+
     var arr = [ "退货", "赠品", "代卖", "次品", "代保管", "换色", "换码" ];
-    var view = window.popover().scrollViews()[0];
+
+    var view = window.popover().scrollViews()[1];
+    // getPop();
 
     var ret = isEqualDropDownList(arr, view);
 
     var f10 = new TField("数量", TF, 10, "-1");
     var f13 = new TField("备注", TF_SC, 13, "换码");
     var fields = [ f10, f13 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     var o1 = { "继续开单保存" : "仍然保存" };
@@ -3597,7 +3599,7 @@ function test170116_170660() {
     var f = new TField("数量", TF, 3, 11);
     var fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
-    
+
     tapStaticText(window, "刷卡");
 
     saveAndAlertOk();

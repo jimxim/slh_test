@@ -5397,6 +5397,22 @@ function test170702() {
                     getTextFieldValue(getScrollView(), 14)), isEqual(1,
                     getTextFieldValue(getScrollView(), 17)));
     
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 21)),
+            isEqual(0, getTextFieldValue(getScrollView(), 24)), isEqual("x001",
+                    getTextFieldValue(getScrollView(), 28)), isEqual(1,
+                    getTextFieldValue(getScrollView(), 31)));
+    
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+    
+    tapPrompt();
+
+    var ret5 = isAnd(isIn(alertMsg, "相同颜色尺码已经存在"));
+
+    
     
 
 }
@@ -5442,6 +5458,7 @@ function test170703() {
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
 
+    tapPrompt();
     var ret5 = isAnd(isIn(alertMsg, "相同款号已经存在"));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, -1 ] } ], "onlytest" : "yes" };
