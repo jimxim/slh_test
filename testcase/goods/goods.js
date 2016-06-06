@@ -3370,9 +3370,8 @@ function test100097() {
     if (colorSize == "yes") {
         var r = getTimestamp(8);
         var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
-            "颜色" : [ "红色" ], "尺码" : [ "X1", "25" ], "吊牌价" : "200" };
-        var keys2 = { "颜色" : "红色", "尺码" : "25,X1" }
-        return ts100033Field(keys1, keys2);
+            "颜色" : "红色", "尺码" : "25,X1", "吊牌价" : "200" };
+        return ts100033Field(keys1, keys1);
     } else {
         return true;
     }
