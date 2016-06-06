@@ -247,8 +247,11 @@ function testGoods002() {
     run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
     run("【货品管理-批量操作】批量停用-重复停用提示", "ts100108");
 
-    // run("【货品管理-基本设置】检查基本颜色新增", "ts100059Color");
-    run("【货品管理-基本设置】检查基本类别新增,修改和启停用功能", "ts100059Type");
+    run("【货品管理-基本设置】检查基本颜色新增", "ts100059Color");
+    run("【货品管理-基本设置】检查基本类别新增", "ts100059Type");
+    run("【货品管理-基本设置】检查基本尺码新增", "ts100059Size");
+    run("【货品管理-基本设置】检查基本尺码组新增", "ts100059SizeID");
+    run("【货品管理-基本设置】检查基本品牌新增", "ts100059Brand");
     run("【货品管理-基本设置】检查基本属性新增提示框验证", "ts100059Msg");
     run("【货品管理-基础设置-所有尺码】新增/显示配码", "ts100095_96");
     run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
@@ -1930,17 +1933,25 @@ function ts100058() {
     return ret;
 }
 
-function ts100059Field(fn1, fn2, keys, menu3) {
+function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
     tapMenu("货品管理", "基本设置", menu3);
     var fields = getTFields(fn1, keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
 
+    if (isDefined(qkeys)) {
+        keys = qkeys;
+    }
     fields = getTFields(fn2, keys);
     query(fields);
     var qr = getQR();
-    return isEqual(keys["名称"], qr.data[0]["名称"]);
+    var ret = isEqual(keys["名称"], qr.data[0]["名称"]);
+
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();
+    return ret;
 }
 function ts100059Type() {
     var r = "type" + getTimestamp(5);
@@ -1950,8 +1961,28 @@ function ts100059Type() {
 function ts100059Color() {
     var r = "color" + getTimestamp(5);
     var keys = { "颜色类别" : "杂色", "名称" : r };
+    var qkeys = { "名称" : r };
     return ts100059Field("editGoodsColorField", "goodsColorField", keys,
-            "新增颜色+");
+            "新增颜色+", qkeys);
+}
+function ts100059Size() {
+    var r = "size" + getTimestamp(5);
+    var keys = { "尺码类别" : "球类", "名称" : r };
+    var qkeys = { "名称" : r };
+    return ts100059Field("editGoodsSizeField", "goodsSizeField", keys, "新增尺码+",
+            qkeys);
+}
+function ts100059brand() {
+    var r = "brand" + getTimestamp(5);
+    var keys = { "名称" : r };
+    return ts100059Field("editGoodsBrandField", "goodsBrandField", keys,
+            "新增品牌+");
+}
+function ts100059SizeID() {
+    var r = "size" + getTimestamp(5);
+    var keys = { "名称" : r };
+    return ts100059Field("editGoodsSizeidsField", "goodsSizeidsField", keys,
+            "新增尺码组+");
 }
 function ts100059Msg() {
     tapMenu("货品管理", "基本设置", "新增类别+");
@@ -3224,21 +3255,33 @@ function test10_type() {
     var fields = goodsTypeFields(keys);
     query(fields);
     qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i]["名称"], "毛衣")) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = isAnd(ret, checkQResult(qr, "名称", "毛衣", "in"));
+
+    var jo1 = qr.data[0];
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+
+    keys = { "是否停用" : "是" };
+    fields = goodsTypeFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    jo1["是否停用"] = "是";
+    ret = isAnd(ret, isEqualObject(jo1, qr.data[0]));
+
+    tapFirstText();
+    tapButtonAndAlert(START, OK);
+
+    keys = { "是否停用" : "否" };
+    fields = goodsTypeFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    jo1["是否停用"] = "否";
+    ret = isAnd(ret, isEqualObject(jo1, qr.data[0]));
 
     tapButton(window, CLEAR);
-    ret = ret && isEqual("", getTextFieldValue(window, 0));
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)));
 
     return ret;
 }
@@ -3257,18 +3300,7 @@ function test10_color() {
     var fields = goodsColorFields(keys);
     query(fields);
     qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i]["名称"], "红")) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = isAnd(ret, checkQResult(qr, "名称", "红", "in"));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0));
@@ -3310,17 +3342,12 @@ function test10_size() {
     return ret;
 
 }
-
-function test100095() {
-    tapMenu("货品管理", "基本设置", "所有尺码");
-    query();
-    tapFirstText();
-
-}
 function test100097() {
     if (colorSize == "yes") {
-        tapMenu("货品管理", "新增货品+");
-
+        var r = getTimestamp(8);
+        var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+            "颜色" : [ "花色" ], "尺码" : [ "X1", "25" ], "吊牌价" : "200" };
+        return ts100033Field(keys1, keys1);
     } else {
         return true;
     }
@@ -3344,7 +3371,7 @@ function test10_brand() {
     fields = goodsBrandFields(keys);
     query(fields);
     tapFirstText();
-    tapButtonAndAlert(STOP);
+    tapButtonAndAlert(STOP, OK);
 
     keys = { "名称" : "1010pp", "是否停用" : "是" };
     fields = goodsBrandFields(keys);
@@ -3382,18 +3409,7 @@ function test10_size_group() {
     var fields = goodsSizeidsFields(keys);
     query(fields);
     qr = getQR();
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i]["名称"], "尺码")) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = isAnd(ret, checkQResult(qr, "名称", "尺码", "in"));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0));

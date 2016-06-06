@@ -15,8 +15,8 @@ function testCustomer001() {
     run("【往来管理-积分查询】积分查询", "test110036");
     run("【往来管理-积分查询】数据验证", "test110036_1");
     run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
-    run("【往来管理-厂商账款】厂商门店账", "ts110041");// 7.01版
-    run("【往来管理-厂商账款】厂商总账", "ts110042");// 7.01版
+    run("【往来管理-厂商账款】厂商门店账", "ts110041");
+    run("【往来管理-厂商账款】厂商总账", "ts110042");
     run("【往来管理-物流商查询】物流商查询", "test110044");
     run("【往来管理-更多】客户回访", "test110048");
     run("【往来管理】下拉框验证", "testCheckCustomerDropDownList");
@@ -1029,20 +1029,20 @@ function editBillForCustomerAccount2() {
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "500", "刷卡" : [ "1000", "交" ], "汇款" : [ "700", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 800 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
     // 余款
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "1500", "刷卡" : [ "800", "交" ], "汇款" : [ "1200", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 3000 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     // 没有结余
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "现金" : "2000", "刷卡" : [ "1000", "交" ], "汇款" : [ "1300", "交" ],
         "代收" : { "物流商" : "sfkd", "代收金额" : 1700 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     return true;
 }
@@ -2712,7 +2712,8 @@ function ts110042() {
             && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
 
     ret = isAnd(ret, fuzzyQueryCheckField(fields["厂商名称"].index, "名称", "p"));
-    tapButton(window, QUERY);
+
+    query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1));
 

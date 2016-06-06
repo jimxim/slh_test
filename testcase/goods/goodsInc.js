@@ -161,6 +161,17 @@ function getEditBillValue(firstTitle, arr) {
     return data;
 }
 /**
+ * 获取视图中所有元素的数组
+ * @param view
+ * @returns
+ */
+function getElements(view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    return view.elements();
+}
+/**
  * 获取开单界面明细界面的值
  * @param view
  * @returns {QResult}

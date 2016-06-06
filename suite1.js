@@ -14,13 +14,8 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "testGoodsPrepare001");//
-    if (setParamFin_price_base2()) {
-        run("按移动加权平均价_1", "textFin_price_base2_1");
-        run("按移动加权平均价_2", "textFin_price_base2_2");
-        run("按移动加权平均价_3", "textFin_price_base2_3");
-    }
-
+// run("测试用例", "test100097");//
+ run("测试用例", "editBillForCustomerAccount2");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //
 // run("【往来管理-新增客户】客户编码", "ts110056");
@@ -29,14 +24,28 @@ function test000All() {
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035","款号名称" : "jkk",
-// "客户" : "xw",
-// "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
- var keys={"款号" : "jkk"};
- var fields = statisticAnalysisProfitFields(keys);
-// query(fields);
-
-    return isArray(fields[0]);
+// var val="黄色";
+// var view1=getPopView();
+// var a1 = view1.elements();
+// var text=getStaticTexts(view1);
+// var btnNum=-1,textNum=-1;
+// for (var i = 0; i < a1.length; i++) {
+// var e = a1[i];
+// if(isUIAButton(e)){
+// btnNum++;
+// }
+// if(isUIAStaticText(e)){
+// textNum++;
+// logDebug("btnNum="+btnNum+" textNum="+textNum+" value="+text[textNum].value);
+// if(text[textNum].value==val){
+// break;
+// }
+// }
+// }
+// tapButton(view1,btnNum);
+    
+    
+    return true;
 }
 
 //
