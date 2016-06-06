@@ -111,7 +111,9 @@ function testSalesColorSize002() {
 }
 // 颜色尺码模式特有用例
 function testSalesColorSize003() {
-    run("【销售开单-开单】颜色尺码下检查颜色为三个字是否正常显示", "test170594");
+    run("【销售开单-开单】颜色尺码下款号的颜色为3个汉字时,通过获取未保存添加款号", "test170626");
+    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-参数准备", "test170703Prepare");
+    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
 }
 function testSalesColorSize004() {
     run("【销售开单-开单】积分跨门店共享", "testCs170183");
@@ -352,6 +354,10 @@ function setNoColorSize_2Params() {
 
     qo = { "备注" : "销售开单价不能低于指定的价格类型" };
     o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "颜色尺码模式下开单" };
+    o = { "新值" : "0", "数值" : [ "默认按颜色尺码提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // qo = { "备注" : "跨门店核销" };
@@ -3928,7 +3934,7 @@ function testCs170251() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test170594() {
+function test170626() {
     // 检查销售开单、销售订货、采购入库、采购订货、门店调出、盘点管理的开单、复制粘贴、取未保存
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -4016,7 +4022,7 @@ function test170594() {
     tapFirstText();
 
     ret6 = isAnd(ret6, isEqual("铁锈红", getTextFieldValue(getScrollView(), 13)));
-    
+
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
@@ -5365,4 +5371,89 @@ function test170660() {
     logDebug(" ret=" + ret + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
             + ret4 + ", ret5=" + ret5);
     return ret && ret2 && ret3 && ret4 && ret5;
+}
+function test170702Prepare() {
+    var qo, o, ret = true;
+    qo = { "备注" : "颜色尺码模式下开单" };
+    o = { "新值" : "0", "数值" : [ "默认按颜色尺码提醒", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function test170702() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 0)),
+            isEqual(1, getTextFieldValue(getScrollView(), 3)));
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 7)),
+            isEqual(0, getTextFieldValue(getScrollView(), 10)), isEqual("x001",
+                    getTextFieldValue(getScrollView(), 14)), isEqual(1,
+                    getTextFieldValue(getScrollView(), 17)));
+    
+    
+
+}
+function test170703Prepare() {
+    var qo, o, ret = true;
+    qo = { "备注" : "颜色尺码模式下开单" };
+    o = { "新值" : "1", "数值" : [ "按款号提醒", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+function test170703() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+
+    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 0)),
+            isEqual(1, getTextFieldValue(getScrollView(), 3)));
+
+    json = { "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret2 = isAnd(isEqual("x003", getTextFieldValue(getScrollView(), 7)),
+            isEqual(1, getTextFieldValue(getScrollView(), 10)));
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    tapPrompt();
+
+    var ret3 = isAnd(isIn(alertMsg, "相同款号已经存在"));
+
+    tapNaviButton("关 闭");
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret4 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 14)),
+            isEqual(0, getTextFieldValue(getScrollView(), 17)), isEqual(-1,
+                    getTextFieldValue(getScrollView(), 21)));
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret5 = isAnd(isIn(alertMsg, "相同款号已经存在"));
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, -1 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    var ret6 = isAnd(isIn(alertMsg, "相同款号已经存在"));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
+            + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }

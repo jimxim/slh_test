@@ -18,16 +18,23 @@ function test000All() {
 
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
- run("【销售开单-开单】颜色尺码下检查颜色为三个字是否正常显示", "test170594");
-// run("", "test1");
+
+//    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
+ run("", "test1");
 }
     
 function test1(){
-// debugElementTree(window);
+ debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+    
+//    tapMenu("销售开单", "开  单+");
+//    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+//        "代收" : { "物流商" : "yt", "运单号" : "1234", "代收金额" : "100" }, "现金" : "500",
+//        "刷卡" : [ 500, "交" ], "汇款" : [ 400, "农" ] };
+//    editSalesBillNoColorSize(json);
 
 }
 function setSales001Params() {
@@ -493,6 +500,22 @@ function testSalesNoColorSizeOutAndIn() {
     if( ok ) {
         testOutAndIn();
         
+        logout();
+    }
+}
+function test000SalesColorSize170703Prepare() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-参数准备", "test170703Prepare");       
+        logout();
+    }
+}
+function test000SalesColorSize170703() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-参数准备", "test170703");       
         logout();
     }
 }

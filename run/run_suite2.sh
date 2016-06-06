@@ -6,7 +6,7 @@ SUITE=suite2
 js_func="setSales001Params"
 #js_func="setSales002Params"
 
-#销售开单-开单
+#均色均码 销售开单-开单
 js_func="$js_func test000SalesNoColorSize001"
 
 js_func="$js_func setSales001Params"
@@ -22,7 +22,7 @@ js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize004"
 #js_func="$js_func test000SalesNoColorSize003"
 
-#销售开单-其它
+#均色均码 销售开单-其它
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse003"
 
@@ -42,20 +42,20 @@ js_func="$js_func setSales002Params"
 js_func="$js_func test000SalesColorSize002"
 
 js_func="$js_func setSales001Params"
-#获取未保存
+#均色均码 获取未保存
 js_func="$js_func testSalesNoColorSize170140_Params"
 js_func="$js_func testSalesNoColorSize170140"
 #加工货品
 #js_func="$js_func testSalesNoColorSize170429_Params"
 #js_func="$js_func testSalesNoColorSize170429"
-#销售开单同时订货
+#均色均码 销售开单同时订货
 js_func="$js_func testSalesNoColorSize170125_Params"
 js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"
-#店长权限——异地＋代收
+#均色均码 店长权限——异地＋代收
 js_func="$js_func testSalesNoColorSize170649_Prepare"
 js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
-#开单是否过滤人员
+#均色均码 开单是否过滤人员
 js_func="$js_func testSalesNoColorSize170240_1 testSalesNoColorSize170241_1 testSalesNoColorSize170240_2 
 testSalesNoColorSize170241_2 testSalesNoColorSize170240_3 testSalesNoColorSize170241_3 testSalesNoColorSize170240_4 
 testSalesNoColorSize170241_4 testSalesNoColorSize170240_5 testSalesNoColorSize170241_5 testSalesNoColorSize170240_6 
@@ -76,6 +76,9 @@ js_func="$js_func testSalesNoColorSize170568Prepare testSalesNoColorSize170568"
 
 #登进登出
 js_func="$js_func testSalesNoColorSizeOutAndIn"
+
+#颜色尺码 销售开单
+js_func="$js_func test000SalesColorSize170703Prepare  test000SalesColorSize170703"
 
 #销售开单-特殊模块（改高改低）
 #js_func="$js_func setSales001Params"
