@@ -15,14 +15,14 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "test100097");//
- run("测试用例", "editBillForCustomerAccount2");//
+ run("测试用例", "onlyTest");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //
 // run("【往来管理-新增客户】客户编码", "ts110056");
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // var val="黄色";
 // var view1=getPopView();
