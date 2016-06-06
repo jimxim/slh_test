@@ -214,7 +214,7 @@ function testGoods002() {
     run("【货品管理-库存分布】停用的类型在库存分布里不出现", "ts100007");
     run("【货品管理-货品进销存】库存显示的门店情况", "ts100009");
     run("【货品管理-货品进销存】特殊货品不能显示", "ts100129");
-    run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157");
+    run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
     run("【货品管理-当前库存】上架天数检查", "ts100116");
     if (colorSize == "no") {
         run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "ts100114");
@@ -2439,8 +2439,13 @@ function ts100147Field(title, type) {
 
     return ret;
 }
-
-function ts100157() {
+function ts100157For000() {
+    return ts100157Field("000");
+}
+function ts100157For004() {
+    return ts100157Field("004");
+}
+function ts100157Field(staff) {
     var code;
     switch (colorSize) {
     case "no":
@@ -2458,14 +2463,26 @@ function ts100157() {
     var fields = queryGoodsInOutFields(keys);
     query(fields);
     var qr = getQR();
-    var exp = qr.data[0];
+    var exp = qr.counts;
+
+    keys = { "门店" : "中洲店" };
+    fields = queryGoodsInOutFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret;
+    if (staff == "000") {
+        ret = qr.data.length > 0;
+    } else {
+        ret = qr.data.length == 0;
+    }
 
     tapMenu("门店调入", "按明细查");
     keys = { "款号名称" : code, "调入门店" : "常青店", "日期从" : getDay(-365) };
     fields = shopInQueryParticularFields(keys);
     query(fields);
     qr = getQR();
-    var ret = isEqual(exp["累计调入"], qr.counts["数量"]);
+    ret = isAnd(ret, isEqual(exp["累计调入"], qr.counts["数量"]));
 
     tapMenu("门店调出", "按明细查");
     keys = { "款号名称" : code, "调出门店" : "常青店", "日期从" : getDay(-365) };
@@ -2473,6 +2490,13 @@ function ts100157() {
     query(fields);
     qr = getQR();
     ret = isAnd(ret, isEqual(exp["累计调出"], qr.counts["数量"]));
+
+    tapMenu("盘点管理", "盈亏表");
+    keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-365) };
+    fields = checkProfitAndLossFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(exp["盈亏数量"], qr.counts["盈亏"]));
 
     return ret;
 }
@@ -3346,8 +3370,9 @@ function test100097() {
     if (colorSize == "yes") {
         var r = getTimestamp(8);
         var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
-            "颜色" : [ "花色" ], "尺码" : [ "X1", "25" ], "吊牌价" : "200" };
-        return ts100033Field(keys1, keys1);
+            "颜色" : [ "红色" ], "尺码" : [ "X1", "25" ], "吊牌价" : "200" };
+        var keys2 = { "颜色" : "红色", "尺码" : "25,X1" }
+        return ts100033Field(keys1, keys2);
     } else {
         return true;
     }

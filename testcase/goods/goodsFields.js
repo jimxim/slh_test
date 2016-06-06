@@ -432,6 +432,14 @@ function editGoodsField(key, show, addIdx, priceStartIndex, barcodeStartIndex) {
             f.value = "S,M";
         }
         break;
+    case "库存录入":
+        f = new TField("库存录入", BTN, addIdx - 2, "");// index为新增+按钮
+        if (show) {
+            f.type = TV;
+            f.index = 0;
+            f.value = "均色,均码,9件;";
+        }
+        break;
     // tapButton(getScrollView(), "减量");也许要点击3次才能变成昨天
     case "marketdate":
     case "上架日期":

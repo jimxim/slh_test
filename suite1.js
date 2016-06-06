@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -15,36 +15,17 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "test100097");//
- run("测试用例", "onlyTest");//
+ run("测试用例", "test100097");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
 //
 // run("【往来管理-新增客户】客户编码", "ts110056");
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// var val="黄色";
-// var view1=getPopView();
-// var a1 = view1.elements();
-// var text=getStaticTexts(view1);
-// var btnNum=-1,textNum=-1;
-// for (var i = 0; i < a1.length; i++) {
-// var e = a1[i];
-// if(isUIAButton(e)){
-// btnNum++;
-// }
-// if(isUIAStaticText(e)){
-// textNum++;
-// logDebug("btnNum="+btnNum+" textNum="+textNum+" value="+text[textNum].value);
-// if(text[textNum].value==val){
-// break;
-// }
-// }
-// }
-// tapButton(view1,btnNum);
-    
-    
+ var val="花色";
+ 
     return true;
 }
 
