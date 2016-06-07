@@ -14,7 +14,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "ts110064");//
+ run("测试用例", "onlyTest");//
 
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
@@ -22,9 +22,15 @@ function test000All() {
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-
+ tapButton(window, "核销");
+ var a1 = o["核销"];
+ for (var i = 0; i < a1.length; i++) {
+     tapButton(getScrollView(-1, 0), a1[i]);
+ }
+ // app.navigationBar().buttons()[OK].tap();
+ tapNaviRightButton();
     return true;
 }
 

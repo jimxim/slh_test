@@ -3438,7 +3438,7 @@ function ts110064() {
     tapFirstText();
     keys = { "上级客户" : "xjkh1" };// 下级客户1
     addCustomer(keys, "yes");
-    ret = isAnd(ret, isInAlertMsgs("选择的客户设置了上级客户"));
+    ret = isAnd(ret, isInAlertMsgs("选择的上级客户设置了上级客户不允许出现多层客户"));
 
     tapMenu2("客户查询");
     keys = { "客户" : "sjkh1" };// 上级客户1
@@ -3447,7 +3447,7 @@ function ts110064() {
     tapFirstText();
     keys = { "上级客户" : r };
     addCustomer(keys, "yes");
-    ret = isAnd(ret, isInAlertMsgs("当前客户已经有子客户"));
+    ret = isAnd(ret, isInAlertMsgs("当前客户已经有子客户不允许设置上级客户"));
 
     return ret;
 }
