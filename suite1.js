@@ -14,8 +14,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "test100071_100072");//
-
+ run("测试用例", "ts130002_2");//
  
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
@@ -23,12 +22,10 @@ function test000All() {
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-   var qo = { "备注" : "开单模式" };
-    var o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款" ] };
-    var ret = setGlobalParam(qo, o);
-    return ret;
+
+    return true;
 }
 
 //

@@ -239,7 +239,7 @@ function testGoods002() {
     run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "ts100035");
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "ts100092");
-    run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");
+    // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
     run("【货品管理-批量调价】不选择任何货品，点击批量调价", "ts100051");
@@ -2831,7 +2831,7 @@ function test100071_100072Prepare() {
 // 新增仓位后重新登录在新增货品界面验证
 function test100071_100072() {
     tapMenu("货品管理", "新增货品+");
-    getScrollView().scrollToElementWithName("最小库存");//滑动到仓位的下一行，防止无法点击
+    getScrollView().scrollToElementWithName("最小库存");// 滑动到仓位的下一行，防止无法点击
     var keys = [ "仓位" ];
     var fields = editGoodsFields(keys);
     var idx = fields["仓位"].index;

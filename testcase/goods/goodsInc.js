@@ -178,7 +178,7 @@ function getElements(view) {
  */
 function getQRDet(view) {
     if (isUndefined(view)) {
-        view = getScrollView();
+        view = getScrollView(-1);
     }
 
     var titles = getDetSizheadTitle();
@@ -1256,7 +1256,7 @@ function editPurInByOrderDet(o) {
                         + tfNum["备注"], d["备注"]));
             }
         }
-        setTFieldsValue(getScrollView(), fields);
+        setTFieldsValue(getScrollView(-1), fields);
     }
 }
 
