@@ -3245,16 +3245,16 @@ function editPurchaseBatchDet(o) {
         var d = details[i];
 
         var f0 = new TField("货品", TF_AC, start + 1, d["货品"], -1, 0);
-        setTFieldsValue(getScrollView(), [ f0 ]);
+        setTFieldsValue(getScrollView(-1), [ f0 ]);
 
         var f1 = new TField("数量", TF, start + 4, d["数量"]);
-        setTFieldsValue(getScrollView(), [ f1 ]);
+        setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];
         if (isDefined(d["单价"])) {
             fields.push(new TField("单价", TF, start + 5, d["单价"]));
         }
-        setTFieldsValue(getScrollView(), fields);
+        setTFieldsValue(getScrollView(-1), fields);
     }
 }
 

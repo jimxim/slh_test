@@ -2831,10 +2831,11 @@ function test100071_100072Prepare() {
 // 新增仓位后重新登录在新增货品界面验证
 function test100071_100072() {
     tapMenu("货品管理", "新增货品+");
+    getScrollView().scrollToElementWithName("最小库存");//滑动到仓位的下一行，防止无法点击
     var keys = [ "仓位" ];
     var fields = editGoodsFields(keys);
     var idx = fields["仓位"].index;
-    tapButton(getScrollView(), idx);
+    tapButton(getScrollView(), idx);// tapButtonScroll
     var view = getPopView(window, -1);
     var text = getStaticTexts(view);
 

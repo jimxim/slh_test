@@ -7,26 +7,28 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "test100097");//
- run("测试用例", "test100097");//
-// run("【往来管理-客户查询】解除上下级客户关系", "test110054");// 上下级客户模式
+ run("测试用例", "test100071_100072");//
+
+ 
+// run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
-// run("【往来管理-新增客户】客户编码", "ts110056");
+
 }
 
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
- var val="花色";
- 
-    return true;
+   var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款" ] };
+    var ret = setGlobalParam(qo, o);
+    return ret;
 }
 
 //

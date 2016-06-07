@@ -280,6 +280,7 @@ function test110005() {
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
     tapReturn();
@@ -3078,7 +3079,7 @@ function test110054() {
 
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : name, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "现金" : "0" };
+        "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
@@ -3087,13 +3088,17 @@ function test110054() {
     query(fields);
 
     tapFirstText();
-    clearTFieldsByIndex(getScrollView(), 8);// 上级客户
-    tapButton(window, "修改保存");
-
-    tapFirstText();
-    var ret = isEqual("", getTextFieldValue(getScrollView(), 8));// 上级客户
     keys = { "上级客户" : "zbs" };
     fields = editCustomerFields(keys);
+
+    clearTFieldsByIndex(getScrollView(), fields["上级客户"].index);// 上级客户
+    tapButton(window, "修改保存");
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    var ret = isEqual("", getTextFieldValue(getScrollView(),
+            fields["上级客户"].index));// 上级客户
+
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
 
@@ -3103,8 +3108,9 @@ function test110054() {
     editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
     tapFirstText();
-    clearTFieldsByIndex(getScrollView(), 8);
+    clearTFieldsByIndex(getScrollView(), fields["上级客户"].index);
 
     tapButton(window, "修改保存");
     tapPrompt();
