@@ -1,16 +1,20 @@
 //LuXingXin <52619481 at qq.com> 20151214
 //一些不靠谱的方法
+
 /**
- * 新增客户
- * @param keys
+ * 新增/修改客户
  */
-function addCustomer(keys, check) {
-    tapMenu("往来管理", "新增客户+");
+function addCustomer(keys, isEdit, check) {
+    var btn = EDIT_SAVE;
+    if (isUndefined(isEdit) || isEdit == "no") {
+        tapMenu("往来管理", "新增客户+");
+        btn = SAVE;
+    }
+
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapReturn();
+    tapButton(window, btn);// 保存后会自动返回
+    tapReturn();// 防止出错，未返回
 
     var ret = true;
     if (isDefined(check) && check == "yes") {

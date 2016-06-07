@@ -567,11 +567,21 @@ function checkRightsStatisticAnalysis() {
     var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapFirstText();
-    arr = [ "进货价", "成本额", "利润额" ];
-    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
-
+    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+    if (hasRights) {
+        ret = isAnd(ret, qr.data[0]["进货价"] != "", qr.data[0]["成本额"] != "",
+                qr.data[0]["利润额"] != "");
+    } else {
+        ret = isAnd(ret, qr.data[0]["进货价"] == "", qr.data[0]["成本额"] == "",
+                qr.data[0]["利润额"] == "");// 这里价值标题显示，但是无内容
+    }
     tapNaviRightButton();
-    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
+    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
+    if (hasRights) {
+        ret = isAnd(ret, qr.data[0]["成本额"] != "", qr.data[0]["利润额"] != "");
+    } else {
+        ret = isAnd(ret, qr.data[0]["成本额"] == "", qr.data[0]["利润额"] == "");// 这里价值标题显示，但是无内容
+    }
     tapNaviLeftButton();
     tapNaviLeftButton();
 

@@ -3421,6 +3421,37 @@ function test110060_1Field(fields, exp1, exp2, exp3) {
             isEqualObject(exp3, qr1.data[1]));
 }
 
+function ts110064() {
+    var r = "cus" + getTimestamp(6);
+    var keys = { "名称" : r };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = { "上级客户" : r };
+    addCustomer(keys, "yes");
+    var ret = isInAlertMsgs("上级客户不能选择自己");
+
+    tapMenu2("客户查询");
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = { "上级客户" : "xjkh1" };// 下级客户1
+    addCustomer(keys, "yes");
+    ret = isAnd(ret, isInAlertMsgs("选择的客户设置了上级客户"));
+
+    tapMenu2("客户查询");
+    keys = { "客户" : "sjkh1" };// 上级客户1
+    var fields = queryCustomerFields(keys);
+    query(fields)
+    tapFirstText();
+    keys = { "上级客户" : r };
+    addCustomer(keys, "yes");
+    ret = isAnd(ret, isInAlertMsgs("当前客户已经有子客户"));
+
+    return ret;
+}
+
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
     var f = new TField("客户", TF_AC, 0, "yun", -1);

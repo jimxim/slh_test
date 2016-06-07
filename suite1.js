@@ -14,8 +14,8 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "ts130002_2");//
- 
+ run("测试用例", "ts110064");//
+
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
 

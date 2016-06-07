@@ -50,8 +50,8 @@ function testSalesOrder002() {
 
     run("【销售订货—按批次查】订单修改界面新增或删除款号", "test160006");
     // run("【销售订货—按批次查】已发货订单保存", "test160008");
-    run("【销售订货—按批次查】作废功能", "ts160009");
     run("【销售订货—按批次查】更多-查看修改日志", "test160011");
+    run("【销售订货—按批次查】作废功能", "ts160009");
     run("【销售订货—按批次查】查看-终结订单", "test160012");
     run("【销售订货-按批次查】修改单据保存再点打印", "test160072");
     run("【销售订货-按批次查】修改已发货的订单", "ts160073_74");
@@ -830,7 +830,7 @@ function test160011Field(staff, menu1) {
     var opTime = getOpTime();
     tapPrompt();
     delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapFirstText();
     tapMenu(menu1, "getMenu_More", "查看修改日志");
@@ -846,7 +846,7 @@ function test160011Field(staff, menu1) {
     index = getArrayIndexIn(texts, "最后修改时间");
     var date3 = getStaticTextValue(getPopOrView(), index + 1);
     tapButton(getPop(), OK);
-    tapButton(window, RETURN);
+    tapReturn();
 
     var ret = isAnd(isEqual(staff, date2), isAqualOptime(opTime, date3));
     if (isDefined(date0)) {
