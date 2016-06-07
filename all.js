@@ -11,6 +11,7 @@
 
 #import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
+#import "testcase/check/checkInc.js"
 
 #import "testcase/goods/goodsInc.js"
 #import "testcase/goods/goods.js"

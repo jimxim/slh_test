@@ -2,7 +2,8 @@
 
 /**
  * 新增盘点，无颜色尺码
- * @param o 输入对象，eg: { "明细" : [ { "货品" : "k300", "数量" : 5 } ]};
+ * @param o 输入对象，eg: { "明细" : [ { "货品" : "k300", "数量" : 5 } ],"onlytest" :
+ *            "yes","不返回" : "yes"};
  */
 function editCheckAddNoColorSize(o) {
     return editCheckAdd(o, "no");
@@ -16,6 +17,8 @@ function editCheckAdd(o, colorSize) {
     if (colorSize == "no") {
         editCheckAddDetNoColorSize(o);
     }
+
+    editCheckAddSave(o);
 }
 /**
  * 均色均码明细
@@ -26,11 +29,18 @@ function editCheckAddDetNoColorSize(o) {
     // 输入超出当前页面显示条数时，比如8条时，tfNum会将前面10行内容都当做标题，因此只在最开始取一次标题数
     var tfNum = getSalesBillDetTfNum(o);
 
+    var view1;
+    if (ipadVer >= "7.10") {
+        view1 = getScrollView(1);
+    } else {
+        view1 = getScrollView();
+    }
+
     for ( var i in details) {
         var start = tfNum * (i - mergeLine + detLine);
         var d = details[i];
         var f0 = new TField("货品", TF_AC, start + 0, d["货品"], -1, 0);
-        var view1 = getScrollView(-1);
+        // var view1 = getScrollView(-1);
         setTFieldsValue(view1, [ f0 ]);
 
         var num;
@@ -96,4 +106,33 @@ function editCheckAddDetColorSize(o) {
             tapNaviLeftButton();
         }
     }
+}
+function editCheckAddSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+    saveAndAlertOk();// 保存后会清空页面数据
+    o["操作日期"] = getOpTime();
+
+    // 本次开单包括了补货退货的货品，是否继续开单保存 \n 1, k200,范范 均色 均码\n
+    var o1 = { "继续开单保存" : "仍然保存" };
+    // 保存成功，是否打印?
+    o1["是否打印"] = CANCEL;
+    // 确定返回吗？
+    o1["确定返回"] = OK;
+    // 同款不同价提醒
+    o1["同款不同价提醒"] = "仍然保存";
+    o1["是否需要重新刷新明细价格等信息"] = "刷新价格";
+    // tapAlertButtonsByMsgKey(o1);
+    setValueToCache(ALERT_MSG_KEYS, o1);
+
+    delay();
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+    }
+
+    return o;
 }

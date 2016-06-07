@@ -1211,7 +1211,7 @@ function test170028_170038() {
 
     var f13 = new TField("备注", TF, 13, "mxbz");
     var fields = [ f13 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1442,7 +1442,7 @@ function test170252() {
 
     var f3 = new TField("数量", TF, 5, "3");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1459,7 +1459,7 @@ function test170252() {
     tapFirstText();
     var f3 = new TField("数量", TF, 5, "7");
     fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -2384,7 +2384,12 @@ function test170275Getmoney() {
     tapMenu3("收 款");
 }
 function test170275() {
-    tapMenu("销售开单", "getMenu_More", "收款单");
+    if (ipadVer >= "7.10") {
+        tapMenu("销售开单", "getMenu_More", "收款单");        
+    } else {
+        tapMenu("销售开单", "收款单");
+    }
+
     var keys = { "日期从" : "2015-01-01" };
     var fields = salesCollectionRecordFields(keys);
     query(fields);
@@ -4207,13 +4212,13 @@ function test170310_170311_170312() {
 
     tapMenu("销售开单", "按汇总", "按款号汇总");
     var keys = { "日期从" : getDay(-30) };
-    var fields = salesPriceFields(keys);
+    var fields = salesCodeFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
     var ret = goPageCheck();
 
-    var ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("上架日期", IS_DATE2);
     ret = ret && sortByTitle("颜色");
@@ -5877,7 +5882,7 @@ function test170365() {
     var totalMoney = getTextFieldValue(window, 13);
     var zk = getTextFieldValue(window, 11);
     var price = getTextFieldValue(getScrollView(), 3);
-    var num = getTextFieldValue(getScrollView(), 4);
+    var num = getTextFieldValue(getScrollView(1), 4);
 
     tapButtonAndAlert("挂 单", OK);
     delay();
@@ -7579,8 +7584,8 @@ function test170454() {
 
     tapFirstText();
 
-    ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(1), 0), r), isEqual(
-            "-9", getTextFieldValue(getScrollView(1), 3)));
+    ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(1), 0), r),
+            isEqual("-9", getTextFieldValue(getScrollView(1), 3)));
 
     tapReturn();
 
