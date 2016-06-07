@@ -4912,7 +4912,7 @@ function test170169() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapButtonAndAlert("挂 单", OK);
+    tapButtonAndAlert("挂 单", OK);//挂 单
     delay();
     tapReturn();
 

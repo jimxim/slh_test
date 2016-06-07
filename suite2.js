@@ -34,11 +34,15 @@ function test000All() {
     
 //    run("【销售开单-按订货开单】订货额、已付、未付检查--部分发货", "test170433");
 //    run("【销售开单-按订货开单】订货额、已付、未付检查--全部发货", "test170434");    
-    run("【销售开单－开单】代收模式2", "test170092");
+//    run("【销售开单－开单】代收模式2", "test170092");
 //    run("【销售开单－开单】代收模式2", "test170093");
 //    run("【销售开单－开单】退货时明细备注框操作", "test170097");//
     
-// run("", "test1");
+//    run("【销售开单－开单】挂单保存", "test170169");
+//    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+//    run("【销售开单－开单】挂单转销售单", "test170171");
+    
+ run("", "test1");
 }
     
 function test1(){
@@ -48,25 +52,6 @@ function test1(){
 // debugQResult(qr);
 // debugElements(window);
     
-//    tapMenu("销售开单", "按订货开单");
-//    query();
-//    var qr = getQR();
-//
-//    tapFirstText();
-//
-//    var f5 = new TField("数量", TF, 5, "0");
-//    var fields = [ f5 ];
-//    setTFieldsValue(getScrollView(-1), fields);
-//
-//    var money = getTextFieldValue(window, 5);
-//    var r = getTimestamp(8);
-//    tapStaticText(window, "代收");
-//    var f0 = new TField("物流商*", TF, 17, "天天物流");
-//    var f1 = new TField("运单号", TF, 18, r);
-//    var f2 = new TField("备注", TF, 19, r);
-//    var fields = [ f0, f1, f2 ];
-//    setTFieldsValue(window, fields);
-//    tapNaviRightButton();
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

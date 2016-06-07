@@ -12,9 +12,9 @@ function testCheck001() {
     run("【盘点管理—盈亏表】条件查询，清除按钮,下拉框", "test180037_180034_180035");
     run("【盘点管理—库存表】清除", "test180054");
 }
-function testCheckAll() { 
-    run("处理掉待作废", "checkPrepare");
+function testCheckAll() {
     run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
+    run("处理掉待作废", "checkPrepare");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
     run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
@@ -40,15 +40,15 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     // run("【盘点管理—盘点处理】处理日期设置", "test180027");
-//    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
-//    run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
-//    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
-//    run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
-//    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
-//    run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
-//    run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
-//    run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
-//    run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
+    // run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
+    // run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
+    // run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
+    // run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
+    // run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
+    // run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
+    // run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
+    // run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
+    // run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
 }
 function checkPrepare_Off() {
     tapMenu(window, "作 废");
@@ -81,10 +81,9 @@ function test180001_180003_180005() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
@@ -103,12 +102,10 @@ function test180001_180003_180005() {
     ret = ret && sortByTitle("处理时间");
     ret = ret && sortByTitle("处理人");
 
-    logDebug("ret=" + ret);
-
     query();
     var qr = getQR();
     var sum1 = 0;
-    var qr = getQR(window, getScrollView(), "序号", 8);
+    var qr = getQR();
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -121,7 +118,7 @@ function test180001_180003_180005() {
     }
     var ret1 = isAnd(isEqual(qr.counts["数量"], sum1));
 
-    logDebug("sum1=" + sum1);
+    logDebug(" sum1=" + sum1 + ", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test180001_2_180004() {
@@ -143,7 +140,7 @@ function test180001_2_180004() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -154,7 +151,7 @@ function test180001_2_180004() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理");
     delay(2);
-    tapButton(window, "返 回");
+    tapReturn();
 
     tapMenu("盘点管理", "按批次查");
     query();
@@ -165,7 +162,7 @@ function test180001_2_180004() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -219,7 +216,8 @@ function test180002() {
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : "2015-01-01", "批次从" : Number(batch - 29), "批次到" : batch };
+    var keys = { "日期从" : "2015-01-01", "批次从" : Number(batch - 29),
+        "批次到" : batch };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     qr = getQR();
@@ -255,7 +253,7 @@ function test180007() {
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "-112");
     var fields = [ f0, f3, f4, f7 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -267,12 +265,13 @@ function test180007() {
     changeTFieldValue(fields1["门店"], "常青店");
     query(fields1);
     tapFirstText();
-    tapButton(getScrollView(), 0);
+    
+    tapButton(getScrollView(1), 0);
 
     f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     f3 = new TField("数量", TF, 3, "0");
     fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -282,8 +281,8 @@ function test180007() {
     query(fields1);
     tapFirstText();
 
-    var ret = isAnd(isEqual(0, getTextFieldValue(getScrollView(), 3)), isEqual(
-            "k300,铅笔裤", getTextFieldValue(getScrollView(), 0)));
+    var ret = isAnd(isEqual(0, getTextFieldValue(getScrollView(1), 3)), isEqual(
+            "k300,铅笔裤", getTextFieldValue(getScrollView(1), 0)));
     delay();
     tapReturn();
 
@@ -297,10 +296,9 @@ function test180008() {
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "-28");
     var fields = [ f0, f3, f4, f7 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");
@@ -316,7 +314,7 @@ function test180008() {
     query();
     tapFirstText();
 
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(1), 0);
     saveAndAlertOk();
     tapPrompt();
 
@@ -334,7 +332,7 @@ function test180009() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -380,7 +378,7 @@ function test180010() {
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "0");
     var fields = [ f0, f3, f4, f7 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -470,7 +468,7 @@ function test180013_2_180014() {
     var f4 = new TField("货品", TF_AC, 4, "k200", -1, 0);
     var f7 = new TField("数量", TF, 7, "-10");
     var fields = [ f0, f3, f4, f7 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -542,9 +540,8 @@ function test180015() {
     var a2 = qr.data[0]["类别"];
     var a3 = qr.data[0]["品牌"];
 
-    ret = ret
-            && isAnd(isEqual("3035", a), isEqual("jkk", a1),
-                    isEqual("登山服", a2), isEqual("Adidas", a3));
+    ret = isAnd(ret, isEqual("3035", a), isEqual("jkk", a1),
+            isEqual("登山服", a2), isEqual("Adidas", a3));
 
     return ret;
 }
@@ -563,7 +560,7 @@ function test180019() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -583,10 +580,10 @@ function test180019() {
     tapFirstText();
 
     var ret2 = isAnd(isEqual(100, getTextFieldValue(window, 0)), isEqual(
-            "3035,jkk", getTextFieldValue(getScrollView(), 0)), isEqual("均色",
-            getTextFieldValue(getScrollView(), 1)), isEqual("均码",
-            getTextFieldValue(getScrollView(), 2)), isEqual(100,
-            getTextFieldValue(getScrollView(), 3)));
+            "3035,jkk", getTextFieldValue(getScrollView(1), 0)), isEqual("均色",
+            getTextFieldValue(getScrollView(1), 1)), isEqual("均码",
+            getTextFieldValue(getScrollView(1), 2)), isEqual(100,
+            getTextFieldValue(getScrollView(1), 3)));
 
     tapReturn();
 
@@ -614,7 +611,7 @@ function test180021() {
     var f11 = new TField("数量", TF, 11, "0");
 
     var fields = [ f0, f3, f4, f7, f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var f12 = new TField("货品", TF_AC, 12, "3035", -1, 0);
     var f15 = new TField("数量", TF, 15, "12");
@@ -624,7 +621,7 @@ function test180021() {
     var f23 = new TField("数量", TF, 23, "0");
 
     fields = [ f12, f15, f16, f19, f20, f23 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var f24 = new TField("货品", TF_AC, 24, "3035", -1, 0);
     var f27 = new TField("数量", TF, 27, "10");
@@ -634,7 +631,7 @@ function test180021() {
     var f35 = new TField("数量", TF, 35, "0");
 
     fields = [ f24, f27, f28, f31, f32, f35 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var f36 = new TField("货品", TF_AC, 36, "3035", -1, 0);
     var f39 = new TField("数量", TF, 39, "10");
@@ -644,7 +641,7 @@ function test180021() {
     var f47 = new TField("数量", TF, 47, "0");
 
     fields = [ f36, f39, f40, f43, f44, f47 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var f48 = new TField("货品", TF_AC, 48, "3035", -1, 0);
     var f51 = new TField("数量", TF, 51, "10");
@@ -657,7 +654,7 @@ function test180021() {
     var f63 = new TField("数量", TF, 63, "20");
 
     fields = [ f48, f51, f52, f55, f56, f59, f60, f63 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -679,38 +676,38 @@ function test180021() {
     tapButton(window, QUERY);
     tapFirstText();
 
-    var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)),
-            isEqual(10, getTextFieldValue(getScrollView(), 3)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 4)), isEqual(
-                    -11, getTextFieldValue(getScrollView(), 7)), isEqual(
-                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 8)),
-            isEqual(0, getTextFieldValue(getScrollView(), 11)), isEqual(
-                    "3035,jkk", getTextFieldValue(getScrollView(), 12)),
-            isEqual(12, getTextFieldValue(getScrollView(), 15)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 16)),
-            isEqual(-11, getTextFieldValue(getScrollView(), 19)), isEqual(
-                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 20)),
-            isEqual(0, getTextFieldValue(getScrollView(), 23)), isEqual(
-                    "3035,jkk", getTextFieldValue(getScrollView(), 24)),
-            isEqual(10, getTextFieldValue(getScrollView(), 27)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 28)),
-            isEqual(-11, getTextFieldValue(getScrollView(), 31)), isEqual(
-                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 32)),
-            isEqual(0, getTextFieldValue(getScrollView(), 35)), isEqual(
-                    "3035,jkk", getTextFieldValue(getScrollView(), 36)),
-            isEqual(10, getTextFieldValue(getScrollView(), 39)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 40)),
-            isEqual(-11, getTextFieldValue(getScrollView(), 43)), isEqual(
-                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 44)),
-            isEqual(0, getTextFieldValue(getScrollView(), 47)), isEqual(
-                    "3035,jkk", getTextFieldValue(getScrollView(), 48)),
-            isEqual(10, getTextFieldValue(getScrollView(), 51)), isEqual(
-                    "k200,范范", getTextFieldValue(getScrollView(), 52)),
-            isEqual(-11, getTextFieldValue(getScrollView(), 55)), isEqual(
-                    "k300,铅笔裤", getTextFieldValue(getScrollView(), 56)),
-            isEqual(0, getTextFieldValue(getScrollView(), 59)), isEqual(
-                    "3035,jkk", getTextFieldValue(getScrollView(), 60)),
-            isEqual(20, getTextFieldValue(getScrollView(), 63)));
+    var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(1), 0)),
+            isEqual(10, getTextFieldValue(getScrollView(1), 3)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(1), 4)), isEqual(
+                    -11, getTextFieldValue(getScrollView(1), 7)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(1), 8)),
+            isEqual(0, getTextFieldValue(getScrollView(1), 11)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(1), 12)),
+            isEqual(12, getTextFieldValue(getScrollView(1), 15)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(1), 16)),
+            isEqual(-11, getTextFieldValue(getScrollView(1), 19)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(1), 20)),
+            isEqual(0, getTextFieldValue(getScrollView(1), 23)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(1), 24)),
+            isEqual(10, getTextFieldValue(getScrollView(1), 27)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(1), 28)),
+            isEqual(-11, getTextFieldValue(getScrollView(1), 31)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(1), 32)),
+            isEqual(0, getTextFieldValue(getScrollView(1), 35)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(1), 36)),
+            isEqual(10, getTextFieldValue(getScrollView(1), 39)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(1), 40)),
+            isEqual(-11, getTextFieldValue(getScrollView(1), 43)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(1), 44)),
+            isEqual(0, getTextFieldValue(getScrollView(1), 47)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(1), 48)),
+            isEqual(10, getTextFieldValue(getScrollView(1), 51)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(1), 52)),
+            isEqual(-11, getTextFieldValue(getScrollView(1), 55)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(1), 56)),
+            isEqual(0, getTextFieldValue(getScrollView(1), 59)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(1), 60)),
+            isEqual(20, getTextFieldValue(getScrollView(1), 63)));
 
     tapReturn();
 
@@ -726,12 +723,12 @@ function test180023() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     tapReturn(window, CANCEL);
 
-    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(), 3)),
-            isEqual("3035,jkk", getTextFieldValue(getScrollView(), 0)));
+    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(1), 3)),
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(1), 0)));
 
     delay();
     tapReturn();
@@ -754,8 +751,8 @@ function test180024() {
     var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
     var f11 = new TField("数量", TF, 11, "0");
     var fields = [ f0, f3, f4, f7, f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(getScrollView(), 2);
+    setTFieldsValue(getScrollView(1), fields);
+    tapButton(getScrollView(1), 2);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -768,8 +765,8 @@ function test180024() {
     query(fields);
     tapFirstText();
 
-    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(), 8)),
-            isEqual("", getTextFieldValue(getScrollView(), 11)));
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(1), 8)),
+            isEqual("", getTextFieldValue(getScrollView(1), 11)));
 
     tapReturn();
 
@@ -845,7 +842,7 @@ function test180025_1() {
     var f8 = new TField("货品", TF_AC, 8, "8989", -1, 0);
     var f11 = new TField("数量", TF, 11, "-22");
     var fields = [ f0, f3, f4, f7, f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -1021,7 +1018,7 @@ function test180026_1() {
     var f8 = new TField("货品", TF_AC, 8, "8989", -1, 0);
     var f11 = new TField("数量", TF, 11, "-22");
     var fields = [ f0, f3, f4, f7, f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -1090,7 +1087,7 @@ function test180027() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1127,7 +1124,7 @@ function test180027() {
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "20");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -1205,7 +1202,7 @@ function test180029_180031_180032() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, r);
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -1425,7 +1422,7 @@ function test180042Prepare() {
     var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1456,7 +1453,7 @@ function test180042() {
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "20");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -1480,7 +1477,7 @@ function test180042() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1496,7 +1493,7 @@ function test180042() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1516,7 +1513,7 @@ function test180042() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1547,7 +1544,7 @@ function test180042_1() {
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, r);
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -1572,7 +1569,7 @@ function test180042_1() {
 
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1592,7 +1589,7 @@ function test180042_1() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1613,7 +1610,7 @@ function test180042_1() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1737,7 +1734,7 @@ function test180042_3() {
     // var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     // var f3 = new TField("数量", TF, 3, "20");
     // var fields = [ f0, f3 ];
-    // setTFieldsValue(getScrollView(), fields);
+    // setTFieldsValue(getScrollView(1), fields);
     // saveAndAlertOk();
     // tapReturn();
     //
@@ -1853,7 +1850,7 @@ function test180042_4() {
 
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1873,7 +1870,7 @@ function test180042_4() {
     var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1885,7 +1882,7 @@ function test180042_4() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1906,7 +1903,7 @@ function test180042_4() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1930,7 +1927,7 @@ function test180042_5() {
     // var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     // var f3 = new TField("数量", TF, 3, r);
     // var fields = [ f0, f3 ];
-    // setTFieldsValue(getScrollView(), fields);
+    // setTFieldsValue(getScrollView(1), fields);
     // saveAndAlertOk();
     // tapReturn();
     //
@@ -1957,7 +1954,7 @@ function test180042_5() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1977,7 +1974,7 @@ function test180042_5() {
     var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1989,7 +1986,7 @@ function test180042_5() {
 
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -2011,7 +2008,7 @@ function test180042_5() {
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -2045,7 +2042,7 @@ function test180042_6() {
     // var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     // var f3 = new TField("数量", TF, 3, r);
     // var fields = [ f0, f3 ];
-    // setTFieldsValue(getScrollView(), fields);
+    // setTFieldsValue(getScrollView(1), fields);
     // saveAndAlertOk();
     // tapReturn();
     //
@@ -2155,7 +2152,7 @@ function test180042_7() {
     // var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     // var f3 = new TField("数量", TF, 3, r);
     // var fields = [ f0, f3 ];
-    // setTFieldsValue(getScrollView(), fields);
+    // setTFieldsValue(getScrollView(1), fields);
     // saveAndAlertOk();
     // tapReturn();
     //
@@ -2206,7 +2203,7 @@ function test180042_7() {
     var f2 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "10");
     var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -2277,7 +2274,7 @@ function test180048() {
     var f0 = new TField("货品", TF_AC, 0, "k300", -1, 0);
     var f3 = new TField("数量", TF, 3, "20");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -2287,7 +2284,7 @@ function test180048() {
 
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -2328,7 +2325,7 @@ function test180049_180036() {
     var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -2396,7 +2393,7 @@ function test180049_180036() {
     var f20 = new TField("货品", TF_AC, 20, "8989", -1, 0);
     var f23 = new TField("数量", TF, 23, "-5");
     var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -2520,7 +2517,7 @@ function test180049_1() {
     var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
     var f3 = new TField("数量", TF, 3, "100");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 
@@ -2587,7 +2584,7 @@ function test180049_1() {
     var f20 = new TField("货品", TF_AC, 20, "8989", -1, 0);
     var f23 = new TField("数量", TF, 23, "-5");
     var fields = [ f0, f3, f4, f7, f8, f11, f12, f15, f16, f19, f20, f23 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -2756,7 +2753,7 @@ function test180057() {
     var f0 = new TField("货品", TF_AC, 0, "4562", -1, 0);
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
     saveAndAlertOk();
     tapReturn();
 

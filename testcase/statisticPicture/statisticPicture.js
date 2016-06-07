@@ -1,19 +1,19 @@
 //Zhangy <2397655091 at qq.com> 20151217
 
 function testStatisticPictureAll() {
-    run("【统计图表—按门店】清除", "test200003");
-    run("【统计图表—按门店汇总】查询", "test200017");
-    run("【统计图表—按门店汇总】清除", "test200018");
-    run("【统计图表—按门店汇总】底部数据检查", "test200019");
-    run("【统计图表—按客户】清除", "test200021");
-    run("【统计图表—按客户】清除", "test200024_1");
-    // run("【统计图表—按款号图像】", "test200026");
-    run("【统计图表—按店员】清除", "test200040");
-    run("【统计图表—按趋势】清除", "test200044");
-    run("【统计图表—按欠款】清除", "test200045");
-    run("【统计图表—按类别】清除", "test200044");
+//    run("【统计图表—按门店】清除", "test200003");
+//    run("【统计图表—按门店汇总】查询", "test200017");
+//    run("【统计图表—按门店汇总】清除", "test200018");
+//    run("【统计图表—按门店汇总】底部数据检查", "test200019");
+//    run("【统计图表—按客户】清除", "test200021");
+//    run("【统计图表—按款号】清除", "test200024_1");
+//    run("【统计图表—按店员】清除", "test200040");
+//    run("【统计图表—按趋势】清除", "test200044");
+//    run("【统计图表—按欠款】清除", "test200045");
+//    run("【统计图表—按类别】清除", "test200044");
     run("【统计图表—按品牌】清除", "test200053");
     run("【统计图表—按滞销】清除", "test200058");
+    // run("【统计图表—按款号图像】", "test200026");
 }
 function test200003() {
     tapMenu("统计图表", "按门店");
@@ -169,7 +169,7 @@ function test200024_1() {
     tapMenu("统计图表", "按款号");
     var keys = { "code" : "3035", "day1" : getDay(-30), "day2" : getToday(),
         "name" : "3035", "shop" : "常青店", "provider" : "Vell",
-        "market1" : "2015-1-1", "market2" : getToday(), "type" : "登山服",
+        "market1" : "2015-01-01", "market2" : getToday(), "type" : "登山服",
         "season" : "春季", "品牌" : "Adidas" };
     var fields = pictureCodeFields(keys);
     query(fields);
@@ -301,7 +301,6 @@ function test200053() {
     tapMenu1("统计图表");
     tapMenu2("getMenu_More");
     tapMenu3("按品牌");
-    tapMenu2("getMenu_More", "按品牌");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店" };
     var fields = pictureBrandFields(keys);
     query(fields);

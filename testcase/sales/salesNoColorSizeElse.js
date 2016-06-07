@@ -7020,7 +7020,7 @@ function test170433() {
 
     var f5 = new TField("数量", TF, 5, "0");
     var fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var money = getTextFieldValue(window, 5);
     var r = getTimestamp(8);
@@ -7133,7 +7133,7 @@ function test170435() {
 
     var f5 = new TField("数量", TF, 5, "0");
     var fields = [ f5 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -7363,10 +7363,10 @@ function test170438() {
     var f12 = new TField("单价", TF, 12, "10.052");
     var f13 = new TField("折扣", TF, 13, "0.643");
     var fields = [ f4, f5, f12, f13 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     var totalMoney = getTextFieldValue(window, 11);
-    var num = getTextFieldValue(getScrollView(), 3);
+    var num = getTextFieldValue(getScrollView(1), 3);
 
     saveAndAlertOk();
     tapPrompt();
@@ -7479,7 +7479,7 @@ function test170442_170425() {
     tapReturn();
 
     tapMenu("销售开单", "物流单");
-    var keys = { "物流商" : "天天物流", "运单号" : r }
+    var keys = { "物流商" : "天天物流", "运单号" : r };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     var qr = getQR();
@@ -7512,7 +7512,7 @@ function test170453() {
     tapButton(window, "核销");
     tapButton(getScrollView(-1, 0), 5);
 
-    app.navigationBar().buttons()["确 认"].tap();
+    tapNaviButton(OK);
 
     saveAndAlertOk();
     tapPrompt();
@@ -7557,7 +7557,7 @@ function test170454() {
 
     var f3 = new TField("数量", TF, 3, "-9");
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     var o1 = { "继续开单保存" : "仍然保存" };
@@ -7579,8 +7579,8 @@ function test170454() {
 
     tapFirstText();
 
-    ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(), 0), r), isEqual(
-            "-9", getTextFieldValue(getScrollView(), 3)));
+    ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(1), 0), r), isEqual(
+            "-9", getTextFieldValue(getScrollView(1), 3)));
 
     tapReturn();
 
