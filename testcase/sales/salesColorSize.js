@@ -437,8 +437,8 @@ function testCs170247() {
     query();
     tapFirstText();
 
-    var b = getTextFieldValue(getScrollView(), 4);
-    var b1 = getTextFieldValue(getScrollView(), 11);
+    var b = getTextFieldValue(getScrollView(-1), 4);
+    var b1 = getTextFieldValue(getScrollView(-1), 11);
     var ret1 = isAnd(isEqual("490", b), isEqual("490", b1));
     tapReturn();
 
@@ -494,8 +494,8 @@ function testCs170248() {
     query();
     tapFirstText();
 
-    var b = getTextFieldValue(getScrollView(), 4);
-    var b1 = getTextFieldValue(getScrollView(), 11);
+    var b = getTextFieldValue(getScrollView(-1), 4);
+    var b1 = getTextFieldValue(getScrollView(-1), 11);
     var ret1 = isAnd(isEqual("390", b), isEqual("390", b1));
     tapReturn();
 
@@ -675,8 +675,8 @@ function testCs170050() {
 
     var totalMoney1 = getTextFieldValue(window, 2);
     ret = ret
-            && isEqual(add(getTextFieldValue(getScrollView(), 19),
-                    getTextFieldValue(getScrollView(), 26)), sub(totalMoney1,
+            && isEqual(add(getTextFieldValue(getScrollView(-1), 19),
+                    getTextFieldValue(getScrollView(-1), 26)), sub(totalMoney1,
                     totalMoney));
 
     saveAndAlertOk();
@@ -968,7 +968,7 @@ function testCs170057() {
 
     var f21 = new TField("货品", TF_AC, 21, "x001", -1, 0);
     var fields = [ f21 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
     tapButton(window, "核销");
     tapNaviLeftButton();
     var bt9 = app.navigationBar().leftButton();
@@ -1176,10 +1176,10 @@ function testCs170065_2() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
     tapFirstText();
-    var ret = isAnd(isIn(getTextFieldValue(getScrollView(), 0), "Nb001"),
-            isEqual("1", getTextFieldValue(getScrollView(), 3)), isIn(
-                    getTextFieldValue(getScrollView(), 7), "Nb001"), isEqual(
-                    "1", getTextFieldValue(getScrollView(), 10)), isIn(
+    var ret = isAnd(isIn(getTextFieldValue(getScrollView(-1), 0), "Nb001"),
+            isEqual("1", getTextFieldValue(getScrollView(-1), 3)), isIn(
+                    getTextFieldValue(getScrollView(-1), 7), "Nb001"), isEqual(
+                    "1", getTextFieldValue(getScrollView(-1), 10)), isIn(
                     getTextFieldValue(getScrollView(), 14), "Nb001"), isEqual(
                     "1", getTextFieldValue(getScrollView(), 17)));
 
@@ -3946,7 +3946,7 @@ function test170626() {
         "明细" : [ { "货品" : "x001", "数量" : [ 0, 0, 0, 1 ] } ], "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret1 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 22));
+    var ret1 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 22));
 
     tapReturn();
 
@@ -3956,7 +3956,7 @@ function test170626() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret2 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 25));
+    var ret2 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 25));
 
     tapReturn();
 
@@ -3966,7 +3966,7 @@ function test170626() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret3 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 25));
+    var ret3 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 25));
 
     tapReturn();
 
@@ -3976,7 +3976,7 @@ function test170626() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret4 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 22));
+    var ret4 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 22));
 
     tapReturn();
 
@@ -3986,7 +3986,7 @@ function test170626() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret5 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 16));
+    var ret5 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 16));
 
     tapReturn();
 
@@ -3995,7 +3995,7 @@ function test170626() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret6 = isEqual("铁锈红", getTextFieldValue(getScrollView(), 13));
+    var ret6 = isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 13));
 
     saveAndAlertOk();
     tapPrompt();
@@ -4021,7 +4021,7 @@ function test170626() {
     tapButton(window, QUERY);
     tapFirstText();
 
-    ret6 = isAnd(ret6, isEqual("铁锈红", getTextFieldValue(getScrollView(), 13)));
+    ret6 = isAnd(ret6, isEqual("铁锈红", getTextFieldValue(getScrollView(-1), 13)));
 
     tapReturn();
 
@@ -4263,7 +4263,7 @@ function test170652() {
 
     var f3 = new TField("数量", TF, 3, add(add(k, k1), 1));
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -4306,7 +4306,7 @@ function test170652() {
 
     var f3 = new TField("数量", TF, 3, -add(add(k2, k3), 1));
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -4350,7 +4350,7 @@ function test170652() {
 
     var f3 = new TField("数量", TF, 3, add(add(k4, k5), 1));
     var fields = [ f3 ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -5324,7 +5324,7 @@ function test170660() {
 
     var f = new TField("数量", TF, 11, 8);
     var fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     tapStaticText(window, "刷卡");
 
@@ -5350,7 +5350,7 @@ function test170660() {
 
     var f = new TField("数量", TF, 11, 11);
     var fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     tapStaticText(window, "刷卡");
 
@@ -5386,24 +5386,24 @@ function test170702() {
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 0)),
-            isEqual(1, getTextFieldValue(getScrollView(), 3)));
+    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 0)),
+            isEqual(1, getTextFieldValue(getScrollView(-1), 3)));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
 
-    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 7)),
-            isEqual(0, getTextFieldValue(getScrollView(), 10)), isEqual("x001",
-                    getTextFieldValue(getScrollView(), 14)), isEqual(1,
-                    getTextFieldValue(getScrollView(), 17)));
+    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 7)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 10)), isEqual("x001",
+                    getTextFieldValue(getScrollView(-1), 14)), isEqual(1,
+                    getTextFieldValue(getScrollView(-1), 17)));
     
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
 
-    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 21)),
-            isEqual(0, getTextFieldValue(getScrollView(), 24)), isEqual("x001",
-                    getTextFieldValue(getScrollView(), 28)), isEqual(1,
-                    getTextFieldValue(getScrollView(), 31)));
+    var ret2 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 21)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 24)), isEqual("x001",
+                    getTextFieldValue(getScrollView(-1), 28)), isEqual(1,
+                    getTextFieldValue(getScrollView(-1), 31)));
     
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
@@ -5430,14 +5430,14 @@ function test170703() {
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 0)),
-            isEqual(1, getTextFieldValue(getScrollView(), 3)));
+    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 0)),
+            isEqual(1, getTextFieldValue(getScrollView(-1), 3)));
 
     json = { "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
 
-    var ret2 = isAnd(isEqual("x003", getTextFieldValue(getScrollView(), 7)),
-            isEqual(1, getTextFieldValue(getScrollView(), 10)));
+    var ret2 = isAnd(isEqual("x003", getTextFieldValue(getScrollView(-1), 7)),
+            isEqual(1, getTextFieldValue(getScrollView(-1), 10)));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
@@ -5451,9 +5451,9 @@ function test170703() {
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
 
-    var ret4 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(), 14)),
-            isEqual(0, getTextFieldValue(getScrollView(), 17)), isEqual(-1,
-                    getTextFieldValue(getScrollView(), 21)));
+    var ret4 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 14)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 17)), isEqual(-1,
+                    getTextFieldValue(getScrollView(-1), 21)));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);

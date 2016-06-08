@@ -8,7 +8,7 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer ="7.10"; // "6.59";// 7.01// 7.10
+    ipadVer ="7.01"; // "6.59";// 7.01// 7.10
 	
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 // run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
@@ -39,16 +39,17 @@ function test000All() {
 // run("【系统设置—打印机】远程打印参数", "test210003");//
 // run("【销售开单－开单】核销（客户余款）", "test170054_2");
     
-//    run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
-//    run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");
-//    run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
-//    run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");//
-//    run("【销售开单－开单】积分兑换", "test170186");// (弹窗的判定不稳定)//
-//    run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-//    run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
-//    run("销售订货价格刷新+上次价", "test170492_1");
-//    run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
-    run("【销售开单-按订货开单】订货额、已付、未付检查--核销预付款", "test170453");//
+// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
+// run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");
+// run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
+// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");//
+// run("【销售开单－开单】积分兑换", "test170186");// (弹窗的判定不稳定)//
+// run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+// run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
+// run("销售订货价格刷新+上次价", "test170492_1");
+// run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
+        
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
     
 // run("", "test1");
 }
@@ -59,17 +60,33 @@ function test1(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-//    tapMenu("盘点管理", "新增盘点+");
-//    var josn={ "明细" : [ { "货品" : "k300", "数量" : 5 } ]};
-//    editCheckAddDetNoColorSize(josn);
-//    var view1;
-//    if (ipadVer >= "7.10") {
-//        view1 = getScrollView(1);
-//    } else {
-//        view1 = getScrollView();
-//    }
+// tapMenu("盘点管理", "新增盘点+");
+// var josn={ "明细" : [ { "货品" : "k300", "数量" : 5 } ]};
+// editCheckAddDetNoColorSize(josn);
+// var view1;
+// if (ipadVer >= "7.10") {
+// view1 = getScrollView(1);
+// } else {
+// view1 = getScrollView();
+// }
+      
+// var ret = isAnd(isEqual(0, getTextFieldValue(checkScrollView(), 3)), isEqual(
+// "k300,铅笔裤", getTextFieldValue(checkScrollView(), 0)));
+
+ var qo,o,ret=true;
+ qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
+ o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+ ret = isAnd(ret, setLocalParam(qo, o));
+ return ret;
     
-    app.navigationBar().buttons()[OK].tap();
+// tapMenu("系统设置", "本地设置");
+// var texts = getStaticTexts(getScrollView(-1));
+// var qrTitle = getQResultTitle("保存后显示是否打印确认窗口");
+// var index = qrTitle.index + (rowIndex + 1) * qrTitle.total;
+// tap(texts[index]);
+//    
+// debugArray(qrTitle);
+// return texts;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
