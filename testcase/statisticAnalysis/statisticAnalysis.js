@@ -253,9 +253,9 @@ function test190015() {
         "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
     tapButton(getScrollView(), 0);
-    var ret = isEqual("", getTextFieldValue(getScrollView(), 0))
-            && isEqual("", getTextFieldValue(getScrollView(), 1))
-            && isEqual("", getTextFieldValue(getScrollView(), 2));
+    var ret = isEqual("", getTextFieldValue(getScrollView(-1), 0))
+            && isEqual("", getTextFieldValue(getScrollView(-1), 1))
+            && isEqual("", getTextFieldValue(getScrollView(-1), 2));
     tapReturn();
 
     return ret;
@@ -327,6 +327,7 @@ function test190017() {
     editStatisticAnalysisIn(json);
 
     tapMenu2("收支表");
+    query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
     var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
@@ -399,9 +400,9 @@ function test190019() {
         "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
     tapButton(getScrollView(), 0);
-    var ret = isEqual("", getTextFieldValue(getScrollView(), 0))
-            && isEqual("", getTextFieldValue(getScrollView(), 1))
-            && isEqual("", getTextFieldValue(getScrollView(), 2));
+    var ret = isEqual("", getTextFieldValue(getScrollView(-1), 0))
+            && isEqual("", getTextFieldValue(getScrollView(-1), 1))
+            && isEqual("", getTextFieldValue(getScrollView(-1), 2));
     tapButtonAndAlert(RETURN);
 
     return ret;
@@ -424,7 +425,7 @@ function test190020() {
     ret = isAnd(ret, isEqual("123.45", qr.data[0]["金额"]));
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("123.45", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(ret, isEqual("123.45", getTextFieldValue(getScrollView(-1), 1)));
     tapButton(window, RETURN);
 
     qo = { "备注" : "单价小数位" };
@@ -450,7 +451,7 @@ function test190021() {
     ret = isAnd(ret, isEqual("123.45", qr.data[0]["金额"]));
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("123.45", getTextFieldValue(getScrollView(), 1)));
+    ret = isAnd(ret, isEqual("123.45", getTextFieldValue(getScrollView(-1), 1)));
     tapButton(window, RETURN);
 
     qo = { "备注" : "单价小数位" };
@@ -513,7 +514,7 @@ function test190002_190003_190008() {
     tapButton(window, QUERY);
     qr = getQR();
     var a = qr.counts["金额"];
-    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-银行账户", "简称" : "银",
+    var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-银行账户", "简称" : "银",
         "金额" : rm1, "备注" : r1, "操作人" : "总经理" };
     var ret = isEqualObject(expected, qr.data[0]);
 
@@ -522,7 +523,7 @@ function test190002_190003_190008() {
     tapButton(window, QUERY);
     qr = getQR();
     var b = qr.counts["金额"];// 支出汇总值为负数
-    expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+    expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
         "金额" : rm2, "备注" : r2, "操作人" : "总经理" };
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
@@ -1412,7 +1413,10 @@ function test190032() {
 }
 
 function test190035() {
-    var jo = getStatisticAnalysisSynthesis();
+    tapMenu("统计分析", "综合汇总");
+    query();
+    var qr = getQR();
+    var jo = qr.counts;
 
     tapMenu("采购入库", "按批次查");
     query();

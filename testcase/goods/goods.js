@@ -1948,6 +1948,7 @@ function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
     tapReturn();
+    
     return ret;
 }
 function ts100059Type() {
@@ -3365,11 +3366,21 @@ function test10_size() {
 
 }
 function test100097() {
+    // X1对应配码8件
     if (colorSize == "yes") {
         var r = getTimestamp(8);
         var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
-            "颜色" : "红色", "尺码" : "25,X1", "吊牌价" : "200" };// 不同尺码组的尺码无排序要求
-        return ts100033Field(keys1, keys1);
+            "颜色" : "红色", "尺码" : "X1", "吊牌价" : "200" };// 不同尺码组的尺码无排序要求
+        var ret = ts100033Field(keys1, keys1);
+
+        tapMenu("销售开单", ADDBILL);
+        json = { "客户" : "xw", "明细" : [ { "货品" : "g" + r, "数量" : [ 1 ] } ] };
+        jo = editSalesBill(json, colorSize);
+
+        var exp = { "尺码" : 25, "数量" : 8 };
+        ret = isAnd(ret, isEqualObject(exp, jo["明细值"].data[0]));
+
+        return ret;
     } else {
         return true;
     }
