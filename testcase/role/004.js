@@ -1035,7 +1035,7 @@ function test170679_170680() {
     tapFirstText();
 
     ret = isAnd(ret, isEqual("中洲店", getTextFieldValue(window, 6)), isEqual(
-            5500, getTextFieldValue(window, 9)));
+            money, getTextFieldValue(window, 9)));
 
     tapReturn();
 
@@ -1058,7 +1058,7 @@ function test170679_170680() {
     var qr = getQR();
 
     var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
-            qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(0,
+            qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(3500, qr.data[0]["代收"]));
 
     tapFirstText();

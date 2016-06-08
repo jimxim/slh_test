@@ -296,7 +296,6 @@ function test180008() {
     } else {
         view1 = getScrollView();
     }
-    tapButton(view1, 0);
 
     tapButton(view1, 0);
     saveAndAlertOk();
@@ -740,7 +739,6 @@ function test180024() {
     logDebug(" ret=" + ret);
     return ret;
 }
-
 function test180025() {
     // 先处理掉以前的盘点单
     tapMenu("盘点管理", "盘点处理");

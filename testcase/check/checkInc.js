@@ -136,3 +136,11 @@ function editCheckAddSave(o) {
 
     return o;
 }
+function checkScrollView(){
+    var view1;
+    if (ipadVer >= "7.10") {
+        view1 = getScrollView(-1);
+    } else {
+        view1 = getScrollView();
+    }
+}
