@@ -254,8 +254,13 @@ function checkRightsCustomer() {
     query(fields);
     tapFirstText();
     tapButton(window, "销售明细");
-    ret = isAnd(ret, !isHasStaticTexts(hasRights, getScrollView(-1, 0),
-            [ "13922211121" ]));
+    if (hasRights) {
+        ret = isAnd(ret, isHasStaticTexts(getScrollView(-1, 0),
+                [ "13922211121" ]));
+    } else {
+        ret = isAnd(ret, !isHasStaticTexts(getScrollView(-1, 0),
+                [ "13922211121" ]));
+    }
     tapNaviLeftButton();
     tapReturn();
 

@@ -7,14 +7,14 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "onlyTest");//
+ run("测试用例", "ts100140");//
 
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
@@ -25,12 +25,16 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
  tapButton(window, "核销");
- var a1 = o["核销"];
- for (var i = 0; i < a1.length; i++) {
-     tapButton(getScrollView(-1, 0), a1[i]);
- }
+
+     tapButton(getScrollView(-1, 0), 4);
+
  // app.navigationBar().buttons()[OK].tap();
- tapNaviRightButton();
+     var btn = app.navigationBar().buttons()[OK];
+     if (isUIAButton(btn)) {// btn.isVisible()
+         btn.tap();
+     } else {
+         app.navigationBar().buttons()["确 认"].tap();
+     }
     return true;
 }
 
