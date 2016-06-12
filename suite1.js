@@ -14,18 +14,22 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "test100097");//
-
+ run("测试用例", "ts100059Msg");//
+// run("测试用例", "onlyTest");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
+    delay();
 
-    return true;
+
+// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00}, 1);
+    var e1 = window.popover().scrollViews()[0].staticTexts()["1010pp"].value();
+    return e1;
 }
 
 //

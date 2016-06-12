@@ -222,6 +222,7 @@ function testGoods002() {
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "ts100034");
     }
     if (colorSize == "yes") {
+
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "ts100029");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "ts100031");
     }
@@ -313,6 +314,8 @@ function testGoods003() {
     run("颜色尺码模式", "setGoodsColorParams");
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "ts100023");
     run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100024");
+    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项不包括款号", "ts100026");
+    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
     run(" 均色均码模式", "setGoodsNoColorParams");
 }
 
@@ -1266,7 +1269,10 @@ function test100019_1() {
     var ret = isEqual("100", qr.data[0]["进货价"]);
 
     tapFirstText();
-
+    var keys = { "吊牌价" : 200, "进货价" : 100, "零批价" : 200, "打包价" : 180,
+        "大客户价" : 160, "Vip价格" : 140 };
+    var fields = editGoodsFields(keys);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
     tapReturn();
     return ret;
 }
@@ -1344,6 +1350,44 @@ function ts100025() {
         "经办人" : "000,总经理" };
 
     return ts100033Field(keys1, keys2);
+}
+// 自动生成款号 颜色尺码 默认价格模式
+function ts100026() {
+    var qo, o, ok = true;
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "1", "数值" : [ "适合无款号情况", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    var r = getTimestamp(8);
+    var keys1 = { "名称" : "货品" + r, "品牌" : "1010pp", "颜色" : "花色", "尺码" : "L",
+        "进货价" : "100" };
+    var keys2 = { "零批价" : "130", "打包价" : "120", "大客户价" : "160", "Vip价格" : "150" };
+
+    var ret = ts100033Field(keys1, keys2);
+
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return ret;
+}
+// 自动生成款号 颜色尺码 默认价格模式
+function ts100027() {
+    var qo, o, ok = true;
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "1", "数值" : [ "适合无款号情况", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    var r = getTimestamp(8);
+    var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "颜色" : "花色", "尺码" : "L", "进货价" : "100" };
+    var keys2 = { "零批价" : "130", "打包价" : "120", "大客户价" : "160", "Vip价格" : "150" };
+
+    var ret = ts100033Field(keys1, keys2);
+
+    qo = { "备注" : "自动生成款号" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return ret;
 }
 // 均色均码默认价格模式
 function ts100046() {
@@ -1454,7 +1498,7 @@ function ts100033Field(key1, key2, key3) {
     tapReturn();
 
     tapMenu2("货品查询");
-    var qKeys = { "款号名称" : key1["款号"] };
+    var qKeys = { "款号名称" : key1["名称"] };// 110026是自动生成款号
     var qFields = queryGoodsFields(qKeys);
     query(qFields);
     tapFirstText();
@@ -1848,7 +1892,7 @@ function test100111() {
  */
 function test100111Field(label, keys, msg) {
 
-    if (isDefined(msg)) {
+    if (isUndefined(msg)) {
         msg = "不能有非法符号";
     }
     var fields = {};
@@ -1948,7 +1992,7 @@ function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
     tapReturn();
-    
+
     return ret;
 }
 function ts100059Type() {
@@ -1992,17 +2036,17 @@ function ts100059Msg() {
 
     tapMenu2("基本设置");
     tapMenu3("新增颜色+");
-    keys = { "颜色类别" : "杂色", "名称" : "'" };
+    keys = { "颜色类别" : "棕", "名称" : "'" };
     ret = isAnd(ret, test100111Field("颜色", keys));
-    keys = { "颜色类别" : "杂色", "名称" : "黄色" };
+    keys = { "颜色类别" : "棕", "名称" : "黄色" };
     ret = isAnd(ret, test100111Field("颜色", keys, "相同记录已存在"));
     tapReturn();
 
     tapMenu2("基本设置");
     tapMenu3("新增尺码+");
-    keys = { "颜色类别" : "裤子尺码", "名称" : "'" };
+    keys = { "尺码类别" : "裤子尺码", "名称" : "'" };
     ret = isAnd(ret, test100111Field("尺码", keys));
-    keys = { "颜色类别" : "杂色", "名称" : "黄色" };
+    keys = { "尺码类别" : "裤子尺码", "名称" : "均码" };
     ret = isAnd(ret, test100111Field("尺码", keys, "相同记录已存在"));
     tapReturn();
 
@@ -2016,7 +2060,7 @@ function ts100059Msg() {
 
     tapMenu2("基本设置");
     tapMenu3("新增品牌折扣+");
-    keys = { "品牌" : "Ck公司" };
+    keys = { "品牌" : "1010pp" };
     ret = isAnd(ret, test100111Field("品牌折扣", keys, "品牌重复"));
     tapReturn();
     return ret;
@@ -3365,7 +3409,7 @@ function test10_size() {
     return ret;
 
 }
-function test100097() {
+function ts100097() {
     // X1对应配码8件
     if (colorSize == "yes") {
         var r = getTimestamp(8);
@@ -3374,8 +3418,8 @@ function test100097() {
         var ret = ts100033Field(keys1, keys1);
 
         tapMenu("销售开单", ADDBILL);
-        json = { "客户" : "xw", "明细" : [ { "货品" : "g" + r, "数量" : [ 1 ] } ] };
-        jo = editSalesBill(json, colorSize);
+        var json = { "客户" : "xw", "明细" : [ { "货品" : "g" + r, "数量" : [ 1 ] } ] };
+        var jo = editSalesBill(json, colorSize);
 
         var exp = { "尺码" : 25, "数量" : 8 };
         ret = isAnd(ret, isEqualObject(exp, jo["明细值"].data[0]));
