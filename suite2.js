@@ -8,7 +8,7 @@
 function test000All() {
     colorSize = "no";
     debug = true;
-    ipadVer ="7.01"; // "6.59";// 7.01// 7.10
+    ipadVer ="7.10"; // "6.59";// 7.01// 7.10
 	
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 // run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");//
@@ -36,7 +36,6 @@ function test000All() {
 // run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
 // run("【销售开单－开单】挂单转销售单", "test170171");
     
-// run("【系统设置—打印机】远程打印参数", "test210003");//
 // run("【销售开单－开单】核销（客户余款）", "test170054_2");
     
 // run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
@@ -49,9 +48,9 @@ function test000All() {
 // run("销售订货价格刷新+上次价", "test170492_1");
 // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
         
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
-    
-// run("", "test1");
+// run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
+
+ run("", "test1");
 }
     
 function test1(){
@@ -69,24 +68,11 @@ function test1(){
 // } else {
 // view1 = getScrollView();
 // }
-      
-// var ret = isAnd(isEqual(0, getTextFieldValue(checkScrollView(), 3)), isEqual(
-// "k300,铅笔裤", getTextFieldValue(checkScrollView(), 0)));
-
- var qo,o,ret=true;
- qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
- o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
- ret = isAnd(ret, setLocalParam(qo, o));
- return ret;
+// var qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
+// debugQResult(qr);
+// tapFirstText(getScrollView(-1), TITLE_SEQ, 5);
     
-// tapMenu("系统设置", "本地设置");
-// var texts = getStaticTexts(getScrollView(-1));
-// var qrTitle = getQResultTitle("保存后显示是否打印确认窗口");
-// var index = qrTitle.index + (rowIndex + 1) * qrTitle.total;
-// tap(texts[index]);
-//    
-// debugArray(qrTitle);
-// return texts;
+//    tapTextByFirstWithName("4");
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
