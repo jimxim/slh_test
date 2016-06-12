@@ -462,21 +462,21 @@ function test170040_170041() {
     var keys = { "客户" : "ls" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["名称"];
 
     tapMenu("系统设置", "人员列表");
     var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
     var b = qr.data[0]["姓名"];
 
     tapMenu("系统设置", "人员列表");
     var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
     var c = qr.data[0]["姓名"];
 
     var ret = isAnd(isEqual("李四", a), isEqual("总经理", b), isEqual("财务员", c));
@@ -676,7 +676,7 @@ function test170044() {
     var keys = { "客户" : r };
     var qFields = queryCustomerFields(keys);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     tapFirstText();
 
@@ -828,7 +828,7 @@ function test170047() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = ret && isEqual(totalMoney, -qr.data[0]["未结"]);
 
     return ret;
@@ -856,7 +856,7 @@ function test170048() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = ret
             && isAnd(isEqual(totalMoney, qr.data[0]["刷卡"]), isEqual(totalMoney,
                     qr.data[0]["实收"]), isEqual(0, qr.data[0]["未结"]));
@@ -885,7 +885,7 @@ function test170049() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = ret
             && isAnd(isEqual(totalMoney, qr.data[0]["汇款"]), isEqual(totalMoney,
                     qr.data[0]["实收"]), isEqual(0, qr.data[0]["未结"]));
@@ -908,7 +908,7 @@ function test170050() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual(totalMoney, qr.data[0]["现金"]), isEqual("0",
             qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]));
 
@@ -932,7 +932,7 @@ function test170050() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21); 
     ret = ret
             && isAnd(isEqual(totalMoney1, qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]));
@@ -949,7 +949,7 @@ function test170051() {
     tapMenu("销售开单", "按批次查");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var xj = qr.data[0]["现金"];
     var sk = qr.data[0]["刷卡"];
     var hk = qr.data[0]["汇款"];
@@ -978,7 +978,7 @@ function test170051() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = ret
             && isAnd(isEqual(totalMoney, qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]));
@@ -990,7 +990,7 @@ function test170052() {
     var keys = { "工号" : "004", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
     var ret1 = isEqual("店长004", qr.data[0]["姓名"]);
 
     tapMenu("销售开单", "开  单+");
@@ -1099,7 +1099,7 @@ function test170054_1() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret1 = isAnd(isEqual(add(totalMoney, dikou), qr.data[0]["金额"]),
             isEqual(totalMoney, qr.data[0]["现金"]), isEqual(-dikou,
                     qr.data[0]["还款/抵扣"]));
@@ -1147,7 +1147,7 @@ function test170054_2() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret1 = isAnd(isEqual(qr.data[0]["金额"], -qr.data[0]["还款/抵扣"]), isEqual(
             "0", qr.data[0]["现金"]), isEqual(k3, Number(-qr.data[0]["未结"])));
 
@@ -1841,7 +1841,7 @@ function test170065_3() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual("1200", qr.data[0]["金额"]), isEqual("0",
             qr.data[0]["现金"]), isEqual("-600", qr.data[0]["未结"]));
 
@@ -1869,7 +1869,7 @@ function test170065_4() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual("1000", qr.data[0]["金额"]), isEqual("0",
             qr.data[0]["现金"]), isEqual("2400", qr.data[0]["未结"]));
 
@@ -1896,7 +1896,7 @@ function test170065_5() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual("-100", qr.data[0]["金额"]), isEqual(0,
             qr.data[0]["现金"]), isEqual("-1700", qr.data[0]["未结"]));
 
@@ -1947,7 +1947,7 @@ function test170070() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     ret = isAnd(ret, isEqual(1400, qr.data[0]["金额"]), isEqual(-1400,
             qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收标记"]));
@@ -1969,7 +1969,7 @@ function test170071() {
     var keys = { "客户" : "xjkh1" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     ret = isAnd(ret, isEqual(1500, qr.data[0]["金额"]), isEqual(-1500,
             qr.data[0]["未结"]), isEqual("否", qr.data[0]["代收标记"]));
@@ -2078,7 +2078,7 @@ function test170075() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret2 = isAnd(isEqual(200, qr.data[0]["金额"]), isEqual("(6; -5)",
             qr.data[0]["备注"]));
@@ -2262,7 +2262,7 @@ function test170077_1() {
     var keys = { "客户" : "ls" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     ret = ret && isEqual("李四", qr.data[0]["名称"]);
 
     tapFirstText();
@@ -2294,7 +2294,7 @@ function test170077_1() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret4 = isAnd(isEqual("124", qr.data[0]["金额"]), isEqual("124",
             qr.data[0]["现金"]), isEqual("0", qr.data[0]["未结"]));
 
@@ -2344,7 +2344,7 @@ function test170077_2() {
     var keys = { "发货状态" : "未发货" };
     var fields = salesBillOrderFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["发货状态"];
 
     var ret1 = isEqual("未发货", a);
@@ -2365,7 +2365,7 @@ function test170077_2() {
     var keys = { "发货状态" : "部分发货" };
     var fields = salesBillOrderFields(keys);
     query(fields);
-    var qr1 = getQR();
+    var qr1 = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var b = qr1.data[0]["发货状态"];
     var ret3 = isEqual("部分发货", b);
 
@@ -2405,7 +2405,7 @@ function test170078() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret1 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isAqualNum(
             totalMoney, qr.data[0]["现金"]), isEqual("0", qr.data[0]["未结"]));
 
@@ -2456,7 +2456,7 @@ function test170083() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isEqual(r,
             qr.data[0]["客户"]), isEqual("0", qr.data[0]["未结"]), isAqualOptime(
@@ -2494,7 +2494,7 @@ function test170083() {
     var keys = { "发货状态" : "部分发货" };
     var fields = salesBillOrderFields(keys);
     query(fields);
-    var qr1 = getQR();
+    var qr1 = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var b = qr1.data[0]["发货状态"];
     var ret6 = isEqual("部分发货", b);
 
@@ -2547,7 +2547,7 @@ function test170080_170084() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret2 = isAnd(isEqual(totalMoney, qr.data[0]["金额"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(sub(k7, k3), qr.data[0]["未结"]),
@@ -2587,7 +2587,7 @@ function test170080_170084() {
     var keys = { "发货状态" : "部分发货" };
     var fields = salesBillOrderFields(keys);
     query(fields);
-    var qr1 = getQR();
+    var qr1 = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var b = qr1.data[0]["发货状态"];
     var ret5 = isEqual("部分发货", b);
 
@@ -2640,7 +2640,7 @@ function test170085() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isEqual("李响",
             qr.data[0]["客户"]), isEqual("0", qr.data[0]["未结"]));
@@ -2688,7 +2688,7 @@ function test170085() {
     var keys = { "发货状态" : "部分发货" };
     var fields = salesBillOrderFields(keys);
     query(fields);
-    var qr1 = getQR();
+    var qr1 = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var ret3 = isAnd(isEqual("部分发货", qr1.data[0]["发货状态"]), isEqual(10,
             qr1.data[0]["订货数"]), isEqual(3, qr1.data[0]["已发数"]), isEqual("李响",
@@ -2730,7 +2730,7 @@ function test170090() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var a = qr.data[0]["代收"];
     var ret1 = isEqual("180", a);
 
@@ -2738,7 +2738,7 @@ function test170090() {
     var keys = { "到" : getToday(), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 12);
     var ret2 = isEqual("180", qr.data[0]["代收"]);
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -2758,7 +2758,7 @@ function test170091() {
     var qFields = queryGoodsFields(qKeys);
     changeTFieldValue(qFields["款号名称"], "8989");
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     tapFirstText();
 
@@ -2771,7 +2771,7 @@ function test170091() {
     tapMenu("销售开单", "按批次查");
     // fields["客户"].p3={"键盘":"简体拼音", "拼音":["li","si"],"汉字":["李","四"]};
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(money,
             qr.data[0]["金额"]), isEqual(dprice, qr.data[0]["代收"]), isEqual(0,
             qr.data[0]["未结"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
@@ -2828,7 +2828,7 @@ function test170092() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(money,
             qr.data[0]["金额"]), isEqual(money, qr.data[0]["代收"]), isEqual(
             getToday(""), qr.data[0]["日期"]));
@@ -2900,7 +2900,7 @@ function test170093() {
     var fields = queryCustomerLogisticsFields(keys);
     changeTFieldValue(fields["名称"], r);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 9);
     var a = qr.data[0]["名称"];
     var ret3 = isEqual(r, a);
 
@@ -2962,7 +2962,7 @@ function test170095() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     tapFirstText();
 
@@ -2976,7 +2976,7 @@ function test170095() {
 
     tapMenu("销售开单", "按明细查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var ret1 = isAnd(isEqual("mxbz1", qr.data[0]["备注"]), isEqual("mxbz",
             qr.data[1]["备注"]));
 
@@ -3000,7 +3000,7 @@ function test170096() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var bz = qr.data[0]["备注"];
     var opt = qr.data[0]["操作日期"];
 
@@ -3051,7 +3051,7 @@ function test170097() {
         "备注" : "换码" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
 
     var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("3035",
             qr.data[0]["款号"]), isEqual("-1", qr.data[0]["数量"]), isAqualOptime(
@@ -3248,7 +3248,7 @@ function test170100() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
 
     tapFirstText();
@@ -3288,7 +3288,7 @@ function test170101() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
 
     tapFirstText();
@@ -3343,7 +3343,7 @@ function test170103() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
     var sl1 = qr.data[1]["数量"];
 
@@ -3653,7 +3653,7 @@ function test170116_170660() {
     var keys = { "款号" : r, "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var k = qr.data[0]["库存"];
 
     var ret3 = isEqual(0, k);
@@ -3679,7 +3679,7 @@ function test170116_170660() {
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var k1 = qr.data[0]["库存"];
 
     var ret5 = isEqual(1, k1);
@@ -3713,7 +3713,7 @@ function test170117() {
     fields = queryGoodsCodeStockFields(keys);
     changeTFieldValue(fields["款号"], r);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var a = qr.data[0]["库存"];
 
     var ret1 = false;
@@ -3815,7 +3815,7 @@ function test170120() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc = qr.data[0]["库存"];
 
     var qKeys = [ "门店" ];
@@ -3823,31 +3823,31 @@ function test170120() {
     changeTFieldValue(qFields["门店"], "中洲店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var cc = qr.data[0]["库存"];
 
     keys = { "款号" : "k300", "门店" : "常青店" };
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc1 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "中洲店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz1 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var cc1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
@@ -3860,13 +3860,13 @@ function test170120() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc2 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "中洲店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz2 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
@@ -3878,19 +3878,19 @@ function test170120() {
     keys = { "款号" : "k300", "门店" : "常青店" };
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc3 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "中洲店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz3 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var cc3 = qr.data[0]["库存"];
 
     ret = isAnd(ret, isEqual(kc2, sub(kc, 5)), isEqual(kc3, add(kc1, -6)),
@@ -3918,7 +3918,7 @@ function test170121() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc = qr.data[0]["库存"];
 
     var qKeys = [ "门店" ];
@@ -3926,19 +3926,19 @@ function test170121() {
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var stock = qr.data[0]["库存"];
 
     keys = { "款号" : "k300", "门店" : "常青店" };
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc1 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var stock1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
@@ -3953,25 +3953,25 @@ function test170121() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc2 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var stock2 = qr.data[0]["库存"];
 
     keys = { "款号" : "k300", "门店" : "常青店" };
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc3 = qr.data[0]["库存"];
 
     changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var stock3 = qr.data[0]["库存"];
 
     ret = isAnd(ret, isEqual(kc2, kc), isEqual(kc3, kc1), isEqual(stock2, sub(
@@ -4003,7 +4003,7 @@ function test170128() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
     var je = qr.data[0]["金额"];
     var opt = qr.data[0]["操作日期"];
@@ -4063,7 +4063,7 @@ function test170129() {
     var qFields = queryGoodsFields(qKeys);
     changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
 
@@ -4143,7 +4143,7 @@ function test170131() {
     var qFields = queryGoodsFields(qKeys);
     changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
 
@@ -4163,7 +4163,7 @@ function test170131() {
     var qFields1 = queryGoodsFields(qKeys1);
     changeTFieldValue(qFields1["款号名称"], r1);
     query(qFields1);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var a1 = qr.data[0]["款号"];
     var b1 = qr.data[0]["名称"];
 
@@ -4220,7 +4220,7 @@ function test170132() {
     var keys = { "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual(6, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
             qr.data[0]["操作日期"], 2));
 
@@ -4229,7 +4229,7 @@ function test170132() {
     var qFields = queryGoodsFields(qKeys);
     changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
 
@@ -4374,7 +4374,7 @@ function test170133() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret = isAnd(isEqual(21, qr.data[0]["数量"]), isAqualOptime(getOpTime(),
             qr.data[0]["操作日期"], 3));
 
@@ -4401,7 +4401,7 @@ function test170137() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
     tapFirstText();
 
@@ -4412,7 +4412,7 @@ function test170137() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "作废");
     query(fields1);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
@@ -4435,7 +4435,7 @@ function test170138() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
     tapFirstText();
 
@@ -4452,7 +4452,7 @@ function test170138() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "待作废");
     query(fields1);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
@@ -4830,7 +4830,7 @@ function test170164() {
     var keys = { "日期从" : getDay(-2), "日期到" : getToday(), "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var sum1 = qr.counts["现金"];
     var sum2 = qr.counts["刷卡"];
@@ -4939,7 +4939,7 @@ function test170167() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var pc = qr.data[0]["批次"];
 
     var f7 = new TField("批次从", TF, 7, pc - 1);
@@ -4995,7 +4995,7 @@ function test170169() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "挂单");
     query(fields1);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("0",
             qr.data[0]["批次"]), isEqual(getToday(""), qr.data[0]["日期"]));
@@ -5109,7 +5109,7 @@ function test170171() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("2",
             qr.data[0]["数量"]), isEqual(getToday(""), qr.data[0]["日期"]));
@@ -5150,7 +5150,7 @@ function test170172() {
     changeTFieldValue(fields1["作废挂单"], "待作废");
     query(fields1);
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = isAnd(ret, isEqual("李四", qr.data[0]["客户"]), isEqual("8",
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
@@ -5171,7 +5171,7 @@ function test170172() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
@@ -5192,7 +5192,7 @@ function test170172() {
     tapMenu("销售开单", "按挂单");
     query();
 
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var ret2 = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(2, qr.data[0]["数量"]), isAqualOptime(
             getOpTime(), qr.data[0]["操作日期"]));
@@ -5237,7 +5237,7 @@ function test170173() {
     delay();
 
     tapMenu("销售开单", "按挂单");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var a = qr.data[0]["客户"];
     var b = qr.data[0]["操作日期"];
 
@@ -5300,7 +5300,7 @@ function test170174() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var a = qr.data[0]["客户"];
     var b = qr.data[0]["操作日期"];
     var c = qr.data[0]["代收"];
@@ -5335,7 +5335,7 @@ function test170174() {
     var keys2 = { "运单号" : r, "物流商" : "圆通速递", "是否作废" : "否" }
     var fields2 = salesQueryLogisticsFields(keys2);
     query(fields2);
-    var qr2 = getQR();
+    var qr2 = getQR(window, getScrollView(), TITLE_SEQ, 11);
 
     var ret1 = isAnd(isEqual(getToday("yy"), qr2.data[0]["日期"]), isEqual("常青店",
             qr2.data[0]["门店"]), isEqual("李四", qr2.data[0]["客户"]), isEqual(
@@ -5358,7 +5358,7 @@ function test170175() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
@@ -5378,7 +5378,7 @@ function test170175() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "正常");
     query(fields1);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret1 = isEqual(batch, qr.data[0]["批次"]);
 
@@ -5399,7 +5399,7 @@ function test170176() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("总经理",
             qr.data[0]["店员"]), !isEqual(0, qr.data[0]["现金"]), isEqual(0,
             qr.data[0]["代收"]));
@@ -5422,7 +5422,7 @@ function test170176() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "正常");
     query(fields1);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var dy = qr.data[0]["店员"];
     var sl = qr.data[0]["数量"];
@@ -5494,7 +5494,7 @@ function test170178() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "正常");
     query(fields1);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var dy = qr.data[0]["店员"];
     var sl = qr.data[0]["数量"];
@@ -5620,7 +5620,7 @@ function test170180() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var a = qr.data[0]["配货"];
 
     var ret1 = isEqual("是", a);
@@ -5666,7 +5666,7 @@ function test170183() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     // 中洲店总经理200登陆
@@ -5681,7 +5681,7 @@ function test170183() {
     var fields1 = queryCustomerFields(keys1);
     changeTFieldValue(fields1["customer"], "ls");
     query(fields1);
-    var qr1 = getQR();
+    var qr1 = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var b = qr1.data[0]["当前积分"];
 
     var ret = false;
@@ -5704,7 +5704,7 @@ function test170184() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     // 中洲店总经理200登陆
@@ -5719,7 +5719,7 @@ function test170184() {
     var fields1 = queryCustomerFields(keys1);
     changeTFieldValue(fields1["customer"], "ls");
     query(fields1);
-    var qr1 = getQR();
+    var qr1= getQR(window, getScrollView(), TITLE_SEQ, 14);
     var b = qr1.data[0]["当前积分"];
 
     var ret = false;
@@ -5741,7 +5741,7 @@ function test170185() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -5762,7 +5762,7 @@ function test170186() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "xw");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.counts["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -5799,7 +5799,7 @@ function test170187() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var jf = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -5827,7 +5827,7 @@ function test170187() {
     var fields1 = queryCustomerFields(keys1);
     changeTFieldValue(fields1["customer"], "ls");
     query(fields1);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var jf1 = qr.data[0]["当前积分"];
 
     var ret = isEqual(jf1, Number(jf - r));
@@ -5926,7 +5926,7 @@ function test170188() {
     changeTFieldValue(fields["account"], "现");
     setTFieldsValue(window, fields);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 9);
 
     var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
             qr.data[0]["金额"]), isEqual(a1[0], "当前积分"), isEqual(r, sub(a[1],
@@ -6009,7 +6009,7 @@ function test170191() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret2 = isAnd(isEqual(money, qr.data[0]["金额"]), isEqual(money,
             qr.data[0]["现金"]), isEqual("0", qr.data[0]["未结"]));
 
@@ -6274,7 +6274,7 @@ function test170213() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     tapFirstText();
     var ret = isAnd(isEqual(r, getTextFieldValue(window, 0)), isEqual(-8,
@@ -6388,7 +6388,7 @@ function test170215() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var je = qr.data[0]["金额"];
     var sl = qr.data[0]["数量"];
@@ -6464,7 +6464,7 @@ function test170216() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var je = qr.data[0]["金额"];
     var sl = qr.data[0]["数量"];
@@ -6542,7 +6542,7 @@ function test170226() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var je = qr.data[0]["金额"];
     var sl = qr.data[0]["数量"];
@@ -6615,7 +6615,7 @@ function test170227() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var kh = qr.data[0]["客户"];
     var je = qr.data[0]["金额"];
     var sl = qr.data[0]["数量"];
@@ -6947,7 +6947,7 @@ function test170244() {
     var keys = { "款号" : "3035", "客户" : "ls", "门店" : "常青店" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var a = qr.data[0]["差额"];
 
     var ret = isEqual("20", a);
@@ -7046,7 +7046,7 @@ function test170246() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var total1 = qr.total;
     for (var i = 0; i < total1; i++) {
         tapFirstText();
@@ -7054,7 +7054,7 @@ function test170246() {
         delay();
     }
 
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var total2 = qr.total;
     var ret1 = false;
     if (total2 < 1) {
@@ -7290,7 +7290,7 @@ function test170248_1() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret = isAnd(ret, isEqual("180", qr.data[0]["金额"]));
 
     tapFirstText();
@@ -7328,7 +7328,7 @@ function test170248_1() {
 
     tapMenu("销售订货", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     ret2 = isAnd(ret2, isEqual("180", qr.data[0]["总额"]));
 
     tapFirstText();
@@ -7350,7 +7350,7 @@ function test170249() {
     var keys = { "客户" : "hh" };
     var fields = queryCustomerFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     tapFirstText();
 
@@ -7363,7 +7363,7 @@ function test170249() {
     keys = { "客户" : "hh" };
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
 
     var ret1 = isEqual("韩红", qr.data[0]["名称"]);
 
@@ -7388,7 +7388,7 @@ function test170249() {
 
     tapMenu("销售订货", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isEqual("韩红", qr.data[0]["客户"]);
 
@@ -7413,7 +7413,7 @@ function test170249() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret5 = isEqual("韩红", qr.data[0]["客户"]);
 
@@ -7431,7 +7431,7 @@ function test170250() {
     var keys = { "客户" : "hh" };
     var fields = queryCustomerFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     tapFirstText();
 
@@ -7444,7 +7444,7 @@ function test170250() {
     keys = { "客户" : "hh" };
     fields = queryCustomerShopAccountFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
 
     var ret1 = isEqual("韩红", qr.data[0]["名称"]);
 
@@ -7469,7 +7469,7 @@ function test170250() {
 
     tapMenu("销售订货", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isEqual("韩红", qr.data[0]["客户"]);
 
@@ -7494,7 +7494,7 @@ function test170250() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret5 = isEqual("韩红", qr.data[0]["客户"]);
 
@@ -7512,7 +7512,7 @@ function test170251() {
 
     tapMenu("销售开单", "物流单");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var batch = qr.data[0]["批次"];
 
     tapMenu("销售开单", LogisticsVerify);
@@ -7530,7 +7530,7 @@ function test170251() {
 
     tapMenu("销售开单", "物流单");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var a = qr.data[0]["批次"];
     var a1 = qr.data[0]["物流商"];
     var a2 = qr.data[0]["运单号"];
@@ -7922,7 +7922,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
 
     var ret = !isEqual(qr.counts["小计"], "");
 
@@ -7930,7 +7930,7 @@ function test170423() {
     keys = { "日期从" : getDay(-30), "厂商" : "vell" }
     var fields = purchaseProviderFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
 
     var ret1 = isAnd(!isEqual(qr.counts["进货数"], ""), !isEqual(qr.counts["退货数"],
             ""), !isEqual(qr.counts["实进数"], ""));
@@ -7939,7 +7939,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret2 = isAnd(!isEqual(qr.counts["现金"], ""), !isEqual(qr.counts["刷卡"],
             ""), !isEqual(qr.counts["汇款"], ""));
@@ -7948,7 +7948,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = salesReturnFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
 
     var ret3 = isAnd(!isEqual(qr.counts["小计"], ""));
 
@@ -7956,7 +7956,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = salesStaffFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var ret4 = isAnd(!isEqual(qr.counts["退额"], ""), !isEqual(qr.counts["销售数"],
             ""), !isEqual(qr.counts["退货数"], ""), !isEqual(qr.counts["实销数"], ""));
@@ -7965,7 +7965,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 12);
 
     var ret5 = isAnd(!isEqual(qr.counts["销售数"], ""), !isEqual(qr.counts["退货数"],
             ""), !isEqual(qr.counts["实销数"], ""));
@@ -7974,7 +7974,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 13);
 
     var ret6 = isAnd(!isEqual(qr.counts["销售数"], ""), !isEqual(qr.counts["退货数"],
             ""), !isEqual(qr.counts["实销数"], ""));
@@ -7983,7 +7983,7 @@ function test170423() {
     var keys = { "日期从" : "2015-1-1" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
 
     var ret7 = isAnd(!isEqual(qr.counts["代收金额"], ""));
 
@@ -7991,7 +7991,7 @@ function test170423() {
     var keys = { "日期从" : getDay(-30) };
     var fields = statisticAnalysisGoodMarketFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
 
     var ret8 = isAnd(!isEqual(qr.counts["销售额"], ""));
 
@@ -7999,7 +7999,7 @@ function test170423() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisUnsalableFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 8);
 
     var ret9 = isAnd(!isEqual(qr.counts["库存数量"], ""));
 
@@ -8120,7 +8120,7 @@ function test170424() {
     var keys = { "客户" : "ls" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(1800, qr.data[0]["金额"]), isAqualOptime(
@@ -8240,7 +8240,7 @@ function test170424_1() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]),
@@ -8364,7 +8364,7 @@ function test170424_2() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(1800, qr.data[0]["金额"]), isAqualOptime(
@@ -8408,7 +8408,7 @@ function test170430() {
 
     tapMenu("采购入库", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var sl = qr.data[0]["总数"];
     var je = qr.data[0]["金额"];
     var sk = qr.data[0]["刷卡"];
@@ -8423,7 +8423,7 @@ function test170430() {
 
     tapMenu("采购入库", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var sl1 = qr.data[0]["总数"];
     var je1 = qr.data[0]["金额"];
     var sk1 = qr.data[0]["刷卡"];
@@ -8439,7 +8439,7 @@ function test170430() {
 function test170443() {
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
 
     tapMenu("销售开单", "开  单+");
@@ -8465,7 +8465,7 @@ function test170443() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch1 = qr.data[0]["批次"];
 
     var ret1 = isEqual(batch1, add(batch, 1));
@@ -8578,7 +8578,7 @@ function test170445() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(10, qr.data[0]["差异数"]), isEqual("未发货",
@@ -8699,7 +8699,7 @@ function test170445_1() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]),
@@ -8820,7 +8820,7 @@ function test170445_2() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(1800, qr.data[0]["总额"]), isEqual("未发货",
@@ -9017,7 +9017,7 @@ function test170460() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret2 = isAnd(isEqual(Math.round(price * R + 1), qr.data[0]["金额"]),
             isEqual(Math.round(price * R + 1), qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["未结"]));
@@ -9067,7 +9067,7 @@ function test170461() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var ret1 = isAnd(isEqual(Math.round(price * R + 1), qr.data[0]["金额"]),
             isEqual(Math.round(price * R + 1), qr.data[0]["现金"]), isEqual("0",
                     qr.data[0]["未结"]));
@@ -9237,7 +9237,7 @@ function test170491() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李响", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * 10), qr.data[0]["金额"]),
@@ -9415,7 +9415,7 @@ function test170491_1() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * z2 * 10),
@@ -9598,7 +9598,7 @@ function test170491_2() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * z2 * 10),
@@ -9778,7 +9778,7 @@ function test170492() {
     tapReturn();
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李响", qr.data[0]["客户"]), isEqual(20,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * 20), qr.data[0]["总额"]),
@@ -9955,7 +9955,7 @@ function test170492_1() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * z2 * 10),
@@ -10137,7 +10137,7 @@ function test170492_2() {
     logDebug(" ret3=" + ret3);
 
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]), isEqual(Math.round(j2 * z2 * 10),
@@ -10267,7 +10267,7 @@ function test170505() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
 
     var ret1 = isAnd(isEqual("", qr.data[0]["客户"]), isEqual("李四",
@@ -10297,12 +10297,12 @@ function test170506() {
     var keys = { "运单号" : r, "物流商" : "天天物流", "是否作废" : "否" }
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var len = qr.data.length;
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
@@ -10344,7 +10344,7 @@ function test170506() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(totalCrash, add(
             money, dPrice * 1)), isEqual(totalCrash, qr.data[0]["现金"]),
@@ -10494,7 +10494,7 @@ function test170509() {
     var qFields = queryGoodsFields(qKeys);
     changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["名称"];
 
@@ -10575,7 +10575,7 @@ function test170522() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var batch = qr.data[0]["批次"];
 
     var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isEqual(rq,
@@ -10661,7 +10661,7 @@ function test170526() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
     var je = qr.data[0]["金额"];
     var opt = qr.data[0]["操作日期"];
@@ -10708,7 +10708,7 @@ function test170527() {
 
     tapMenu("采购入库", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var ret1 = isEqual("Rt", qr.data[0]["厂商"]);
 
     tapMenu("采购订货", "新增订货+");
@@ -10736,7 +10736,7 @@ function test170527() {
 
     tapMenu("采购订货", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
     var ret3 = isEqual("Rt", qr.data[0]["厂商"]);
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
@@ -10855,7 +10855,7 @@ function test170533() {
 function test170536() {
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var total1 = qr.total;
 
     tapMenu("销售开单", "开  单+");
@@ -10876,7 +10876,7 @@ function test170536() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var total2 = qr.total;
 
     var ret1 = isEqual(total1, total2);
@@ -11051,7 +11051,7 @@ function test170542() {
     var keys = { "物流商" : "天天物流", "运单号" : r }
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var ret1 = isAnd(isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("天天物流",
             qr.data[0]["物流商"]), isEqual(r, qr.data[0]["运单号"]), isEqual("zz",
             qr.data[0]["物流备注"]), isEqual("是", qr.data[0]["代收货款"]));
@@ -11135,7 +11135,7 @@ function test170545() {
     changeTFieldValue(fields["shop"], "常青店");
     changeTFieldValue(fields["account"], "现");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 9);
 
     var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
             qr.data[0]["金额"]), isEqual(a1[0], "当前积分"), isEqual(r, sub(a[1],
@@ -11213,7 +11213,7 @@ function test170552() {
     qo = { "备注" : "款号是否按门店区分" };
     var fields = querySystemGlobalFields(qo);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var num = qr.data[0]["数值"];
 
     o = { "新值" : "1", "数值" : [ "区分，门店只能选择自己的款号", "in" ] };
@@ -11251,7 +11251,7 @@ function test170552() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
     var je = qr.data[0]["金额"];
     var opt = qr.data[0]["操作日期"];
@@ -11751,7 +11751,7 @@ function test170583() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var total1 = qr.total;
 
     tapMenu("销售开单", "开  单+");
@@ -11764,7 +11764,7 @@ function test170583() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
     var total2 = qr.total;
 
     var ret1 = isAnd(isEqual(total2, add(total1, 1)));
@@ -11786,7 +11786,7 @@ function test170584() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -11799,7 +11799,7 @@ function test170584() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a1 = qr.data[0]["当前积分"];
 
     var ret = isEqual(155, sub(a1, a));
@@ -11829,7 +11829,7 @@ function test170585() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -11842,7 +11842,7 @@ function test170585() {
     var fields = queryCustomerFields(key);
     changeTFieldValue(fields["customer"], "ls");
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a1 = qr.data[0]["当前积分"];
 
     var ret1 = isEqual(180, sub(a1, a));
@@ -11867,7 +11867,7 @@ function test170587() {
     var keys = { "日期从" : getDay(-1), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 12);
 
     var sxe = qr.data[0]["实销额"];
 
@@ -11895,7 +11895,7 @@ function test170587() {
     var keys = { "日期从" : getDay(-1), "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 12);
 
     var sxe1 = qr.data[0]["实销额"];
 
@@ -12359,7 +12359,7 @@ function test170631() {
     var fields = salesMatcherFields(keys);
     query(fields);
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 8);
 
     var xj = qr.data[0]["现金"];
     var sk = qr.data[0]["刷卡"];
@@ -12403,7 +12403,7 @@ function test170631() {
     var keys = { "日期从" : "2015-01-01", "配货员" : "004" };
     var fields = salesMatcherFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 8);
 
     var xj1 = qr.data[0]["现金"];
     var sk1 = qr.data[0]["刷卡"];
@@ -12433,7 +12433,7 @@ function test170632_170633() {
     var fields = salesMatcherFields(keys);
     query(fields);
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 8);
 
     var xj = qr.data[0]["现金"];
     var sk = qr.data[0]["刷卡"];
@@ -12457,7 +12457,7 @@ function test170632_170633() {
     var keys = { "日期从" : "2015-01-01", "配货员" : "004" };
     var fields = salesMatcherFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 8);
 
     var xj1 = qr.data[0]["现金"];
     var sk1 = qr.data[0]["刷卡"];
@@ -12540,7 +12540,7 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var v = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var x = qr.data[0]["累计销"];
@@ -12548,7 +12548,7 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "中洲店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var zv = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zx = qr.data[0]["累计销"];
@@ -12556,7 +12556,7 @@ function test170671() {
     var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var v1 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var x1 = qr.data[0]["累计销"];
@@ -12564,7 +12564,7 @@ function test170671() {
     var keys = { "款号" : "k300", "门店" : "中洲店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var zv1 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zx1 = qr.data[0]["累计销"];
@@ -12573,7 +12573,7 @@ function test170671() {
     var keys = { "门店" : "常青店", "款号" : "3035" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var ventory = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var xiao = qr.data[0]["累计销"];
@@ -12581,7 +12581,7 @@ function test170671() {
     var keys = { "门店" : "中洲店", "款号" : "3035" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var zventory = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zxiao = qr.data[0]["累计销"];
@@ -12589,7 +12589,7 @@ function test170671() {
     var keys = { "门店" : "常青店", "款号" : "k300" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var ventory1 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var xiao1 = qr.data[0]["累计销"];
@@ -12597,7 +12597,7 @@ function test170671() {
     var keys = { "门店" : "中洲店", "款号" : "k300" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var zventory1 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zxiao1 = qr.data[0]["累计销"];
@@ -12607,7 +12607,7 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc = qr.data[0]["库存"];
 
     var keys = { "款号" : "3035", "门店" : "中洲店" };
@@ -12619,7 +12619,7 @@ function test170671() {
     var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc1 = qr.data[0]["库存"];
 
     var keys = { "款号" : "k300", "门店" : "中洲店" };
@@ -12639,7 +12639,7 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var v2 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var x2 = qr.data[0]["累计销"];
@@ -12647,7 +12647,7 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "中洲店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var zv2 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zx2 = qr.data[0]["累计销"];
@@ -12655,7 +12655,7 @@ function test170671() {
     var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var v3 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var x3 = qr.data[0]["累计销"];
@@ -12663,7 +12663,7 @@ function test170671() {
     var keys = { "款号" : "k300", "门店" : "中洲店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 16);
 
     var zv3 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zx3 = qr.data[0]["累计销"];
@@ -12672,7 +12672,7 @@ function test170671() {
     var keys = { "门店" : "常青店", "款号" : "3035" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var ventory2 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var xiao2 = qr.data[0]["累计销"];
@@ -12680,7 +12680,7 @@ function test170671() {
     var keys = { "门店" : "中洲店", "款号" : "3035" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var zventory2 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zxiao2 = qr.data[0]["累计销"];
@@ -12688,7 +12688,7 @@ function test170671() {
     var keys = { "门店" : "常青店", "款号" : "k300" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var ventory3 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var xiao3 = qr.data[0]["累计销"];
@@ -12696,7 +12696,7 @@ function test170671() {
     var keys = { "门店" : "中洲店", "款号" : "k300" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
 
     var zventory3 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var zxiao3 = qr.data[0]["累计销"];
@@ -12706,25 +12706,25 @@ function test170671() {
     var keys = { "款号" : "3035", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc2 = qr.data[0]["库存"];
 
     var keys = { "款号" : "3035", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz2 = qr.data[0]["库存"];
 
     var keys = { "款号" : "k300", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var kc3 = qr.data[0]["库存"];
 
     var keys = { "款号" : "k300", "门店" : "中洲店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var zz3 = qr.data[0]["库存"];
 
     // 款号库存
@@ -12771,7 +12771,7 @@ function test170672() {
     tapMenu("销售开单", "按批次查");
     query();
 
-    var qr = getQR();
+   var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(0,
@@ -12800,7 +12800,7 @@ function test170672() {
     var keys = { "物流商" : "天天物流", "运单号" : r };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var a = qr.data[0]["代收金额"];
     var a1 = qr.data[0]["物流商"];
     var a2 = qr.data[0]["运单号"];
@@ -12828,7 +12828,7 @@ function test170672() {
     tapMenu("销售开单", "按批次查");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret2 = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
@@ -12858,7 +12858,7 @@ function test170672() {
     var keys = { "物流商" : "天天物流", "运单号" : r1 };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var b = qr.data[0]["代收金额"];
     var b1 = qr.data[0]["物流商"];
     var b2 = qr.data[0]["运单号"];
@@ -12914,7 +12914,7 @@ function test170673() {
     var keys = { "物流商" : "天天物流", "运单号" : r };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var b = qr.data[0]["代收金额"];
     var b1 = qr.data[0]["物流商"];
     var b2 = qr.data[0]["运单号"];
@@ -12928,13 +12928,13 @@ function test170673() {
     tapMenu("销售开单", "getMenu_More", "代收收款查询");
     query();
 
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 10);
 
     var ret1 = isEqual(money, qr.data[0]["金额"]);
 
     tapMenu("统计分析", "收支流水");
     query();
-    var qr1 = getQR();
+    var qr1= getQR(window, getScrollView(), TITLE_SEQ, 9);
     var ret2 = isAnd(isEqual("代收收款", qr1.data[0]["类型"]), isEqual("东灵测试-现金账户",
             qr1.data[0]["账户"]), isEqual(money, qr1.data[0]["金额"]),
             isAqualOptime(getOpTime(), qr1.data[0]["操作日期"], 2));
@@ -12972,7 +12972,7 @@ function test170674_170675() {
     tapMenu("销售开单", "按挂单");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
 
     var ret = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("常青店", qr.data[0]["发货门店"]), isEqual(0,
@@ -13013,7 +13013,7 @@ function test170674_170675() {
     tapMenu("销售开单", "按挂单");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
 
     var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
@@ -13044,7 +13044,7 @@ function test170674_170675() {
     tapMenu("销售开单", "按批次查");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
@@ -13074,7 +13074,7 @@ function test170674_170675() {
     var keys = { "物流商" : "天天物流", "运单号" : r1 };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var b = qr.data[0]["代收金额"];
     var b1 = qr.data[0]["物流商"];
     var b2 = qr.data[0]["运单号"];
@@ -13173,7 +13173,7 @@ function test170676() {
     tapMenu("销售开单", "按批次查");
     query();
 
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
 
     var ret3 = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("中洲店", qr.data[0]["发货门店"]), isEqual(0,
@@ -13202,7 +13202,7 @@ function test170676() {
     var keys = { "物流商" : "天天物流", "运单号" : r };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 11);
     var b = qr.data[0]["代收金额"];
     var b1 = qr.data[0]["物流商"];
     var b2 = qr.data[0]["运单号"];
@@ -13240,7 +13240,7 @@ function test170692() {
     var qFields = queryCustomerFields(key);
     changeTFieldValue(qFields["customer"], "lt");
     query(qFields);
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
@@ -13249,7 +13249,7 @@ function test170692() {
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a1 = qr.data[0]["当前积分"];
 
     var ret1 = isEqual(200, sub(a, a1));
@@ -13274,7 +13274,7 @@ function test170692() {
     tapMenu("往来管理", "客户查询");
     changeTFieldValue(qFields["customer"], "lt");
     query(qFields);
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
     var a2 = qr.data[0]["当前积分"];
 
     var ret2 = isEqual(1900, sub(a2, a1));

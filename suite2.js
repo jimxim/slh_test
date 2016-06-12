@@ -16,7 +16,7 @@ function test000All() {
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
 
-// run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
+ run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
 
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
@@ -32,12 +32,6 @@ function test000All() {
 // run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
 // run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
     
-// run("【销售开单－开单】挂单保存", "test170169");
-// run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-// run("【销售开单－开单】挂单转销售单", "test170171");
-    
-// run("【销售开单－开单】核销（客户余款）", "test170054_2");
-    
 // run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
 // run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");
 // run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
@@ -50,7 +44,7 @@ function test000All() {
         
 // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
 
- run("", "test1");
+// run("", "test1");
 }
     
 function test1(){
@@ -62,17 +56,14 @@ function test1(){
 // tapMenu("盘点管理", "新增盘点+");
 // var josn={ "明细" : [ { "货品" : "k300", "数量" : 5 } ]};
 // editCheckAddDetNoColorSize(josn);
-// var view1;
-// if (ipadVer >= "7.10") {
-// view1 = getScrollView(1);
-// } else {
-// view1 = getScrollView();
-// }
 // var qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
 // debugQResult(qr);
-// tapFirstText(getScrollView(-1), TITLE_SEQ, 5);
     
-//    tapTextByFirstWithName("4");
+// tapTextByFirstWithName("4");
+    
+// var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
+// debugQResult(qr);
+    
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
