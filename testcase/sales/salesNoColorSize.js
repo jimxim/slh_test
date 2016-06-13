@@ -4003,7 +4003,7 @@ function test170128() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
     var sl = qr.data[0]["数量"];
     var je = qr.data[0]["金额"];
     var opt = qr.data[0]["操作日期"];

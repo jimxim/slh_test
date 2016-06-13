@@ -7,7 +7,7 @@ js_func="setSales001Params"
 #js_func="setSales002Params"
 
 #均色均码 销售开单-开单
-js_func="$js_func test000SalesNoColorSize001"
+js_func="$js_func  test000SalesNoColorSize001"
 
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize001_1"
@@ -26,22 +26,22 @@ js_func="$js_func test000SalesNoColorSize004"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse003"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse004"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse004"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse005"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse005"
 
-js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
-js_func="$js_func test000SalesNoColorSizeElse002"
+#js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
+#js_func="$js_func test000SalesNoColorSizeElse002"
 
-js_func="$js_func setSales001Params"
-js_func="$js_func test000SalesNoColorSizeElse001 "
+#js_func="$js_func setSales001Params"
+#js_func="$js_func test000SalesNoColorSizeElse001 "
 
-js_func="$js_func setSales002Params"
-js_func="$js_func test000SalesColorSize002"
+#js_func="$js_func setSales002Params"
+#js_func="$js_func test000SalesColorSize002"
 
-js_func="$js_func setSales001Params"
+#js_func="$js_func setSales001Params"
 #均色均码 获取未保存
 js_func="$js_func testSalesNoColorSize170140_Params"
 js_func="$js_func testSalesNoColorSize170140"
@@ -103,7 +103,7 @@ js_func="$js_func test000testStatisticPicture001"
 #js_func="$js_func test000testStatisticPicture002"
 
 #系统设置
-js_func="$js_func test000System001 test000System002"
+js_func="$js_func test000System001  test000System002"
 
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"

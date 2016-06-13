@@ -16,7 +16,7 @@ function test000All() {
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
 
- run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
+// run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
 
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
@@ -44,6 +44,7 @@ function test000All() {
         
 // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
 
+
 // run("", "test1");
 }
     
@@ -62,6 +63,8 @@ function test1(){
 // tapTextByFirstWithName("4");
     
 // var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
+//    tapButton(window,QUERY);
+//    var qr=getQR();
 // debugQResult(qr);
     
 }
