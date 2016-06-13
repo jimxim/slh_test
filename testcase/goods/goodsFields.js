@@ -31,7 +31,7 @@ function queryGoodsStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -42,7 +42,7 @@ function queryGoodsStockField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF_SC, 4, "花色");
+        f = new TField("颜色", TF, 4, "花色");// TF_SC
         break;
     case "size":
     case "尺码":
@@ -111,7 +111,7 @@ function queryGoodsCodeStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "仓库店");
+        f = new TField("门店", TF, 2, "仓库店");// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -227,7 +227,7 @@ function queryGoodsInOutField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "仓库店");
+        f = new TField("门店", TF, 0, "仓库店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -1131,7 +1131,7 @@ function goodsStockAdjustmentField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");
+        f = new TField("门店", TF, 2, "常青店");//TF_SC
         break;
     case "batch1":
     case "批次从":

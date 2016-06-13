@@ -48,7 +48,7 @@ function salesOrderQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 6, "常青店");
+        f = new TField("门店", TF, 6, "常青店");// TF_SC
         break;
     case "shipping":
     case "发货状态":
@@ -77,7 +77,7 @@ function salesOrderQueryParticularField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "常青店");
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
         break;
     case "day1":
     case "日期从":
@@ -115,7 +115,7 @@ function salesOrderQueryParticularField(key, show) {
     return f;
 }
 
-//按挂单
+// 按挂单
 function testSalesOrderHangFields() {
     var keys = [ "customer", "day1", "day2", "staff", "shop", "mode" ];
     var fields = salesOrderHangFields(keys);
@@ -132,10 +132,11 @@ function salesOrderHangField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "xw",-1,0);{
+        f = new TField("客户", TF_AC, 0, "xw", -1, 0);
+        {
             if (show) {
                 f.value = "小王";
-            }  
+            }
         }
         break;
     case "day1":
@@ -155,9 +156,9 @@ function salesOrderHangField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "1");
+        f = new TField("门店", TF, 4, "1");// TF_SC
         break;
-    //这个发货状态没有意义，挂单只有未发货状态
+    // 这个发货状态没有意义，挂单只有未发货状态
     case "mode":
     case "发货状态":
         f = new TField("发货状态", TF, 5, "20");
@@ -249,7 +250,7 @@ function salesOrderCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");
+        f = new TField("门店", TF, 4, "常青店");// TF_SC
         break;
     case "customer":
     case "客户":
@@ -357,7 +358,7 @@ function salesOrderShopField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -477,7 +478,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 7, "常青店");
+        f = new TField("门店", TF, 7, "常青店");// TF_SC
         break;
     case "brand":
     case "品牌":

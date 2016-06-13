@@ -13,9 +13,16 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-
- run("测试用例", "ts100026");//
-// run("测试用例", "onlyTest");//
+// run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项不包括款号", "ts100026");
+// run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
+// run("【货品管理-新增货品】新增配码的货品", "ts100097");
+// run("【货品管理-基本设置】检查基本属性新增提示框验证", "ts100059Msg");
+// run("【货品管理-基本设置】货品类别", "test10_type");
+// run("【货品管理-基本设置】所有品牌", "test10_brand");
+// run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
+// run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
+// run("测试用例", "test10_type");//
+ run("测试用例", "onlyTest");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
 
@@ -24,8 +31,15 @@ function test000All() {
 function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00}, 1);//popover滑动无法触发？
-  
+// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00},
+// 1);//popover滑动无法触发？
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
+        "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
+        "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否", "类别" : "登山服" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+
     return true;
 }
 

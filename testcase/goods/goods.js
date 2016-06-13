@@ -185,7 +185,7 @@ function testGoods001() {
     run("【货品管理-基本设置】所有颜色", "test10_color");
     run("【货品管理-基本设置】所有尺码", "test10_size");
     run("【货品管理-基本设置】所有品牌", "test10_brand");
-    run("【货品管理-基本设置】所有尺码组", "test10_size_group");
+    run("【货品管理-基本设置】所有尺码组", "test10_sizeID");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序，操作日期不验证排序是否正确，没有年份
 
     run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
@@ -222,7 +222,7 @@ function testGoods002() {
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "ts100034");
     }
     if (colorSize == "yes") {
-
+        run("【货品管理-新增货品】新增配码的货品", "ts100097");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "ts100029");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "ts100031");
     }
@@ -3409,25 +3409,22 @@ function test10_size() {
     return ret;
 
 }
+// 颜色尺码模式
 function ts100097() {
     // X1对应配码8件
-    if (colorSize == "yes") {
-        var r = getTimestamp(8);
-        var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
-            "颜色" : "红色", "尺码" : "X1", "吊牌价" : "200" };// 不同尺码组的尺码无排序要求
-        var ret = ts100033Field(keys1, keys1);
+    var r = getTimestamp(8);
+    var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+        "颜色" : "红色", "尺码" : "X1", "吊牌价" : "200" };// 不同尺码组的尺码无排序要求
+    var ret = ts100033Field(keys1, keys1);
 
-        tapMenu("销售开单", ADDBILL);
-        var json = { "客户" : "xw", "明细" : [ { "货品" : "g" + r, "数量" : [ 1 ] } ] };
-        var jo = editSalesBill(json, colorSize);
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "g" + r, "数量" : [ 1 ] } ] };
+    var jo = editSalesBill(json, colorSize);
 
-        var exp = { "尺码" : 25, "数量" : 8 };
-        ret = isAnd(ret, isEqualObject(exp, jo["明细值"].data[0]));
+    var exp = { "尺码" : 25, "数量" : 8 };
+    ret = isAnd(ret, isEqualObject(exp, jo["明细值"].data[0]));
 
-        return ret;
-    } else {
-        return true;
-    }
+    return ret;
 }
 function test10_brand() {
     tapMenu("货品管理", "基本设置", "所有品牌");
@@ -3474,7 +3471,7 @@ function test10_brand() {
     return isAnd(ret, ret1, ret2);
 }
 
-function test10_size_group() {
+function test10_sizeID() {
     tapMenu("货品管理", "基本设置", "所有尺码组");
     query();
     var ret = goPageCheck();
