@@ -7,7 +7,7 @@
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.01";// 7.01
 // var caseName="测试用例";
@@ -20,9 +20,10 @@ function test000All() {
 // run("【货品管理-基本设置】货品类别", "test10_type");
 // run("【货品管理-基本设置】所有品牌", "test10_brand");
 // run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
-// run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
-// run("测试用例", "test10_type");//
- run("测试用例", "onlyTest");//
+    
+// run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");//colorSize no
+ run("测试用例", "test110012");//
+// run("测试用例", "onlyTest");//
 // run("【往来管理-客户查询】解除上下级客户关系", "test110054");
 //
 
@@ -33,12 +34,7 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00},
 // 1);//popover滑动无法触发？
-    tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
-        "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
-        "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否", "类别" : "登山服" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+ 
 
     return true;
 }

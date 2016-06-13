@@ -14,7 +14,7 @@ function testCustomer001() {
     run("【往来管理-客户活跃度】客户活跃度", "ts110033");
     run("【往来管理-积分查询】积分查询", "test110036");
     run("【往来管理-积分查询】数据验证", "test110036_1");
-    run("【往来管理-厂商查询】翻页，排序，查询，清除", "test1100_QueryProvider");
+    run("【往来管理-厂商查询】翻页，排序，查询，清除", "ts110075");
     run("【往来管理-厂商账款】厂商门店账", "ts110041");
     run("【往来管理-厂商账款】厂商总账", "ts110042");
     run("【往来管理-物流商查询】物流商查询", "test110044");
@@ -73,6 +73,8 @@ function testCustomer002() {
     run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
+    run("【往来管理-物流商查询】总经理登录，显示所有门店物流商", "ts110061For000");
+    run("【往来管理-物流商查询】检查物流商默认门店", "ts110062");
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
@@ -781,6 +783,7 @@ function test110017() {
     tapNaviLeftButton();
     var ret = isEqual(a, sum3);
 
+    tapButton(window, QUERY);
     qr = getQR();
     var sum1 = 0; // 余额汇总
     var sum2 = 0; // 条数汇总
@@ -1607,8 +1610,8 @@ function test110031_110032() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqual(0, qr.data.length), isEqual("0", qr.curPageTotal),
-            isEqual("1", qr.totalPageNo));
+    ret = isAnd(ret, qr.data.length == 0, qr.curPageTotal == 0,
+            qr.totalPageNo == 0);
 
     return ret;
 }
@@ -1961,7 +1964,7 @@ function test110036_3() {
     return ret;
 }
 
-function test1100_QueryProvider() {
+function ts110075() {
     tapMenu("往来管理", "厂商查询");
     query();
     // 翻页
@@ -2103,8 +2106,8 @@ function test110040() {
             getScrollView(-1), 4)));
     editSalesBillSave({});
 
+    tapMenu2("按批次查");//
     query();
-    //
     tapFirstText();
     ret = isAnd(ret, test110040Field("进货价"), isEqual("100", getTextFieldValue(
             getScrollView(-1), 4)));
@@ -2859,6 +2862,51 @@ function test110044() {
     }
     return ret;
 }
+// 总经理可以查看所有门店的物流商 数据准备中洲店的物流商
+function ts110061For000() {
+    return ts110061Field("000");
+}
+// 总经理外角色只能看本店的物流商
+function ts110061For004() {
+    return ts110061Field("004");
+}
+function ts110061Field(staff) {
+    tapMenu("往来管理", "getMenu_More", "物流商查询");
+    var keys = { "门店" : "中洲店" };
+    var fields = queryCustomerLogisticsFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = true;
+    if (staff == "000") {
+        ret = ret && qr.data.length > 0;
+    } else {
+        ret = ret && qr.data.length == 0;
+    }
+    return ret;
+}
+
+function ts110062() {
+    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    var r = "l" + getTimestamp(6);
+    var keys = { "名称" : r };
+    var fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    tapReturn();// 保存后自动返回物流商查询界面
+
+    keys = { "名称" : r, "门店" : "常青店" };
+    fields = queryCustomerLogisticsFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data[0]["门店"] == "常青店";
+
+    tapFirstText();
+    fields = editCustomerLogisticsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+
+    return ret;
+}
 
 function test110045_110046() {
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
@@ -2911,7 +2959,7 @@ function test110045_110046() {
     query(fields);
     var qr = getQR();
     ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
-    tapRefresh();
+    tapRefresh();// 刷新后去开单界面验证
 
     tapMenu("销售开单", ADDBILL);
     var josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
@@ -3450,6 +3498,32 @@ function ts110064() {
     ret = isAnd(ret, isInAlertMsgs("当前客户已经有子客户不允许设置上级客户"));
 
     return ret;
+}
+
+function ts110066() {
+    var r = getTimestamp(6);
+    tapMenu("销售开单", ADDBILL);
+    var keys = { "名称" : "c" + r, "手机" : "p" + r, "店员" : "000", "适用价格" : "打包价",
+        "地址" : "abc" };
+    editSalesBillAddCustomer(keys);
+    tapReturn();
+
+    tapMenu("往来管理", "客户查询");
+    query();
+    tapFirstText();
+    var fields = editCustomerFields(keys, true);
+    fields["店员"].value = "000总经理";
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+    return ret;
+}
+
+function ts110079_80() {
+    var qo = { "备注" : "是否允许跨门店核销" };
+    var o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+    
+    
 }
 
 function testCheckCustomerDropDownList() {

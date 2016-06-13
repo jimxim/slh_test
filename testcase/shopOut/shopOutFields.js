@@ -76,7 +76,7 @@ function shopOutQueryParticularField(key, show) {
         break;
     case "shop-out":
     case "调出门店":
-        f = new TField("调出门店", SC, 2, "常青店");// TF_SC
+        f = new TField("调出门店", TF, 2, "常青店");// TF_SC
         break;
     case "day1":
     case "日期从":
