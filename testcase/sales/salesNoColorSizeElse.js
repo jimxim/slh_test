@@ -6410,7 +6410,7 @@ function test170378() {
     var money = json["代收"]["代收金额"];
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "ht");
+    var f = new TField("物流", TF_AC, 0, "ht");
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");

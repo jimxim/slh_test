@@ -4,14 +4,15 @@ var ADDBILL = "开  单+";
 /** 日利润表 */
 var Menu_Profit = "日利润表";// 5.69前为利润表
 /** 物流核销 */
-var LogisticsVerify = "核销+";// 7.01及以前为"核销+",7.10为"物流核销+"
+var LogisticsVerify = "物流核销+";// 7.01及以前为"核销+",7.10为"物流核销+"
 /** 更多 */
-var MORE = "更多";// 7.01及以前为"更多."或"更多.."
+var MORE = "更多";// 7.01及以前为"更多."或"更多.." ,7.10为"更多"
 /** 更多. */
 var MORE1 = "更多.";
 /** 更多.. */
 var MORE2 = "更多..";
-
+/** 兑换积分 */
+var ExchangeScore = "兑换积分";// 7.01及以前为"积分兑换",7.10为"兑换积分"
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");

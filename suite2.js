@@ -15,35 +15,20 @@ function test000All() {
 // run("【销售开单－代收收款】核销代收收款功能", "test170287");//
 // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//
 // run("【 开单】快速新增客户时自动刷新检查", "test170538");//
-
 // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");//
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
 
-// run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
-// run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
-
-// run("【销售开单-开单】异地+代收", "test170672");
-// run("【销售开单-开单】异地+代收， 挂单", "test170674_170675");
-// run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");
-// run("【销售开单+整单折扣+代收】挂单转为销售单", "test170365");
-// run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
-// run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");
-// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
-// run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
-// run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
-    
-// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
-// run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
-// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");//
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
 // run("销售订货价格刷新+上次价", "test170492_1");
 // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
-        
-// run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
-//  run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-//  run("【销售开单－开单】积分兑换", "test170186");// (弹窗的判定不稳定)//
-
- run("", "test1");
+    
+// run("【销售开单-开单】颜色尺码下款号的颜色为3个汉字时,通过获取未保存添加款号", "test170626");
+// run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-参数准备", "test170703Prepare");
+// run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
+// run("【销售开单-开单】异地+代收， 加载所有挂单", "test170676");//代收界面文本框下标
+    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// //
+    
+// run("", "test1");
 }
     
 function test1(){
@@ -52,30 +37,7 @@ function test1(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-// tapMenu("盘点管理", "新增盘点+");
-// var josn={ "明细" : [ { "货品" : "k300", "数量" : 5 } ]};
-// editCheckAddDetNoColorSize(josn);
-// var qr = getQR(window, getScrollView(-1), TITLE_SEQ, 5);
-// debugQResult(qr);
-    
-// tapTextByFirstWithName("4");
-    
-// var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
-//    tapButton(window,QUERY);
-//    var qr=getQR();
-// debugQResult(qr);
-    
-    tapButton(window, "核销");
-    tapButton(getScrollView(-1, 0), "积分兑换");
-    
-//    tapButton(window, "核销");
-//    tapButton(getScrollView(-1, 0), "兑换记录");
-//
-//    var texts = getStaticTexts(getScrollView(-1));
-//    var titleTexts = getStaticTexts(window);
-//    var qr = getQRverify(texts, "序号", 7, 0, titleTexts);
-//    debugQResult(qr);
-    
+
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
