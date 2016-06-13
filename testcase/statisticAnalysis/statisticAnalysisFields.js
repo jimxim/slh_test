@@ -62,7 +62,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -244,7 +244,7 @@ function statisticAnalysisReturnField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 4, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -284,7 +284,7 @@ function statisticAnalysisGoodMarketField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");//TF_SC
+        f = new TField("门店", TF_SC, 4, "常青店");//TF_SC
         break;
     case "name":
     case "款号名称":
@@ -328,7 +328,7 @@ function statisticAnalysisUnsalableField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");//TF_SC
+        f = new TField("门店", TF_SC, 3, "常青店");//TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

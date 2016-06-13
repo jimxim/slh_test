@@ -46,7 +46,7 @@ function purchaseQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "仓库店");// TF_SC
+        f = new TField("门店", TF_SC, 6, "仓库店");// TF_SC
         break;
     case "staff":
     case "店员":
@@ -109,7 +109,7 @@ function purchaseQueryParticularField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 5, "仓库店");// TF_SC
+        f = new TField("门店", TF_SC, 5, "仓库店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -201,7 +201,7 @@ function purchaseCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 7, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 7, "常青店");// TF_SC
         break;
     case "type":
     case "类别":
@@ -577,7 +577,7 @@ function purchaseShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

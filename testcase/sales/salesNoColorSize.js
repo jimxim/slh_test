@@ -10934,7 +10934,7 @@ function test170536() {
         "特殊货品" : { "抹零" : 9 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var f6 = new TField("备注", TF, 6, """);
+    var f6 = new TField("备注", TF, 6, "\"");
     var fields = [ f6 ];
     setTFieldsValue(getScrollView(-1), fields);
 

@@ -70,7 +70,7 @@ function shopInQueryBatchField(key, show) {
         break;
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 3, "仓库店");// TF_SC
+        f = new TField("调入门店", TF_SC, 3, "仓库店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -136,7 +136,7 @@ function shopInQueryParticularField(key, show) {
 
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 5, "仓库店");//TF_SC
+        f = new TField("调入门店", TF_SC, 5, "仓库店");//TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -184,7 +184,7 @@ function shopInCodeField(key, show) {
         break;
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 5, "常青店");//TF_SC
+        f = new TField("调入门店", TF_SC, 5, "常青店");//TF_SC
         break;
     case "brand":
     case "品牌":

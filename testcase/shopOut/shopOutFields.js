@@ -25,7 +25,7 @@ function shopOutQueryBatchField(key, show) {
         break;
     case "shop-in":
     case "调出门店":
-        f = new TField("调出门店", TF, 2, "仓库店");// TF_SC
+        f = new TField("调出门店", TF_SC, 2, "仓库店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -76,7 +76,7 @@ function shopOutQueryParticularField(key, show) {
         break;
     case "shop-out":
     case "调出门店":
-        f = new TField("调出门店", TF, 2, "常青店");// TF_SC
+        f = new TField("调出门店", TF_SC, 2, "常青店");// TF_SC
         break;
     case "day1":
     case "日期从":
@@ -182,7 +182,7 @@ function shopOutCodeField(key, show) {
         break;
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 5, "常青店");// TF_SC
+        f = new TField("调入门店", TF_SC, 5, "常青店");// TF_SC
         break;
     case "brand":
     case "品牌":
