@@ -5772,9 +5772,9 @@ function test170186() {
     tapButton(window, "核销");
 
     // var e = getStaticTextValue(getScrollView(-1, 0), 0);
-    var b = getStaticTextValue(getScrollView(-1, 0), 1);
+    var b = getStaticTextValue(getScrollView(-1), 1);
 
-    tapButton(getScrollView(-1, 0), "积分兑换");
+    tapButton(getScrollView(-1), "积分兑换");
     var r = "9" + getTimestamp(6);
     var g0 = new TField("兑换积分*", TF, 0, r);
     var g1 = new TField("兑换金额*", TF, 1, r);

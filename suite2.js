@@ -33,19 +33,17 @@ function test000All() {
 // run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
     
 // run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
-// run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");
 // run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
 // run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");//
-// run("【销售开单－开单】积分兑换", "test170186");// (弹窗的判定不稳定)//
-// run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
 // run("销售订货价格刷新+上次价", "test170492_1");
 // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
         
 // run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");
+//  run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
+//  run("【销售开单－开单】积分兑换", "test170186");// (弹窗的判定不稳定)//
 
-
-// run("", "test1");
+ run("", "test1");
 }
     
 function test1(){
@@ -66,6 +64,17 @@ function test1(){
 //    tapButton(window,QUERY);
 //    var qr=getQR();
 // debugQResult(qr);
+    
+    tapButton(window, "核销");
+    tapButton(getScrollView(-1, 0), "积分兑换");
+    
+//    tapButton(window, "核销");
+//    tapButton(getScrollView(-1, 0), "兑换记录");
+//
+//    var texts = getStaticTexts(getScrollView(-1));
+//    var titleTexts = getStaticTexts(window);
+//    var qr = getQRverify(texts, "序号", 7, 0, titleTexts);
+//    debugQResult(qr);
     
 }
 function setSales001Params() {

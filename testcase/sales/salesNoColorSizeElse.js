@@ -5298,8 +5298,7 @@ function test170338_170344() {
     var keys = { "客户" : "ls", "款号" : "k300" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-    // tapTitle(getScrollView(-1), "批次");isAqualOptime(getOpTime(),
-    // qr2.data[0]["操作日期"], 2),
+
     var qr2 = getQR(window, getScrollView(), TITLE_SEQ, 19);
 
     var ret1 = isAnd(isEqual(totalNum, qr2.counts["数量"]), isEqual(totalMoney,
@@ -5308,7 +5307,8 @@ function test170338_170344() {
     var ret2 = isAnd(isEqual(qr2.data[0]["批次"], batch), isEqual(
             qr2.data[0]["款号"], code), isEqual(qr2.data[0]["名称"], name),
             isEqual(qr2.data[0]["单价"], price), isEqual(qr2.data[0]["数量"], num),
-            isEqual(getToday("yy"), date));
+            isEqual(getToday("yy"), date), isAqualOptime(getOpTime(),
+                    qr2.data[0]["操作日期"], 2));
 
     logDebug(" sum1=" + sum1 + ", sum2=" + sum2 + ", ret=" + ret + ", ret1="
             + ret1 + ", ret2=" + ret2);
@@ -5331,11 +5331,6 @@ function test170339_170705() {
     return ret;
 }
 function test170340() {
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-    // "现金" : "1500" };
-    // editSalesBillNoColorSize(json);
-
     tapMenu("销售开单", "按汇总", "按客户上货");
     var i;
     var ret = false;
@@ -5407,7 +5402,6 @@ function test170341_170342_170343_170346() {
 
     var ret = goPageCheck();
 
-    // query();
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
@@ -5469,11 +5463,6 @@ function test170350() {
     return ret;
 }
 function test170351() {
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-    // "现金" : "1500" };
-    // editSalesBillNoColorSize(json);
-
     tapMenu("销售开单", "按汇总", "客户对账单");
     var i;
     var ret = false;
@@ -5491,7 +5480,6 @@ function test170351() {
 
     tapButton(window, CLEAR);
 
-    // tapMenu("销售开单", "按汇总", "客户对账单");
     var ret1 = false;
     tap(getTextField(window, 1));
     var texts = getStaticTexts(getPopView());
