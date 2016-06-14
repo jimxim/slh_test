@@ -1939,7 +1939,7 @@ function test110036_3() {
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
     ret = isAnd(ret, isIn(b, a));
 
-    tapButton(getScrollView(-1, 0), "积分兑换");
+    tapButton(getScrollView(-1, 0), ExchangeScore);
     var g0 = new TField("兑换积分", TF, 0, 1000);
     var g1 = new TField("兑换金额", TF, 1, 1000);
     setTFieldsValue(getPopView(), [ g0, g1 ]);

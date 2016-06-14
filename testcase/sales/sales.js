@@ -296,7 +296,7 @@ function ts170557_2_2() {
 }
 
 function ts170557_3_2() {
-    return isAnd(check170557Alert(90, "因为启用了价格验证价格类型[0]"), check170557Alert(
+    return isAnd(check170557Alert(90, "因为启用了价格验证价格类型[2]"), check170557Alert(
             120, "第1行价格错误，不允许改低"), check170557Alert(200, "保存成功"));
 }
 

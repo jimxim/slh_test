@@ -136,7 +136,7 @@ function addRedeemPoints(customer, points, money) {
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
-    tapButton(getScrollView(-1, 0), "积分兑换");
+    tapButton(getScrollView(-1, 0), ExchangeScore);
     var g0 = new TField("兑换积分", TF, 0, points);
     var g1 = new TField("兑换金额", TF, 1, money);
     setTFieldsValue(getPopView(), [ g0, g1 ]);
