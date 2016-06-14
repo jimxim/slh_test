@@ -26,28 +26,28 @@ js_func="$js_func test000SalesNoColorSize004"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse003"
 
-#js_func="$js_func setSales001Params"
-#js_func="$js_func test000SalesNoColorSizeElse004"
+js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSizeElse004"
 
-#js_func="$js_func setSales001Params"
-#js_func="$js_func test000SalesNoColorSizeElse005"
+js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSizeElse005"
 
-#js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
-#js_func="$js_func test000SalesNoColorSizeElse002"
+js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
+js_func="$js_func test000SalesNoColorSizeElse002"
 
-#js_func="$js_func setSales001Params"
-#js_func="$js_func test000SalesNoColorSizeElse001 "
+js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSizeElse001 "
 
-#js_func="$js_func setSales002Params"
-#js_func="$js_func test000SalesColorSize002"
+js_func="$js_func setSales002Params"
+js_func="$js_func test000SalesColorSize002"
 
-#js_func="$js_func setSales001Params"
 #均色均码 获取未保存
+js_func="$js_func setSales001Params"
 js_func="$js_func testSalesNoColorSize170140_Params"
 js_func="$js_func testSalesNoColorSize170140"
 #加工货品
-#js_func="$js_func testSalesNoColorSize170429_Params"
-#js_func="$js_func testSalesNoColorSize170429"
+js_func="$js_func testSalesNoColorSize170429_Params"
+js_func="$js_func testSalesNoColorSize170429"
 #均色均码 销售开单同时订货
 js_func="$js_func testSalesNoColorSize170125_Params"
 js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"

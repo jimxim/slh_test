@@ -363,7 +363,7 @@ function getTableViewCells1(view1, f, o) {
     logDebug(" tableViewIndex=" + tableViewIndex + " ret=" + ret);
     return ret;
 }
-var menu_More;
+
 /**
  * 获取更多按钮 7.10之前版本不统一
  * @returns
@@ -391,4 +391,53 @@ function getMenu_More() {
         }
     }
     return menu;
+}
+
+/**
+ * 点击销售开单－开单－核销界面确定按钮 7.10之前版本不统一
+ * @returns
+ */
+function tapSalesBillVerify_OK() {
+    var ok;
+    if (ipadVer >= "7.10") {
+        ok = OK;
+    } else {
+        ok = CONFIRM;
+    }
+    tapNaviButton(ok);
+
+    return ok;
+}
+
+/**
+ * 兑换积分
+ * @param r
+ * @returns
+ */
+function editExchangeScore(r, ret) {
+    tapButton(window, "核销");
+    tapButton(getScrollView(-1, 0), ExchangeScore);
+    var r;
+    var g0 = new TField("兑换积分*", TF, 0, r);
+    var g1 = new TField("兑换金额*", TF, 1, r);
+    var fields = [ g0, g1 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+
+    tapNaviLeftButton();
+
+    if (ret == "yes") {
+        editExchangeScoreYes(r);
+    }
+    if (ret == "no") {
+        editExchangeScoreNo(r);
+    }
+
+    return r;
+}
+function editExchangeScoreYes(r) {
+    tapReturn();
+}
+function editExchangeScoreNo(r) {
+    return;
 }

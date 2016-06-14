@@ -29,18 +29,11 @@ function editCheckAddDetNoColorSize(o) {
     // 输入超出当前页面显示条数时，比如8条时，tfNum会将前面10行内容都当做标题，因此只在最开始取一次标题数
     var tfNum = getSalesBillDetTfNum(o);
 
-    var view1;
-    if (ipadVer >= "7.10") {
-        view1 = getScrollView(1);
-    } else {
-        view1 = getScrollView();
-    }
-
     for ( var i in details) {
         var start = tfNum * (i - mergeLine + detLine);
         var d = details[i];
         var f0 = new TField("货品", TF_AC, start + 0, d["货品"], -1, 0);
-        // var view1 = getScrollView(-1);
+         var view1 = getScrollView(-1);
         setTFieldsValue(view1, [ f0 ]);
 
         var num;
@@ -135,12 +128,4 @@ function editCheckAddSave(o) {
     }
 
     return o;
-}
-function checkScrollView(){
-    var view1;
-    if (ipadVer >= "7.10") {
-        view1 = getScrollView(-1);
-    } else {
-        view1 = getScrollView();
-    }
 }
