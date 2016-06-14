@@ -234,7 +234,7 @@ function test110005() {
     var keys = { "名称" : r };
     addCustomer(keys);
 
-    tapMenu("往来管理", "客户查询");
+    tapMenu2("客户查询");
     query();
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
@@ -3190,7 +3190,7 @@ function ts110056() {
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
-    ret = isAnd(ret, isIn(alertMsg, "相同客户代码已存在"));
+    ret = isAnd(ret, isIn(alertMsg, "相同客户编码已存在"));
     tapPrompt();
 
     var r = "客户代码abc" + getTimestamp(6);
@@ -3522,8 +3522,7 @@ function ts110079_80() {
     var qo = { "备注" : "是否允许跨门店核销" };
     var o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
     var ok = setGlobalParam(qo, o);
-    
-    
+
 }
 
 function testCheckCustomerDropDownList() {

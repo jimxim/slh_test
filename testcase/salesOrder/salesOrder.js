@@ -2075,12 +2075,14 @@ function ts160073_74() {
     editSalesBill(json, colorSize);
 
     //
+    tapMenu2("按批次查");
+    query();
     tapFirstText();
     tapButtonAndAlert(REPEAL, OK);
     tapReturn();
 
     tapMenu2("按批次查");
-    query();
+    tapButton(window,QUERY);
     tapFirstText();// getScrollView(),"序号",16
     editSalesBill(addDet, colorSize);// 新增货品
     var ok = isInAlertMsgs("已作废的批次不能执行这个操作");
@@ -2088,14 +2090,18 @@ function ts160073_74() {
     ret = ret && ok;
 
     // 部分发货
-    addBill160073();
-
-    var cond = "getButton(window, ADDBILL).isVisible()";
-    waitUntil(cond, 5);
-    tapMenu("销售开单", ADDBILL);
-    var jo = { "客户" : "xw", "核销" : [ 5 ] };
+    tapMenu("销售订货", "新增订货+");
+    var jo = { "客户" : "xw" };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var json = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 5 ] };
+    editSalesBill(json, colorSize);
+    var cond = "getButton(window, ADDBILL).isVisible()";
+    waitUntil(cond, 5);
 
     tapMenu("销售订货", "按批次查");
     query();
@@ -2241,7 +2247,7 @@ function addBill160073(all) {
     query();
     tapFirstText();
 
-    if (all) {
+    if (isUndefined(all)) {
         var o = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
         editPurInByOrderDet(o);
     }

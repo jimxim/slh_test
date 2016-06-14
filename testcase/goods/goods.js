@@ -2014,7 +2014,7 @@ function ts100059Size() {
     return ts100059Field("editGoodsSizeField", "goodsSizeField", keys, "新增尺码+",
             qkeys);
 }
-function ts100059brand() {
+function ts100059Brand() {
     var r = "brand" + getTimestamp(5);
     var keys = { "名称" : r };
     return ts100059Field("editGoodsBrandField", "goodsBrandField", keys,
@@ -2028,7 +2028,7 @@ function ts100059SizeID() {
 }
 function ts100059Msg() {
     tapMenu("货品管理", "基本设置", "新增类别+");
-    var keys = { "名称" : "'" };
+    var keys = { "名称" : "\'" };
     var ret = test100111Field("类别", keys, "非法字符");
     keys = { "名称" : "登山服" };
     ret = isAnd(ret, test100111Field("类别", keys, "相同记录已存在"));
@@ -2036,7 +2036,7 @@ function ts100059Msg() {
 
     tapMenu2("基本设置");
     tapMenu3("新增颜色+");
-    keys = { "颜色类别" : "棕", "名称" : "'" };
+    keys = { "颜色类别" : "棕", "名称" : "\'" };
     ret = isAnd(ret, test100111Field("颜色", keys));
     keys = { "颜色类别" : "棕", "名称" : "黄色" };
     ret = isAnd(ret, test100111Field("颜色", keys, "相同记录已存在"));
@@ -2044,7 +2044,7 @@ function ts100059Msg() {
 
     tapMenu2("基本设置");
     tapMenu3("新增尺码+");
-    keys = { "尺码类别" : "裤子尺码", "名称" : "'" };
+    keys = { "尺码类别" : "裤子尺码", "名称" : "\'" };
     ret = isAnd(ret, test100111Field("尺码", keys));
     keys = { "尺码类别" : "裤子尺码", "名称" : "均码" };
     ret = isAnd(ret, test100111Field("尺码", keys, "相同记录已存在"));
@@ -2052,7 +2052,7 @@ function ts100059Msg() {
 
     tapMenu2("基本设置");
     tapMenu3("新增尺码组+");
-    keys = { "名称" : "'" };
+    keys = { "名称" : "\'" };
     ret = isAnd(ret, test100111Field("尺码组", keys));
     keys = { "名称" : "裤子尺码" };
     ret = isAnd(ret, test100111Field("尺码组", keys, "相同记录已存在"));

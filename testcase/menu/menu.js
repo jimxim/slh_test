@@ -84,9 +84,6 @@ function testCheckPurchase() {
         "按订货入库" : {} };
     ret = isAnd(ret, checkMenus(menus2));
 
-    tapButtonAndAlert("刷新入库+", OK);
-    delay();
-
     menu2 = "按汇总";
     menus3 = { "按金额汇总" : {}, "按款号汇总" : {}, "按厂商返货" : {}, "按厂商汇总" : {},
         "出入库汇总" : {}, "厂商对账单" : { "navi_close" : "yes" }, "按类别汇总" : {} };

@@ -971,7 +971,7 @@ function dropDownListCheck(index, value, expected, o) {
         delay();
         tapKeyboardHide();
     } else {
-        ret = isEqual(getTextFieldValue(window, index), expected);
+        ret = isIn(getTextFieldValue(window, index), expected);
     }
 
     if (window.buttons()[CLEAR].isVisible()) {
@@ -1285,11 +1285,14 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
     logDebug("index=" + index);
     return index;
 }
+/**
+ * 获取版本号 在主界面时取
+ * @returns
+ */
 function getIpadVer() {
-    // 主界面倒数第二个静态文本中包含版本号
-    var value = getStaticTextValue(window, -2);
-    var ipadVer = value.slice(-6);
-    return ipadVer;
+    var value = app.navigationBar().name();
+    var ipadVer = value.split(" ");
+    return ipadVer[1];
 }
 
 /**
