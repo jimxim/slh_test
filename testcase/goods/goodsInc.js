@@ -136,15 +136,23 @@ function addRedeemPoints(customer, points, money) {
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
+    addRedeemPointsFields(points, money);
+
+    tapReturn();
+}
+/**
+ * 积分兑换
+ * @param points
+ * @param money
+ */
+function addRedeemPointsFields(points, money) {
     tapButton(getScrollView(-1, 0), ExchangeScore);
     var g0 = new TField("兑换积分", TF, 0, points);
     var g1 = new TField("兑换金额", TF, 1, money);
     setTFieldsValue(getPopView(), [ g0, g1 ]);
     tapButton(getPop(), OK);
-    // tapButton(getPop(), CLOSE);
+    tapButton(getPop(), CLOSE);// 防止出错卡界面
     tapNaviLeftButton();
-
-    tapReturn();
 }
 
 /**

@@ -1091,7 +1091,7 @@ function ts130015() {
     return ret;
 }
 function test130015EndBill() {
-    tapMenu2( "getMenu_More");
+    tapMenu2("getMenu_More");
     tapMenu3("终结订单");
 }
 
@@ -1367,9 +1367,10 @@ function editOverLengthBillDet() {
 /**
  * 简单的开单明细
  * @param num 数量
- * @param gIdx 颜色尺码模式时，货品文本框的下标
+ * @param gIdx 颜色尺码模式时，货品文本框的下标 默认-2
+ * @param remarks 备注
  */
-function addPOrderBillDet(num, gIdx) {
+function addPOrderBillDet(num, gIdx, remarks) {
     if (isUndefined(num)) {
         num = 30;
     }
@@ -1391,6 +1392,9 @@ function addPOrderBillDet(num, gIdx) {
     default:
         logWarn("未知colorSize＝" + colorSize);
         break;
+    }
+    if (isDefined(remarks)) {
+        det["明细"][0]["备注"] = remarks;
     }
     return det;
 }

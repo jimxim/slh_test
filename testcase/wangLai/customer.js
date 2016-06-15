@@ -1939,13 +1939,8 @@ function test110036_3() {
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
     ret = isAnd(ret, isIn(b, a));
 
-    tapButton(getScrollView(-1, 0), ExchangeScore);
-    var g0 = new TField("兑换积分", TF, 0, 1000);
-    var g1 = new TField("兑换金额", TF, 1, 1000);
-    setTFieldsValue(getPopView(), [ g0, g1 ]);
-    tapButton(getPop(), OK);
-    tapNaviLeftButton();
-    tapButtonAndAlert(RETURN);
+    addRedeemPointsFields(1000, 1000);
+    tapReturn();
 
     tapMenu("往来管理", "积分查询");
     tapButton(window, QUERY);
