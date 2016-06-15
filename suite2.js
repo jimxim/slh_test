@@ -30,19 +30,14 @@ function test000All() {
 // run("【销售开单-开单】挂单操作之后检查开单输入客户", "test170525");//
 // run("销售订货价格刷新", "test170445");
 // run("销售订货价格刷新+上次价/代收2", "test170492");
-// run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--不限制", "test170558");
-// run("【开单 】同款不同价提醒", "test170539");
-// run("【销售开单－开单】产品折扣支持3位小数", "test170080_170084");
-// run("【销售开单－开单】整单折扣下使用折扣3位小数", "test170078");
 // run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
  // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");
  // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");
  // run("【销售开单－开单】按门店区分客户--不区分", "test170250");//
-
 // run("【销售开单－开单】开单时不允许负库存", "test170116_170660");
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
- // run("【销售开单－开单】退货时明细备注框操作", "test170097");//
- 
+// run("【销售开单－开单】退货时明细备注框操作", "test170097");//
+
 // run("", "test1");
 }
     
@@ -52,7 +47,11 @@ function test1(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    
+//    tapButton(window,QUERY);
+//    tapFirstText();
+//    var qr1 = getQR2(getScrollView(-1, 0), "批次", "操作日期");
+//    debugQResult(qr1);
+//    return qr1;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
@@ -238,6 +237,14 @@ function test100SalesNoColorSizeElsePrepare003() {
     var ok = login("100","000000",p1);
     if( ok ) {
         run("仓库店准备代收单", "testSalesPrepare003");
+        logout();
+    }
+}
+function test100SalesNoColorSizeElsePrepare004() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("100","000000",p1);
+    if( ok ) {
+        run("仓库店准备代收单", "testSalesPrepare004");
         logout();
     }
 }

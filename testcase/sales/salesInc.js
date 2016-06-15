@@ -63,10 +63,10 @@ function testSalesPrepare003() {
 
     return ret;
 }
-function testSalesPrepare003() {
+function testSalesPrepare004() {
     // 仓库店、中洲店,要有积分兑换单
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt", "onlytest" : "yes" };
+    var json = { "客户" : "ls", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -92,7 +92,7 @@ function testSalesPrepare003() {
 
     return ret;
 }
-function testSalesPrepare004() {
+function testSalesPrepare005() {
     // "Aaa002"中洲店入库10件
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "Aaa002", "数量" : [ 10 ] } ] };

@@ -14,7 +14,7 @@ var LogisticsVerify = "核销+";// 7.01及以前为"核销+",7.10为"物流核�
 /** 兑换积分 */
 var ExchangeScore = "积分兑换";// 7.01及以前为"积分兑换",7.10为"兑换积分"
 /** 确 认 */
-var CONFIRM = "确 认";// 7.01及以前为"确 认",7.10为"确 定"
+var CONFIRM = "确 认";
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");

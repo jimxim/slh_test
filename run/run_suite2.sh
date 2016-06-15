@@ -23,7 +23,7 @@ js_func="$js_func test000SalesNoColorSize004"
 #js_func="$js_func test000SalesNoColorSize003"
 
 #均色均码 销售开单-其它
-js_func="$js_func setSales001Params"
+js_func="$js_func setSales001Params test100SalesNoColorSizeElsePrepare003 test100SalesNoColorSizeElsePrepare004"
 js_func="$js_func test000SalesNoColorSizeElse003"
 
 js_func="$js_func setSales001Params"
@@ -32,7 +32,7 @@ js_func="$js_func test000SalesNoColorSizeElse004"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse005"
 
-js_func="$js_func setSales001Params  test100SalesNoColorSizeElsePrepare003"
+js_func="$js_func setSales001Params "
 js_func="$js_func test000SalesNoColorSizeElse002"
 
 js_func="$js_func setSales001Params"
