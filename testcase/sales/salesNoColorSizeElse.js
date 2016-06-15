@@ -2358,7 +2358,7 @@ function test170274() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR(window, getScrollView(), TITLE_SEQ, 14);
+    qr = getQR();
 
     ret1 = isAnd(ret1, isEqual(money, qr.data[0]["金额"]));
 
@@ -2370,13 +2370,13 @@ function test170275Prepare() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
 
-    var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
+    var qr = getQR();
     var total1 = qr.total;
     for (var i = 0; i < total1; i++) {
         tapFirstText();
         tapButtonAndAlert("作 废", OK);
 
-        qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
+        qr = getQR();
         var len = qr.data.length;
         if (len = 0) {
             break;
@@ -2388,7 +2388,7 @@ function test170275Getmoney() {
     tapMenu3("收 款");
 }
 function test170275() {
-    if (ipadVer >= "7.10") {
+    if (ipadVer >= "7.20") {
         tapMenu("销售开单", "getMenu_More", "收款单");
     } else {
         tapMenu("销售开单", "收款单");
@@ -2411,7 +2411,7 @@ function test170275() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
 
-    if (ipadVer >= "7.10") {
+    if (ipadVer >= "7.20") {
         tapMenu("销售开单", "getMenu_More", "收款单");
     } else {
         tapMenu("销售开单", "收款单");
@@ -2484,7 +2484,7 @@ function test170277() {
 
     var Recieve;
     tapMenu("销售开单", "getMenu_More", Recieve);
-    if (ipadVer >= "7.10") {
+    if (ipadVer >= "7.20") {
         Recieve = "收款单撤销"
     } else {
         Recieve = "撤销"

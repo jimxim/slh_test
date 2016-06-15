@@ -399,7 +399,7 @@ function getMenu_More() {
  */
 function tapSalesBillVerify_OK() {
     var ok;
-    if (ipadVer >= "7.10") {
+    if (ipadVer >= "7.20") {
         ok = OK;
     } else {
         ok = CONFIRM;
