@@ -689,11 +689,7 @@ function test100005_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("库存", IS_NUM);
     ret = ret && sortByTitle("上架日期", IS_DATE2);
-    if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("累计进", IS_NUM);
-    } else {
-        ret = ret && sortByTitle("累计进");
-    }
+    ret = ret && sortByTitle("累计进", IS_NUM);
     ret = ret && sortByTitle("在途数", IS_NUM);
 
     var arr = [ "库存", "待发货", "累计进", "在途数", "待入库" ];
@@ -870,11 +866,9 @@ function test100006_1() {
     query();
     var ret = goPageCheck();
 
-    if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("名称");
-        ret = ret && sortByTitle("库存", IS_NUM);
-        ret = ret && sortByTitle("价值", IS_NUM);
-    }
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("库存", IS_NUM);
+    ret = ret && sortByTitle("价值", IS_NUM);
     // ret = ret && sortByTitle("仓库店", IS_NUM);
     // ret = ret && sortByTitle("常青店", IS_NUM);
     // ret = ret && sortByTitle("文一店", IS_NUM);

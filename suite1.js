@@ -5,6 +5,7 @@
 
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
+// #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
 // colorSize = "yes";

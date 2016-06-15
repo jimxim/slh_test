@@ -47,7 +47,7 @@ function statisticAnalysisProfitFields(keys, show) {
 }
 function statisticAnalysisProfitField(key, show) {
     var idx = 0;
-    if (ipadVer < 7.10) {
+    if (ipadVer < 7.20) {
         idx = -1;
     }
     var f;
