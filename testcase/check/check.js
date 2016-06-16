@@ -257,8 +257,8 @@ function test180007() {
     query(fields1);
     tapFirstText();
 
-    var ret = isAnd(isEqual(0, getTextFieldValue(getScrollView(-1), 3)), isEqual(
-            "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 0)));
+    var ret = isAnd(isEqual(0, getTextFieldValue(getScrollView(-1), 3)),
+            isEqual("k300,铅笔裤", getTextFieldValue(getScrollView(-1), 0)));
     delay();
     tapReturn();
 
@@ -288,11 +288,8 @@ function test180008() {
     saveAndAlertOk();
     tapPrompt();
 
-    delay();
-    if (isIn(alertMsg, "盘点单已处理，不允许更改")) {
-        var ret = true;
-    }
-    delay();
+    var ret =isIn(alertMsg, "盘点单已处理，不允许更改");
+
     tapReturn();
 
     return ret;
@@ -522,8 +519,9 @@ function test180019() {
 
     var ret2 = isAnd(isEqual(100, getTextFieldValue(window, 0)), isEqual(
             "3035,jkk", getTextFieldValue(getScrollView(-1), 0)), isEqual("均色",
-            getTextFieldValue(getScrollView(-1), 1)), isEqual("均码", getTextFieldValue(
-            getScrollView(-1), 2)), isEqual(100, getTextFieldValue(getScrollView(-1), 3)));
+            getTextFieldValue(getScrollView(-1), 1)), isEqual("均码",
+            getTextFieldValue(getScrollView(-1), 2)), isEqual(100,
+            getTextFieldValue(getScrollView(-1), 3)));
 
     tapReturn();
 
@@ -618,34 +616,39 @@ function test180021() {
     tapButton(window, QUERY);
     tapFirstText();
 
-    var ret = isAnd(isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 0)), isEqual(
-            10, getTextFieldValue(getScrollView(-1), 3)), isEqual("k200,范范",
-            getTextFieldValue(getScrollView(-1), 4)), isEqual(-11, getTextFieldValue(getScrollView(-1),
-            7)), isEqual("k300,铅笔裤", getTextFieldValue(getScrollView(-1), 8)), isEqual(0,
-            getTextFieldValue(getScrollView(-1), 11)), isEqual("3035,jkk",
-            getTextFieldValue(getScrollView(-1), 12)), isEqual(12, getTextFieldValue(getScrollView(-1),
-            15)), isEqual("k200,范范", getTextFieldValue(getScrollView(-1), 16)), isEqual(
-            -11, getTextFieldValue(getScrollView(-1), 19)), isEqual("k300,铅笔裤",
-            getTextFieldValue(getScrollView(-1), 20)), isEqual(0, getTextFieldValue(getScrollView(-1),
-            23)), isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 24)), isEqual(
-            10, getTextFieldValue(getScrollView(-1), 27)), isEqual("k200,范范",
-            getTextFieldValue(getScrollView(-1), 28)), isEqual(-11, getTextFieldValue(
-            getScrollView(-1), 31)), isEqual("k300,铅笔裤", getTextFieldValue(getScrollView(-1), 32)),
-            isEqual(0, getTextFieldValue(getScrollView(-1), 35)), isEqual("3035,jkk",
-                    getTextFieldValue(getScrollView(-1), 36)), isEqual(10,
-                    getTextFieldValue(getScrollView(-1), 39)), isEqual("k200,范范",
-                    getTextFieldValue(getScrollView(-1), 40)), isEqual(-11,
-                    getTextFieldValue(getScrollView(-1), 43)), isEqual("k300,铅笔裤",
-                    getTextFieldValue(getScrollView(-1), 44)), isEqual(0,
-                    getTextFieldValue(getScrollView(-1), 47)), isEqual("3035,jkk",
-                    getTextFieldValue(getScrollView(-1), 48)), isEqual(10,
-                    getTextFieldValue(getScrollView(-1), 51)), isEqual("k200,范范",
-                    getTextFieldValue(getScrollView(-1), 52)), isEqual(-11,
-                    getTextFieldValue(getScrollView(-1), 55)), isEqual("k300,铅笔裤",
-                    getTextFieldValue(getScrollView(-1), 56)), isEqual(0,
-                    getTextFieldValue(getScrollView(-1), 59)), isEqual("3035,jkk",
-                    getTextFieldValue(getScrollView(-1), 60)), isEqual(20,
-                    getTextFieldValue(getScrollView(-1), 63)));
+    var ret = isAnd(
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 0)),
+            isEqual(10, getTextFieldValue(getScrollView(-1), 3)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(-1), 4)),
+            isEqual(-11, getTextFieldValue(getScrollView(-1), 7)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 8)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 11)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(-1), 12)),
+            isEqual(12, getTextFieldValue(getScrollView(-1), 15)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(-1), 16)),
+            isEqual(-11, getTextFieldValue(getScrollView(-1), 19)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 20)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 23)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(-1), 24)),
+            isEqual(10, getTextFieldValue(getScrollView(-1), 27)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(-1), 28)),
+            isEqual(-11, getTextFieldValue(getScrollView(-1), 31)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 32)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 35)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(-1), 36)),
+            isEqual(10, getTextFieldValue(getScrollView(-1), 39)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(-1), 40)),
+            isEqual(-11, getTextFieldValue(getScrollView(-1), 43)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 44)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 47)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(-1), 48)),
+            isEqual(10, getTextFieldValue(getScrollView(-1), 51)), isEqual(
+                    "k200,范范", getTextFieldValue(getScrollView(-1), 52)),
+            isEqual(-11, getTextFieldValue(getScrollView(-1), 55)), isEqual(
+                    "k300,铅笔裤", getTextFieldValue(getScrollView(-1), 56)),
+            isEqual(0, getTextFieldValue(getScrollView(-1), 59)), isEqual(
+                    "3035,jkk", getTextFieldValue(getScrollView(-1), 60)),
+            isEqual(20, getTextFieldValue(getScrollView(-1), 63)));
 
     tapReturn();
 
@@ -658,13 +661,13 @@ function test180023() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ] };
+    var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ], "onlytest" : "yes" };
     editCheckAddDetNoColorSize(josn);
 
     tapReturn(window, CANCEL);
 
-    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(-1), 3)), isEqual(
-            "3035,jkk", getTextFieldValue(getScrollView(-1), 0)));
+    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(-1), 3)),
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 0)));
 
     tapReturn();
 
@@ -688,10 +691,13 @@ function test180024() {
     var fields = queryCheckBatchFields(keys);
     changeTFieldValue(fields["门店"], "常青店");
     query(fields);
+
     tapFirstText();
 
-    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(-1), 8)), isEqual("",
-            getTextFieldValue(getScrollView(-1), 11)));
+    tapButton(getScrollView(-1), 2);
+
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(-1), 8)),
+            isEqual("", getTextFieldValue(getScrollView(-1), 11)));
 
     tapReturn();
 
@@ -1345,7 +1351,7 @@ function test180042() {
     // 部分处理
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
-    var josn = { "明细" : [ { "货品" : "k300", "数量" : 20 } ] };
+    var josn = { "明细" : [ { "货品" : "k300", "数量" : r } ] };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "盘点处理");
