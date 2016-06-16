@@ -23,19 +23,21 @@ function test000All() {
 // run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
     
 // run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");//colorSize no
- run("测试用例", "ts160049");//
-// run("测试用例", "onlyTest");//
-// run("【往来管理-客户查询】解除上下级客户关系", "test110054");
+// run("测试用例", "ts110081");//
+ run("测试用例", "onlyTest");//
 //
-
+// onlyTest();
 }
 
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00},
-// 1);//popover滑动无法触发？
-    addRedeemPoints("xw",1000,1000);
+// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00},1);//
+// popover滑动无法触发？
+// window.tableViews()[0].scrollDown();
+// window.tableViews()[0].scrollUp();
+    var qr=getQR2(getScrollView(-1,0),"批次","未结");
+    
     return true;
 }
 

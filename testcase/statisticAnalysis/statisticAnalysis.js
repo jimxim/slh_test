@@ -1790,10 +1790,10 @@ function test190046Field() {
     var i, j;
     // debugElementTree(getScrollView(-1, 0));
     var qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    var arr = {};
+    var sum = {};
     for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
-            arr = addObject(qr.data[i], arr);
+            sum = addObject(qr.data[i], sum);
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();

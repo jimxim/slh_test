@@ -154,7 +154,27 @@ function addRedeemPointsFields(points, money) {
     tapButton(getPop(), CLOSE);// 防止出错卡界面
     tapNaviLeftButton();
 }
-
+/**
+ * 计算汇总值
+ * @param cond
+ */
+function getCounts(cond) {
+    if (isUndefined(cond)) {
+        cond = getQR();
+    }
+    var sum = {};
+    var qr = eval(cond);
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            sum = addObject(qr.data[i], sum);
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = eval(cond);
+        }
+    }
+    return sum;
+}
 /**
  * 获取开单界面window视图中的值,标题与文本框必须一一对应
  * @param firstTitle 起始标题
@@ -589,13 +609,19 @@ function goPage2(page, qr) {
  * @returns {Boolean}
  */
 function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
-    var pageInfoView = window;
-    var dataView = getScrollView();
-    var firstTitle = TITLE_SEQ;
+    if (isUndefined(pageInfoView)) {
+        pageInfoView = window;
+    }
+    if (isUndefined(dataView)) {
+        dataView = getScrollView();
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = TITLE_SEQ;
+    }
 
     // 当前页为1
     var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-    var ok = isEqual(1, qr.curPageNo);
+    var ok = qr.curPageNo == 1;
     if (!ok) {
         goPage(1, qr);
         qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
@@ -607,7 +633,7 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
     if (totalPageNo > 1) {
         var page1 = qr.data;
         // 总页数验证
-        ret = ret && isEqual(Math.ceil(qr.total / 15), totalPageNo);
+        ret = ret && Math.ceil(qr.total / 15) == totalPageNo;
         if (!ret) {
             logDebug("总页数错误");
         }
@@ -620,10 +646,9 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
         var firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
         // 最后的序号应该等于总数据条数
         ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
-                firstSeq, qr.data[0]["序号"]),
-                isEqual(totalPageNo, qr.curPageNo), isDifferentArray(page1,
-                        page2, 1), scrollPrevPageCheck(pageInfoView, dataView,
-                        firstTitle, titleTotal));
+                firstSeq, qr.data[0]["序号"]), totalPageNo == qr.curPageNo,
+                isDifferentArray(page1, page2, 1), scrollPrevPageCheck(
+                        pageInfoView, dataView, firstTitle, titleTotal));
 
         // 当总页数大于2时，追加一页验证
         if (totalPageNo > 2) {
@@ -876,8 +901,12 @@ function isInQRData1Object(qr, expected) {
  * 滑动翻页验证 先向上翻，再向下翻
  */
 function scrollPrevPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
-    var pageInfoView = window;
-    var dataView = getScrollView();
+    if (isUndefined(pageInfoView)) {
+        pageInfoView = window;
+    }
+    if (isUndefined(dataView)) {
+        pageInfoView = getScrollView();
+    }
 
     var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
     var pageNo = qr.curPageNo;

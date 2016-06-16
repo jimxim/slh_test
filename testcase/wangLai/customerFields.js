@@ -35,6 +35,9 @@ function queryCustomerField(key, show) {
             f.value = "000,管理员";
         }
         break;
+    case "上级客户":
+        f = new TField("上级客户", TF_AC, 6, "a", -1, 0);
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -428,7 +431,7 @@ function queryCustomerScoreField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "常青店");//TF_SC
+        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
         break;
     case "customer":
     case "客户":
@@ -563,7 +566,7 @@ function queryProviderShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");//TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -662,7 +665,7 @@ function queryCustomerLogisticsField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");//TF_SC
+        f = new TField("门店", TF_SC, 3, "常青店");// TF_SC
         break;
     case "stop":
     case "是否停用":
