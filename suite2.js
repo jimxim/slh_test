@@ -36,22 +36,38 @@ function test000All() {
  // run("【销售开单－开单】按门店区分客户--不区分", "test170250");//
 // run("【销售开单－开单】开单时不允许负库存", "test170116_170660");
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
- run("【销售开单－开单】退货时明细备注框操作", "test170097");//
-
-// run("", "test1");
-}
+// run("【销售开单－开单】退货时明细备注框操作", "test170097");//
     
+ run("", "test1");
+// run("", "test0");
+}
 function test1(){
+    tapMenu("销售开单", "开  单+");
+    var r1 = getTimestamp(6);
+    var r = "anewkh" + r1;
+    var json = { "名称" : r, "手机" : r1, "店员" : "000,", "适用价格" : "零批价", "地址" : r };
+    editQuickAddCustomer(json);
+}
+function test0(){
 // debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-//    tapButton(window,QUERY);
-//    tapFirstText();
-//    var qr1 = getQR2(getScrollView(-1, 0), "批次", "操作日期");
-//    debugQResult(qr1);
-//    return qr1;
+    
+    tapMenu("销售开单", "开  单+");
+    var r = getTimestamp(6);
+    var r1 = "货品" + r;
+    var json = { "款号" : r, "名称" : r, "进货价" :r1, "零批价" : r1, "打包价" : r1 };
+    editQuickAddGoods(json);
+    
+    var r = "anewKH1" + getTimestamp(7);
+    var json = { "名称" : r, "手机" : r1, "店员" : "000,", "地址" : r };
+    editQuickAddCustomer(json);
+    
+    var json = { "物流商" : "tt","运单号":1123444,"备注":"2jj"};
+    editSalesBillAgency2(json);
+
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

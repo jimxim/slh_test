@@ -705,7 +705,7 @@ function test210028_210029() {
     keys = { "是否停用" : "否" };
     fields = querySystemStaffFields(keys);
     query(fields);
-    
+
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
     ret = isAnd(isEqual("005", getTextFieldValue(getScrollView(), 0)), isEqual(
             "开单员005", getTextFieldValue(getScrollView(), 1)));
@@ -960,7 +960,9 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    var ret2 = isIn(alertMsg, "请确认原密码是否正确");
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isIn(alertMsg1, "请确认原密码输入是否正确");
 
     tapButton(window, "关 闭");
 
@@ -974,7 +976,9 @@ function test210035() {
     tapButton(window, OK);
     tapPrompt();
 
-    var ret3 = isIn(alertMsg, "再次输入都密码不同");
+    debugArray(alertMsgs);
+    var alertMsg2 = getArray1(alertMsgs, -1);
+    var ret3 = isIn(alertMsg2, "两次输入的密码不同");
 
     tapButton(window, "关 闭");
 

@@ -4544,7 +4544,7 @@ function test170319_1() {
     var keys = { "日期从" : getDay(-2), "款号" : "00000", "门店" : "常青店", "店员" : "000" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-    qr = getQR(window, getScrollView(), TITLE_SEQ, 19);
+    qr = getQR();
 
     var totalXj = qr.counts["小计"];
 
@@ -7252,7 +7252,7 @@ function test170437() {
     keys = { "款号" : "3035" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
 
     var sum1 = 0;
     var totalPageNo = qr.totalPageNo;
@@ -9894,7 +9894,7 @@ function test170682() {
     var keys = { "款号" : "3035", "门店" : "仓库店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
     var ck = qr.data[0]["库存"];
 
     tapMenu("销售订货", "新增订货+");

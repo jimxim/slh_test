@@ -370,7 +370,7 @@ function getTableViewCells1(view1, f, o) {
  */
 function getMenu_More() {
     var menu;
-    if (ipadVer >= 7.10) {
+    if (ipadVer >= "7.20") {
         menu = MORE;
     } else {
         switch (gMenu1) {
@@ -415,7 +415,9 @@ function tapSalesBillVerify_OK() {
  * @returns
  */
 function editExchangeScore(r, ret) {
-    tapButton(window, "核销");
+    if (isUndefined(ret)) {
+        ret = "yes";
+    }
     tapButton(getScrollView(-1, 0), ExchangeScore);
     var r;
     var g0 = new TField("兑换积分*", TF, 0, r);
@@ -437,7 +439,154 @@ function editExchangeScore(r, ret) {
 }
 function editExchangeScoreYes(r) {
     tapReturn();
+    delay(2);
 }
 function editExchangeScoreNo(r) {
     return;
+}
+
+/**
+ * 快速新增客户
+ * @param o
+ * @returns
+ */
+function editQuickAddCustomer(o, ret) {
+    if (isUndefined(ret)) {
+        ret = "no";
+    }
+    tapButton(window, "新增+");
+    var fields = editQuickAddCustomerFields(o);
+    setTFieldsValue(getPopView(window, -1), fields);
+    delay();
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    if (ret == "yes") {
+        editQuickAddCustomerYes(o);
+    }
+    if (ret == "no") {
+        editQuickAddCustomerNo(o);
+    }
+
+    return ret;
+}
+function editQuickAddCustomerYes(o) {
+    tapReturn();
+    delay();
+}
+function editQuickAddCustomerNo(o) {
+    return;
+}
+// 快速新增客户
+function editQuickAddCustomerFields(keys, show) {
+    return getTFields("editQuickAddCustomerField", keys, show);
+}
+function editQuickAddCustomerField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 0, "aaa");
+        break;
+    case "phone":
+    case "手机":
+        f = new TField("手机", TF, 1, "1234567890");
+        break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 2, "000", -1, 0);
+        if (show) {
+            f.value = "000,总经理";
+        }
+        break;
+    case "proprice":
+    case "适用价格":
+        f = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
+        if (show) {
+            f.type = TF;
+            f.index = 0;
+        }
+        break;
+    case "address":
+    case "地址":
+        f = new TField("地址", TF, 4, "杭衣");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+/**
+ * 快速新增货品
+ * @param o
+ * @returns
+ */
+function editQuickAddGoods(o, ret) {
+    if (isUndefined(ret)) {
+        ret = "no";
+    }
+    tapButton(window, "新增货品");
+    var fields = editQuickAddGoodsFields(o);
+    setTFieldsValue(getPopView(), fields);
+    delay();
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+
+    if (ret == "yes") {
+        editQuickAddGoodsYes(o);
+    }
+    if (ret == "no") {
+        editQuickAddGoodsNo(o);
+    }
+
+    return ret;
+}
+function editQuickAddGoodsYes(o) {
+    tapReturn();
+    delay();
+}
+function editQuickAddGoodsNo(o) {
+    return;
+}
+// 快速新增客户
+function editQuickAddGoodsFields(keys, show) {
+    return getTFields("editQuickAddGoodsField", keys, show);
+}
+function editQuickAddGoodsField(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF, 0, "aaa");
+        break;
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 1, "连衣裙");
+        break;
+    case "purchase-price":
+    case "进货价":
+        f = new TField("进货价", TF, 2, "100");
+        break;
+    case "retail":
+    case "零批价":
+        f = new TField("零批价", TF, 3, "200");
+        break;
+    case "pack":
+    case "打包价":
+        f = new TField("打包价", TF, 4, "180");
+        break;
+    case "customerPrice":
+    case "大客户价":
+        f = new TField("大客户价", TF, 5, "160");
+        break;
+    case "vip":
+    case "Vip价格":
+        f = new TField("Vip价格", TF, 6, "140");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
 }
