@@ -414,28 +414,32 @@ function tapSalesBillVerify_OK() {
  * @param r
  * @returns
  */
-function editExchangeScore(r, ret) {
+function editExchangeScore(r, r1, ret) {
+    if (isUndefined(r1)) {
+        r1 = r;
+    }
     if (isUndefined(ret)) {
         ret = "yes";
     }
     tapButton(getScrollView(-1, 0), ExchangeScore);
-    var r;
+    var r, r1;
     var g0 = new TField("兑换积分*", TF, 0, r);
-    var g1 = new TField("兑换金额*", TF, 1, r);
+    var g1 = new TField("兑换金额*", TF, 1, r1);
     var fields = [ g0, g1 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
 
-    tapNaviLeftButton();
+    tapSalesBillVerify_OK();
 
     if (ret == "yes") {
-        editExchangeScoreYes(r);
+        editExchangeScoreYes(r, r1);
     }
     if (ret == "no") {
-        editExchangeScoreNo(r);
+        editExchangeScoreNo(r, r1);
     }
 
-    return r;
+    logDebug(" r=" + r + ", r1=" + r1);
+    return r && r1;
 }
 function editExchangeScoreYes(r) {
     tapReturn();
@@ -459,7 +463,7 @@ function editQuickAddCustomer(o, ret) {
     setTFieldsValue(getPopView(window, -1), fields);
     delay();
     tapButton(getPop(), OK);
-    tapButton(getPop(), "关 闭");
+    tapButton(getPop(), CLOSE);
 
     if (ret == "yes") {
         editQuickAddCustomerYes(o);
@@ -531,7 +535,7 @@ function editQuickAddGoods(o, ret) {
     setTFieldsValue(getPopView(), fields);
     delay();
     tapButton(getPop(), OK);
-    tapButton(getPop(), "关 闭");
+    tapButton(getPop(), CLOSE);
 
     if (ret == "yes") {
         editQuickAddGoodsYes(o);
@@ -583,6 +587,50 @@ function editQuickAddGoodsField(key, show) {
     case "vip":
     case "Vip价格":
         f = new TField("Vip价格", TF, 6, "140");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+/**
+ * 快速新增物流商
+ * @param o
+ * @returns
+ */
+function editQuickAddExpress(o) {
+    tapStaticText(window, "代收");
+    tapButton(window, "新增");
+    var fields = editQuickAddExpressFields(o);
+    setTFieldsValue(getPopOrView(), fields);
+    delay();
+    tapButton(getPop(), OK);
+
+    return o;
+}
+// 快速新增物流商
+function editQuickAddExpressFields(keys, show) {
+    return getTFields("editQuickAddExpressField", keys, show);
+}
+function editQuickAddExpressField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 0, "华商物流");
+        break;
+    case "phone":
+    case "电话":
+        f = new TField("电话", TF, 1, "110");
+        break;
+    case "address":
+    case "地址":
+        f = new TField("地址", TF, 2, "江城路889");
+        break;
+    case "account":
+    case "账户":
+        f = new TField("账户", TF, 3, "200999");
         break;
     default:
         logWarn("未知key＝" + key);

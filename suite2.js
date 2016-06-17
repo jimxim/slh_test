@@ -38,15 +38,28 @@ function test000All() {
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");
 // run("【销售开单－开单】退货时明细备注框操作", "test170097");//
     
- run("", "test1");
+//    run("【销售开单－开单】二次挂单后点代收，通过代收方式付款", "test170174");// //
+//    run("【销售开单-开单】明细备注特殊字符检查", "test170536");// //$,
+//    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// //+备注
+//    run("【销售开单－开单】积分兑换", "test170186");//   
+//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单", "test170424");// 上次审核用例到这里
+//    run("销售订货价格刷新", "test170445");
+//    run("销售开单价格刷新+上次价/代收2", "test170491");
+//    run("销售订货价格刷新+上次价/代收2", "test170492");
+//    run("【开单  】同款不同价提醒", "test170539");//弹窗不稳定
+//    run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");//
+// run("", "test1");
 // run("", "test0");
 }
 function test1(){
-    tapMenu("销售开单", "开  单+");
-    var r1 = getTimestamp(6);
-    var r = "anewkh" + r1;
-    var json = { "名称" : r, "手机" : r1, "店员" : "000,", "适用价格" : "零批价", "地址" : r };
-    editQuickAddCustomer(json);
+    tapButton(window, "核销");
+
+    var score = getStaticTextValue(getScrollView(-1, 0), 1);
+    var a = score.split(": ");
+
+    r = -1 + getTimestamp(2);
+// var r1=1 + getTimestamp(2);
+    editExchangeScore(r);
 }
 function test0(){
 // debugElementTree(window);
@@ -54,6 +67,8 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+    var json = { "名称" : "华商1123444","电话":1123444,"地址":"2jj","账户":"79"};
+    editQuickAddExpress(json);
     
     tapMenu("销售开单", "开  单+");
     var r = getTimestamp(6);
@@ -67,6 +82,8 @@ function test0(){
     
     var json = { "物流商" : "tt","运单号":1123444,"备注":"2jj"};
     editSalesBillAgency2(json);
+    
+    var qr = getQRtable1(window, 8, -2);
 
 }
 function setSales001Params() {

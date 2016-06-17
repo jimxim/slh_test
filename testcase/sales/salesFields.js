@@ -1086,11 +1086,17 @@ function logisticsVerifyField(key, show) {
     case "店员":
         f = new TField("店员", TF_AC, 4, "000", -1, 0);
         break;
+    case "刷卡":
+        f = new TField("刷卡", TF_AC, 6, "000", -1, 0);
+        break;
     case "日期":
         f = new TField("日期", TF_DT, 8, getToday());
         break;
     case "备":
         f = new TField("备", TF, 9, "a");
+        break;
+    case "汇款":
+        f = new TField("汇款", TF_AC, 12, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
