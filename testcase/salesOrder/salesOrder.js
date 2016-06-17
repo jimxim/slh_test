@@ -2045,6 +2045,7 @@ function ts160073_74() {
     var cond = "getButton(window, ADDBILL).isVisible()";
     waitUntil(cond, 5);
 
+    //
     tapMenu("销售订货", "按批次查");
     query();
     alertMsgs = [];// 清空
@@ -2099,7 +2100,6 @@ function ts160073_74() {
     // 全部发货
     addBill160073(true);
 
-    // 
     tapMenu("销售订货", "按批次查");
     query();
     alertMsgs = [];// 清空

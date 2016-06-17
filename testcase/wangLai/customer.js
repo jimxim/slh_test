@@ -3603,6 +3603,7 @@ function ts110079() {
     var arr = [ "门店" ];
     return checkRightsField(false, getScrollView(), arr);
 }
+//
 function ts110081() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     var keys = { "客户" : "sjkh1" };
@@ -3627,7 +3628,37 @@ function ts110081() {
     ret = isAnd(ret, isEqual(b, counts["未结"]));
     return ret;
 }
+function ts110084() {
+    var keys = { "客户" : "xw001" };
+    tapMenu("往来管理", "客户查询");
+    var fields = queryCustomerFields(keys);
+    var ret = ts110084Field(fields);
+    
+    tapMenu2("客户账款");
+    tapMenu3("客户门店账");
+    fields = queryCustomerShopAccountFields(keys);
+    ret =isAnd(ret, ts110084Field(fields));
+    
+    tapMenu2("客户账款");
+    tapMenu3("客户总账");
+    fields = queryCustomerAccountFields(keys);
+    ret =isAnd(ret, ts110084Field(fields));
+    
+    tapMenu2("客户活跃度");
+    fields = queryCustomerActiveFields(keys);
+    ret =isAnd(ret, ts110084Field(fields));
 
+    return ret;
+}
+function ts110084Field(fields) {
+    var o = { "键盘" : "简体拼音", "拼音" : [ "xiao" ], "汉字" : [ "小" ] };
+    var ret = dropDownListCheck(fields["客户"].index, "小", "小王xw001", o);
+
+    setTFieldsValue(window, fields);
+    fields["客户"].value = "小王";
+    ret = isAnd(ret, checkShowFields(window, fields));
+    return ret;
+}
 function ts110085() {
     tapMenu("往来管理", "客户查询");
     var keys = { "上级客户" : "sjkh1" };// 上级客户1

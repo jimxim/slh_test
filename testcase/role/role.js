@@ -144,16 +144,16 @@ var hasRights;
 function checkLimitsToRights_YES() {
     hasRights = true;
     run("货品管理", "checkRightsGoods");
-    run("往来管理", "checkRightsCustomer");
-    run("采购入库", "checkRightsPurchase");
-    run("采购订货", "checkRightsPurchaseOrder");
-    run("门店调入", "checkRightsShopIn");
-    run("门店调出", "checkRightsShopOut");
-    run("销售订货", "checkRightsSalesOrder");
-    run("销售开单", "checkRightsSales");
-    run("盘点管理", "checkRightsCheck");
-    run("统计分析", "checkRightsStatisticAnalysis");
-    run("统计图表", "checkRightsStatisticPicture");
+    // run("往来管理", "checkRightsCustomer");
+    // run("采购入库", "checkRightsPurchase");
+    // run("采购订货", "checkRightsPurchaseOrder");
+    // run("门店调入", "checkRightsShopIn");
+    // run("门店调出", "checkRightsShopOut");
+    // run("销售订货", "checkRightsSalesOrder");
+    // run("销售开单", "checkRightsSales");
+    // run("盘点管理", "checkRightsCheck");
+    // run("统计分析", "checkRightsStatisticAnalysis");
+    // run("统计图表", "checkRightsStatisticPicture");
 }
 
 function checkLimitsToRights_NO() {
@@ -170,7 +170,19 @@ function checkLimitsToRights_NO() {
     run("统计分析", "checkRightsStatisticAnalysis");
     run("统计图表", "checkRightsStatisticPicture");
 }
-
+function checkRightsGoodsField(hasRights) {
+    delay(0.5);
+    var ret;
+    var text = getStaticTexts(getScrollView(-1));
+    var qr = getQR3(getScrollView(-1), "序号", "小计");
+    if (hasRights) {
+        ret = isAnd(qr.data[0]["单价"] != "", qr.data[0]["小计"] != "");
+    } else {
+        ret = isAnd(qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");// 这里单价小计标题显示，但是无内容
+    }
+    tapNaviLeftButton();
+    return ret;
+}
 function checkRightsGoods() {
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -178,17 +190,25 @@ function checkRightsGoods() {
     var f = queryGoodsStockFields([ "厂商" ]);
     var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
 
+    var keys = { "款号" : "role0617" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
     // 分单据类型判断
     tapFirstText();
-    tapFirstText(getScrollView(-1, 0), "批次", 6);
-    delay(0.5);
-    var text = getStaticTexts(getScrollView(-1));
-    var qr = getQR3(getScrollView(-1), "序号", "小计");
-    if (hasRights) {
-        ret = isAnd(ret, qr.data[0]["单价"] != "", qr.data[0]["小计"] != "");
-    } else {
-        ret = isAnd(ret, qr.data[0]["单价"] == "", qr.data[0]["小计"] == "");// 这里单价小计标题显示，但是无内容
-    }
+    var view = getScrollView(-1, 0);
+    // tapFirstText(, "批次", 6);
+    tapStaticTextIn(view, "调拨入库");
+    ret = ret && checkRightsGoodsField(hasRights);
+    tapStaticTextIn(view, "调拨出库");
+    ret = ret && checkRightsGoodsField(hasRights);
+    tapStaticTextIn(view, "采购进货");
+    ret = ret && checkRightsGoodsField(hasRights);
+    tapStaticTextIn(view, "销售出货");
+    ret = ret && checkRightsGoodsField(hasRights);
+    tapStaticTextIn(view, "盘点入库");
+    ret = ret && checkRightsGoodsField(hasRights);
+    tapStaticTextIn(view, "调整入库");
+    ret = ret && checkRightsGoodsField(hasRights);
     tapNaviClose();
 
     tapMenu2("款号库存");

@@ -987,25 +987,26 @@ function scrollPrevPageCheck2(dataView, firstTitle, lastTitle) {
 }
 
 /**
- * 下拉列表验证,有一个符合就返回true
+ * 下拉列表验证,有一个符合就返回true 已去除空格逗号等
  * @param index 静态文本下标
  * @param value 输入值
  * @param expected 希望显示的内容
  */
 function dropDownListCheck(index, value, expected, o) {
     var ret = false;
-    var f = new TField("款号", TF_AC, index, value, -1);
+    var f = new TField("", TF_AC, index, value, -1);
     var cells = getTableViewCells(window, f, o);
     if (cells.length > 0) {
         for (var i = 0; i < cells.length; i++) {
             var cell = cells[i];
-            var v = cell.name();
+            var v = cell.name().toString();
+            v = v.replace(/[\ |\;|\；|\,|\，]/g, "");
             if (isIn(v, expected)) {
                 ret = true;
                 break;
             }
         }
-        delay();
+        delay(0.5);
         tapKeyboardHide();
     } else {
         ret = isIn(getTextFieldValue(window, index), expected);
