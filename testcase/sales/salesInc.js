@@ -429,6 +429,10 @@ function editExchangeScore(r, r1, ret) {
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
 
+    var o1 = { "操作失败" : "确定" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay();
+
     tapSalesBillVerify_OK();
 
     if (ret == "yes") {
@@ -437,6 +441,7 @@ function editExchangeScore(r, r1, ret) {
     if (ret == "no") {
         editExchangeScoreNo(r, r1);
     }
+    delay();
 
     logDebug(" r=" + r + ", r1=" + r1);
     return r && r1;
