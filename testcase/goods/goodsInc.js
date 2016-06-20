@@ -1245,6 +1245,43 @@ function repealRecordsForCheck(day) {
     } while (qr.data.length > 0);
 }
 
+/**
+ * 重试
+ * @param fn1
+ * @param maxTries 最大尝试次数
+ * @param i 延迟时间
+ */
+function retry(fn1, maxTries, i) {
+    if (isUndefined(maxTries)) {
+        maxTries = 3;
+    }
+    if (isUndefined(i)) {
+        i = 0.5;
+    }
+
+    var tries = 0;
+    var exception = null;
+    while (tries < maxTries) {
+        try {
+            var f1 = fn1 + "('";
+            for (var j = 3; j < arguments.length; j++) {
+                var arg = arguments[j];
+                if (isDefined(arg)) {
+                    f1 += "," + arguments[j];
+                }
+            }
+            f1 += ")";
+
+            var f = eval(f1);
+            return;// 通过就跳出
+        } catch (e) {
+            tries++;
+            delay(i);
+        }
+    }
+    UIALogger.logIssue(f + ",失败因为异常＝" + e);
+}
+
 function editLogisticsVerify(o, idx) {
     if (isDefined(o["核销"])) {
         if (isUndefined(i)) {

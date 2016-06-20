@@ -65,7 +65,7 @@ function testCustomer002() {
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "ts110034");
     run("【往来管理-客户活跃度】未拿货天数", "ts110035");
-    // run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
+    run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
     run("【往来管理-新增厂商】新增厂商", "ts110038");
@@ -1262,7 +1262,9 @@ function test110022Verify1() {
     tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "核销" : [ 5 ], "现金" : 50 };
     editSalesBillNoColorSize(json);
-    delay();
+
+    tapMenu2("按批次查");
+    query();
     var qr = getQR();
     var batch = qr.data[0]["批次"];
 
@@ -1326,10 +1328,11 @@ function test110022Verify2() {
     tapMenu("销售开单", ADDBILL);
     json = { "客户" : "sjkh1", "核销" : [ 5 ], "现金" : -50 };
     editSalesBillNoColorSize(json);
-    delay();
+
+    tapMenu2("按批次查");
+    query();
     var qr = getQR();
     var batch = qr.data[0]["批次"];
-
     jo1 = getQR110022V1();
 
     tapFirstText();
@@ -3633,20 +3636,34 @@ function ts110084() {
     tapMenu("往来管理", "客户查询");
     var fields = queryCustomerFields(keys);
     var ret = ts110084Field(fields);
-    
+
     tapMenu2("客户账款");
     tapMenu3("客户门店账");
     fields = queryCustomerShopAccountFields(keys);
-    ret =isAnd(ret, ts110084Field(fields));
-    
+    ret = isAnd(ret, ts110084Field(fields));
+
     tapMenu2("客户账款");
     tapMenu3("客户总账");
     fields = queryCustomerAccountFields(keys);
-    ret =isAnd(ret, ts110084Field(fields));
-    
+    ret = isAnd(ret, ts110084Field(fields));
+
     tapMenu2("客户活跃度");
     fields = queryCustomerActiveFields(keys);
-    ret =isAnd(ret, ts110084Field(fields));
+    ret = isAnd(ret, ts110084Field(fields));
+
+    tapMenu2("积分查询");
+    fields = queryCustomerScoreFields(keys);
+    ret = isAnd(ret, ts110084Field(fields));
+
+    tapMenu2("getMenu_More");
+    tapMenu3("客户回访");
+    fields = queryCustomerBackFields(keys);
+    ret = isAnd(ret, ts110084Field(fields));
+
+    tapMenu("销售开单", ADDBILL);
+    fields = editSalesBillFields(keys);
+    ret = isAnd(ret, ts110084Field(fields));
+    tapReturn();
 
     return ret;
 }

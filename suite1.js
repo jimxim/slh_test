@@ -14,23 +14,20 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-
-    
-// run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");//colorSize no
-// run("测试用例", "ts100157For000");//
+// run("测试用例", "ts110084");//
  run("测试用例", "onlyTest");//
-// ts100028
 // onlyTest();
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
-// target.dragFromToForDuration({x:548.00, y:444.00}, {x:541.00, y:194.00},1);//
-// popover滑动无法触发？
-// window.tableViews()[0].scrollDown();
-// window.tableViews()[0].scrollUp();
+// target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
+//   target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00}, 0.5);
+// var view=getPop(getScrollView(),0);
+ 
+  
   return true;
 }
 

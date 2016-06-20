@@ -68,6 +68,7 @@ function testPurchase002() {
     run("【采购入库-新增入库】退货+不退款", "test120021");
     run("【采购入库-新增入库】检查核销", "test120022");
     run("【采购入库-新增入库】新增入库+不付款", "test120023");
+    run("【采购入库-新增入库】关闭参数'是否启用加工价'后价格检查", "test120065");
     run("【采购入库】新增入库单修改保存", "test120033");
     run("【采购入库】客户或供应商信息不允许修改", "ts120034");
     run("【采购入库-新增入库】新增入库和新增订货页面，厂商输入中文后，检查下拉列表", "test120035");
@@ -2555,7 +2556,7 @@ function test120065() {
     tapPrompt();
     var cond = "isInAlertMsgs('清理和刷新成功')";
     waitUntil(cond, 300);
-    tapMenu1("货品管理");// 随便点击一个菜单触发自动处理弹窗
+    tapMenu1("货品管理");// 随便点击一个菜单触发自动处理弹窗，否则有时会卡
 
     return ret;
 }
@@ -3209,6 +3210,25 @@ function ts120061() {
     var newObj = { "现金" : 0, "应付" : 0, "核销" : 3000, "代收/实收" : 0 };// 这里的代收是实收
     var exp = mixObject(oldObj, newObj);
     return isEqualObject(exp, actual);
+}
+// 店长权限设为默认店长权限. 店长或开单员登陆
+function ts120087() {
+    var arr = [ "单价" ];
+    var hasRights = false;
+
+    tapMenu("采购入库", "新增入库+");
+    var ret = checkRightsField(hasRights, getScrollView(), arr);
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
+    tapReturn();
+
+    tapMenu("销售开单", AddBILL);
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
+    tapReturn();
+
+    return ret;
 }
 
 /**
