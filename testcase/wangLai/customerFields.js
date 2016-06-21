@@ -409,6 +409,7 @@ function queryCustomerActiveField(key, show) {
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

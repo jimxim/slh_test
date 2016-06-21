@@ -155,6 +155,29 @@ function addRedeemPointsFields(points, money) {
     tapNaviLeftButton();
 }
 /**
+ * 获取开单界面明细界面每行第一个可输入TF的下标（一般为货品）
+ * @param idx
+ * @param tfNum 明细输入框个数
+ * @returns {Number}
+ */
+function getBillDetInputIndex(tfNum, idx) {
+    if (isUndefined(idx)) {
+        idx = -1;
+    }
+    if (isUndefined(tfNum)) {
+        tfNum = getSalesBillDetTfNum({});
+    }
+    var view = getScrollView(idx);
+    var text = getTextFields(view);
+    for (var i = 0; i < text.length; i = i + tfNum) {
+        if (getTextFieldValue(view, i) == "") {
+            logDebug("开单明细第一个输入下标 i=" + i);
+            break;
+        }
+    }
+    return i;
+}
+/**
  * 计算汇总值
  * @param cond
  */

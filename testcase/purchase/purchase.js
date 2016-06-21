@@ -3,6 +3,7 @@
 function testPurchase001() {
     run("【采购入库-按批次查】翻页_排序_汇总", "ts120001_1");
     run("【采购入库-按批次查】条件查询，清除按钮", "ts120001_2");
+    run("【采购入库-按批次查】订货号检查", "ts120096_97");
     run("【采购入库-按明细查】界面功能检查,翻页/排序/汇总", "test120047_1");
     run("【采购入库-按明细查】界面功能检查,查询/清除", "test120047_2");
     run("【采购入库-采购汇总】采购汇总->按金额汇总", "ts120007");
@@ -68,11 +69,13 @@ function testPurchase002() {
     run("【采购入库-新增入库】退货+不退款", "test120021");
     run("【采购入库-新增入库】检查核销", "test120022");
     run("【采购入库-新增入库】新增入库+不付款", "test120023");
-    run("【采购入库-新增入库】关闭参数'是否启用加工价'后价格检查", "test120065");
     run("【采购入库】新增入库单修改保存", "test120033");
+    run("【采购入库-新增入库、批量入库、按订货入库-加工货品】加工货品", "test120050");
+    run("【采购入库-新增入库】关闭参数'是否启用加工价'后价格检查", "test120065");
     run("【采购入库】客户或供应商信息不允许修改", "ts120034");
     run("【采购入库-新增入库】新增入库和新增订货页面，厂商输入中文后，检查下拉列表", "test120035");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
+    run("【采购入库-新增入库】采购入库内容支持从门店调入单里整单复制粘贴", "ts120091");
 
     run("【采购入库-批量入库】均色均码+批量入库", "test120024");
     run("【采购入库-按订货入库】按订货入库", "test120025");
@@ -2064,26 +2067,19 @@ function test120033() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu2("按批次查");
+    query();
     var qr = getQR();
     var a = qr.data[0]["总数"];
 
     tapFirstText();
-    var tfNum = getSalesBillDetTfNum({});
-    var f8 = new TField("货品", TF_AC, tfNum, "k300", -1, 0);
-    var f11 = new TField("数量", TF, tfNum + 3, "10");
-    var fields = [ f8, f11 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapReturn();
+    json = { "明细" : [ { "货品" : "4562", "数量" : "10" } ] }
+    editSalesBillNoColorSize(json);
 
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
     qr = getQR();
-    var ret = isEqual("10", sub(qr.data[0]["总数"], a));
-
-    return ret;
-
+    return sub(qr.data[0]["总数"], a) == 10;
 }
 
 function ts120034() {
@@ -2621,24 +2617,8 @@ function test120047_1() {
 
 function test120047_2() {
     tapMenu("采购入库", "按明细查");
-    var i;
-    var ret = false;
-    var f = new TField("款号", TF_AC, 0, "303", -1);
-    var cells = getTableViewCells(window, f);
-    if (cells.length > 0) {
-        for (i = 0; i < cells.length; i++) {
-            var cell = cells[i];
-            var v = cell.name();
-            if (isIn(v, "3035,jkk,")) {
-                ret = true;
-                break;
-            }
-            delay();
-            tapKeyboardHide();
-        }
-    } else {
-        ret = isIn(getTextFieldValue(window, 0), "3035,jkk,");
-    }
+    var f = purchaseQueryParticularField("款号");
+    var ret = dropDownListCheck(f.inedx, "303", "3035,jkk,");
 
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
         "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" }
@@ -2848,6 +2828,8 @@ function test120050Field(price) {
     tapFirstText();
     var qr2 = getQRDet();
     tapReturn();
+    qr1.data[0]["通知数"] = 0;
+    qr1.data[1]["通知数"] = 0;
     ret = isAnd(ret, isEqualDyadicArray(qr1.data, qr2.data));
 
     tapMenu2("批量入库+");
@@ -3231,6 +3213,273 @@ function ts120087() {
     return ret;
 }
 
+function ts120091() {
+    tapMenu("门店调入", "按批次查");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = shopInQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    var data1 = getQRDet().data;
+    tapButton(window, "整单复制");
+    delay();
+    tapReturn();// 防止未自动返回
+
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window, "整单粘贴");
+    var data2 = getQRDet().data;
+    tapReturn();
+    var ret = isEqualDyadicArray(data1, data2);
+    for (var i = 0; i < data2.length; i++) {
+        ret = isAnd(ret, isEqual("", data2[i]["单价"]), isEqual("0",
+                data2[i]["小计"]));
+    }
+    return ret;
+}
+function ts120092() {
+    var addDet = {};
+    switch (colorSize) {
+    case "no":
+        addDet = {
+            "按订货" : "yes",
+            "明细" : [ { "货品" : "3035", "数量" : 30 }, { "货品" : "4562", "数量" : 30 } ] };
+        break;
+    case "yes":
+        addDet = {
+            "按订货" : "yes",
+            "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] },
+                    { "货品" : "agc002", "数量" : [ 30 ] } ],
+            "goodsFieldIndex" : -2 };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+    var inDet = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+
+    var qo, o, ret = true;
+    qo = { "备注" : "是否允许修改已发货的订单" };
+    o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var jo = { "客户" : "xw" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    //
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();
+
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();// getScrollView(),"序号",16
+    editSalesBill(addDet, colorSize);// 新增货品
+    var ok = isInAlertMsgs("已作废的批次不能执行这个操作");
+    logDebug("选择一条已作废的订单，增加款号点保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 部分发货
+    tapMenu("销售订货", "新增订货+");
+    var jo = { "客户" : "xw" };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var json = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 5 ] };
+    editSalesBill(json, colorSize);
+    var cond = "getButton(window, ADDBILL).isVisible()";
+    waitUntil(cond, 5);
+
+    //
+    tapMenu("销售订货", "按批次查");
+    query();
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editPurInByOrderDet(inDet);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("订单预付款被核销");
+    logDebug("------选择一条部分发货，但预付款被核销了的订单 修改款号订货数量后保存 ok=" + ok);
+    ret = ret && ok;
+
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editSalesBill(addDet, colorSize);
+    ok = isInAlertMsgs("订单预付款被核销");
+    logDebug("------选择一条部分发货，但预付款被核销了的订单 增加款号后保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 部分入库单
+    addBill160073();
+
+    //
+    alertMsgs = [];// 清空
+    tapMenu("销售订货", "按批次查");
+    tapFirstText();
+    tapButton(getScrollView(), 0);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("已发货的明细不允许删除");
+    logDebug("------选择一条部分发货的款号，删除已发货的款号，保存 ok=" + ok);
+    ret = ret && ok;
+
+    //
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editPurInByOrderDet(inDet);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("保存成功");
+    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 部分入库单
+    addBill160073();
+    alertMsgs = [];// 清空
+    tapMenu("销售订货", "按批次查");
+    tapFirstText();
+    var inDet1 = { "入库明细" : [ { "数量" : 50 }, { "数量" : 50 } ] };
+    editPurInByOrderDet(inDet);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("保存成功");
+    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成比已发数大，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 全部发货
+    addBill160073(true);
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editSalesBill(addDet, colorSize);// 新增货品
+    ok = isInAlertMsgs("订单已全部发货");
+    logDebug("------选择一条全部发货的款号，增加款号，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    alertMsgs = [];// 清空
+    tapFirstText();
+    tapButton(getScrollView(), 0);// 删除款号
+    editSalesBillSave({});
+    ok = isInAlertMsgs("订单已全部发货");
+    logDebug("------选择一条全部发货的款号，删除款号，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 
+    alertMsgs = [];// 清空
+    tapFirstText();
+    var inDet1 = { "入库明细" : [ { "数量" : 5 }, { "数量" : 5 } ] };
+    editPurInByOrderDet(inDet);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("订单已全部发货");
+    logDebug("------选择一条全部发货的款号，订货数修改成比已发数小，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    // 
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editSalesBill(addDet, colorSize);// 新增货品
+    ok = isInAlertMsgs("订单已全部发货");
+    logDebug("------选择一条全部发货的款号，增加订货数，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    //
+    addBill160073();
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapFirstText();
+    runAndAlert("test130015EndBill", OK);// 终结订单
+    tapReturn();
+
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editSalesBill(addDet, colorSize);// 新增货品
+    ok = isInAlertMsgs("已结束的订单不允许修改");
+    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    alertMsgs = [];// 清空
+    tapFirstText();
+    editPurInByOrderDet(inDet);
+    editSalesBillSave({});
+    ok = isInAlertMsgs("已结束的订单不允许修改");
+    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
+    ret = ret && ok;
+
+    qo = { "备注" : "是否允许修改已发货的订单" };
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    return ret;
+}
+/**
+ * 店长开单员只能看到本门店的数据
+ */
+function ts120095() {
+    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
+    tapMenu("采购入库");
+
+    tapMenu2("按汇总");
+    tapMenu3("按款号汇总");
+    var fields = purchaseCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length == 0;
+
+    tapMenu2("按汇总");
+    tapMenu3("出入库汇总");
+    tapTitle(getScrollView(), "门店");
+    tapTitle(getScrollView(), "门店");
+    delay();
+    qr = getQR();// 这里getQR不稳定，title重复
+    ret = isAnd(ret, isEqual(qr.data[0]["门店"], "常青店"));
+
+    return ret;
+}
+function ts120096_97() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+
+    tapMenu("采购入库", "按批次查");
+    var keys = { "订货号" : batch };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret = isEqual(qr.data[0]["备注"], "预付款");
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    var qr = getQR();
+    var data1 = qr.data[0];
+
+    tapFirstText();
+    editSalesBillSave({});
+
+    tapMenu2("按批次查");
+    var keys = { "订货号" : batch };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+    var data2 = qr.data[0];
+    data2["批次"] = batch;
+    ret = isAnd(ret, isEqualObject2(data1, data2));
+    return ret;
+}
+
+function ts120108(){
+    
+}
 /**
  * 新增批量入库
  * @param o

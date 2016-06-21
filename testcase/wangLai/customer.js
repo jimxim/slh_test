@@ -25,6 +25,7 @@ function testCustomer001() {
 
 // 中洲店总经理准备数据
 function testCustomerPrepare001() {
+    run("开单模式2", "setPaymethod2");
     // 客户账款检查数据正确性
     run("上级客户1开单", "editBillForCustomerAccount1");
     run("下级客户1开单", "editBillForCustomerAccount2");
@@ -1680,8 +1681,7 @@ function ts110033() {
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();
-    ret = isAnd(ret, isEqual(0, qr.data.length), isEqual(0, qr.total), isEqual(
-            1, qr.totalPageNo));
+    ret = isAnd(ret, qr.data.length == 0, qr.total == 0, qr.totalPageNo == 1);
 
     return ret;
 }

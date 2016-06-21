@@ -19,7 +19,6 @@ function testShopIn001() {
         run("【门店调入-按款号汇总】查询_清除", "ts140023_24");
         run("【门店调入-按款号汇总】翻页_排序_汇总", "ts140025_26_27");
     }
-    run("【门店调入-按批次查-整单复制】", "ts140021");
 
 }
 
@@ -481,25 +480,6 @@ function ts140016_20() {
 function ts140018() {
     tapMenu("门店调入", "按明细查");
 
-}
-
-function ts140021() {
-    tapMenu("门店调入", "按批次查");
-    query();
-    tapFirstText();
-    var data1 = getQRDet().data;
-    tapButton(window, "整单复制");
-    delay();
-
-    tapMenu("采购入库", "新增入库+");
-    tapButton(window, "整单粘贴");
-    var data2 = getQRDet().data;
-    tapReturn();
-    var ret = isEqualDyadicArray(data1, data2);
-    for (var i = 0; i < data2.length; i++) {
-        ret = isAnd(ret, isEqual("", data[i]["单价"]), isEqual("", data[i]["小计"]));
-    }
-    return ret;
 }
 
 function ts140022() {
