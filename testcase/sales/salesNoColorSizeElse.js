@@ -74,17 +74,17 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单-核销】开启-允许跨门店核销时，显示其他门店的物流代收单", "test170574");
     run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");
     run("【销售开单-核销】开启跨门店核销核销不同门店的物流单", "test170687");
-    run("【销售开单-核销】开启-不允许跨门店核销时，不显示其他门店的物流代收单", "test170291");// (帐套存在跨门店核销数据，关闭参数失败)
     run("【销售开单-核销】不开启允许跨门店核销时，显示本门店的余款", "test170688");
     run("【销售开单-核销】修改物流商不能弹出价格刷新框", "test170689");
+    run("【销售开单-核销】开启-不允许跨门店核销时，不显示其他门店的物流代收单", "test170291");// (帐套存在跨门店核销数据，关闭参数失败)
     // run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");//
     // run("【销售开单+产品折扣+代收】销售开单+特殊货品+折扣值，通过代收方式开单打印，检查打印小票",
     // "test170383");//(用例已改)
 }
 function testSalesNoColorSizeElseAll() {
-    run("【销售开单－按批次查】是否未结", "test170005");/////
+    run("【销售开单－按批次查】是否未结", "test170005");// ///
     run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
-    run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");//上次审核用例到这里
+    run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");// 上次审核用例到这里
     run("【销售开单－按批次查】页面跳转检查", "test170013");
     run("【销售开单－按批次查】键盘检查", "test170014");
     run("【销售开单－按批次查】修改代收内容", "test170024");
@@ -426,7 +426,7 @@ function test170006() {
     var r = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "2" } ],
-         "onlytest" : "yes" };
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
@@ -452,7 +452,7 @@ function test170006() {
             isEqual("2", a6), isEqual("0", a7), isEqual("否", a8));
 
     tapFirstText();
-    
+
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -9001,7 +9001,6 @@ function test170633() {
     tapButton(window, QUERY);
     var qr = getQR();
     var sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
-    var qr = getQR();
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -10263,7 +10262,7 @@ function test170710() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "销售价不能为零");
+    ret = isAnd(ret, isIn(alertMsg, "销售价不能为零"));
 
     tapReturn();
 
@@ -10505,7 +10504,8 @@ function test170713() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret = isIn(alertMsg, "保存成功");
+    var ret2 = isIn(alertMsg, "保存成功");
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
