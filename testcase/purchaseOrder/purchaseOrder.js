@@ -441,6 +441,9 @@ function ts130004_2() {
     var det = addPOrderBillDet();
     tapMenu("采购订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-3), "款号" : det["明细"][0]["货品"], "门店" : "常青店" };
+    if (ipadVer >= 7.21) {
+        keys["类别"] = "登山服";
+    }
     var fields = purchaseOrderCodeFields(keys);
     query(fields);
     var qr = getQR();

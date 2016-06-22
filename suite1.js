@@ -14,28 +14,22 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "ts120096_97");//
-// run("测试用例", "onlyTesst");//
+// run("测试用例", "ts100095_96");//
+ run("测试用例", "onlyTest");//
 // onlyTest();
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 // var view=getPop(getScrollView(),0);
-    
-// var r = "g" + getTimestamp(5);
-// tapMenu("采购入库", "新增入库+");
-// var joG = { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300, "数量" : 20 };
-// var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
-// "现金" : 300, "刷卡" : [ 5000, "交" ], "汇款" : [ 700, "交" ] };
-// editSalesBillAddGoods(joG);
-// editSalesBillNoColorSize(json);
-// var i=getBillDetInputIndex();
+
+// tapButton(window, "新增配码+");
+// ts100095Field("X1", 10);
   return true;
 }
 

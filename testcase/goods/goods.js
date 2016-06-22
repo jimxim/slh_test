@@ -98,9 +98,9 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "门店库存是否允许跨门店查询" };
-    o = { "新值" : "1", "数值" : [ "默认门店可自由查询各自库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "门店库存是否允许跨门店查询" };
+    // o = { "新值" : "1", "数值" : [ "默认门店可自由查询各自库存" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
