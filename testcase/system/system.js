@@ -38,16 +38,13 @@ function testSystem001() {
     run("【系统设置-全局参数】异地发货参数互斥", "test210063");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
-
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
-
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置-更多】门店停用规则", "test210067");
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
-
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -60,8 +57,6 @@ function testSystem002() {
     run("【系统设置-全局参数】是否允许修改单据日期--限制修改销售单日期", "test210051_1");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_1");
-    // run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期",
-    // "test210052_2");(已合并入test210052_1)
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
     // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
@@ -2098,57 +2093,6 @@ function test210052_1() {
     logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
-}
-function test210052_2() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否允许修改单据日期" };
-    o = { "新值" : "2", "数值" : [ "限制修改所有单据日期", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    var keys = { "发货状态" : "未发货" };
-    var fields = salesBillOrderFields(keys);
-    query(fields);
-
-    tapFirstText();
-
-    var f10 = new TField("日期", TF_DT, 10, getDay(-1));
-    var fields = [ f10 ];
-    setTFieldsValue(window, fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret1 = isIn(alertMsg, "系统设定不允许修改开单日期");
-
-    tapReturn();
-
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("采购入库", "按订货入库");
-    query();
-    tapFirstText();
-
-    var f8 = new TField("日期", TF_DT, 8, getDay(-1));
-    var fields = [ f8 ];
-    setTFieldsValue(window, fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-
-    var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
 }
 function test210053() {
     var qo, o, ret = true;

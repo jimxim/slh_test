@@ -69,7 +69,6 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单－按明细查】差额检查", "test170039");
     run("【销售开单-按明细查】折扣后价格的核算模式 四舍五入取整", "test170438");
     run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442_170425");
-    run("【销售开单－按汇总-按款号汇总】异地发货模式查询", "test170523");
     run("【销售开单-按挂单】挂单允许销售价格为0，转正式单不允许销售价格为0", "test170710");
     run("【销售开单-核销】开启-允许跨门店核销时，显示其他门店的物流代收单", "test170574");
     run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");
@@ -140,33 +139,32 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1");
     run("【销售开单-按汇总-按厂商汇总】增加门店查询", "test170648");
     run("【销售开单－销售汇总-按客户销售】点击查询记录后页面检查", "test170331");
+    run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
+    run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
+    run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
     run("【销售开单-按汇总】按配货员汇总--在既退货又拿货的情况下检查配货员业绩", "test170634");
     run("【销售开单-按汇总】按配货员汇总--在预付款里检查配货员显示", "test170635");
     run("【销售开单-按汇总】按配货员汇总界面查看权限控制", "test170637");
     run("【销售开单-按汇总】按配货员汇总", "test170633");
-    run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
-    run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
-    run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
 }
 function testSalesNoColorSizeElseAll_2() {
-//    run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
-//    run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
-//    run("【销售开单-按批次查】代收之后新增款号", "test170520");
-//    run("【销售开单－代收收款】清除功能", "test170286");
-//    run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// 综合收支表界面需要修改取值
-//    run("【销售开单－代收收款】核销代收收款功能", "test170287");
-//    run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
-//    run("【销售开单－代收收款】店员下拉框检查", "test170289");
-//    run("【销售开单－代收收款】核销代收单", "test170290");
-//    run("【销售开单－物流单】代收单作废", "test170292");
-//    run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");
-//    run("【销售开单－代收收款】连续核销", "test170294_170609");
-//    run("【销售开单－更多-代收收款查询】进入代收收款内容明细/检查代收收款金额", "test170300_170410");
-//    run("【销售开单】按挂单--正常功能检查", "test170303");
-//    run("【销售开单】按挂单--挂单作废", "test170304");
-//    run("【销售开单】挂单界面打印时提示检查", "test170400");
-//    run("【销售开单】均色均码模式下，开单输入款号之后的款号框不能修改", "test170406");
-    //
+    run("【销售开单-按批次查】退货，需要排除本单的退货数再验证是否超出购买数", "test170454");
+    run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
+    run("【销售开单-按批次查】代收之后新增款号", "test170520");
+    run("【销售开单－代收收款】清除功能", "test170286");
+    run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// 综合收支表界面需要修改取值
+    run("【销售开单－代收收款】核销代收收款功能", "test170287");
+    run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
+    run("【销售开单－代收收款】店员下拉框检查", "test170289");
+    run("【销售开单－代收收款】核销代收单", "test170290");
+    run("【销售开单－物流单】代收单作废", "test170292");
+    run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");
+    run("【销售开单－代收收款】连续核销", "test170294_170609");
+    run("【销售开单－更多-代收收款查询】进入代收收款内容明细/检查代收收款金额", "test170300_170410");
+    run("【销售开单】按挂单--正常功能检查", "test170303");
+    run("【销售开单】按挂单--挂单作废", "test170304");
+    run("【销售开单】挂单界面打印时提示检查", "test170400");
+    run("【销售开单】均色均码模式下，开单输入款号之后的款号框不能修改", "test170406");
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单-核销】物流单核销-特殊货品", "test170569");
     run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
@@ -929,8 +927,8 @@ function test170023() {
             qr.data[0]["货款收讫"]), isEqual(getToday("yy"), qr.data[0]["日期"]));
 
     tapMenu("销售开单", LogisticsVerify);
-    var f0 = new TField("物流", TF, 0, "tt");
-    fields = [ f0 ];
+    keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     tapButton(window, "核销");
@@ -962,8 +960,8 @@ function test170023() {
             qr.data[0]["货款收讫"]), isEqual(getToday("yy"), qr.data[0]["日期"]));
 
     tapMenu("销售开单", LogisticsVerify);
-    var f0 = new TField("物流", TF, 0, "tt");
-    fields = [ f0 ];
+    keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     tapButton(window, "核销");
@@ -2712,8 +2710,8 @@ function test170285_2() {
 }
 function test170286() {
     tapMenu("销售开单", LogisticsVerify);
-    var f0 = new TField("物流", TF, 0, "tt");
-    var fields = [ f0 ];
+    keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     var ret = isAnd(isEqual("天天物流", getTextFieldValue(window, 0)), isEqual(
@@ -2967,8 +2965,8 @@ function test170290() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "tt");
-    var fields = [ f ];
+    var keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     json = { "核销" : [ 0 ] };
@@ -3123,8 +3121,8 @@ function test170293() {
     var money = json["代收"]["代收金额"];
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "ht");
-    var fields = [ f ];
+    keys = { "物流" : "ht" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     json = { "核销" : [ 0 ] };
@@ -5799,14 +5797,9 @@ function test170368() {
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
-    tapMenu("销售开单", "物流单");
-    var keys1 = { "运单号" : "123", "物流商" : "汇通快递" };
-    var fields1 = salesQueryLogisticsFields(keys1);
-    query(fields1);
-
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "ht");
-    var fields = [ f ];
+    var keys = { "物流" : "ht" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
 
@@ -6165,8 +6158,8 @@ function test170378() {
     var money = json["代收"]["代收金额"];
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF_AC, 0, "ht");
-    var fields = [ f ];
+    var keys = { "物流" : "ht" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
 
@@ -7835,72 +7828,6 @@ function test170520() {
 
     return ret;
 }
-function test170523() {
-    var qo, o, ret = true;
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "发货" : "仓库店" };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "常青店" }
-    var fields = queryGoodsCodeStockFields(keys);
-    query(fields);
-    var qr = getQR();
-
-    var kc = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
-
-    keys = { "款号" : "3035" };
-    var fields = queryGoodsCodeStockFields(keys);
-    query(fields);
-    qr = getQR();
-
-    // var sum1 = 0;
-    // var totalPageNo = qr.totalPageNo;
-    // for (var j = 1; j <= totalPageNo; j++) {
-    // for (var i = 0; i < qr.curPageTotal; i++) {
-    // sum1 += Number(qr.data[i]["在途数"]);
-    // }
-    // if (j < totalPageNo) {
-    // scrollNextPage();
-    // qr = getQR();
-    // }
-    // }
-
-    var kuc = add(qr.counts["库存"], qr.counts["在途数"]);
-
-    tapMenu("销售开单", "按汇总", "按款号汇总");
-    var keys = { "门店" : "常青店", "款号" : "3035" };
-    var fields = salesCodeFields(keys);
-    query(fields);
-    qr = getQR();
-
-    ret = isAnd(ret, isEqual(kc, qr.data[0]["库存"]), !isEqual(0,
-            qr.data[0]["库存"]));
-
-    var keys = { "款号" : "3035" }
-    var fields = salesCodeFields(keys);
-    query(fields);
-    qr = getQR();
-
-    var ret1 = isAnd(isEqual(kuc, qr.data[0]["库存"]), !isEqual(0,
-            qr.data[0]["库存"]));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
-}
 function test170554() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "sjkh1", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
@@ -8277,8 +8204,8 @@ function test170574() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "tt");
-    var fields = [ f ];
+    var keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
 
@@ -8878,18 +8805,11 @@ function test170612() {
     tapMenu("销售开单", "物流单");
     query();
 
-    tapFirstText();
-
     var r = getTimestamp(8);
-    var f6 = new TField("运单号", TF, 6, r);
-    var f10 = new TField("备注", TF, 10, "zz");
-    var fields = [ f6, f10 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
+    var keys = { "运单号" : r, "备注" : "zz" };
+    editLogisticsBillDe(keys);
 
     query();
-
     tapFirstText();
 
     var ret = isAnd(isEqual(r, getTextFieldValue(getScrollView(-1), 6)),
@@ -9862,21 +9782,21 @@ function test170688() {
     var qr = getQR();
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "tt");
-    var fields = [ f ];
+    var keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     var totalMoney = getTextFieldValue(window, 1);
 
     tapButton(window, "核销");
 
-    tapNaviButton("全 选");
+    tapNaviButton(ALL);
     var texts = getStaticTexts(app.navigationBar());
     var index = getArrayIndexIn(texts, ".");
     var money = getStaticTextValue(app.navigationBar(), index);
 
     if (isEqual(0, Number(money))) {
-        tapNaviButton("全 选");
+        tapNaviButton(NONE);
         for (var i = 0; i < 3; i++) {
             var texts = getStaticTexts(app.navigationBar());
             var index = getArrayIndexIn(texts, ".");
@@ -9902,21 +9822,21 @@ function test170689() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", LogisticsVerify);
-    var f = new TField("物流", TF, 0, "yt");
-    var fields = [ f ];
+    var keys = { "物流" : "yt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     var json = { "特殊货品" : { "抹零" : "8", "打包费" : "48" } };
     editSalesBillSpecial(json);
 
-    f = new TField("物流", TF, 0, "tt");
-    fields = [ f ];
+    keys = { "物流" : "tt" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     var ret = !isIn(alertMsg, "是否需要重新刷新明细价格等信息");
 
-    f = new TField("店员", TF_AC, 4, "000", -1, 0);
-    fields = [ f ];
+    keys = { "店员" : "000" };
+    var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
     var ret1 = !isIn(alertMsg, "是否需要重新刷新明细价格等信息");
@@ -10271,7 +10191,7 @@ function test170710() {
     saveAndAlertOk();
     tapPrompt();
 
-    ret = isAnd(ret, isIn(alertMsg, "销售价不能为零"));
+    ret = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[k300]价格是否维护"));
 
     tapReturn();
 
@@ -10318,7 +10238,7 @@ function test170710() {
     saveAndAlertOk();
     tapPrompt();
 
-    var ret3 = isIn(alertMsg, "销售价不能为零");
+    var ret3 = isIn(alertMsg, "销售价不能为零，请核对款号[3035]价格是否维护");
 
     tapReturn();
 

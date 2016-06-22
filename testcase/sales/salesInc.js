@@ -1,9 +1,7 @@
 //zhangY <2397655091 at qq.com> 20151229
 
-//    run("【销售开单－更多-代收收款查询】底部数据汇总检查", "testSalesPrepare003");
-
-//款号4562加上品牌Adidas
-//常青店000,店长：厂商敏感字段勾选
+// 款号4562加上品牌Adidas
+// 常青店000,店长：厂商敏感字段勾选
 function testSalesPrepare001() {
     tapMenu("销售开单", "开  单+");
     var json = {
@@ -106,6 +104,21 @@ function testSalesPrepare005() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : [ 50 ] } ] };
     editSalesBillColorSize(json);
 }
+function test170637Prepare() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "20", "数值" : [ "现金+刷卡+汇款+配货员", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = {
+        "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : "1" }, { "货品" : "3035", "数量" : "-1" } ],
+        "配货" : "004" };
+    editSalesBillNoColorSize(json);
+
+    return ret;
+}
 
 function test170064getQR() {
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10, 1);
@@ -171,6 +184,7 @@ function test170064Field1(title, type, order, pageInfoView, dataView,
 
 /**
  * 明细详细页面排序验证
+ * 
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -243,6 +257,7 @@ function compareQR3(title, type, order, dataView, firstTitle, lastTitle) {
 
 /**
  * 明细详细页面排序验证
+ * 
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -314,6 +329,7 @@ function compareQR4(title, type, order, dataView, firstTitle, lastTitle) {
 
 /**
  * approximately equals 近似等于,操作时间,格式 mm-dd hh:mm
+ * 
  * @param expected
  * @param actual
  * @param allow 允许偏差分钟数，默认1
@@ -344,6 +360,7 @@ function isAqualOptime1(expected, actual, allow) {
 
 /**
  * 获取弹出表格的行数组
+ * 
  * @param view1 TextField所在视图
  * @param f TF_AC的TField
  * @param o 输入中文 eg：o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] }
@@ -374,6 +391,7 @@ function getTableViewCells1(view1, f, o) {
 
 /**
  * 获取更多按钮 7.10之前版本不统一
+ * 
  * @returns
  */
 function getMenu_More() {
@@ -403,6 +421,7 @@ function getMenu_More() {
 
 /**
  * 点击销售开单－开单－核销界面确定按钮 7.10之前版本不统一
+ * 
  * @returns
  */
 function tapSalesBillVerify_OK() {
@@ -419,6 +438,7 @@ function tapSalesBillVerify_OK() {
 
 /**
  * 兑换积分
+ * 
  * @param r
  * @returns
  */
@@ -464,6 +484,7 @@ function editExchangeScoreNo(r) {
 
 /**
  * 快速新增客户
+ * 
  * @param o
  * @returns
  */
@@ -536,6 +557,7 @@ function editQuickAddCustomerField(key, show) {
 }
 /**
  * 快速新增货品
+ * 
  * @param o
  * @returns
  */
@@ -609,6 +631,7 @@ function editQuickAddGoodsField(key, show) {
 }
 /**
  * 快速新增物流商
+ * 
  * @param o
  * @returns
  */
@@ -644,6 +667,46 @@ function editQuickAddExpressField(key, show) {
     case "account":
     case "账户":
         f = new TField("账户", TF, 3, "200999");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+
+/**
+ * 编辑物流单明细信息
+ * 
+ * @param o
+ * @returns
+ */
+function editLogisticsBillDe(o) {
+    if (!isDefined(o)) {
+        return;
+    }
+    tapFirstText();
+    var fields = editLogisticsBillDetFields(o);
+    var view1 = getScrollView(-1);
+    setTFieldsValue(view1, fields);
+    saveAndAlertOk();
+
+    return o;
+}
+// 物流单明细界面
+function editLogisticsBillDetFields(keys, show) {
+    return getTFields("editLogisticsBillDetField", keys, show);
+}
+function editLogisticsBillDetField(key, show) {
+    var f;
+    switch (key) {
+    case "shipno":
+    case "运单号":
+        f = new TField("运单号", TF, 6, "12345678");
+        break;
+    case "tip":
+    case "备注":
+        f = new TField("备注", TF, 10, "天天");
         break;
     default:
         logWarn("未知key＝" + key);

@@ -83,7 +83,7 @@ function pictureCustomerField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "customer":
     case "客户":
@@ -135,7 +135,7 @@ function pictureCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店");// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -282,7 +282,7 @@ function pictureTrendField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -307,7 +307,7 @@ function pictureOutstandingField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -340,7 +340,7 @@ function pictureSingleField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -373,7 +373,7 @@ function pictureTypeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");
+        f = new TField("门店", TF, 2, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -406,7 +406,7 @@ function pictureBrandField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
