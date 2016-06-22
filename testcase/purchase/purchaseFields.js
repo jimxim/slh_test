@@ -88,16 +88,16 @@ function purchaseQueryParticularField(key, show) {
             f.value = "5880,kha,210元";
         }
         break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "aaa");
+        break;
     case "provider":
     case "厂商":
         f = new TField("厂商", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "aa";
         }
-        break;
-    case "name":
-    case "款号名称":
-        f = new TField("款号名称", TF, 1, "aaa");
         break;
     case "day1":
     case "日期从":
@@ -109,7 +109,7 @@ function purchaseQueryParticularField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 5, "仓库店");// TF_SC
+        f = new TField("门店", TF, 5, "仓库店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -201,7 +201,7 @@ function purchaseCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 7, "常青店");// TF_SC
+        f = new TField("门店", TF, 7, "常青店");// TF_SC
         break;
     case "type":
     case "类别":
@@ -577,7 +577,7 @@ function purchaseShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

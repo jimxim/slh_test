@@ -31,7 +31,7 @@ function queryGoodsStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -111,7 +111,7 @@ function queryGoodsCodeStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "仓库店");// TF_SC
+        f = new TField("门店", TF, 2, "仓库店");// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -173,6 +173,10 @@ function queryGoodsDistributionField(key, show) {
     case "是否停用":
         f = new TField("类别", TF_SC, 2, "否");
         break;
+    case "season":
+    case "季节":
+        f = new TField("季节", TF_SC, 3, "春季");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -202,6 +206,10 @@ function queryGoodsDistributionDetField(key, show) {
             f.value = "3035,jkk,200元,Adidas"
         }
         break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "jkk");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -227,7 +235,7 @@ function queryGoodsInOutField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "仓库店");// TF_SC
+        f = new TField("门店", TF, 0, "仓库店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -299,6 +307,10 @@ function queryGoodsFields(keys, show) {
 }
 
 function queryGoodsField(key, show) {
+    var i = 0;
+    if (ipadVer < 7.21) {
+        i = -1;
+    }
     var f;
     switch (key) {
     case "provider":
@@ -323,30 +335,34 @@ function queryGoodsField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF_SC, 4, "花色");
+        f = new TField("颜色", TF, 4, "花色");// TF_SC
+        break;
+    case "hasPicture":
+    case "是否有图":
+        f = new TField("是否有图", TF_SC, 5, "是");// TF_SC
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 5, "000", -1, 0);
+        f = new TField("经办人", TF_AC, 6 + i, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 6, "1010pp");
+        f = new TField("品牌", TF_AC, 7 + i, "1010pp");
         break;
     case "stop":
     case "是否停用":
-        f = new TField("是否停用", TF_SC, 7, "否");
+        f = new TField("是否停用", TF_SC, 8 + i, "否");
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 8, "登山服");
+        f = new TField("类别", TF_SC, 9 + i, "登山服");
         break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 9, "春季新");
+        f = new TField("季节", TF_SC, 10 + i, "春季");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -1131,7 +1147,7 @@ function goodsStockAdjustmentField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "batch1":
     case "批次从":

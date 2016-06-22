@@ -32,7 +32,7 @@ function purchaseOrderQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -80,7 +80,7 @@ function purchaseOrderQueryParticularField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -146,7 +146,7 @@ function purchaseOrderCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店");// TF_SC
         break;
     case "type":
     case "类别":
@@ -190,7 +190,7 @@ function purchaseOrderProviderField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -223,7 +223,7 @@ function purchaseOrderShopField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");//TF_SC
+        f = new TField("门店", TF, 2, "常青店");//TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

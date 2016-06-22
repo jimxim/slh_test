@@ -54,6 +54,7 @@ function testPurchase002() {
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "ts120060");
     run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");
     run("【采购入库-按批次查】切换厂商后检查核销", "test120083");
+    run("【采购入库-按批次查】反复修改同一张采购单后保存", "ts120108");
 
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
@@ -3476,9 +3477,47 @@ function ts120096_97() {
     ret = isAnd(ret, isEqualObject2(data1, data2));
     return ret;
 }
+function ts120106() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var det = addPOrderBillDet(3);
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
-function ts120108(){
-    
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    var json = { "入库明细" : [ { "数量" : 10 } ] };
+    editPurInByOrderDet(json);
+    editSalesBillSave({});
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    var qr = getDetQR();
+    tapReturn();
+
+    return isEqual(qr.data[0]["入库数"], -7);
+}
+// 多次重复保存不应该出错
+function ts120108() {
+    tapMenu("采购入库", "新增入库+");
+    var jo = { "客户" : "rt" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+
+    for (var i = 0; i < 3; i++) {
+        var r = getRandomNum(1, 100);
+        tapFirstText();
+        var json = { "入库明细" : [ { "数量" : r } ] };
+        editPurInByOrderDet(json);
+        editSalesBillSave({});
+    }
+
+    return !isInAlertMsgs("only run on the main thread");
 }
 /**
  * 新增批量入库

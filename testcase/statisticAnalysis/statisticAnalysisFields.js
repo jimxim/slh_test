@@ -26,6 +26,10 @@ function statisticAnalysisInOutField(key, show) {
     case "收支类别":
         f = new TField("收支类别", TF_SC, 2, "收入");
         break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 2, "常青店");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -62,7 +66,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -100,6 +104,12 @@ function statisticAnalysisProfitField(key, show) {
     case "品牌":
         f = new TField("品牌", TF_AC, 8 + idx, "1010pp");
         break;
+    case "上架从":
+        f = new TField("上架从", TF_DT, 9, getToday());
+        break;
+    case "上架到":
+        f = new TField("上架到", TF_DT, 10, getToday());
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -136,7 +146,7 @@ function statisticAnalysisSynthesisField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -244,7 +254,7 @@ function statisticAnalysisReturnField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -267,13 +277,6 @@ function statisticAnalysisGoodMarketFields(keys, show) {
 function statisticAnalysisGoodMarketField(key, show) {
     var f;
     switch (key) {
-    case "code":
-    case "款号":
-        f = new TField("款号", TF_AC, 2, "a", -1, 0);
-        if (show) {
-            f.value = "5880,kha,210元";
-        }
-        break;
     case "day1":
     case "日期从":
         f = new TField("日期从", TF_DT, 0, getToday());
@@ -282,13 +285,20 @@ function statisticAnalysisGoodMarketField(key, show) {
     case "到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
-    case "shop":
-    case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");//TF_SC
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 2, "a", -1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
         break;
     case "name":
     case "款号名称":
         f = new TField("款号名称", TF, 3, "aaa");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 4, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -328,7 +338,7 @@ function statisticAnalysisUnsalableField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");//TF_SC
+        f = new TField("门店", TF, 3, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -360,11 +370,11 @@ function statisticAnalysColorField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");
+        f = new TField("门店", TF, 4, "常青店");
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF, 5, "花色");//TF_SC
+        f = new TField("颜色", TF, 5, "花色");// TF_SC
         break;
     case "code":
     case "款号":
@@ -427,7 +437,7 @@ function statisticAnalysSizeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 4, "常青店");
+        f = new TField("门店", TF, 4, "常青店");
         break;
     case "size":
     case "尺码":
@@ -492,7 +502,7 @@ function statisticAnalysProviderField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");
+        f = new TField("门店", TF, 3, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -628,7 +638,7 @@ function statisticAnalysisInOutAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");
+        f = new TField("门店", TF, 3, "常青店");
         break;
     case "remark":
     case "备注":
