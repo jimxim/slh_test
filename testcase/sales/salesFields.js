@@ -626,7 +626,7 @@ function salesQueryCustomerField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店",TF_SC , 1, "常青店");//TF// TF_SC
+        f = new TField("门店", TF_SC, 1, "常青店");// TF// TF_SC
         break;
     case "sortord":
     case "对账单排序方式":
@@ -1077,26 +1077,33 @@ function logisticsVerifyFields(keys, show) {
 function logisticsVerifyField(key, show) {
     var f;
     switch (key) {
+    case "express":
     case "物流":
         f = new TField("物流", TF_AC, 0, "sf", -1, 0);
         break;
+    case "cash":
     case "现金":
         f = new TField("现金", TF, 2, "0");
         break;
+    case "staff":
     case "店员":
         f = new TField("店员", TF_AC, 4, "000", -1, 0);
         break;
+    case "card":
     case "刷卡":
-        f = new TField("刷卡", TF_AC, 6, "000", -1, 0);
+        f = new TField("刷卡", TF, 6, "000", -1, 0);
         break;
+    case "date":
     case "日期":
         f = new TField("日期", TF_DT, 8, getToday());
         break;
+    case "tip":
     case "备":
         f = new TField("备", TF, 9, "a");
         break;
+    case "remit":
     case "汇款":
-        f = new TField("汇款", TF_AC, 12, "000", -1, 0);
+        f = new TField("汇款", TF, 12, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -1133,7 +1140,7 @@ function salesCollectionField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 3, "常青店");//TF// TF_SC
+        f = new TField("门店", TF_SC, 3, "常青店");// TF// TF_SC
         break;
     case "day1":
     case "日期从":
