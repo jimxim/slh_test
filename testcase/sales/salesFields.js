@@ -330,6 +330,10 @@ function salesReturnField(key, show) {
     case "类型":
         f = new TField("类型", TF_SC, 4, "退货");
         break;
+    case "season":
+    case "季节":
+        f = new TField("季节", TF_SC, 5, "春季");
+        break;
     default:
         logWarn("未知key＝" + key);
     }
@@ -1006,7 +1010,7 @@ function salesCollectionRecordField(key, show) {
     return f;
 }
 
-// 物流商查询
+// 物流单
 function testSalesQueryLogisticsFields() {
     var keys = [ "customer", "day1", "day2", "logistics", "batch1", "batch2",
             "shop", "shipno", "receive", "invalid" ];
