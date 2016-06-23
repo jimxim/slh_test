@@ -1313,7 +1313,7 @@ function checkCopyAndPaste(menu2) {
     var o1 = { "确定复制吗" : OK };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay();
-    // 门店调出不会自动返回
+    // 门店调出不会自动返回,这里用tapReturn不稳定，容易跳过整单粘贴的步骤
     var btn = getButton(window, RETURN);
     if (isUIAButton(btn)) {
         tapButton(window, RETURN);
@@ -1325,7 +1325,7 @@ function checkCopyAndPaste(menu2) {
     editSalesBillSave({});
 
     tapMenu2("按批次查");
-    query();
+    tapButton(window, QUERY);
     tapFirstText();
     var v2 = editSalesBillGetValue({});
     var data2 = getQRDet().data;

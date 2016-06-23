@@ -112,7 +112,7 @@ function ts160049() {
     tapTitle(getScrollView(), "批次");
     tapTitle(getScrollView(), "批次");
     var qr = getQR();
-    var batch = Number(qr.data[0]["批次"]) + 1;//找常青店最大批次
+    var batch = Number(qr.data[0]["批次"]) + 1;// 找常青店最大批次
 
     tapMenu("销售订货", "新增订货+");
     var jo = { "客户" : "xw", "现金" : 1000, "刷卡" : [ 2000, "银" ],
@@ -742,8 +742,9 @@ function test160011() {
 function test160011_1() {
     return test160011Field("店长", "销售订货");
 }
+
 /**
- * 验证查看修改日志
+ * 验证查看修改日志 需要按批次查第一个单据为正常单据
  * @param staff 登陆角色
  * @param menu1
  * @returns
@@ -757,44 +758,44 @@ function test160011Field(staff, menu1) {
     tapFirstText();
     // 取首次订货人和首次订货时间
     tapMenu(menu1, "getMenu_More", "查看修改日志");
-    var texts = getStaticTexts(getPopOrView());
-    var index = getArrayIndexIn(texts, "首次订货人");
     // 采购订货没有首次订货人与首次订货时间
-    if (index >= 0) {
-        var date0 = getStaticTextValue(getPopOrView(), index + 1);
-        index = getArrayIndexIn(texts, "首次订货时间");
-        var date1 = getStaticTextValue(getPopOrView(), index + 1);
-    }
+    var jo1 = test160011Field_1();
     tapButton(getPop(), OK);
 
     // 保存修改
     saveAndAlertOk();
-    var opTime = getOpTime();
+    var opTime = getOpTime();//
     tapPrompt();
     delay();
     tapReturn();
 
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
     tapFirstText();
     tapMenu(menu1, "getMenu_More", "查看修改日志");
-    texts = getStaticTexts(getPopOrView());
-    index = getArrayIndexIn(texts, "首次订货人");
-    if (index >= 0) {
-        var newDate0 = getStaticTextValue(getPopOrView(), index + 1);
-        index = getArrayIndexIn(texts, "首次订货时间");
-        var newDate1 = getStaticTextValue(getPopOrView(), index + 1);
-    }
-    index = getArrayIndexIn(texts, "最后修改人");
-    var date2 = getStaticTextValue(getPopOrView(), index + 1);
-    index = getArrayIndexIn(texts, "最后修改时间");
-    var date3 = getStaticTextValue(getPopOrView(), index + 1);
+    var jo2 = test160011Field_1();
     tapButton(getPop(), OK);
     tapReturn();
 
-    var ret = isAnd(isEqual(staff, date2), isAqualOptime(opTime, date3));
-    if (isDefined(date0)) {
-        ret = isAnd(ret, isEqual(date0, newDate0), isEqual(date1, newDate1));
+    jo1["最后修改人"] = staff;
+    jo1["最后修改时间"] = opTime;
+    return isEqualObject(jo1, jo2);
+}
+// 获取查看修改日志整个界面的内容
+function test160011Field_1() {
+    var view = getPopView(window, -1);//
+    var texts = getStaticTexts(view);
+    var arr = {};
+    for (var i = 0; i < texts.length; i = i + 2) {
+        var t = texts[i];
+        v = t.value();
+        if (v) {
+            arr[v] = texts[i + 1].value();//
+        } else {
+            break;
+        }
     }
-    return ret;
+    return arr;
 }
 
 function test160012() {

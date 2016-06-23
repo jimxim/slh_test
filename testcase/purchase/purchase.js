@@ -77,6 +77,8 @@ function testPurchase002() {
     run("【采购入库-新增入库】新增入库和新增订货页面，厂商输入中文后，检查下拉列表", "test120035");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
     run("【采购入库-新增入库】采购入库内容支持从门店调入单里整单复制粘贴", "ts120091");
+    run("【采购订货-新增订货】整单复制和整单粘贴", "ts120100");// kh的16个款号
+    run("【采购入库-按批次查】查看修改日志（修改记录）", "ts120101");
 
     run("【采购入库-批量入库】均色均码+批量入库", "test120024");
     run("【采购入库-按订货入库】按订货入库", "test120025");
@@ -3477,6 +3479,24 @@ function ts120096_97() {
     ret = isAnd(ret, isEqualObject2(data1, data2));
     return ret;
 }
+
+function ts120100() {
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "rt" };
+    var det = editOverLengthBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    return checkCopyAndPaste("新增订货+");
+}
+
+function ts120101() {
+    return test160011Field("总经理", "采购入库");
+}
+function ts120102() {
+
+}
+
 function ts120106() {
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "rt", "采购订货" : "yes" };
