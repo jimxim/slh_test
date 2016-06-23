@@ -883,7 +883,6 @@ function test170050() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -895,9 +894,14 @@ function test170050() {
     query();
     tapFirstText();
 
-    var f7 = new TField("货品", TF_AC, 7, "3035", -1, 0);
-    var f10 = new TField("数量", TF, 10, "5");
-    var fields = [ f7, f10 ];
+    if (ipadVer >= "7.21") {
+        var f8 = new TField("货品", TF_AC, 8, "3035", -1, 0);
+        var f12 = new TField("数量", TF, 12, "5");
+    } else {
+        var f8 = new TField("货品", TF_AC, 7, "3035", -1, 0);
+        var f12 = new TField("数量", TF, 10, "5");
+    }
+    var fields = [ f8, f12 ];
     setTFieldsValue(getScrollView(-1), fields);
 
     var totalMoney1 = getTextFieldValue(window, 2);
@@ -907,7 +911,6 @@ function test170050() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -940,9 +943,14 @@ function test170051() {
     tapFirstText();
 
     var k1 = getTextFieldValue(window, 2);
-    var f8 = new TField("货品", TF_AC, 7, "3035", -1, 0);
-    var f11 = new TField("数量", TF, 10, "5");
-    var fields = [ f8, f11 ];
+    if (ipadVer >= "7.21") {
+        var f8 = new TField("货品", TF_AC, 8, "3035", -1, 0);
+        var f12 = new TField("数量", TF, 12, "5");
+    } else {
+        var f8 = new TField("货品", TF_AC, 7, "3035", -1, 0);
+        var f12 = new TField("数量", TF, 10, "5");
+    }
+    var fields = [ f8, f12 ];
     setTFieldsValue(getScrollView(-1), fields);
 
     var totalMoney = getTextFieldValue(window, 2);
@@ -953,7 +961,6 @@ function test170051() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -10787,7 +10794,8 @@ function test170555_170611() {
     query(qFields);
     tapFirstText();
 
-    ret = isAnd(ret, isEqual(1, getTextFieldValue(getScrollView(-1), 20)));
+    ret = isAnd(ret, isEqual(1, getTextFieldValue(getScrollView(-1), 21))
+            || isEqual(1, getTextFieldValue(getScrollView(-1), 20)));
 
     tapReturn();
 
@@ -10815,7 +10823,8 @@ function test170555_170611() {
     query(qFields);
     tapFirstText();
 
-    ret1 = isAnd(ret1, isEqual(1, getTextFieldValue(getScrollView(), 20)));
+    ret1 = isAnd(ret1, isEqual(1, getTextFieldValue(getScrollView(), 20))
+            || isEqual(1, getTextFieldValue(getScrollView(-1), 21)));
 
     tapReturn();
 
@@ -10883,7 +10892,8 @@ function test170556_170610() {
     query(qFields);
     tapFirstText();
 
-    ret = isAnd(ret, isEqual(0, getTextFieldValue(getScrollView(-1), 20)));
+    ret = isAnd(ret, isEqual(0, getTextFieldValue(getScrollView(-1), 20))
+            || isEqual(0, getTextFieldValue(getScrollView(-1), 21)));
 
     tapReturn();
 
@@ -10909,7 +10919,8 @@ function test170556_170610() {
     query(qFields);
     tapFirstText();
 
-    ret1 = isAnd(ret1, isEqual(0, getTextFieldValue(getScrollView(), 20)));
+    ret1 = isAnd(ret1, isEqual(0, getTextFieldValue(getScrollView(), 20))
+            || isEqual(0, getTextFieldValue(getScrollView(-1), 21)));
 
     tapReturn();
 
@@ -10946,7 +10957,8 @@ function test170556_170610() {
     query(qFields);
     tapFirstText();
 
-    ret2 = isAnd(ret2, isEqual(0, getTextFieldValue(getScrollView(), 20)));
+    ret2 = isAnd(ret2, isEqual(0, getTextFieldValue(getScrollView(), 20))
+            || isEqual(0, getTextFieldValue(getScrollView(-1), 21)));
 
     tapReturn();
 

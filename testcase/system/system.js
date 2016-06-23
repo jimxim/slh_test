@@ -800,7 +800,7 @@ function test210032() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret1 = isIn(alertMsg, "工号已存在，请选择另外一个");
+    var ret1 = isIn(alertMsg, "员工工号重复");
 
     var r = getTimestamp(4);
     f0 = new TField("工号", TF, 0, "y" + r);
@@ -867,7 +867,7 @@ function test210032() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
 
-    var ret4 = (isIn(alertMsg, "工号已存在，请选择另外一个"));
+    var ret4 = (isIn(alertMsg, "员工工号重复"));
 
     tapReturn();
 
