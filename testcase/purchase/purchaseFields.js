@@ -31,7 +31,6 @@ function purchaseQueryBatchField(key, show) {
     case "日期到":
         f = new TField("到", TF_DT, 2, "2015-9-15");
         break;
-
     case "batch1":
     case "批次从":
         f = new TField("批次从", TF, 3, "1");
@@ -46,7 +45,7 @@ function purchaseQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 6, "仓库店");// TF_SC
+        f = new TField("门店", TF, 6, "仓库店");// TF_SC
         break;
     case "staff":
     case "店员":

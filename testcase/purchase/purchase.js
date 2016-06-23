@@ -3222,7 +3222,7 @@ function ts120091() {
     tapFirstText();
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
-    delay();
+    delay(0.5);
     tapReturn();// 防止未自动返回
 
     tapMenu("采购入库", "新增入库+");

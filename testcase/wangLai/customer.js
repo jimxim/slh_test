@@ -141,6 +141,9 @@ function test110001() {
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
         "客户类别" : "VIP客户", "店员" : "000" };
+    if (ipadVer >= 7.21) {
+        keys["门店"] = "常青店";
+    }
     qFields = queryCustomerFields(keys);
     query(qFields);
     qr = getQR();

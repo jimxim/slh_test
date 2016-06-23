@@ -14,22 +14,20 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run("测试用例", "ts100095_96");//
- run("测试用例", "ts120106");//
+// run("测试用例", "ts130020Count");//
+ run("测试用例", "onlyTest");//
 // onlyTest();
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-// var view=getPop(getScrollView(),0);
 
-// tapButton(window, "新增配码+");
-// ts100095Field("X1", 10);
+
   return true;
 }
 

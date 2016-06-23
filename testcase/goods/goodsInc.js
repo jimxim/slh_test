@@ -155,7 +155,7 @@ function addRedeemPointsFields(points, money) {
     tapNaviLeftButton();
 }
 /**
- * 获取开单界面明细界面每行第一个可输入TF的下标（一般为货品）
+ * 获取开单界面明细界面第一个内容为空的货品textField下标
  * @param idx
  * @param tfNum 明细输入框个数
  * @returns {Number}

@@ -82,10 +82,8 @@ function ts130020Count() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var title = getDetSizheadTitle();
-    var f = new TField("入库数", TF, title["入库数"], "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    editSalesBillSave({});
+    json = { "入库明细" : [ { "数量" : 10 } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
     tapButton(window, QUERY);
