@@ -1986,10 +1986,9 @@ function test170268() {
     tapFirstText();
 
     var qr = getQRDet();
-    var ret = isAnd(isEqual(s, qr.data[0]["货品"]),
-            isEqual(50, qr.data[0]["数量"]), isEqual(s, qr.data[1]["货品"]),
-            isEqual(40, qr.data[1]["数量"]), isEqual(s, qr.data[2]["货品"]),
-            isEqual(50, qr.data[2]["数量"]));
+    var ret1 = isAnd(isIn(qr.data[0]["货品"], s), isEqual(50, qr.data[0]["数量"]),
+            isIn(qr.data[1]["货品"], s), isEqual(40, qr.data[1]["数量"]), isIn(
+                    qr.data[2]["货品"], s), isEqual(50, qr.data[2]["数量"]));
 
     saveAndAlertOk();
     tapPrompt();
@@ -2006,23 +2005,24 @@ function test170268() {
     query();
     var qr = getQR();
 
-    var ret1 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(140,
+    var ret2 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(140,
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
     qr = getQRDet();
-    var ret = isAnd(isEqual(s, qr.data[0]["货品"]),
-            isEqual(50, qr.data[0]["数量"]), isEqual(s, qr.data[1]["货品"]),
-            isEqual(40, qr.data[1]["数量"]), isEqual(s, qr.data[2]["货品"]),
-            isEqual(50, qr.data[2]["数量"]));
-    
+    var ret3 = isAnd(isIn(qr.data[0]["货品"], s), isEqual(50, qr.data[0]["数量"]),
+            isIn(qr.data[1]["货品"], s), isEqual(40, qr.data[1]["数量"]), isIn(
+                    qr.data[2]["货品"], s), isEqual(50, qr.data[2]["数量"]));
+
     tapReturn();
 
     qo = { "备注" : "发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170269() {
     // 设置全局参数 按订货开单是否按当前库存自动填写发货数 为 默认不填写 ,然后重新登录
@@ -2083,40 +2083,14 @@ function test170269() {
     query();
     tapFirstText();
 
-    if (ipadVer <= "7.21") {
-        var ret = isAnd(isIn(getTextFieldValue(getScrollView(-1), 0), s),
-                isEqual(60, getTextFieldValue(getScrollView(-1), 5)), isIn(
-                        getTextFieldValue(getScrollView(-1), 9), s), isEqual(
-                        40, getTextFieldValue(getScrollView(-1), 14)), isIn(
-                        getTextFieldValue(getScrollView(-1), 18), s), isEqual(
-                        50, getTextFieldValue(getScrollView(-1), 23)), isIn(
-                        getTextFieldValue(getScrollView(-1), 27), "3035"),
-                isEqual(7, getTextFieldValue(getScrollView(-1), 32)), isIn(
-                        getTextFieldValue(getScrollView(-1), 36), "k300"),
-                isEqual(6, getTextFieldValue(getScrollView(-1), 41)), isIn(
-                        getTextFieldValue(getScrollView(-1), 45), r), isEqual(
-                        5, getTextFieldValue(getScrollView(-1), 50)));
-    } else {
-        var ret = isAnd(isIn(getTextFieldValue(getScrollView(-1), 0), s),
-                isEqual(60, getTextFieldValue(getScrollView(-1), 6)), isIn(
-                        getTextFieldValue(getScrollView(-1), 10), s), isEqual(
-                        40, getTextFieldValue(getScrollView(-1), 16)), isIn(
-                        getTextFieldValue(getScrollView(-1), 20), s), isEqual(
-                        50, getTextFieldValue(getScrollView(-1), 26)), isIn(
-                        getTextFieldValue(getScrollView(-1), 30), "3035"),
-                isEqual(7, getTextFieldValue(getScrollView(-1), 36)), isIn(
-                        getTextFieldValue(getScrollView(-1), 40), "k300"),
-                isEqual(6, getTextFieldValue(getScrollView(-1), 46)), isIn(
-                        getTextFieldValue(getScrollView(-1), 50), r), isEqual(
-                        5, getTextFieldValue(getScrollView(-1), 56)));
-    }
-    
     var qr = getQRDet();
-    var ret = isAnd(isEqual(s, qr.data[0]["货品"]),
-            isEqual(60, qr.data[0]["数量"]), isEqual(s, qr.data[1]["货品"]),
-            isEqual(40, qr.data[1]["数量"]), isEqual(s, qr.data[2]["货品"]),
-            isEqual(50, qr.data[2]["数量"]), isEqual("3035", qr.data[3]["货品"]),
-            isEqual(7, qr.data[3]["数量"]));
+    var ret1 = isAnd(isIn(qr.data[0]["货品"], s), isEqual(60, qr.data[0]["数量"]),
+            isIn(qr.data[1]["货品"], s), isEqual(40, qr.data[1]["数量"]), isIn(
+                    qr.data[2]["货品"], s), isEqual(50, qr.data[2]["数量"]), isIn(
+                    qr.data[3]["货品"], "3035"), isEqual(7, qr.data[3]["数量"]),
+            isIn(qr.data[4]["货品"], "k300"), isEqual(6, qr.data[4]["数量"]), isIn(
+                    qr.data[5]["货品"], r), isEqual(5, qr.data[5]["数量"]), isIn(
+                    qr.data[6]["货品"], q), isEqual(10, qr.data[6]["数量"]));
 
     saveAndAlertOk();
     tapPrompt();
@@ -2126,52 +2100,32 @@ function test170269() {
     query();
     var qr = getQR();
 
-    ret = isAnd(ret, isEqual(178, qr.data[0]["订货数"]), isEqual(178,
+    var ret2 = isAnd(isEqual(178, qr.data[0]["订货数"]), isEqual(178,
             qr.data[0]["已发数"]), isEqual(0, qr.data[0]["差异数"]));
 
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
 
-    var ret1 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(178,
+    var ret2 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(178,
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
 
-    if (ipadVer <= "7.21") {
-        ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(-1), 0), s),
-                isEqual(60, getTextFieldValue(getScrollView(-1), 3)), isIn(
-                        getTextFieldValue(getScrollView(-1), 7), s), isEqual(
-                        40, getTextFieldValue(getScrollView(-1), 10)), isIn(
-                        getTextFieldValue(getScrollView(-1), 14), s), isEqual(
-                        50, getTextFieldValue(getScrollView(-1), 17)), isIn(
-                        getTextFieldValue(getScrollView(-1), 21), "3035"),
-                isEqual(7, getTextFieldValue(getScrollView(-1), 24)), isIn(
-                        getTextFieldValue(getScrollView(-1), 28), "k300"),
-                isEqual(6, getTextFieldValue(getScrollView(-1), 31)), isIn(
-                        getTextFieldValue(getScrollView(-1), 35), r), isEqual(
-                        5, getTextFieldValue(getScrollView(-1), 38)), isIn(
-                        getTextFieldValue(getScrollView(-1), 42), q), isEqual(
-                        10, getTextFieldValue(getScrollView(-1), 45)));
-    } else {
-        ret1 = isAnd(ret1, isIn(getTextFieldValue(getScrollView(-1), 0), s),
-                isEqual(60, getTextFieldValue(getScrollView(-1), 4)), isIn(
-                        getTextFieldValue(getScrollView(-1), 8), s), isEqual(
-                        40, getTextFieldValue(getScrollView(-1), 12)), isIn(
-                        getTextFieldValue(getScrollView(-1), 16), s), isEqual(
-                        50, getTextFieldValue(getScrollView(-1), 20)), isIn(
-                        getTextFieldValue(getScrollView(-1), 24), "3035"),
-                isEqual(7, getTextFieldValue(getScrollView(-1), 28)), isIn(
-                        getTextFieldValue(getScrollView(-1), 32), "k300"),
-                isEqual(6, getTextFieldValue(getScrollView(-1), 36)), isIn(
-                        getTextFieldValue(getScrollView(-1), 40), r), isEqual(
-                        5, getTextFieldValue(getScrollView(-1), 44)), isIn(
-                        getTextFieldValue(getScrollView(-1), 48), q), isEqual(
-                        10, getTextFieldValue(getScrollView(-1), 52)));
-    }
+    qr = getQRDet();
+    var ret3 = isAnd(isIn(qr.data[0]["货品"], s), isEqual(60, qr.data[0]["数量"]),
+            isIn(qr.data[1]["货品"], s), isEqual(40, qr.data[1]["数量"]), isIn(
+                    qr.data[2]["货品"], s), isEqual(50, qr.data[2]["数量"]), isIn(
+                    qr.data[3]["货品"], "3035"), isEqual(7, qr.data[3]["数量"]),
+            isIn(qr.data[4]["货品"], "k300"), isEqual(6, qr.data[4]["数量"]), isIn(
+                    qr.data[5]["货品"], r), isEqual(5, qr.data[5]["数量"]), isIn(
+                    qr.data[6]["货品"], q), isEqual(10, qr.data[6]["数量"]));
+
     tapReturn();
 
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170272() {
     var qo, o, ret = true;

@@ -27,15 +27,17 @@ function test000All() {
 // run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");//
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库", "test170121");//
 // run("【销售开单－按汇总-按款号汇总】异地发货模式查询", "test170523");
-// run("【销售开单－开单】刷卡按钮", "test170048");
-// run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
-// run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
+
 // run("【销售开单-按订货开单】开单允许折扣大于1+整单折扣+大于1的折扣", "test170274");
 // run("【销售开单－按明细查】差额检查", "test170039");
 // run("【销售开单+产品折扣+代收】销售开单-销售汇总-按店员汇总，检查代收", "test170379");
 // run("【销售开单+产品折扣+代收】收支流水界面检查代收款核销单", "test170380");
 // run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
- run("", "test0");
+
+// run("【销售开单－开单】核销（客户余款）", "test170054_2");
+// run("【销售开单－开单】核销（客户欠款）", "test170055");
+// run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
+ run("", "test170167");
 }
 function test0(){
 // debugElementTree(window);
@@ -48,11 +50,11 @@ function test0(){
 // var view = window.popover().scrollViews()[0];
 // var ret = isEqualDropDownList(arr, view);
 // return ret;
-    query();
-    tapFirstText();
-    var qr=getQRDet();
-    var code=qr.data[3]["单价"];
-    return code;
+// var json = { "明细" : [ { "货品" : "3035", "数量" : "5", "单价" : "-500" } ] };
+// editSalesBillDetNoColorSize(json);
+// var json = { "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
+// editSalesBillNoColorSize(json);
+   
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
