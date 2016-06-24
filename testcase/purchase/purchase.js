@@ -79,6 +79,7 @@ function testPurchase002() {
     run("【采购入库-新增入库】采购入库内容支持从门店调入单里整单复制粘贴", "ts120091");
     run("【采购订货-新增订货】整单复制和整单粘贴", "ts120100");// kh的16个款号
     run("【采购入库-按批次查】查看修改日志（修改记录）", "ts120101");
+    run("【采购入库-按批次查】查看修改日志（核销记录）", "ts120102");// 不稳定
 
     run("【采购入库-批量入库】均色均码+批量入库", "test120024");
     run("【采购入库-按订货入库】按订货入库", "test120025");
@@ -1857,13 +1858,11 @@ function test120028() {
     tapButton(window, RETURN);
 
     return isAnd(ret1, ret2);
-
 }
 
 function test120029() {
     tapMenu("采购入库", "厂商账款", "厂商总账");
-    var ret = test110043Check();
-    return ret;
+    return test110043Check();
 }
 
 function test120029_1() {
@@ -3215,6 +3214,24 @@ function ts120087() {
 
     return ret;
 }
+function ts120088() {
+    var qo, o, ok = true;
+    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    tapMenu("采购入库", "新增入库");
+    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    return ret;
+}
 
 function ts120091() {
     tapMenu("门店调入", "按批次查");
@@ -3239,12 +3256,23 @@ function ts120091() {
     return ret;
 }
 function ts120092() {
+    var jo1 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    var jo2 = { "入库明细" : [ { "数量" : 40 } ] };
+    ts120092Field(jo1, jo2);
+    var ret=isInAlertMsgs("保存成功");
+    
+    
+    
+
+    return ret;
+}
+
+function ts120092Field(jo1, jo2) {
     var addDet = {};
     switch (colorSize) {
     case "no":
-        addDet = {
-            "按订货" : "yes",
-            "明细" : [ { "货品" : "3035", "数量" : 30 }, { "货品" : "4562", "数量" : 30 } ] };
+        addDet = { "明细" : [ { "货品" : "3035", "数量" : 30 },
+                { "货品" : "4562", "数量" : 30 } ] };
         break;
     case "yes":
         addDet = {
@@ -3257,166 +3285,21 @@ function ts120092() {
         logWarn("未知colorSize＝" + colorSize);
         break;
     }
-    var inDet = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
 
-    var qo, o, ret = true;
-    qo = { "备注" : "是否允许修改已发货的订单" };
-    o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售订货", "新增订货+");
-    var jo = { "客户" : "xw" };
-    var det = addPOrderBillDet();
-    var json = mixObject(jo, det);
+    tapMenu("采购订货", "新增订货+");
+    var jo = { "客户" : "vell" };
+    var json = mixObject(jo, addDet);
     editSalesBill(json, colorSize);
 
-    //
-    tapMenu2("按批次查");
+    tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
-    tapReturn();
-
-    tapMenu2("按批次查");
-    tapButton(window, QUERY);
-    tapFirstText();// getScrollView(),"序号",16
-    editSalesBill(addDet, colorSize);// 新增货品
-    var ok = isInAlertMsgs("已作废的批次不能执行这个操作");
-    logDebug("选择一条已作废的订单，增加款号点保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 部分发货
-    tapMenu("销售订货", "新增订货+");
-    var jo = { "客户" : "xw" };
-    var json = mixObject(jo, det);
-    editSalesBill(json, colorSize);
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    var json = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 5 ] };
-    editSalesBill(json, colorSize);
-    var cond = "getButton(window, ADDBILL).isVisible()";
-    waitUntil(cond, 5);
-
-    //
-    tapMenu("销售订货", "按批次查");
-    query();
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editPurInByOrderDet(inDet);
+    editPurInByOrderDet(jo1);
     editSalesBillSave({});
-    ok = isInAlertMsgs("订单预付款被核销");
-    logDebug("------选择一条部分发货，但预付款被核销了的订单 修改款号订货数量后保存 ok=" + ok);
-    ret = ret && ok;
 
-    alertMsgs = [];// 清空
     tapFirstText();
-    editSalesBill(addDet, colorSize);
-    ok = isInAlertMsgs("订单预付款被核销");
-    logDebug("------选择一条部分发货，但预付款被核销了的订单 增加款号后保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 部分入库单
-    addBill160073();
-
-    //
-    alertMsgs = [];// 清空
-    tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    tapButton(getScrollView(), 0);
+    editPurInByOrderDet(jo2);
     editSalesBillSave({});
-    ok = isInAlertMsgs("已发货的明细不允许删除");
-    logDebug("------选择一条部分发货的款号，删除已发货的款号，保存 ok=" + ok);
-    ret = ret && ok;
-
-    //
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editPurInByOrderDet(inDet);
-    editSalesBillSave({});
-    ok = isInAlertMsgs("保存成功");
-    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 部分入库单
-    addBill160073();
-    alertMsgs = [];// 清空
-    tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    var inDet1 = { "入库明细" : [ { "数量" : 50 }, { "数量" : 50 } ] };
-    editPurInByOrderDet(inDet);
-    editSalesBillSave({});
-    ok = isInAlertMsgs("保存成功");
-    logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成比已发数大，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 全部发货
-    addBill160073(true);
-
-    tapMenu("销售订货", "按批次查");
-    query();
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editSalesBill(addDet, colorSize);// 新增货品
-    ok = isInAlertMsgs("订单已全部发货");
-    logDebug("------选择一条全部发货的款号，增加款号，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    alertMsgs = [];// 清空
-    tapFirstText();
-    tapButton(getScrollView(), 0);// 删除款号
-    editSalesBillSave({});
-    ok = isInAlertMsgs("订单已全部发货");
-    logDebug("------选择一条全部发货的款号，删除款号，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 
-    alertMsgs = [];// 清空
-    tapFirstText();
-    var inDet1 = { "入库明细" : [ { "数量" : 5 }, { "数量" : 5 } ] };
-    editPurInByOrderDet(inDet);
-    editSalesBillSave({});
-    ok = isInAlertMsgs("订单已全部发货");
-    logDebug("------选择一条全部发货的款号，订货数修改成比已发数小，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    // 
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editSalesBill(addDet, colorSize);// 新增货品
-    ok = isInAlertMsgs("订单已全部发货");
-    logDebug("------选择一条全部发货的款号，增加订货数，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    //
-    addBill160073();
-    tapMenu("销售订货", "按批次查");
-    query();
-    tapFirstText();
-    runAndAlert("test130015EndBill", OK);// 终结订单
-    tapReturn();
-
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editSalesBill(addDet, colorSize);// 新增货品
-    ok = isInAlertMsgs("已结束的订单不允许修改");
-    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    alertMsgs = [];// 清空
-    tapFirstText();
-    editPurInByOrderDet(inDet);
-    editSalesBillSave({});
-    ok = isInAlertMsgs("已结束的订单不允许修改");
-    logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
-    ret = ret && ok;
-
-    qo = { "备注" : "是否允许修改已发货的订单" };
-    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
 }
 /**
  * 店长开单员只能看到本门店的数据
@@ -3494,7 +3377,30 @@ function ts120101() {
     return test160011Field("总经理", "采购入库");
 }
 function ts120102() {
+    tapMenu("采购入库", "新增入库+");
+    var jo = { "客户" : "vell", "未付" : "yes" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
 
+    tapMenu2("新增入库+");
+    jo = { "客户" : "vell", "核销" : [ 4 ] };
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+    var opTime = json["操作日期"];// 核销时间
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var verifyBatch = qr.data[0]["批次"];
+
+    tapTextByFirstWithName("2", getScrollView());// 欠款单
+    tapMenu("采购入库", "getMenu_More", "查看修改日志");
+    var actual = test160011Field_1();
+    tapButton(getPop(), OK);
+    tapReturn();
+    var exp = { "核销时间" : opTime, "核销批次" : verifyBatch };
+    return isEqualObject(exp, actual);
 }
 
 function ts120106() {

@@ -72,7 +72,7 @@ function editCustomerFields(keys, show) {
 }
 function editCustomerField(key, show) {
     var sexIdx = 1;
-    if (ipadVer < 7.21) {
+    if (ipadVer < 7.20) {
         sexIdx = 0;
     }
     var f;
@@ -83,7 +83,7 @@ function editCustomerField(key, show) {
         break;
     case "sex":
     case "性别":
-        f = new TField("名称", BTN_SC, 0, "男");
+        f = new TField("性别", BTN_SC, 0, "男");
         if (show) {
             f.type = TF;
             f.index = 2;
@@ -91,7 +91,7 @@ function editCustomerField(key, show) {
         break;
     case "area":
     case "区域":
-        f = new TField("区域", BTN_AREA, 0, "黑龙江", 0 + sexIdx, "客户,东北");
+        f = new TField("区域", BTN_AREA, 0 + sexIdx, "黑龙江", 0, "客户,东北");
         if (show) {
             f.type = TF;
             f.index = 2 + sexIdx;

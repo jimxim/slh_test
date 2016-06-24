@@ -781,7 +781,9 @@ function test160011Field(staff, menu1) {
     jo1["最后修改时间"] = opTime;
     return isEqualObject(jo1, jo2);
 }
-// 获取查看修改日志整个界面的内容
+/**
+ * 获取查看修改日志整个界面的内容
+ */
 function test160011Field_1() {
     var view = getPopView(window, -1);//
     var texts = getStaticTexts(view);
@@ -795,6 +797,7 @@ function test160011Field_1() {
             break;
         }
     }
+    debugObject(arr, "修改日志arr=");
     return arr;
 }
 

@@ -10,13 +10,13 @@
 function test000All() {
 // colorSize = "yes";
     debug = true;
-// ipadVer = "7.01";// 7.01
+// ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "ts120101");//
+ run("测试用例", "ts120102");//
 // run("测试用例", "onlyTest");//
-// onlyTest();
+
 // checkLimitsToRights_NO();
 }
 
@@ -26,8 +26,10 @@ function onlyTest(){
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-  var arr=test160011Field_1();
-  debugObject(arr,"arr=");
+// target.tap({x:"325.0000137690875", y:"314.0000218119832"});
+    tapButton(window,QUERY);
+    var qr=getQR();
+    debugObject(qr.counts);
   return true;
 }
 

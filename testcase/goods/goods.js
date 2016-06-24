@@ -1142,7 +1142,6 @@ function test100010_100011_100013_1() {
     ret = ret && sortByTitle("品牌");
     ret = ret && sortByTitle("总库存", IS_NUM);
     ret = ret && sortByTitle("备注");
-    ret = ret && sortByTitle("商陆宝可见");
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("建档人");
 

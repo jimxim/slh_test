@@ -165,7 +165,6 @@ function test110001() {
 }
 
 function test110004() {
-
     tapMenu("货品管理", "基本设置", "价格名称");
     var qr = getQR();
     var arr = new Array();
@@ -176,62 +175,45 @@ function test110004() {
     }
 
     tapMenu("往来管理", "新增客户+");
+    var r = getTimestamp(6);
+    var name = "cus" + r;
+    var keys = { "名称" : name, "适用价格" : "零批价" };
+    var fields = editCustomerFields(keys);
+
     // 适用价格下拉框内容验证
-    tapButton(getScrollView(), 5);// 适用价格的选择按钮
+    tapButton(getScrollView(), fields["适用价格"].index);// 适用价格的选择按钮
     var view1 = window.popover().scrollViews()[0];
     var ret = isEqualDropDownList(arr, view1);
 
-    var r = "c" + getTimestamp(6);
-    var keys = { "名称" : r, "适用价格" : "打包价" };
-    var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-
-    delay();
     tapReturn();
 
-    tapMenu("往来管理", "客户查询");
-    keys = { "客户" : r };
+    tapMenu2("客户查询");
+    keys = { "客户" : name };
     var fields = queryCustomerFields(keys);
     query(fields);
 
     tapFirstText();
-    keys = [ "区域", "手机", "微信", "门店", "生日", "店员", "上级客户", "客户类别", "客户代码",
-            "允许退货", "适用价格", "传真号", "备注", "地址", "拿货折扣", "信用额度", "欠款报警" ];
+    keys = { "性别" : "男", "区域" : "黑龙江", "手机" : "p" + r, "微信" : "x123456",
+        "门店" : "常青店", "生日" : getToday(), "店员" : "000", "客户类别" : "打包客户",
+        "客户代码" : r, "允许退货" : "否", "适用价格" : "打包价", "传真号" : r, "备注" : "备注abc123",
+        "地址" : "地址" + r, "拿货折扣" : "0.678", "信用额度" : "2000", "欠款报警" : "3000" }
+    if (ipadVer < 7.21) {
+        keys["性别"] = undefined;
+    }
     fields = editCustomerFields(keys);
-    changeTFieldValue(fields["手机"], r);
-    changeTFieldValue(fields["门店"], "中洲店");
-    changeTFieldValue(fields["生日"], getToday());
-    changeTFieldValue(fields["客户类别"], "打包客户");
-    changeTFieldValue(fields["客户代码"], r);
-    changeTFieldValue(fields["允许退货"], "否");
-    changeTFieldValue(fields["拿货折扣"], "0.888");
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);
     // delay();
 
-    tapMenu("往来管理", "客户查询");
-    query();
+    tapMenu2("客户查询");
+    tapButton(window, QUERY);
     tapFirstText();
-    var ret = isEqual(r, getTextFieldValue(getScrollView(), 1))
-            && isEqual("黑龙江", getTextFieldValue(getScrollView(), 2))
-            && isEqual(r, getTextFieldValue(getScrollView(), 3))
-            && isEqual("x123456", getTextFieldValue(getScrollView(), 4))
-            && isEqual("中洲店", getTextFieldValue(getScrollView(), 5))
-            && isEqual(getToday(), getTextFieldValue(getScrollView(), 6))
-            && isEqual("000,总经理", getTextFieldValue(getScrollView(), 7))
-            && isEqual("Yvb", getTextFieldValue(getScrollView(), 8))
-            && isEqual("打包客户", getTextFieldValue(getScrollView(), 9))
-            && isEqual(r, getTextFieldValue(getScrollView(), 11))// 客户代码
-            && isEqual("否", getTextFieldValue(getScrollView(), 12))// 允许退货
-            && isEqual("零批价", getTextFieldValue(getScrollView(), 14))// 适用价格
-            && isEqual("55555", getTextFieldValue(getScrollView(), 15))
-            && isEqual("123", getTextFieldValue(getScrollView(), 16))
-            && isEqual("地址", getTextFieldValue(getScrollView(), 17))
-            && isEqual("0.888", getTextFieldValue(getScrollView(), 18))
-            && isEqual("10000", getTextFieldValue(getScrollView(), 20))// 信用额度
-            && isEqual("5000", getTextFieldValue(getScrollView(), 21));
-    tapButton(window, RETURN);
+    fields = editCustomerFields(keys, true);
+    fields["店员"].value = "000,总经理";
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
 
     return ret;
 
@@ -2063,7 +2045,7 @@ function ts110039() {
 
     tapMenu("货品管理", "新增货品+");
     var addIdx = getButtonIndex(getScrollView(), "增量");// 日期的增量按钮
-    tapButton(getScrollView(), addIdx + 5); // 厂商的新增+按钮
+    tapButtonScroll(getScrollView(), addIdx + 5); // 厂商的新增+按钮
     tapButton(getPopOrView(), "选 择");
     var ret = isEqualDropDownListByExp(p);
     tapButton(getPop(), CLOSE);
@@ -2952,6 +2934,7 @@ function test110045_110046() {
     tapButton(window, SAVE);
     delay();
 
+    tapButton(window, QUERY);
     tapFirstText();// getScrollView(), TITLE_SEQ, 9
     ret = isAnd(ret, checkShowFields(getScrollView(), fields));
 
@@ -2999,32 +2982,27 @@ function test110045_110046() {
 function test110047() {
     tapMenu("往来管理", "getMenu_More", "新增回访+");
     var r = "主题" + getTimestamp(6);
-    var keys = [ "客户", "经办人", "回访类型", "主题", "反馈及建议" ];
+    var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
+        "反馈及建议" : "反馈及建议abc123" };
     var fields = editCustomerBackFields(keys);
-    changeTFieldValue(fields["客户"], "xw");
-    changeTFieldValue(fields["主题"], r);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE);
     delay();
     // tapButton(window, RETURN);
 
-    // tapMenu("往来管理", "getMenu_More", "客户回访");
+    query();
     var qr = getQR(window, getScrollView(), "序号", 7);
     var expected = { "回访日期" : getToday("yy"), "名称" : "小王", "主题" : r,
-        "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议" };
-    var ret = isEqualQRData1Object(qr, expected);
+        "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议abc123" };
+    var ret = isEqualObject(expected, qr.data[0]);
 
     tapFirstText();
-    ret = isAnd(ret,
-            isEqual(getToday(), getTextFieldValue(getScrollView(), 0)),
-            isEqual("小王", getTextFieldValue(getScrollView(), 1)), isEqual(
-                    "000,总经理", getTextFieldValue(getScrollView(), 2)), isEqual(
-                    "售后回访", getTextFieldValue(getScrollView(), 3)), isEqual(r,
-                    getTextFieldValue(getScrollView(), 4)), isEqual("反馈及建议",
-                    getTextViewValue(getScrollView(), 0)));
-    tapButton(window, RETURN);
+    fields = editCustomerBackFields(keys, true);
+    fields["客户"].value = "小王";
+    fields["经办人"].value = "000,总经理";
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
     return ret;
-
 }
 
 function test110048() {
@@ -3082,16 +3060,18 @@ function test110049() {
     // tapButton(window, RETURN);
 
     // tapMenu("往来管理", "getMenu_More", "客户回访");
+    query();
     var qr = getQR();
     tapFirstText();
     keys = { "客户" : "zbs", "经办人" : "004", "回访类型" : "定期回访", "主题" : r + "a",
         "反馈及建议" : "反馈及建议a" };
     fields = editCustomerBackFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("保存修改");
+    tapButtonAndAlert("保存修改", OK);
     delay();
 
     // tapMenu("往来管理", "getMenu_More", "客户回访");
+    tapButton(window, QUERY);
     qr = getQR();
     var expected = { "回访日期" : getToday("yy"), "名称" : "赵本山", "主题" : r + "a",
         "回访类型" : "定期回访", "反馈及建议" : "反馈及建议a" };
@@ -3099,8 +3079,9 @@ function test110049() {
 
     // 删除
     tapFirstText();
-    tapButtonAndAlert("删 除");
+    tapButtonAndAlert("删 除", OK);
     delay();
+    tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, !isEqual(r + "a", qr.data[0]["主题"]));
 
