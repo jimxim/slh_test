@@ -588,7 +588,7 @@ function editQuickAddGoodsYes(o) {
 function editQuickAddGoodsNo(o) {
     return;
 }
-// 快速新增客户
+// 快速新增货品
 function editQuickAddGoodsFields(keys, show) {
     return getTFields("editQuickAddGoodsField", keys, show);
 }

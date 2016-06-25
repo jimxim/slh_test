@@ -37,7 +37,7 @@ function test000All() {
 // run("【销售开单－开单】核销（客户余款）", "test170054_2");
 // run("【销售开单－开单】核销（客户欠款）", "test170055");
 // run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");
- run("", "test170167");
+ run("", "test0");
 }
 function test0(){
 // debugElementTree(window);
@@ -52,8 +52,8 @@ function test0(){
 // return ret;
 // var json = { "明细" : [ { "货品" : "3035", "数量" : "5", "单价" : "-500" } ] };
 // editSalesBillDetNoColorSize(json);
-// var json = { "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
-// editSalesBillNoColorSize(json);
+ var json = { "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
+ editSalesBillNoColorSize(json);
    
 }
 function setSales001Params() {
