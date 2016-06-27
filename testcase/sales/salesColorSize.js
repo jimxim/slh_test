@@ -160,7 +160,7 @@ function setNoColorSize_2Params() {
     o = { "新值" : "0", "数值" : [ "默认不支持" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "默认显示零批价或打包价" };
+    qo = { "备注" : "默认显示价格类型" };
     o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

@@ -21,7 +21,7 @@ function editCheckAdd(o, colorSize) {
     editCheckAddSave(o);
 }
 /**
- * 均色均码明细
+ * 新增盘点单均色均码明细
  * @param o
  */
 function editCheckAddDetNoColorSize(o) {
