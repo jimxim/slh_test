@@ -76,6 +76,7 @@ function testPurchase002() {
     run("【采购入库】客户或供应商信息不允许修改", "ts120034");
     run("【采购入库-新增入库】新增入库和新增订货页面，厂商输入中文后，检查下拉列表", "test120035");
     run("【采购入库】厂商适用价格没选时，采购入库界面检查款号价格", "test120037");
+    run("【采购入库-新增入库】取上次价", "ts120088");
     run("【采购入库-新增入库】采购入库内容支持从门店调入单里整单复制粘贴", "ts120091");
     run("【采购订货-新增订货】整单复制和整单粘贴", "ts120100");// kh的16个款号
     run("【采购入库-按批次查】查看修改日志（修改记录）", "ts120101");
@@ -86,6 +87,7 @@ function testPurchase002() {
     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
     run("【采购入库-按订货入库】修改供应商名称", "test120028");// 5。58版本可测，之后的版本清除按钮灰化
+    run("【采购入库-按订货入库】全部发货状态不允许继续发货", "ts120092");
     run("【采购入库-厂商账款】厂商账款->厂商门店账", "test120030");
     run("【采购入库-厂商账款】厂商账款->厂商总账", "test120029");
 
@@ -2345,6 +2347,10 @@ function test120045() {
 }
 // 单据是否允许修改客户或厂商--不允许
 function ts120046() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+
     tapMenu("采购入库", "新增入库+");
     var det = addPOrderBillDet();
     editSalesBill(det, colorSize);
@@ -2372,6 +2378,10 @@ function ts120046() {
 }
 // 单据是否允许修改客户或厂商--不允许
 function ts120060() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+    
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "rt" };
     var det = addPOrderBillDet();
@@ -3220,16 +3230,46 @@ function ts120088() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ok = isAnd(ok, setGlobalParam(qo, o));
 
-    tapMenu("采购入库", "新增入库");
-    var jo = { "客户" : "rt", "采购订货" : "yes" };
-    var det = addPOrderBillDet();
+    var det = {}, det2 = {};
+    switch (colorSize) {
+    case "no":
+        det = { "明细" : [ { "货品" : "3035", "数量" : 30, "单价" : 110 } ] };
+        det2 = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+        break;
+    case "yes":
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ], "单价" : 110 } ],
+            "goodsFieldIndex" : -2 };
+        det2 = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ],
+            "goodsFieldIndex" : -2 };
+        break;
+    default:
+        logWarn("未知colorSize＝" + colorSize);
+        break;
+    }
+
+    tapMenu("采购入库", "新增入库+");
+    var jo = { "客户" : "rt" };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
+
+    tapMenu2("新增入库+");
+    json = mixObject(jo, det2);
+    editSalesBill(json, colorSize);
+    var ret = isEqual(110, json["明细值"].data[0]["单价"]);
+
+    // 采购订货不受上次价影响
+    tapMenu("采购订货", "新增订货+");
+    json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("新增订货+");
+    json = mixObject(jo, det2);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(100, json["明细值"].data[0]["单价"]));
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
     o = { "新值" : "0", "数值" : [ "默认不启用" ] };
     ok = isAnd(ok, setGlobalParam(qo, o));
-
     return ret;
 }
 
@@ -3256,17 +3296,50 @@ function ts120091() {
     return ret;
 }
 function ts120092() {
+    alertMsgExKeys = [ "确定返回", "确定操作", "保存成功", "确定入库", "确定作废" ];
+    // 1.选择部分发货的单子，输入超过订货数 /与订货数相同保存
     var jo1 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
     var jo2 = { "入库明细" : [ { "数量" : 40 } ] };
     ts120092Field(jo1, jo2);
-    var ret=isInAlertMsgs("保存成功");
-    
-    
-    
+    var ret = !hasAlerts();// 正常保存
+
+    // 2.选择部分发货的单子，一个款全部发货，另外一个款部分发货， 再输入发货数保存
+    jo1 = { "入库明细" : [ { "数量" : 10 } ] };
+    jo2 = { "入库明细" : [ { "数量" : 10 } ] };
+    ts120092Field(jo1, jo2);
+    ret = isAnd(ret, !hasAlerts());// 正常保存
+
+    // 3.选择全部发货的单子（已发数与订货数相等），输入数量点保存
+    jo1 = {};
+    jo2 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    ts120092Field(jo1, jo2);
+    ret = isAnd(ret, isInAlertMsgs("订单已全部入库或已终结"));
+    alertMsgs = [];
+
+    // 4.选择全部发货的单子（已发数大于订货数），输入数量点保存
+    jo1 = { "入库明细" : [ { "数量" : 40 }, { "数量" : 40 } ] };
+    jo2 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    ts120092Field(jo1, jo2);
+    ret = isAnd(ret, isInAlertMsgs("订单已全部入库或已终结"));
+    alertMsgs = [];
+
+    // 5.销售开单-按订货开单，全部发货，然后再去销售开单-按批次查作废该销售单
+    jo1 = {};
+    ts120092Field(jo1);
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    tapButtonAndAlert(REPEAL, OK);
+    tapReturn();
+    ret = isAnd(ret, !hasAlerts());// 作废成功
 
     return ret;
 }
-
+/**
+ * ts120092具体实现
+ * @param jo1 数据准备
+ * @param jo2 验证数据
+ */
 function ts120092Field(jo1, jo2) {
     var addDet = {};
     switch (colorSize) {
@@ -3294,12 +3367,17 @@ function ts120092Field(jo1, jo2) {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    editPurInByOrderDet(jo1);
+    editPurInByOrderDet(jo1);// 数据准备
     editSalesBillSave({});
 
-    tapFirstText();
-    editPurInByOrderDet(jo2);
-    editSalesBillSave({});
+    if (isDefined(jo2)) {
+        tapMenu2("按订货入库");
+        tapButton(window, QUERY);// 刷新界面
+        tapFirstText();
+        editPurInByOrderDet(jo2);
+        editSalesBillSave({});
+    }
+    delay();
 }
 /**
  * 店长开单员只能看到本门店的数据

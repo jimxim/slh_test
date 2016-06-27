@@ -478,6 +478,72 @@ function statisticAnalysSizeField(key, show) {
     }
     return f;
 }
+
+//品牌销售表
+function statisticAnalysBrandFields(keys, show) {
+    return getTFields("statisticAnalysBrandField", keys, show);
+}
+function statisticAnalysBrandField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_AC, 2, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 3, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+
+//类别销售表
+function statisticAnalysTypeFields(keys, show) {
+    return getTFields("statisticAnalysTypeField", keys, show);
+}
+function statisticAnalysTypeField(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 2, "v", -1, 0);
+        if (show) {
+            f.value = "Vell";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 3, "常青店");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
 // 厂商销售表
 function statisticAnalysProviderFields(keys, show) {
     return getTFields("statisticAnalysProviderField", keys, show);

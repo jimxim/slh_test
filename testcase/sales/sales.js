@@ -381,7 +381,7 @@ function setSPCParams(key1, key2) {
     o = { "新值" : key2, "数值" : [ value2, "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "默认显示零批价或打包价" };
+    qo = { "备注" : "默认显示价格类型" }; // 
     o = { "新值" : "2", "数值" : [ "默认打包价" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

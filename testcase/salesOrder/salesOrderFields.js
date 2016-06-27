@@ -440,6 +440,37 @@ function salesOrderCompanyField(key, show) {
     }
     return f;
 }
+// 订货对账单
+function salesOrderBillFields(keys, show) {
+    return getTFields("salesOrderBillField", keys, show);
+}
+function salesOrderBillField(key, show) {
+    var f;
+    switch (key) {
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "xw", -1, 0);
+        if (show) {
+            f.value = "小王";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 1, "常青店");// TF_AC
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 2, getToday());
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 3, getToday());
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 
 // 按缺货查
 function salesOrderQueryByStockoutFields(keys, show) {

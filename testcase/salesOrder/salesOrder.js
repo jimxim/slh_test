@@ -27,6 +27,7 @@ function testSalesOrder001() {
     run("【销售订货—订货汇总】按门店-条件查询，清除按钮", "test160046");
     run("【销售订货-按厂商报单】查询_清除", "test160070");
     run("【销售订货-按厂商报单】翻页_排序", "test160101");
+    run("【销售订货-订货对帐单】清除", "ts160095");
     run("【销售订货—按缺货查】翻页_排序_汇总", "test16_Stockout_1");
     // run("【销售订货—按缺货查】查询_清除", "test16_Stockout_2");
 }
@@ -384,6 +385,10 @@ function test160064() {
 }
 // 单据是否允许修改客户或厂商 不允许
 function test160068_160069() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
     editSalesBillNoColorSize(json);
@@ -841,25 +846,6 @@ function test160012() {
     return ret;
 
 }
-// 刷新图像已经删除
-// function test160013() {
-// tapMenu("销售订货", "按批次查");
-// query();
-// tapFirstText();
-// test160013Field();
-// tapPrompt();
-// var cond = "isIn(alertMsg, '刷新成功')";
-// waitUntil(cond, 300);
-// var ret = isIn(alertMsg, "刷新成功");
-// tapReturn();
-//
-// return ret;
-//
-// }
-
-// function test160013Field() {
-// tapMenu("销售订货", "getMenu_More", "刷新图像");
-// }
 
 function test160023_160024() {
     tapMenu("销售订货", "按明细查");
@@ -1033,6 +1019,20 @@ function test160021() {
 
     return ret;
 
+}
+function ts160095() {
+    tapMenu("销售订货", "订货对账单");
+    var keys = { "客户" : "xw", "门店" : "常青店", "日期从" : getDay(-7),
+        "到" : getDay(-3) };
+    var fields = salesOrderBillFields(keys);
+    query(fields, "yes");
+
+    var ret = isEqual("", getTextFieldValue(window, 0))
+            && isEqual("", getTextFieldValue(window, 1))
+            && isEqual(getToday(), getTextFieldValue(window, 2))
+            && isEqual(getToday(), getTextFieldValue(window, 3));
+
+    return ret;
 }
 function test160096() {
     var ret = test160096Field();

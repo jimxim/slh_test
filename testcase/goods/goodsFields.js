@@ -1215,6 +1215,27 @@ function getColorSort(type) {
     }
     return f;
 }
+function getGoodSort(type) {
+    var f;
+    switch (type) {
+    case "agc001":
+        f = "01";
+        break;
+    case "agc002":
+        f = "02";
+        break;
+    case "agc004":
+        f = "03";
+        break;
+    case "agc003":
+        f = "04";
+        break;
+    default:
+        logWarn("未知款号＝" + type);
+        f = "99";
+    }
+    return f;
+}
 function getSizeSort(type) {
     var f;
     switch (type) {

@@ -4,9 +4,9 @@
  * 常青店总经理验证
  */
 function testShopIn001() {
-    run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
-    run("【门店调出-按批次查】调入已作废单", "ts150002_1");// 6.59前版本适用
     run("【门店调入】数据验证", "ts140001");// 需要shopInPrepare的批次号
+    run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
+    // run("【门店调出-按批次查】调入已作废单", "ts150002_1");// 6.59前版本适用
     run("【门店调出-在途调拨】门店调拨-在途调拨，默认日期检查", "ts140006");
     run("【门店调入-在途调拨】全部清除", "ts140010");
     run("【门店调入-在途调拨】返回", "ts140011");
@@ -106,10 +106,7 @@ function ts150008() {
 
 // 常青店登入，验证ts150007开的单子的明细备注并验证ts150013的相关内容
 function ts150013() {
-    logDebug(" outBatch['ts150007']=" + outBatch['ts150007']);
     tapMenu("门店调入", "在途调拨");
-    var keys = { "批次从" : outBatch["ts150007"], "批次到" : outBatch["ts150007"] };
-    var fields = shopInFlitFields(keys);
     query();
 
     tapFirstText();
@@ -139,12 +136,11 @@ function ts150013() {
 
 function ts140001() {
     tapMenu("门店调出", "按批次查");
-    var keys = { "调出门店" : "中洲店", "批次从" : outBatch["inPre"],
-        "批次到" : outBatch["inPre"] };
+    var keys = { "调出门店" : "中洲店" };
     var fields = shopOutQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-    var exp = qr.data[0];
+    var outExp = qr.data[0];
     tapFirstText();
     var expData = getQRDet().data;
     tapButton(window, RETURN);
@@ -161,7 +157,7 @@ function ts140001() {
     var ret = false;
     if (qr.data.length > 0) {
         // 与门店调出对比
-        ret = isEqualObject2(qr.data[0], exp);
+        ret = isEqualObject2(qr.data[0], outExp);
         tapFirstText();
         var sIndata = getQRDet().data;
         tapButton(window, RETURN);
@@ -169,8 +165,7 @@ function ts140001() {
 
         // 验证未调入单的批次应该不显示
         tapMenu2("按批次查");
-        keys = { "调出门店" : "中洲店", "调出批次从" : outBatch["inPre"],
-            "调出批次到" : outBatch["inPre"] };
+        keys = { "调出门店" : "中洲店", "调出批次从" : outExp["批次"], "调出批次到" : outExp["批次"] };
         fields = shopInQueryBatchFields(keys);
         query(fields);
         qr = getQR();
@@ -223,12 +218,11 @@ function ts140001() {
 
         tapMenu2("按批次查");
         keys = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次从" : inBatch,
-            "批次到" : inBatch, "调出批次从" : outBatch["inPre"],
-            "调出批次到" : outBatch["inPre"] };
+            "批次到" : inBatch, "调出批次从" : outExp["批次"], "调出批次到" : outExp["批次"] };
         fields = shopInQueryBatchFields(keys);
         query(fields);
         qr = getQR();
-        exp = { "批次" : inBatch, "调出批次" : outBatch["inPre"], "调出门店" : "中洲店",
+        var exp = { "批次" : inBatch, "调出批次" : outExp["批次"], "调出门店" : "中洲店",
             "调入门店" : "常青店", "送货人" : "总经理200", "数量" : 40, "金额" : 6400,
             "操作人" : "总经理", "备注" : "InPre" };
         tapFirstText();
@@ -303,7 +297,7 @@ function ts140001() {
         exp = { "常青店" : 15, "中洲店" : 0 };
         ret = isAnd(ret, isEqualObject(exp, subObject(date1, date)));
     } else {
-        logDebug("未找到批次为" + outBatch["inPre"] + "的调拨单");
+        logDebug("未找到批次为" + outExp["批次"] + "的调拨单");
     }
 
     return ret;

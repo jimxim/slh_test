@@ -118,12 +118,17 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "默认显示零批价或打包价" };
+    qo = { "备注" : "默认显示价格类型" };
     o = { "新值" : "1", "数值" : [ "默认零批价" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否检查折扣" };
     o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 120088涉及
+    qo = { "备注" : "开单是否显示上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
@@ -3981,8 +3986,10 @@ function ts100125() {
     query(fields);
     var qr = getQR();
     var arr = [];
+    // 款号排列按照创建顺序
     for (var i = 0; i < qr.data.length; i++) {
-        arr[i] = qr.data[i]["款号"] + getShopSort(qr.data[i]["仓库/门店"])
+        arr[i] = getGoodSort(qr.data[i]["款号"])
+                + getShopSort(qr.data[i]["仓库/门店"])
                 + getColorSort(qr.data[i]["颜色"])
                 + getSizeSort(qr.data[i]["尺码"]);
     }

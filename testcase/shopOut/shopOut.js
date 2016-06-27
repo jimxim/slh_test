@@ -19,8 +19,7 @@ function testShopOut001() {
         UIALogger.logFail("修改参数失败");
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
-    run(" 门店调入数据准备", "shopInPrepare");
-    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
+
     if (ipadVer >= 7.01) {
         run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
         run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
@@ -28,11 +27,13 @@ function testShopOut001() {
     }
     run("【门店调出-批量调出】整单复制和整单粘贴", "ts150024");
     run("【门店调出-批量调出】删除所有款号明细", "ts150031");
-    run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
+    run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
+    run(" 门店调入数据准备", "shopInPrepare");
+    // run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
 }
 
 function testShopOut003() {
-    run("【门店调出-批量调出】取未保存", "ts150025");
+    // run("【门店调出-批量调出】取未保存", "ts150025");
 }
 
 function setShopOutParams() {
@@ -436,10 +437,10 @@ function ts150007() {
     }
     editShopOutSave({});
 
-    tapMenu2("按批次查");
-    query();
-    var qr = getQR();
-    outBatch["ts150007"] = qr.data[0]["批次"];
+    // tapMenu2("按批次查");
+    // query();
+    // var qr = getQR();
+    //    outBatch["ts150007"] = qr.data[0]["批次"];
 
     return ret;
 }
@@ -601,7 +602,7 @@ function ts150019_20_21() {
     return ret;
 }
 
-//常青店总经理以外的角色登陆验证,需要有按款号汇总的权限
+// 常青店总经理以外的角色登陆验证,需要有按款号汇总的权限
 function ts150022() {
     tapMenu("门店调出", "按款号汇总");
     var keys = { "调出门店" : "常青店", "日期从" : getDay(-365) };
@@ -694,7 +695,16 @@ function ts150025() {
     }
 }
 
+function ts150027() {
+    if (colorSize == "yes") {
+        var qo = { "备注" : "是否需要颜色尺码" };
+        var o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+        var ok = setGlobalParam(qo, o);
 
+    } else {
+        return true;
+    }
+}
 
 function ts150031() {
     tapMenu("门店调出", "批量调出+");
@@ -742,11 +752,6 @@ function shopInPrepare() {
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
 
-    tapMenu2("按批次查");
-    query();
-    var qr = getQR();
-    outBatch["inPre"] = qr.data[0]["批次"];
-    logDebug("outBatch['inPre']=" + outBatch["inPre"]);
     return true;
 }
 

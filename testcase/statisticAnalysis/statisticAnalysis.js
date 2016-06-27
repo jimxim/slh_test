@@ -40,6 +40,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—收支类别】返回", "test190029");
     run("【统计分析—收支流水】帐户余额允许为负", "test190090");
     run("【统计分析-收支流水】销售开单/采购入库 退货并退款", "test190104");
+    run("【统计分析-收支流水】备注", "ts190138");// 部分做在13，17，25中
 
     run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
     run("【统计分析—汇总表-退货表】权限检查", "test190096For000");
@@ -53,12 +54,19 @@ function testStatisticAnalysis001() {
     run("【统计分析—汇总表-滞销表】翻页排序汇总", "test190079_190099");
     run("【统计分析—汇总表-滞销表】权限检查", "test190103For000");
 
+    run("【汇总表-颜色销售表】查询条件、下拉列表", "test190113");
+    run("【汇总表-颜色销售表】翻页，排序，底部数据汇总", "test190114");
+    run("【汇总表-尺码销售表】翻页，排序，底部数据汇总", "test190118");
+    run("【汇总表-品牌销售表】翻页，排序，底部数据汇总", "test190122");
+    run("【汇总表-类别销售表】翻页，排序，底部数据汇总", "test190126");
+    run("【汇总表-厂商销售表】翻页，排序，底部数据汇总", "test190130");
+
     run("【统计分析—利润表】查询清除", "test190087_190101");
     run("【统计分析—利润表】检查加工类商品的利润值", "test190089");
     run("【统计分析—利润表】翻页排序", "test190088");// 利润额不作排序
     run("【统计分析—利润表】底部数据检查", "test190086");
     run("【统计分析—利润表】查看详细", "test190083");
-    run("【统计分析—利润表】详细页面排序翻页", "test190042");// 放到zy那跑
+    run("【统计分析—利润表】详细页面排序翻页", "test190042");
     run("【统计分析—利润表】详细页面-特殊货品", "test190043");
     run("【统计分析—利润表】查看明细-按单利润表", "test190084");// 3种成本核算
     run("【统计分析—利润表】按单利润表排序翻页", "test190102");
@@ -220,7 +228,7 @@ function test190013() {
     query();
     qr = getQR();
     expected = { "批次" : batch, "类型" : "收入单", "账户" : "东灵测试-现金账户", "金额" : rm,
-        "操作人" : "总经理" };
+        "操作人" : "总经理", "备注" : "" };
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
     return ret;
@@ -369,7 +377,7 @@ function test190017() {
     query();
     qr = getQR();
     expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户",
-        "金额" : -123.45, "操作人" : "总经理" };
+        "金额" : -123.45, "操作人" : "总经理", "备注" : "" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     return ret;
@@ -957,7 +965,7 @@ function test190025_1() {
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "15" } ] };
     editSalesBillNoColorSize(json);
     var expected = { "类型" : "销售单", "账户" : "东灵测试-现金账户", "金额" : "3000",
-        "操作人" : "总经理" };
+        "操作人" : "总经理", "备注" : "单位[小王]" };
     var exp = { "销数" : 15, "销额" : 3000, "实销数" : 15, "实销额" : 3000, "现金" : 3000 };
     var jo1 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("现", "收入", "销售单");
@@ -968,7 +976,7 @@ function test190025_1() {
     tapMenu("销售订货", "新增订货+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
-    expected = { "类型" : "销售单", "金额" : "4000", "操作人" : "总经理" };
+    expected = { "类型" : "销售单", "金额" : "4000", "操作人" : "总经理", "备注" : "单位[小王]" };
     ret = isAnd(ret, test190025Field1(expected));
 
     logDebug("------销售订货按订货开单------");
@@ -999,7 +1007,7 @@ function test190025_2() {
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
     var expected = { "类型" : "采购单", "账户" : "东灵测试-现金账户", "金额" : "-2000",
-        "操作人" : "总经理" };
+        "操作人" : "总经理", "备注" : "单位[Rt]" };
     var exp = { "进数" : 20 };
     var jo1 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("现", "支出", "采购单");
@@ -1036,7 +1044,8 @@ function test190025_3() {
     addRedeemPoints("xw", 1000, 1000);
     var jo2 = getStatisticAnalysisSynthesis();
     var n2 = getSACountsQR("现", "支出", "积分兑换");
-    var expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理" };
+    var expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理",
+        "备注" : "单位[小王]" };
     ret = isAnd(ret, test190025Field1(expected), isEqualObject(jo1, jo2),
             isEqual(1000, n2 - n1));
 
@@ -1054,7 +1063,7 @@ function test190025_3() {
     var n2 = getSACountsQR("代", "收入", "销售单");
     var exp = { "销数" : 8, "销额" : 1600, "实销数" : 8, "实销额" : 1600, "代收" : 1600,
         "代收收款" : 1600 };
-    expected = { "类型" : "代收收款", "金额" : 1600, "操作人" : "总经理" };
+    expected = { "类型" : "代收收款", "金额" : 1600, "操作人" : "总经理", "备注" : "单位[小王]" };
     ret = isAnd(ret, test190025Field1(expected), isEqual(1600, n2 - n1),
             isEqualObject(exp, subObject(jo1, jo2)));
     return ret;
@@ -1816,6 +1825,12 @@ function test190046Field() {
     return ret;
 }
 
+function ts190109() {
+    tapMenu("统计分析", "综合汇总");
+    var n1 = getSACountsQR();
+
+}
+
 function test190068_190070() {
     tapMenu("统计分析", "汇总表", "退货表");
     var keys = { "日期从" : getDay(-30), "款号" : "3035", "款号名称" : "jkk",
@@ -2505,6 +2520,205 @@ function test190102() {
 
     tapNaviLeftButton();
     tapNaviLeftButton();
+
+    return ret;
+}
+
+// 店长登陆
+function test190112() {
+    tapMenu("统计分析", "汇总表", "颜色销售表");
+    var ret = test190112Field("statisticAnalysColorField");
+
+    tapMenu("统计分析", "汇总表", "尺码销售表");
+    ret = isAnd(ret, test190112Field("statisticAnalysSizeField"));
+
+    tapMenu("统计分析", "汇总表", "品牌销售表");
+    ret = isAnd(ret, test190112Field("statisticAnalysBrandField"));
+
+    tapMenu("统计分析", "汇总表", "类别销售表");
+    ret = isAnd(ret, test190112Field("statisticAnalysTypeField"));
+
+    tapMenu("统计分析", "汇总表", "厂商销售表");
+    ret = isAnd(ret, test190112Field("statisticAnalysProviderField"));
+    return ret;
+}
+
+function test190112Field(fn) {
+    var keys = { "日期从" : getDay(-365), "门店" : "常青店" };
+    var fields = getTFields(fn, keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+
+    keys = { "门店" : "中洲店" };
+    fields = getTFields(fn, keys);
+    query(fields, "yes");
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+    return ret;
+}
+
+function test190113() {
+    tapMenu("统计分析", "汇总表", "颜色销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysColorFields(keys);
+    query(fields);
+
+}
+
+function test190114() {
+    tapMenu("统计分析", "汇总表", "颜色销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysColorFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("销售数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+
+    var arr = [ "销售数", "退货数", "实销数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+function test190115() {
+
+}
+function test190118() {
+    tapMenu("统计分析", "汇总表", "尺码销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysSizeFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("销售数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+
+    var arr = [ "销售数", "退货数", "实销数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+
+function test190122() {
+    tapMenu("统计分析", "汇总表", "品牌销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysBrandFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("销售数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+
+    var arr = [ "销售数", "退货数", "实销数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+
+function test190126() {
+    tapMenu("统计分析", "汇总表", "类别销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysTypeFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("类别");
+    ret = ret && sortByTitle("销售数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+
+    var arr = [ "销售数", "退货数", "实销数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+
+function test190126() {
+    tapMenu("统计分析", "汇总表", "厂商销售表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysTypeFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("销售数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+
+    var arr = [ "销售数", "退货数", "实销数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+
+function test190134() {
+    tapMenu("统计分析", "汇总表", "款号利润表");
+    var keys = { "日期从" : getDay(-30) };
+    var fields = statisticAnalysisCodeProfitFields(keys);
+    query(fields);
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("日期", IS_DATE2);
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("款号");
+    ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("颜色");
+    ret = ret && sortByTitle("尺码");
+    ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("上架日期", IS_DATE2);
+    ret = ret && sortByTitle("销售价", IS_NUM);
+    ret = ret && sortByTitle("销售均价", IS_NUM);
+    ret = ret && sortByTitle("实销数", IS_NUM);
+    ret = ret && sortByTitle("销售额", IS_NUM);
+    ret = ret && sortByTitle("成本价", IS_NUM);
+    ret = ret && sortByTitle("成本额", IS_NUM);
+    ret = ret && sortByTitle("利润", IS_NUM);
+
+    var arr = [ "实销数", "销售额", "成本额" , "利润"];
+    ret = isAnd(ret, isEqualCounts(arr));
+
+    return ret;
+}
+
+function ts190138() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "1", "数值" : [ "允许" ] };
+    var ok = setGlobalParam(qo, o);
+
+    // 无客户单据
+    tapMenu("销售开单", ADDBILL);
+    var det = addPOrderBillDet();
+    editSalesBill(det, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapFirstText();
+    var jo = { "客户" : "xw" };
+    editSalesBill(jo, colorSize);
+
+    tapMenu("统计分析", "收支流水");
+    query();
+    var qr = getQR();
+    var ret = isEqual("单位[小王]", qr.data[0]["备注"]);
+
+    tapMenu("销售开单", "按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();
+    jo = { "客户" : "zbs" };
+    editSalesBill(jo, colorSize);
+
+    tapMenu("统计分析", "收支流水");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual("单位[赵本山]", qr.data[0]["备注"]));
 
     return ret;
 }
