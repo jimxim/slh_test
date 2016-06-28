@@ -273,7 +273,7 @@ function purchaseOrderAddField(key, show) {
         break;
     case "remarks":
     case "备注":
-        f = new TField("刷卡", TF, cardTFindex + 2, "0");
+        f = new TField("刷卡", TV, 0, "0");//TF
         break;
     case "day":
     case "日期":

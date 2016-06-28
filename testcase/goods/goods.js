@@ -1652,6 +1652,7 @@ function ts100102_100103() {
     ok = isAnd(ok, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "货品查询");
+    tapButton(window, QUERY);
     tapFirstText();
     tapButtonAndAlert(EDIT_SAVE, OK);
     tapReturn();
@@ -2510,7 +2511,14 @@ function ts100157For000() {
 function ts100157For004() {
     return ts100157Field("004");
 }
-function ts100157Field(staff) {
+// 数据原因放到zy那跑，
+function ts100157For000_2() {
+    return ts100157Field("000", true);
+}
+function ts100157For004_2() {
+    return ts100157Field("004", true);
+}
+function ts100157Field(staff, check) {
     var code;
     switch (colorSize) {
     case "no":
@@ -2542,26 +2550,28 @@ function ts100157Field(staff) {
         ret = qr.data.length == 0;
     }
 
-    tapMenu("门店调入", "按明细查");
-    keys = { "款号名称" : code, "调入门店" : "常青店", "日期从" : getDay(-365) };
-    fields = shopInQueryParticularFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(exp["累计调入"], qr.counts["数量"]));
+    if (check) {
+        tapMenu("盘点管理", "盈亏表");
+        keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-365) };
+        fields = checkProfitAndLossFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(exp["盈亏数量"], qr.counts["盈亏"]));
+    } else {
+        tapMenu("门店调入", "按明细查");
+        keys = { "款号名称" : code, "调入门店" : "常青店", "日期从" : getDay(-365) };
+        fields = shopInQueryParticularFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(exp["累计调入"], qr.counts["数量"]));
 
-    tapMenu("门店调出", "按明细查");
-    keys = { "款号名称" : code, "调出门店" : "常青店", "日期从" : getDay(-365) };
-    fields = shopOutQueryParticularFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(exp["累计调出"], qr.counts["数量"]));
-
-    tapMenu("盘点管理", "盈亏表");
-    keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-365) };
-    fields = checkProfitAndLossFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, isEqual(exp["盈亏数量"], qr.counts["盈亏"]));
+        tapMenu("门店调出", "按明细查");
+        keys = { "款号名称" : code, "调出门店" : "常青店", "日期从" : getDay(-365) };
+        fields = shopOutQueryParticularFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(exp["累计调出"], qr.counts["数量"]));
+    }
 
     return ret;
 }
@@ -3555,7 +3565,7 @@ function ts100090() {
     setValue100090(keys);
     runAndAlert("test100090Field", OK);// 保存确定后会自动回到二级页面
     delay();
-    var qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    var qr = getQR2(getScrollView(-1, 0), "批次", "备注");
     ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("-100",
             qr.data[0]["数量"]));
 

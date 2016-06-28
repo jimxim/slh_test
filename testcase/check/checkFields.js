@@ -41,7 +41,7 @@ function queryCheckBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");//TF_SC
+        f = new TField("门店", TF, 6, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -93,7 +93,7 @@ function queryCheckParticularField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");//TF_SC
+        f = new TField("门店", TF, 6, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -159,7 +159,7 @@ function checkProcessRecordField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");//TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -196,7 +196,7 @@ function checkMaterialField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");//TF_SC
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -248,24 +248,31 @@ function checkProfitAndLossField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");//TF_SC
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        break;
+    case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 1, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("批次到", TF, 2, "1");
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 1, "a", -1, 0);
+        f = new TField("款号", TF_AC, 3, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        f = new TField("日期从", TF_DT, 4, getToday());
         break;
     case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 3, getToday());
+    case "日期到":
+        f = new TField("到", TF_DT, 5, getToday());
         break;
-
     default:
         logWarn("未知key＝" + key);
     }
@@ -289,7 +296,7 @@ function checkPlanField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");//TF_SC
+        f = new TField("门店", TF, 0, "常青店");// TF_SC
         break;
     case "operate":
     case "是否处理":

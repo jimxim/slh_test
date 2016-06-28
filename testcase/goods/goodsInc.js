@@ -52,8 +52,6 @@ function addGoods(keys, isEdit, day) {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(btn, OK);
-
-    delay();
     tapReturn();
 }
 

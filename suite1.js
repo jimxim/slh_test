@@ -14,9 +14,9 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "ts100123");//
+// run("测试用例", "ts100034");//
 
-// run("测试用例", "onlyTest");//
+ run("测试用例", "ts100142_143");//
 
 // checkLimitsToRights_NO();
 }
@@ -28,7 +28,9 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 // target.tap({x:"325.0000137690875", y:"314.0000218119832"});
-
+var keys={"厂商":"Adidas"};
+var fields = editGoodsFields(keys, false);
+setTFieldsValue(getScrollView(), fields);
   return true;
 }
 

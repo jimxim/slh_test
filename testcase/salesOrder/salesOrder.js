@@ -795,7 +795,7 @@ function test160011Field_1() {
     var arr = {};
     for (var i = 0; i < texts.length; i = i + 2) {
         var t = texts[i];
-        v = t.value();
+        var v = t.value();
         if (v) {
             arr[v] = texts[i + 1].value();//
         } else {

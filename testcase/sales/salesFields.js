@@ -812,21 +812,14 @@ function editSalesBillField(key, show) {
         break;
     case "remarks":
     case "备注":
-        // 各种开单模式下，销售开单的备注一般为刷卡的后3格
-        f = new TField("备注", TF, cardTFindex + 3, "123"); // 10
+        f = new TField("备注", TV, 0, "123"); // 
         break;
     case "汇款":
         f = new TField("汇款", TF, totalNumTFindex + 2, 0, "NoNeedReturn"); // 12
         break;
-    case "code":
-    case "款号":
-        f = new TField("款号", TF_AC, 16, "k526", -1, "k526,铅笔裤,300元");
-        if (show) {
-            f.value = "k526,铅笔裤";
-        }
-        break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }
@@ -1103,11 +1096,11 @@ function logisticsVerifyField(key, show) {
         break;
     case "tip":
     case "备":
-        f = new TField("备", TF, 9, "a");
+        f = new TField("备", TV, 0, "a");
         break;
     case "remit":
     case "汇款":
-        f = new TField("汇款", TF, 12, "000", -1, 0);
+        f = new TField("汇款", TF, 11, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
