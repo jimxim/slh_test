@@ -2381,7 +2381,7 @@ function ts120060() {
     var qo = { "备注" : "单据是否允许修改客户或厂商" };
     var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
     var ok = setGlobalParam(qo, o);
-    
+
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "rt" };
     var det = addPOrderBillDet();
@@ -2735,12 +2735,9 @@ function test120017() {
     ret = isAnd(ret, isEqual("", getTextFieldValue(getScrollView(), 8)),
             isEqual("", getTextFieldValue(getScrollView(), 11)), isEqual("",
                     getTextFieldValue(getScrollView(), 12)));
-    var f8 = new TField("货品", TF_AC, 8, "k300", -1, 0);
-    var f11 = new TField("数量", TF, 11, "8");
-    var f16 = new TField("货品", TF_AC, 16, "k200", -1, 0);
-    var f19 = new TField("数量", TF, 19, "12");
-    var fields = [ f8, f11, f16, f19 ];
-    setTFieldsValue(getScrollView(), fields);
+    var jo = { "明细" : [ { "货品" : "k300", "数量" : "8" },
+            { "货品" : "k200", "数量" : "12" } ] };
+    editSalesBillDetNoColorSize(jo);
     // 重复挂单
     runAndAlert("test120052Hang", OK);
     tapPrompt();

@@ -16,7 +16,9 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "ts100034");//
 
- run("测试用例", "ts100142_143");//
+    run("【采购订货-新增订货】整单备注和明细备注", "ts130014");
+  
+// run("测试用例", "ts100142_143");//
 
 // checkLimitsToRights_NO();
 }

@@ -812,7 +812,8 @@ function editSalesBillField(key, show) {
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TV, 0, "123"); // 
+        f = new TField("备注", TF, cardTFindex + 3, "123");
+        // f = new TField("备注", TV, 0, "123"); //
         break;
     case "汇款":
         f = new TField("汇款", TF, totalNumTFindex + 2, 0, "NoNeedReturn"); // 12
@@ -1096,11 +1097,12 @@ function logisticsVerifyField(key, show) {
         break;
     case "tip":
     case "备":
-        f = new TField("备", TV, 0, "a");
+        f = new TField("备", TF, 9, "a");
+        // f = new TField("备", TV, 0, "a");
         break;
     case "remit":
     case "汇款":
-        f = new TField("汇款", TF, 11, "000", -1, 0);
+        f = new TField("汇款", TF, 12, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);

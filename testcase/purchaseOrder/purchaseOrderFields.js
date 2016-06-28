@@ -223,7 +223,7 @@ function purchaseOrderShopField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");//TF_SC
+        f = new TField("门店", TF, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -273,7 +273,8 @@ function purchaseOrderAddField(key, show) {
         break;
     case "remarks":
     case "备注":
-        f = new TField("刷卡", TV, 0, "0");//TF
+        f = new TField("备注", TF, cardTFindex + 2, "0");
+        // f = new TField("备注", TV, 0, "0");//TF
         break;
     case "day":
     case "日期":

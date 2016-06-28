@@ -1034,10 +1034,11 @@ function ts130014() {
     tapFirstText();
     var remarketTFindex = getEditSalesTFindex("客户,厂商", "备");
     var tfNum = getDetSizheadTitle();
-    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"),
-            isEqual(getTextFieldValue(getScrollView(), tfNum["备注"]), "123"),
-            isEqual(getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
-                    + tfNum["备注"]), remark));
+    //isEqual(getTextViewValue(window, 0), "xx")
+    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"), isEqual(
+            getTextFieldValue(getScrollView(), tfNum["备注"]), "123"), isEqual(
+            getTextFieldValue(getScrollView(), tfNum["明细输入框个数"] + tfNum["备注"]),
+            remark));
     tapReturn();
 
     return ret;
