@@ -7732,7 +7732,6 @@ function test170569() {
 
     var ret3 = isAnd(isEqual(add(money, 11), sub(ds1, ds)), isEqual("代收收款",
             qr4.data[1]["收入"]), isEqual(sf, sub(qr4.data[1]["金额"], je)));
-
     delay();
     tapNaviLeftButton();
 

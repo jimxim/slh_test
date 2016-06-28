@@ -52,7 +52,6 @@ function testSalesPrepare002() {
 
     tapPrompt();
     tapReturn();
-
 }
 function testSalesPrepare003() {
     // 仓库店、中洲店// 要有物流单
