@@ -10,7 +10,12 @@ function testQueryGoodsStockFields() {
     var showFields = queryGoodsStockFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 当前库存
+ * @param keys
+ * @param show
+ * @returns
+ */
 function queryGoodsStockFields(keys, show) {
     return getTFields("queryGoodsStockField", keys, show);
 }
@@ -225,12 +230,21 @@ function testQueryGoodsInOutFields() {
     var showFields = queryGoodsInOutFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 货品进销存
+ * @param keys
+ * @param show
+ * @returns
+ */
 function queryGoodsInOutFields(keys, show) {
     return getTFields("queryGoodsInOutField", keys, show);
 }
 
 function queryGoodsInOutField(key, show) {
+    var idx = 0;
+    if (ipadVer < 7.21) {
+        idx = -1;
+    }
     var f;
     switch (key) {
     case "shop":
@@ -259,29 +273,33 @@ function queryGoodsInOutField(key, show) {
             f.value = "Adidas";
         }
         break;
+    case "isStop":
+    case "是否停用":
+        f = new TField("是否停用", TF_SC, 5, "否", -1, 0);
+        break;
     case "market1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 5, "2015-9-11");
+        f = new TField("上架从", TF_DT, 6 + idx, "2015-9-11");
         break;
     case "market2":
     case "到":
-        f = new TField("到", TF_DT, 6, "2015-9-11");
+        f = new TField("到", TF_DT, 7 + idx, "2015-9-11");
         break;
 
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 7, "1010pp", -1, 0);
+        f = new TField("品牌", TF_AC, 8 + idx, "1010pp", -1, 0);
         if (show) {
             f.value = "1010pp";
         }
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 8, "登山服", -1, 0);
+        f = new TField("类别", TF_SC, 9 + idx, "登山服", -1, 0);
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 9, "000", -1, 0);
+        f = new TField("经办人", TF_AC, 10 + idx, "000", -1, 0);
         if (show) {
             f.value = "000,总经理";
         }
@@ -301,7 +319,12 @@ function testQueryGoodsFields() {
     var showFields = queryGoodsFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 货品查询
+ * @param keys
+ * @param show
+ * @returns
+ */
 function queryGoodsFields(keys, show) {
     return getTFields("queryGoodsField", keys, show);
 }

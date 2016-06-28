@@ -2798,75 +2798,35 @@ function test10_tapBatchStart() {
 }
 
 function test100060() {
-    var i, f, cells, cell, v;
-    var ret1 = false, ret4 = false, ret5 = false;
-    var ret2 = false;
-
     tapMenu("货品管理", "当前库存");
-    f = new TField("品牌", TF_AC, 10, "z", -1);
-    cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        cell = cells[i];
-        v = cell.name();
-        if (isEqual("真维斯", v)) {
-            ret1 = true;
-            break;
-        }
-    }
-    tapButton(window, CLEAR);
-
     var keys = { "品牌" : "zws" };
     var fields = queryGoodsStockFields(keys);
+    var ret = dropDownListCheck(fields["品牌"].index, "z", "真维斯");
+
     setTFieldsValue(window, fields);
-    ret2 = isEqual("真维斯", getTextFieldValue(window, 10));
-    delay();
+    ret = isAnd(ret, isEqual("真维斯", getTextFieldValue(window,
+            fields["品牌"].index)));
     tapButton(window, CLEAR);
 
-    //
-    tapMenu("货品管理", "货品查询");
-    f = new TField("品牌", TF_AC, 6, "z", -1);
-    cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        cell = cells[i];
-        v = cell.name();
-        if (isEqual("真维斯", v)) {
-            ret4 = true;
-            break;
-        }
-    }
-    tapButton(window, CLEAR);
-
-    keys = { "品牌" : "zws" };
+    tapMenu2("货品查询");
     fields = queryGoodsFields(keys);
+    ret = isAnd(ret, dropDownListCheck(fields["品牌"].index, "z", "真维斯"));
+
     setTFieldsValue(window, fields);
-    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 6));
-    delay();
+    ret = isAnd(ret, isEqual("真维斯", getTextFieldValue(window,
+            fields["品牌"].index)));
     tapButton(window, CLEAR);
 
-    //
-    tapMenu("货品管理", "货品进销存");
-    f = new TField("品牌", TF_AC, 7, "z", -1);
-    cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        cell = cells[i];
-        v = cell.name();
-        if (isEqual("真维斯", v)) {
-            ret5 = true;
-            break;
-        }
-    }
-    tapButton(window, CLEAR);
-
-    keys = { "品牌" : "zws" };
+    tapMenu2("货品进销存");
     fields = queryGoodsInOutFields(keys);
+    ret = isAnd(ret, dropDownListCheck(fields["品牌"].index, "z", "真维斯"));
+
     setTFieldsValue(window, fields);
-    ret2 = ret2 && isEqual("真维斯", getTextFieldValue(window, 7));
-    delay();
+    ret = isAnd(ret, isEqual("真维斯", getTextFieldValue(window,
+            fields["品牌"].index)));
     tapButton(window, CLEAR);
 
-    logDebug("ret1=" + ret1 + "   ret2=" + ret2 + "   ret4=" + ret4
-            + "   ret5=" + ret5);
-    return ret1 && ret2 && ret4 && ret5;// &ret3
+    return ret;
 }
 function test100071_100072Prepare() {
     var name = "start" + getToday("yy");
@@ -3938,45 +3898,41 @@ function ts100122() {
 }
 function ts100123() {
     var keys = { "是否停用" : "是" };
-    var stock1 = test100123Field(keys);
-    var ret = isAnd(isEqual(stock1[0], stock1[1]),
-            isEqual(stock1[0], stock1[2]));
+    var ret = test100123Field(keys);
 
     keys = { "是否停用" : "否" };
-    var stock2 = test100123Field(keys);
-    ret = isAnd(ret, isEqual(stock2[0], stock2[1]), isEqual(stock2[0],
-            stock2[2]));
-
-    tapMenu2("货品进销存");
-    query();
-    var qr = getQR();
-    var stock = qr.counts["库存"];
-    ret = isAnd(ret, isEqual(stock, add(stock1[1], stock2[1])))
-
+    ret = isAnd(ret, test100123Field(keys));
     return ret;
 }
 
 function test100123Field(keys) {
-    var stock = new Array(3);
     tapMenu("货品管理", "当前库存")
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
-    stock[0] = qr.counts["库存"];
+    var a = qr.counts["库存"];
 
     tapMenu2("款号库存");
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
-    stock[1] = qr.counts["库存"];
+    var b = qr.counts["库存"];
 
     tapMenu2("库存分布");
     fields = queryGoodsDistributionFields(keys);
     query(fields);
     qr = getQR();
-    stock[2] = qr.counts["库存"];
+    var c = qr.counts["库存"];
 
-    return stock;
+    tapMenu2("货品进销存");
+    fields = queryGoodsInOutFields(keys);
+    query(fields);
+    qr = getQR();
+    var d = qr.counts["库存"];
+
+    logDebug("当前库存 库存=" + a + " 款号库存 库存=" + b + " 库存分布 库存=" + c + " 货品进销存 库存="
+            + d);
+    return a == b && a == c && a == d;
 }
 
 function ts100125() {

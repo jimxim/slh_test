@@ -1052,32 +1052,36 @@ function test110022() {
     var keys = { "客户" : "xjkh1", "门店" : "常青店" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var a1 = test110022Field(0);
-    var a2 = test110022Field(1);
-    var a3 = test110022Field(2);
+    var qr = getQR();
+    var a1 = test110022Field(qr, 0);
+    var a2 = test110022Field(qr, 1);
+    var a3 = test110022Field(qr, 2);
 
     keys = { "门店" : "中洲店" };
     fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var b1 = test110022Field(0);
-    var b2 = test110022Field(1);
-    var b3 = test110022Field(2);
+    qr = getQR();
+    var b1 = test110022Field(qr, 0);
+    var b2 = test110022Field(qr, 1);
+    var b3 = test110022Field(qr, 2);
 
     keys = { "客户" : "sjkh1", "门店" : "常青店" };
     fields = salesQueryBatchFields(keys);
     query(fields);
-    var c1 = test110022Field(0);
-    var c2 = test110022Field(1);
-    var c3 = test110022Field(2);
+    qr = getQR();
+    var c1 = test110022Field(qr, 0);
+    var c2 = test110022Field(qr, 1);
+    var c3 = test110022Field(qr, 2);
 
     keys = { "门店" : "中洲店" };
     fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var d1 = test110022Field(0);
-    var d2 = test110022Field(1);
-    var d3 = test110022Field(2);
+    qr = getQR();
+    var d1 = test110022Field(qr, 0);
+    var d2 = test110022Field(qr, 1);
+    var d3 = test110022Field(qr, 2);
 
     // 上下级模式
     // 1.客户门店账：显示上级客户和下级客户。此处上级客户只统计自己的账款，
@@ -1175,22 +1179,24 @@ function test110022_1() {
     var keys = { "客户" : "xjkh1", "门店" : "常青店" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-    var a1 = test110022Field(0);
+    var qr = getQR();
+    var a1 = test110022Field(qr, 0);
     a1["门店"] = "常青店";
-    var a2 = test110022Field(1);
+    var a2 = test110022Field(qr, 1);
     a2["门店"] = "常青店";
-    var a3 = test110022Field(2);
+    var a3 = test110022Field(qr, 2);
     a3["门店"] = "常青店";
 
     keys = { "客户" : "sjkh1" };
     fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var c1 = test110022Field(0);
+    qr = getQR();
+    var c1 = test110022Field(qr, 0);
     c1["门店"] = "常青店";
-    var c2 = test110022Field(1);
+    var c2 = test110022Field(qr, 1);
     c2["门店"] = "常青店";
-    var c3 = test110022Field(2);
+    var c3 = test110022Field(qr, 2);
     c3["门店"] = "常青店";
 
     tapMenu("往来管理", "客户账款", "按上级单位");
@@ -1207,8 +1213,7 @@ function test110022_1() {
     return ret;
 }
 
-function test110022Field(i) {
-    var qr = getQR();
+function test110022Field(qr, i) {
     var arr = { "批次" : qr.data[i]["批次"], "门店" : qr.data[i]["门店"],
         "操作日期" : getToday("yy"), "客户" : qr.data[i]["客户"],
         "店员" : qr.data[i]["店员"], "金额" : qr.data[i]["金额"],
@@ -1356,7 +1361,7 @@ function test110022Verify3() {
     }
     if (isDefined(index)) {
         tapButtonScroll(getScrollView(1, 0), index * 2 + 5);
-        app.navigationBar().buttons()["确 认"].tap();
+        app.navigationBar().buttons()[OK].tap();
         var cardTFindex = getValueFromCacheF1("getCardTFindex");// 获取刷卡的下标
         var num1 = getTextFieldValue(window, cardTFindex - 1);// 核销的欠余款的值
         json["现金"] = Math.floor(num1 / 2);
@@ -1407,7 +1412,7 @@ function test110022Verify4() {
     }
     if (isDefined(index)) {
         tapButtonScroll(getScrollView(1, 0), index * 2 + 5);
-        app.navigationBar().buttons()["确 认"].tap();
+        app.navigationBar().buttons()[OK].tap();
         var cardTFindex = getValueFromCacheF1("getCardTFindex");// 获取刷卡的下标
         var num1 = getTextFieldValue(window, cardTFindex - 1);// 核销的欠余款的值
         var n = Math.floor(num1 / 200) - 1;
@@ -1639,7 +1644,7 @@ function ts110033() {
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("手机");
-    ret = ret && sortByTitle("店员");
+    ret = ret && sortByTitle("所属店员");
     ret = ret && sortByTitle("最后一次拿货", IS_DATE2);
     ret = ret && sortByTitle("未拿货天数", IS_NUM);
 
@@ -1649,7 +1654,7 @@ function ts110033() {
     var qr = getQR();
     // 确定结果只有一条
     var expected = { "门店" : "常青店", "名称" : "赵本山", "手机" : "13922211121",
-        "店员" : "总经理", "最后一次拿货" : day, "未拿货天数" : day1 }
+        "所属店员" : "总经理", "最后一次拿货" : day, "未拿货天数" : day1 }
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]), isEqual(1, qr.total),
             isEqual(1, qr.totalPageNo));
     tapButton(window, CLEAR);
@@ -1723,7 +1728,7 @@ function ts110035() {
     tapMenu("销售订货", "新增订货+");
     jo = { "客户" : r, "goodsFieldIndex" : -2 };
     json = mixObject(det, jo);
-    editSalesBill(json, colorSize);
+    editSalesBill(json, colorSize);//当天的订货单
 
     tapMenu("往来管理", "客户活跃度");
     var keys = { "客户" : r, "门店" : "常青店" };
@@ -3182,11 +3187,15 @@ function ts110056() {
     keys = { "客户代码" : r };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");
+    tapButton(window, "修改保存");// 保存后会自动返回客户查询界面
 
-    var index = fields["客户代码"].index;
-    delay();
+    var cond = "window.buttons()['客户查询'].isVisible()";
+    waitUntil(cond, 5);
+
+    tapMenu2("客户查询");
+    tapButton(window, QUERY);
     tapFirstText();
+    var index = fields["客户代码"].index;
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), index)));
     tapButton(window, RETURN);
 
