@@ -44,7 +44,6 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－更多-代收收款查询】单项查询", "test170295_170296_170297");
     run("【销售开单－更多-代收收款查询】底部数据汇总检查", "test170298");
     run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
-    run("【统计分析—利润表】详细页面排序翻页", "test190042");
 }
 function testSalesNoColorSizeElse002() {
     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306_1");

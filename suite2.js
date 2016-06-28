@@ -11,10 +11,9 @@ function test000All() {
     ipadVer ="7.21"; // "6.59";// 7.13// 7.21
 
 // run("【销售开单－开单】退货时明细备注框操作", "test170097");//
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认打包价", "test170424_3");
-//    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认零批价", "test170424");//
-//    run("销售订货价格刷新", "test170445");
-// run("", "test0");
+// run("【销售开单－开单】查看上次成交记录-更多：显示全部门店记录", "test170522");//
+    run("【销售开单－开单】整单备注和明细备注", "test170095");
+    // run("", "test0");
 }
 function test0(){
 // debugElementTree(window);
@@ -29,7 +28,6 @@ function test0(){
 // return ret;
 // var json = { "明细" : [ { "货品" : "3035", "数量" : "5", "单价" : "-500" } ] };
 // editSalesBillDetNoColorSize(json);
-
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
@@ -575,6 +573,14 @@ function test000SalesColorSize170703() {
      if( ok ) {
          run("【盘点管理—新增盘点】获取未保存", "test180022");
          
+         logout();
+     }
+ }
+ function testCheckts100157For000_2() {
+     var p1 = {"角色":"总经理"};
+     var ok = login("004","000000",p1);
+     if( ok ) {
+         run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000_2");
          logout();
      }
  }

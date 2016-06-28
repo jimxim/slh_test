@@ -28,13 +28,20 @@ function testSalesPrepare001() {
 function testSalesPrepare002() {
     tapMenu("销售开单", "开  单+");
     var json = {
-        "客户" : "ls",
+        "客户" : "lx",
         "明细" : [ { "货品" : "3035", "数量" : "2", "备注" : "mxbz" },
                 { "货品" : "3035", "数量" : "-1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var f10 = new TField("数量", TF, 10, "-1");
-    var f13 = new TField("备注", TF_SC, 13, "换码");
+    var idx;
+    if(ipadVer >="7.21"){
+        idx=12;
+    }
+    else{
+        idx=10;
+    }
+    var f10 = new TField("数量", TF, idx, "-1");
+    var f13 = new TField("备注", TF_SC, idx+3, "换码");
     var fields = [ f10, f13 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -50,10 +57,13 @@ function testSalesPrepare002() {
 function testSalesPrepare003() {
     // 仓库店、中洲店// 要有物流单
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : "4" }, { "货品" : "4562", "数量" : "5" } ],
         "代收" : { "物流商" : "tt" }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
+    tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
 
