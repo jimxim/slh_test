@@ -970,8 +970,14 @@ function ts100008() {
     var ret = isEqualObject(exp, qr.data[0]);
 
     tapButton(window, CLEAR);
-    for (var i = 0; i < 10; i++) {
-        ret = ret && isEqual("", getTextFieldValue(window, i));
+    var f = queryGoodsInOutField("是否停用");
+    var text = getTextFields();
+    for (var i = 0; i < text.length; i++) {
+        if (i == f.index) {
+            ret = ret && isEqual("否", getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
     }
 
     return ret;

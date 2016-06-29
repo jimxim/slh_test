@@ -414,8 +414,9 @@ function editGoodsFields(keys, show) {
     if (isUndefined(show)) {
         show = false;
     }
-    var priceStartIndex = -1;
+
     var texts = getStaticTexts(view);
+    var priceStartIndex = -1;
     if (isEqualsTexts1(texts, "吊牌价")) {
         priceStartIndex = 0;
     }
@@ -428,6 +429,14 @@ function editGoodsFields(keys, show) {
 
     return getTFields("editGoodsField", keys, show, addIdx, priceStartIndex,
             barcodeStartIndex);
+}
+function getGoodsTagPriceIndex() {
+    var texts = getStaticTexts(view);
+    var tagPriceIndex = -1;
+    if (isEqualsTexts1(texts, "吊牌价")) {
+        tagPriceIndex = 0;
+    }
+    return tagPriceIndex;
 }
 
 function editGoodsField(key, show, addIdx, priceStartIndex, barcodeStartIndex) {
@@ -539,33 +548,41 @@ function editGoodsField(key, show, addIdx, priceStartIndex, barcodeStartIndex) {
             f.value = "Vell";
         }
         break;
-    case "measure":
-    case "计量单位":
-        f = new TField("计量单位", BTN_SC, addIdx + 6, "双");
+    case "useLastPrice":
+    case "启用上次价":
+        f = new TField("启用上次价", BTN_SC, addIdx + 6, "双");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 17;
         }
         break;
-    case "warehouse":
-    case "仓位":
-        f = new TField("仓位", BTN_SC, addIdx + 7, "默认");
+    case "measure":
+    case "计量单位":
+        f = new TField("计量单位", BTN_SC, addIdx + 7, "双");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 18;
         }
         break;
+    case "warehouse":
+    case "仓位":
+        f = new TField("仓位", BTN_SC, addIdx + 8, "默认");
+        if (show) {
+            f.type = TF;
+            f.index = priceStartIndex + 19;
+        }
+        break;
     case "min":
     case "最小库存":
-        f = new TField("最小库存", TF, priceStartIndex + 19, "1");
+        f = new TField("最小库存", TF, priceStartIndex + 20, "1");
         break;
     case "max":
     case "最大库存":
-        f = new TField("最大库存", TF, priceStartIndex + 20, "200");
+        f = new TField("最大库存", TF, priceStartIndex + 21, "200");
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, priceStartIndex + 21, "000", -1, 0);
+        f = new TField("经办人", TF_AC, priceStartIndex + 22, "000", -1, 0);
         if (show) {
             f.value = "000,总经理";
         }
@@ -573,81 +590,81 @@ function editGoodsField(key, show, addIdx, priceStartIndex, barcodeStartIndex) {
     // 这个不考虑与客户是否允许退货的组合情况
     case "allowReturn":
     case "允许退货":
-        f = new TField("允许退货", BTN_SC, addIdx + 8, "否");
-        if (show) {
-            f.type = TF;
-            f.index = priceStartIndex + 22;
-        }
-        break;
-    case "isProcess":
-    case "是否加工款":
-        f = new TField("是否加工款", BTN_SC, addIdx + 9, "否");
+        f = new TField("允许退货", BTN_SC, addIdx + 9, "否");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 23;
         }
         break;
+    case "isProcess":
+    case "是否加工款":
+        f = new TField("是否加工款", BTN_SC, addIdx + 10, "否");
+        if (show) {
+            f.type = TF;
+            f.index = priceStartIndex + 24;
+        }
+        break;
     case "processPrice":
     case "加工价":
-        f = new TField("加工价", TF, priceStartIndex + 24, "100");
+        f = new TField("加工价", TF, priceStartIndex + 25, "100");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", BTN_SC, addIdx + 10, "常青店");
+        f = new TField("门店", BTN_SC, addIdx + 11, "常青店");
         if (show) {
             f.type = TF;
-            f.index = priceStartIndex + 25;
+            f.index = priceStartIndex + 26;
         }
         break;
     case "boxNum":
     case "装箱数":
-        f = new TField("装箱数", TF, priceStartIndex + 26, "6");
+        f = new TField("装箱数", TF, priceStartIndex + 27, "6");
         break;
     case "material":
     case "面料":
-        f = new TField("面料", TF, priceStartIndex + 27, "纯棉");
+        f = new TField("面料", TF, priceStartIndex + 28, "纯棉");
         break;
     case "operativeNorm":
     case "执行标准":
-        f = new TField("执行标准", BTN_SC, addIdx + 11, "执行标准A");
-        if (show) {
-            f.type = TF;
-            f.index = priceStartIndex + 28;
-        }
-        break;
-    case "safeType":
-    case "安全类别":
-        f = new TField("安全类别", BTN_SC, addIdx + 12, "安全类别A");
+        f = new TField("执行标准", BTN_SC, addIdx + 12, "执行标准A");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 29;
         }
         break;
-    case "level":
-    case "等级":
-        f = new TField("等级", BTN_SC, addIdx + 13, "一等品");
+    case "safeType":
+    case "安全类别":
+        f = new TField("安全类别", BTN_SC, addIdx + 13, "安全类别A");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 30;
         }
         break;
-    case " washingInstructions":
-    case "洗涤说明":
-        f = new TField("洗涤说明", BTN_MC, addIdx + 14, [ 0, 1 ]);
+    case "level":
+    case "等级":
+        f = new TField("等级", BTN_SC, addIdx + 14, "一等品");
         if (show) {
             f.type = TF;
             f.index = priceStartIndex + 31;
+        }
+        break;
+    case " washingInstructions":
+    case "洗涤说明":
+        f = new TField("洗涤说明", BTN_MC, addIdx + 15, [ 0, 1 ]);
+        if (show) {
+            f.type = TF;
+            f.index = priceStartIndex + 32;
             f.value = "可以机洗,适宜手洗";
         }
         break;
     case "barcode":
     case "条码":
-        f = new TField("条码", TF, priceStartIndex + 27 + barcodeStartIndex,
+        f = new TField("条码", TF, priceStartIndex + 28 + barcodeStartIndex,
                 "555555");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, priceStartIndex + 28 + barcodeStartIndex,
+        f = new TField("备注", TF, priceStartIndex + 29 + barcodeStartIndex,
                 "123");
         break;
 

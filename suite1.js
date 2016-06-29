@@ -14,25 +14,37 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run("测试用例", "ts100034");//
+// run("测试用例", "testCheckCustomerDropDownList");//
 
-    run("【采购订货-新增订货】整单备注和明细备注", "ts130014");
-  
-// run("测试用例", "ts100142_143");//
+ run("测试用例", "test120011_1");//
 
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-// target.tap({x:"325.0000137690875", y:"314.0000218119832"});
-var keys={"厂商":"Adidas"};
-var fields = editGoodsFields(keys, false);
-setTFieldsValue(getScrollView(), fields);
+ var view1=getScrollView();
+ var text=getTextFields(view1);
+ var a1 = view1.elements();
+ for (var j = 0; j < text.length; j++) {
+     var val = valueArr[j];
+     var btnNum = -1, textNum = -1;
+     for (var i = 0; i < a1.length; i++) {
+         var e = a1[i];
+         if (isUIAButton(e)) {
+
+         }
+         if (isUIAStaticText(e)) {
+             
+         }
+     }
+  }
+ 
+// debugObject(gCache,"gCache");
   return true;
 }
 

@@ -252,7 +252,7 @@ function testCheckSystem() {
     ret = isAnd(ret, checkMenus(menus2));
 
     tapButtonAndAlert("清理本地", OK);
-    var cond = "isIn(alertMsg,'清理和刷新成功')";
+    var cond = "isIn(alertMsg,'清理刷新')";
     waitUntil(cond);
 
     menu2 = "getMenu_More";

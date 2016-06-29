@@ -413,7 +413,7 @@ function ts120007() {
 
 function test120008() {
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
+    var keys = { "日期从" : getDay(-30) };// , "日期到" : getToday()
     var fields = purchaseCodeFields(keys);
     query(fields);
     var ret = goPageCheck();
@@ -455,29 +455,10 @@ function test120008() {
 
     query();
     qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0;
-    var ret1 = true;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["拿货数"]);
-            sum3 += Number(qr.data[i]["退货数"]);
-            if (Number(qr.data[i]["数量"]) != Number(qr.data[i]["拿货数"])
-                    - Number(qr.data[i]["退货数"])) {
-                ret1 = false;
-                break;
-            }
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["拿货数"],
-            sum2), isEqual(qr.counts["退货数"], sum3));
+    var arr = [ "数量", "拿货数", "退货数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
 
-    return ret && ret1;
+    return ret;
 }
 function ts120008_1() {
     // 按款号汇总中的款号应该与按明细查中相同，但不包括特殊货品
