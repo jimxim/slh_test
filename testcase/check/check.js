@@ -121,23 +121,19 @@ function test180001_180003_180005() {
     return ret && ret1;
 }
 function test180001_2_180004() {
-    tapMenu("盘点管理", "按批次查");
-    var ret = false;
-    tap(getTextField(window, 6));
-    var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret = true;
-            break;
-        }
-    }
-    target.frontMostApp().mainWindow().popover().dismiss();
-    query();
-
-    tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ] };
-    editCheckAddNoColorSize(josn);
+    // tapMenu("盘点管理", "按批次查");
+    // var ret = false;
+    // tap(getTextField(window, 6));
+    // var texts = getStaticTexts(getPopView());
+    // for (var i = 0; i < texts.length; i++) {
+    // var v = texts[i].name();
+    // if (isIn("常青店", v)) {
+    // ret = true;
+    // break;
+    // }
+    // }
+    // target.frontMostApp().mainWindow().popover().dismiss();
+    // query();
 
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ] };
@@ -1193,21 +1189,21 @@ function test180037() {
     return ret && ret1;
 }
 function test180037_180034_180035() {
-    tapMenu("盘点管理", "盈亏表");
-    var ret = false;
-    tap(getTextField(window, 0));
-    var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    target.frontMostApp().mainWindow().popover().dismiss();
-    query();
+    // tapMenu("盘点管理", "盈亏表");
+    // var ret = false;
+    // tap(getTextField(window, 0));
+    // var texts = getStaticTexts(getPopView());
+    // for (var i = 0; i < texts.length; i++) {
+    // var v = texts[i].name();
+    // if (isIn("常青店", v)) {
+    // ret = true;
+    // break;
+    // }
+    // }
+    // delay();
+    // tapKeyboardHide();
+    // target.frontMostApp().mainWindow().popover().dismiss();
+    // query();ret &&"ret=" + ret +
 
     tapMenu("盘点管理", "盈亏表");
     var keys = { "门店" : "常青店", "款号" : "k300", "日期从" : getDay(-30) };
@@ -1230,8 +1226,8 @@ function test180037_180034_180035() {
             getTextFieldValue(window, 2)), isEqual(getToday(),
             getTextFieldValue(window, 3)));
 
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret1 && ret2;
 }
 function test180042Prepare() {
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
@@ -1711,7 +1707,7 @@ function test180042_4() {
 
     var json = { "明细" : [ { "货品" : "3035", "数量" : 11 } ] };
     editSalesBillDetNoColorSize(json);
-    
+
     saveAndAlertOk();
     tapPrompt();
     var ret2 = false;
@@ -2412,9 +2408,14 @@ function test180053() {
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("盘点日期", IS_DATE2);
     ret = ret && sortByTitle("门店");
-    ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("备注");
+    if (ipadVer >= "7.21") {
+        ret = ret && sortByTitle("处理时间", IS_OPTIME);
+        ret = ret && sortByTitle("处理人");
+    } else {
+        ret = ret && sortByTitle("操作日期", IS_OPTIME);
+        ret = ret && sortByTitle("操作人");
+    }
 
     query();
 

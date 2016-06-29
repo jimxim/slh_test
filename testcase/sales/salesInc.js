@@ -1,6 +1,6 @@
 //zhangY <2397655091 at qq.com> 20151229
 
-// 款号4562加上品牌Adidas
+// 款号4562加上品牌Adidas,3035在其他店有库存，配货员在其他店开单
 // 常青店000,店长：厂商敏感字段勾选
 function testSalesPrepare001() {
     tapMenu("销售开单", "开  单+");
@@ -34,14 +34,13 @@ function testSalesPrepare002() {
     editSalesBillNoColorSize(json);
 
     var idx;
-    if(ipadVer >="7.21"){
-        idx=12;
-    }
-    else{
-        idx=10;
+    if (ipadVer >= "7.21") {
+        idx = 12;
+    } else {
+        idx = 10;
     }
     var f10 = new TField("数量", TF, idx, "-1");
-    var f13 = new TField("备注", TF_SC, idx+3, "换码");
+    var f13 = new TField("备注", TF_SC, idx + 3, "换码");
     var fields = [ f10, f13 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -441,6 +440,7 @@ function tapSalesBillVerify_OK() {
         ok = CONFIRM;
     }
     tapNaviButton(ok);
+    delay();
 
     return ok;
 }

@@ -237,6 +237,12 @@ function salesCodeFields(keys, show) {
     return getTFields("salesCodeField", keys, show);
 }
 function salesCodeField(key, show) {
+    var ty;
+    if (ipadVer >= "7.21") {
+        ty = TF;
+    } else {
+        ty = TF_SC;
+    }
     var f;
     switch (key) {
     case "day1":
@@ -275,7 +281,7 @@ function salesCodeField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF_SC, 7, "花色");
+        f = new TField("颜色", ty, 7, "花色");
         break;
     case "size":
     case "尺码":
