@@ -183,14 +183,10 @@ function ts120001_2() {
     tapButton(window, QUERY);
     qr = getQR();
     // 6.59日期列格式为MM-DD
-    var expected = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday(""),
+    var expected = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday("yy"),
         "厂商" : "Rt", "店员" : "总经理", "厂商" : "Rt", "总数" : "30", "金额" : "3000",
         "现金" : "1000", "刷卡" : "200", "汇款" : "300", "订货号" : "0", "操作日期" : time,
         "备注" : "abc", "操作人" : "总经理" };
-    if (ipadVer >= 7.01) {
-        // 这个地方先按照版本判断，要不然不知道59会不会变成yy-MM-dd的格式
-        expected["日期"] = getToday("yy");
-    }
     var ret = isEqualObject(expected, qr.data[0]);
 
     tapButton(window, CLEAR);

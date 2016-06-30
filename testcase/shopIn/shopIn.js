@@ -14,12 +14,9 @@ function testShopIn001() {
     run("【门店调入-按批次查】翻页_排序_汇总", "ts140012_19");
     run("【门店调入-按批次查】返回按钮", "ts140015");
     run("【门店调入-按明细查】翻页_排序_汇总", "ts140016_20");
-    if (ipadVer >= 7.01) {
-        run("【门店调入-按款号汇总】按款号汇总功能检查", "ts140022");
-        run("【门店调入-按款号汇总】查询_清除", "ts140023_24");
-        run("【门店调入-按款号汇总】翻页_排序_汇总", "ts140025_26_27");
-    }
-
+    run("【门店调入-按款号汇总】按款号汇总功能检查", "ts140022");
+    run("【门店调入-按款号汇总】查询_清除", "ts140023_24");
+    run("【门店调入-按款号汇总】翻页_排序_汇总", "ts140025_26_27");
 }
 
 // 调拨启用密码验证
@@ -345,22 +342,8 @@ function ts140007_09() {
     ret = ret && sortByTitle("备注");
 
     // 7。01起不显示作废数据
-    if (ipadVer >= 7.01) {
-        var arr = [ "数量" ];
-        ret = isAnd(ret, isEqualCounts(arr));
-    } else {
-        fields["日期从"].value = getDay(-365);
-        query(fields);
-        var qr = getQR();
-        var num = qr.counts["数量"];
-
-        tapMenu("货品管理", "当前库存");
-        keys = { "门店" : "常青店" };
-        fields = queryGoodsStockFields(keys);
-        query(fields);
-        qr = getQR();
-        ret = isAnd(ret, isEqual(num, qr.counts["在途数"]));
-    }
+    var arr = [ "数量" ];
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 

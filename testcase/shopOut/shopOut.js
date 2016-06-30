@@ -15,16 +15,11 @@ function testShopOut001() {
         run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "ts150010_2");
         run("【门店调出-按批次查】按批次查作废，汇总", "ts150001_09");
         run("【门店调出-批量调出】批量调出", "ts150003");
-    } else {
-        UIALogger.logFail("修改参数失败");
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
-
-    if (ipadVer >= 7.01) {
-        run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
-        run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
-        run("【门店调出-按款号汇总】翻页_排序_汇总", "ts150019_20_21");
-    }
+    run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
+    run("【门店调出-按款号汇总】查询_清除", "ts150017_18");
+    run("【门店调出-按款号汇总】翻页_排序_汇总", "ts150019_20_21");
     run("【门店调出-批量调出】整单复制和整单粘贴", "ts150024");
     run("【门店调出-批量调出】删除所有款号明细", "ts150031");
     run("【门店调出】 调拨单增加 明细备注,用于填写退货回到仓库的原因", "ts150007");// 接ts150013
@@ -37,14 +32,21 @@ function testShopOut003() {
 }
 
 function setShopOutParams() {
+    UIALogger.logStart("设置参数");
     var qo, o, ret = true;
+    // 隐藏时单价小计的textField还在，对取值有影响，暂时先打开的方法验证
     qo = { "备注" : "门店调拨是否可以填写价格" };
-    o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
+    o = { "新值" : "1", "数值" : [ "调拨有价格选项", "in" ] };// 0,默认只有数量
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "调拨核算价格" };
     o = { "新值" : "3", "数值" : [ "调拨按销价3核算", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    if (ret) {
+        UIALogger.logPass("设置参数通过");
+    } else {
+        UIALogger.logFail("设置参数失败");
+    }
     return ret;
 }
 
@@ -104,13 +106,7 @@ function ts150001_2() {
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
 
-    // 下拉框检查
     tapMenu2("按批次查");
-    tap(getTextField(window, 2));
-    var texts = getStaticTexts(getPopView());
-    var ret = isHasStaticTexts(getPopView(), [ "常青店", "中洲店" ]);
-    window.popover().dismiss();
-
     keys = { "批次从" : batch, "批次到" : batch + 1, "调入门店" : "常青店" }
     fields = shopOutQueryBatchFields(keys);
     setTFieldsValue(window, fields);
@@ -119,7 +115,7 @@ function ts150001_2() {
     var expected = { "批次" : batch + 1, "调出门店" : "中洲店", "调入门店" : "常青店",
         "送货人" : "总经理200", "数量" : "50", "状态" : "未接收", "金额" : 8000,
         "操作人" : "总经理200", "备注" : "abc123" };
-    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
+    var ret = isEqualObject(expected, qr.data[0]);
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
@@ -172,13 +168,7 @@ function ts150010_2() {
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
 
-    // 下拉框检查
     tapMenu2("按明细查");
-    tap(getTextField(window, 2));
-    var texts = getStaticTexts(getPopView());
-    var ret = isHasStaticTexts(getPopView(), [ "常青店", "中洲店" ]);
-    window.popover().dismiss();
-
     keys = { "款号" : det["明细"][0]["货品"], "款号名称" : det["名称"],
         "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店", "调入门店" : "常青店" }
     fields = shopOutQueryParticularFields(keys);
@@ -187,7 +177,7 @@ function ts150010_2() {
     var expected = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : batch + 1,
         "款号" : det["明细"][0]["货品"], "名称" : det["名称"], "颜色" : det["颜色"],
         "尺码" : det["尺码"], "数量" : 50, "单价" : 160, "金额" : 8000, "操作人" : "总经理200" };
-    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
+    var ret = isEqualObject(expected, qr.data[0]);
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
@@ -407,7 +397,7 @@ function ts150006() {
     tf.setValue("123456");
     tapButton(window, index);
     delay();
-    // ret = isAnd(ret, window.buttons()["按批次查"].isVisible);
+    tapReturn();
 
     ret = isAnd(ret, changeSecure("123456", "000000"));
 
@@ -440,7 +430,7 @@ function ts150007() {
     // tapMenu2("按批次查");
     // query();
     // var qr = getQR();
-    //    outBatch["ts150007"] = qr.data[0]["批次"];
+    // outBatch["ts150007"] = qr.data[0]["批次"];
 
     return ret;
 }

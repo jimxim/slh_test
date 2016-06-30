@@ -53,9 +53,7 @@ function ts130020_1() {
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("入库数", IS_NUM);
     ret = ret && sortByTitle("差异数");// 目前不支持排序
-    if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("发货状态");
-    }
+    ret = ret && sortByTitle("发货状态");
     ret = ret && sortByTitle("现金", IS_NUM);
     ret = ret && sortByTitle("刷卡", IS_NUM);
     ret = ret && sortByTitle("汇款", IS_NUM);
@@ -286,6 +284,7 @@ function ts130002_1() {
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("厂商");
+    ret = ret && sortByTitle("图");
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("颜色");
@@ -294,17 +293,12 @@ function ts130002_1() {
     ret = ret && sortByTitle("单价", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("已入库", IS_NUM);
+    ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
-    var arr = [ "数量", "金额", "已入库" ];
-    if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("图");
-        ret = ret && sortByTitle("差异数", IS_NUM);
-        arr.push("差异数");
-    }
-
+    var arr = [ "数量", "金额", "已入库", "差异数" ];
     ret = ret && isEqualCounts(arr);
     return ret;
 }
@@ -420,9 +414,7 @@ function ts130004_1() {
     query(fields);
     var ret = goPageCheck();
 
-    if (ipadVer >= 7.01) {
-        ret = ret && sortByTitle("图");
-    }
+    ret = ret && sortByTitle("图");
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
@@ -1034,11 +1026,11 @@ function ts130014() {
     tapFirstText();
     var remarketTFindex = getEditSalesTFindex("客户,厂商", "备");
     var tfNum = getDetSizheadTitle();
-    //isEqual(getTextViewValue(window, 0), "xx")
-    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"), isEqual(
-            getTextFieldValue(getScrollView(), tfNum["备注"]), "123"), isEqual(
-            getTextFieldValue(getScrollView(), tfNum["明细输入框个数"] + tfNum["备注"]),
-            remark));
+    // isEqual(getTextViewValue(window, 0), "xx")
+    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"),
+            isEqual(getTextFieldValue(getScrollView(), tfNum["备注"]), "123"),
+            isEqual(getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
+                    + tfNum["备注"]), remark));
     tapReturn();
 
     return ret;

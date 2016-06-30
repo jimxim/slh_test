@@ -16,33 +16,25 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "testCheckCustomerDropDownList");//
 
- run("测试用例", "test120011_1");//
+ run("测试用例", "ts140011");//
 
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
- var view1=getScrollView();
- var text=getTextFields(view1);
- var a1 = view1.elements();
- for (var j = 0; j < text.length; j++) {
-     var val = valueArr[j];
-     var btnNum = -1, textNum = -1;
-     for (var i = 0; i < a1.length; i++) {
-         var e = a1[i];
-         if (isUIAButton(e)) {
-
-         }
-         if (isUIAStaticText(e)) {
-             
-         }
-     }
-  }
+//
+ tapMenu("门店调出", "批量调出+");
+ var jo = { "调出人" : "200", "接收店" : "常青店", "备注" : "ts150003",
+ "onlytest" : "yes" };
+ var det = { "明细" : [ { "货品" : "3035", "数量" : 50 },
+ { "货品" : "4562", "数量" : 25 } ] };
+ var json = mixObject(jo, det);
+ editShopOutDecruitIn(json, colorSize);
  
 // debugObject(gCache,"gCache");
   return true;
