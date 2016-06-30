@@ -121,20 +121,6 @@ function test180001_180003_180005() {
     return ret && ret1;
 }
 function test180001_2_180004() {
-    // tapMenu("盘点管理", "按批次查");
-    // var ret = false;
-    // tap(getTextField(window, 6));
-    // var texts = getStaticTexts(getPopView());
-    // for (var i = 0; i < texts.length; i++) {
-    // var v = texts[i].name();
-    // if (isIn("常青店", v)) {
-    // ret = true;
-    // break;
-    // }
-    // }
-    // target.frontMostApp().mainWindow().popover().dismiss();
-    // query();
-
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ] };
     editCheckAddNoColorSize(josn);
@@ -162,7 +148,7 @@ function test180001_2_180004() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理");
     delay(2);
-    tapButton(window, "返 回");
+    tapButton(window, RETURN);
 
     tapMenu("盘点管理", "按批次查");
     var keys = { "日期从" : getDay(-30), "批次从" : batch, "批次到" : batch + 1,
@@ -193,8 +179,8 @@ function test180001_2_180004() {
         }
     }
 
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2);
+    return ret1 && ret2;
 }
 function test180002() {
     tapMenu("盘点管理", "按批次查");
@@ -287,9 +273,7 @@ function test180008() {
     tapButton(getScrollView(-1), 0);
     saveAndAlertOk();
     tapPrompt();
-
     var ret = isIn(alertMsg, "盘点单已处理，不允许更改");
-
     tapReturn();
 
     return ret;
@@ -536,16 +520,15 @@ function test180019() {
 }
 function test180021() {
     tapMenu("盘点管理", "新增盘点+");
-    var json = {
-        "客户" : r,
-        "明细" : [ { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : -11 },
-                { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 12 },
-                { "货品" : "k200", "数量" : -11 }, { "货品" : "k300", "数量" : 0 },
-                { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : -11 },
-                { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 10 },
-                { "货品" : "k200", "数量" : -11 }, { "货品" : "k300", "数量" : 0 },
-                { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : -11 },
-                { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 20 } ] };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 10 },
+            { "货品" : "k200", "数量" : -11 }, { "货品" : "k300", "数量" : 0 },
+            { "货品" : "3035", "数量" : 12 }, { "货品" : "k200", "数量" : -11 },
+            { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 10 },
+            { "货品" : "k200", "数量" : -11 }, { "货品" : "k300", "数量" : 0 },
+            { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : -11 },
+            { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 10 },
+            { "货品" : "k200", "数量" : -11 }, { "货品" : "k300", "数量" : 0 },
+            { "货品" : "3035", "数量" : 20 } ] };
     editCheckAddNoColorSize(json);
 
     tapMenu("盘点管理", "按批次查");
@@ -608,10 +591,10 @@ function test180023() {
 
     tapReturn(window, CANCEL);
 
-    var qr = getQRDet();
-    var ret = isAnd(isEqual(100, qr.data[0]["数量"]), isEqual("3035,jkk",
-            qr.data[0]["货品"]), isEqual("均色", qr.data[0]["颜色"]), isEqual("均码",
-            qr.data[0]["尺码"]));
+    var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(-1), 3)),
+            isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 0)),
+            isEqual("均色", getTextFieldValue(getScrollView(-1), 1)), isEqual(
+                    "均码", getTextFieldValue(getScrollView(-1), 2)));
     tapReturn();
 
     tapMenu("盘点管理", "按批次查");
@@ -620,6 +603,7 @@ function test180023() {
     var batch1 = qr.data[0]["批次"];
     var ret1 = isEqual(batch1, batch);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test180024() {
@@ -636,9 +620,8 @@ function test180024() {
 
     tapFirstText();
     tapButton(getScrollView(-1), 2);
-    var qr = getQRDet();
-    var ret = isAnd(isEqual("", qr.data[2]["货品"]),
-            isEqual("", qr.data[2]["数量"]));
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(-1), 0)),
+            isEqual("", getTextFieldValue(getScrollView(-1), 3)));
     tapReturn();
 
     logDebug(" ret=" + ret);
@@ -1109,7 +1092,7 @@ function test180033() {
     // isAqualOptime(opTime,qr.data[0]["操作日期"], 2)
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-0101", "到" : getToday() };
+    var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-01-01", "到" : getToday() };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
@@ -1189,27 +1172,17 @@ function test180037() {
     return ret && ret1;
 }
 function test180037_180034_180035() {
-    // tapMenu("盘点管理", "盈亏表");
-    // var ret = false;
-    // tap(getTextField(window, 0));
-    // var texts = getStaticTexts(getPopView());
-    // for (var i = 0; i < texts.length; i++) {
-    // var v = texts[i].name();
-    // if (isIn("常青店", v)) {
-    // ret = true;
-    // break;
-    // }
-    // }
-    // delay();
-    // tapKeyboardHide();
-    // target.frontMostApp().mainWindow().popover().dismiss();
-    // query();ret &&"ret=" + ret +
+    tapMenu("盘点管理", "盈亏表");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : "常青店", "款号" : "k300", "日期从" : getDay(-30) };
+    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : batc, "款号" : "k300",
+        "日期从" : getDay(-30), "日期到" : getDay(-30) };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
 
     var a = qr.data[0]["款号"];
     var a1 = qr.data[0]["名称"];
@@ -1222,9 +1195,10 @@ function test180037_180034_180035() {
 
     tapButton(window, CLEAR);
     var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
-            getTextFieldValue(window, 1)), isEqual(getToday(),
-            getTextFieldValue(window, 2)), isEqual(getToday(),
-            getTextFieldValue(window, 3)));
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)), isEqual("", getTextFieldValue(window, 3)), isEqual(
+            getToday(), getTextFieldValue(window, 4)), isEqual(getToday(),
+            getTextFieldValue(window, 5)));
 
     logDebug(", ret1=" + ret1 + ", ret2=" + ret2);
     return ret1 && ret2;
@@ -1254,10 +1228,6 @@ function test180042Prepare() {
     editSalesBillNoColorSize(json);
 }
 function test180042() {
-    // var p = "全局设置";
-    // var cond = "p.isVisible()";
-    // waitUntil(cond, 10);
-
     var qo, o, ret = true;
     qo = { "备注" : "不允许修改盘点之前出入库流水" };
     o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
@@ -1267,8 +1237,7 @@ function test180042() {
     o = { "新值" : "0", "数值" : [ "没有价格", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    test180042Prepare();
-    // 部分处理
+    test180042Prepare();// 部分处理
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
     var josn = { "明细" : [ { "货品" : "k300", "数量" : r } ] };
@@ -1290,29 +1259,24 @@ function test180042() {
     query(fields);
 
     tapFirstText();
-
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 50 } ] };
     editCheckAddDetNoColorSize(josn);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "盘点之前的流水不允许修改");
-
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
     query();
 
     tapFirstText();
-
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret2 = false;
     if (isIn(alertMsg, "盘点之前的流水不允许修改")) {
         ret2 = true;
@@ -1325,14 +1289,18 @@ function test180042() {
     query(fields);
 
     tapFirstText();
-
-    var f3 = new TField("数量", TF, 3, "11");
+    var idx;
+    if (ipadVer >= "7.21") {
+        idx = 4;
+    } else {
+        idx = 3;
+    }
+    var f3 = new TField("数量", TF, idx, "11");
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(1), fields);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret3 = false;
     if (isIn(alertMsg, "盘点之前的流水不允许修改")) {
         ret3 = true;
@@ -1378,14 +1346,12 @@ function test180042_1() {
     query(fields);
 
     tapFirstText();
-
     var f3 = new TField("数量", TF, 3, "50");
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret = false;
     if (isIn(alertMsg, "全盘之前出入库流水不允许修改")) {
         ret = true;
@@ -1398,14 +1364,12 @@ function test180042_1() {
     query(fields);
 
     tapFirstText();
-
     var f3 = new TField("数量", TF, 3, "11");
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret1 = false;
     if (isIn(alertMsg, "全盘之前出入库流水不允许修改")) {
         ret1 = true;
@@ -1418,15 +1382,19 @@ function test180042_1() {
     query(fields);
 
     tapFirstText();
-
+    var idx;
+    if (ipadVer >= "7.21") {
+        idx = 4;
+    } else {
+        idx = 3;
+    }
     var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "11");
+    var f3 = new TField("数量", TF, idx, "11");
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret2 = false;
     if (isIn(alertMsg, "全盘之前出入库流水不允许修改")) {
         ret2 = true;
@@ -2416,31 +2384,14 @@ function test180053() {
         ret = ret && sortByTitle("操作日期", IS_OPTIME);
         ret = ret && sortByTitle("操作人");
     }
-
     query();
 
-    tapMenu("盘点管理", "处理记录");
-    var ret1 = false;
-    tap(getTextField(window, 2));
-    var texts = getStaticTexts(getPopView());
-    for (var i = 0; i < texts.length; i++) {
-        var v = texts[i].name();
-        if (isIn("常青店", v)) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    target.frontMostApp().mainWindow().popover().dismiss();
-    query();
-
-    return ret && ret1;
+    return ret;
 }
 function test180054() {
     tapMenu("盘点管理", "库存表");
     var keys = { "shop" : "常青店", "code" : "3035", "name" : "jkk",
-        "brand" : "Adidas", "season" : "春季", "day1" : "2015-1-1",
+        "brand" : "Adidas", "season" : "春季", "day1" : "2015-01-01",
         "day2" : getToday() };
     var fields = checkMaterialFields(keys);
     setTFieldsValue(window, fields);

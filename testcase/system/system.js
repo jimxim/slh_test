@@ -447,7 +447,7 @@ function test210018_5() {
 function test210018_6() {
     tapMenu("系统设置", "小票信息");
     tapFirstText(getScrollView(), TITLE_SEQ, 6);
-    var keys = { "帐号" : "建行6227000943230037636" };
+    var keys = { "账号" : "建行6227000943230037636" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
@@ -465,7 +465,7 @@ function test210018_6() {
     var b = getTextFieldValue(getScrollView(), 5);
     var ret1 = isEqual("建行6227000943230037636", b);
 
-    keys = { "帐号" : "农行 14233232443-1-3" };
+    keys = { "账号" : "农行 14233232443-1-3" };
     fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, OK);
@@ -528,14 +528,21 @@ function test210022() {
 function test210020_210021() {
     runAndAlert("test210020Clear", OK);
     tapPrompt();
+    var cond;
     if (ipadVer >= "7.21") {
-        var cond = "isIn(alertMsg, '清理刷新结束')";
+        cond = "isIn(alertMsg, '清理刷新结束')";
     } else {
-        var cond = "isIn(alertMsg, '清理和刷新成功')";
+        cond = "isIn(alertMsg, '清理和刷新成功')";
     }
     waitUntil(cond, 300);
 
-    var ret = isIn(alertMsg, "清理和刷新成功");
+    var Msg;
+    if (ipadVer >= "7.21") {
+        Msg = "清理刷新结束";
+    } else {
+        Msg = "清理和刷新成功";
+    }
+    var ret = isIn(alertMsg, Msg);
 
     return ret;
 }
@@ -569,7 +576,6 @@ function test210023() {
 }
 function test210024() {
     tapMenu("系统设置", "人员列表");
-
     var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
@@ -1119,8 +1125,8 @@ function test210039_1_210068() {
 
     tapFirstText();
     var qr = getQRDet();
-    var ret1 = isAnd(isEqual("", qr.data[0]["颜色"]), isEqual("",
-            qr.data[0]["尺码"]), isEqual("", qr.data[1]["颜色"]), isEqual("",
+    var ret1 = isAnd(isEqual(null, qr.data[0]["颜色"]), isEqual(null,
+            qr.data[0]["尺码"]), isEqual(null, qr.data[1]["颜色"]), isEqual(null,
             qr.data[1]["尺码"]));
     tapReturn();
 
