@@ -140,7 +140,7 @@ function ts140001() {
     var outExp = qr.data[0];
     tapFirstText();
     var expData = getQRDet().data;
-    tapButton(window, RETURN);
+    tapReturn();
 
     var v = expData[0]["货品"];
     var v1 = v.split(",");
@@ -148,6 +148,7 @@ function ts140001() {
     var name = v1[1];
 
     tapMenu("门店调入", "在途调拨");
+    keys = { "调出门店" : "中洲店", "批次从" : outExp["批次"], "批次到" : outExp["批次"] };
     fields = shopInFlitFields(keys);
     query(fields);
     qr = getQR();
@@ -158,7 +159,9 @@ function ts140001() {
         tapFirstText();
         var sIndata = getQRDet().data;
         tapButton(window, RETURN);
-        ret = isAnd(ret, isEqualDyadicArray(expData, sIndata));
+        for (var i = 0; i < expData.length; i++) {
+            ret = isAnd(ret, isEqualObject2(expData[i], sIndata[i]));
+        }
 
         // 验证未调入单的批次应该不显示
         tapMenu2("按批次查");
@@ -196,6 +199,7 @@ function ts140001() {
         var date = getDetTS100006(code);
 
         tapMenu("门店调入", "在途调拨");
+        tapButton(window, QUERY);
         tapFirstText();
         editShopInFlitting();
 
@@ -206,7 +210,7 @@ function ts140001() {
         // 清除
         tapButton(window, CLEAR);
         for (var i = 0; i < 5; i++) {
-            if (i == 0 || i == 1) {
+            if (i == 0) {
                 ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
             } else {
                 ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -368,10 +372,11 @@ function ts140011() {
 
     var title = getDetSizheadTitle();
     var f = new TField("数量", TF, title["数量"], "30");
-    setTFieldsValue(getScrollView(), [ f ]);
+    setTFieldsValue(getScrollView(-1), [ f ]);
     tapReturn();
 
-    delay();
+    tapMenu2("在途调拨");
+    tapButton(window, QUERY);
     tapFirstText();
     var data2 = getQRDet().data;
     tapReturn();

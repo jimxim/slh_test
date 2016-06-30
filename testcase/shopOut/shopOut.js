@@ -1,5 +1,3 @@
-//ZhangY <15068165765 at 139.com> 20151013
-var outBatch = {};// 调出批次
 var xCache;
 /**
  * 中洲店总经理验证
@@ -412,7 +410,7 @@ function ts150007() {
     editShopOutDecruitIn(json, colorSize);
 
     var title = getDetSizheadTitle();
-    var text = getTextField(getScrollView(), title["备注"]);
+    var text = getTextField(getScrollView(-1), title["备注"]);
     tap(text);
     // 批量调出界面输入负数量时,这个款号对应的备注信息要允许用户随便输入信息,不能是下拉框选择的方式
     var view = getPopView(window, 0);
@@ -420,18 +418,12 @@ function ts150007() {
 
     if (ret) {
         var f = new TField("备注", TF, title["备注"], "abc123");
-        setTFieldsValue(getScrollView(), [ f ]);
+        setTFieldsValue(getScrollView(-1), [ f ]);
     } else {
         // 防止出现下拉框挡住返回按钮
         target.frontMostApp().mainWindow().popover().dismiss();
     }
     editShopOutSave({});
-
-    // tapMenu2("按批次查");
-    // query();
-    // var qr = getQR();
-    // outBatch["ts150007"] = qr.data[0]["批次"];
-
     return ret;
 }
 
