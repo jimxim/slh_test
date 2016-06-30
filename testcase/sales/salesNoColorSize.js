@@ -5685,9 +5685,7 @@ function test170215() {
     delay(5);
 
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "保存成功，是否打印");
-
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -5742,11 +5740,9 @@ function test170216() {
     json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "2" } ], "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    json = { "客户" : r, "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
+    json = { "客户" : r, "特殊货品" : { "抹零" : 19, "打包费" : 30 },
+        "明细" : [ { "货品" : "3035", "数量" : "-2" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
-    json = { "明细" : [ { "货品" : "3035", "数量" : "-2" } ] };
-    editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
     tapPrompt();
@@ -5754,9 +5750,15 @@ function test170216() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = isIn(alertMsg1, "操作提醒，该款属于补货不能退货 ]\n [3035,jkk");
 
-    json = { "明细" : [ { "货品" : "3035", "数量" : 3 } ], "onlytest" : "yes" };
-    editSalesBillDetNoColorSize(json);
-
+    var idx;
+    if (ipadVer >= "7.21") {
+        idx = 4;
+    } else {
+        idx = 3;
+    }
+    var f4 = new TField("数量", TF, idx, 3);
+    var fields = [ f4 ];
+    setTFieldsValue(getScrollView(-1), fields);
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -5801,10 +5803,13 @@ function test170226() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewk" + getTimestamp(6);
-    var r1 = "1" + getTimestamp(3);
-    tapButton(window, "新增货品");
-    var json = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
-    editQuickAddGoods(json, "yes");
+    tapMenu("货品管理", "新增货品+");
+    var r = "khao" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : r, "进货价" : "500" };
+    var fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "-30" } ],
@@ -5813,7 +5818,7 @@ function test170226() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "保存成功");
+    var ret1 = isIn(alertMsg, "保存成功");
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -5838,7 +5843,7 @@ function test170226() {
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    return ret;
+    return ret && ret1;
 }
 function test170227() {
     var qo, o, ret = true;
@@ -5852,27 +5857,33 @@ function test170227() {
 
     tapMenu("货品管理", "新增货品+");
     var r = "khao" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : r, "进货价" : "200" }
+    var keys = { "款号" : r, "名称" : r, "进货价" : "200" };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : r, "数量" : "10" } ],
-        "备注" : "zdbz" };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : r, "数量" : 10 } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : r, "数量" : "-5" } ] };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : r, "数量" : -5 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
     query();
 
     tapFirstText();
-    json = { "明细" : [ { "货品" : r, "数量" : "-6" } ] };
-    editSalesBillDetNoColorSize(json);
+    var idx;
+    if (ipadVer >= "7.21") {
+        idx = 4;
+    } else {
+        idx = 3;
+    }
+    var f3 = new TField("数量", TF, idx, -6);
+    var fields = [ f3 ];
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     var o1 = { "继续开单保存" : "仍然保存" };
@@ -5967,31 +5978,37 @@ function test170229() {
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
-
     var o1 = { "继续开单保存" : "仍然保存" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
 
     tapPrompt();
-    var ret = isIn(alertMsg, "销售价不能为零，请核对款号[k200]价格是否维护");
+    var ret1 = isIn(alertMsg, "销售价不能为零，请核对款号[k200]价格是否维护");
 
-    json = { "明细" : [ { "货品" : "k200", "数量" : "20" },
-            { "货品" : r, "数量" : "-10", "单价" : 0 } ] };
-    editSalesBillDetNoColorSize(json);
+    var idx, idx1;
+    if (ipadVer >= "7.21") {
+        idx = 5;
+        idx1 = 13;
+    } else {
+        idx = 4;
+        idx1 = 11;
+    }
+    var f5 = new TField("单价", TF, idx, 170);
+    var f13 = new TField("单价", TF, idx1, 0);
+    var fields = [ f5, f13 ];
+    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
-
     var o1 = { "继续开单保存" : "仍然保存" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
 
     tapPrompt();
-
-    var ret = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[" + r + "]价格是否维护"));
-
+    var ret2 = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[" + r + "]价格是否维护"));
     tapReturn();
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170239() {
     var qo, o, ret = true;
@@ -6112,7 +6129,7 @@ function test170239() {
 
     tapMenu("销售订货", "新增订货+");
     var ret6 = false;
-    var f = new TField("店员", TF_AC, 3, "2", -1);
+    var f = new TField("店员", TF_AC, 5, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -10205,6 +10222,10 @@ function test170552() {
 }
 function test170555_170611() {
     var qo, o, ret = true;
+    qo = { "备注" : "信用额度" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "信用额度默认值" };
     o = { "新值" : "1", "数值" : [ "1" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -10244,11 +10265,9 @@ function test170555_170611() {
 
     saveAndAlertOk();
     tapPrompt();
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为200, 大于信用额度金额1");
-
+    var ret2 = isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为200, 大于信用额度金额1");
     tapReturn();
 
     tapMenu("往来管理", "客户查询");
@@ -10259,18 +10278,18 @@ function test170555_170611() {
     tapFirstText();
     keys = { "名称" : r1, "信用额度" : 1 };
     fields = editCustomerFields(keys);
-    var ret1 = checkShowFields(getScrollView(-1), fields);
+    var ret3 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
     tapButton(window, "新增+");
-    var r2 = "anewXYKH2" + getTimestamp(3) + getTimestamp(4);
+    var r2 = "anewXYKH2" + getTimestamp(6);
     var keys = { "名称" : r2 };
     var fields = editQuickAddCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
+    setTFieldsValue(getPopView(window, -1), fields);
     delay();
-    tapReturn();
+    tapButton(getPop(), OK);
+    tapButton(getPop(), CLOSE);
 
     var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "未付" : "yes",
         "onlytest" : "yes" };
@@ -10278,22 +10297,18 @@ function test170555_170611() {
 
     saveAndAlertOk();
     tapPrompt();
-
-    var ret2 = isIn(alertMsg, "保存成功");
-
+    var ret4 = isIn(alertMsg, "保存成功");
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-
     saveAndAlertOk();
     tapPrompt();
 
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为200, 大于信用额度金额1");
-
+    var ret5 = isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为200, 大于信用额度金额1");
     tapReturn();
 
     tapMenu("往来管理", "客户查询");
@@ -10301,17 +10316,21 @@ function test170555_170611() {
     var qFields = queryCustomerFields(keys);
     query(qFields);
     tapFirstText();
-
+    keys = { "名称" : r2, "信用额度" : 1 };
     fields = editCustomerFields();
-    var ret1 = checkShowFields(getScrollView(-1), fields);
+    var ret6 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170556_170610() {
     var qo, o, ret = true;
+    qo = { "备注" : "信用额度" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "信用额度默认值" };
     o = { "新值" : "0", "数值" : [ "0" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -10330,6 +10349,8 @@ function test170556_170610() {
     var qFields = queryCustomerFields(keys);
     query(qFields);
     tapFirstText();
+    keys = { "名称" : r, "信用额度" : 0 };
+    fields = editCustomerFields(keys);
     var ret1 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
@@ -10337,7 +10358,7 @@ function test170556_170610() {
     tapButton(window, "新增+");
     var r1 = "anewkh" + getTimestamp(6);
     var json = { "名称" : r1 };
-    var fields = editQuickAddCustomerFields(keys);
+    var fields = editQuickAddCustomerFields(json);
     setTFieldsValue(getPopView(window, -1), fields);
     delay();
     tapButton(getPop(), OK);
@@ -10357,16 +10378,16 @@ function test170556_170610() {
     qFields = queryCustomerFields(keys);
     query(qFields);
     tapFirstText();
-
-    fields = editCustomerFields();
+    keys = { "名称" : r1, "信用额度" : 0 };
+    fields = editCustomerFields(keys);
     var ret2 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
     tapButton(window, "新增+");
-    var r2 = "anewXYKH2" + getTimestamp(3) + getTimestamp(4);
+    var r2 = "anewXYKH2" + getTimestamp(6);
     json = { "名称" : r2 };
-    var fields = editQuickAddCustomerFields(keys);
+    var fields = editQuickAddCustomerFields(json);
     setTFieldsValue(getPopView(window, -1), fields);
     delay();
     tapButton(getPop(), OK);
@@ -10389,20 +10410,21 @@ function test170556_170610() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功");
+    var ret3 = isIn(alertMsg1, "保存成功");
 
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r2 };
     qFields = queryCustomerFields(keys);
     query(qFields);
     tapFirstText();
-
-    fields = editCustomerFields();
-    var ret2 = checkShowFields(getScrollView(-1), fields);
+    keys = { "名称" : r2, "信用额度" : 0 };
+    fields = editCustomerFields(keys);
+    var ret4 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170558() {
     var qo, o, ret = true;
