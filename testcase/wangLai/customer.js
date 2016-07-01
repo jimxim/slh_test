@@ -67,7 +67,7 @@ function testCustomer002() {
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "ts110034");
     run("【往来管理-客户活跃度】未拿货天数", "ts110035");
     run("【往来管理-客户活跃度】异地发货模式下查看客户门店帐下未拿货天数", "test110058");
-    run("开单模式2", "setPaymethod2");//防止110058出错卡在开单模式15
+    run("开单模式2", "setPaymethod2");// 防止110058出错卡在开单模式15
     run("【往来管理-积分查询】积分数值对比", "test110036_3");
 
     run("【往来管理-新增厂商】新增厂商", "ts110038");
@@ -3755,9 +3755,10 @@ function testCheckCustomerDropDownList() {
 
     tapMenu("往来管理", "新增客户+");
     var view = getScrollView();
-    f = new TField("店员", TF_AC, 7, "y", -1);
+    var fields = editCustomerFields([ "店员", "上级客户" ]);
+    f = new TField("店员", TF_AC, fields["店员"].index, "y", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
-    f = new TField("客户", TF_AC, 8, "yun", -1);
+    f = new TField("客户", TF_AC, fields["上级客户"].index, "yun", -1);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 

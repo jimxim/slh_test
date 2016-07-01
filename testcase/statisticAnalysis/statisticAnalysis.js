@@ -190,7 +190,7 @@ function test190013() {
     query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
-    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+    var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
         "金额" : rm, "备注" : r, "操作人" : "总经理" };
     var ret = isEqualObject(expected, qr.data[0]);
 
@@ -228,7 +228,7 @@ function test190013() {
     query();
     qr = getQR();
     expected = { "批次" : batch, "类型" : "收入单", "账户" : "东灵测试-现金账户", "金额" : rm,
-        "操作人" : "总经理", "备注" : "" };
+        "操作人" : "总经理", "备注" : r };
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
     return ret;
@@ -260,7 +260,7 @@ function test190015() {
         "明细" : [ { "收入类别" : "订金", "金额" : "888", "备注" : "123" } ],
         "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     var ret = isEqual("", getTextFieldValue(getScrollView(-1), 0))
             && isEqual("", getTextFieldValue(getScrollView(-1), 1))
             && isEqual("", getTextFieldValue(getScrollView(-1), 2));
@@ -338,7 +338,7 @@ function test190017() {
     query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
-    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+    var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
         "金额" : 123.45, "备注" : r, "操作人" : "总经理" };
     var ret = isEqualObject(expected, qr.data[0]);
 
@@ -377,7 +377,7 @@ function test190017() {
     query();
     qr = getQR();
     expected = { "批次" : batch, "类型" : "支出单", "账户" : "东灵测试-现金账户",
-        "金额" : -123.45, "操作人" : "总经理", "备注" : "" };
+        "金额" : -123.45, "操作人" : "总经理", "备注" : r };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     return ret;
@@ -407,7 +407,7 @@ function test190019() {
         "明细" : [ { "收入类别" : "物业", "金额" : "888", "备注" : "123" } ],
         "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     var ret = isEqual("", getTextFieldValue(getScrollView(-1), 0))
             && isEqual("", getTextFieldValue(getScrollView(-1), 1))
             && isEqual("", getTextFieldValue(getScrollView(-1), 2));
@@ -429,6 +429,7 @@ function test190020() {
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
+    query();
     var qr = getQR();
     ret = isAnd(ret, isEqual("123.45", qr.data[0]["金额"]));
 
@@ -455,6 +456,7 @@ function test190021() {
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支表");
+    query();
     var qr = getQR();
     ret = isAnd(ret, isEqual("123.45", qr.data[0]["金额"]));
 
@@ -585,6 +587,7 @@ function test190006() {
     tapFirstText();
     tapButton(window, RETURN);
 
+    tapButton(window, QUERY);
     qr = getQR();
     var b = qr.data[0];
     var ret = isEqualObject(a, b);
@@ -1063,7 +1066,7 @@ function test190025_3() {
     var n2 = getSACountsQR("代", "收入", "销售单");
     var exp = { "销数" : 8, "销额" : 1600, "实销数" : 8, "实销额" : 1600, "代收" : 1600,
         "代收收款" : 1600 };
-    expected = { "类型" : "代收收款", "金额" : 1600, "操作人" : "总经理", "备注" : "单位[小王]" };
+    expected = { "类型" : "代收收款", "金额" : 1600, "操作人" : "总经理", "备注" : "单位[顺丰快递]" };
     ret = isAnd(ret, test190025Field1(expected), isEqual(1600, n2 - n1),
             isEqualObject(exp, subObject(jo1, jo2)));
     return ret;
@@ -2682,7 +2685,7 @@ function test190134() {
     ret = ret && sortByTitle("成本额", IS_NUM);
     ret = ret && sortByTitle("利润", IS_NUM);
 
-    var arr = [ "实销数", "销售额", "成本额" , "利润"];
+    var arr = [ "实销数", "销售额", "成本额", "利润" ];
     ret = isAnd(ret, isEqualCounts(arr));
 
     return ret;

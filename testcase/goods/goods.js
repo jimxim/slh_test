@@ -276,7 +276,7 @@ function testGoods002() {
     run("【货品管理-更多-库存调整单】当前库存有小数时进行库存调整", "ts100117");
     run("【货品查询-新增货品】检查没有加工价的版本没有看到是否加工及加工价字段", "ts100110");
     run("【 货品管理-基本设置 】停用价格名称", "ts100144");
-    run("【货品管理-基础设置-价格名称】修改价格名称重复", "ts100122");
+    
     // 开单模式5
     // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
     // "test10_fuzzyQueryAndDropDownListCheck");
@@ -2115,7 +2115,7 @@ function ts100095_96() {
 
     // 新增配码后直接点击保存
     tapNaviRightButton();// 保存
-    var ret = isInAlertMsgs("单据重复保存");
+    var ret = isInAlertMsgs("单据重复");
 
     // 选择上述一样的尺码、不同的数量，点保存
     ts100095Field("26", 15);
@@ -2927,8 +2927,9 @@ function test100073_100074() {
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), 0)));
     tapReturn();
 
+    tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqualObject(data1, qr.data[0]));
+    ret = isAnd(ret, isEqualObject(data1, qr.data[0]));//自动返回仓位列表
 
     return ret;
 }
@@ -2940,8 +2941,7 @@ function test100068_100069() {
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("货品管理", "getMenu_More", "仓位列表");
     query();
@@ -3894,7 +3894,8 @@ function ts100121() {
 }
 function ts100122() {
     tapMenu("货品管理", "基本设置", "价格名称");
-    tapFirstText();
+    // delay();//
+    tapFirstText(getScrollView(), TITLE_SEQ, 4);
     var keys = { "名称" : "打包价" };
     var fields = goodsPriceNameFields(keys);
     setTFieldsValue(getScrollView(), fields);

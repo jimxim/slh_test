@@ -414,6 +414,37 @@ function tapNaviClose(max) {
         }
     }
 }
+function tapStaticTextByValue(view1, txt1) {
+    var texts = getStaticTexts(view1);
+    var index = -1, v;
+    for (var i = 0; i < texts.length; i++) {
+        var t = texts[i];
+        try {
+            v = t.value();
+        } catch (e) {
+            logError(e);
+        }
+        if (v == txt1) {
+            index = i;
+            break;
+        }
+    }
+
+    var e1 = texts[index];
+    try {
+        if (e1 && !e1.isVisible()) {
+            e1.scrollToVisible();
+        }
+        tap(e1);
+    } catch (e) {
+        try {
+            var e2 = texts[idx + 2];
+            e2.scrollToVisible();
+        } catch (e) {
+            tap(e1);
+        }
+    }
+}
 /**
  * 点击第一个内容为希望值的静态文本
  * @param name 默认为1，即点击第一条数据

@@ -16,8 +16,9 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "testCheckCustomerDropDownList");//
 
- run("测试用例", "ts150007");//
+ run("测试用例", "test190006");//
 
+// run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
 }
 
@@ -28,13 +29,7 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 //
-    var title = getDetSizheadTitle();
-    var text = getTextField(getScrollView(), title["备注"]);
-    logDebug("title['备注']="+title['备注']);
-    tap(text);
 
-// var view = getPopView(window, 0);
-// var ret = isUIAElementNil(view);
 // debugObject(gCache,"gCache");
   return true;
 }
