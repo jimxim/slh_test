@@ -78,7 +78,6 @@ function test200017() {
     fields = salesReturnFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
-
     qr = getQR();
     var t = qr.counts["数量"];
 

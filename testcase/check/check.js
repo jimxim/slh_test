@@ -590,6 +590,7 @@ function test180023() {
     editCheckAddDetNoColorSize(josn);
 
     tapReturn(window, CANCEL);
+    delay(2);
 
     var ret = isAnd(isEqual(100, getTextFieldValue(getScrollView(-1), 3)),
             isEqual("3035,jkk", getTextFieldValue(getScrollView(-1), 0)),
@@ -613,15 +614,12 @@ function test180024() {
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "按批次查");
-    var keys = [ "门店" ];
-    var fields = queryCheckBatchFields(keys);
-    changeTFieldValue(fields["门店"], "常青店");
-    query(fields);
+    query();
 
     tapFirstText();
     tapButton(getScrollView(-1), 2);
-    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(-1), 0)),
-            isEqual("", getTextFieldValue(getScrollView(-1), 3)));
+    var ret = isAnd(isEqual("", getTextFieldValue(getScrollView(-1), 8)),
+            isEqual("", getTextFieldValue(getScrollView(-1), 11)));
     tapReturn();
 
     logDebug(" ret=" + ret);
@@ -646,7 +644,6 @@ function test180025() {
     } else {
         // if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
         ret = false;
-
         tapReturn();
         // }
     }
@@ -668,15 +665,17 @@ function test180025_1() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var keys = { "款号" : "4562", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
 
-    keys = { "款号" : "3035", "门店" : "中洲店" };
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    var qKeys = [ "门店" ];
+    var qFields = queryGoodsCodeStockFields(qKeys);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var b = qr.data[0]["库存"];
 
@@ -688,7 +687,7 @@ function test180025_1() {
 
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : r },
+    var josn = { "明细" : [ { "货品" : "4562", "数量" : r },
             { "货品" : "k200", "数量" : 0 }, { "货品" : "8989", "数量" : -22 } ] };
     editCheckAddNoColorSize(josn);
 
@@ -720,16 +719,17 @@ function test180025_1() {
     // qr.data[0]["操作日期"], 2));
 
     tapMenu("货品管理", "款号库存");
-    var keys = { "款号" : "3035", "门店" : "常青店" };
+    var keys = { "款号" : "4562", "门店" : "常青店" };
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
     var ret2 = isAnd(isEqual(r, qr.data[0]["库存"]),
             !isEqual(a, qr.data[0]["库存"]));
 
-    keys = { "款号" : "3035", "门店" : "中洲店" };
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    qFields = queryGoodsCodeStockFields(qKeys);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     qr = getQR();
     var ret3 = isEqual(b, qr.data[0]["库存"]);
 
@@ -760,7 +760,7 @@ function test180025_1() {
         var ret5 = true;
     }
     // (r－22)为盘点总数
-    ret5 = ret5 && isEqual(Number(r - 22), m);
+    ret5 = ret5 && isAqualNum(Number(r - 22), m);
 
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -1092,7 +1092,8 @@ function test180033() {
     // isAqualOptime(opTime,qr.data[0]["操作日期"], 2)
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-01-01", "到" : getToday() };
+    var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-01-01",
+        "日期到" : getToday() };
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
@@ -1178,7 +1179,7 @@ function test180037_180034_180035() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : batc, "款号" : "k300",
+    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : batch, "款号" : "k300",
         "日期从" : getDay(-30), "日期到" : getDay(-30) };
     var fields = checkProfitAndLossFields(keys);
     query(fields);

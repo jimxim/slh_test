@@ -64,8 +64,14 @@ function testSalesPrepare003() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-
     var ret = qr;
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt" };
+    editSalesBillCustomer(json);
+    tapButton(window, "核销");
+    var r = "1" + getTimestamp(2);
+    editExchangeScore(r);
 
     return ret;
 }
@@ -81,18 +87,8 @@ function testSalesPrepare004() {
 
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
 
-    tapButton(getScrollView(-1, 0), "积分兑换");
     var r = "9" + getTimestamp(6);
-    var g0 = new TField("兑换积分*", TF, 0, r);
-    var g1 = new TField("兑换金额*", TF, 1, r);
-    var fields = [ g0, g1 ];
-    setTFieldsValue(getPopView(), fields);
-    tapButton(getPop(), OK);
-    delay();
-
-    tapNaviLeftButton();
-    tapReturn();
-
+    editExchangeScore(r);
     query();
     var qr = getQR();
 

@@ -1170,7 +1170,7 @@ function test170028_170038() {
 }
 function test170028_170036_170487() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx",
+    var json = { "客户" : "lx", "店员" : "000",
         "明细" : [ { "货品" : "3035", "数量" : "-1", "备注" : "退货" } ], "备注" : "zdbz",
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -1197,7 +1197,7 @@ function test170028_170036_170487() {
     tapReturn();
 
     tapMenu("销售开单", "按明细查");
-    var keys = { "款号" : "3035", "款号名称" : "jkk", "客户" : "lx", "店员" : "000,",
+    var keys = { "客户" : "lx", "款号" : "3035", "款号名称" : "jkk", "店员" : "000,",
         "门店" : "常青店", "类型" : "退货", "备注" : "退货", "适用价格" : "打包价" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
@@ -2340,7 +2340,7 @@ function test170278_170285_170284() {
     var num = Number(qr.data[0]["批次"]);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 1 } ],
         "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
@@ -2353,7 +2353,7 @@ function test170278_170285_170284() {
 
     tapMenu("销售开单", "物流单");
     var keys = { "客户" : "ls", "日期从" : getToday(), "日期到" : getToday(),
-        "物流商" : "圆通速递", "批次从" : num, "批次到" : num + 1, "门店" : "常青店",
+        "物流商" : "圆通速递", "批次从" : num - 1, "批次到" : num + 1, "门店" : "常青店",
         "运单号" : "123", "是否收款" : "否", "是否作废" : "否" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
@@ -2581,13 +2581,11 @@ function test170287() {
     qr = getQR();
     var xj = qr.data[0]["现金"];
     var ds = qr.data[0]["代收收款"];
-
     ret = isAnd(ret, isEqual(totalDs, qr.data[0]["代收收款"]));
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
     query();
     var qr2 = getQR();
-
     ret = isAnd(ret, isEqual(xj, qr2.data[0]["现金"]));
 
     tapMenu("统计分析", "收支流水");
@@ -3744,7 +3742,7 @@ function test170308() {
     keys = { "日期从" : getDay(-30), "款号" : "3035" };
     fields = salesCodeFields(keys);
     query(fields);
-    qr = getQR();
+    qr = getQR(getScrollView(-1), TITLE_SEQ, 10);
 
     var b4 = qr.data[0]["库存"];
     var b5 = qr.data[0]["实销数"];
@@ -3752,8 +3750,7 @@ function test170308() {
     keys = { "日期从" : getDay(-30) };
     fields = salesCodeFields(keys);
     query(fields);
-    qr = getQR();
-
+    qr = getQR(getScrollView(-1), TITLE_SEQ, 10);
     var totalSale = qr.counts["实销数"];
 
     tapMenu("货品管理", "当前库存");
@@ -3794,7 +3791,7 @@ function test170308() {
     query(fields);
     qr = getQR();
 
-    ret3 = isAnd(isEqual(totalSale, qr.counts["数量"]));
+    ret3 = isAnd(ret3, isEqual(totalSale, qr.counts["数量"]));
 
     // qo = { "备注" : "支持异地仓库" };
     // o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
@@ -3916,7 +3913,7 @@ function test170313() {
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(getScrollView(-1), TITLE_SEQ, 6);
     var a = qr.data[0]["名称"];
     var totalReturn = qr.counts["数量"];
     var totalMoney = qr.counts["小计"];
@@ -3929,7 +3926,7 @@ function test170313() {
     changeTFieldValue(fields["类型"], "换码");
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    qr = getQR();
+    qr = getQR(getScrollView(-1), TITLE_SEQ, 6);
     var b = qr.data[0]["名称"];
     var totalReturn1 = qr.counts["数量"];
     var totalMoney1 = qr.counts["小计"];
@@ -4211,10 +4208,10 @@ function test170320_170319() {
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "店员" : "000" };
     var fields = salesStaffFields(keys);
     query(fields);
-    var qr = getQR();
+    var qr = getQR(getScrollView(-1), TITLE_SEQ, 16);
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0;
     var sum7 = 0, sum8 = 0, sum9 = 0, sum10 = 0, sum11 = 0, sum12 = 0, sum13 = 0;
-    var qr = getQR();
+    qr = getQR(getScrollView(-1), TITLE_SEQ, 16);
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
