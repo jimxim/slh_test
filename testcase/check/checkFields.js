@@ -289,7 +289,7 @@ function testCheckPlanFields() {
 }
 
 function checkPlanFields(keys, show) {
-    return getTFields("checkCheckPlanField", keys, show);
+    return getTFields("checkPlanField", keys, show);
 }
 function checkPlanField(key, show) {
     var f;
@@ -302,7 +302,6 @@ function checkPlanField(key, show) {
     case "是否处理":
         f = new TField("款号", TF_SC, 1, "是");
         break;
-
     default:
         logWarn("未知key＝" + key);
     }

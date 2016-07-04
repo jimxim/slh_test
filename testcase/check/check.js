@@ -78,7 +78,28 @@ function checkPrepare() {
     return ret;
 }
 function checkPrepare1() {
+    tapMenu("盘点管理", MORE, "盘点计划表");
+    var keys = { "门店" : "常青店", "是否处理" : "否" };
+    var fields = checkPlanFields(keys);
+    query(fields);
+    var qr = getQR();
+    var t1 = qr.total;
+    for (var i = 0; i < t1; i++) {
+        tapFirstText();
+        tapButtonAndAlert("删除计划", OK);
+        tapPrompt();
 
+    }
+    tapButton(window, QUERY);
+    qr = getQR();
+    
+    var ret = false;
+    var t = qr.total;
+    if (t == 0) {
+        ret = true;
+    }
+
+    return ret;
 }
 function test180001_180003_180005() {
     tapMenu("盘点管理", "新增盘点+");
@@ -2496,7 +2517,7 @@ function test180061() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    tapMenu("盘点管理", MORE, "盘点计划表");
     query();
     var qr = getQR();
     var ret3 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按品牌",
