@@ -1514,9 +1514,10 @@ function test190037() {
     var i, sum1 = 0, sum2 = 0;
     // debugElementTree(window);
     tapMenu("统计分析", "综合汇总");
-    var keys = { "门店" : "常青店" };
+    var keys = { "日期从":getDay(-30),"门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
+    
     tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);

@@ -2109,7 +2109,7 @@ function test120037() {
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
-    var title = getDetSizheadTitle({});
+    var title = getSalesBillDetTfObject();
     var a = getTextFieldValue(getScrollView(), title["单价"]);
     ret = isAnd(ret, isEqual("100", a));
     // window.segmentedControls()[2].buttons()["进货价"].isVisible();

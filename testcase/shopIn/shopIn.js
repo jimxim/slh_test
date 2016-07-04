@@ -107,7 +107,7 @@ function ts150013() {
     query();
 
     tapFirstText();
-    var title = getDetSizheadTitle();
+    var title = getSalesBillDetTfObject();
     var ret = isEqual("abc123", getTextFieldValue(getScrollView(), title["备注"]));
 
     var f = new TField("数量", TF, title["数量"], "20");
@@ -120,7 +120,7 @@ function ts150013() {
     tapMenu("门店调出", "按批次查");
     query();
     tapFirstText();
-    title = getDetSizheadTitle();
+    title = getSalesBillDetTfObject();
     setTFieldsValue(getScrollView(), [ f ]);
     editShopOutSave({});
 
@@ -370,7 +370,7 @@ function ts140011() {
     tapFirstText();
     var data1 = getQRDet().data;
 
-    var title = getDetSizheadTitle();
+    var title = getSalesBillDetTfObject();
     var f = new TField("数量", TF, title["数量"], "30");
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapReturn();

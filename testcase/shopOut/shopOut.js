@@ -409,7 +409,7 @@ function ts150007() {
     var json = mixObject(jo, det);
     editShopOutDecruitIn(json, colorSize);
 
-    var title = getDetSizheadTitle();
+    var title = getSalesBillDetTfObject();
     var text = getTextField(getScrollView(-1), title["备注"]);
     tap(text);
     // 批量调出界面输入负数量时,这个款号对应的备注信息要允许用户随便输入信息,不能是下拉框选择的方式

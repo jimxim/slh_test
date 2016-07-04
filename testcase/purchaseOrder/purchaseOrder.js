@@ -854,7 +854,7 @@ function ts130009() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var title = getDetSizheadTitle();
+    var title = getSalesBillDetTfObject();
     var f = new TField("入库数", TF, title["入库数"], "10");
     setTFieldsValue(getScrollView(), [ f ]);
     editSalesBillSave({});
@@ -944,7 +944,7 @@ function ts130012() {
     } else {
         exp.push("实收");
     }
-    var titles = getDetSizheadTitle();
+    var titles = getSalesBillDetTfObject();
     var ret = isAnd(isHasStaticTexts(window, exp), titles.hasOwnProperty("单价"),
             titles.hasOwnProperty("小计"));
 
@@ -980,7 +980,7 @@ function ts130013() {
     } else {
         exp.push("实收");
     }
-    var titles = getDetSizheadTitle();
+    var titles = getSalesBillDetTfObject();
     var ret = isAnd(!isHasStaticTexts(window, exp), !titles
             .hasOwnProperty("单价"), !titles.hasOwnProperty("小计"));
 
@@ -1025,7 +1025,7 @@ function ts130014() {
     query();
     tapFirstText();
     var remarketTFindex = getEditSalesTFindex("客户,厂商", "备");
-    var tfNum = getDetSizheadTitle();
+    var tfNum = getSalesBillDetTfObject();
     // isEqual(getTextViewValue(window, 0), "xx")
     var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"),
             isEqual(getTextFieldValue(getScrollView(), tfNum["备注"]), "123"),

@@ -234,7 +234,7 @@ function getQRDet(view) {
         view = getScrollView(-1);
     }
 
-    var titles = getDetSizheadTitle();
+    var titles = getSalesBillDetTfObject();
     delete titles["明细输入框个数"];
     var title = [];
     for ( var i in titles) {
@@ -395,6 +395,58 @@ function getRandomNum(min, max, dn) {
     }
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
+}
+//
+
+/**
+ * 获取明细输入框个数，标题列号，从0开始
+ * @param idx 明细输入框个数所在视图下标，默认-1
+ * @returns {"货品":0, "颜色":1, "尺码":2,... "明细输入框个数":10 }
+ */
+function getSalesBillDetTfObject(idx) {
+    if (isUndefined(idx)) {
+        idx = -1;
+    }
+    // debugElementTree(window);
+    // 标题以#开头，表示序号，以操作结束
+    var texts = getStaticTexts(window);
+    var title1 = "图";
+    var qrTitle1 = getQResultTitle(texts, title1); // 找不到为0
+    if (qrTitle1.index <= 0) {
+        title1 = "#";
+        qrTitle1 = getQResultTitle(texts, title1);
+    }
+
+    var ret = {};
+    var tfNum = 0, ignore = 0;
+    var y = 0, yPre = 0;
+
+    var view1 = getScrollView(idx);
+    var a1 = view1.elements();
+    for (var i = 0; i < a1.length; i++) {
+        var e = a1[i];
+        yPre = y;
+        y = e.rect().origin.y;
+        // 新增的图片列中的图片目前找到的最大偏移量为5
+        if (yPre > 0 && !isAqualNum(y, yPre, 10)) {
+            break;// 第二行跳出
+        }
+        if (isUIATextField(e)) {
+            tfNum++;
+            var width = e.rect().size.width;
+            // 隐藏的TF，宽度为0,设置为5保险~
+            if (width < 5) {
+                ignore++;
+            } else {
+                var j = qrTitle1.index + tfNum - ignore;
+                var title = texts[j].name();
+                ret[title] = tfNum - 1;
+            }
+        }
+    }
+    ret["明细输入框个数"] = tfNum;
+
+    return ret;
 }
 
 /**
@@ -1364,7 +1416,7 @@ function editLogisticsVerify(o, idx) {
 function editPurInByOrderDet(o) {
     var details = o["入库明细"];
     if (isDefined(details)) {
-        var tfNum = getDetSizheadTitle();
+        var tfNum = getSalesBillDetTfObject();
         var title_num = "入库数";// 采购为入库数，销售为数量
         if (!tfNum.hasOwnProperty("入库数")) {
             title_num = "数量";
