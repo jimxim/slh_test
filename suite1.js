@@ -23,15 +23,15 @@ function test000All() {
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-    tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
-        "现金" : "1000", "刷卡" : [ 400, "银" ], "汇款" : [ 600, "银" ] };
-    editSalesBillNoColorSize(json);
+//    tapMenu("销售开单", ADDBILL);
+//    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+//        "现金" : "1000", "刷卡" : [ 400, "银" ], "汇款" : [ 600, "银" ] };
+//    editSalesBillNoColorSize(json);
 // debugObject(gCache,"gCache");
   return true;
 }

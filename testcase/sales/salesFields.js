@@ -822,7 +822,7 @@ function editSalesBillField(key, show) {
         f = new TField("备注", TV, 0, "123"); //
         break;
     case "汇款":
-        f = new TField("汇款", TF, remitTFindex, 0, "NoNeedReturn");
+        f = new TField("汇款", TF, 12, 0, "NoNeedReturn");//remitTFindex
         break;
     default:
         logWarn("未知key＝" + key);
