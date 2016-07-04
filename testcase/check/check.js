@@ -2450,18 +2450,26 @@ function testAddBrandCheck() {
     tapButton(getScrollView(), 1);
 
     var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[1];
+    var table1 = getTableViews(view1)[0];
     var cells = table1.cells();
     tap(getStaticText(cells["Adidas"], 0));
     // tap(getStaticText(cells["Adidas"], 0));
 
-    tapButton(view1, 2);
+    tapButton(view1, "确定");
 }
 function test180061() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    delay(2);
+    tapPrompt();
+    tapReturn();
+
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
-
     var ret = isIn(alertMsg, "门店不能为空");
 
     var keys = { "门店" : "常青店" };
@@ -2484,7 +2492,7 @@ function test180061() {
     setTFieldsValue(getScrollView(), fields);
 
     testAddBrandCheck();
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
     tapPrompt();
     tapReturn();
 

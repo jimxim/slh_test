@@ -2452,7 +2452,7 @@ function test170092() {
 }
 function test170093() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2597,34 +2597,21 @@ function test170096() {
     return ret;
 }
 function test170097() {
-    // 款号不合并
-    // tapMenu("货品管理", "新增货品+");
-    // var r = "anewCodeTip" + getTimestamp(8);
-    // var keys = { "款号" : r, "名称" : r, "进货价" : "148" }
-    // var fields = editGoodsFields(keys);
-    // setTFieldsValue(getScrollView(), fields);
-    // saveAndAlertOk();
-    // tapReturn();
-
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "2", "备注" : "mxbz" },
                 { "货品" : "3035", "数量" : "-1" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
     var idx;
     if (ipadVer >= "7.21") {
         idx = 12;
     } else {
         idx = 10;
     }
-    getTextField(getScrollView(-1), idx + 3);
-
+    tap(getTextField(getScrollView(-1), idx + 3));
     var arr = [ "退货", "赠品", "代卖", "次品", "代保管", "换色", "换码" ];
-
-    var view = window.popover().scrollViews()[1];
-
+    var view = window.popover().scrollViews()[0];
     var ret = isEqualDropDownList(arr, view);
 
     var f10 = new TField("数量", TF, idx, "-1");
@@ -2636,7 +2623,6 @@ function test170097() {
     var o1 = { "继续开单保存" : "仍然保存" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
-
     tapPrompt();
     tapReturn();
 
