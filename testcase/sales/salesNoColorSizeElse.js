@@ -6436,17 +6436,16 @@ function test170433() {
 function test170434() {
     var r = getTimestamp(8);
     tapMenu("销售订货", "新增订货+");
-    var json = {
-        "客户" : "lt",
-        "明细" : [ { "货品" : "k300", "数量" : "30" }, { "货品" : "4562", "数量" : "20" } ],
+    var json = { "客户" : "lt",
+        "明细" : [ { "货品" : "k300", "数量" : 30 }, { "货品" : "4562", "数量" : 20 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "现金" : 0, "汇款" : [ 1200, "建" ],
         "备注" : "xx", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var money1 = getTextFieldValue(window, 12);
+    var money1 = getTextFieldValue(window, 11);
     var xj = getTextFieldValue(window, 2);
     var sk = getTextFieldValue(window, 7);
-    var hk = getTextFieldValue(window, 13);
+    var hk = getTextFieldValue(window, 12);
     var ds = getTextFieldValue(window, 8);
     saveAndAlertOk();
     tapPrompt();
@@ -6455,10 +6454,9 @@ function test170434() {
     tapMenu("销售开单", "按订货开单");
     query();
     var qr = getQR();
-    var ret = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(
-            Number(Number(xj) + Number(sk) + Number(hk) + Number(ds)),
-            qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(qr.data[0]["订货额"],
-            qr.data[0]["已付"])));
+    var ret = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(add(xj, sk, hk,
+            ds), qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(
+            qr.data[0]["订货额"], qr.data[0]["已付"])));
 
     tapFirstText();
     var r = getTimestamp(8);
@@ -6468,7 +6466,7 @@ function test170434() {
     var money = getTextFieldValue(window, 5);
     xj = getTextFieldValue(window, 2);
     sk = getTextFieldValue(window, 8);
-    hk = getTextFieldValue(window, 14);
+    hk = getTextFieldValue(window, 13);
     ds = getTextFieldValue(window, 9);
     saveAndAlertOk();
     tapPrompt();
@@ -6476,12 +6474,12 @@ function test170434() {
     tapMenu("销售开单", "按订货开单");
     query();
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["订货额"], money1), isEqual(
-            Number(Number(money) + Number(xj) + Number(sk) + Number(hk)
-                    + Number(ds)), qr.data[0]["已付"]), isEqual(qr.data[0]["未付"],
-            sub(qr.data[0]["订货额"], qr.data[0]["已付"])));
+    var ret1 = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(add(money, xj,
+            sk, hk, ds), qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(
+            qr.data[0]["订货额"], qr.data[0]["已付"])));
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", money=" + money);
+    return ret && ret1;
 }
 function test170435() {
     // 部分发货
@@ -6714,8 +6712,8 @@ function test170438() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "lx",
-        "明细" : [ { "货品" : "K300", "数量" : "3", "单价" : 102, "折扣" : "0.678" },
-                { "货品" : "K200", "数量" : "7", "单价" : 10.052, "折扣" : "0.643" } ],
+        "明细" : [ { "货品" : "K300", "数量" : 3, "单价" : 102, "折扣" : "0.678" },
+                { "货品" : "K200", "数量" : 7, "单价" : 10.052, "折扣" : "0.643" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     var totalMoney = getTextFieldValue(window, 11);
