@@ -39,7 +39,7 @@ function testPurchasePrepare002() {
     // test120026
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "1" } ],
-        "备注" : "120026", "采购订货" : "yes" };
+        "备注" : "120026" };
     editSalesBillNoColorSize(json);
 
     return json;
@@ -1609,7 +1609,7 @@ function test120024() {
 function test120025_1() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
-        "备注" : "xx", "采购订货" : "yes" };
+        "备注" : "xx" };
     editSalesBillNoColorSize(json);
     delay();
     tapButton(window, RETURN);
@@ -2802,7 +2802,7 @@ function test120050Field(price) {
 
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "vell", "现金" : 1000, "刷卡" : [ 2000, "银" ],
-        "汇款" : [ 3000, "银" ], "采购订货" : "yes" };
+        "汇款" : [ 3000, "银" ] };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
     var qr1 = json["明细值"];
@@ -3127,8 +3127,7 @@ function test120048() {
 function test120051() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "zdbz",
-        "采购订货" : "yes" };
+        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
@@ -3138,12 +3137,9 @@ function test120051() {
 
     tapFirstText();
     delay();// 网络原因延迟
-    var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
     // 备注为总数的前一个
-    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window,
-            totalNumTFindex - 1)));
+    ret = isAnd(ret, isEqual("zdbz", getTextViewValue(window, 0)));
     saveAndAlertOk();
-    delay();
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
@@ -3151,9 +3147,7 @@ function test120051() {
     ret = isAnd(ret, isEqual("zdbz", qr.data[0]["备注"]));
 
     tapFirstText();
-    totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
-    ret = isAnd(ret, isEqual("zdbz", getTextFieldValue(window,
-            totalNumTFindex - 1)));
+    ret = isAnd(ret, isEqual("zdbz", getTextViewValue(window, 0)));
     tapReturn();
 
     return ret;
@@ -3379,7 +3373,7 @@ function ts120095() {
 }
 function ts120096_97() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var jo = { "客户" : "rt" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -3457,7 +3451,7 @@ function ts120102() {
 
 function ts120106() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var jo = { "客户" : "rt" };
     var det = addPOrderBillDet(3);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);

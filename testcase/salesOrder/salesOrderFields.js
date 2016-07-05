@@ -366,52 +366,6 @@ function salesOrderShopField(key, show) {
     return f;
 }
 
-// 新增订货
-function testSalesOrderAddFields() {
-    var keys = [ "customer", "staff", "day", "remarks" ];
-    var fields = salesOrderAddFields(keys);
-    setTFieldsValue(window, fields);
-    var showFields = salesOrderAddFields(keys, true);
-    return checkShowFields(window, showFields);
-}
-
-function salesOrderAddFields(keys, show) {
-    return getTFields("salesOrderAddField", keys, show);
-}
-function salesOrderAddField(key, show) {
-    // var cashTFindex = getEditSalesTFindex("客户,厂商", "现金");
-    var cardTFindex = getValueFromCacheF1("getCardTFindex");
-    var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
-    var f;
-    switch (key) {
-    case "customer":
-    case "客户":
-        f = new TField("客户", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "Qaq";
-        }
-        break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, cardTFindex - 2, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
-        break;
-    case "day":
-    case "日期":
-        f = new TField("日期", TF_DT, totalNumTFindex - 2, getToday());
-        break;
-    case "remarks":
-    case "备注":
-        f = new TField("备注", TF, totalNumTFindex - 1, "123");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
-}
-
 // 按厂商报单
 function salesOrderCompanyFields(keys, show) {
     return getTFields("salesOrderCompanyField", keys, show);

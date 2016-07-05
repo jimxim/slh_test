@@ -231,69 +231,6 @@ function purchaseOrderShopField(key, show) {
     return f;
 }
 
-// 新增订货
-function testPurchaseOrderAddFields() {
-    var keys = [ "provider", "staff", "day", "remarks" ];
-    var fields = purchaseOrderAddFields(keys);
-    setTFieldsValue(window, fields);
-    var showFields = purchaseOrderAddFields(keys, true);
-    return checkShowFields(window, showFields);
-}
-
-function purchaseOrderAddFields(keys, show) {
-    return getTFields("purchaseOrderAddField", keys, show);
-}
-function purchaseOrderAddField(key, show) {
-    var f;
-    var cashTFindex = getEditSalesTFindex("客户,厂商", "现金");
-    var cardTFindex = getValueFromCacheF1("getCardTFindex");
-    var totalNumTFindex = getValueFromCacheF1("getTotalNumTFindex");
-    switch (key) {
-    case "provider":
-    case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, "aa");
-        if (show) {
-            f.value = f.p2;
-        }
-        break;
-    case "cash":
-    case "现金":
-        f = new TField("现金", TF, getEditSalesTFindex, "0");
-        break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, cardTFindex - 2, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
-        break;
-    case "card":
-    case "刷卡":
-        f = new TField("刷卡", TF, cardTFindex, "0");
-        break;
-    case "remarks":
-    case "备注":
-        f = new TField("备注", TF, cardTFindex + 2, "0");
-        // f = new TField("备注", TV, 0, "0");//TF
-        break;
-    case "day":
-    case "日期":
-        f = new TField("日期", TF_DT, totalNumTFindex - 2, getToday());
-        break;
-    case "shop":
-    case "订货门店":
-        f = new TField("订货门店", TF_SC, totalNumTFindex - 1, "123");
-        break;
-    case "remit":
-    case "汇款":
-        f = new TField("汇款", TF, totalNumTFindex + 2, "123");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
-}
-
 // 新增厂商
 function testPurchaseOrderProviderAddFields() {
     var fields = purchaseOrderProviderAddFields("provider-code", "mobile",

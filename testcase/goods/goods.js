@@ -276,7 +276,7 @@ function testGoods002() {
     run("【货品管理-更多-库存调整单】当前库存有小数时进行库存调整", "ts100117");
     run("【货品查询-新增货品】检查没有加工价的版本没有看到是否加工及加工价字段", "ts100110");
     run("【 货品管理-基本设置 】停用价格名称", "ts100144");
-    
+
     // 开单模式5
     // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
     // "test10_fuzzyQueryAndDropDownListCheck");
@@ -2428,7 +2428,7 @@ function ts100147Field(title, type) {
     var a = qr.counts[title];
 
     tapMenu(menu1, "新增订货+");
-    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var jo = { "客户" : "rt" };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -2477,7 +2477,7 @@ function ts100147Field(title, type) {
     ret = isAnd(ret, isEqual(a, qr.counts[title]));
 
     tapMenu(menu1, "新增订货+");
-    var jo = { "客户" : "rt", "采购订货" : "yes" };
+    var jo = { "客户" : "rt" };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -2929,7 +2929,7 @@ function test100073_100074() {
 
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqualObject(data1, qr.data[0]));//自动返回仓位列表
+    ret = isAnd(ret, isEqualObject(data1, qr.data[0]));// 自动返回仓位列表
 
     return ret;
 }

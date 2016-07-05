@@ -774,7 +774,12 @@ function testSalesBillFields() {
     var showFields = editSalesBillFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
+/**
+ * 开单界面
+ * @param keys
+ * @param show
+ * @returns
+ */
 function editSalesBillFields(keys, show) {
     return getTFields("editSalesBillField", keys, show);
 }
@@ -816,13 +821,21 @@ function editSalesBillField(key, show) {
     case "日期":
         f = new TField("日期", TF_DT, cardTFindex + 2, getToday()); // 9
         break;
+    case "orderShop":
+    case "订货门店":
+        var index = getEditSalesTFindex2("客户,厂商", "订货门店");
+        f = new TField("订货门店", TF_SC, index, "常青店");// 采购订货
+        break;
     case "remarks":
     case "备注":
-        // f = new TField("备注", TF, cardTFindex + 3, "123");
         f = new TField("备注", TV, 0, "123"); //
         break;
+    case "折扣":
+        var index = getEditSalesTFindex2("客户,厂商", "折扣");
+        f = new TField("折扣", TF, index, "0.6");//
+        break;
     case "汇款":
-        f = new TField("汇款", TF, 12, 0, "NoNeedReturn");//remitTFindex
+        f = new TField("汇款", TF, remitTFindex, 0, "NoNeedReturn");// 
         break;
     default:
         logWarn("未知key＝" + key);
@@ -839,14 +852,17 @@ function getStaffTFindex() {
     return getEditSalesTFindex("客户,厂商", "店员");
 }
 function getCardTFindex() {
-    return getEditSalesTFindex("客户,厂商", "刷卡");
-}
-function getTotalNumTFindex() {
-    return getEditSalesTFindex("客户,厂商", "总数");
+    return getEditSalesTFindex2("客户,厂商", "刷卡");
 }
 function getRemitTFindex() {
-    return getEditSalesTFindex("客户,厂商", "汇款");
+    return getEditSalesTFindex2("客户,厂商", "汇款");
 }
+/**
+ * 
+ * @param title1
+ * @param title2
+ * @returns {Number}
+ */
 function getEditSalesTFindex(title1, title2) {
     var stCustomerIndex = -1, stStaffIndex = 0, ret = 0;
     var a1t = title1.split(",");
@@ -863,10 +879,14 @@ function getEditSalesTFindex(title1, title2) {
     if (a1t.length > 1) {
         t1 = a1t[1];
     }
+    var ignoreNum = 0;
     for (var i = 0; i < a1.length; i++) {
         var e1 = a1[i];
         if (stCustomerIndex == -1 && isUIAStaticText(e1) && e1.name() == t1) {
             stCustomerIndex = i;
+        }
+        if (isUIAStaticText(e1) && e1.value() == "") {
+            ignoreNum++;
         }
         if (isUIAStaticText(e1) && e1.name() == title2) {
             stStaffIndex = i;
@@ -874,9 +894,39 @@ function getEditSalesTFindex(title1, title2) {
         }
     }
 
-    ret = stStaffIndex - stCustomerIndex;
+    ret = stStaffIndex - stCustomerIndex - ignoreNum;
     logDebug(title1 + "文本下标=" + stCustomerIndex + " " + title2 + "文本下标="
-            + stStaffIndex + " " + title2 + "输入框下标=" + ret);
+            + stStaffIndex + " ignoreNum=" + ignoreNum + "  " + title2
+            + "的输入框下标=" + ret);
+    return ret;
+}
+/**
+ * 取开单界面文本输入框的下标（需要文本框与前面的标签一一对应）
+ * @param title1
+ * @param title2
+ * @returns {Number}
+ */
+function getEditSalesTFindex2(title1, title2) {
+    var stCustomerIndex = -1, tfNum = -1, ret = -1;
+    var a1t = title1.split(",");
+
+    var a1 = window.elements();
+    for (var i = 0; i < a1.length; i++) {
+        var e = a1[i];
+        if (stCustomerIndex == -1 && isUIAStaticText(e)
+                && (e.value() == a1t[0] || e.value() == a1t[1])) {
+            stCustomerIndex = i;// 取客户,厂商的起始下标，应该在客户厂商后面
+        }
+        if (stCustomerIndex != -1 && isUIATextField(e)
+                && e.rect().size.width > 5) {
+            tfNum++;// 宽度小于5的应该是隐藏的TF
+        }
+        if (stCustomerIndex != -1 && isUIAStaticText(e) && e.value() == title2) {
+            ret = tfNum + 1;// 加1即为标签相应的文本输入框
+            break;
+        }
+    }
+    logDebug(title2 + "的输入框下标=" + ret);
     return ret;
 }
 

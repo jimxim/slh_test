@@ -131,7 +131,7 @@ function ts130001() {
         var batch = Number(qr.data[0]["批次"]) + 1;
 
         tapMenu2("新增订货+");
-        var jo = { "客户" : "rt", "采购订货" : "yes" };
+        var jo = { "客户" : "rt" };
         var det = addPOrderBillDet();
         var json = mixObject(jo, det);
         editSalesBill(json, colorSize);
@@ -171,7 +171,7 @@ function ts130001() {
         ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(0));
 
         tapMenu2("新增订货+");
-        jo = { "客户" : "rt", "采购订货" : "yes" };
+        jo = { "客户" : "rt" };
         det = addPOrderBillDet();
         json = mixObject(jo, det);
         editSalesBill(json, colorSize);
@@ -197,7 +197,7 @@ function ts130001() {
         ret = isAnd(ret, isEqualObject(exp, qr.data[0]), ts130019(16));
 
         tapMenu2("新增订货+");
-        jo = { "客户" : "rt", "采购订货" : "yes" };
+        jo = { "客户" : "rt" };
         det = addPOrderBillDet();
         json = mixObject(jo, det);
         editSalesBill(json, colorSize);
@@ -242,7 +242,7 @@ function ts130020_2() {
 
     tapMenu2("新增订货+");
     var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
-        "汇款" : [ 300, "银" ], "备注" : "xx", "采购订货" : "yes" };
+        "汇款" : [ 300, "银" ], "备注" : "xx" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -304,7 +304,7 @@ function ts130002_1() {
 }
 function ts130002_2() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "备注" : "xx", "采购订货" : "yes" };
+    var jo = { "客户" : "vell", "备注" : "xx" };
     var det = {}, jo2 = {}, kCode = {}, i;
     switch (colorSize) {
     case "no":
@@ -780,8 +780,7 @@ function ts130007_08() {
     var qr = getQRDet();
     var det1 = qr.data[0], det2 = qr.data[1];
     det2["货品"] = r2 + "," + r2;
-    var o = { "采购订货" : "yes" };
-    var vWin = editSalesBillSave(o);
+    var vWin = editSalesBillSave({});
     vWin["输入框值"]["店员"] = "000,总经理";
     vWin["输入框值"]["订货门店"] = "常青店";
 
@@ -892,7 +891,7 @@ function ts130010() {
 function ts130011() {
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
-        "汇款" : [ 300, "银" ], "备注" : "xx", "采购订货" : "yes" };
+        "汇款" : [ 300, "银" ], "备注" : "xx" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -950,7 +949,7 @@ function ts130012() {
 
     if (ret) {
         var jo = { "客户" : "vell", "现金" : 1000, "刷卡" : [ 600, "银" ],
-            "汇款" : [ 400, "银" ], "采购订货" : "yes" };
+            "汇款" : [ 400, "银" ] };
         var det = addPOrderBillDet();
         var json = mixObject(jo, det);
         editSalesBill(json, colorSize);
@@ -1003,7 +1002,7 @@ function ts130013() {
 }
 function ts130014() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "备注" : "xx", "采购订货" : "yes" };
+    var jo = { "客户" : "vell", "备注" : "xx" };
     var det = {}, remark = "";
     switch (colorSize) {
     case "no":
@@ -1159,7 +1158,7 @@ function ts130016_2() {
 function ts130017() {
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "vell", "现金" : 1000, "刷卡" : [ 600, "银" ],
-        "汇款" : [ 300, "银" ], "采购订货" : "yes" };
+        "汇款" : [ 300, "银" ] };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -1175,7 +1174,7 @@ function ts130017() {
 
 function ts130024() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "采购订货" : "yes", "goodsFieldIndex" : -2 };
+    var jo = { "客户" : "vell", "goodsFieldIndex" : -2 };
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -1245,7 +1244,7 @@ function ts130026() {
 // 采购员003登陆
 function ts130037() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "订货门店" : "常青店", "采购订货" : "yes" };
+    var jo = { "客户" : "vell", "订货门店" : "常青店" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -1254,14 +1253,14 @@ function ts130037() {
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    json = { "订货门店" : "中洲店", "采购订货" : "yes" };
+    json = { "订货门店" : "中洲店" };
     editSalesBill(json, colorSize);
     var msg = arrayToString(alertMsgs);
     ret = isAnd(ret, isIn(msg, "目前暂不支持跨门店订货时的账号支付"));
 
     // alertMsgs = [];
     tapFirstText();
-    json = { "订货门店" : "中洲店", "采购订货" : "yes", "未付" : "yes" };
+    json = { "订货门店" : "中洲店", "未付" : "yes" };
     editSalesBill(json, colorSize);
     msg = arrayToString(alertMsgs);
     ret = isAnd(ret, isIn(msg, "不允许修改采购订单的订货门店"));
@@ -1271,7 +1270,7 @@ function ts130037() {
 // 采购员003登陆 ts130038已经开过本门店的订单，这里就只开中洲店的单据
 function ts130038() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "订货门店" : "中洲店", "采购订货" : "yes", "未付" : "yes" };
+    var jo = { "客户" : "vell", "订货门店" : "中洲店", "未付" : "yes" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
