@@ -1162,7 +1162,7 @@ function logisticsVerifyField(key, show) {
         break;
     case "remit":
     case "汇款":
-        var remitTFindex = getRemitTFindex();
+        var remitTFindex = getEditSalesTFindex2("物流", "汇款");
         f = new TField("汇款", TF, remitTFindex, "000", -1, 0);
         break;
     default:

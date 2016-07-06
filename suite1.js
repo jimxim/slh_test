@@ -32,24 +32,24 @@ function onlyTest(){
 // "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
 // var fields = statisticAnalysisProfitFields(keys);
 // query(fields);
-   var qr=getQRDet();
-   
-  var msg = "标题 "
-       var titles = qr.titles;
-       for ( var i in titles) {
-           msg += i + "=" + titles[i] + ",";
-       }
-       logDebug(msg);
-       
-   var data = qr.data;
-   for (var i = 0; i < data.length; i++) {
-       msg = "data i=" + i + " ";
-       var data1 = data[i];
-       for ( var j in data1) {
-           msg += " " + j + "=" + data1[j];
-       }
-       logDebug(msg);
-   }
+//   var qr=getQRDet();
+//   
+//  var msg = "标题 "
+//       var titles = qr.titles;
+//       for ( var i in titles) {
+//           msg += i + "=" + titles[i] + ",";
+//       }
+//       logDebug(msg);
+//       
+//   var data = qr.data;
+//   for (var i = 0; i < data.length; i++) {
+//       msg = "data i=" + i + " ";
+//       var data1 = data[i];
+//       for ( var j in data1) {
+//           msg += " " + j + "=" + data1[j];
+//       }
+//       logDebug(msg);
+//   }
 //    
 // var fields=[];
 // fields.push(new TField("店员", TF_AC, 2, "000", -1, 0));
