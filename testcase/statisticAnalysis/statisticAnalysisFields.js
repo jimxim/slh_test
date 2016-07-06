@@ -58,7 +58,7 @@ function statisticAnalysisProfitField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "日期到":
@@ -102,7 +102,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 8 + idx, "1010pp");
+        f = new TField("品牌", TF_AC, 8 + idx, "1010pp", -1, 0);
         break;
     case "上架从":
         f = new TField("上架从", TF_DT, 9, getToday());
@@ -479,7 +479,7 @@ function statisticAnalysSizeField(key, show) {
     return f;
 }
 
-//品牌销售表
+// 品牌销售表
 function statisticAnalysBrandFields(keys, show) {
     return getTFields("statisticAnalysBrandField", keys, show);
 }
@@ -512,7 +512,7 @@ function statisticAnalysBrandField(key, show) {
     return f;
 }
 
-//类别销售表
+// 类别销售表
 function statisticAnalysTypeFields(keys, show) {
     return getTFields("statisticAnalysTypeField", keys, show);
 }

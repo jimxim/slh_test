@@ -1132,6 +1132,7 @@ function logisticsVerifyFields(keys, show) {
     return getTFields("logisticsVerifyField", keys, show);
 }
 function logisticsVerifyField(key, show) {
+
     var f;
     switch (key) {
     case "express":
@@ -1161,7 +1162,8 @@ function logisticsVerifyField(key, show) {
         break;
     case "remit":
     case "汇款":
-        f = new TField("汇款", TF, 12, "000", -1, 0);
+        var remitTFindex = getValueFromCacheF1("getRemitTFindex");
+        f = new TField("汇款", TF, remitTFindex, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);

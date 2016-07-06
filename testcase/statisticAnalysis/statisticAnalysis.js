@@ -542,8 +542,8 @@ function test190002_190003_190008() {
     // 收入-支出=总值
     ret = isAnd(ret, isAqualNum(sum + rm1 - rm2, sum1, 0.001), isAqualNum(sum1,
             add(a, b), 0.001),
-            isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-                    getToday(), getTextFieldValue(window, 1)), isEqual("",
+            isEqual(getToday(), getTextFieldValue(window, 0)), isEqual("",
+                    getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)));
 
     return ret;
@@ -899,7 +899,7 @@ function test190011() {
 }
 
 function test190022_190023() {
-    var rm = (getRandomInt(100000) + 1) / 100;
+    var rm = getRandomNum(1, 1000, 2);
     var r = "备注" + "a" + getTimestamp(6);
     tapMenu("统计分析", "新增收支", "新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -1283,7 +1283,7 @@ function test190026() {
 function test190027() {
     tapMenu("统计分析", "收支类别");
     tapMenu2("收支类别");// 重新点击一次，相当于延迟操作，防止getQR取值出错
-    var ret = goPageCheck();
+    var ret = goPageCheck(window, getScrollView(), TITLE_SEQ, 3);
 
     ret = ret && sortByTitle("出入类别");
     ret = ret && sortByTitle("名称");
@@ -1293,7 +1293,7 @@ function test190027() {
 
 function test190028() {
     tapMenu("统计分析", "收支类别");
-    tapFirstText();
+    tapFirstText(getScrollView(), TITLE_SEQ, 3);
     var r = "类别" + getTimestamp(7);
     var f = new TField("名称", TF, 0, r);
     var fields = [ f ];
@@ -1303,11 +1303,11 @@ function test190028() {
 
     tapMenu2("收支类别");
     delay();// 防止界面未刷新
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 3);
     var titles1 = qr.titles;
     var ret = isEqualQRData1ByTitle(qr, "名称", r);
 
-    tapFirstText();
+    tapFirstText(getScrollView(), TITLE_SEQ, 3);
     f = new TField("名称", TF, 0, "汇款");
     fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
@@ -1316,9 +1316,9 @@ function test190028() {
     ret = isAnd(ret, isInAlertMsgs("相同记录已存在"));
 
     delay();
-    qr = getQR();
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 3);
     var titles2 = qr.titles;
-    ret = isAnd(ret, isEqualObject(titles1, titles2));
+    ret = isAnd(ret, isEqualObject(titles1, titles2));// 验证返回回到收支类别界面
 
     return ret;
 }
@@ -1514,10 +1514,10 @@ function test190037() {
     var i, sum1 = 0, sum2 = 0;
     // debugElementTree(window);
     tapMenu("统计分析", "综合汇总");
-    var keys = { "日期从":getDay(-30),"门店" : "常青店" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    
+
     tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
@@ -1566,10 +1566,10 @@ function test190037_1Field(qr, type, value) {
         if (isDefined(qr.data[i]["名称"])) {
             name = qr.data[i]["名称"];
         }
-        if (qr.data[i]["名称"] == "银") {
+        if (name == "银") {
             if (isIn(qr.data[i][type], value)) {
                 var a = qr.data[i][type].split(" ");
-                // debugObject(a, "a");
+                debugObject(a, "a");
                 arr["刷"] = a[1].slice(1);
                 arr["汇"] = a[2].slice(1);
                 if (type == "收入") {
@@ -2003,39 +2003,57 @@ function test190074() {
 }
 
 function test190077() {
-    tapMenu("统计分析", "汇总表", "滞销表");
+    var ret = true, ok = false;
+    tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "k300", "门店" : "常青店" };
-    var fields = statisticAnalysisUnsalableFields(keys);
+    var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
+    var sum = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
+
+    if (sum <= 0) {
+        ok = true;
+        tapMenu("统计分析", "汇总表", "滞销表");
+        fields = statisticAnalysisUnsalableFields(keys);
+        query(fields);
+        qr = getQR();
+        ret = isAnd(ret, isEqual("0", qr.data.length));
+
+        sum = 30 - sum;
+        tapMenu("采购入库", "新增入库+");
+        var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : sum } ] };
+        editSalesBillNoColorSize(json);
+    }
+
+    tapMenu("统计分析", "汇总表", "滞销表");
+    fields = statisticAnalysisUnsalableFields(keys);
+    query(fields);
+    qr = getQR();
     var day = qr.data[0]["滞销天数"];
     var stock = qr.data[0]["库存"];
     var day2 = qr.data[0]["上架日期"];
     var day1 = getToday("yy");
 
-    tapMenu("货品管理", "当前库存");
-    keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
-    qr = getQR();
-    var sum = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
     var ret = isEqual(stock, sum);
 
-    // 当前库存的库存+在途数<0,在滞销表验证
-    query();
-    tapTitle(getScrollView(), "库存");
-    delay();
-    qr = getQR();
-    if (Number(qr.data[0]["库存"]) + Number(qr.data[0]["在途数"]) < 0) {
-        var shop1 = qr.data[0]["仓库/门店"];
-        var code1 = qr.data[0]["款号"];
-
-        tapMenu("统计分析", "汇总表", "滞销表");
-        keys = { "款号" : code1, "门店" : shop1 };
-        fields = statisticAnalysisUnsalableFields(keys);
-        query(fields);
+    if (!ok) {
+        // 当前库存的库存+在途数<0,在滞销表验证
+        tapMenu("货品管理", "当前库存");
+        query();
+        tapTitle(getScrollView(), "库存");
+        delay();
         qr = getQR();
-        ret = isAnd(ret, isEqual("0", qr.data.length));
+        if (Number(qr.data[0]["库存"]) + Number(qr.data[0]["在途数"]) < 0) {
+            var shop1 = qr.data[0]["仓库/门店"];
+            var code1 = qr.data[0]["款号"];
+
+            tapMenu("统计分析", "汇总表", "滞销表");
+            keys = { "款号" : code1, "门店" : shop1 };
+            fields = statisticAnalysisUnsalableFields(keys);
+            query(fields);
+            qr = getQR();
+            ret = isAnd(ret, isEqual("0", qr.data.length));
+        }
     }
 
     // 最后售出时间
@@ -2644,10 +2662,10 @@ function test190126() {
     return ret;
 }
 
-function test190126() {
+function test190130() {
     tapMenu("统计分析", "汇总表", "厂商销售表");
     var keys = { "日期从" : getDay(-30) };
-    var fields = statisticAnalysTypeFields(keys);
+    var fields = statisticAnalysProviderFields(keys);
     query(fields);
     var ret = goPageCheck();
 
@@ -2758,6 +2776,8 @@ function editStatisticAnalysisInDet(o) {
 
         var f1 = new TField("金额", TF, tfNum * i + 1, d["金额"]);
         setTFieldsValue(getScrollView(-1), [ f1 ]);
+        // var m = getTextFieldValue(getScrollView(-1), tfNum * i + 1);
+        // logDebug("金额=" + m);
 
         var fields = [];
         if (isDefined(d["备注"])) {
@@ -2780,6 +2800,6 @@ function editStatisticAnalysisInSave(o) {
         logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
         tapKeyboardHide();
     } else {
-        tapButtonAndAlert(RETURN);
+        tapReturn();
     }
 }
