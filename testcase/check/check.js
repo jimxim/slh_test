@@ -170,7 +170,7 @@ function test180001_2_180004() {
     tapButton(window, RETURN);
 
     tapMenu("盘点管理", "按批次查");
-    var keys = { "日期从" : getDay(-30), "批次从" : batch, "批次到" : batch + 1,
+    var keys = { "日期从" : getDay(-30), "批次从" : batch - 1, "批次到" : batch + 1,
         "处理时间从" : getToday(), "处理时间到" : getToday(), "门店" : "常青店" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
@@ -1490,7 +1490,7 @@ function test180042_4() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "操作成功");
+    var ret = isIn(alertMsg, "操作成功") || isIn(alertMsg, "保存成功");
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
@@ -1547,7 +1547,7 @@ function test180042_5() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "操作成功");
+    var ret = isIn(alertMsg, "操作成功") || isIn(alertMsg, "保存成功");
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");

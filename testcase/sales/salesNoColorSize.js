@@ -6424,6 +6424,10 @@ function test170248() {
     o = { "新值" : "2", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "自动完成的列表只有单个记录时是否自动选择" };
+    o = { "新值" : "1", "数值" : [ "适用于手写输入", "in" ] };
+    ret = isAnd(ret, setLocalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
     var r1 = getTimestamp(6);
@@ -6447,7 +6451,7 @@ function test170248() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -6456,7 +6460,7 @@ function test170248() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -6485,7 +6489,7 @@ function test170248_1() {
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
 
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();
@@ -6516,7 +6520,7 @@ function test170248_1() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 

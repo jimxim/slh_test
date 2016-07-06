@@ -612,7 +612,7 @@ function test210027() {
     query(fields);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
-    var keys = { "工号" : 004 };
+    var keys = { "工号" : "004" };
     var fields = EditSystemStaffFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE, OK);
@@ -633,7 +633,7 @@ function test210027() {
     var ret1 = isEqual("y" + r, qr.data[0]["工号"]);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
-    keys = { "工号" : 005 };
+    keys = { "工号" : "005" };
     fields = EditSystemStaffFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE, OK);
