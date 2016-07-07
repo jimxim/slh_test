@@ -485,10 +485,15 @@ function test180015() {
     var a2 = qr.data[0]["类别"];
     var a3 = qr.data[0]["品牌"];
 
-    ret = isAnd(ret, isEqual("3035", a), isEqual("jkk", a1),
-            isEqual("登山服", a2), isEqual("Adidas", a3));
+    ret = isAnd(ret, isEqual("登山服", a2), isEqual("Adidas", a3));
 
-    return ret;
+    var ret1 = false;
+    if (a == "3035" || a == "k300") {
+        ret1 = true;
+    }
+
+    logDebug(" ret=" + ret + ",  ret1=" + ret1);
+    return ret && ret1;
 }
 function test180019() {
     tapMenu("盘点管理", "按批次查");

@@ -1314,12 +1314,11 @@ function test170058() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : 1000000,
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 1000000,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var json = { "客户" : r, "核销" : [ 5 ],
-        "明细" : [ { "货品" : "k300", "数量" : "5" } ] };
+    var json = { "客户" : r, "核销" : [ 5 ], "明细" : [ { "货品" : "k300", "数量" : 5 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -1352,7 +1351,7 @@ function test170059() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : 0,
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 0,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 

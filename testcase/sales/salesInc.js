@@ -719,3 +719,28 @@ function editLogisticsBillDetField(key, show) {
     }
     return f;
 }
+// 物流核销-核销明细界面
+function editlogisticsVerifyDetFields(keys, show) {
+    return getTFields("editlogisticsVerifyDetField", keys, show);
+}
+function editlogisticsVerifyDetField(key, show) {
+    var f;
+    switch (key) {
+    case "date":
+    case "日期":
+        f = new TField("日期", TF_DT, 14, getToday());
+        break;
+    case "date1":
+    case "到":
+        f = new TField("日期", TF_DT, 15, getToday());
+        break;
+    case "custemer":
+    case "客户":
+        f = new TField("客户", TF_AC, 16, "ls", -1, 0);
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
