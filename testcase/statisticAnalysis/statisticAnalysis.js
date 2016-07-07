@@ -2209,7 +2209,8 @@ function test190084() {
                 { "货品" : "3035", "数量" : "-10" } ] };
     editSalesBillNoColorSize(json);
 
-    delay();
+    tapMenu2("按批次查");
+    query();
     var qr = getQR();
     var batch1 = qr.data[0]["批次"];
     var batch2 = qr.data[1]["批次"];
@@ -2232,39 +2233,23 @@ function test190084() {
 }
 
 function test190085() {
-    var i, j, sum1 = 0, sum2 = 0;
+    var i, j, sum1, sum2;
     tapMenu("统计分析", Menu_Profit);
     query();
     var qr = getQR();
     var a = qr.data[0]["利润额"];
 
     tapFirstText();
-    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
-        }
-    }
+    var cond = "getQR2(getScrollView(-1, 0), '款号', '利润额')";
+    sum1 = getCounts(cond);
 
     tapNaviRightButton();
-    qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            sum2 += Number(qr.data[i]["利润额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
-        }
-    }
+    cond = " getQR2(getScrollView(-1, 0), '批次', '利润额')";
+    sum2 = getCounts(cond);
     tapNaviLeftButton();
     tapNaviLeftButton();
 
-    return isEqual(sum1, sum2) && isEqual(a, sum2);
+    return isEqual(sum1["利润额"], sum2["利润额"]) && isEqual(a, sum2["利润额"]);
 }
 
 // 先跳过，有分歧
@@ -2530,15 +2515,19 @@ function test190102() {
     tapFirstText();
     tapNaviRightButton();
     var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "批次", "利润额");
-
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "批次", IS_NUM);
-    ret = ret
-            && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "日期", IS_DATE2);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "客户");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额", IS_NUM);
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");// 本列暂不支持排序
+    // 暂时不做排序
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "批次",
+    // IS_NUM);
+    // ret = ret
+    // && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "日期", IS_DATE2);
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "客户");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量",
+    // IS_NUM);
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额",
+    // IS_NUM);
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额",
+    // IS_NUM);
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");
 
     tapNaviLeftButton();
     tapNaviLeftButton();

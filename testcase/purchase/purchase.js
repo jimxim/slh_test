@@ -527,7 +527,7 @@ function test120008_2() {
         "厂商" : "vell", "门店" : "常青店", "类别" : "登山服", "品牌" : "Adidas", "季节" : "春季" }
     var fields = purchaseCodeFields(keys);
 
-    var ret = dropDownListCheck(fields["款号"].index, "303", "3035,jkk");
+    var ret = dropDownListCheck(fields["款号"].index, "303", "3035jkk");
 
     query(fields);
     var qr = getQR();
@@ -706,7 +706,6 @@ function test120011_1() {
     ret = ret && sortByTitle("总数", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
-    // logDebug("ret=" + ret);
 
     // 变成升序
     tapTitle(getScrollView(), "日期");
@@ -722,7 +721,7 @@ function test120011_1() {
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual(getToday(), getTextFieldValue(window, 1)));
+            isEqual("", getTextFieldValue(window, 1)));
 
     return ret;
 }
@@ -2607,7 +2606,7 @@ function test120047_1() {
 function test120047_2() {
     tapMenu("采购入库", "按明细查");
     var f = purchaseQueryParticularField("款号");
-    var ret = dropDownListCheck(f.inedx, "303", "3035,jkk,");
+    var ret = dropDownListCheck(f.inedx, "303", "3035jkk");
 
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
         "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" }

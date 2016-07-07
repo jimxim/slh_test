@@ -169,7 +169,7 @@ function getBillDetInputIndex(tfNum, idx) {
     var text = getTextFields(view);
     for (var i = 0; i < text.length; i = i + tfNum) {
         if (getTextFieldValue(view, i) == "") {
-            logDebug("开单明细第一个输入下标 i=" + i);
+            // logDebug("开单明细第一个输入下标 i=" + i);
             break;
         }
     }
@@ -234,52 +234,43 @@ function getQRDet(view) {
         view = getScrollView(-1);
     }
 
-    var titles = getSalesBillDetTfObject();
-    delete titles["明细输入框个数"];
-    var title = [];
-    for ( var i in titles) {
-        title.push(i);
-    }
-
     var texts = getStaticTexts(window);
-    var firstIndex = 0, lastIndex = 0;
-    for (var i = texts.length - 1; i >= 0; i--) {
-        var v = texts[i].value();
-        if (firstIndex == 0 && v == title[0]) {
-            firstIndex = i;
-        }
-        if (lastIndex == 0 && v == title[title.length - 1]) {
-            lastIndex = i;
-        }
+    var title1 = "图";
+    var qrTitle1 = getQResultTitle(texts, title1);// 找不到为0
+    if (qrTitle1.index <= 0) {
+        title1 = "#";
+        qrTitle1 = getQResultTitle(texts, title1);
     }
-    // logDebug("firstIndex=" + firstIndex + " lastIndex=" + lastIndex);
-
-    var titlesX = {}, j = 0;
-    for (var i = firstIndex; i <= lastIndex; i++) {
-        titlesX[title[j]] = getX(texts[i]);// getX
-        j++;
+    var title2 = "操作";
+    var qrTitle2 = getQResultTitle(texts, title2);
+    var titles = [];
+    for (var i = qrTitle1.index + 1; i < qrTitle2.index; i++) {
+        titles.push(texts[i].value());
     }
-    // debugObject(titlesX, "titlesX=");
 
+    var tfNum = getSalesBillDetTfNum({});
     var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
 
     var data = [];
     texts = getTextFields(view);
     for (var j = 0; j < line.length; j++) {
-        if (getTextFieldValue(view, title.length * j) != "") {
+        if (texts[tfNum * j].value() != "") {
             var data1 = {};
-            for (var i = 0; i < title.length; i++) {
-                var index = title.length * j + i;
+            var ignore = 0;
+            for (var i = 0; i < tfNum; i++) {
+                var index = tfNum * j + i;
                 var v = texts[index].value();
-                var x = getX(texts[index]);
-                var t = getKeyByXy(titlesX, x);
-                // 还需要优化 有些内容隐藏了，但还是可以取到
-                data1[t] = v;
+                var w = texts[index].rect().size.width;
+                if (w < 5) {
+                    ignore++;
+                } else {
+                    var t = titles[i - ignore];
+                    data1[t] = v;
+                }
             }
             data.push(data1);
         }
     }
-    var titles = title;
     var total = data.length;
     var qResult = new QResult(titles, data, total);
     return qResult;
