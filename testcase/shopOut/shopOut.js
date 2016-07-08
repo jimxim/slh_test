@@ -375,7 +375,7 @@ function ts150006() {
     var a1 = getButtons(window);
     var index = -1;
     for (var i = a1.length; i > 0; i--) {
-        if ("打 印" == a1[i].name()) {
+        if ("打印" == a1[i].name() || "打 印" == a1[i].name()) {
             index = i;
             break;
         }

@@ -76,7 +76,7 @@ function testCustomer002() {
     run("【往来管理-厂商账款】总经理权限检查", "ts110041Role000");
     run("【往来管理-厂商/客户门店账】累计未结标题检查", "test110041TitleCheck");
     // run("【往来管理-厂商账款】异地核销_欠款", "test110041Verify_1");
-    run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
+    // run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
     run("【往来管理-物流商查询】总经理登录，显示所有门店物流商", "ts110061For000");
@@ -3106,7 +3106,7 @@ function test110053() {
     var ret = isIn(alertMsg, "不允许创建分店");
     tapPrompt();
     tapNaviLeftButton();
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }

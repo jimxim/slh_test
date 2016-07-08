@@ -14,24 +14,23 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "onlyTest");//
-// run("测试用例", "test120011_2");//
+ run("测试用例", "ts150006");//
+// run("测试用例", "test100107");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-//    tapMenu("门店调出", "批量调出+");
-//    var jo = { "调出人" : "000", "接收店" : "中洲店" };
-//    var det = editShopOutDet();
-//    var json = mixObject(jo, det);
-//    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ] };
+    editSalesBillNoColorSize(json);
 // debugObject(gCache,"gCache");
   return true;
 }
