@@ -809,7 +809,7 @@ function editSalesBillField(key, show) {
         }
         break;
     case "发货":
-        f = new TField("发货", TF_SC, staffTFindex + 1, "仓库店");
+        f = new TField("发货", TF_SC, cardTFindex - 2, "仓库店");
         if (show) {
             f.value = "000,管理员";
         }
