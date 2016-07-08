@@ -11509,15 +11509,16 @@ function test170672() {
 
     tapFirstText();
     var qr = getQRDet();
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
     ret = isAnd(ret, isIn(qr.data[0]["货品"], "3035"), isEqual(7,
-            qr.data[0]["数量"]), isEqual(15, getTextFieldValue(window, 12)),
-            isEqual("常青店", getTextFieldValue(window, 6)), isEqual(50,
-                    getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual(15, getTextFieldValue(window,
+            remitTFindex - 2)), isEqual("常青店", getTextFieldValue(window, 6)),
+            isEqual(50, getTextFieldValue(window, 9)));
 
     tapStaticText(window, "代收");
-    ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(r,
-            getTextFieldValue(window, 18)), isEqual("a" + r, getTextFieldValue(
-            window, 19)), isEqual(50, getTextFieldValue(window, 20)));
+    ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(r,
+            getTextFieldValue(window, -3)), isEqual("a" + r, getTextFieldValue(
+            window, -2)), isEqual(50, getTextFieldValue(window, -1)));
     tapNaviLeftButton();
     tapReturn();
 
@@ -11555,16 +11556,17 @@ function test170672() {
             qr.data[0]["实收"]), isEqual(money1, qr.data[0]["代收"]));
     tapFirstText();
     qr = getQRDet();
+    remitTFindex = getEditSalesTFindex2("客户", "汇款");
     ret2 = isAnd(ret2, isIn(qr.data[0]["货品"], "3035"), isEqual(10,
-            qr.data[0]["数量"]), isEqual(16, getTextFieldValue(window, 12)),
-            isEqual("仓库店", getTextFieldValue(window, 6)), isEqual(50,
-                    getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual(16, getTextFieldValue(window,
+            remitTFindex - 2)), isEqual("仓库店", getTextFieldValue(window, 6)),
+            isEqual(50, getTextFieldValue(window, 9)));
 
     tapStaticText(window, "代收");
-    ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(
-            r1, getTextFieldValue(window, 18)), isEqual("a" + r1,
-            getTextFieldValue(window, 19)), isEqual(50, getTextFieldValue(
-            window, 20)));
+    ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
+            r1, getTextFieldValue(window, -3)), isEqual("a" + r1,
+            getTextFieldValue(window, -2)), isEqual(50, getTextFieldValue(
+            window, -1)));
     tapNaviLeftButton();
     tapReturn();
 
@@ -11684,14 +11686,13 @@ function test170674_170675() {
     tapFirstText();
     var qr = getQRDet();
     ret = isAnd(ret, isIn(qr.data[0]["货品"], "3035"), isEqual(7,
-            qr.data[0]["数量"]), isEqual(15, getTextFieldValue(window, 12)),
-            isEqual("常青店", getTextFieldValue(window, 6)), isEqual(3500,
-                    getTextFieldValue(window, 9)));
+            qr.data[0]["数量"])), isEqual("常青店", getTextFieldValue(window, 6)),
+            isEqual(3500, getTextFieldValue(window, 9));
 
     tapStaticText(window, "代收");
-    ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(r,
-            getTextFieldValue(window, 18)), isEqual("a" + r, getTextFieldValue(
-            window, 19)), isEqual(3500, getTextFieldValue(window, 20)));
+    ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(r,
+            getTextFieldValue(window, -3)), isEqual("a" + r, getTextFieldValue(
+            window, -2)), isEqual(3500, getTextFieldValue(window, -1)));
     tapNaviLeftButton();
     tapReturn();
 
@@ -11717,15 +11718,14 @@ function test170674_170675() {
     tapFirstText();
     qr = getQRDet();
     var ret2 = isAnd(isIn(qr.data[0]["货品"], "3035"), isEqual(10,
-            qr.data[0]["数量"]), isEqual(30, getTextFieldValue(window, 12)),
-            isEqual("仓库店", getTextFieldValue(window, 6)), isEqual(5500,
-                    getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window, 6)),
+            isEqual(5500, getTextFieldValue(window, 9)));
 
     tapStaticText(window, "代收");
-    ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(
-            r1, getTextFieldValue(window, 18)), isEqual("a" + r1,
-            getTextFieldValue(window, 19)), isEqual(5500, getTextFieldValue(
-            window, 20)));
+    ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
+            r1, getTextFieldValue(window, -3)), isEqual("a" + r1,
+            getTextFieldValue(window, -2)), isEqual(5500, getTextFieldValue(
+            window, -1)));
     tapNaviLeftButton();
     saveAndAlertOk();
     tapPrompt();
@@ -11740,15 +11740,14 @@ function test170674_170675() {
     tapFirstText();
     qr = getQRDet();
     var ret4 = isAnd(isIn(qr.data[0]["货品"], "3035"), isEqual(10,
-            qr.data[0]["数量"]), isEqual(30, getTextFieldValue(window, 12)),
-            isEqual("仓库店", getTextFieldValue(window, 6)), isEqual(5500,
-                    getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window, 6)),
+            isEqual(5500, getTextFieldValue(window, 9)));
 
     tapStaticText(window, "代收");
-    ret4 = isAnd(ret4, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(
-            r1, getTextFieldValue(window, 18)), isEqual("a" + r1,
-            getTextFieldValue(window, 19)), isEqual(5500, getTextFieldValue(
-            window, 20)));
+    ret4 = isAnd(ret4, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
+            r1, getTextFieldValue(window, -3)), isEqual("a" + r1,
+            getTextFieldValue(window, -2)), isEqual(5500, getTextFieldValue(
+            window, -1)));
     tapNaviLeftButton();
     tapReturn();
 
@@ -11832,11 +11831,11 @@ function test170676() {
 
     var ret1 = isAnd(isEqual("物流商*", value), isEqual("运单号", value1), isEqual(
             "备注", value2), isEqual("代收金额*", value3), isEqual("bz",
-            getTextFieldValue(window, 19)), isIn(value4, "应付金额"));
+            getTextFieldValue(window, -2)), isIn(value4, "应付金额"));
 
-    var ret2 = isAnd(isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(r,
-            getTextFieldValue(window, 18)), isEqual("bz", getTextFieldValue(
-            window, 19)), isEqual(5000, getTextFieldValue(window, 20)));
+    var ret2 = isAnd(isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(r,
+            getTextFieldValue(window, -3)), isEqual("bz", getTextFieldValue(
+            window, -2)), isEqual(5000, getTextFieldValue(window, -1)));
     tapNaviLeftButton();
     saveAndAlertOk();
     tapPrompt();

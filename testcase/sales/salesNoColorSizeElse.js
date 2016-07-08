@@ -696,7 +696,7 @@ function test170018() {
     query(fields);
 
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0;
-    var qr = getQR();
+    var qr = getQR(getScrollView(-1), TITLE_SEQ, 21);
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -1677,9 +1677,8 @@ function test170262() {
 }
 function test170264() {
     tapMenu("销售订货", "新增订货+");
-    var json = {
-        "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "k200", "数量" : "10" } ],
+    var json = { "客户" : "lt",
+        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k200", "数量" : 10 } ],
         "特殊货品" : { "抹零" : 39, "打包费" : 100 } };
     editSalesBillNoColorSize(json);
 
@@ -1703,7 +1702,7 @@ function test170264() {
     tapMenu("销售开单", "按订货开单");
     query();
     var qr1 = getQR();
-    var a = qr.data[0]["发货状态"];
+    var a = qr1.data[0]["发货状态"];
 
     tapFirstText();
     var qr = getQRDet();
@@ -1737,8 +1736,9 @@ function test170264() {
             "3035,jkk", qr.data[0]["货品"]), isEqual(5, qr.data[0]["数量"]),
             isEqual("k200,范范", qr.data[1]["货品"]), isEqual(0, qr.data[1]["数量"]),
             isEqual("00000,抹零", qr.data[2]["货品"]),
-            isEqual(-1, qr.data[2]["数量"]), isEqual("00001,打包费",
-                    qr.data[3]["货品"]), isEqual(1, qr.data[3]["数量"]));
+            isEqual(0, qr.data[2]["数量"]),
+            isEqual("00001,打包费", qr.data[3]["货品"]),
+            isEqual(0, qr.data[3]["数量"]));
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -1750,7 +1750,7 @@ function test170264() {
     qr = getQRDet();
     var ret2 = isAnd(isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(0,
             qr.data[0]["数量"]), isEqual("k200,范范", qr.data[1]["货品"]), isEqual(
-            10, qr.data[0]["数量"]), isEqual("00000,抹零", qr.data[2]["货品"]),
+            10, qr.data[1]["数量"]), isEqual("00000,抹零", qr.data[2]["货品"]),
             isEqual(-1, qr.data[2]["数量"]), isEqual("00001,打包费",
                     qr.data[3]["货品"]), isEqual(1, qr.data[3]["数量"]));
     tapReturn();
@@ -1938,6 +1938,10 @@ function test170269() {
     var qo, o, ret = true;
     qo = { "备注" : "发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "新增货品+");
@@ -2339,7 +2343,7 @@ function test170278_170285_170284() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "物流单");
-    var keys = { "门店" : "常青店", "是否收款" : "否", "是否作废" : "否" };
+    var keys = { "门店" : "常青店", "物流商" : "圆通速递", "是否收款" : "否", "是否作废" : "否" };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     var qr = getQR();
@@ -2347,7 +2351,7 @@ function test170278_170285_170284() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 1 } ],
-        "代收" : { "物流商" : "yt", "运单号" : "123", "备注" : "a" } };
+        "代收" : { "物流商" : "yt", "运单号" : 123, "备注" : "a" } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
     var wls = json["代收"]["物流商"];
@@ -4533,12 +4537,11 @@ function test170332_170337() {
 
     var r1 = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : "5" }, { "货品" : "3035", "数量" : "-5" } ],
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "k300", "数量" : 5 }, { "货品" : "3035", "数量" : -5 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 79 }, "现金" : 50, "刷卡" : [ 100, "交" ],
         "汇款" : [ 400, "建" ],
-        "代收" : { "物流商" : "yt", "运单号" : r1, "备注" : r1 + "zz", "代收金额" : "50" } };
+        "代收" : { "物流商" : "yt", "运单号" : r1, "备注" : r1 + "zz", "代收金额" : 50 } };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按客户未结");
@@ -4604,8 +4607,10 @@ function test170332_170337() {
 
     tapNaviLeftButton();
     tapNaviLeftButton();
+    delay();
 
     tapMenu("销售开单", "按批次查");
+    delay(2);
     var keys = { "客户" : "ls", "日期从" : getDay(-10), "是否未结" : "是", "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
@@ -4873,7 +4878,7 @@ function test170340() {
             sum2));
 
     tapMenu("销售开单", "按汇总", "按客户上货");
-    var keys = { "客户" : "ls", "上架从" : "2015-1-1", "上架到" : getToday(),
+    var keys = { "客户" : "ls", "上架从" : "2015-01-01", "上架到" : getToday(),
         "款号" : "k300", "品牌" : "Adidas", "日期从" : getDay(-10), "日期到" : getToday() };
     var fields = salesCustomerSupplyFields(keys);
     query(fields);
@@ -7892,7 +7897,8 @@ function test170576() {
     var cash = getTextFieldValue(window, 2);
     var yf = getTextFieldValue(window, 3);
     var sf = getTextFieldValue(window, 7);
-    var zj = getTextFieldValue(window, 11);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var zj = getTextFieldValue(window, remitTFindex - 1);
 
     var ret = isAnd(isEqual(add(money, 11), yf), isEqual(add(money, 11), sf),
             isEqual(add(money, 11), cash), isEqual(11, zj));
@@ -9283,14 +9289,14 @@ function test170701() {
     var ret = isEqual(sub(ds1, ds), xj);
 
     tapStaticText(window, "代收");
-    ret = isAnd(ret, isEqual(ds1, getTextFieldValue(window, 19)));
+    ret = isAnd(ret, isEqual(ds1, getTextFieldValue(window, -1)));
     tapNaviRightButton();
     tapButton(getScrollView(-1), 1);
     var ds2 = getTextFieldValue(window, 8);
     var ret1 = isEqual(sub(ds1, ds2), xj);
 
     tapStaticText(window, "代收");
-    ret1 = isAnd(ret1, isEqual(ds2, getTextFieldValue(window, 19)));
+    ret1 = isAnd(ret1, isEqual(ds2, getTextFieldValue(window, -1)));
     tapNaviRightButton();
     saveAndAlertOk();
     tapPrompt();
@@ -9311,14 +9317,14 @@ function test170701() {
     var ret2 = isEqual(sub(ds3, ds2), xj);
 
     tapStaticText(window, "代收");
-    ret2 = isAnd(ret2, isEqual(ds3, getTextFieldValue(window, 19)));
+    ret2 = isAnd(ret2, isEqual(ds3, getTextFieldValue(window, -1)));
     tapNaviRightButton();
     tapButton(getScrollView(-1), 1);
     var ds4 = getTextFieldValue(window, 8);
     var ret3 = isEqual(sub(ds3, ds4), xj);
 
     tapStaticText(window, "代收");
-    ret3 = isAnd(ret3, isEqual(ds4, getTextFieldValue(window, 19)));
+    ret3 = isAnd(ret3, isEqual(ds4, getTextFieldValue(window, -1)));
     tapNaviRightButton();
     tapReturn();
 
