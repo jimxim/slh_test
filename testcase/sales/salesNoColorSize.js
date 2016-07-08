@@ -823,7 +823,8 @@ function test170049() {
             getTextFieldValue(window, 3));
 
     tap(window.staticTexts()["汇款"]);
-    ret = ret && isEqual(totalMoney, getTextFieldValue(window, 13));
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    ret = ret && isEqual(totalMoney, getTextFieldValue(window, remitTFindex));
 
     saveAndAlertOk();
     tapPrompt();
@@ -1446,7 +1447,7 @@ function test170061() {
 }
 function test170062() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButton(window, "核销");
@@ -1456,7 +1457,6 @@ function test170062() {
     tapNaviLeftButton();
 
     var ret = isEqual(e, "下级客户1 其他店总欠: 0.0");
-
     tapSalesBillVerify_OK();
 
     saveAndAlertOk();
@@ -1470,9 +1470,7 @@ function test170062() {
     tapButton(window, "核销");
     var a = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
-
-    var ret1 = isIn(a, "李四 其他店总欠:");
-
+    var ret1 = isAnd(isIn(a, "李四"), isIn(a, "其他店总欠"));
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
@@ -2784,17 +2782,21 @@ function test170100() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : "10" },
-                { "货品" : "k200", "数量" : "11" }, { "货品" : "k300", "数量" : "2" },
-                { "货品" : "3035", "数量" : "12" }, { "货品" : "k200", "数量" : "1" },
-                { "货品" : "4562", "数量" : "1" }, { "货品" : "8989", "数量" : "15" },
-                { "货品" : "k200", "数量" : "20" }, { "货品" : "k300", "数量" : "10" },
-                { "货品" : "3035", "数量" : "12" }, { "货品" : "k200", "数量" : "1" },
-                { "货品" : "4562", "数量" : "1" }, { "货品" : "8989", "数量" : "15" },
-                { "货品" : "k200", "数量" : "20" }, { "货品" : "k300", "数量" : "10" },
-                { "货品" : "4562", "数量" : "10" }, { "货品" : "8989", "数量" : "30" },
-                { "货品" : "k300", "数量" : "20" }, { "货品" : "3035", "数量" : "10" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : 11 },
+                { "货品" : "k300", "数量" : 2 }, { "货品" : "3035", "数量" : 12 },
+                { "货品" : "k200", "数量" : 1 }, { "货品" : "4562", "数量" : 1 },
+                { "货品" : "8989", "数量" : 15 }, { "货品" : "k200", "数量" : 20 },
+                { "货品" : "k300", "数量" : 10 }, { "货品" : "3035", "数量" : 12 },
+                { "货品" : "k200", "数量" : 1 }, { "货品" : "4562", "数量" : 1 },
+                { "货品" : "8989", "数量" : 15 }, { "货品" : "k200", "数量" : 20 },
+                { "货品" : "k300", "数量" : 10 }, { "货品" : "4562", "数量" : 10 },
+                { "货品" : "8989", "数量" : 30 }, { "货品" : "k300", "数量" : 20 },
+                { "货品" : "3035", "数量" : 10 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2861,9 +2863,8 @@ function test170103() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "2" }, { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 2 }, { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2875,9 +2876,8 @@ function test170103() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "3" }, { "货品" : "3035", "数量" : "-1" } ],
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 3 }, { "货品" : "3035", "数量" : -1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -3936,16 +3936,19 @@ function test170139() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : "10" },
-                { "货品" : "k200", "数量" : "11" }, { "货品" : "k300", "数量" : "2" },
-                { "货品" : "3035", "数量" : "12" }, { "货品" : "k200", "数量" : "1" },
-                { "货品" : "4562", "数量" : "1" }, { "货品" : "8989", "数量" : "15" },
-                { "货品" : "k200", "数量" : "20" }, { "货品" : "k300", "数量" : "10" },
-                { "货品" : "4562", "数量" : "10" }, { "货品" : "8989", "数量" : "30" },
-                { "货品" : "k300", "数量" : "20" }, { "货品" : "3035", "数量" : "10" },
-                { "货品" : "k200", "数量" : "1" }, { "货品" : "8989", "数量" : "2" },
-                { "货品" : "3035", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : 11 },
+                { "货品" : "k300", "数量" : 2 }, { "货品" : "3035", "数量" : 12 },
+                { "货品" : "k200", "数量" : 1 }, { "货品" : "4562", "数量" : 1 },
+                { "货品" : "8989", "数量" : 15 }, { "货品" : "k200", "数量" : 20 },
+                { "货品" : "k300", "数量" : 10 }, { "货品" : "4562", "数量" : 10 },
+                { "货品" : "8989", "数量" : 30 }, { "货品" : "k300", "数量" : 20 },
+                { "货品" : "3035", "数量" : 10 }, { "货品" : "k200", "数量" : 1 },
+                { "货品" : "8989", "数量" : 2 }, { "货品" : "3035", "数量" : 20 } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -4038,7 +4041,7 @@ function test170139_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
     var cash = json["输入框值"]["现金"];
 
@@ -4102,12 +4105,12 @@ function test170139_2() {
 
     var r = "newKuanH2" + getTimestamp(8);
     var r1 = "0." + getTimestamp(3);
-    var keys = { "款号" : r, "名称" : r, "进货价" : "100", "产品折扣" : r1 };
+    var keys = { "款号" : r, "名称" : r, "进货价" : 100, "产品折扣" : r1 };
     addGoods(keys, colorSize);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : r, "数量" : "3", "备注" : "mxbz" } ], "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 3, "备注" : "mxbz" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();
@@ -4183,7 +4186,7 @@ function test170139_3() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r,
-        "明细" : [ { "货品" : "8989", "数量" : "4", "备注" : "mxbz" } ], "备注" : "zdbz",
+        "明细" : [ { "货品" : "8989", "数量" : 4, "备注" : "mxbz" } ], "备注" : "zdbz",
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -4307,7 +4310,7 @@ function test170164() {
 function test170166() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "004",
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -4335,7 +4338,7 @@ function test170166() {
 
     var ret = isAnd(isAqualOptime(getOpTime(), date, 2), isAqualOptime(
             getOpTime(), opt, 2), isEqual("总经理", staff), isAqualOptime(
-            getOpTime(), firstOpt), isEqual("总经理", firstStaff));
+            getOpTime(), firstOpt, 2), isEqual("总经理", firstStaff));
     tapButton(getPop(), OK);
     tapReturn();
 
@@ -4345,15 +4348,15 @@ function test170166() {
 }
 function test170167() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "未付" : "yes", "不返回" : "yes" };
+    var json = { "客户" : "xw", "店员" : "000",
+        "明细" : [ { "货品" : "3035", "数量" : 1 } ], "未付" : "yes", "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var json1 = { "客户" : "ls", "核销" : [ 5 ] };
+    var json1 = { "客户" : "xw", "核销" : [ 5 ] };
     editSalesBillNoColorSize(json1);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
+    var keys = { "客户" : "xw" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
@@ -9587,7 +9590,7 @@ function test170527() {
 function test170533() {
     // 设置免单的最高比例为10％，抹零为0
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "特殊货品" : { "抹零" : 200 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9596,11 +9599,11 @@ function test170533() {
 
     var ret = isIn(alertMsg, "保存成功");
 
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "未付" : "yes", "不返回" : "yes" };
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "未付" : "yes",
+        "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    json = { "客户" : "lt", "核销" : [ 5 ], "特殊货品" : { "免单" : 21 },
+    json = { "客户" : "xw", "核销" : [ 5 ], "特殊货品" : { "免单" : 21 },
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9611,7 +9614,7 @@ function test170533() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "lt", "核销" : [ 5 ], "特殊货品" : { "免单" : 20 },
+    json = { "客户" : "xw", "核销" : [ 5 ], "特殊货品" : { "免单" : 20 },
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9623,7 +9626,7 @@ function test170533() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "特殊货品" : { "免单" : 20 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9632,7 +9635,7 @@ function test170533() {
 
     var ret3 = isIn(alertMsg, "保存成功");
 
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "特殊货品" : { "免单" : 21 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9644,13 +9647,12 @@ function test170533() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "未付" : "yes", "不返回" : "yes" };
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "未付" : "yes",
+        "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    json = { "客户" : "lt", "核销" : [ 5 ],
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "特殊货品" : { "免单" : 41 },
-        "onlytest" : "yes" };
+    json = { "客户" : "xw", "核销" : [ 5 ], "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "特殊货品" : { "免单" : 41 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -9661,9 +9663,8 @@ function test170533() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "lt", "核销" : [ 5 ],
-        "明细" : [ { "货品" : "3035", "数量" : "1" } ], "特殊货品" : { "免单" : 40 },
-        "onlytest" : "yes" };
+    json = { "客户" : "xw", "核销" : [ 5 ], "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "特殊货品" : { "免单" : 40 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -9674,7 +9675,7 @@ function test170533() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "特殊货品" : { "打包费" : 200, "免单" : 21 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
