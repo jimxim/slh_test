@@ -2049,31 +2049,27 @@ function test170078() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "onlytest" : "yes" };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 }, "折扣" : 0.58 };
     editSalesBillNoColorSize(json);
 
-    var f10 = new TField("折扣", TF, 10, 0.58);
-    var fields = [ f10 ];
-    setTFieldsValue(window, fields);
-
-    var qr = getQRDet();
-    var totalMoney = add(0.58 * Number(qr.data[0]["数量"])
-            * Number(qr.data[0]["单价"]), 1);
-    var ret1 = isAnd(isAqualNum(totalMoney, getTextFieldValue(window, 2)),
-            isAqualNum(totalMoney, getTextFieldValue(window, 3)));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var qr = json["明细值"];
+    var totalMoney = Math.round(add(0.58 * Number(qr.data[0]["数量"])
+            * Number(qr.data[0]["单价"]), 11));
+    
+    var qr1 = json["输入框值"];
+    var ret1 = isAnd(isAqualNum(totalMoney, qr1["现金"]), isAqualNum(totalMoney,
+            qr1["应付"]));
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    qr = getQR();
     var ret2 = isAnd(isAqualNum(totalMoney, qr.data[0]["金额"]), isAqualNum(
             totalMoney, qr.data[0]["现金"]), isEqual(0, qr.data[0]["未结"]));
 
     tapFirstText();
-    ret2 = isAnd(ret2, isEqual(0.58, getTextFieldValue(window, 10)));
+    var index = getEditSalesTFindex2("客户,厂商", "折扣");
+    ret2 = isAnd(ret2, isEqual(0.58, getTextFieldValue(window, index)));
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -2087,11 +2083,11 @@ function test170083() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "newkehu" + getTimestamp(6);
-    var keys = { "名称" : r, "适用价格" : "零批价", "拿货折扣" : "0.8" };
+    var keys = { "名称" : r, "适用价格" : "零批价", "拿货折扣" : 0.8 };
     addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "8989", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2120,7 +2116,7 @@ function test170083() {
             getOpTime(), qr.data[0]["操作日期"]));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
