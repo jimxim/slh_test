@@ -14,8 +14,8 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "ts150006");//
-// run("测试用例", "test100107");//
+ run("测试用例", "onlyTest");//
+// run("测试用例", "ts100010_100011_100013");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
@@ -28,9 +28,16 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 
-    tapMenu("销售开单", ADDBILL);
-    json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
+// var keys1 = { "吊牌价" : "200",
+// "进货价" : "100" };
+// var fields = editGoodsFields(keys1, false);
+// logDebug("吊牌价index="+fields["吊牌价"].index+" 进货价="+fields["进货价"].index);
+// setTFieldsValue(getScrollView(), fields);
+    var view = getScrollView();
+    var texts = getElements(view);
+    var idx = getEditGoodsIndex(texts, "吊牌价");
+    debugArray(idx);
+
 // debugObject(gCache,"gCache");
   return true;
 }
