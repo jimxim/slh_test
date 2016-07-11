@@ -1715,16 +1715,14 @@ function test170264() {
     var ret = isAnd(isEqual("部分发货", a), isEqual(15, qr1.data[0]["订货数"]),
             isEqual(10, qr1.data[0]["已发数"]), isEqual(5, qr1.data[0]["差异数"]),
             isEqual(0, a1), isEqual(-1, a2), isEqual(0, a3), isEqual(0, a4),
-            isEqual(0, a5), isEqual(1, qr.data[3]["订货数"]), isEqual(1,
+            isEqual(0, a5), isEqual(1, qr.data[3]["订货"]), isEqual(1,
                     qr.data[3]["已发"]), isEqual(0, qr.data[3]["数量"]), isEqual(0,
                     qr.data[3]["单价"]));
     saveAndAlertOk();
     tapPrompt();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
+    query();
     qr = getQR();
     var sl = qr.data[0]["数量"];
     var opt = qr.data[0]["操作日期"];
@@ -2169,12 +2167,7 @@ function test170274() {
         "特殊货品" : { "抹零" : 39, "打包费" : 210 }, "折扣" : 1.1 };
     editSalesBillNoColorSize(json);
 
-    // var f10 = new TField("折扣", TF, 9, "1.1");
-    // var fields = [ f10 ];
-    // setTFieldsValue(window, fields);
-
     var qr = json["明细值"];
-    debugQResult(qr);
     var lprice = qr.data[0]["单价"];
     var lprice1 = qr.data[1]["单价"];
     var xj = qr.data[0]["小计"];
@@ -5322,7 +5315,7 @@ function test170365() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "8989", "数量" : 1 } ],
         "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -5394,8 +5387,9 @@ function test170366() {
 
     var qr = getQRDet();
     var money = getTextFieldValue(window, 3);
-    var totalMoney = getTextFieldValue(window, 12);
-    var zk = getTextFieldValue(window, 10);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
+    var zk = getTextFieldValue(window, remitTFindex - 3);
     var price = qr.data[0]["单价"];
     var num = qr.data[0]["数量"];
 
@@ -5411,7 +5405,8 @@ function test170366() {
     editSalesBillDetNoColorSize(json);
 
     qr = getQRDet();
-    var zk1 = getTextFieldValue(window, 11);
+    remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var zk1 = getTextFieldValue(window, remitTFindex - 3);
     var price1 = qr.data[2]["单价"];
     var num1 = qr.data[2]["数量"];
 
@@ -5455,7 +5450,7 @@ function test170366() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("zk=" + zk + ", num=" + num + ", price=" + ", zk1=" + zk1
+    logDebug("zk=" + zk + ", num=" + num + ", price=" + price + ", zk1=" + zk1
             + ", num1=" + num1 + ", price1=" + price1 + ", ret=" + ret
             + ", ret1=" + ret1);
     return ret && ret1;
@@ -5469,9 +5464,8 @@ function test170368() {
 
     var r = getTimestamp(5);
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "lx",
-        "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "lx",
+        "明细" : [ { "货品" : "8989", "数量" : "1" }, { "货品" : "3035", "数量" : 1 } ],
         "特殊货品" : { "抹零" : 6 }, "代收" : { "物流商" : "ht", "运单号" : r, "备注" : "a" } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
