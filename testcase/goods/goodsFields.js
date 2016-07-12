@@ -438,7 +438,7 @@ function getGoodsTFields(keys, show, texts) {
                 changeTFieldValue(f, a1);
             }
         }
-        logDebug("getTFields i=" + i + " index=" + f.index);
+        logDebug("getTFields i=" + i + "  type=" + f.type + " index=" + f.index);
         ret[key] = f;
     }
 
@@ -471,7 +471,6 @@ function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
     }
-
     var f, idx = [];
     switch (key) {
     case "code":
@@ -706,7 +705,7 @@ function editGoodsField(key, show, texts) {
     case " washingInstructions":
     case "洗涤说明":
         idx = getEditGoodsIndex(texts, "洗涤说明");
-        f = new TField("洗涤说明", BTN_MC, idx[1], [ "可以机洗", "适宜手洗" ]);
+        f = new TField("洗涤说明", BTN_MC, idx[1], "可以机洗,适宜手洗");
         if (show) {
             f.type = TF;
             f.index = idx[0];
