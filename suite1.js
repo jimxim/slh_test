@@ -14,7 +14,7 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "onlyTest");//
+ run("测试用例", "ts100034");//
 // run("测试用例", "ts100010_100011_100013");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
