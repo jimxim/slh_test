@@ -41,7 +41,7 @@ function queryCheckBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 6, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -93,7 +93,7 @@ function queryCheckParticularField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 6, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -159,7 +159,7 @@ function checkProcessRecordField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -196,7 +196,7 @@ function checkMaterialField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
@@ -248,7 +248,7 @@ function checkProfitAndLossField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -296,7 +296,7 @@ function checkPlanField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
         break;
     case "operate":
     case "是否处理":

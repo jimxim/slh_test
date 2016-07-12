@@ -1130,7 +1130,7 @@ function test170056() {
     var md = qr.data[0]["门店"];
     var kh = qr.data[0]["客户"];
     tapNaviLeftButton();
-    var ret = isAnd(isIn("下级客户1 其他店", a), isEqual("常青店", md), isEqual("下级客户1",
+    var ret = isAnd(isIn(a, "下级客户1 其他店"), isEqual("常青店", md), isEqual("下级客户1",
             kh));
 
     tapButton(window, CLEAR);
@@ -1423,7 +1423,7 @@ function test170062() {
     var e = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
 
-    var ret = isEqual(e, "下级客户1 其他店结余: 0.0");
+    var ret = isIn(e, "下级客户1 其他店");
     tapSalesBillVerify_OK();
 
     saveAndAlertOk();
@@ -1770,24 +1770,25 @@ function test170074() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "hh", "明细" : [ { "货品" : r, "数量" : "-50" } ],
+    var json = { "客户" : "hh", "明细" : [ { "货品" : r, "数量" : -50 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "款号【" + r + "," + r, "均色,均码】退货数量高于拿货总数量，请核对");
+    tapReturn();
 
-    var json = { "明细" : [ { "货品" : r, "数量" : "10" } ], "不返回" : "yes" };
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "hh", "明细" : [ { "货品" : r, "数量" : 10 } ], "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var json = { "客户" : "hh", "明细" : [ { "货品" : r, "数量" : "-50" } ],
+    var json = { "客户" : "hh", "明细" : [ { "货品" : r, "数量" : -20 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret2 = isIn(alertMsg, "款号【" + r + "," + r, "均色,均码】退货数量高于拿货总数量，请核对");
     tapReturn();
 
@@ -2153,7 +2154,7 @@ function test170080_170084() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 1 } ],
-        "特殊货品" : { "抹零" : "19" }, "onlytest" : "yes" };
+        "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();
@@ -2181,7 +2182,7 @@ function test170080_170084() {
             isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : "10" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2945,9 +2946,8 @@ function test170105() {
     tapReturn();
 
     ret = isAnd(ret, isEqual(a1[0], "日期"), isAqualOptime(a1[1], getOpTime()),
-            isEqual("数量: 2  价格: " + r + " 折扣: 1", num),
-            isEqual(getToday(""), a), isEqual("2", b), isEqual(r, c), isEqual(
-                    "1", z));
+            isEqual("数量: 2  价格: " + r + " 折扣: 1", num), isIn(a, getToday("")),
+            isEqual("2", b), isEqual(r, c), isEqual("1", z));
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
@@ -3295,8 +3295,7 @@ function test170120() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k300", "数量" : 6 } ],
-        "明细输入框个数" : 9 };
+        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k300", "数量" : 6 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "款号库存");
@@ -3388,7 +3387,7 @@ function test170121_170523() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 7 }, { "货品" : "k300", "数量" : 8 } ],
-        "发货" : "仓库店", "明细输入框个数" : 9 };
+        "发货" : "仓库店" };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "款号库存");
@@ -3897,7 +3896,6 @@ function test170139() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-
     tapButtonAndAlert(window, "复 制");
 
     tapMenu("销售开单", "开  单+");
@@ -3924,10 +3922,8 @@ function test170139() {
     // var k1 = getTextFieldValue(getScrollView(-1), 1);
     // var k2 = getTextFieldValue(getScrollView(-1), 2);
     // var k3 = getTextFieldValue(getScrollView(-1), 3);
-    //
     // var f0 = getTextFieldValue(window, 0);
     // var f5 = getTextFieldValue(window, 5);
-    //
     // var num = getTextFieldValue(window, 11);
     var qr = getQRDet();
     var ret = isAnd(isEqualObject(exp0, qr.data[0]), isEqualObject(exp1,
@@ -9100,10 +9096,9 @@ function test170506() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-
     tapButton(window, "未付");
     keys = { "现金" : money };
-    var fields = logisticsVerifyFields(keys);
+    var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
 
     saveAndAlertOk();
@@ -9129,7 +9124,6 @@ function test170506() {
     tapMenu("销售开单", "按批次查");
     query();
     qr = getQR();
-
     var ret = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(totalCrash, add(
             money, price * 1)), isEqual(totalCrash, qr.data[0]["现金"]), isEqual(
             0, qr.data[0]["代收"]), isAqualOptime(getOpTime(),
@@ -9142,14 +9136,12 @@ function test170506() {
             isEqual(totalCrash, getTextFieldValue(window, 2)), isEqual(0,
                     getTextFieldValue(window, 8)), isEqual(getToday(),
                     getTextFieldValue(window, 9)));
-
     tapReturn();
 
     tapMenu("销售开单", "物流单");
     tapButton(window, QUERY);
     var q = getQR();
     var len1 = q.total;
-
     var ret2 = isAnd(isEqual(1, sub(len, len1)), isEqual(0, len1));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -9351,7 +9343,7 @@ function test170522() {
     var qr = getQR();
     var batch = qr.data[0]["批次"];
 
-    var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isEqual(rq,
+    var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isIn(rq,
             getToday("")), isEqual(dy, "仓管员"), isEqual(kh, "4562"), isEqual(ys,
             "均色"), isEqual(cm, "均码"), isEqual(mc, "Story"), isEqual(sl, "2"),
             isEqual(zk, "1"), isEqual(bz, "mxbz"));
@@ -10833,7 +10825,7 @@ function test170593() {
 }
 function test170595() {
     tapMenu("销售开单", "开  单+");
-    var r = getTimestamp(12);
+    var r = "/" + getTimestamp(12);
     var json = { "明细" : [ { "货品" : r, "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
