@@ -28,15 +28,13 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 
-// var keys1 = { "吊牌价" : "200",
-// "进货价" : "100" };
-// var fields = editGoodsFields(keys1, false);
-// logDebug("吊牌价index="+fields["吊牌价"].index+" 进货价="+fields["进货价"].index);
-// setTFieldsValue(getScrollView(), fields);
-    var view = getScrollView();
-    var texts = getElements(view);
-    var idx = getEditGoodsIndex(texts, "吊牌价");
-    debugArray(idx);
+ var keys1 = { "吊牌价":200,"进货价" : 100 };// 
+ var fields = editGoodsFields(keys1, false);
+
+ setTFieldsValue(getScrollView(), fields);
+//
+// 
+// var tests = getEditGoodsElements();
 
 // debugObject(gCache,"gCache");
   return true;

@@ -410,13 +410,43 @@ function testEditGoodsFields() {
  * @param show
  */
 function editGoodsFields(keys, show) {
-    var view = getScrollView();
     if (isUndefined(show)) {
         show = false;
     }
-    var texts = getElements(view);
-    var addIdx = getButtonIndex(view, "增量");
-    return getTFields("editGoodsField", keys, show, texts, addIdx);
+    var tests = getEditGoodsElements();
+    return getGoodsTFields(keys, show, tests);// getTFields
+}
+function getGoodsTFields(keys, show, texts) {
+    if (isUndefined(keys)) {
+        return {};
+    }
+    var ret = {};
+
+    for ( var i in keys) {
+        var key = i;
+        if (isArray(keys)) {
+            key = keys[i];
+        }
+
+        var f = editGoodsField(key, show, texts);
+        if (isObject(keys)) {
+            var a1 = keys[i];
+            if (isArray(a1)) {
+                changeTFieldValue(f, getArray1(a1, 0), getArray1(a1, 1),
+                        getArray1(a1, 2), getArray1(a1, 3));
+            } else {
+                changeTFieldValue(f, a1);
+            }
+        }
+        logDebug("getTFields i=" + i + " index=" + f.index);
+        ret[key] = f;
+    }
+
+    return ret;
+}
+function getEditGoodsElements() {
+    var view = getScrollView();
+    return getElements(view);
 }
 function getEditGoodsIndex(texts, value) {
     var idx = new Array(2), tfNum = -1, btnNum = -1;
@@ -431,19 +461,18 @@ function getEditGoodsIndex(texts, value) {
         if (isUIAStaticText(e) && e.value() == value) {
             idx[0] = tfNum + 1;
             idx[1] = btnNum + 1;
-            logDebug()
             break;
         }
     }
     return idx;
 }
 
-function editGoodsField(key, show, texts, addIdx) {
+function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
     }
 
-    var f, idx;
+    var f, idx = [];
     switch (key) {
     case "code":
     case "款号":
@@ -499,7 +528,7 @@ function editGoodsField(key, show, texts, addIdx) {
     case "tag":
     case "吊牌价":
         idx = getEditGoodsIndex(texts, "吊牌价");
-        f = new TField("吊牌价", TF, idx[0], "200");// 这个地方比较奇怪，有2个TF
+        f = new TField("吊牌价", TF, idx[0] + 1, "200");// 这个地方比较奇怪，有2个TF
         break;
     case "purchase-price":
     case "进货价":
@@ -509,7 +538,7 @@ function editGoodsField(key, show, texts, addIdx) {
     case "retail":
     case "零批价":
         idx = getEditGoodsIndex(texts, "零批价");
-        f = new TField("零批价", TF, idx[0], "200");
+        f = new TField("零批价", TF, idx, "200");
         break;
     case "pack":
     case "打包价":
