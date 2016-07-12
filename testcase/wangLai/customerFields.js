@@ -42,7 +42,7 @@ function queryCustomerField(key, show) {
         f = new TField("地址", TF, 7, "a");
         break;
     case "门店":
-        f = new TField("门店", TF, 8, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 8, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -294,7 +294,7 @@ function queryCustomerShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "仓库店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "仓库店");// TF_SC
         break;
     case "staff":
     case "店员":
@@ -350,7 +350,7 @@ function queryCustomerSuperField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -421,7 +421,7 @@ function queryCustomerActiveField(key, show) {
     // break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 1, "仓库店");// TF_SC
+        f = new TField("门店", TF_SC, 1, "仓库店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -448,7 +448,7 @@ function queryCustomerScoreField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 0, "常青店");// TF_SC
         break;
     case "customer":
     case "客户":
@@ -583,7 +583,7 @@ function queryProviderShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 2, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -682,7 +682,7 @@ function queryCustomerLogisticsField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店", TF_SC, 3, "常青店");// TF_SC
         break;
     case "stop":
     case "是否停用":

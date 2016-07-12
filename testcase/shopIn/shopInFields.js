@@ -25,7 +25,7 @@ function shopInFlitField(key, show) {
         break;
     case "shopOut":
     case "调出门店":
-        f = new TField("门店", TF, 2, "常青店");
+        f = new TField("门店", TF_SC, 2, "常青店");
         break;
     case "batch1":
     case "批次从":
@@ -66,11 +66,11 @@ function shopInQueryBatchField(key, show) {
         break;
     case "shop-out":
     case "调出门店":
-        f = new TField("调出门店", TF, 2, "常青店");
+        f = new TField("调出门店", TF_SC, 2, "常青店");
         break;
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 3, "仓库店");// TF_SC
+        f = new TField("调入门店", TF_SC, 3, "仓库店");// TF_SC
         break;
     case "batch1":
     case "批次从":
@@ -123,7 +123,7 @@ function shopInQueryParticularField(key, show) {
         break;
     case "shop-out":
     case "调出门店":
-        f = new TField("调出门店", TF, 2, "常青店");
+        f = new TField("调出门店", TF_SC, 2, "常青店");
         break;
     case "day1":
     case "日期从":
@@ -136,7 +136,7 @@ function shopInQueryParticularField(key, show) {
 
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 5, "仓库店");// TF_SC
+        f = new TField("调入门店", TF_SC, 5, "仓库店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -180,11 +180,11 @@ function shopInCodeField(key, show) {
         break;
     case "shop-out":
     case "调出门店":
-        f = new TField("调出门店", TF, 4, "中洲店");
+        f = new TField("调出门店", TF_SC, 4, "中洲店");
         break;
     case "shop-in":
     case "调入门店":
-        f = new TField("调入门店", TF, 5, "常青店");// TF_SC
+        f = new TField("调入门店", TF_SC, 5, "常青店");// TF_SC
         break;
     case "brand":
     case "品牌":
