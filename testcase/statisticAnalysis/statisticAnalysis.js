@@ -2571,7 +2571,8 @@ function test190112Field(fn) {
 
 function test190113() {
     tapMenu("统计分析", "汇总表", "颜色销售表");
-    var keys = { "日期从" : getDay(-30) };
+    var keys = { "日期从" : getDay(-30), "上架从" : "2015-01-01", "上架到" : getToday(),
+        "门店" : "常青店", "颜色" : "均色" };
     var fields = statisticAnalysColorFields(keys);
     query(fields);
 

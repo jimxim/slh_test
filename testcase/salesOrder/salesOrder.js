@@ -2329,15 +2329,15 @@ function test160122() {
     delay();
     loadHangBill(1);
     editSalesBillSave({});
-    var ret = !hasArray();
+    var ret = isInAlertMsgs("保存成功");
 
     tapMenu2("按批次查");
-    tapMenu("销售开单", MORE, "所有挂单");
+    tapMenu("销售开单", "getMenu_More", "所有挂单");
     delay();
     loadHangBill(1);
     editSalesBillSave({});
     tapReturn();
-    ret=isAnd(ret,isInAlertMsgs)
+    ret=isAnd(ret,isInAlertMsgs("开单界面存在数据"));
 
     return ret;
 }
