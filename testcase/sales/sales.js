@@ -10,13 +10,13 @@ var MORE1 = "更多.";
 /** 更多.. */
 var MORE2 = "更多..";
 /** 物流核销 */
-var LogisticsVerify = "核销+";// 7.01及以前为"核销+",7.10为"物流核销+"
+var LogisticsVerify = "物流核销+";// 7.01及以前为"核销+",7.10为"物流核销+"
 /** 兑换积分 */
-var ExchangeScore = "积分兑换";// 7.01及以前为"积分兑换",7.10为"兑换积分"
+var ExchangeScore = "兑换积分";// 7.01及以前为"积分兑换",7.10为"兑换积分"
 /** 确 认 */
 var CONFIRM = "确 认";
 /** 本单查询 */
-var SELFQUERY = "查 询";// 7.01及以前为"查 询",7.10为"本单查询"
+var SELFQUERY = "本单查询";// 7.01及以前为"查 询",7.10为"本单查询"
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");

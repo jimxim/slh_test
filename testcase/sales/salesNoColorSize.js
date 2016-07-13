@@ -5111,21 +5111,21 @@ function test170187() {
     return ret && ret1;
 }
 function test170188() {
-    tapMenu("统计分析", "综合汇总");
-    var f2 = new TField("门店", TF_SC, 2, "常青店");
-    var fields = [ f2 ];
-    setTFieldsValue(window, fields);
-    query(fields);
-    tapFirstText();
-
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    var je = qr.data[2]["金额2"];
-    var ret = false;
-    if (qr.data[2]["金额2"] == null) {
-        je = 0
-    }
-    tapNaviLeftButton();
+    // tapMenu("统计分析", "综合汇总");
+    // var f2 = new TField("门店", TF_SC, 2, "常青店");
+    // var fields = [ f2 ];
+    // setTFieldsValue(window, fields);
+    // query(fields);
+    // tapFirstText();
+    //
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称", 5);
+    // var je = qr.data[2]["金额2"];
+    // var ret = false;
+    // if (qr.data[2]["金额2"] == null) {
+    // je = 0
+    // }
+    // tapNaviLeftButton();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xw", "onlytest" : "yes" };
@@ -5145,21 +5145,21 @@ function test170188() {
     tapNaviLeftButton();
     tapReturn();
 
-    tapMenu("统计分析", "综合汇总");
-    var f2 = new TField("门店", TF_SC, 2, "常青店");
-    var fields = [ f2 ];
-    setTFieldsValue(window, fields);
-    query(fields);
-    tapFirstText();
-
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    var je1 = qr.data[2]["金额2"];
-    var ret = false;
-    if (je1 >= 0) {
-        ret = true;
-    }
-    tapNaviLeftButton();
+    // tapMenu("统计分析", "综合汇总");
+    // var f2 = new TField("门店", TF_SC, 2, "常青店");
+    // var fields = [ f2 ];
+    // setTFieldsValue(window, fields);
+    // query(fields);
+    // tapFirstText();
+    //
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称", 5);
+    // var je1 = qr.data[2]["金额2"];
+    // var ret = false;
+    // if (je1 >= 0) {
+    // ret = true;
+    // }
+    // tapNaviLeftButton();
 
     tapMenu("统计分析", "收支流水");
     var keys = [ "day1", "day2", "shop", "account" ];
@@ -5171,13 +5171,12 @@ function test170188() {
     setTFieldsValue(window, fields);
     query(fields);
     var qr = getQR();
-
     var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
             qr.data[0]["金额"]), isEqual(a1[0], "当前积分"), isEqual(r, sub(a[1],
             a1[1])), isEqual(r, sub(je1, je)));
 
-    logDebug("金额=" + je + ", a1=" + a1 + ", ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(", a1=" + a1 + ", ret1=" + ret1);
+    return ret1;
 }
 function test170189() {
     tapMenu("销售开单", "开  单+");

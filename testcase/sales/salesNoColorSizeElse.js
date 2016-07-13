@@ -7479,18 +7479,18 @@ function test170569() {
     var qr = getQR();
     var ds = qr.data[0]["代收收款"];
 
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    var je = qr.data[1]["金额"];
-    if (je == isNaN) {
-        je = 0;
-    }
-    tapNaviLeftButton();
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称", 5);
+    // var je = qr.data[1]["金额"];
+    // if (je == isNaN) {
+    // je = 0;
+    // }
+    // tapNaviLeftButton();
 
     var r = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "2" } ],
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "代收" : { "物流商" : "tt", "运单号" : r } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
@@ -7542,13 +7542,12 @@ function test170569() {
     var qr3 = getQR();
     var ds1 = qr3.data[0]["代收收款"];
 
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr4 = getQRverify(texts, "名称", 5);
-    var ret3 = isAnd(isEqual(add(money, 11), sub(ds1, ds)), isEqual("代收收款",
-            qr4.data[1]["收入"]), isEqual(sf, sub(qr4.data[1]["金额"], je)));
-    delay();
-    tapNaviLeftButton();
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr4 = getQRverify(texts, "名称", 5);
+    // delay();
+    // tapNaviLeftButton();
+    var ret3 = isAnd(isEqual(add(money, 11), sub(ds1, ds)));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -7846,15 +7845,15 @@ function test170576() {
     var ds = qr.data[0]["代收收款"];
     var xj = qr.data[0]["现金"];
 
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    var je = qr.data[1]["金额"];
-
-    if (je == isNaN) {
-        je = 0
-    }
-    tapNaviLeftButton();
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称", 5);
+    // var je = qr.data[1]["金额"];
+    //
+    // if (je == isNaN) {
+    // je = 0
+    // }
+    // tapNaviLeftButton();
 
     var r = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
@@ -7914,14 +7913,13 @@ function test170576() {
     var ds1 = qr3.data[0]["代收收款"];
     var xj1 = qr3.data[0]["现金"];
 
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr4 = getQRverify(texts, "名称", 5);
-    var ret3 = isAnd(isEqual(add(money, 11), sub(ds1, ds)), isEqual(xj, xj1),
-            isEqual("代收收款", qr4.data[1]["收入"]), isEqual(sf, sub(
-                    qr4.data[1]["金额"], je)));
-    delay();
-    tapNaviLeftButton();
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr4 = getQRverify(texts, "名称", 5);
+    // delay();
+    // tapNaviLeftButton();
+
+    var ret3 = isAnd(isEqual(add(money, 11), sub(ds1, ds)), isEqual(xj, xj1));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
