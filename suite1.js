@@ -17,7 +17,7 @@ function test000All() {
 
 
 
- run("测试用例", "test170018");//
+ run("测试用例", "test190013");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
