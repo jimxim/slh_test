@@ -1371,7 +1371,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1390,7 +1390,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -1404,7 +1404,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1759,7 +1759,7 @@ function test210052() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1775,7 +1775,7 @@ function test210052() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1792,7 +1792,7 @@ function test210052() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "4562", "数量" : 20 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f9 = new TField("日期", TF_DT, 9, getDay(-1));
@@ -1802,12 +1802,11 @@ function test210052() {
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "系统设定不允许修改开单日期");
-
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "4562", "数量" : 20 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var f9 = new TField("日期", TF_DT, 8, getDay(-1));
@@ -1816,28 +1815,21 @@ function test210052() {
 
     saveAndAlertOk();
     tapPrompt();
-
     var ret3 = isIn(alertMsg, "系统设定不允许修改开单日期");
-
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var f0 = new TField("货品", TF_AC, 0, "000", -1, 0);
     var f1 = new TField("数量", TF_SC, 1, "中洲店");
     var f2 = new TField("日期", TF_DT, 2, getDay(1));
-    var fields = [ f0, f1, f2 ];
+    var fields = [ f1, f2 ];
     setTFieldsValue(window, fields);
 
-    var f2 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "10");
-    var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var json = { "客户" : "000", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
-
     var ret4 = isIn(alertMsg, "系统设定不允许修改开单日期");
-
     tapReturn();
 
     return ret && ret1 && ret2 && ret3 && ret4;

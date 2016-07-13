@@ -252,9 +252,9 @@ function test200044() {
 
     tapButton(window, CLEAR);
 
-    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-            getToday(), getTextFieldValue(window, 1)), isEqual("",
-            getTextFieldValue(window, 2)));
+    var ret = isAnd(isEqual(getDay(-30), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)));
 
     return ret && ret1;
 }

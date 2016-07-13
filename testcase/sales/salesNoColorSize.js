@@ -1189,7 +1189,7 @@ function test170057() {
     tapNaviLeftButton();
     var ret10 = isIn(b1, "下级客户1 其他店");
 
-    tapMenu("销售开单", "getMenu_More", "本单查询");
+    tapMenu("销售开单", "getMenu_More", SELFQUERY);
     var g0 = new TField("款号名称＊", TF, 0, "3035");
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);

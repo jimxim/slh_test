@@ -400,12 +400,12 @@ function test180013_2_180014() {
     tapMenu("盘点管理", "按明细查");
     var i;
     var ret1 = false;
-    var f = new TField("款号", TF_AC, 2, "303", -1);
+    var f = new TField("款号", TF_AC, 2, "456", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, "3035,jkk")) {
+        if (isIn(v, "4562,Story")) {
             ret1 = true;
             break;
         }
@@ -455,14 +455,16 @@ function test180013_2_180014() {
             isEqual("均码", a5), isEqual("总经理", a7), isIn(a8, getToday("")));
 
     tapButton(window, CLEAR);
-    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-            getToday(), getTextFieldValue(window, 1)), isEqual("",
-            getTextFieldValue(window, 2)), isEqual("", getTextFieldValue(
-            window, 3)), isEqual("", getTextFieldValue(window, 4)), isEqual("",
-            getTextFieldValue(window, 5)));
+    var ret3 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)), isEqual("",
+                    getTextFieldValue(window, 3)), isEqual("",
+                    getTextFieldValue(window, 4)), isEqual("",
+                    getTextFieldValue(window, 5)));
 
-    logDebug("ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test180015() {
     tapMenu("货品管理", "货品查询");
@@ -1202,8 +1204,12 @@ function test180037_180034_180035() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "盈亏表");
-    var keys = { "门店" : "常青店", "批次从" : batch, "批次到" : batch, "款号" : "k300",
-        "日期从" : getDay(-30), "日期到" : getToday() };
+    var keys = { "门店" : "常青店", "款号" : "k300", "日期从" : getDay(-30),
+        "日期到" : getToday() };
+    if (ipadVer >= "7.21") {
+        keys["批次从"] = batch;
+        keys["批次到"] = batch;
+    }
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
@@ -2194,7 +2200,11 @@ function test180061() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("盘点管理", MORE, "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
     var qr = getQR();
     var ret3 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按品牌",
@@ -2219,7 +2229,11 @@ function test180062() {
     var ret = isIn(alertMsg, "盘点计划正在执行中，请等盘点处理完毕后新增计划");
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
     tapFirstText();
     tapButtonAndAlert("删除计划", OK);
@@ -2285,7 +2299,11 @@ function test180062() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     keys = { "门店" : "中洲店" };
     fields = checkPlanFields(keys);
     query(fields);
@@ -2428,7 +2446,11 @@ function test180066() {
     tapPrompt();
     delay();
 
-    tapMenu("盘点管理", MORE, "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
     tapFirstText();
     tapButtonAndAlert("删除计划", OK);
@@ -2455,7 +2477,11 @@ function test180066() {
     var kc2 = add(qr1.counts["库存"], qr1.counts["在途数"]);
     var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2));
 
-    tapMenu("盘点管理", MORE, "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
     tapFirstText();
     tapButtonAndAlert("删除计划", OK);
@@ -2513,7 +2539,11 @@ function test180067() {
 
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
 
     var qr = getQR();
@@ -2544,7 +2574,11 @@ function test180068() {
 
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
 
     tapFirstText();
@@ -2613,7 +2647,11 @@ function test180068() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
     var qr = getQR();
     var ret3 = isAnd(isEqual("中洲店", qr.data[0]["门店"]), isEqual("按品牌",
@@ -2731,9 +2769,12 @@ function test180073() {
 
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
-
     var qr = getQR();
 
     var ret3 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按品牌",
@@ -2753,18 +2794,17 @@ function test180074() {
     delay();
 
     testAddProviderCheck();
-
     tapButtonAndAlert(SAVE, OK);
-
     tapPrompt();
-
     var ret = isIn(alertMsg, "盘点计划正在执行中，请等盘点处理完毕后新增计划");
-
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
-
     tapFirstText();
     tapButtonAndAlert("删除计划", OK);
     tapPrompt();
@@ -2829,11 +2869,13 @@ function test180074() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("盘点管理", "盘点计划表");
+    if (ipadVer >= "7.21") {
+        tapMenu("盘点管理", MORE, "盘点计划表");
+    }else{
+        tapMenu("盘点管理", "盘点计划表");
+    }
     query();
-
     var qr = getQR();
-
     var ret3 = isAnd(isEqual("中洲店", qr.data[0]["门店"]), isEqual("按品牌",
             qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
             isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("",

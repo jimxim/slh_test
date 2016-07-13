@@ -244,6 +244,12 @@ function checkProfitAndLossFields(keys, show) {
     return getTFields("checkProfitAndLossField", keys, show);
 }
 function checkProfitAndLossField(key, show) {
+    var i;
+    if (ipadVer >= "7.21") {
+        i = 2;
+    } else {
+        i = 0;
+    }
     var f;
     switch (key) {
     case "shop":
@@ -260,18 +266,18 @@ function checkProfitAndLossField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 3, "a", -1, 0);
+        f = new TField("款号", TF_AC, 1 + i, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 4, getToday());
+        f = new TField("日期从", TF_DT, 2 + i, getToday());
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 5, getToday());
+        f = new TField("到", TF_DT, 3 + i, getToday());
         break;
     default:
         logWarn("未知key＝" + key);
