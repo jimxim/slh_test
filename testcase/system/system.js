@@ -35,7 +35,7 @@ function testSystem001() {
     run("【系统设置—改密码】关闭", "test210036");
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置】紧急模式上传异常", "test210061");
-    run("【系统设置-全局参数】异地发货参数互斥", "test210063");
+    // run("【系统设置-全局参数】异地发货参数互斥", "test210063");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
@@ -1010,24 +1010,18 @@ function test210039_210068() {
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
-    var ret1 = isAnd(isEqual("X001,特步夹克", getTextFieldValue(getScrollView(-1),
-            0)), isEqual("红色", getTextFieldValue(getScrollView(-1), 1)),
-            isEqual("L", getTextFieldValue(getScrollView(-1), 2)), isEqual(5,
-                    getTextFieldValue(getScrollView(-1), 3)), isEqual(
-                    "X001,特步夹克", getTextFieldValue(getScrollView(-1), 7)),
-            isEqual("红色", getTextFieldValue(getScrollView(-1), 8)), isEqual(
-                    "XL", getTextFieldValue(getScrollView(-1), 9)), isEqual(6,
-                    getTextFieldValue(getScrollView(-1), 10)), isEqual(
-                    "X003,特步登山服", getTextFieldValue(getScrollView(-1), 14)),
-            isEqual("黄色", getTextFieldValue(getScrollView(-1), 15)), isEqual(
-                    "L", getTextFieldValue(getScrollView(-1), 16)), isEqual(1,
-                    getTextFieldValue(getScrollView(-1), 17)), isEqual(
-                    "X003,特步登山服", getTextFieldValue(getScrollView(-1), 21)),
-            isEqual("黄色", getTextFieldValue(getScrollView(-1), 22)), isEqual(
-                    "XL", getTextFieldValue(getScrollView(-1), 23)), isEqual(2,
-                    getTextFieldValue(getScrollView(-1), 24)));
+    qr = getQRDet();
+    var ret1 = isAnd(isEqual("X001,特步夹克", qr.data[0]["货品"]), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(5,
+            qr.data[0]["数量"]), isEqual("X001,特步夹克", qr.data[1]["货品"]), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("XL", qr.data[1]["尺码"]), isEqual(
+            6, qr.data[1]["数量"]), isEqual("X003,特步登山服", qr.data[2]["货品"]),
+            isEqual("黄色", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
+            isEqual(1, qr.data[2]["数量"]), isEqual("X003,特步登山服",
+                    qr.data[3]["货品"]), isEqual("黄色", qr.data[3]["颜色"]),
+            isEqual("XL", qr.data[3]["尺码"]), isEqual(2, qr.data[3]["数量"]));
     tapReturn();
-    delay(3);
+    delay(2);
 
     tapMenu("系统设置", "全局设置");
     var f1 = new TField("备注", TF, 1, "是否显示颜色尺码字样");
@@ -1257,7 +1251,7 @@ function test210045() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1278,7 +1272,7 @@ function test210046() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1424,7 +1418,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -1438,7 +1432,7 @@ function test210050() {
     setTFieldsValue(window, fields);
 
     json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "20" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : 20 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
@@ -1460,7 +1454,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
@@ -1491,7 +1485,7 @@ function test210050() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
@@ -1533,8 +1527,7 @@ function test210050() {
     // logDebug(" ret8=" + ret8 + ", ret9=" + ret9);
 
     tapMenu("采购订货", "新增订货+");
-    json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    json = { "客户" : "Rt", "店员" : "000", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
@@ -1545,7 +1538,7 @@ function test210050() {
     var fields = [ f8 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
@@ -1553,7 +1546,7 @@ function test210050() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
@@ -1566,7 +1559,7 @@ function test210050() {
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
 
-    json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
     saveAndAlertOk();
     tapPrompt();
@@ -1588,7 +1581,7 @@ function test210051() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1600,14 +1593,14 @@ function test210051() {
     tapPrompt();
     var ret = isIn(alertMsg, "系统设定不允许修改开单日期");
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "1" } ] };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
 
     var f9 = new TField("日期", TF_DT, 9, getToday());
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    var json = { "明细" : [ { "货品" : "k200", "数量" : "1" } ] };
+    var json = { "明细" : [ { "货品" : "k200", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -1628,7 +1621,7 @@ function test210051() {
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "k200", "数量" : "5" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k200", "数量" : 5 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
@@ -1639,7 +1632,7 @@ function test210051() {
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
 
-    var json = { "明细" : [ { "货品" : "k200", "数量" : "1" } ] };
+    var json = { "明细" : [ { "货品" : "k200", "数量" : 1 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -1661,7 +1654,7 @@ function test210051_1() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "5" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 5 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1700,7 +1693,7 @@ function test210051_1() {
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1710,16 +1703,14 @@ function test210051_1() {
     tapReturn();
 
     tapMenu("门店调出", "批量调出+");
-    var f0 = new TField("调出人", TF_AC, 0, "000", -1, 0);
     var f1 = new TField("接收店", TF_SC, 1, "中洲店");
     var f2 = new TField("日期", TF_DT, 2, getDay(1));
-    var fields = [ f0, f1, f2 ];
+    var fields = [ f1, f2 ];
     setTFieldsValue(window, fields);
 
-    var f2 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, 3, "10");
-    var fields = [ f2, f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    var json = { "客户" : "000", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
     tapPrompt();
@@ -1728,7 +1719,7 @@ function test210051_1() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
@@ -1739,7 +1730,7 @@ function test210051_1() {
     var fields = [ f8 ];
     setTFieldsValue(window, fields);
 
-    var json = { "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "4562", "数量" : 20 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -1841,7 +1832,7 @@ function test210052_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -1860,7 +1851,7 @@ function test210052_1() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
@@ -1898,7 +1889,7 @@ function test210052_1() {
 
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按批次查");
@@ -1933,7 +1924,7 @@ function test210052_1() {
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
@@ -2201,34 +2192,34 @@ function test210062() {
 
     return ret;
 }
-function test210063() {
-    // 常青店没有绑定仓库
-    var qo, o, ret = true;
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-
-    tapFirstText();
-    var setObj = {};
-    setObj["数值"] = [ "15,异地发货开单模式", "in" ];
-    setObj["授权码"] = [];
-    var fields = editSystemGlobalFields(setObj);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-
-    tapPrompt();
-
-    var ret1 = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
-}
+// function test210063() {
+// // 常青店没有绑定仓库
+// var qo, o, ret = true;
+// qo = { "备注" : "支持异地仓库" };
+// o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+// ret = isAnd(ret, setGlobalParam(qo, o));
+//
+// qo = { "备注" : "开单模式" };
+// var fields = querySystemGlobalFields(qo);
+// query(fields);
+//
+// tapFirstText();
+// var setObj = {};
+// setObj["数值"] = [ "15,异地发货开单模式", "in" ];
+// setObj["授权码"] = [];
+// var fields = editSystemGlobalFields(setObj);
+// setTFieldsValue(getScrollView(), fields);
+// saveAndAlertOk();
+//
+// tapPrompt();
+//
+// var ret1 = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
+//
+// tapReturn();
+//
+// logDebug(" ret=" + ret + ", ret1=" + ret1);
+// return ret && ret1;
+// }
 function test210065() {
     tapMenu("系统设置", "打印机");
 
