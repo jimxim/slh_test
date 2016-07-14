@@ -167,7 +167,7 @@ function test110001() {
 
 function test110004() {
     tapMenu("货品管理", "基本设置", "价格名称");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var arr = new Array();
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["启用"] == "是") {
@@ -601,14 +601,18 @@ function test110014() {
     keys = { "名称" : "vell" };
     ret = isAnd(ret, test110014Field(keys, "名称重复"));
 
+    var msg = "相同手机号已存在";
+    if (ipadVer < 7.21) {
+        msg = "手机号码重复";
+    }
     keys = { "名称" : r, "手机" : "13922211121" };// 客户手机
-    ret = isAnd(ret, test110014Field(keys, "手机号码重复"));
+    ret = isAnd(ret, test110014Field(keys, msg));// 
 
     keys = { "手机" : "13122221112" };// 厂商手机
-    ret = isAnd(ret, test110014Field(keys, "手机号码重复"));
+    ret = isAnd(ret, test110014Field(keys, msg));
 
     delay();
-    tapButton(window, RETURN);
+    tapReturn();
     return ret;
 }
 
@@ -761,7 +765,7 @@ function test110017() {
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var sum3 = 0; // 未结汇总
-    for (j = 1; j <= qr.totalPageNo; j++) {
+    for (j = f1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             sum3 += Number(qr.data[i]["未结"]);
         }
@@ -1987,7 +1991,7 @@ function ts110075() {
 
 function ts110038() {
     tapMenu("货品管理", "基本设置", "价格名称");
-    var qr = getQR();
+    var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var arr = new Array();
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["启用"] == "是") {
@@ -2010,7 +2014,7 @@ function ts110038() {
 
     var r = getTimestamp(8);
     keys = { "名称" : "cs" + r, "手机" : "13122221112" };// 厂商的手机号码
-    ret = isAnd(ret, test110038Field(keys, "手机号码重复"));
+    ret = isAnd(ret, test110038Field(keys, "相同手机号已存在"));
     delay();
 
     // 现在可以与客户的手机号一样

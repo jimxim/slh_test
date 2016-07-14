@@ -411,7 +411,7 @@ function test190019() {
     var ret = isEqual("", getTextFieldValue(getScrollView(-1), 0))
             && isEqual("", getTextFieldValue(getScrollView(-1), 1))
             && isEqual("", getTextFieldValue(getScrollView(-1), 2));
-    tapButtonAndAlert(RETURN);
+    tapReturn();
 
     return ret;
 }
@@ -2734,11 +2734,14 @@ function ts190138() {
 
     return ret;
 }
-
+/**
+ * 新增收支
+ * @param o
+ */
 function editStatisticAnalysisIn(o) {
     editStatisticAnalysisInField1(o, "日期");
     editStatisticAnalysisInField1(o, "账户");
-    editStatisticAnalysisInField1(o, "收支备注");
+    editStatisticAnalysisInField1(o, "收支备注");//防止数据重复提交
 
     editStatisticAnalysisInDet(o);
 
@@ -2765,7 +2768,7 @@ function editStatisticAnalysisInDet(o) {
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
         var f1 = new TField("金额", TF, tfNum * i + 1, d["金额"]);
-        setTFieldsValue(getScrollView(-1), [ f1 ]);
+        setTFieldsValue(getScrollView(-1), [ f1 ]);//有时莫名其妙变成浮点数，原因不明
         // var m = getTextFieldValue(getScrollView(-1), tfNum * i + 1);
         // logDebug("金额=" + m);
 

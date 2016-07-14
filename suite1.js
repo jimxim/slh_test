@@ -16,8 +16,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 
-
- run("测试用例", "test190013");//
+// run("测试用例", "test190002_190003_190008");
+ run("测试用例", "onlyTest");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
@@ -29,11 +29,20 @@ function onlyTest(){
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-
-    var keys1 = { "颜色":"红色,黄色,蓝色"};// 
-    var fields = editGoodsFields(keys1, false);
-    setTFieldsValue(getScrollView(), fields);
-
+    var value = getRandomNum(100, 1000, 2);
+    logDebug("value="+value);
+    var view1=getScrollView(-1);
+    var tf = view1.textFields()[1].textFields()[0];
+    tap(tf);
+    var kb = app.keyboard();
+    for (var i = 0; i < value.length; i++) {
+        var c = value.charAt(i);
+        if (kb.isVisible()) {
+            kb.typeString(c);
+        } else {
+            break;
+        }
+    }
 // 
 // var tests = getEditGoodsElements();
 
@@ -340,16 +349,6 @@ function login000SAProfit() {
        textFin_price_base();   
        logout();
    }
-}
-
-// 仓库店总经理
-function login100Warehouse(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("100","000000",p1);
-    if( ok ) {
-        testWarehouseAll();
-       logout();
-    }
 }
 
 // 财务员

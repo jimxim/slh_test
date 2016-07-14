@@ -95,7 +95,7 @@ function setGoodsParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
+    o = { "新值" : "1", "数值" : [ "默认不启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // qo = { "备注" : "门店库存是否允许跨门店查询" };
@@ -3296,11 +3296,10 @@ function test100082_100083_100084_100085_100093() {
 function test10_price() {
     tapMenu("货品管理", "基本设置", "价格名称");
     var ret = true;
-    var qr = getQR();
+
     // debugElementTree(window);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("启用");
-    // delay();
     ret = ret
             && sortByTitle("进货价比例", IS_NUM, window, getScrollView(), TITLE_SEQ,
                     4);

@@ -148,8 +148,20 @@ function addRedeemPointsFields(points, money) {
     var g0 = new TField("兑换积分", TF, 0, points);
     var g1 = new TField("兑换金额", TF, 1, money);
     setTFieldsValue(getPopView(), [ g0, g1 ]);
-    tapButton(getPop(), OK);
-    tapButton(getPop(), CLOSE);// 防止出错卡界面
+
+    var view1 = getPop();
+    // 尝试三次，偶尔日志中有点击动作，但是实际没有点击
+//    for (var i = 0; i < 3; i++) {
+//        var btn = getButton(view1, OK);
+//        if (isUIAButton(btn)) {
+//            tapButton(view1, OK);
+//        } else {
+//            break;
+//        }
+//    }
+    tapButton(view1, OK);
+    tapButton(view1, CLOSE);// 防止出错卡界面
+
     tapNaviLeftButton();
 }
 /**

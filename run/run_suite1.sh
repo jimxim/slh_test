@@ -31,10 +31,6 @@ js_func="$js_func loginShopkeeper004 "
 #开单员
 js_func="$js_func loginBillClerk005_1 "
 
-#仓库店 
-#总经理
-js_func="$js_func login100Warehouse "
-
 #货品管理默认价格模式
 js_func="$js_func loginGoodsParams002 login000Goods003 "
 js_func="$js_func loginGoodsParams003 loginStoreKeeper002_2 loginBillClerk005_2 "
@@ -49,6 +45,9 @@ js_func="$js_func login000SAProfit"
 #敏感字段测试目前只有auto1test可以跑
 js_func="$js_func login008Rights login009Rights"
 
+#帐套autotest1异地仓库 
+#仓库店总经理
+js_func="$js_func loginGoodsParams001 "
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 

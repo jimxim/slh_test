@@ -1,5 +1,15 @@
 //luxingxin <52619481 at qq.com> 20160113
 
+function loginGoodsParams001() {
+    var p1 = { "角色" : "总经理", "帐套" : "autotest1异地仓库" };
+    var ok = login("000", "000000", p1);
+    if (ok) {
+        run("开单模式2", "setPaymethod2");
+        testWarehouseAll();
+        logout();
+    }
+}
+
 // 仓库店，总经理100
 // 绑定的仓库为文一店，文一店店长404
 function testWarehouseAll() {
@@ -10,8 +20,8 @@ function testWarehouseAll() {
 function repealWarehouseSalesBill() {
     // 主要是针对统计分析综合汇总，仓库店排序在常青店之前，现在修改统计分析的用例比较麻烦，因此在这先把仓库店的开单作废
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : getDay(-30), "门店" : "仓库店", "作废挂单" : "正常" };
-    var field = testSalesQueryBatchFields(keys);
+    var keys = { "日期从" : getDay(-3), "门店" : "仓库店", "作废挂单" : "正常" };
+    var field = salesQueryBatchFields(keys);
     query(field);
     var qr = getQR();
     var length = qr.data.length;
@@ -20,14 +30,16 @@ function repealWarehouseSalesBill() {
         tapButtonAndAlert(REPEAL, OK);
         tapReturn();// 防止未自动返回
 
+        if (isInAlertMsgs("单据已作废")) {
+            break;// 防止查询错误出现的死循环
+        }
+
         tapMenu2("按批次查");
         tapButton(window, QUERY);
         qr = getQR();
-        if (qr.data.length == 0) {
-            break;
-        }
+        length = qr.data.length;
     }
-    return qr.data.length == 0
+    return length == 0;
 }
 
 function testTreasurer001All() {
