@@ -10,12 +10,8 @@ function test000All() {
     colorSize = "no";
     debug = true;
     ipadVer ="7.21"; // "6.59";// 7.13// 7.21
-// run("【销售开单－按订货开单】开单日期检查", "test170272");
-// run("【销售开单－销售汇总-按店员汇总】按店员汇总", "test170319_1");//
-// run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");//
-// run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// 综合收支表界面需要修改取值
-// run("【销售开单－代收收款】核销代收收款功能", "test170287");
- run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");
+ run("【销售开单－销售汇总-按店员汇总】按店员汇总", "test170319_1");//
+// run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");
 // run("", "test0");
 }
 function test0(){
@@ -24,6 +20,7 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

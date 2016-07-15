@@ -4410,9 +4410,8 @@ function test170170() {
 }
 function test170171() {
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ],
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -4436,10 +4435,10 @@ function test170171() {
     query();
     var qr = getQR();
 
-    var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("2",
+    var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
             qr.data[0]["数量"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
-    logDebug(" ret" + ret + " ret1" + ret1);
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170172() {
@@ -4451,7 +4450,7 @@ function test170172() {
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "8" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 8 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -4756,9 +4755,8 @@ function test170176() {
 }
 function test170178() {
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "2" }, { "货品" : "k300", "数量" : "3" } ],
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 2 }, { "货品" : "k300", "数量" : 3 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9870,35 +9868,34 @@ function test170545() {
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
-
     var score = getStaticTextValue(getScrollView(-1, 0), 1);
     var a = score.split(": ");
 
     // 负，负
-    var r = "-1" + getTimestamp(2);
-    editExchangeScore(r, r, "no");
-    var money = -Number(r);
+    var f = "-1" + getTimestamp(2);
+    editExchangeScore(f, f, "no");
+    var money = -Number(f);
 
     tapButton(window, "核销");
     var score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a1 = score1.split(": ");
 
-    var ret = isEqual(a1[1], sub(a[1], r));
+    var ret = isEqual(a1[1], sub(a[1], f));
 
     // 负，正
-    r = "-1" + getTimestamp(2);
-    var r1 = 1 + getTimestamp(2);
-    editExchangeScore(r, r1, "no");
-    var money1 = -Number(r1);
+    var g = "-1" + getTimestamp(2);
+    var g1 = 1 + getTimestamp(2);
+    editExchangeScore(g, g1, "no");
+    var money1 = -Number(g1);
 
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a2 = score1.split(": ");
 
-    ret = isAnd(ret, isEqual(a2[1], sub(a1[1], r)));
+    ret = isAnd(ret, isEqual(a2[1], sub(a1[1], g)));
 
     // 负，0
-    r = "-1" + getTimestamp(2);
+    var r = "-1" + getTimestamp(2);
     editExchangeScore(r, 0, "no");
 
     tapButton(window, "核销");
@@ -9908,16 +9905,16 @@ function test170545() {
     var ret1 = isEqual(a3[1], sub(a2[1], r));
 
     // 正，负
-    r = "1" + getTimestamp(2);
-    var r1 = "-1" + getTimestamp(2);
-    editExchangeScore(r, r1, "no");
-    var money2 = -Number(r1);
+    var h = "1" + getTimestamp(2);
+    var h1 = "-1" + getTimestamp(2);
+    editExchangeScore(h, h1, "no");
+    var money2 = -Number(h1);
 
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a4 = score1.split(": ");
 
-    ret1 = isAnd(ret1, isEqual(a4[1], sub(a3[1], r)));
+    ret1 = isAnd(ret1, isEqual(a4[1], sub(a3[1], h)));
 
     // 正，0
     r = "1" + getTimestamp(2);
@@ -10557,7 +10554,7 @@ function test170561() {
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "2" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "特殊货品" : { "打包费" : 27 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
