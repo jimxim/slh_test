@@ -2996,9 +2996,8 @@ function test110047() {
         "反馈及建议" : "反馈及建议abc123" };
     var fields = editCustomerBackFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(SAVE);
-    delay();
-    // tapButton(window, RETURN);
+    saveAndAlertOk();
+    tapReturn();
 
     query();
     var qr = getQR(window, getScrollView(), "序号", 7);
@@ -3022,8 +3021,7 @@ function test110048() {
         "反馈及建议" : r };
     var fields = editCustomerBackFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(SAVE);
-    delay();
+    saveAndAlertOk();
     tapReturn();
 
     tapMenu("往来管理", "getMenu_More", "客户回访");
@@ -3031,7 +3029,6 @@ function test110048() {
     var qr = getQR();
     var ret = goPageCheck();
 
-    // debugElementTree(getScrollView());
     ret = ret && sortByTitle("回访日期", IS_DATE2);
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("主题");

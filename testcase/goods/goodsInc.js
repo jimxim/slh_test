@@ -151,14 +151,14 @@ function addRedeemPointsFields(points, money) {
 
     var view1 = getPop();
     // 尝试三次，偶尔日志中有点击动作，但是实际没有点击
-//    for (var i = 0; i < 3; i++) {
-//        var btn = getButton(view1, OK);
-//        if (isUIAButton(btn)) {
-//            tapButton(view1, OK);
-//        } else {
-//            break;
-//        }
-//    }
+    // for (var i = 0; i < 3; i++) {
+    // var btn = getButton(view1, OK);
+    // if (isUIAButton(btn)) {
+    // tapButton(view1, OK);
+    // } else {
+    // break;
+    // }
+    // }
     tapButton(view1, OK);
     tapButton(view1, CLOSE);// 防止出错卡界面
 
@@ -1510,7 +1510,26 @@ function getImages(view1) {
     }
     return ret;
 }
-
+/**
+ * 模拟键盘输入数字，防止直接设置变成浮点数
+ * @param view1
+ * @param f
+ */
+function setTextFieldNumValue(view1, f) {
+    var i = f.index;
+    var value = String(f.value);
+    var tf = view1.textFields()[i].textFields()[0];
+    tap(tf, true);//
+    var kb = app.keyboard();
+    for (var i = 0; i < value.length; i++) {
+        var c = value.charAt(i);
+        if (kb.isVisible()) {
+            kb.typeString(c);//
+        } else {
+            break;
+        }
+    }
+}
 /**
  * 明细详细页面排序验证
  * @param dataView

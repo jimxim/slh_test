@@ -17,38 +17,38 @@ function test000All() {
 
 
 // run("测试用例", "test190002_190003_190008");
- run("测试用例", "onlyTest");//
-
+// run("测试用例", "ts110035");//
+ run("测试用例", "onlyTest");
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x : 500, y : 300 }, { x : 500, y : 500})
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
-    var value = getRandomNum(100, 1000, 2);
-    logDebug("value="+value);
-    var view1=getScrollView(-1);
-    var tf = view1.textFields()[1].textFields()[0];
-    tap(tf);
-    var kb = app.keyboard();
-    for (var i = 0; i < value.length; i++) {
-        var c = value.charAt(i);
-        if (kb.isVisible()) {
-            kb.typeString(c);
-        } else {
-            break;
-        }
-    }
-// 
-// var tests = getEditGoodsElements();
-
+    
+// var view=getScrollView(-1,0);
+// var e=getElements(view);
+// for(var i=0;i<e.length;i++){
+// if(isUIAStaticText(e)){
+//            
+// }
+// }
+// tapButton(window,QUERY);
+   var qr=getQR();
+   for(var i=0;i<3;i++){
+       debugObject(qr.data[i]);
+   }
+   debugObject(qr.counts);
+    
 // debugObject(gCache,"gCache");
   return true;
 }
+
+
 
 //
 function loginGoodsParams001(){

@@ -1765,11 +1765,12 @@ function test100042_100045Field() {
 }
 
 function ts100092() {
+    var r = "g" + getTimestamp(6);
     var keys = {};
     if (colorSize == "no") {
-        keys = { "款号" : "goods", "名称" : "goods" };
+        keys = { "款号" : r, "名称" : r };
     } else {
-        keys = { "款号" : "goods", "名称" : "goods", "颜色" : [ 0 ], "尺码" : [ 0 ] };
+        keys = { "款号" : r, "名称" : r, "颜色" : [ 0 ], "尺码" : [ 0 ] };
     }
     tapMenu("货品管理", "新增货品+");
     var fields = editGoodsFields(keys, false);
@@ -1782,7 +1783,7 @@ function ts100092() {
     ret = ret && test100092Field(keys);
 
     fields = editGoodsFields(keys, false);
-    clearTField(getScrollView(), fields["最小库存"]);
+    clearTField(getScrollView(), fields["最小库存"]);// 防止最小库存对最大库存判断的影响
 
     keys = { "最大库存" : "a" };
     ret = ret && test100092Field(keys);
@@ -2145,33 +2146,30 @@ function ts100095_96() {
 function ts100124() {
     // 检查货品管理-当前库存、款号库存、库存分布、货品查询界面的查询条件 “是否停用”
     // 点到相应界面，查询条件 “是否停用”的内容就会刷新变成默认值“否”
+    // 7.21只有点击清除后才会变回默认，不再验证页面切换后变回默认值
     tapMenu("货品管理", "当前库存");
     var keys = { "是否停用" : "是" };
     var f = queryGoodsStockFields(keys);
     setTFieldsValue(window, f);
-    tapMenu2("款号库存");
-    tapMenu2("当前库存");
+    tapButton(window, CLEAR);
     var ret = isEqual("否", getTextFieldValue(window, f["是否停用"].index));
 
     tapMenu2("款号库存");
     f = queryGoodsCodeStockFields(keys);
     setTFieldsValue(window, f);
-    tapMenu2("当前库存");
-    tapMenu2("款号库存");
+    tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("库存分布");
     f = queryGoodsDistributionFields(keys);
     setTFieldsValue(window, f);
-    tapMenu2("当前库存");
-    tapMenu2("库存分布");
+    tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("货品查询");
     f = queryGoodsFields(keys);
     setTFieldsValue(window, f);
-    tapMenu2("当前库存");
-    tapMenu2("货品查询");
+    tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
     return ret;
 }
@@ -3582,7 +3580,7 @@ function ts100090() {
     setValue100090(keys);
     runAndAlert("test100090Field", OK);
     delay();
-    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    qr = getQR2(getScrollView(-1, 0), "批次", "备注");
     ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("50",
             qr.data[0]["数量"]));
 
@@ -3593,7 +3591,7 @@ function ts100090() {
     setValue100090(keys);
     runAndAlert("test100090Field", OK);
     delay();
-    qr = getQR2(getScrollView(-1, 0), "批次", "操作人");
+    qr = getQR2(getScrollView(-1, 0), "批次", "备注");
     tapNaviLeftButton();
     ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("25",
             qr.data[0]["数量"]));
