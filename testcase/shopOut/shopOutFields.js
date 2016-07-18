@@ -129,7 +129,7 @@ function shopOutDecruitField(key, show) {
         break;
     case "remarks":
     case "备注":
-        f = new TField("备", TF, 3, "备注");
+        f = new TField("备", TV, 0, "备注");
         break;
     case "password":
     case "操作人密码":

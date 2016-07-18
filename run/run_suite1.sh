@@ -47,7 +47,7 @@ js_func="$js_func login008Rights login009Rights"
 
 #帐套autotest1异地仓库 
 #仓库店总经理
-#js_func="$js_func loginGoodsParams001 "
+#js_func="$js_func loginWarehouse001 "
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 

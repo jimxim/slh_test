@@ -17,8 +17,8 @@ function test000All() {
 
 
 // run("测试用例", "test190002_190003_190008");
-// run("测试用例", "ts110035");//
- run("测试用例", "onlyTest");
+ run("测试用例", "ts130024");//
+
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
 }
@@ -30,19 +30,7 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
     
-// var view=getScrollView(-1,0);
-// var e=getElements(view);
-// for(var i=0;i<e.length;i++){
-// if(isUIAStaticText(e)){
-//            
-// }
-// }
-// tapButton(window,QUERY);
-   var qr=getQR();
-   for(var i=0;i<3;i++){
-       debugObject(qr.data[i]);
-   }
-   debugObject(qr.counts);
+
     
 // debugObject(gCache,"gCache");
   return true;

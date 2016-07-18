@@ -32,9 +32,8 @@ function testShopOut003() {
 function setShopOutParams() {
     UIALogger.logStart("设置参数");
     var qo, o, ret = true;
-    // 隐藏时单价小计的textField还在，对取值有影响，暂时先打开的方法验证
     qo = { "备注" : "门店调拨是否可以填写价格" };
-    o = { "新值" : "1", "数值" : [ "调拨有价格选项", "in" ] };// 0,默认只有数量
+    o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "调拨核算价格" };
@@ -117,7 +116,7 @@ function ts150001_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
-        if (i == 0) {
+        if (i == 0 && i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -764,17 +763,6 @@ function editShopOutDecruitField1(o, key) {
         keys[key] = v;
         var fields = shopOutDecruitFields(keys);
         setTFieldsValue(window, fields);
-
-        // 备注框输入超过5个时会触发，进入后重新输入一次值，针对备注框已经有值，而输入的内容不同的情况
-        if (key == "备注") {
-            var view = getPop();
-            if (isDefined(view) && view.isVisible()) {
-                var f = new TField("备注", TF, 0, v);
-                setTFieldsValue(getPopOrView(), [ f ]);
-                delay();
-                tapButton(view, OK);
-            }
-        }
     }
 }
 function editShopOutSave(o) {

@@ -1,6 +1,6 @@
 //luxingxin <52619481 at qq.com> 20160113
 
-function loginGoodsParams001() {
+function loginWarehouse001() {
     var p1 = { "角色" : "总经理", "帐套" : "autotest1异地仓库" };
     var ok = login("000", "000000", p1);
     if (ok) {
