@@ -27,7 +27,7 @@ function repealWarehouseSalesBill() {
     var length = qr.data.length;
     while (length > 0) {
         tapFirstText();
-        tapButtonAndAlert(REPEAL, OK);
+        tapButtonAndAlert(INVALID, OK);
         tapReturn();// 防止未自动返回
 
         if (isInAlertMsgs("单据已作废")) {

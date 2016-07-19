@@ -848,7 +848,7 @@ function test190005Field(type, x) {
     tapMenu("统计分析", "收支表");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     tapMenu("统计分析", "收支汇总");

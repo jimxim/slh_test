@@ -268,7 +268,7 @@ function test120003Field(json, s1, s2) {
     var jo = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     delay();
     // 这里作废后会自动返回上级页面
 
@@ -2223,7 +2223,7 @@ function ts120044() {
     var qr = getQR();
     var jo = qr.data[0];
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
 
     tapMenu2("按批次查");
@@ -2250,7 +2250,7 @@ function ts120044() {
     tapTitle(getScrollView(), "备注");
     tapTitle(getScrollView(), "备注");
     tapTextByFirstWithName("预付款");
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("本批次是采购订货预付款单"));
 
@@ -2773,7 +2773,7 @@ function test120017_1() {
     var jo = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);// 作废后会自动返回
+    tapButtonAndAlert(INVALID, OK);// 作废后会自动返回
     tapReturn();
 
     tapButton(window, QUERY);
@@ -3296,7 +3296,7 @@ function ts120092() {
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
     ret = isAnd(ret, !hasAlerts());// 作废成功
 

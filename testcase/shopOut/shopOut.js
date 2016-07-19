@@ -222,7 +222,7 @@ function ts150001_09() {
     ret = isAnd(ret, isEqualObject(exp, subObject(count2, count1)));
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     tapMenu2("按批次查");
@@ -267,7 +267,7 @@ function ts150002() {
     tapTitle(getScrollView(), "状态");
     tapTextByFirstWithName("已接收");
 
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     return isInAlertMsgs("调入方已确认接收");

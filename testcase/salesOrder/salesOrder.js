@@ -550,7 +550,7 @@ function test160005_160007() {
     var ret = isEqualObject(exp, subObject(qr.counts, counts));
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     tapMenu2("按批次查");
@@ -719,7 +719,7 @@ function ts160009() {
 
     var ret = true;
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     var cond = "getButton(window, '按批次查').isVisible()";
     waitUntil(cond, 10);
     if (!eval(cond)) {
@@ -733,7 +733,7 @@ function ts160009() {
     ret = isAnd(ret, isInAlertMsgs("确定作废吗"), isEqualDyadicArray(data, qr.data));
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("已作废的批次不能执行这个操作"));
 
@@ -1005,7 +1005,7 @@ function test160021() {
     var qr = getQR();
     var batch = qr.data[0]["批次"];
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
 
     tapMenu("销售订货", "按明细查");
@@ -1047,7 +1047,7 @@ function test160096() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
 
     ret = isAnd(ret, test160096Field());
@@ -2025,7 +2025,7 @@ function ts160073_74() {
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
 
     tapMenu2("按批次查");

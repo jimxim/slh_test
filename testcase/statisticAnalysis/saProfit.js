@@ -79,7 +79,7 @@ function textFin_price_base2_2() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     tapMenu("销售开单", ADDBILL);

@@ -102,7 +102,7 @@ function ts130020Count() {
     tapMenu2("按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();
 
     tapMenu2("按批次查");
@@ -389,7 +389,7 @@ function ts130003() {
     var a1 = qr.data[0];
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
     var ret = isInAlertMsgs("作废成功");
 
@@ -860,7 +860,7 @@ function ts130009() {
 
     tapMenu("采购订货", "按批次查");
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
     return isIn(alertMsg, "订单已入库，不允许作废");
