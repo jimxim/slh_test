@@ -116,7 +116,7 @@ function ts150001_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
-        if (i == 0 && i == 1) {
+        if (i == 0 || i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));

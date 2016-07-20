@@ -373,7 +373,7 @@ function queryGoodsField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 7 + i, "1010pp");
+        f = new TField("品牌", TF_AC, 7 + i, "1010pp", -1, 0);
         break;
     case "stop":
     case "是否停用":
@@ -448,6 +448,12 @@ function getEditGoodsElements() {
     var view = getScrollView();
     return getElements(view);
 }
+/**
+ * 获取新增货品界面下标
+ * @param texts
+ * @param value
+ * @returns {Array}
+ */
 function getEditGoodsIndex(texts, value) {
     var idx = new Array(2), tfNum = -1, btnNum = -1;
     for (var i = 0; i < texts.length; i++) {
@@ -483,7 +489,7 @@ function editGoodsField(key, show, texts) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 2, "1010pp");// BTN_SC,0
+        f = new TField("品牌", TF_AC, 2, "1010pp", -1, 0);// BTN_SC,0
         if (show) {
             f.type = TF;
             f.index = 2;

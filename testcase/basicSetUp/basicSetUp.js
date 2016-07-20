@@ -63,21 +63,21 @@ function testBasicSetUpAll() {
     run("plczcs3", "setGoods008");
 
     run("颜色尺码模式", "setGoodsColorParams");
-    run("x001", "setGoods009");
-    run("x003", "setGoods010");
-    run("nb001", "setGoods011");
-    run("nb003", "setGoods012");
+//    run("x001", "setGoods009");
+//    run("x003", "setGoods010");
+//    run("nb001", "setGoods011");
+//    run("nb003", "setGoods012");
     run("agc001", "setAuto1GoodsColor001");// 3035的颜色尺码版本
     run("agc002", "setAuto1GoodsColor002");// 4562的颜色尺码版本
     run("agc003", "setAuto1Goods003");// 加工商品 均色均码
     run("agc004", "setAuto1GoodsColor004");// 加工商品 颜色尺码
     // 童装尺码模式开单带款号
-    run("Tz", "setGoods0013");
+//    run("Tz", "setGoods0013");
 
     // 加工款
-    run("GG55", "setGoods014");
+//    run("GG55", "setGoods014");
     // 中洲店款
-    run("Aaa002", "setGoods015");// 设置门店为中洲店,入库10件
+//    run("Aaa002", "setGoods015");// 设置门店为中洲店,入库10件
 
     run("均色均码模式", "setGoodsNoColorParams");
 

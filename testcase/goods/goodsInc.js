@@ -1,6 +1,15 @@
 //LuXingXin <52619481 at qq.com> 20151214
 //一些不靠谱的方法
 
+function cToEn(str) {
+    var ret = str;
+    var en = English[str];
+    if (isDefined(en)) {
+        ret = en;
+    }
+    return ret;
+}
+
 /**
  * 新增/修改客户
  */

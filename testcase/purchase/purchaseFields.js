@@ -208,7 +208,7 @@ function purchaseCodeField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 9, "1010pp");
+        f = new TField("品牌", TF_AC, 9, "1010pp", -1, 0);
         break;
     case "season":
     case "季节":

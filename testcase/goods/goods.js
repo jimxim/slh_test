@@ -1539,7 +1539,7 @@ function ts100033Field(key1, key2, key3) {
 function ts100035() {
     var r = getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var addIdx = getButtonIndex(getScrollView(), "增量");
+    var texts= getEditGoodsElements();
     var f = new TField("款号", TF, 0, "goods" + r);
     var f2 = new TField("名称", TF, 1, "goods" + r);
     setTFieldsValue(getScrollView(), [ f, f2 ]);
@@ -1557,13 +1557,13 @@ function ts100035() {
     // var f2 = new TField("尺码", TF, 1, "s" + r);
     // ts100035Field(btnIdx, [ f, f2 ]);
 
-    var btnIdx = addIdx + 4;
+    var  idx = getEditGoodsIndex(texts, "类别");
     var f = new TField("类别", TF, 0, "t" + r);
-    ts100035Field(btnIdx, [ f ]);
+    ts100035Field(idx[1]+2, [ f ]);
 
-    var btnIdx = addIdx + 5;
+    var  idx = getEditGoodsIndex(texts, "厂商");
     var f = new TField("厂商", TF, 0, "p" + r);
-    ts100035Field(btnIdx, [ f ]);
+    ts100035Field(idx[1], [ f ]);
     saveAndAlertOk();
     tapReturn();
 
@@ -1584,7 +1584,7 @@ function ts100035() {
 }
 function ts100035Field(btnIdx, fields) {
     delay();// 延迟，防止不触发后续操作
-    tapButton(getScrollView(), btnIdx);
+    tapButtonScroll(getScrollView(), btnIdx);
     setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
@@ -1660,9 +1660,14 @@ function ts100102_100103() {
     tapMenu("货品管理", "货品查询");
     tapButton(window, QUERY);
     tapFirstText();
+    tapButtonAndAlert(EDIT_SAVE, OK);//
+
+    keys = { "款号" : code };
+    fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);// 改回无中文版防止对后续用例造成影响
     tapButtonAndAlert(EDIT_SAVE, OK);
     tapReturn();
-    ret = ret && isInAlertMsgs("该款号包括了中文");
+    ret = isAnd(ret, isInAlertMsgs("该款号包括了中文"));
 
     return ret;
 
@@ -2000,7 +2005,7 @@ function ts100058() {
         }
     }
     tapNaviLeftButton();
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }
@@ -3721,6 +3726,7 @@ function ts100106() {
     return ret;
 }
 
+//当天第二次跑可能出错 eg款号已存在
 function ts100108() {
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : "g" };

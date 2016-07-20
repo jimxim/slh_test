@@ -191,7 +191,7 @@ function salesOrderPictureField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元");
+        f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元",-1,0);
         if (show) {
             f.value = "741,Abc";
         }
@@ -249,7 +249,7 @@ function salesOrderCodeField(key, show) {
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 5, "xw");
+        f = new TField("客户", TF_AC, 5, "xw",-1,0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -446,7 +446,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "company":
     case "厂商":
-        f = new TField("厂商", TF_AC, 4, "Vell");
+        f = new TField("厂商", TF_AC, 4, "Vell",-1,0);
         break;
     case "day3":
     case "上架从":

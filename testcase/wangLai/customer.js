@@ -765,7 +765,7 @@ function test110017() {
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var sum3 = 0; // 未结汇总
-    for (j = f1; j <= qr.totalPageNo; j++) {
+    for (j = 1; j <= qr.totalPageNo; j++) {
         for (i = 0; i < qr.curPageTotal; i++) {
             sum3 += Number(qr.data[i]["未结"]);
         }
@@ -3369,7 +3369,7 @@ function test110060() {
     // 上级客户开欠款单，余款单，无欠余单
     editBillForCustomerAccount1();
     // 因为是新做的数据，排列顺序应该一一对应
-    tapMenu2["按批次查"];
+    tapMenu2("按批次查");
     delay();
     var qr = getQR();
     var jo1 = qr.data[0];

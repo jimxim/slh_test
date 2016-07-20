@@ -1482,9 +1482,8 @@ function test120022() {
     delay();
     tapButton(window, "未付");
     saveAndAlertOk();
-    tapPrompt();
-    var ret = isIn(alertMsg, "空单");
-    tapButton(window, RETURN);
+    tapReturn();
+    var ret = !isInAlertMsgs("空单");// slh_5976改成可以正常保存
 
     // 核销欠款，输入抹零，点未付，保存
     tapMenu("采购入库", "新增入库+");
