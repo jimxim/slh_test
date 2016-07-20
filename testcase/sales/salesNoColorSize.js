@@ -703,7 +703,7 @@ function test170046() {
     editQuickAddCustomer(json);
 
     // 有欠款的客户
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0",
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : "0",
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -715,7 +715,7 @@ function test170046() {
     var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "欠款");
     var value = getStaticTextValue(window, index);
-    var ret = isAnd(isEqual("欠款", value), isEqual("1500", k0));
+    var ret = isAnd(isEqual("欠款", value), isEqual(1500, k0));
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -724,7 +724,7 @@ function test170046() {
     editQuickAddCustomer(json);
 
     // 有余款的客户
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "4000",
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 4000,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -745,7 +745,7 @@ function test170046() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : 1500,
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 1500,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -765,7 +765,7 @@ function test170046() {
 }
 function test170047() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : "10" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
         "未付" : "yes", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -785,21 +785,21 @@ function test170047() {
 }
 function test170048() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : 5 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 3);
-    var ret = isEqual(getTextFieldValue(window, 2),
-            getTextFieldValue(window, 3));
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
+    var ret = isEqual(getTextFieldValue(window, cashTFindex), totalMoney);
 
     tap(window.staticTexts()["刷卡"]);
 
-    ret = ret && isEqual(totalMoney, getTextFieldValue(window, 7));
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    ret = ret && isEqual(totalMoney, getTextFieldValue(window, cardTFindex));
 
     saveAndAlertOk();
     tapPrompt();
-
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -814,13 +814,13 @@ function test170048() {
 }
 function test170049() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "6" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : 6 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 3);
-    var ret = isEqual(getTextFieldValue(window, 2),
-            getTextFieldValue(window, 3));
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
+    var ret = isEqual(getTextFieldValue(window, cashTFindex), totalMoney);
 
     tap(window.staticTexts()["汇款"]);
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -842,11 +842,12 @@ function test170049() {
 }
 function test170050() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : 5 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 2);
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var totalMoney = getTextFieldValue(window, cashTFindex);
 
     saveAndAlertOk();
     tapPrompt();
@@ -860,7 +861,7 @@ function test170050() {
 
     query();
     tapFirstText();
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 5 } ] };
     editSalesBillDetNoColorSize(json);
 
     var qr = getQRDet();
@@ -902,10 +903,14 @@ function test170051() {
     var json = { "明细" : [ { "货品" : "3035", "数量" : 5 } ] };
     editSalesBillDetNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 2);
-    var ret1 = isAnd(isEqual(getTextFieldValue(window, 3), getTextFieldValue(
-            window, 2)), isEqual(0, getTextFieldValue(window, 7)), isEqual(0,
-            getTextFieldValue(window, 12)));
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var remitTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var totalMoney = getTextFieldValue(window, cashTFindex);
+    var ret1 = isAnd(isEqual(getTextFieldValue(window, cashTFindex + 1),
+            getTextFieldValue(window, cashTFindex)), isEqual(0,
+            getTextFieldValue(window, cardTFindex)), isEqual(0,
+            getTextFieldValue(window, remitTFindex - 1)));
 
     saveAndAlertOk();
     tapPrompt();
@@ -984,8 +989,9 @@ function test170053() {
     tapButton(window, 12);
     delay();
 
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var ret = isAnd(isEqual("000,总经理", k0), isEqual(0, getTextFieldValue(
-            window, 4)));
+            window, cashTFindex + 2)));
     tapReturn();
 
     return ret;
@@ -997,17 +1003,20 @@ function test170054_1() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "1600",
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 1600,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
     // 总计金额大于抵扣金额
     var json = { "客户" : r, "核销" : [ 5 ],
-        "明细" : [ { "货品" : "k300", "数量" : "4" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : 4 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 3);
-    var dikou = getTextFieldValue(window, 6);
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
+    var dikou = getTextFieldValue(window, cardTFindex - 1);
 
     var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "余款");
@@ -1016,9 +1025,9 @@ function test170054_1() {
     var value1 = getStaticTextValue(window, index1);
 
     var ret = isAnd(isEqual("余款", value), isEqual("抵扣", value1), isEqual(100,
-            getTextFieldValue(window, 1)), isEqual(100, getTextFieldValue(
-            window, 6)), isEqual(getTextFieldValue(window, 2), sub(
-            getTextFieldValue(window, 11), getTextFieldValue(window, 6))));
+            getTextFieldValue(window, 1)), isEqual(100, dikou), isEqual(
+            getTextFieldValue(window, cashTFindex), sub(getTextFieldValue(
+                    window, remitTFindex - 1), dikou)));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1040,18 +1049,21 @@ function test170054_2() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "6000",
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : 6000,
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
     // 总计金额小于抵扣金额
     var json = { "客户" : r, "核销" : [ 5 ],
-        "明细" : [ { "货品" : "k300", "数量" : "2" } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : 2 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var k1 = getTextFieldValue(window, 1);
-    var k2 = getTextFieldValue(window, 6);
-    var k3 = getTextFieldValue(window, 3);
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var k1 = getTextFieldValue(window, cashTFindex - 1);
+    var k2 = getTextFieldValue(window, cardTFindex - 1);
+    var k3 = getTextFieldValue(window, cashTFindex + 1);
 
     var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "余款");
@@ -1060,9 +1072,9 @@ function test170054_2() {
     var value1 = getStaticTextValue(window, index1);
 
     var ret = isAnd(isEqual("余款", value), isEqual("抵扣", value1), isEqual(4500,
-            k1), isEqual(4500, k2), isEqual("", getTextFieldValue(window, 2)),
-            isEqual(sub(getTextFieldValue(window, 11), k1), getTextFieldValue(
-                    window, 3)));
+            k1), isEqual(4500, k2), isEqual(0, getTextFieldValue(window,
+            cashTFindex)), isEqual(sub(getTextFieldValue(window,
+            remitTFindex - 1), k1), getTextFieldValue(window, cashTFindex + 1)));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1083,17 +1095,20 @@ function test170055() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "5" } ], "现金" : "0" };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 5 } ], "现金" : "0" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : "1" } ],
+    var json = { "客户" : r, "明细" : [ { "货品" : "k300", "数量" : 1 } ],
         "核销" : [ 5 ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var k1 = getTextFieldValue(window, 1);
-    var k2 = getTextFieldValue(window, 6);
-    var totalCash = getTextFieldValue(window, 3);
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var k1 = getTextFieldValue(window, cashTFindex - 1);
+    var k2 = getTextFieldValue(window, cardTFindex - 1);
+    var totalCash = getTextFieldValue(window, cashTFindex);
     var money = getTextFieldValue(window, 11);
 
     var texts = getStaticTexts(window);
@@ -1104,7 +1119,7 @@ function test170055() {
 
     var ret = isAnd(isEqual("欠款", value), isEqual("还款", value1), isEqual(1500,
             k1), isEqual(1500, k2), isEqual(add(k2, money), getTextFieldValue(
-            window, 2)));
+            window, cashTFindex)));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1524,7 +1539,7 @@ function test170064() {
     ret = ret && test170064Field("批次", IS_NUM);
     ret = ret && test170064Field("日期", IS_DATE2);
     ret = ret && test170064Field("店员");
-    if (ipadVer <= "7.20") {
+    if (ipadVer <= "7.21") {
         ret = ret && test170064Field("总金额", IS_NUM);
     } else {
         ret = ret && test170064Field("总额", IS_NUM);
@@ -1532,7 +1547,7 @@ function test170064() {
 
     ret = ret && test170064Field("未结金额", IS_NUM);
 
-    if (ipadVer >= "7.20") {
+    if (ipadVer >= "7.21") {
         ret = ret && test170064Field("备注");
     }
     tapNaviLeftButton();
@@ -1547,7 +1562,7 @@ function test170065_1() {
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "4" } ], "未付" : "yes",
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 4 } ], "未付" : "yes",
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1740,8 +1755,7 @@ function test170071() {
 function test170072() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "xjkh1",
-        "明细" : [ { "货品" : "k300", "数量" : "5", "单价" : "-100" } ],
-        "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : 5, "单价" : -100 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -1846,7 +1860,7 @@ function test170076() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : "300.1" } ],
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : 300.1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -1873,7 +1887,7 @@ function test170076_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : "300.18" } ],
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : "300.18" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -9409,18 +9423,19 @@ function test170525() {
 }
 function test170526() {
     // 折扣后单价的核算模式为保留精确小数位
+    var qo, o, ret = true;
+    qo = { "备注" : "总计是否需要四舍五入" };
+    o = { "新值" : "0", "数值" : [ "不需要" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = "0." + getTimestamp(3);
     var r1 = "1." + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "2" } ],
-        "特殊货品" : { "抹零" : r, "打包费" : r1 }, "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
+        "特殊货品" : { "抹零" : r, "打包费" : r1 } };
     editSalesBillNoColorSize(json);
 
-    var k2 = getTextFieldValue(window, 2);
-    var k3 = getTextFieldValue(window, 3);
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var qr1 = json["输入框值"];
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -9429,19 +9444,19 @@ function test170526() {
     var je = qr.data[0]["金额"];
     var opt = qr.data[0]["操作日期"];
 
-    tapFirstText(getScrollView(-1), TITLE_SEQ, 22);
+    tapFirstText();
     qr = getQRDet();
     var a = qr.data[0]["货品"];
     var b = qr.data[1]["货品"];
-    var ret = isAnd(isEqual(Math.round(add(qr.data[0]["小计"], sub(r1, r))), k3),
-            isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(Number(-r),
-                    Number(qr.data[1]["小计"])), isEqual("00001,打包费",
-                    qr.data[2]["货品"]), isEqual(Number(r1),
-                    Number(qr.data[2]["小计"])), isEqual(2, sl), isEqual(k3, je),
-            isAqualOptime(getOpTime(), opt, 2));
+    var ret = isAnd(isEqual(Math.round(add(qr.data[0]["小计"], sub(r1, r))),
+            qr1["应"]), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
+            Number(-r), Number(qr.data[1]["小计"])), isEqual("00001,打包费",
+            qr.data[2]["货品"]), isEqual(Number(r1), Number(qr.data[2]["小计"])),
+            isEqual(2, sl), isEqual(qr1["应"], je), isAqualOptime(getOpTime(),
+                    opt, 2));
     tapReturn();
 
-    logDebug("k2=" + k2 + ", k3=" + k3, ", ret=" + ret);
+    logDebug(", ret=" + ret);
     return ret;
 }
 function test170527Change() {
@@ -9451,7 +9466,7 @@ function test170527Change() {
 }
 function test170527() {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "现金" : "0" };
     editSalesBillNoColorSize(json);
 

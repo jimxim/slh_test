@@ -677,7 +677,7 @@ function test180025() {
 function test180025_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : s, "名称" : s, "进货价" : "100" }
+    var keys = { "款号" : s, "名称" : s, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
@@ -686,7 +686,7 @@ function test180025_1() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : s, "数量" : "20" } ] };
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : s, "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "款号库存");
@@ -1073,7 +1073,7 @@ function test180029_180031_180032() {
 
     tapButton(window, CLEAR);
     var ret1 = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual("", getTextFieldValue(window, 1)), isEqual("",
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)), isEqual("",
                     getTextFieldValue(window, 3)), isEqual("",
                     getTextFieldValue(window, 4)), isEqual("",
@@ -1241,7 +1241,7 @@ function test180042Prepare() {
     // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "批量调出+");
@@ -1254,7 +1254,7 @@ function test180042Prepare() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 }
 function test180042() {
@@ -2202,7 +2202,7 @@ function test180061() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2231,7 +2231,7 @@ function test180062() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2301,7 +2301,7 @@ function test180062() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     keys = { "门店" : "中洲店" };
@@ -2448,7 +2448,7 @@ function test180066() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2479,7 +2479,7 @@ function test180066() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2541,7 +2541,7 @@ function test180067() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2576,7 +2576,7 @@ function test180068() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2649,7 +2649,7 @@ function test180068() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2771,7 +2771,7 @@ function test180073() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2801,7 +2801,7 @@ function test180074() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
@@ -2871,7 +2871,7 @@ function test180074() {
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", MORE, "盘点计划表");
-    }else{
+    } else {
         tapMenu("盘点管理", "盘点计划表");
     }
     query();
