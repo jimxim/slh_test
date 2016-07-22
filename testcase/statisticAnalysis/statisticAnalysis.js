@@ -542,8 +542,8 @@ function test190002_190003_190008() {
     // 收入-支出=总值
     ret = isAnd(ret, isAqualNum(sum + rm1 - rm2, sum1, 0.001), isAqualNum(sum1,
             add(a, b), 0.001),
-            isEqual(getToday(), getTextFieldValue(window, 0)), isEqual("",
-                    getTextFieldValue(window, 1)), isEqual("",
+            isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
+                    getToday(), getTextFieldValue(window, 1)), isEqual("",
                     getTextFieldValue(window, 2)));
 
     return ret;
@@ -1560,8 +1560,14 @@ function test190037() {
  * @param value
  */
 function test190037_1Field(qr, type, value) {
-    var name = "现", sum = 0;
+    var name = "现", total;
     var arr = { "刷" : 0, "汇" : 0, "金额" : 0 };
+    if (type == "收入") {
+        total = "金额";
+    }
+    if (type == "支出") {
+        total = "金额2";
+    }
     for (var i = 0; i < qr.data.length - 1; i++) {
         if (isDefined(qr.data[i]["名称"])) {
             name = qr.data[i]["名称"];
@@ -1570,14 +1576,20 @@ function test190037_1Field(qr, type, value) {
             if (isIn(qr.data[i][type], value)) {
                 var a = qr.data[i][type].split(" ");
                 debugObject(a, "a");
-                arr["刷"] = a[1].slice(1);
-                arr["汇"] = a[2].slice(1);
-                if (type == "收入") {
-                    arr["金额"] = qr.data[i]["金额"];
+                if (a[0].indexOf("刷卡") != -1) {
+                    arr["刷"] = qr.data[i][total];
                 }
-                if (type == "支出") {
-                    arr["金额"] = qr.data[i]["金额2"];
+                if (a[0].indexOf("汇款") != -1) {
+                    arr["汇"] = qr.data[i][total];
                 }
+                if (isDefined(a[1])) {
+                    arr["刷"] = a[1].slice(1);
+                }
+                if (isDefined(a[2])) {
+                    arr["汇"] = a[2].slice(1);
+                }
+
+                arr["金额"] = qr.data[i][total];
                 break;
             }
         }
@@ -2390,7 +2402,7 @@ function test190087_190101() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 8; i++) {
-        if (i == 0) {
+        if (i == 0 || i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -2570,12 +2582,30 @@ function test190112Field(fn) {
 }
 
 function test190113() {
+    var arr = {};
+    tapMenu("销售开单", "按汇总", "按款号汇总");
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "颜色" : "均色", "款号" : "3035",
+        "客户名称" : "jkk", "品牌" : "Adidas", "厂商" : "Vell", "类别" : "登山服" };
+    var fields = salesCodeFields(keys);
+    var qr = getQR();
+    arr["实销数"] = qr.data[0]["实销数"];
+
     tapMenu("统计分析", "汇总表", "颜色销售表");
-    var keys = { "日期从" : getDay(-30), "上架从" : "2015-01-01", "上架到" : getToday(),
-        "门店" : "常青店", "颜色" : "均色" };
+    keys["上架从"] = "2015-01-01", keys["上架到"] = getToday();
     var fields = statisticAnalysColorFields(keys);
     query(fields);
+    qr = getQR();
+    var ret = isEqualObject2(qr.data[0], arr);
 
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 11; i++) {
+        if (i == 0 || i == 1) {
+            ret = ret && getTextFieldValue(window, i) == getToday();
+        } else {
+            ret = ret && getTextFieldValue(window, i) == "";
+        }
+    }
+    return ret;
 }
 
 function test190114() {

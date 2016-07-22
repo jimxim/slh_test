@@ -789,7 +789,7 @@ function queryCustomerBackField(key, show) {
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 2, "a", 1, 0);
+        f = new TField("客户", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }

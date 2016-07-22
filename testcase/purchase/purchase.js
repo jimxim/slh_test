@@ -721,7 +721,7 @@ function test120011_1() {
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
-            isEqual("", getTextFieldValue(window, 1)));
+            isEqual(getToday(), getTextFieldValue(window, 1)));
 
     return ret;
 }
@@ -1572,8 +1572,7 @@ function test120024() {
     // debugElementTree(window);
 
     saveAndAlertOk();
-    delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     query(fields);
@@ -1609,8 +1608,6 @@ function test120025_1() {
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
         "备注" : "xx" };
     editSalesBillNoColorSize(json);
-    delay();
-    tapButton(window, RETURN);
 
     tapMenu("采购入库", "按订货入库");
     var keys = { "日期从" : getDay(-3), "到" : getToday() }
@@ -1708,8 +1705,7 @@ function test120025() {
     var fields4 = [ f0, f3 ];
     setTFieldsValue(getScrollView(), fields4);
     saveAndAlertOk();
-    delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("采购入库", "按订货入库");
     tapFirstText();
@@ -1765,46 +1761,39 @@ function test120026() {
     return ret;
 }
 
-// 无法修改已有款号 这点无法验证，程序可以清除灰化文本框的内容
 function test120027() {
     tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "50" } ] };
     editSalesBillNoColorSize(json);
+    var det1 = json["明细值"].data;
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var f8 = new TField("货品", TF_AC, 8, "3035", -1, 0);
-    var f13 = new TField("订货数", TF, 13, "10");
-    var fields = [ f8, f13 ];
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
+    var ret = isDisabledTField(0, getScrollView(-1));// 无法修改已有款号，应灰化
+    var json2 = { "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
+    editSalesBillNoColorSize(json2);
 
-    tapMenu("采购入库", "按订货入库");
-    query();
+    tapButton(window, QUERY);
     tapFirstText();
-    var a = getTextFieldValue(getScrollView(), 8);
-    var ret = isEqual("", a);
-    delay();
+    var qr = getQRDet();
     tapReturn();
+    ret = isAnd(ret, qr.data.length == 1, isIn(qr.data[0]["货品"], "k300"));
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu2("按批次查");
     query();
     tapFirstText();
-    var b = getTextFieldValue(getScrollView(), 0);
-    var c = getTextFieldValue(getScrollView(), 8);
-    ret = isAnd(ret, isEqual("k300,铅笔裤", b), isEqual("3035,jkk", c));
-    delay();
-    tapButton(window, RETURN);
+    var qr = getQRDet();
+    tapReturn();
+    ret = isAnd(ret, qr.data.length == 2, isIn(qr.data[0]["货品"], "k300"), isIn(
+            qr.data[1]["货品"], "3035"));
 
     tapMenu("采购订货", "按批次查");
     query();
     tapFirstText();
-    b = getTextFieldValue(getScrollView(), 7);
-    c = getTextFieldValue(getScrollView(), 10);
-    ret = isAnd(ret, b == "" || b == null, isEqual("", c));
-    delay();
-    tapButton(window, RETURN);
+    var qr = getQRDet();
+    tapReturn();
+    ret = isAnd(ret, isEqualDyadicArray(qr.data, det1));
 
     return ret;
 }
@@ -2336,15 +2325,10 @@ function ts120046() {
     var ret = isEqual("", qr.data[0]["厂商"]);
 
     tapFirstText();
-    var f0 = new TField("厂商", TF_AC, 0, "vell", -1, 0);
-    setTFieldsValue(window, [ f0 ]);
-
-    saveAndAlertOk();
-    delay();
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "操作成功"));
-    tapReturn();
-
+    var json={"客户":"vell"};
+    editSalesBill(json, colorSize);
+    
+    tapMenu2("按批次查");
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual("Vell", qr.data[0]["厂商"]));

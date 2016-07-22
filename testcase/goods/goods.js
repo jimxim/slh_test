@@ -1013,15 +1013,14 @@ function ts100009() {
     ret = isAnd(ret, isEqual(a, b));
     tapNaviLeftButton();
 
-    keys = { "门店" : "常青店" };
+    keys = { "门店" : "常青店", "款号" : code  };
     fields = queryGoodsInOutFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    query(fields);
     qr = getQR();
     a = add(qr.data[0]["在途数"], qr.data[0]["库存"]);
 
     tapFirstText();
-    oStockNum = getColorSizeStockNum();
+    var oStockNum = getColorSizeStockNum();
     b = 0;
     for ( var i in oStockNum) {
         b += Number(oStockNum[i]);
@@ -1119,7 +1118,7 @@ function ts100010_100011_100013() {
 
     tapFirstText();
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 10; i++) {
@@ -1314,12 +1313,16 @@ function test100022() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
-            && isEqual("", getTextFieldValue(getScrollView(), 10))
-            && isEqual("", getTextFieldValue(getScrollView(), 11))
-            && isEqual("", getTextFieldValue(getScrollView(), 12));
-    delay();
-    tapButton(window, RETURN);
+    keys = [ "进货价", "零批价", "打包价", "大客户价" ];
+    fields = editGoodsFields(keys, false);
+    var ret = isEqual("", getTextFieldValue(getScrollView(), keys["进货价"].index))
+            && isEqual("",
+                    getTextFieldValue(getScrollView(), keys["零批价"].index))
+            && isEqual("",
+                    getTextFieldValue(getScrollView(), keys["打包价"].index))
+            && isEqual("", getTextFieldValue(getScrollView(),
+                    keys["大客户价"].index));
+    tapReturn();
 
     return ret;
 }
@@ -1333,12 +1336,16 @@ function test100021() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isEqual("", getTextFieldValue(getScrollView(), 9))
-            && isEqual("", getTextFieldValue(getScrollView(), 10))
-            && isEqual("", getTextFieldValue(getScrollView(), 11))
-            && isEqual("", getTextFieldValue(getScrollView(), 12));
-    delay();
-    tapButton(window, RETURN);
+    keys = [ "进货价", "零批价", "打包价", "大客户价" ];
+    fields = editGoodsFields(keys, false);
+    var ret = isEqual("", getTextFieldValue(getScrollView(), keys["进货价"].index))
+            && isEqual("",
+                    getTextFieldValue(getScrollView(), keys["零批价"].index))
+            && isEqual("",
+                    getTextFieldValue(getScrollView(), keys["打包价"].index))
+            && isEqual("", getTextFieldValue(getScrollView(),
+                    keys["大客户价"].index));
+    tapReturn();
 
     return ret;
 }
@@ -1539,7 +1546,7 @@ function ts100033Field(key1, key2, key3) {
 function ts100035() {
     var r = getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var texts= getEditGoodsElements();
+    var texts = getEditGoodsElements();
     var f = new TField("款号", TF, 0, "goods" + r);
     var f2 = new TField("名称", TF, 1, "goods" + r);
     setTFieldsValue(getScrollView(), [ f, f2 ]);
@@ -1557,11 +1564,11 @@ function ts100035() {
     // var f2 = new TField("尺码", TF, 1, "s" + r);
     // ts100035Field(btnIdx, [ f, f2 ]);
 
-    var  idx = getEditGoodsIndex(texts, "类别");
+    var idx = getEditGoodsIndex(texts, "类别");
     var f = new TField("类别", TF, 0, "t" + r);
-    ts100035Field(idx[1]+2, [ f ]);
+    ts100035Field(idx[1] + 2, [ f ]);
 
-    var  idx = getEditGoodsIndex(texts, "厂商");
+    var idx = getEditGoodsIndex(texts, "厂商");
     var f = new TField("厂商", TF, 0, "p" + r);
     ts100035Field(idx[1], [ f ]);
     saveAndAlertOk();
@@ -3165,13 +3172,8 @@ function test100075_100076_100077_100078() {
     var r = "cc" + getTimestamp(6);
     var max = getRandomInt(9) + 1;
     var stock = getRandomInt(50) + 50;
-    tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "最大库存" : max };
-    var fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    delay(2);
-    tapButton(window, RETURN);
+    addGoods(keys);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : stock } ] };
@@ -3726,7 +3728,7 @@ function ts100106() {
     return ret;
 }
 
-//当天第二次跑可能出错 eg款号已存在
+// 当天第二次跑可能出错 eg款号已存在
 function ts100108() {
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : "g" };

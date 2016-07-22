@@ -1395,7 +1395,7 @@ function retry(fn1, maxTries, i) {
             delay(i);
         }
     }
-    UIALogger.logIssue(f + ",失败因为异常＝" + e);
+
 }
 
 function editLogisticsVerify(o, idx) {

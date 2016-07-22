@@ -3167,29 +3167,30 @@ function ts110056() {
     var keys = { "客户代码" : "&" };
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");
-    var ret = isIn(alertMsg, "包含特殊字符");
+    tapButton(window, EDIT_SAVE);
     tapPrompt();
-
+    var ret = isIn(alertMsg, "包含特殊字符");
+ 
     keys = { "客户代码" : "'" };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");
-    ret = isAnd(ret, isIn(alertMsg, "包含特殊字符"));
+    tapButton(window, EDIT_SAVE);
     tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "包含特殊字符"));
 
     keys = { "客户代码" : "xw001" };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
-    ret = isAnd(ret, isIn(alertMsg, "相同客户编码已存在"));
     tapPrompt();
-
+    ret = isAnd(ret, isIn(alertMsg, "相同客户编码已存在"));
+    
     var r = "客户代码abc" + getTimestamp(6);
     keys = { "客户代码" : r };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, "修改保存");// 保存后会自动返回客户查询界面
+    tapButton(window, EDIT_SAVE);// 保存后会自动返回客户查询界面
+    tapReturn();
 
     var cond = "window.buttons()['客户查询'].isVisible()";
     waitUntil(cond, 5);
@@ -3199,7 +3200,7 @@ function ts110056() {
     tapFirstText();
     var index = fields["客户代码"].index;
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), index)));
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }
