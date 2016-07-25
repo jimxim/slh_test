@@ -654,10 +654,8 @@ function test170044() {
     var qr = getQR();
 
     tapFirstText();
-
     tapButtonAndAlert("停 用");
     delay();
-
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
@@ -677,7 +675,6 @@ function test170044() {
     if (ret == false || equal == false) {
         ret1 = true;
     }
-
     tapReturn();
 
     logDebug("ret1=" + ret1);
