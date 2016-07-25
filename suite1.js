@@ -17,7 +17,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "test120011_2");
- run("测试用例", "ts120046");//
+ run("测试用例", "onlyTest");//
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();
@@ -30,12 +30,10 @@ function onlyTest(){
 // target.dragFromToForDuration({x:537.00, y:329.00}, {x:537.00, y:513.00},
 // 0.5);
 
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "-20" } ], "现金" : "-1000",
-        "刷卡" : [ -600, "交" ], "汇款" : [ -400, "交" ] };
-    editSalesBillNoColorSize(json);
-   
+    var r = "g" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : "a" + r,  "进货价" : "200" };
+    addGoods(keys);
+// tapReturn();
     
 // debugObject(gCache,"gCache");
   return true;

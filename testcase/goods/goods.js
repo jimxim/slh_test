@@ -1013,7 +1013,7 @@ function ts100009() {
     ret = isAnd(ret, isEqual(a, b));
     tapNaviLeftButton();
 
-    keys = { "门店" : "常青店", "款号" : code  };
+    keys = { "门店" : "常青店", "款号" : code };
     fields = queryGoodsInOutFields(keys);
     query(fields);
     qr = getQR();
@@ -3324,8 +3324,7 @@ function test10_type() {
     var keys = { "名称" : "毛衣" };
     var fields = goodsTypeFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "名称", "毛衣", "in"));
+    ret = isAnd(ret, checkQResult("名称", "毛衣", "in"));
 
     var jo1 = qr.data[0];
     tapFirstText();
@@ -3369,8 +3368,7 @@ function test10_color() {
     var keys = { "名称" : "红" };
     var fields = goodsColorFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "名称", "红", "in"));
+    ret = isAnd(ret, checkQResult("名称", "红", "in"));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0));
@@ -3441,8 +3439,7 @@ function test10_brand() {
     var keys = { "名称" : "品牌" };
     var fields = goodsBrandFields(keys);
     query(fields);
-    qr = getQR();
-    var ret1 = checkQResult(qr, "名称", "品牌", "in");
+    var ret1 = checkQResult("名称", "品牌", "in");
 
     keys = { "名称" : "1010pp" };
     fields = goodsBrandFields(keys);
@@ -3485,8 +3482,7 @@ function test10_sizeID() {
     var keys = { "名称" : "尺码" };
     var fields = goodsSizeidsFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "名称", "尺码", "in"));
+    ret = isAnd(ret, checkQResult("名称", "尺码", "in"));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0));

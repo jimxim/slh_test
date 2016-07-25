@@ -418,11 +418,11 @@ function ts130004_1() {
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    var arr = [ "数量", "已发", "差异数", "小计" ];
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
     ret = ret && isEqualCounts(arr);
     return ret;
 }
@@ -560,11 +560,11 @@ function ts130005_1() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    var arr = [ "数量", "已发", "差异数", "小计" ];
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
     ret = ret && isEqualCounts();
     return ret;
 }
@@ -607,11 +607,11 @@ function ts130006_1() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    var arr = [ "数量", "已发", "差异数", "小计" ];
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
     ret = ret && isEqualCounts();
     return ret;
 }
@@ -672,7 +672,8 @@ function ts130004_05_06() {
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
-    var exp = { "数量" : 30, "已发" : 10, "差异数" : 20 };
+    var exp = { "数量" : 30, "差异数" : 20 };
+    exp[title_Shipped] = 10;
     var exp1 = { "款号" : det["明细"][0]["货品"], "名称" : det["名称"], "颜色" : det["颜色"],
         "尺码" : det["尺码"] };
 
@@ -1282,7 +1283,7 @@ function ts130038() {
     var qr = getQR();
     var ret = qr.data.length > 0;
     if (ret) {
-        ret = checkQResult(qr, "门店", "中洲店");
+        ret = checkQResult("门店", "中洲店");
     }
 
     return ret;

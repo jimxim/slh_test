@@ -1,4 +1,8 @@
 // luxingxin <52619481 at qq.com> 20151021
+/**
+ * 已发
+ */
+var title_Shipped = "已发";
 function testSalesOrderPrepare() {
     tapMenu("销售订货", "新增订货+");
     var json = {
@@ -15,7 +19,7 @@ function testSalesOrder001() {
     run("【销售订货—按批次查】汇总", "test160005_160007");
     run("【销售订货—按批次查】翻页_排序", "test160015_160016");// 汇总无法排除作废数据的影响
     run("【销售订货—按明细查】查询条件单项查询", "test160019");
-    // run("【销售订货—按明细查】查询条件组合查询_清除", "test160020_160022");
+    run("【销售订货—按明细查】查询条件组合查询_清除", "test160020_160022");
     run("【销售订货—按明细查】翻页_排序_汇总", "test160023_160024");
     run("【销售订货-按挂单】翻页_排序", "test160124");
     run("【销售订货—订货汇总】按款号-翻页_排序_汇总", "test160033");
@@ -133,9 +137,10 @@ function ts160049() {
     tapButton(window, QUERY);
     qr = getQR();
     var expected = { "批次" : batch, "日期" : getDay(-1, "yy"), "门店" : "常青店",
-        "店员" : "总经理", "客户" : "小王", "数量" : "30", "已发数" : "0", "差异数" : "30",
-        "发货状态" : "未发货", "总额" : "5990", "现金" : "1000", "刷卡" : "2000",
-        "汇款" : "3000", "操作日期" : json["操作日期"] };
+        "店员" : "总经理", "客户" : "小王", "数量" : "30", "差异数" : "30", "发货状态" : "未发货",
+        "总额" : "5990", "现金" : "1000", "刷卡" : "2000", "汇款" : "3000",
+        "操作日期" : json["操作日期"] };
+    expected[title_Shipped] = 0;
     var ret = isEqualObject(expected, qr.data[0], 1);
 
     tapFirstText();
@@ -424,7 +429,7 @@ function test160015_160016() {
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发数", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("发货状态");
     ret = ret && sortByTitle("总额", IS_NUM);
@@ -450,54 +455,45 @@ function test160001() {
     query(fields);
     var qr = getQR();
     var batch = qr.data[0]["批次"];
-    var ret = checkQResult(qr, "客户", "小王");
+    var ret = checkQResult("客户", "小王");
 
     keys = { "店员" : "000", "日期从" : getDay(-30) };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
     ret = isAnd(ret, checkQResult(qr, "店员", "总经理"));
 
     keys = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "日期", getDay(-30), "day", getDay(-1)));
+    ret = isAnd(ret, checkQResult("日期", getDay(-30), "day", getDay(-1)));
 
     keys = { "日期从" : getDay(-30), "批次从" : Math.ceil(batch / 2), "批次到" : batch };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "批次", Math.ceil(batch / 2), "batch",
-            batch));
+    ret = isAnd(ret, checkQResult("批次", Math.ceil(batch / 2), "batch", batch));
 
     keys = { "门店" : "常青店", "日期从" : getDay(-30) };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    qr = getQR();
-    ret = isAnd(ret, checkQResult(qr, "门店", "常青店"));
+    ret = isAnd(ret, checkQResult("门店", "常青店"));
 
     keys = { "发货状态" : "未发货" };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
     var exp = { "批次" : batch, "日期" : getToday("yy"), "门店" : "常青店",
-        "店员" : "总经理", "客户" : "小王", "数量" : 50, "已发数" : 0, "差异数" : 50,
-        "发货状态" : "未发货", "总额" : 10000, "现金" : 2000, "刷卡" : 3000, "汇款" : 5000,
-        "客户分店" : "", "操作日期" : qr.data[0]["操作日期"] };
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult(qr, "发货状态",
-            "未发货"));
+        "店员" : "总经理", "客户" : "小王", "数量" : 50, "差异数" : 50, "发货状态" : "未发货",
+        "总额" : 10000, "现金" : 2000, "刷卡" : 3000, "汇款" : 5000, "客户分店" : "",
+        "操作日期" : qr.data[0]["操作日期"] };
+    exp[title_Shipped] = 0;
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]),
+            checkQResult("发货状态", "未发货"));
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var f = new TField("数量", TF, 5, "15");
-    setTFieldsValue(getScrollView(), [ f ]);
-    saveAndAlertOk();
-    // 保存成功，是否打印?
-    var o1 = { "是否打印" : CANCEL };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    tapKeyboardHide();
+    json = { "入库明细" : [ { "数量" : 15 } ] };
+    editSalesBill(json, colorSize);
     delay();// 不加延时会卡到销售开单按批次查界面
 
     tapMenu1("销售订货");
@@ -506,17 +502,14 @@ function test160001() {
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    exp["已发数"] = 15, exp["差异数"] = 35, exp["发货状态"] = "部分发货";
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult(qr, "发货状态",
+    exp[title_Shipped] = 15, exp["差异数"] = 35, exp["发货状态"] = "部分发货";
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult("发货状态",
             "部分发货"));
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    tapKeyboardHide();
-    delay();
+    editSalesBillSave({});
 
     tapMenu1("销售订货");
     tapMenu("销售订货", "按批次查");
@@ -524,8 +517,8 @@ function test160001() {
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    exp["已发数"] = 50, exp["差异数"] = 0, exp["发货状态"] = "全部发货";
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult(qr, "发货状态",
+    exp[title_Shipped] = 50, exp["差异数"] = 0, exp["发货状态"] = "全部发货";
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult("发货状态",
             "全部发货"));
 
     return ret;
@@ -545,8 +538,9 @@ function test160005_160007() {
     tapMenu("销售订货", "按批次查");
     tapButton(window, QUERY);
     qr = getQR();
-    var exp = { "数量" : 50, "已发数" : 0, "差异数" : 50, "总额" : 10000, "现金" : 2000,
-        "刷卡" : 3000, "汇款" : 5000 };
+    var exp = { "数量" : 50, "差异数" : 50, "总额" : 10000, "现金" : 2000, "刷卡" : 3000,
+        "汇款" : 5000 };
+    exp[title_Shipped] = 0;
     var ret = isEqualObject(exp, subObject(qr.counts, counts));
 
     tapFirstText();
@@ -580,8 +574,8 @@ function test160002_160017() {
     query(fields);
     qr = getQR();
     var expected = { "批次" : batch + 1, "日期" : getToday("yy"), "门店" : "常青店",
-        "店员" : "总经理", "客户" : "小王", "数量" : "10", "已发数" : "0", "差异数" : "10",
-        "发货状态" : "未发货" };
+        "店员" : "总经理", "客户" : "小王", "数量" : "10", "差异数" : "10", "发货状态" : "未发货" };
+    expected[title_Shipped] = 0;
     var ret = isEqualObject(expected, qr.data[0]);
 
     tapButton(window, CLEAR);
@@ -865,33 +859,15 @@ function test160023_160024() {
     ret = ret && sortByTitle("颜色");
     ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发数", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("价格", IS_NUM);
     ret = ret && sortByTitle("总额", IS_NUM);
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
 
-    logDebug("ret=" + ret);
-
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["已发数"]);
-            sum3 += Number(qr.data[i]["差异数"]);
-            sum4 += Number(qr.data[i]["总额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发数"],
-            sum2), isEqual(qr.counts["差异数"], sum3), isEqual(qr.counts["总额"],
-            sum4));
-    return ret && ret1;
+    var arr = [ "数量", title_Shipped, "差异数", "总额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
 }
 
 function test160019() {
@@ -901,57 +877,17 @@ function test160019() {
     var keys = { "日期从" : getDay(-15), "客户" : "xw" };
     var fields = salesOrderQueryParticularFields(keys);
     query(fields);
-    var qr = getQR();
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            ret = ret && isEqual("小王", qr.data[i]["客户"]);
-            if (!ret) {
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    var ret = checkQResult("客户", "小王");
 
     keys = { "日期从" : getDay(-15), "款号" : "3035" };
     fields = salesOrderQueryParticularFields(keys);
     query(fields);
-    qr = getQR();
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            ret = ret && isEqual("3035", qr.data[i]["款号"]);
-            if (!ret) {
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = isAnd(ret, checkQResult("款号", "3035"));
 
     keys = { "日期从" : getDay(-15), "日期到" : getDay(-10) };
     fields = salesOrderQueryParticularFields(keys);
     query(fields);
-    qr = getQR();
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            if (getDay24(qr.data[i]["日期"]) < getDay(-30)
-                    || getDay24(qr.data[i]["日期"]) > getDay(-10)) {
-                ret = false;
-                break;
-            }
-        }
-        if (!ret) {
-            break;
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
+    ret = isAnd(ret, checkQResult("日期", getDay(-15), "day", getDay(-10)));
 
     return ret;
 }
@@ -969,7 +905,7 @@ function test160020_160022() {
         "客户" : "xw",
         "日期" : getDay(-1),
         "明细" : [ { "货品" : "3035", "数量" : "10" }, { "货品" : "4562", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("销售订货", "按明细查");
     keys = { "门店" : "常青店", "日期从" : getDay(-30), "日期到" : getDay(-1),
@@ -979,7 +915,8 @@ function test160020_160022() {
     qr = getQR();
     var expected = { "批次" : batch + 1, "日期" : getDay(-1, "yy"), "客户" : "小王",
         "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : "10",
-        "已发数" : "0", "差异数" : "10", "价格" : "200", "总额" : "2000" };
+        "差异数" : "10", "价格" : "200", "总额" : "2000" };
+    expected[title_Shipped] = 0;
     var ret = isEqualQRData1Object(qr, expected);
 
     tapButton(window, CLEAR);
@@ -1057,12 +994,12 @@ function test160096Field() {
     tapMenu("销售订货", "按批次查");
     query();
     var qr = getQR();
-    var counts1 = qr.counts["已发数"];
+    var counts1 = qr.counts[title_Shipped];
 
     tapMenu("销售订货", "按明细查");
     query();
     qr = getQR();
-    var counts2 = qr.counts["已发数"];
+    var counts2 = qr.counts[title_Shipped];
     return isEqual(counts1, counts2);
 }
 
@@ -1092,33 +1029,14 @@ function test160033() {
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发数", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("未发数", IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    logDebug("ret=" + ret);
-
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["已发数"]);
-            sum3 += Number(qr.data[i]["未发数"]);
-            sum4 += Number(qr.data[i]["差异数"]);
-            sum5 += Number(qr.data[i]["小计"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发数"],
-            sum2), isEqual(qr.counts["未发数"], sum3), isEqual(qr.counts["差异数"],
-            sum4), isEqual(qr.counts["小计"], sum5));
-    return ret && ret1;
+    var arr = [ "数量", title_Shipped, "未发数", "差异数", "小计" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
 }
 
 function test160031_160034() {
@@ -1151,8 +1069,9 @@ function test160031_160034() {
     var actual = subObject(jo2, jo1);
     var del = { "厂商" : "", "款号" : "", "名称" : "" };
     var counts = mixObject(jo2, del)
-    var expected = { "厂商" : "Vell", "名称" : "jkk", "数量" : 30, "已发数" : 0,
-        "未发数" : 30, "差异数" : 30, "小计" : 6000 };
+    var expected = { "厂商" : "Vell", "名称" : "jkk", "数量" : 30, "未发数" : 30,
+        "差异数" : 30, "小计" : 6000 };
+    expected[title_Shipped] = 0;
     var ret = isAnd(isEqualObject(expected, actual), isEqualObject(qr.counts,
             counts));// 只有一条数据，与汇总值应该相同
 
@@ -1212,8 +1131,9 @@ function test160035() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "名称" : "jkk", "数量" : 30, "已发数" : 10, "未发数" : 20,
-        "差异数" : 20, "小计" : 6000 };
+    var expected = { "名称" : "jkk", "数量" : 30, "未发数" : 20, "差异数" : 20,
+        "小计" : 6000 };
+    expected[title_Shipped] = 10;
     var ret = isEqualObject(expected, actual);
 
     tapFirstText();
@@ -1233,8 +1153,8 @@ function test160035() {
     qr = getQR();
     jo1 = qr.data[0];
     actual = subObject(jo1, jo2);
-    expected = { "名称" : "jkk", "数量" : 0, "已发数" : 0, "未发数" : -20, "差异数" : 0,
-        "小计" : 0 };
+    expected = { "名称" : "jkk", "数量" : 0, "未发数" : -20, "差异数" : 0, "小计" : 0 };
+    expected[title_Shipped] = 0;
     ret = isAnd(ret, isEqualObject(expected, actual));
 
     tapFirstText();
@@ -1273,8 +1193,9 @@ function test160036() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "名称" : "jkk", "数量" : 30, "已发数" : 50, "未发数" : 0,
-        "差异数" : -20, "小计" : 6000 };
+    var expected = { "名称" : "jkk", "数量" : 30, "未发数" : 0, "差异数" : -20,
+        "小计" : 6000 };
+    expected[title_Shipped] = 50;
     var ret = isEqualObject(expected, actual);
     return ret;
 }
@@ -1311,7 +1232,7 @@ function test160063_1() {
     query(fields);
     var qr = getQR();
     var a = Number(qr.counts["数量"]);
-    var b = Number(qr.counts["已发数"]);
+    var b = Number(qr.counts[title_Shipped]);
     var c = Number(qr.counts["未发数"]);
     var ret = isEqual(c, a - b - 20);
     // 未发数=订货数-发货数-停用的未发货数
@@ -1392,7 +1313,8 @@ function test160037() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "数量" : 20, "已发数" : 0, "未发数" : 20, "差异数" : 20, "小计" : 4000 };
+    var expected = { "数量" : 20, "未发数" : 20, "差异数" : 20, "小计" : 4000 };
+    expected[title_Shipped] = 0;
     var ret = isEqualObject(expected, actual);
 
     tapFirstText();
@@ -1447,8 +1369,8 @@ function test160038() {
         tapButton(window, QUERY);
         qr = getQR();
         ret = isAnd(ret, isEqual(qr.counts["数量"], data[i]["数量"]), isEqual(
-                qr.counts["已发数"], data[i]["已发数"]), isEqual(qr.counts["差异数"],
-                data[i]["差异数"]));
+                qr.counts[title_Shipped], data[i][title_Shipped]), isEqual(
+                qr.counts["差异数"], data[i]["差异数"]));
         if (!ret) {
             break;
         }
@@ -1524,29 +1446,12 @@ function test160041() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    logDebug("ret=" + ret);
-
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["已发"]);
-            sum3 += Number(qr.data[i]["差异数"]);
-            sum4 += Number(qr.data[i]["小计"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发"],
-            sum2), isEqual(qr.counts["差异数"], sum3), isEqual(qr.counts["小计"],
-            sum4));
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 
@@ -1590,15 +1495,16 @@ function test160042() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual1 = subObject(jo2, jo1);
-    var expected1 = { "名称" : "总经理", "数量" : 20, "已发" : 10, "差异数" : 10,
-        "小计" : 4000 };
+    var expected1 = { "名称" : "总经理", "数量" : 20, "差异数" : 10, "小计" : 4000 };
+    expected1[title_Shipped] = 10;
     var arr2 = test160042QR();
     var actual2 = subObject(arr2, arr1);
-    var expected2 = { "名称" : "jkk", "数量" : 20, "已发" : 10, "差异数" : 10 };
+    var expected2 = { "名称" : "jkk", "数量" : 20, "差异数" : 10 };
+    expected2[title_Shipped] = 10;
     var ret = isAnd(isEqualObject(expected1, actual1), isEqualObject(expected2,
-            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(jo2["已发"],
-            qr.counts["已发"]), isEqual(jo2["差异数"], qr.counts["差异数"]), isEqual(
-            jo2["小计"], qr.counts["小计"]));
+            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(
+            jo2[title_Shipped], qr.counts[title_Shipped]), isEqual(jo2["差异数"],
+            qr.counts["差异数"]), isEqual(jo2["小计"], qr.counts["小计"]));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
@@ -1642,30 +1548,12 @@ function test160043() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    logDebug("ret=" + ret);
-
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["已发"]);
-            sum3 += Number(qr.data[i]["差异数"]);
-            sum4 += Number(qr.data[i]["小计"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发"],
-            sum2), isEqual(qr.counts["差异数"], sum3), isEqual(qr.counts["小计"],
-            sum4));
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 
@@ -1709,15 +1597,16 @@ function test160044() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "名称" : "小王", "数量" : 50, "已发" : 20, "差异数" : 30,
-        "小计" : 10000 };
+    var expected = { "名称" : "小王", "数量" : 50, "差异数" : 30, "小计" : 10000 };
+    expected[title_Shipped] = 20;
     var arr2 = test160042QR();
     var actual2 = subObject(arr2, arr1);
-    var expected2 = { "名称" : "jkk", "数量" : 20, "已发" : 10, "差异数" : 10 };
+    var expected2 = { "名称" : "jkk", "数量" : 20, "差异数" : 10 };
+    expected2[title_Shipped] = 10;
     var ret = isAnd(isEqualObject(expected, actual), isEqualObject(expected2,
-            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(jo2["已发"],
-            qr.counts["已发"]), isEqual(jo2["差异数"], qr.counts["差异数"]), isEqual(
-            jo2["小计"], qr.counts["小计"]));
+            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(
+            jo2[title_Shipped], qr.counts[title_Shipped]), isEqual(jo2["差异数"],
+            qr.counts["差异数"]), isEqual(jo2["小计"], qr.counts["小计"]));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
@@ -1738,31 +1627,13 @@ function test160045() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("小计", IS_NUM);
 
-    logDebug("ret=" + ret);
-
-    query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-            sum2 += Number(qr.data[i]["已发"]);
-            sum3 += Number(qr.data[i]["差异数"]);
-            sum4 += Number(qr.data[i]["小计"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["已发"],
-            sum2), isEqual(qr.counts["差异数"], sum3), isEqual(qr.counts["小计"],
-            sum4));
-    return ret && ret1;
+    var arr = [ "数量", title_Shipped, "差异数", "小计" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
 }
 
 function test160046() {
@@ -1792,15 +1663,16 @@ function test160046() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "名称" : "常青店", "数量" : 50, "已发" : 20, "差异数" : 30,
-        "小计" : 10000 };
+    var expected = { "名称" : "常青店", "数量" : 50, "差异数" : 30, "小计" : 10000 };
+    expected[title_Shipped] = 20;
     var arr2 = test160042QR();
     var actual2 = subObject(arr2, arr1);
-    var expected2 = { "名称" : "jkk", "数量" : 20, "已发" : 10, "差异数" : 10 };
+    var expected2 = { "名称" : "jkk", "数量" : 20, "差异数" : 10 };
+    expected2[title_Shipped] = 10;
     var ret = isAnd(isEqualObject(expected, actual), isEqualObject(expected2,
-            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(jo2["已发"],
-            qr.counts["已发"]), isEqual(jo2["差异数"], qr.counts["差异数"]), isEqual(
-            jo2["小计"], qr.counts["小计"]));
+            actual2), isEqual(jo2["数量"], qr.counts["数量"]), isEqual(
+            jo2[title_Shipped], qr.counts[title_Shipped]), isEqual(jo2["差异数"],
+            qr.counts["差异数"]), isEqual(jo2["小计"], qr.counts["小计"]));
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
@@ -2308,7 +2180,8 @@ function test160121() {
     query(fields);
     qr = getQR();
     var exp = { "批次" : 0, "日期" : getToDay("yy"), "门店" : "常青店", "店员" : "总经理",
-        "客户" : "小王", "数量" : 30, "已发" : 0, "差异数" : 30, "发货状态" : "未发货" };
+        "客户" : "小王", "数量" : 30, "差异数" : 30, "发货状态" : "未发货" };
+    exp[title_Shipped] = 0;
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     tapButton(window, CLEAR);
@@ -2337,7 +2210,7 @@ function test160122() {
     loadHangBill(1);
     editSalesBillSave({});
     tapReturn();
-    ret=isAnd(ret,isInAlertMsgs("开单界面存在数据"));
+    ret = isAnd(ret, isInAlertMsgs("开单界面存在数据"));
 
     return ret;
 }
@@ -2356,7 +2229,7 @@ function test160124() {
     ret = ret && sortByTitle("店员");
     ret = ret && sortByTitle("客户");
     ret = ret && sortByTitle("数量", IS_NUM);
-    ret = ret && sortByTitle("已发", IS_NUM);
+    ret = ret && sortByTitle(title_Shipped, IS_NUM);
     ret = ret && sortByTitle("差异数", IS_NUM);
     ret = ret && sortByTitle("发货状态");
     ret = ret && sortByTitle("总额", IS_NUM);
@@ -2386,27 +2259,10 @@ function test16_Stockout_1() {
     ret = ret && sortByTitle("库存(含在途)", IS_NUM);
     ret = ret && sortByTitle("采购未到", IS_NUM);
     ret = ret && sortByTitle("缺货数", IS_NUM);
-    logDebug("ret=" + ret);
 
-    // query();
-    var qr = getQR();
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["订货未发"]);
-            sum2 += Number(qr.data[i]["库存(含在途)"]);
-            sum3 += Number(qr.data[i]["采购未到"]);
-            sum4 += Number(qr.data[i]["缺货数"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["订货未发"], sum1), isEqual(
-            qr.counts["库存(含在途)"], sum2), isEqual(qr.counts["采购未到"], sum3),
-            isEqual(qr.counts["缺货数"], sum4));
-    return isAnd(ret, ret1);
+    var arr = [ "订货未发", "库存(含在途)", "采购未到", "缺货数" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
 }
 
 // 条件查询/数据验证/清除

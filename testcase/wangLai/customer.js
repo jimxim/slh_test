@@ -3103,13 +3103,11 @@ function test110053() {
     var keys = { "名称" : "客户分店" };
     var fields = editCustomerBranchFields(keys);
     setTFieldsValue(window, fields);
-    tapNaviRightButton();
-    var ret = isIn(alertMsg, "不允许创建分店");
-    tapPrompt();
+    tapNaviRightButton();// 保存
     tapNaviLeftButton();
     tapReturn();
 
-    return ret;
+    return isInAlertMsgs("不允许创建分店");
 }
 
 function test110054() {
@@ -3170,7 +3168,7 @@ function ts110056() {
     tapButton(window, EDIT_SAVE);
     tapPrompt();
     var ret = isIn(alertMsg, "包含特殊字符");
- 
+
     keys = { "客户代码" : "'" };
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -3184,7 +3182,7 @@ function ts110056() {
     tapButton(window, "修改保存");
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "相同客户编码已存在"));
-    
+
     var r = "客户代码abc" + getTimestamp(6);
     keys = { "客户代码" : r };
     fields = editCustomerFields(keys);

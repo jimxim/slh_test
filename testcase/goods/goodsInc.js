@@ -61,6 +61,7 @@ function addGoods(keys, isEdit, day) {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(btn, OK);
+    delay();
     tapReturn();
 }
 
@@ -571,52 +572,58 @@ function checkDate(str) {
 
 /**
  * 单项查询条件验证
- * @param qr
  * @param title
  * @param expected
- * @param type
+ * @param type batch/day/in
  * @param expected2
  * @returns {Boolean}
  */
-function checkQResult(qr, title, expected, type, expected2) {
-    var ret = false;
-    if (qr.data.length > 0) {
-        for (var j = 1; j <= qr.totalPageNo; j++) {
-            for (var i = 0; i < qr.curPageTotal; i++) {
-                var value = qr.data[i][title];
-                switch (type) {
-                case "batch":
-                    value = Number(value);
-                    expected = Number(expected);
-                    expected2 = Number(expected2);
-                    ret = isAnd(expected <= value, value <= expected2);
-                    break;
-                case "day":
-                    value = getDay24(value);
-                    ret = isAnd(expected <= value, value <= expected2);
-                    break;
-                case "in":
-                    ret = isIn(value, expected);
-                    break;
-                default:
-                    ret = isEqual(expected, value);
-                    break;
-                }
-                if (!ret) {
-                    logDebug("第" + j + "页,第" + i + "行 expected=" + expected
-                            + "  actual=" + value);
-                    break;
-                }
-            }
-            if (ret && j < qr.totalPageNo) {
-                scrollNextPage();
-                qr = getQR();
-            }
+function checkQResult(title, expected, type, expected2) {
+    var regTotal = /共\s*(\d+)条/;
+    var oPage = getPageInfo(window, regTotal);
+    var totalPageNo = oPage["totalPageNo"];
+
+    tapTitle(getScrollView(), title);
+    var ret = checkQResultField(title, expected, type, expected2);
+
+    if (totalPageNo > 1 && ret) {
+        tapTitle(getScrollView(), title);
+        ret = checkQResultField(title, expected, type, expected2);
+    }
+    tapButton(window,QUERY);//取消排序，防止影响后续操作
+    return ret;
+}
+function checkQResultField(title, expected, type, expected2) {
+    var ret;
+    var qr = getQR();
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        var value = qr.data[i][title];
+        switch (type) {
+        case "batch":
+            value = Number(value);
+            expected = Number(expected);
+            expected2 = Number(expected2);
+            ret = expected <= value && value <= expected2;
+            break;
+        case "day":
+            value = getDay24(value);
+            ret = expected <= value && value <= expected2;
+            break;
+        case "in":
+            ret = isIn(value, expected);
+            break;
+        default:
+            ret = expected == value;
+            break;
+        }
+        if (!ret) {
+            logDebug("第" + j + "页,第" + i + "行 expected=" + expected
+                    + "  actual=" + value);
+            break;
         }
     }
     return ret;
 }
-
 /**
  * 清除指定下标的文本框的内容
  * @param view
