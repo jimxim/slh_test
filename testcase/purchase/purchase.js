@@ -1696,16 +1696,8 @@ function test120025() {
     var c2 = qr.data[0]["常青店"];
 
     tapMenu("采购订货", "新增订货+");
-    var keys3 = [ "厂商" ];
-    var fields3 = purchaseOrderAddFields(keys3);
-    changeTFieldValue(fields3["厂商"], "vell");
-    setTFieldsValue(window, fields3);
-    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("订货数", TF, 3, "10");
-    var fields4 = [ f0, f3 ];
-    setTFieldsValue(getScrollView(), fields4);
-    saveAndAlertOk();
-    tapReturn();
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按订货入库");
     tapFirstText();
@@ -2061,8 +2053,8 @@ function ts120034() {
     query();
     tapFirstText();
     jo = { "客户" : "rt" };
-    editSalesBillCustomer(jo);
-    editSalesBillSave({});
+    editSalesBill(jo, colorSize);
+    tapReturn();
 
     return isInAlertMsgs("客户或供应商信息不允许修改");
 }
@@ -2325,9 +2317,9 @@ function ts120046() {
     var ret = isEqual("", qr.data[0]["厂商"]);
 
     tapFirstText();
-    var json={"客户":"vell"};
+    var json = { "客户" : "vell" };
     editSalesBill(json, colorSize);
-    
+
     tapMenu2("按批次查");
     tapButton(window, QUERY);
     qr = getQR();

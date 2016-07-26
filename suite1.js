@@ -2,7 +2,7 @@
 //测试套具，集合测试用例
 
 #import "all.js"
-#import "lib/Msg_EN.js"
+// #import "lib/Msg_EN.js"
 
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
@@ -16,8 +16,9 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "test120011_2");
- run("测试用例", "onlyTest");//
+ // run("测试用例", "test110022Verify3");
+// run("测试用例", "test110022Verify4");
+ run("测试用例", "ts130024");
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
 // checkLimitsToRights_NO();

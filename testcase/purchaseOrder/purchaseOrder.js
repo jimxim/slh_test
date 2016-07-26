@@ -265,7 +265,7 @@ function ts130020_2() {
     tapButton(window, CLEAR);
     var text = getTextFields(window);
     for (var i = 0; i < text.length; i++) {
-        if (i == 1) {
+        if (i == 1 || i == 2) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -393,6 +393,8 @@ function ts130003() {
     tapReturn();// 防止未自动返回
     var ret = isInAlertMsgs("作废成功");
 
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqualObject(a1, qr.data[0]), isEqualObject2(qr.counts,
             batchCounts));
@@ -454,6 +456,7 @@ function ts130004_2() {
     }
 
     tapMenu2("按明细查");
+    delete keys["类别"];
     fields = purchaseOrderQueryParticularFields(keys);
     var jo1 = get130004QR(fields, "厂商");
     var ret1 = isEqualObject(jo1, jo2);
@@ -854,12 +857,11 @@ function ts130009() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var title = getSalesBillDetTfObject();
-    var f = new TField("入库数", TF, title["入库数"], "10");
-    setTFieldsValue(getScrollView(), [ f ]);
-    editSalesBillSave({});
+    json = { "入库明细" : [ { "数量" : 10 } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
+    query();
     tapFirstText();
     tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
@@ -875,14 +877,16 @@ function ts130010() {
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
+    query();
     tapFirstText();
-    var staffTFindex = getEditSalesTFindex("客户,厂商", "店员");
+    var staffTFindex = getStaffTFindex();
     var ret = isIn(getTextFieldValue(window, staffTFindex), "000");
     tapReturn();
 
     tapMenu("采购入库", "按订货入库");
+    query();
     tapFirstText();
-    staffTFindex = getEditSalesTFindex("客户,厂商", "店员");
+    staffTFindex = getStaffTFindex();
     ret = isAnd(ret, isIn(getTextFieldValue(window, staffTFindex), "000"));
     tapReturn();
 
@@ -891,8 +895,7 @@ function ts130010() {
 
 function ts130011() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "店员" : "000", "现金" : 1000, "刷卡" : [ 600, "银" ],
-        "汇款" : [ 300, "银" ], "备注" : "xx" };
+    var jo = { "客户" : "vell" };
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -900,25 +903,16 @@ function ts130011() {
     tapMenu("采购订货", "按批次查");
     query();
     tapFirstText();
-    var keys = { "厂商" : "lx" };
-    var fields = purchaseOrderAddFields(keys);
-    setTFieldsValue(window, fields);
-    saveAndAlertOk();
-    delay();
-    tapPrompt();
-    var ret = isIn(alertMsg, "客户或供应商信息不允许修改");
+    json = { "客户" : "lx", "不返回" : "yes" };
+    editSalesBill(json, colorSize);
+    var ret = isInAlertMsgs("客户或供应商信息不允许修改");
 
-    // keys = { "厂商" : "" };
-    // fields = purchaseOrderAddFields(keys);
-    // setTFieldsValue(window, fields);
     tapButton(window, CLEAR);
     saveAndAlertOk();
     delay();
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "需要输入订货厂商"));
-
-    delay();
-    tapButton(window, RETURN);
+    tapReturn();
 
     return ret;
 }
@@ -1024,12 +1018,10 @@ function ts130014() {
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    var remarketTFindex = getEditSalesTFindex("客户,厂商", "备");
     var tfNum = getSalesBillDetTfObject();
-    // isEqual(getTextViewValue(window, 0), "xx")
-    var ret = isAnd(isEqual(getTextFieldValue(window, remarketTFindex), "xx"),
-            isEqual(getTextFieldValue(getScrollView(), tfNum["备注"]), "123"),
-            isEqual(getTextFieldValue(getScrollView(), tfNum["明细输入框个数"]
+    var ret = isAnd(isEqual(getTextViewValue(window, 0), "xx"), isEqual(
+            getTextFieldValue(getScrollView(-1), tfNum["备注"]), "123"),
+            isEqual(getTextFieldValue(getScrollView(-1), tfNum["明细输入框个数"]
                     + tfNum["备注"]), remark));
     tapReturn();
 
@@ -1165,6 +1157,7 @@ function ts130017() {
     editSalesBill(json, colorSize);
 
     tapMenu2("按批次查");
+    query();
     tapFirstText();
     var act = editSalesBillGetValue(jo);
     tapReturn();

@@ -1829,7 +1829,7 @@ function test110036() {
             && isEqual("", getTextFieldValue(window, 1))
             && isEqual("", getTextFieldValue(window, 2));
 
-    var ret1 = isAnd(sortByTitle("门店"), sortByTitle("名称"), sortByTitle("电话"),
+    var ret1 = isAnd(sortByTitle("门店"), sortByTitle("名称"), sortByTitle("手机"),
             sortByTitle("当前积分", IS_NUM), sortByTitle("最近兑换日期", IS_DATE2));
 
     return isAnd(ret, ret1);

@@ -36,7 +36,7 @@ function queryGoodsStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -47,7 +47,7 @@ function queryGoodsStockField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF, 4, "花色");// TF_SC
+        f = new TField("颜色", TF, 4, "花色", -1, 0);// TF_SC
         break;
     case "size":
     case "尺码":
@@ -116,7 +116,7 @@ function queryGoodsCodeStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "仓库店");// TF_SC
+        f = new TField("门店", TF, 2, "仓库店", -1, 0);// TF_SC
         break;
     case "provider":
     case "厂商":
@@ -249,7 +249,7 @@ function queryGoodsInOutField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "仓库店");// TF_SC
+        f = new TField("门店", TF, 0, "仓库店", -1, 0);// TF_SC
         break;
     case "code":
     case "款号":
@@ -358,7 +358,7 @@ function queryGoodsField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF, 4, "花色");// TF_SC
+        f = new TField("颜色", TF, 4, "花色", -1, 0);// TF_SC
         break;
     case "hasPicture":
     case "是否有图":
