@@ -246,10 +246,10 @@ function testGoods002() {
     run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "ts100035");
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "ts100092");
-    // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");
+    // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
-    run("【货品管理-批量调价】不选择任何货品，点击批量调价", "ts100051");
+    // run("【货品管理-批量调价】不选择任何货品，点击批量调价", "ts100051");//验证码
     run("【货品管理-批量操作】批量操作", "test100053");
     run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
     run("【货品管理-批量操作】批量停用-重复停用提示", "ts100108");
@@ -1594,7 +1594,7 @@ function ts100035Field(btnIdx, fields) {
     tapButtonScroll(getScrollView(), btnIdx);
     setTFieldsValue(getPopOrView(), fields);
     tapButton(getPop(), OK);
-    tapButton(getPop(), CLOSE);
+    tapButton(getPop(), CLOSE, 2);// 若出现提示框，可能第一次点不到关闭按钮
 }
 
 function ts100038_100039_100040() {
@@ -1897,6 +1897,7 @@ function test100111() {
     tapReturn();
 
     tapMenu("货品管理", "基本设置", "所有品牌");
+    query();
     tapFirstText();
     ret = isAnd(ret, test100111Field("品牌", keys1));
     ret = isAnd(ret, test100111Field("品牌", keys2));
@@ -2122,13 +2123,14 @@ function ts100095_96() {
     var view = getScrollView(-1);
     tapButton(view, SELECT);
     var text = getStaticTexts(getPopView(window, 0));
+    var ret = !isEqualsTexts1(text, "停用尺码");
     window.popover().dismiss();
 
     ts100095Field("26", 10);
 
     // 新增配码后直接点击保存
     tapNaviRightButton();// 保存
-    var ret = isInAlertMsgs("单据重复");
+    ret = isAnd(ret, isInAlertMsgs("数据重复提交"));
 
     // 选择上述一样的尺码、不同的数量，点保存
     ts100095Field("26", 15);
@@ -2150,8 +2152,7 @@ function ts100095_96() {
     tapReturn();
 
     // 不显示已作废的尺码
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), !isEqualsTexts1(text,
-            "停用尺码"));
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
     return ret;
 }
 
@@ -3019,13 +3020,10 @@ function test100070() {
 function test100079_100080_100081() {
     var r = "cc" + getTimestamp(6);
     tapMenu("采购入库", "新增入库+");
-    var f0 = new TField("厂商", TF_AC, 0, "vell");
-    var fields = [ f0 ];
-    setTFieldsValue(window, fields);
-
+    var json = { "客户" : "vell" };
+    editSalesBillCustomer(json);
     var jo = { "款号" : r, "名称" : r, "进货价" : 100, "零批价" : 200, "数量" : 100 };
     editSalesBillAddGoods(jo);
-
     editSalesBillSave({});
 
     // 修改最大库存为0
@@ -3033,10 +3031,7 @@ function test100079_100080_100081() {
     query();
     tapFirstText();
     var keys = { "最大库存" : "0" };
-    var fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(EDIT_SAVE, OK);
-    delay();
+    addGoods(keys, "yes");
 
     tapMenu("货品管理", "getMenu_More", "超储统计");
     var keys = { "款号" : r };
@@ -3050,10 +3045,7 @@ function test100079_100080_100081() {
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "最大库存" : 100 };
-    fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(EDIT_SAVE, OK);
-    delay();
+    addGoods(keys, "yes");
 
     tapMenu("货品管理", "getMenu_More", "超储统计");
     tapButton(window, QUERY);
@@ -3065,10 +3057,7 @@ function test100079_100080_100081() {
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "最大库存" : 10 };
-    fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(EDIT_SAVE, OK);
-    delay();
+    addGoods(keys, "yes");
 
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店",

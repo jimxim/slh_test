@@ -801,7 +801,7 @@ function ts130007_08() {
         var det11 = qr.data[0], det21 = qr.data[1];
         ret = isAnd(ret, isEqualObject(det1, det11),
                 isEqualObject(det2, det21), isEqualObject(vWin["输入框值"],
-                        editSalesBillGetValue(o)));
+                        editSalesBillGetValue({})));
         tapButton(window, RETURN);
     }
 

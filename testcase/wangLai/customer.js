@@ -53,8 +53,8 @@ function testCustomer002() {
     run("【往来管理-客户账款】详细页面_上下级模式", "test110022");//
     run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
     run("【往来管理-客户账款】上级客户核销下级客户账款_余款", "test110022Verify2");
-    run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
-    run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
+    // run("【往来管理-客户账款】异地核销_欠款", "test110022Verify3");
+    // run("【往来管理-客户账款】异地核销_余款", "test110022Verify4");
     run("【往来管理-客户账款】客户门店账->核对汇总金额和客户信息条数", "test110017");
     run("【往来管理-客户账款】客户账款->按上级单位，客户名称检查", "ts110019");
     run("【往来管理-客户账款】客户门店帐,按上级单和客户总帐之间的关系", "test110023");
@@ -2742,7 +2742,7 @@ function test110043Check() {
     // 本次的累计未结=上次的累计未结+本次（付款-金额+异地核销）
     var ret = test110043Field(qr, "常青店");
     ret = isAnd(ret, test110043Field(qr, "中洲店"));
-    ret = isAnd(ret, test110043Field(qr, "仓库店"));
+    // ret = isAnd(ret, test110043Field(qr, "仓库店"));
 
     var shop1, shop2, shop3, i, j;
     for (j = 1; j <= qr.totalPageNo; j++) {
@@ -2907,20 +2907,20 @@ function ts110062() {
 function test110045_110046() {
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
     var r = "kd" + getTimestamp(6);
-    var keys = { "名称" : "天天物流", "店员" : "004", "区域" : "华北", "电话" : r,
+    var keys = { "名称" : "天天物流", "店员" : "004", "区域" : "华北", "手机" : r,
         "邮编" : "312000", "地址" : "abc", "账号" : "123", "门店" : "中洲店", "备注" : "备注" };
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     var ret = isInAlertMsgs("相同名称已存在");
 
-    keys = { "名称" : r, "电话" : "13833331112" };
+    keys = { "名称" : r, "手机" : "13833331112" };
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
 
-    keys = { "电话" : r };
+    keys = { "手机" : r };
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
@@ -2929,12 +2929,12 @@ function test110045_110046() {
     query();
     var qr = getQR();
     var expected = { "区域" : "华北", "名称" : r, "门店" : "中洲店", "店员" : "店长",
-        "电话" : r, "地址" : "abc", "账号" : "123", "备注" : "备注" }
+        "手机" : r, "地址" : "abc", "账号" : "123", "备注" : "备注" }
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
     // 修改物流商信息并验证
     tapFirstText();
-    keys = { "名称" : r + "a", "店员" : "000", "区域" : "客户", "电话" : r,
+    keys = { "名称" : r + "a", "店员" : "000", "区域" : "客户", "手机" : r,
         "邮编" : "310000", "地址" : "地址", "账号" : "abc", "门店" : "常青店",
         "备注" : "备注abc123" };
     fields = editCustomerLogisticsFields(keys);

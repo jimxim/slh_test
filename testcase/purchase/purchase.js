@@ -977,15 +977,14 @@ function test120013_3Field(code) {
 }
 
 function test120014() {
-    // 备注下标为7，若有变动会报错
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-5" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetNoColorSize(json);
-
-    // target.frontMostApp().mainWindow().popover().scrollViews()[0].staticTexts()["退货"]
+    var title = getSalesBillDetTfObject();
+    var idx = title["备注"];
     var p = "退货 赠品 代卖 次品 代保管 换色 换码";
-    tap(getScrollView().textFields()[7].textFields()[0]);// 点击备注文本框
+    tap(getScrollView().textFields()[idx].textFields()[0]);// 点击备注文本框
     var view1 = getPopView(window, -1);
     var ret = true;
     var texts = getStaticTexts(view1);

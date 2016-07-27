@@ -731,8 +731,8 @@ function editCustomerLogisticsField(key, show) {
         }
         break;
     case "mobile":
-    case "电话":
-        f = new TField("电话", TF, 3, "123456789");
+    case "手机":
+        f = new TField("手机", TF, 3, "123456789");
         break;
     case "postcode":
     case "邮编":
