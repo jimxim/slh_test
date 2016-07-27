@@ -11,8 +11,12 @@ function test000All() {
     debug = true;
     ipadVer ="7.21"; // "6.59";// 7.13// 7.21
 // run("【销售开单－销售汇总-按店员汇总】按店员汇总", "test170319_1");//
-//    run("【销售开单-开单】1.1窜码发货，库存总数为正", "test170651");
- run("", "test0");
+// run("【销售开单-开单】1.1窜码发货，库存总数为正", "test170651");
+//    run("【销售开单】按挂单--正常功能检查", "test170303");
+// run("【销售开单-收款撤销】收款撤销", "test170277");
+//    run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
+    run("【盘点管理—盈亏表】条件查询，清除按钮,下拉框", "test180037_180034_180035");
+// run("", "test0");
    
 }
 function test0(){
@@ -21,19 +25,6 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    var r = "anewCuanMa" + getTimestamp(6);
-    tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
-        "吊牌价" : 200, "进货价" : 100 };
-    var fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapReturn();
-}
-function test1(){
-    tapMenu("销售开单", "按订货开单");
-    query();
-
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

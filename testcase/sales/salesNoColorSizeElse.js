@@ -1815,8 +1815,8 @@ function test170267() {
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : "5" }, { "货品" : "k200", "数量" : "5" },
-                { "货品" : "k300", "数量" : "12" } ],
+        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k200", "数量" : 5 },
+                { "货品" : "k300", "数量" : 12 } ],
         "特殊货品" : { "抹零" : 100, "打包费" : 300 } };
     editSalesBillNoColorSize(json);
 
@@ -2260,8 +2260,8 @@ function test170275() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3));
+    var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1), isAqualNum(
+            qr.counts["刷卡"], sum2), isAqualNum(qr.counts["汇款"], sum3));
 
     logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3);
     return ret && ret1;
@@ -2542,7 +2542,7 @@ function test170286() {
 function test170287() {
     var r = getTimestamp(8);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "代收" : { "物流商" : "tt", "运单号" : r, "备注" : r + "tt", "代收金额" : 200 } };
     editSalesBillNoColorSize(json);
 
@@ -2555,8 +2555,8 @@ function test170287() {
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "getMenu_More", "代收收款查询");
@@ -2751,8 +2751,8 @@ function test170289() {
 }
 function test170290() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a", "代收金额" : "200" } };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "代收" : { "物流商" : "tt", "运单号" : "123", "备注" : "a", "代收金额" : 200 } };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", LogisticsVerify);
@@ -2763,8 +2763,8 @@ function test170290() {
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "物流单");
@@ -2916,8 +2916,8 @@ function test170293() {
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
-    // tapNaviRightButton();
     saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "物流单");
@@ -3181,8 +3181,8 @@ function test170300_170410() {
     var json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "getMenu_More", "代收收款查询");
@@ -3240,10 +3240,9 @@ function test170303() {
     var fields = [ f0, f3 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var json = {
-        "明细" : [ { "货品" : "k300", "数量" : "1" }, { "货品" : "k200", "数量" : "2" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 1 },
+            { "货品" : "k200", "数量" : 2 } ] };
+    editSalesBillDetNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
 
@@ -3256,11 +3255,13 @@ function test170303() {
     var ret = isAnd(isEqual("李四", a), isEqual(getToday("yy"), b));
 
     tapFirstText();
-    var totalMoney = getTextFieldValue(window, 12);
-    var num = getTextFieldValue(window, 11);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
+    var num = getTextFieldValue(window, remitTFindex - 2);
     saveAndAlertOk();
     tapPrompt();
-    tapReturn();
+    delay();
+    tapButton(window, Button);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -3271,8 +3272,9 @@ function test170303() {
                     qr.data[0]["金额"]));
 
     tapFirstText();
-    var ret2 = isAnd(isEqual(totalMoney, getTextFieldValue(window, 12)),
-            isEqual(num, getTextFieldValue(window, 11)));
+    var ret2 = isAnd(isEqual(totalMoney, getTextFieldValue(window,
+            remitTFindex - 1)), isEqual(num, getTextFieldValue(window,
+            remitTFindex - 2)));
     tapReturn();
 
     logDebug(" ret＝" + ret + ", totalMoney＝" + totalMoney + ", num＝" + num);
@@ -3679,9 +3681,10 @@ function test170307_170306() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1, 0.001), isEqual(
-            qr.counts["刷卡"], sum2), isEqual(qr.counts["汇款"], sum3), isEqual(
-            qr.counts["代收"], sum4), isEqual(qr.counts["实收"], sum5));
+    var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1, 0.001), isAqualNum(
+            qr.counts["刷卡"], sum2), isAqualNum(qr.counts["汇款"], sum3),
+            isAqualNum(qr.counts["代收"], sum4),
+            isAqualNum(qr.counts["实收"], sum5));
 
     logDebug(", sum1=" + sum1 + ", sum2=" + sum2 + ", sum3=" + sum3 + ", sum4="
             + sum4 + ", sum5=" + sum5);
@@ -3794,7 +3797,7 @@ function test170309() {
     tapMenu("销售开单", "按汇总", "按款号汇总");
     var i;
     var ret = false;
-    var f = new TField("款号", TF_AC, 4, "4562", -1);
+    var f = new TField("款号", TF_AC, 4, "456", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -7463,10 +7466,8 @@ function test170569() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
-    // tapButton(window, "核销");
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
-    tapNaviRightButton();
 
     var json = { "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
     editSalesBillSpecial(json);
@@ -7479,7 +7480,8 @@ function test170569() {
     var zj = getTextFieldValue(window, remitTFindex - 1);
     var ret = isAnd(isEqual(add(money, 11), yf), isEqual(add(money, 11), sf),
             isEqual(add(money, 11), cash), isEqual(11, zj));
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     // 在代收收款查询,收支流水,综合汇总,综合收支表四个界面检查核销金额
@@ -7830,10 +7832,8 @@ function test170576() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
-    // tapButton(window, "核销");
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
-    // tapNaviRightButton();
 
     var json = { "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
     editSalesBillSpecial(json);
@@ -7847,7 +7847,8 @@ function test170576() {
     var ret = isAnd(isEqual(add(money, 11), yf), isEqual(add(money, 11), sf),
             isEqual(add(money, 11), cash), isEqual(11, zj));
 
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     // 在代收收款查询,收支流水,综合汇总,综合收支表四个界面检查核销金额
@@ -7965,7 +7966,8 @@ function test170579() {
 
     json = { "特殊货品" : { "抹零" : 39, "打包费" : 48 } };
     editSalesBillSpecial(json);
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "getMenu_More", "代收收款查询");

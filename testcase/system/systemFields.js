@@ -305,7 +305,7 @@ function editSystemPasswordField(key, show) {
     }
     return f;
 }
-//门店列表
+// 门店列表
 function testSystemShopFields() {
     var fields = testSystemShopFields("name", "section");
     setTFieldsValue(window, fields);
@@ -331,7 +331,69 @@ function editSystemShopField(key, show) {
     }
     return f;
 }
-//账户列表
+// 新增门店+
+function testSystemShopAddFields() {
+    var fields = testSystemShopAddFields("name", "section");
+    setTFieldsValue(window, fields);
+    return true;
+}
+
+function editSystemShopAddFields(keys, show) {
+    return getTFields("editSystemShopAddField", keys, show);
+}
+function editSystemShopAddField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "店名":
+        f = new TField("店名", TF, 0, "常青店");
+        break;
+    case "type":
+    case "类型":
+        f = new TField("类型", BTN_SC, 0, "仓库");
+        break;
+    case "shoptype":
+    case "门店类型":
+        f = new TField("门店类型", BTN_SC, 1, "直营店");
+        break;
+    case "Marketlabel":
+    case "市场标签":
+        f = new TField("市场标签", TF_SC, 1, "直营店");
+        break;
+    case "addrass":
+    case "地址":
+        f = new TField("地址", TF, 4, "仓库");
+        break;
+    case "staff":
+    case "经办人":
+        f = new TField("经办人", TF_AC, 5, "000");
+        break;
+    case "phone":
+    case "联系电话":
+        f = new TField("联系电话", TF, 6, "12345678901");
+        break;
+    case "cellphone":
+    case "手机":
+        f = new TField("手机", TF, 7, "12345678901");
+        break;
+    case "Alipay":
+    case "支付宝":
+        f = new TField("支付宝", TF, 8, "12345678901");
+        break;
+    case "head":
+    case "打印抬头":
+        f = new TField("打印抬头", TF, 9, "仓库");
+        break;
+    case "account1":
+    case "户名1":
+        f = new TField("户名1", TF, 10, "农行");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+// 账户列表
 function testSystemAccountFields() {
     var fields = testSystemAccountFields("name", "section");
     setTFieldsValue(window, fields);
@@ -361,5 +423,3 @@ function editSystemAccountField(key, show) {
     }
     return f;
 }
-
-

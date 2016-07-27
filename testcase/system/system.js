@@ -633,7 +633,7 @@ function test210027() {
     var ret1 = isEqual("y" + r, qr.data[0]["工号"]);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
-    keys = { "工号" : "005" };
+    keys = { "工号" : "006" };
     fields = EditSystemStaffFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(EDIT_SAVE, OK);
@@ -2250,13 +2250,9 @@ function test210067() {
     tapMenu3("门店列表");
 
     query();
-
     tapFirstText();
-
     tapButtonAndAlert("停 用", OK);
-
     tapPrompt();
-
     var ret = isIn(alertMsg, "该门店下还存在款号库存，无法停用");
 
     return ret;
@@ -2267,7 +2263,8 @@ function test210069_210070() {
     tapMenu3("新增门店＋");
 
     var m = "test" + getTimestamp(8);
-
+    // var keys = {"店名":m,"类型":};
+    // var feilds = editSystemShopAddFields(keys);
     var f0 = new TField("店名", TF, 0, m);
     var f1 = new TField("类型", BTN_SC, 0, "门店");
     var f2 = new TField("门店类型", BTN_SC, 1, "加盟店");
@@ -2287,9 +2284,7 @@ function test210069_210070() {
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-
     var qr = getQR();
-
     var ret = isEqual(m, qr.data[0]["门店"]);
 
     tapMenu1("系统设置");
@@ -2307,9 +2302,7 @@ function test210069_210070() {
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2");
 
     var r2 = getTimestamp(2);
@@ -2318,7 +2311,6 @@ function test210069_210070() {
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
-
     tapReturn();
 
     tapMenu1("系统设置");
@@ -2326,9 +2318,7 @@ function test210069_210070() {
     tapMenu3("账户列表");
 
     query();
-
     var qr = getQR();
-
     var ret2 = isEqual(r, qr.data[0]["账户名称"]);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2);
