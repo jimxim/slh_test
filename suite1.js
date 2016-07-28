@@ -16,20 +16,19 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-//  run("测试用例", "ts100035");
+// run("测试用例", "ts100035");
 // run("测试用例", "onlyTest");
- run("测试用例", "test110043");
+ run("测试用例", "checkRightsShopIn");
 
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
-// checkLimitsToRights_NO();
+
 }
 
 function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
 
 // debugObject(gCache,"gCache");
   return true;

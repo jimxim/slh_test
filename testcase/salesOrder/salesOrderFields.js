@@ -77,7 +77,7 @@ function salesOrderQueryParticularField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店", TF, 0, "常青店", -1, 0);// TF_SC
         break;
     case "day1":
     case "日期从":
@@ -191,7 +191,7 @@ function salesOrderPictureField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元",-1,0);
+        f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元", -1, 0);
         if (show) {
             f.value = "741,Abc";
         }
@@ -249,7 +249,7 @@ function salesOrderCodeField(key, show) {
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 5, "xw",-1,0);
+        f = new TField("客户", TF_AC, 5, "xw", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -382,7 +382,7 @@ function salesOrderCompanyField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_DT, 3, "000");
+        f = new TField("店员", TF_AC, 3, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -446,7 +446,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "company":
     case "厂商":
-        f = new TField("厂商", TF_AC, 4, "Vell",-1,0);
+        f = new TField("厂商", TF_AC, 4, "Vell", -1, 0);
         break;
     case "day3":
     case "上架从":

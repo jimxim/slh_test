@@ -108,10 +108,11 @@ function ts150013() {
 
     tapFirstText();
     var title = getSalesBillDetTfObject();
-    var ret = isEqual("abc123", getTextFieldValue(getScrollView(), title["备注"]));
+    var ret = isEqual("abc123", getTextFieldValue(getScrollView(-1),
+            title["备注"]));
 
     var f = new TField("数量", TF, title["数量"], "20");
-    setTFieldsValue(getScrollView(), [ f ]);
+    setTFieldsValue(getScrollView(-1), [ f ]);
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
@@ -119,14 +120,19 @@ function ts150013() {
 
     tapMenu("门店调出", "按批次查");
     query();
+    var qr = getQR();
+    var data1 = qr.data[0];
+
     tapFirstText();
     title = getSalesBillDetTfObject();
-    setTFieldsValue(getScrollView(), [ f ]);
+    setTFieldsValue(getScrollView(-1), [ f ]);
     editShopOutSave({});
+    ret = isAnd(ret, isInAlertMsgs("不支持跨门店的调出单修改"));
 
+    tapMenu2("按批次查");
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqual("中洲店", qr.data[0]["调出门店"]));
+    ret = isAnd(ret, isEqualObject(data1, qr.data[0]));
 
     return ret;
 }
@@ -210,7 +216,7 @@ function ts140001() {
         // 清除
         tapButton(window, CLEAR);
         for (var i = 0; i < 5; i++) {
-            if (i == 0) {
+            if (i == 0 || i == 1) {
                 ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
             } else {
                 ret = ret && isEqual("", getTextFieldValue(window, i));
@@ -386,7 +392,7 @@ function ts140011() {
 
 function ts140012_19() {
     tapMenu("门店调入", "按批次查");
-    var keys = { "日期从" : getDay(-100) };
+    var keys = { "日期从" : getDay(-30) };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
     // 点击翻页

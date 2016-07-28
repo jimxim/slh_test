@@ -1531,6 +1531,7 @@ function ts100033Field(key1, key2, key3) {
         var fields1 = editGoodsFields(key3, true);
         ret1 = checkShowFields(getScrollView(), fields1);
     }
+    delay();//防止无法触发返回按钮
     tapReturn();
 
     tapMenu2("货品查询");

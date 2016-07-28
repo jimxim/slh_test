@@ -159,16 +159,16 @@ var hasRights;
 function checkLimitsToRights_YES() {
     hasRights = true;
     run("货品管理", "checkRightsGoods");
-    // run("往来管理", "checkRightsCustomer");
-    // run("采购入库", "checkRightsPurchase");
-    // run("采购订货", "checkRightsPurchaseOrder");
-    // run("门店调入", "checkRightsShopIn");
-    // run("门店调出", "checkRightsShopOut");
-    // run("销售订货", "checkRightsSalesOrder");
-    // run("销售开单", "checkRightsSales");
-    // run("盘点管理", "checkRightsCheck");
-    // run("统计分析", "checkRightsStatisticAnalysis");
-    // run("统计图表", "checkRightsStatisticPicture");
+    run("往来管理", "checkRightsCustomer");
+    run("采购入库", "checkRightsPurchase");
+    run("采购订货", "checkRightsPurchaseOrder");
+    run("门店调入", "checkRightsShopIn");
+    run("门店调出", "checkRightsShopOut");
+    run("销售订货", "checkRightsSalesOrder");
+    run("销售开单", "checkRightsSales");
+    run("盘点管理", "checkRightsCheck");
+    run("统计分析", "checkRightsStatisticAnalysis");
+    run("统计图表", "checkRightsStatisticPicture");
 }
 
 function checkLimitsToRights_NO() {
@@ -507,7 +507,7 @@ function checkRightsShopIn() {
     if (hasRights) {
         ret = isAnd(ret, qr.counts["金额"] != 0);
     } else {
-        ret = isAnd(ret, qr.counts["金额"] == 0);// !qr.counts.hasOwnProperty("金额")
+        ret = isAnd(ret, qr.counts["金额"] == 0 || isUndefined(qr.counts["金额"]));// !qr.counts.hasOwnProperty("金额")
     }
     return ret;
 }
@@ -537,7 +537,7 @@ function checkRightsShopOut() {
     if (hasRights) {
         ret = isAnd(ret, qr.counts["金额"] != 0);
     } else {
-        ret = isAnd(ret, qr.counts["金额"] == 0);
+        ret = isAnd(ret, qr.counts["金额"] == 0 || isUndefined(qr.counts["金额"]));
     }
     return ret;
 }

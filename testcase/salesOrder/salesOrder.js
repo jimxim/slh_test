@@ -900,14 +900,14 @@ function test160020_160022() {
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
-    tapMenu("销售订货", "新增订货+");
+    tapMenu2("新增订货+");
     var json = {
         "客户" : "xw",
         "日期" : getDay(-1),
         "明细" : [ { "货品" : "3035", "数量" : "10" }, { "货品" : "4562", "数量" : "20" } ] };
     editSalesBill(json, colorSize);
 
-    tapMenu("销售订货", "按明细查");
+    tapMenu2("按明细查");
     keys = { "门店" : "常青店", "日期从" : getDay(-30), "日期到" : getDay(-1),
         "客户" : "xw", "批次从" : batch, "批次到" : batch + 1, "款号" : "3035" };
     fields = salesOrderQueryParticularFields(keys);
@@ -963,7 +963,8 @@ function ts160095() {
     var keys = { "客户" : "xw", "门店" : "常青店", "日期从" : getDay(-7),
         "到" : getDay(-3) };
     var fields = salesOrderBillFields(keys);
-    query(fields, "yes");
+    setTFieldsValue(window, fields);
+    tapButton(window, CLEAR);
 
     var ret = isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))

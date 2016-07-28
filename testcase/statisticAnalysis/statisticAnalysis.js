@@ -2585,7 +2585,7 @@ function test190113() {
     var arr = {};
     tapMenu("销售开单", "按汇总", "按款号汇总");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "颜色" : "均色", "款号" : "3035",
-        "品牌" : "Adidas", "厂商" : "Vell", "类别" : "登山服" };
+        "品牌" : "Adidas", "厂商" : "Vell" };
     var fields = salesCodeFields(keys);
     var qr = getQR();
     arr["实销数"] = qr.data[0]["实销数"];

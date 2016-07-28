@@ -1672,7 +1672,7 @@ function ts110033() {
     // addCustomer(keys);
 
     tapMenu2("客户活跃度");
-    keys = { "客户" : "bkdhk", "门店" : "常青店" };// 不开单客户
+    keys = { "客户" : "bkdkh", "门店" : "常青店" };// 不开单客户
     fields = queryCustomerActiveFields(keys);
     query(fields);
     qr = getQR();

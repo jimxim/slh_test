@@ -590,7 +590,7 @@ function checkQResult(title, expected, type, expected2) {
         tapTitle(getScrollView(), title);
         ret = checkQResultField(title, expected, type, expected2);
     }
-    tapButton(window,QUERY);//取消排序，防止影响后续操作
+    tapButton(window, QUERY);// 取消排序，防止影响后续操作
     return ret;
 }
 function checkQResultField(title, expected, type, expected2) {
@@ -796,11 +796,16 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
             goPage2(1, qr);
         }
     } else {
-        // 只有一页的时候，滑动页面，检测有没有提示错误
-        scrollPrevPage();
-        scrollNextPage();
-        goPage(1, qr);
-        ret = isAnd(ret, goPageCheckField());
+        if (qr.data.length > 0) {
+            // 只有一页的时候，滑动页面，检测有没有提示错误
+            scrollPrevPage();
+            scrollNextPage();
+            goPage(1, qr);
+            ret = isAnd(ret, goPageCheckField());
+        } else {
+            logDebug("data.length=0,跳过翻页验证");
+            ret = false;
+        }
     }
     logDebug("goPageCheck ret=" + ret);
     return ret;

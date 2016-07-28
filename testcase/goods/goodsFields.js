@@ -539,8 +539,12 @@ function editGoodsField(key, show, texts) {
         break;
     case "purchase-price":
     case "进货价":
+        var i = 1;
+        if (isEqualsTexts1(texts, "吊牌价")) {
+            i = 0;
+        }
         idx = getEditGoodsIndex(texts, "进货价");
-        f = new TField("进货价", TF, idx[0], "100");
+        f = new TField("进货价", TF, idx[0] + i, "100");// 默认价格模式有2个TF
         break;
     case "retail":
     case "零批价":
