@@ -1536,17 +1536,10 @@ function test170064() {
     ret = ret && test170064Field("批次", IS_NUM);
     ret = ret && test170064Field("日期", IS_DATE2);
     ret = ret && test170064Field("店员");
-    if (ipadVer <= "7.21") {
-        ret = ret && test170064Field("总金额", IS_NUM);
-    } else {
-        ret = ret && test170064Field("总额", IS_NUM);
-    }
-
+    ret = ret && test170064Field("总额", IS_NUM);
     ret = ret && test170064Field("未结金额", IS_NUM);
+    ret = ret && test170064Field("备注");
 
-    if (ipadVer >= "7.21") {
-        ret = ret && test170064Field("备注");
-    }
     tapNaviLeftButton();
     tapReturn();
 
@@ -3929,32 +3922,23 @@ function test170139() {
     var exp14 = { "货品" : "8989,我们", "颜色" : "均色", "尺码" : "均码", "数量" : 2 };
     var exp15 = { "货品" : "3035,jkk", "颜色" : "均色", "尺码" : "均码", "数量" : 20 };
 
-    // var k0 = getTextFieldValue(getScrollView(-1), 0);
-    // var k1 = getTextFieldValue(getScrollView(-1), 1);
-    // var k2 = getTextFieldValue(getScrollView(-1), 2);
-    // var k3 = getTextFieldValue(getScrollView(-1), 3);
-    // var f0 = getTextFieldValue(window, 0);
-    // var f5 = getTextFieldValue(window, 5);
-    // var num = getTextFieldValue(window, 11);
+    var f0 = getTextFieldValue(window, 0);
+    var f5 = getTextFieldValue(window, 5);
     var qr = getQRDet();
-    var ret = isAnd(isEqualObject(exp0, qr.data[0]), isEqualObject(exp1,
-            qr.data[1]), isEqualObject(exp2, qr.data[2]), isEqualObject(exp3,
-            qr.data[3]), isEqualObject(exp4, qr.data[4]), isEqualObject(exp5,
-            qr.data[5]), isEqualObject(exp6, qr.data[6]), isEqualObject(exp7,
-            qr.data[7]), isEqualObject(exp8, qr.data[8]), isEqualObject(exp9,
-            qr.data[9]), isEqualObject(exp10, qr.data[10]), isEqualObject(
-            exp11, qr.data[11]), isEqualObject(exp12, qr.data[12]),
-            isEqualObject(exp13, qr.data[13]),
+    var ret = isAnd(isEqual("", f0), isIn(f5, "总经理"), isEqualObject(exp0,
+            qr.data[0]), isEqualObject(exp1, qr.data[1]), isEqualObject(exp2,
+            qr.data[2]), isEqualObject(exp3, qr.data[3]), isEqualObject(exp4,
+            qr.data[4]), isEqualObject(exp5, qr.data[5]), isEqualObject(exp6,
+            qr.data[6]), isEqualObject(exp7, qr.data[7]), isEqualObject(exp8,
+            qr.data[8]), isEqualObject(exp9, qr.data[9]), isEqualObject(exp10,
+            qr.data[10]), isEqualObject(exp11, qr.data[11]), isEqualObject(
+            exp12, qr.data[12]), isEqualObject(exp13, qr.data[13]),
             isEqualObject(exp14, qr.data[14]),
             isEqualObject(exp15, qr.data[15]));
 
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
-
-    // var ret = isAnd(isIn(k0, "3035"), isEqual("均色", k1), isEqual("均码", k2),
-    // isEqual(10, k3), isEqual("", f0), isIn(f5, "总经理"),
-    // isEqual(175, num));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -9445,8 +9429,8 @@ function test170526() {
     qr = getQRDet();
     var a = qr.data[0]["货品"];
     var b = qr.data[1]["货品"];
-    var ret = isAnd(isEqual(Math.round(add(qr.data[0]["小计"], sub(r1, r))),
-            qr1["应"]), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
+    var ret = isAnd(isEqual(Math.round(add(qr.data[0]["小计"], sub(r1, r))), Math
+            .round(qr1["应"])), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
             Number(-r), Number(qr.data[1]["小计"])), isEqual("00001,打包费",
             qr.data[2]["货品"]), isEqual(Number(r1), Number(qr.data[2]["小计"])),
             isEqual(2, sl), isEqual(qr1["应"], je), isAqualOptime(getOpTime(),

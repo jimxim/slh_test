@@ -1804,7 +1804,7 @@ function test170266() {
     var a3 = getStaticTextValue(getPopOrView(), index + 9);
     var a4 = getStaticTextValue(getPopOrView(), index + 10);
 
-    var ret = isAnd(isEqual(getDay(), a), isEqual("002,仓管员", a1), isEqual(500,
+    var ret = isAnd(isEqual(getDay(), a), isEqual("000,总经理", a1), isEqual(500,
             a2), isEqual(100, a3), isEqual(200, a4));
     window.popover().dismiss();
     tapReturn();
@@ -3728,7 +3728,7 @@ function test170308() {
             a2), isEqual("均码", a3), isEqual(k, a4));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按款号汇总");
@@ -4171,6 +4171,12 @@ function test170319_1() {
     var totalXj1 = qr.counts["小计"];
     var totalSl4 = qr.counts["数量"];
 
+    changeTFieldValue(fields["code"], "3035");
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var totalSl = qr.counts["数量"];
+
     var keys = { "日期从" : getDay(-2), "款号名称" : "00002", "门店" : "常青店",
         "店员" : "000" };
     var fields = salesQueryParticularFields(keys);
@@ -4179,13 +4185,6 @@ function test170319_1() {
     var totalXj2 = qr.counts["小计"];
     var totalSl5 = qr.counts["数量"];
 
-    var keys = [ "code" ];
-    var fields = salesQueryParticularFields(keys);
-    changeTFieldValue(fields["code"], "3035");
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
-    qr = getQR();
-    var totalSl = qr.counts["数量"];
     var ret2 = isAnd(isAqualNum(-ml1, totalXj), isAqualNum(qt1, add(totalXj1,
             totalXj2)), isEqual(0, totalSl4), isEqual(0, totalSl5), isEqual(
             "3035", kh), isEqual(totalSl, num));
@@ -8101,7 +8100,7 @@ function test170596() {
     var fields = [ f3, f11 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : 6 }, ] };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 6 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -8168,7 +8167,7 @@ function test170596() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    tapButtonAndAlert(REPEAL, OK);
+    tapButtonAndAlert("作 废", OK);
 
     tapMenu("销售开单", "按批次查");
     var keys = { "作废挂单" : "作废" };
