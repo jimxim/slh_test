@@ -214,20 +214,20 @@ function test210007_210008() {
 }
 function test210010_210011() {
     tapMenu("系统设置", "全局设置");
-    var keys = { "名称" : "ignorecolorsize" };
+    var keys = { "名称" : "paymethod" };
     var fields = querySystemGlobalFields(keys);
     query(fields);
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
 
-    var ret = isEqual("是否需要颜色尺码", qr.data[0]["备注"]);
+    var ret = isEqual("开单模式", qr.data[0]["备注"]);
 
-    keys = { "备注" : "是否需要颜色尺码" };
+    keys = { "备注" : "开单模式" };
     fields = querySystemGlobalFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
 
-    var ret1 = isAnd(isEqual("是否需要颜色尺码", qr.data[0]["备注"]), isEqual(
-            "ignorecolorsize", qr.data[0]["名称"]));
+    var ret1 = isAnd(isEqual("开单模式", qr.data[0]["备注"]), isEqual("paymethod",
+            qr.data[0]["名称"]));
 
     keys = { "类别" : "销售" };
     fields = querySystemGlobalFields(keys);
@@ -243,13 +243,13 @@ function test210010_210011() {
         }
     }
 
-    keys = { "名称" : "ignorecolorsize", "备注" : "是否需要颜色尺码", "类别" : "综合" };
+    keys = { "名称" : "paymethod", "备注" : "开单模式", "类别" : "销售" };
     fields = querySystemGlobalFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
 
-    var ret3 = isAnd(isEqual("是否需要颜色尺码", qr.data[0]["备注"]), isEqual(
-            "ignorecolorsize", qr.data[0]["名称"]));
+    var ret3 = isAnd(isEqual("开单模式", qr.data[0]["备注"]), isEqual("paymethod",
+            qr.data[0]["名称"]));
 
     tapButton(window, CLEAR);
     var b = getTextFieldValue(window, 0);

@@ -253,10 +253,12 @@ function test170001_1_170010_170011_170012() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isEqual(qr.counts["金额"],
-            sum2), isEqual(qr.counts["现金"], sum3), isEqual(qr.counts["刷卡"],
-            sum4), isEqual(qr.counts["汇款"], sum5), isEqual(qr.counts["实收"],
-            sum6), isEqual(qr.counts["代收"], sum7));
+    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isAqualNum(
+            qr.counts["金额"], sum2), isAqualNum(qr.counts["现金"], sum3),
+            isAqualNum(qr.counts["刷卡"], sum4),
+            isAqualNum(qr.counts["汇款"], sum5),
+            isAqualNum(qr.counts["实收"], sum6),
+            isAqualNum(qr.counts["代收"], sum7));
 
     logDebug("sum1=" + sum1 + ", sum2=" + sum2 + ", sum3=" + sum3 + ", sum4="
             + sum4 + ", sum5=" + sum5 + ", sum6=" + sum6 + ", sum7=" + sum7
@@ -265,7 +267,7 @@ function test170001_1_170010_170011_170012() {
 }
 function test170001_2_170002_170003_170004_170008_170020_170485() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
     var opt = json["操作日期"];
@@ -1804,7 +1806,7 @@ function test170266() {
     var a3 = getStaticTextValue(getPopOrView(), index + 9);
     var a4 = getStaticTextValue(getPopOrView(), index + 10);
 
-    var ret = isAnd(isEqual(getDay(), a), isEqual("000,总经理", a1), isEqual(500,
+    var ret = isAnd(isEqual(getDay(), a), isEqual("002,仓管员", a1), isEqual(500,
             a2), isEqual(100, a3), isEqual(200, a4));
     window.popover().dismiss();
     tapReturn();

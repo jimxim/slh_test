@@ -586,10 +586,6 @@ function test170043() {
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "名称重复"));
     tapPrompt();
 
     // 输入厂商，提示名称重复
@@ -597,10 +593,6 @@ function test170043() {
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    ret = ret && (isIn(alertMsg1, "名称重复"));
     tapPrompt();
 
     var r = "anewkh" + getTimestamp(7);
@@ -618,7 +610,10 @@ function test170043() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    ret = ret && isIn(alertMsg1, "相同手机号已存在");
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var alertMsg3 = getArray1(alertMsgs, -3);
+    var ret = isAnd(isIn(alertMsg1, "相同手机号已存在"), isIn(alertMsg2, "名称重复"), isIn(
+            alertMsg3, "名称重复"));
 
     var o = { "手机" : r1, "店员" : "000,", "适用价格" : "零批价", "地址" : r };
     var fields = editQuickAddCustomerFields(o);
@@ -2743,12 +2738,8 @@ function test170100() {
                 { "货品" : "8989", "数量" : 15 }, { "货品" : "k200", "数量" : 20 },
                 { "货品" : "k300", "数量" : 10 }, { "货品" : "4562", "数量" : 10 },
                 { "货品" : "8989", "数量" : 30 }, { "货品" : "k300", "数量" : 20 },
-                { "货品" : "3035", "数量" : 10 } ], "onlytest" : "yes" };
+                { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
