@@ -18,7 +18,7 @@ function test000All() {
 
 // run("测试用例", "ts100035");
 // run("测试用例", "onlyTest");
- run("测试用例", "checkRightsShopIn");
+ run("测试用例", "ts160048");
 
 
 // run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
@@ -26,11 +26,12 @@ function test000All() {
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
-// debugObject(gCache,"gCache");
+  var qr=getQRDet(); 
+  debugObject(qr.data[0]);
+ debugObject(gCache,"gCache");
   return true;
 }
 

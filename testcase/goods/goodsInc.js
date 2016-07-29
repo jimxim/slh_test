@@ -251,26 +251,18 @@ function getElements(view) {
  * @param view
  * @returns {QResult}
  */
-function getQRDet(view) {
+function getQRDet(view, o) {
     if (isUndefined(view)) {
         view = getScrollView(-1);
     }
-
-    var texts = getStaticTexts(window);
-    var title1 = "图";
-    var qrTitle1 = getQResultTitle(texts, title1);// 找不到为0
-    if (qrTitle1.index <= 0) {
-        title1 = "#";
-        qrTitle1 = getQResultTitle(texts, title1);
-    }
-    var title2 = "操作";
-    var qrTitle2 = getQResultTitle(texts, title2);
-    var titles = [];
-    for (var i = qrTitle1.index + 1; i < qrTitle2.index; i++) {
-        titles.push(texts[i].value());
+    var titles = {};
+    if (isDefined(o)&&o.hasOwnProperty("标题")) {
+        titles = o["标题"]
+    } else {
+        titles = getSalesBillDetTfObject();
     }
 
-    var tfNum = getSalesBillDetTfNum({});
+    var tfNum = titles["明细输入框个数"];
     var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
 
     var data = [];
@@ -286,8 +278,13 @@ function getQRDet(view) {
                 if (w < 5) {
                     ignore++;
                 } else {
-                    var t = titles[i - ignore];
-                    data1[t] = v;
+                    var num = i - ignore;
+                    for ( var t in titles) {
+                        if (titles[t] == num) {
+                            data1[t] = v;
+                            break;
+                        }
+                    }
                 }
             }
             data.push(data1);

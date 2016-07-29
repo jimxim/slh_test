@@ -78,12 +78,11 @@ function testSalesOrder002() {
 
 function ts160048() {
     tapMenu("销售订货", "新增订货+");
-    var jo = { "客户" : "xw", "onlytest" : "yes" };
+    var jo = { "客户" : "xw" };// ,"onlytest":"yes"
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
-    var data1 = getQRDet().data;
-    editSalesBillSave({});
+    var data1 = json["明细值"].data;
 
     // 保存前已发为空，保存点击进入明细后已发变成0
     for (var i = 0; i < data1.length; i++) {
