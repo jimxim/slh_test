@@ -4043,15 +4043,16 @@ function test170651() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapReturn();
+    delay();
+    tapButton(window, RETURN);
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 20 ] } ],
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ],
         "goodsFieldIndex" : -2 };
     editSalesBillColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 0, 10 ] } ] };
     editSalesBillColorSize(json);
 
     qo = { "备注" : "是否允许负库存" };
@@ -4059,7 +4060,7 @@ function test170651() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "花色", "尺码" : "M" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4067,7 +4068,7 @@ function test170651() {
 
     var qKeys = [ "尺码" ];
     var qFields = queryGoodsStockFields(qKeys);
-    changeTFieldValue(qFields["尺码"], "M");
+    changeTFieldValue(qFields["尺码"], "S");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -4075,7 +4076,7 @@ function test170651() {
     var ret1 = isAnd(isEqual("-10", k), isEqual(20, k1));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 0, 1 ] } ],
         "onlytets" : "ye" };
     editSalesBillColorSize(json);
 
@@ -4091,7 +4092,7 @@ function test170651() {
     qr = getQR();
     var kc1 = qr.data[0]["库存"];
 
-    changeTFieldValue(qFields["尺码"], "S");
+    changeTFieldValue(qFields["尺码"], "M");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -4099,7 +4100,7 @@ function test170651() {
     ret1 = isAnd(ret1, isEqual("-11", kc), isEqual(20, kc1));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ],
+    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : [ 0, 1 ] } ],
         "goodsFieldIndex" : -2 };
     editSalesBillColorSize(json);
 
@@ -4118,7 +4119,7 @@ function test170651() {
     qr = getQR();
     var kc2 = qr.data[0]["库存"];
 
-    changeTFieldValue(qFields["尺码"], "M");
+    changeTFieldValue(qFields["尺码"], "S");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -4126,7 +4127,7 @@ function test170651() {
     ret3 = isAnd(ret3, isEqual("-12", kc2), isEqual(20, kc3));
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ -1 ] } ],
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, -1 ] } ],
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
@@ -4143,7 +4144,7 @@ function test170651() {
     qr = getQR();
     var kc5 = qr.data[0]["库存"];
 
-    changeTFieldValue(qFields["尺码"], "S");
+    changeTFieldValue(qFields["尺码"], "M");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -4151,7 +4152,7 @@ function test170651() {
     ret4 = isAnd(ret4, isEqual("-13", kc4), isEqual(20, kc5));
 
     tapMenu("门店调出", "批量调出+");
-    var json = { "客户" : "000", "明细" : [ { "货品" : r, "数量" : [ 2 ] } ],
+    var json = { "客户" : "000", "明细" : [ { "货品" : r, "数量" : [ 0, 2 ] } ],
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
@@ -4169,7 +4170,7 @@ function test170651() {
     qr = getQR();
     var kc6 = qr.data[0]["库存"];
 
-    changeTFieldValue(qFields["尺码"], "M");
+    changeTFieldValue(qFields["尺码"], "S");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
@@ -4213,7 +4214,7 @@ function test170652() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();

@@ -1095,9 +1095,9 @@ function test180033() {
 
     var batch = qr.data[0]["批次"];
     var shop = qr.data[0]["门店"];
-    // var opStaff = qr.data[0]["操作人"];
+    var opStaff = qr.data[0]["处理人"];
     var ckTime = qr.data[0]["盘点日期"];
-    // var opTime = qr.data[0]["操作日期"];
+    var opTime = qr.data[0]["处理时间"];
     var tip = qr.data[0]["备注"];
 
     tapMenu("盘点管理", "处理记录");
@@ -1112,9 +1112,8 @@ function test180033() {
 
     var ret2 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(ckTime,
             qr.data[0]["盘点日期"]), isEqual(shop, qr.data[0]["门店"]), isEqual(tip,
-            qr.data[0]["备注"]));
-    // , isEqual(opStaff, qr.data[0]["操作人"]),
-    // isAqualOptime(opTime,qr.data[0]["操作日期"], 2)
+            qr.data[0]["备注"]), isEqual(opStaff, qr.data[0]["处理人"]),
+            isAqualOptime(opTime, qr.data[0]["处理时间"], 2));
 
     tapMenu("盘点管理", "盈亏表");
     var keys = { "门店" : [ "常青店", "in" ], "日期从" : "2015-01-01",
@@ -1134,23 +1133,27 @@ function test180033() {
     query(fields);
 
     tapButton(window, "盘点撤销");
-    var ret = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
 
     tapButton(getScrollView(), 0);
     tapButton(getScrollView(), 1);
     tapButton(window, "盘点撤销");
-    var ret1 = isIn(alertMsg, "请点击[处理记录]并选择一条记录");
 
     tapButton(getScrollView(), 0);
     tapButton(window, "盘点撤销");
-    ret1 = isAnd(ret1, isIn(alertMsg, "只能撤销最近一次盘点处理"));
 
     var cond = "isIn(alertMsg, '只能撤销最近一次盘点处理')";
     waitUntil(cond, 5);
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var alertMsg3 = getArray1(alertMsgs, -3);
+
+    var ret = isAnd(isIn(alertMsg3, "请点击[处理记录]并选择一条记录"), isIn(alertMsg2,
+            "请点击[处理记录]并选择一条记录"), isIn(alertMsg1, "只能撤销最近一次盘点处理"));
+
+    logDebug(" ret=" + ret + ", ret2=" + ret2 + ", ret3=" + ret3);
+    return ret && ret2 && ret3;
 }
 function test180037() {
     // 为了数据的多样性和复杂性，跑这部分用例之前需要造一些数据

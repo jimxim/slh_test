@@ -1940,7 +1940,7 @@ function test170269() {
 
     tapMenu("货品管理", "新增货品+");
     var r = "anewK269" + getTimestamp(4);
-    var keys = { "款号" : r, "名称" : r, "进货价" : 100 }
+    var keys = { "款号" : r, "名称" : r, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1953,7 +1953,7 @@ function test170269() {
 
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : s, "名称" : s, "进货价" : 200 }
+    var keys = { "款号" : s, "名称" : s, "进货价" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1966,7 +1966,7 @@ function test170269() {
 
     tapMenu("货品管理", "新增货品+");
     var q = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : q, "名称" : q, "进货价" : 200 }
+    var keys = { "款号" : q, "名称" : q, "进货价" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -3262,8 +3262,7 @@ function test170303() {
     var num = getTextFieldValue(window, remitTFindex - 2);
     saveAndAlertOk();
     tapPrompt();
-    delay();
-    tapButton(window, Button);
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -3943,7 +3942,7 @@ function test170313() {
     query(fields);
     qr = getQR();
     var xj2 = qr.counts["小计"];
-    var ret1 = isAnd(isEqual(add(totalReturn, totalReturn1), -add(sl, sl1)),
+    var ret1 = isAnd(isAqualNum(add(totalReturn, totalReturn1), -add(sl, sl1)),
             isAqualNum(Number(add(totalMoney, totalMoney1)), Number(-sub(add(
                     xj, xj1), xj2))));
 
