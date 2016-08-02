@@ -423,3 +423,30 @@ function editSystemAccountField(key, show) {
     }
     return f;
 }
+// 新增账户
+function editSystemAccountAddFields(keys, show) {
+    return getTFields("editSystemAccountAddField", keys, show);
+}
+function editSystemAccountAddField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "账户全称":
+        f = new TField("账户全称", TF, 0, "");
+        break;
+    case "账户简称":
+        f = new TField("账户简称", TF, 1, "常青店");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", BTN_SC, 0, "常青店");
+        break;
+    case "card/remit":
+    case "刷卡/汇款":
+        f = new TField("门店", BTN_SC, 1, "通用");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}

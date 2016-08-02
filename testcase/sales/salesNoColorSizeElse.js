@@ -1836,7 +1836,7 @@ function test170267() {
     return ret;
 }
 function test170268() {
-    // (关闭参数异地发货仓库)，设置全局参数 按订货开单是否按当前库存自动填写发货数 为 自动填写 ,然后重新登录
+    // (关闭参数异地发货仓库)，设置全局参数 按订货开单是否按当前库存自动填写发货数为自动填写 ,然后重新登录
     var qo, o, ret = true;
     qo = { "备注" : "发货数" };
     o = { "新值" : "1", "数值" : [ "自动填写", "in" ] };
@@ -1848,11 +1848,11 @@ function test170268() {
 
     tapMenu("货品管理", "新增货品+");
     var r = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : r, "名称" : r, "进货价" : 100 }
+    var keys = { "款号" : r, "名称" : r, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -1861,11 +1861,11 @@ function test170268() {
 
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : s, "名称" : s, "进货价" : "200" }
+    var keys = { "款号" : s, "名称" : s, "进货价" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -1874,11 +1874,11 @@ function test170268() {
 
     tapMenu("货品管理", "新增货品+");
     var q = "anewkhao" + getTimestamp(4);
-    var keys = { "款号" : q, "名称" : q, "进货价" : 300 }
+    var keys = { "款号" : q, "名称" : q, "进货价" : 300 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -1944,7 +1944,7 @@ function test170269() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -1957,7 +1957,7 @@ function test170269() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");

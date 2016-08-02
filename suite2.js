@@ -11,14 +11,6 @@ function test000All() {
     debug = true;
     ipadVer ="7.21"; // "6.59";// 7.13// 7.21
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");//
-    run("【销售开单-开单】1.2窜码发货，修改时超过总库存时", "test170652");
-//    run("【销售开单-开单】1.3窜码发货，开单时超过总库存时", "test170653");
-//    run("【销售开单-开单】2.1窜码发货，库存总数为正", "test170654");
-//    run("【销售开单-开单】2.2窜码发货，开单时超过总库存时", "test170655");
-//    run("【销售开单-开单】3.窜码发货，库存总数为0", "test170656");
-//    run("【销售开单-开单】4.窜码发货，库存总数为负", "test170657");
-//    run("【销售开单-开单】5.窜码发货，不计算其他门店的数据", "test170658");
-//    run("【销售开单-开单】7.窜码发货，允许修改采购进货单的数量", "test170660");
 // run("", "test0");
 }
 function test0(){
@@ -27,15 +19,6 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    var r = "anewCuanMa" + getTimestamp(6);
-    tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
-        "吊牌价" : 200, "进货价" : 100 };
-    var fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-//    delay();
-    tapButton(window,RETURN);
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
