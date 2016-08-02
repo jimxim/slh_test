@@ -327,8 +327,8 @@ function checkRightsCustomer() {
 
     tapMenu2("厂商查询");
     tapButton(window, QUERY);
-    arr = [ "手机" ];// "名称",
-    f = queryCustomerProviderFields([ "厂商", "手机" ]);
+    arr = [];// "名称", "手机"
+    f = queryCustomerProviderFields([ "厂商" ]);// , "手机" ,厂商和物流商不控制手机
     ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
     tapMenu2("厂商账款");

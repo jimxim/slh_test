@@ -392,3 +392,62 @@ function setSPCParams(key1, key2) {
     ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
 }
+
+// SLH_8953
+// 情况一：款号库存全为负数
+// 情况二：款号库存为正数和负数
+// 情况三：库存为0（新增的款号就订货）
+// 情况四：库存为0和正库存
+// 情况五：库存为0和负库存
+// 情况六：负库存、0、正库存
+// 情况七：特殊货品
+// 1.普通模式，未绑定仓库也未开启异地发货
+// 2.开启异地仓库，门店绑定仓库
+// 3.异地发货
+// 备注：2,3需注意取的是开单门店的库存还是发货门店的库存
+function setSales_fillnum_byinvnum_0() {
+    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
+    var o = { "新值" : "0", "数值" : [ "默认不填写", "in" ] };
+    return setGlobalParam(qo, o);
+}
+function setSales_fillnum_byinvnum_1() {
+    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
+    var o = { "新值" : "1", "数值" : [ "自动填写", "in" ] };
+    return setGlobalParam(qo, o);
+}
+function testSLH_8953() {
+    var keys = addGoodsSimple();
+    var code1 = keys["款号"];// 负库存
+
+    keys = addGoodsSimple();
+    code2 = keys["款号"];// 0库存
+
+    keys = addGoodsSimple();
+    code3 = keys["款号"];// 正库存
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : code1, "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : code3, "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "明细" : [ { "货品" : code1, "数量" : [ 10 ] },
+                { "货品" : code2, "数量" : [ 10 ] },
+                { "货品" : code3, "数量" : [ 10 ] } ] };
+    editSalesBill(json, colorSize);
+    
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var det=getQRDet();
+    tapReturn();
+}
+
+function testSLH_8953Field() {
+
+}

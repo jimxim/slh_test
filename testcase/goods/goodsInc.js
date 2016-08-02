@@ -218,6 +218,7 @@ function getCounts(cond) {
     }
     return sum;
 }
+
 /**
  * 获取开单界面window视图中的值,标题与文本框必须一一对应
  * @param firstTitle 起始标题
@@ -256,8 +257,8 @@ function getQRDet(view, o) {
         view = getScrollView(-1);
     }
     var titles = {};
-    if (isDefined(o)&&o.hasOwnProperty("标题")) {
-        titles = o["标题"]
+    if (isDefined(o) && o.hasOwnProperty("标题")) {
+        titles = o["标题"];
     } else {
         titles = getSalesBillDetTfObject();
     }
@@ -266,7 +267,7 @@ function getQRDet(view, o) {
     var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
 
     var data = [];
-    texts = getTextFields(view);
+    var texts = getTextFields(view);
     for (var j = 0; j < line.length; j++) {
         if (texts[tfNum * j].value() != "") {
             var data1 = {};
@@ -459,6 +460,48 @@ function getSalesBillDetTfObject(idx) {
     return ret;
 }
 
+function getSalesOrderDistributeDet() {
+    var viewSize = getScrollView(-2); // 尺码所在视图
+    var texts = getStaticTexts(viewSize);
+    var textColorX = texts[0].rect().origin.x; // 颜色所在列坐标x
+    var oSize = {};
+    for (var i = 1; i < texts.length; i++) {
+        oSize[texts[i].name()] = texts[i].rect().origin.x;//
+    }
+
+    var view1 = getScrollView(-1); // 颜色明细所在视图
+    texts = getStaticTexts(view1);
+    var oColor = {}; // 先找到颜色及坐标Y
+    for (var i = 0; i < texts.length; i++) {
+        var txt = texts[i];
+        if (Math.abs(textColorX - txt.rect().origin.x) < 2) {
+            oColor[txt.name()] = texts[i].rect().origin.y;//
+        }
+    }
+
+    var oStock = {}, key;
+    texts = getTextFields(view1);
+    for (var i = 0; i < texts.length; i++) {
+        var txt = texts[i];
+        var x = txt.rect().origin.x;
+        var y = txt.rect().origin.y;
+        var size = getKeyByXy(oSize, x);
+        var color = getKeyByXy(oColor, y);
+
+        if (isDefined(size) && isDefined(color)) {
+            key = color + "-" + size;
+            var a1 = oStock[key];
+            if (isUndefined(a1)) {
+                a1 = [];
+            }
+            a1.push(txt.value());
+            oStock[key] = a1;
+        }
+    }
+    debugObject(oStock);
+
+    return oStock;
+}
 /**
  * 点击导航栏左按钮，防止用例出错卡界面
  * @param max 最大尝试次数
