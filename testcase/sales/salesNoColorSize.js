@@ -1693,23 +1693,19 @@ function test170070() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 5 } ],
-        "特殊货品" : { "抹零" : 100 }, "未付" : "yes", "代收" : "是", "onlytest" : "yes" };
+        "特殊货品" : { "抹零" : 100 }, "未付" : "yes", "代收" : "是" };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
-    var money = qr.data[0]["小计"];
-    var money1 = qr.data[1]["小计"];
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var qr = json["输入框值"];
+    var totalMoney = qr["总计"];
 
     tapMenu("销售开单", "按批次查");
     query();
     qr = getQR();
-    ret = isAnd(ret, isEqual(add(money, money1), qr.data[0]["金额"]), isEqual(
-            -1400, qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收标记"]));
+    ret = isAnd(ret, isEqual(totalMoney, qr.data[0]["金额"]), isEqual(-1400,
+            qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收标记"]));
 
+    logDebug(" ret=" + ret + ", totalMoney=" + totalMoney);
     return ret;
 }
 function test170071() {
@@ -2054,7 +2050,7 @@ function test170078() {
 
     var qr1 = json["输入框值"];
     var ret1 = isAnd(isAqualNum(totalMoney, qr1["现金"]), isAqualNum(totalMoney,
-            qr1["应付"]));
+            qr1["应"]));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2153,12 +2149,12 @@ function test170080_170084() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 1 } ],
-        "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
+        "特殊货品" : { "抹零" : 19 } };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
-    var k3 = getTextFieldValue(window, 3);
-    var k7 = getTextFieldValue(window, 7);
+    var qr = json["明细值"];
+    var qr1 = json["输入框值"];
+    var k3 = qr1["应"];
     var num = qr.data[0]["数量"];
     var price = qr.data[0]["单价"];
     var zk = qr.data[0]["折扣"];
@@ -2167,18 +2163,12 @@ function test170080_170084() {
     ret = isAnd(ret, isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
             totalMoney, k3));
 
-    saveAndAlertOk();
-    tapPrompt();
-    // var alertMsg1 = getArray1(alertMsgs, -1);
-    // var ret1 = isIn(alertMsg1, "保存成功");&& ret1+ ", ret1=" + ret1
-    tapReturn();
-
     tapMenu("销售开单", "按批次查");
     query();
     qr = getQR();
     var ret2 = isAnd(isEqual(totalMoney, qr.data[0]["金额"]), isEqual("李四",
-            qr.data[0]["客户"]), isEqual(sub(k7, k3), qr.data[0]["未结"]),
-            isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
+            qr.data[0]["客户"]), isEqual(0, qr.data[0]["未结"]), isAqualOptime(
+            getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ],
@@ -2232,7 +2222,7 @@ function test170085() {
 
     var qr1 = json["输入框值"];
     var k2 = qr1["现金"];
-    var k3 = qr1["应付"];
+    var k3 = qr1["应"];
     var ret1 = isAnd(isEqual(k3, k2), isAqualNum(totalMoney, k2));
 
     var alertMsg1 = getArray1(alertMsgs, -1);
@@ -2257,7 +2247,7 @@ function test170085() {
 
     qr1 = json["输入框值"];
     k2 = qr1["现金"];
-    k3 = qr1["应付"];
+    k3 = qr1["应"];
     var ret1 = isAnd(isEqual(k3, k2), isAqualNum(totalMoney1, k2));
 
     tapMenu("销售开单", "按订货开单");
@@ -3974,7 +3964,6 @@ function test170139_1() {
 
     tapMenu("销售开单", "按批次查");
     query();
-
     tapFirstText();
     tapButton(window, "复 制");
 
@@ -3986,8 +3975,9 @@ function test170139_1() {
     var k1 = qr.data[0]["颜色"];
     var k2 = qr.data[0]["尺码"];
     var k3 = qr.data[0]["数量"];
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
     var f0 = getTextFieldValue(window, 0);
-    var f5 = getTextFieldValue(window, 4);
+    var f5 = getTextFieldValue(window, staffTFindex);
 
     saveAndAlertOk();
     tapPrompt();
@@ -4030,40 +4020,35 @@ function test170139_2() {
     addGoods(keys, colorSize);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 3, "备注" : "mxbz" } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 3, "备注" : "mxbz" } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
+    var qr = json["明细值"];
+    var qr1 = json["输入框值"];
     var ret1 = isAqualNum(r1, qr.data[0]["折扣"]);
-
-    var k3 = getTextFieldValue(window, 3);
-
+    var k3 = qr1["应"];
     saveAndAlertOk();
     tapPrompt();
 
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret2 = isIn(alertMsg1, "保存成功");
-
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
-
     tapFirstText();
-
     tapButton(window, "复 制");
 
     tapMenu("销售开单", "开  单+");
     tapButton(window, "粘 贴");
-
     qr = getQRDet();
     var k0 = qr.data[0]["货品"];
     var k1 = qr.data[0]["颜色"];
     var k2 = qr.data[0]["尺码"];
     var k3 = qr.data[0]["数量"];
     var f0 = getTextFieldValue(window, 0);
-    var f5 = getTextFieldValue(window, 4);
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var f5 = getTextFieldValue(window, staffTFindex);
 
     saveAndAlertOk();
     tapPrompt();
@@ -4075,14 +4060,14 @@ function test170139_2() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-
     qr = getQRDet();
+    var dateTFindex = getEditSalesTFindex2("客户", "日期");
     var ret4 = isAnd(isIn(qr.data[0]["货品"], r),
             isEqual("均色", qr.data[0]["颜色"]), isEqual("均码", qr.data[0]["尺码"]),
             isEqual(3, qr.data[0]["数量"]), isAqualNum(r1, qr.data[0]["折扣"]),
             isEqual("mxbz", qr.data[0]["备注"]), isEqual("李四", f0), isIn(f5,
-                    "总经理"), isEqual(getToday(), getTextFieldValue(window, 8)));
-
+                    "总经理"), isEqual(getToday(), getTextFieldValue(window,
+                    dateTFindex)));
     tapReturn();
 
     qo = { "备注" : "开单模式" };
@@ -4132,8 +4117,9 @@ function test170139_3() {
     var k1 = qr.data[0]["颜色"];
     var k2 = qr.data[0]["尺码"];
     var k3 = qr.data[0]["数量"];
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
     var f0 = getTextFieldValue(window, 0);
-    var f5 = getTextFieldValue(window, 5);
+    var f5 = getTextFieldValue(window, staffTFindex);
 
     saveAndAlertOk();
     tapPrompt();
@@ -4145,11 +4131,12 @@ function test170139_3() {
     tapButton(window, QUERY);
     tapFirstText();
     qr = getQRDet();
+    var dateTFindex = getEditSalesTFindex2("客户", "日期");
     var ret4 = isAnd(isIn(qr.data[0]["货品"], "8989"), isEqual("均色",
             qr.data[0]["颜色"]), isEqual("均码", qr.data[0]["尺码"]), isEqual(4,
             qr.data[0]["数量"]), isAqualNum(r1, qr.data[0]["折扣"]), isEqual(
             "mxbz", qr.data[0]["备注"]), isEqual(r, f0), isIn(f5, "总经理"),
-            isEqual(getToday(), getTextFieldValue(window, 9)));
+            isEqual(getToday(), getTextFieldValue(window, dateTFindex)));
     tapReturn();
 
     qo = { "备注" : "开单模式" };
@@ -5211,13 +5198,13 @@ function test170191() {
     addCustomer(keys);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
-    var k3 = getTextFieldValue(window, 3);
-    var k12 = getTextFieldValue(window, 11);
+    var qr = json["明细值"];
+    var qr1 = json["输入框值"];
+    var k3 = qr1["应"];
+    var k12 = qr1["总计"];
     var money = Math.round(qr.data[0]["小计"]);
 
     var ret1 = isAnd(isEqual(k3, k12), isEqual(k12, money), isEqual(0.899,
@@ -11055,13 +11042,15 @@ function test170631() {
 
     query();
     tapFirstText();
-    ret = isAnd(ret, isIn(getTextFieldValue(window, 8), "店长004"));
+    var matchTFindex = getEditSalesTFindex2("客户", "刷卡");
+    ret = isAnd(ret, isIn(getTextFieldValue(window, matchTFindex), "店长004"));
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var ret1 = isIn(getTextFieldValue(window, 9), "店长004");
+    cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var ret1 = isIn(getTextFieldValue(window, cardTFindex + 1), "店长004");
 
     saveAndAlertOk();
     tapPrompt();
@@ -11070,7 +11059,8 @@ function test170631() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var ret2 = isIn(getTextFieldValue(window, 8), "店长004");
+    matchTFindex = getEditSalesTFindex2("客户", "配货");
+    var ret2 = isIn(getTextFieldValue(window, matchTFindex), "店长004");
     tapReturn();
 
     tapMenu("销售开单", "按汇总", "按配货员汇总");
@@ -11121,7 +11111,8 @@ function test170632_170633() {
 
     query();
     tapFirstText();
-    ret = isAnd(ret, isIn(getTextFieldValue(window, 8), "店长004"));
+    cardTFindex = getEditSalesTFindex2("客户", "刷卡");
+    ret = isAnd(ret, isIn(getTextFieldValue(window, cardTFindex + 1), "店长004"));
     tapReturn();
 
     tapMenu("销售开单", "按汇总", "按配货员汇总");
@@ -11426,10 +11417,13 @@ function test170672() {
     tapFirstText();
     var qr = getQRDet();
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var logistTFindex = getEditSalesTFindex2("客户", "代收");
     ret = isAnd(ret, isIn(qr.data[0]["货品"], "3035"), isEqual(7,
             qr.data[0]["数量"]), isEqual(15, getTextFieldValue(window,
-            remitTFindex - 2)), isEqual("常青店", getTextFieldValue(window, 6)),
-            isEqual(50, getTextFieldValue(window, 9)));
+            remitTFindex - 2)), isEqual("常青店", getTextFieldValue(window,
+            staffTFindex + 1)), isEqual(50, getTextFieldValue(window,
+            logistTFindex)));
 
     tapStaticText(window, "代收");
     ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(r,
@@ -11473,10 +11467,13 @@ function test170672() {
     tapFirstText();
     qr = getQRDet();
     remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    staffTFindex = getEditSalesTFindex2("客户", "店员");
+    logistTFindex = getEditSalesTFindex2("客户", "代收");
     ret2 = isAnd(ret2, isIn(qr.data[0]["货品"], "3035"), isEqual(10,
             qr.data[0]["数量"]), isEqual(16, getTextFieldValue(window,
-            remitTFindex - 2)), isEqual("仓库店", getTextFieldValue(window, 6)),
-            isEqual(50, getTextFieldValue(window, 9)));
+            remitTFindex - 2)), isEqual("仓库店", getTextFieldValue(window,
+            staffTFindex + 1)), isEqual(50, getTextFieldValue(window,
+            logistTFindex)));
 
     tapStaticText(window, "代收");
     ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
@@ -11601,9 +11598,12 @@ function test170674_170675() {
 
     tapFirstText();
     var qr = getQRDet();
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var logistTFindex = getEditSalesTFindex2("客户", "代收");
     ret = isAnd(ret, isIn(qr.data[0]["货品"], "3035"), isEqual(7,
-            qr.data[0]["数量"])), isEqual("常青店", getTextFieldValue(window, 6)),
-            isEqual(3500, getTextFieldValue(window, 9));
+            qr.data[0]["数量"])), isEqual("常青店", getTextFieldValue(window,
+            staffTFindex + 1)), isEqual(3500, getTextFieldValue(window,
+            logistTFindex));
 
     tapStaticText(window, "代收");
     ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(r,
@@ -11633,9 +11633,12 @@ function test170674_170675() {
 
     tapFirstText();
     qr = getQRDet();
+    staffTFindex = getEditSalesTFindex2("客户", "店员");
+    logistTFindex = getEditSalesTFindex2("客户", "代收");
     var ret2 = isAnd(isIn(qr.data[0]["货品"], "3035"), isEqual(10,
-            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window, 6)),
-            isEqual(5500, getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window,
+            staffTFindex + 1)), isEqual(5500, getTextFieldValue(window,
+            logistTFindex)));
 
     tapStaticText(window, "代收");
     ret2 = isAnd(ret2, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
@@ -11655,9 +11658,12 @@ function test170674_170675() {
             qr.data[0]["实收"]), isEqual(5500, qr.data[0]["代收"]));
     tapFirstText();
     qr = getQRDet();
+    staffTFindex = getEditSalesTFindex2("客户", "店员");
+    logistTFindex = getEditSalesTFindex2("客户", "代收");
     var ret4 = isAnd(isIn(qr.data[0]["货品"], "3035"), isEqual(10,
-            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window, 6)),
-            isEqual(5500, getTextFieldValue(window, 9)));
+            qr.data[0]["数量"]), isEqual("仓库店", getTextFieldValue(window,
+            staffTFindex + 1)), isEqual(5500, getTextFieldValue(window,
+            logistTFindex)));
 
     tapStaticText(window, "代收");
     ret4 = isAnd(ret4, isEqual("天天物流", getTextFieldValue(window, -4)), isEqual(
@@ -11732,9 +11738,12 @@ function test170676() {
     delay(2);
 
     qr = getQRDet();
-    ret = isAnd(ret, isEqual("中洲店", getTextFieldValue(window, 6)), isEqual(
-            5000, getTextFieldValue(window, 9)),
-            isIn(qr.data[0]["货品"], "3035"), isEqual(10, qr.data[0]["数量"]));
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var logistTFindex = getEditSalesTFindex2("客户", "代收");
+    ret = isAnd(ret,
+            isEqual("中洲店", getTextFieldValue(window, staffTFindex + 1)),
+            isEqual(5000, getTextFieldValue(window, logistTFindex)), isIn(
+                    qr.data[0]["货品"], "3035"), isEqual(10, qr.data[0]["数量"]));
 
     tapStaticText(window, "代收");
     var texts = getStaticTexts(window);
