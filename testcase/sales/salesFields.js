@@ -817,6 +817,10 @@ function editSalesBillField(key, show) {
     case "刷卡":
         f = new TField("刷卡", TF, cardTFindex, 0, "NoNeedReturn"); // 7
         break;
+    case "配货":
+        var index = getEditSalesTFindex2("客户,厂商", "配货");
+        f = new TField("配货", TF_AC, index, "000", -1,0); 
+        break;
     case "day":
     case "日期":
         f = new TField("日期", TF_DT, cardTFindex + 2, getToday()); // 9

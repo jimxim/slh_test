@@ -75,7 +75,11 @@ function addGoodsStockAdjustment(r) {
     runAndAlert("test100090Field", OK);
     tapNaviLeftButton();
 }
-
+/**
+ * 新增物流核销单
+ * @param o
+ * @returns
+ */
 function addLogisticsVerify(o) {
     tapMenu("销售开单", LogisticsVerify);
     logisticsVerifySetField(o, "物流");
@@ -459,7 +463,9 @@ function getSalesBillDetTfObject(idx) {
 
     return ret;
 }
-
+/**
+ * 获取按订货配货明细
+ */
 function getSalesOrderDistributeDet() {
     var viewSize = getScrollView(-2); // 尺码所在视图
     var texts = getStaticTexts(viewSize);
@@ -608,6 +614,51 @@ function checkChinese(str) {
 function checkDate(str) {
     var reg = new RegExp("^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$");
     return reg.test(str);
+}
+
+/**
+ * 模糊查询验证
+ * @param f
+ * @param title1
+ * @param title2 比如款号名称对应款号/名称，2个符合一个就可以
+ * @returns {Boolean}
+ */
+function checkFuzzyQuery(f, title1, title2) {
+    var fields = [ f ];
+    query(fields);
+    var qr = getQR();
+    var ret;
+    var v = String(f.value);
+    var a = CC2PY(v).toUpperCase();// 中文转拼音
+
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            var v1 = qr.data[i][title1];
+            var b = CC2PY(v1).toUpperCase();
+            ret = b.indexOf(a) != -1;
+            if (!ret && isDefined(title2)) {
+                v1 = qr.data[i][title2];
+                b = CC2PY(v1).toUpperCase();
+                ret = b.indexOf(a) != -1;
+            }
+            if (!ret) {
+                logDebug("模糊查询验证 isIn b=" + v1 + "  a=" + a + "  ret=" + ret);
+                break;
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapButton(window, CLEAR);
+    return ret;
+}
+function testCheckFuzzyQuery() {
+    tapMenu("货品管理", "当前库存");
+    var f = new TField("款号名称", TF, 1, "货品");
+    return checkFuzzyQuery(f, "款号", "名称");
 }
 
 /**
@@ -1331,56 +1382,6 @@ function isEqualDropDownList(expected, view1) {
     }
     target.frontMostApp().mainWindow().popover().dismiss();
     return ret;
-}
-
-/**
- * 模糊查询验证
- * @param index 静态文本下标
- * @param title
- * @param value 输入值
- * @param title1 查询条件为款号名称时，对应标题为款号或名称，2个标题符合一个就可
- */
-function fuzzyQueryCheckField(index, title, value, title1) {
-    var f = new TField("名称", TF, index, value);
-    var fields = [ f ];
-    query(fields);
-    var qr = getQR();
-    var ret1 = true, ret2 = true;
-    var isABC = checkABC(value);
-    var value1 = value.toUpperCase();
-
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            var str = qr.data[i][title];
-            if (isABC && checkChinese(str)) {
-                logDebug("第" + j + "页,第" + i + "行,内容为" + str + ",字母转汉字搞不定,跳过判断")
-            } else {
-                if (!isIn(str, value) && !isIn(str, value1)) {
-                    ret1 = false;
-                }
-                if (!ret1 && isDefined(title1)) {
-                    if (!isIn(str, value) && !isIn(str, value1)) {
-                        ret2 = false;
-                    }
-                    if (ret2) {
-                        ret1 = true;
-                    }
-                }
-            }
-            if (!ret1) {
-                logDebug("错误页码j=" + j + "  错误序号i=" + i + "  isIn b=" + str
-                        + " a=" + value);
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-
-    tapButton(window, CLEAR);
-    return ret1;
 }
 
 function logisticsVerifySetField(o, key) {

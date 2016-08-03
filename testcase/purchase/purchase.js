@@ -2381,15 +2381,13 @@ function test120079() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-
     json = { "客户" : "tbscs" };// 特步生产商 适用价格零批价
     editSalesBillCustomer(json);
     tapButtonAndAlert("none", "刷新价格");// 注:采购入库和采购订货界面不会出现价格刷新窗口
     // 刷新后应该依然为进货价100
-    ret = isAnd(ret, isEqual(100, getTextFieldValue(getScrollView(), 4)),
-            isEqual(getTextFieldValue(getScrollView(), 5), getTextFieldValue(
-                    getScrollView(), 3)
-                    * getTextFieldValue(getScrollView(), 4)));
+    var data = getQRDet().data[0];
+    ret = isAnd(ret, isEqual(100, data["单价"]), isEqual(data["小计"], data["数量"]
+            * data["单价"]));
     tapReturn();
 
     return ret;
@@ -3460,6 +3458,7 @@ function ts120108() {
         var json = { "入库明细" : [ { "数量" : r } ] };
         editPurInByOrderDet(json);
         editSalesBillSave({});
+        delay();
     }
 
     return !isInAlertMsgs("only run on the main thread");

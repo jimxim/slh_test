@@ -894,18 +894,18 @@ function ts130010() {
 }
 
 function ts130011() {
-    tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell" };
-    var det = addPOrderBillDet();
-    var json = mixObject(jo, det);
-    editSalesBill(json, colorSize);
-
+    var p1 = "lx", p2 = "vell";
     tapMenu("采购订货", "按批次查");
     query();
     tapFirstText();
-    json = { "客户" : "lx", "不返回" : "yes" };
+    var v = getTextFieldValue(window, 0);
+    if (v == p1) {
+        p1 = p2;
+    }
+    json = { "客户" : p1, "不返回" : "yes" };
     editSalesBill(json, colorSize);
     var ret = isInAlertMsgs("客户或供应商信息不允许修改");
+    delay();
 
     tapButton(window, CLEAR);
     saveAndAlertOk();

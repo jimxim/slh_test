@@ -278,8 +278,8 @@ function testGoods002() {
     run("【 货品管理-基本设置 】停用价格名称", "ts100144");
 
     // 开单模式5
-    // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
-    // "test10_fuzzyQueryAndDropDownListCheck");
+    run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
+            "test10_fuzzyQueryAndDropDownListCheck");
     run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
     run("开单模式2", "setPaymethod2");
 }
@@ -659,22 +659,23 @@ function test10_fuzzyQueryAndDropDownListCheck() {
     var ok = setGlobalParam(qo, o);
     if (ok) {
         tapMenu("货品管理", "当前库存");
-        var ret1 = isAnd(dropDownListCheck(0, "456",
-                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号",
-                "3", "名称"));
+        var f = new TField("款号名称", TF, 1, "3035");
+        var expected = "4562Story200元0.91010pp";//去除了空格逗号
+        var ret1 = isAnd(dropDownListCheck(0, "456", expected),
+                checkFuzzyQuery(f, "款号", "名称"));
 
         tapMenu("货品管理", "款号库存");
-        var ret2 = isAnd(dropDownListCheck(0, "456",
-                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(1, "款号",
-                "3", "名称"));
+        var ret2 = isAnd(dropDownListCheck(0, "456", expected),
+                checkFuzzyQuery(f, "款号", "名称"));
 
         tapMenu("货品管理", "货品进销存");
-        var ret3 = isAnd(dropDownListCheck(1, "456",
-                "4562,Story,200元,0.9,1010pp"), fuzzyQueryCheckField(2, "款号",
-                "3", "名称"));
+        f.index = 2;
+        var ret3 = isAnd(dropDownListCheck(1, "456", expected),
+                checkFuzzyQuery(f, "款号", "名称"));
 
         tapMenu("货品管理", "货品查询");
-        var ret4 = fuzzyQueryCheckField(1, "款号", "z", "名称");
+        f.index = 1;
+        var ret4 = checkFuzzyQuery(f, "款号", "名称");
     }
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };

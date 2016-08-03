@@ -4,7 +4,7 @@
  * 常青店总经理验证
  */
 function testShopIn001() {
-    run("【门店调入】数据验证", "ts140001");// 需要shopInPrepare的批次号
+    run("【门店调入】数据验证", "ts140001");
     run("【门店调出-按批次查】修改其他门店的未调入的调拨单后，该调拨单的门店检查", "ts150013");// 接ts150007
     // run("【门店调出-按批次查】调入已作废单", "ts150002_1");// 6.59前版本适用
     run("【门店调出-在途调拨】门店调拨-在途调拨，默认日期检查", "ts140006");
@@ -90,10 +90,14 @@ function ts150008() {
     tapPrompt();
     var ret = isIn(alertMsg, "密码要填写");
 
+    tapMenu2("在途调拨");
+    tapButton(window, QUERY);
     tapFirstText();
     editShopInFlitting("999999");
     ret = isAnd(ret, isIn(alertMsg, "操作人/接收人密码错误"));
 
+    tapMenu2("在途调拨");
+    tapButton(window, QUERY);
     tapFirstText();
     editShopInFlitting("000000");
     // 大师说是操作成功的，以后要是变成保存成功，就去打死大师

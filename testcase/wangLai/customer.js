@@ -137,8 +137,12 @@ function test110001() {
     ret = isAnd(ret, isEqual("0309", qr.data[0]["名称"]));
 
     // 客户名称,手机模糊查询
-    ret = isAnd(ret, fuzzyQueryCheckField(1, "名称", "z"), fuzzyQueryCheckField(
-            1, "名称", "小"), fuzzyQueryCheckField(2, "手机", "139"));
+    var f = new TField("名称", TF, 1, "xiao");
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
+    f.value = "小";
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
+    var f = new TField("手机", TF, 2, "139");
+    ret = isAnd(ret, checkFuzzyQuery(f, "手机"));
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
         "客户类别" : "VIP客户", "店员" : "000" };
@@ -898,7 +902,8 @@ function test110020() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    ret = isAnd(ret, fuzzyQueryCheckField(0, "名称", "小"));
+    f = new TField("名称", TF, 0, "小");
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
 
     var keys = { "客户" : "zbs" };
     var fields = queryCustomerAccountFields(keys);
@@ -2194,7 +2199,9 @@ function ts110041() {
             isEqual(1, qr.totalPageNo), isEqual(qr.data[0]["余额"],
                     qr.counts["余额"]));
 
-    ret = isAnd(ret, fuzzyQueryCheckField(fields["厂商名称"].index, "名称", "p"));
+    f = new TField("厂商名称", TF, fields["厂商名称"].index, "p");
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
+
     tapButton(window, QUERY);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
             && isEqual("", getTextFieldValue(window, 1))
@@ -2712,7 +2719,8 @@ function ts110042() {
             && isEqual(1, qr.totalPageNo)
             && isEqual(qr.data[0]["余额"], qr.counts["余额"]);
 
-    ret = isAnd(ret, fuzzyQueryCheckField(fields["厂商名称"].index, "名称", "p"));
+    f = new TField("厂商名称", TF, fields["厂商名称"].index, "p");
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0))
@@ -2918,7 +2926,7 @@ function test110045_110046() {
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    ret = isAnd(ret, isIn(alertMsg, "相同名称已存在"));//相同手机号已存在
+    ret = isAnd(ret, isIn(alertMsg, "相同名称已存在"));// 相同手机号已存在
 
     keys = { "手机" : r };
     fields = editCustomerLogisticsFields(keys);
