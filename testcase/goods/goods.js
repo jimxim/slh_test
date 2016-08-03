@@ -655,7 +655,7 @@ function testGoods002Field(n1, n2) {
  */
 function test10_fuzzyQueryAndDropDownListCheck() {
     var qo = { "备注" : "开单模式" };
-    var o = { "新值" : "5", "数值" : [ "现金+刷卡+代收+产品折扣", "in" ] };
+    var o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
     var ok = setGlobalParam(qo, o);
     if (ok) {
         tapMenu("货品管理", "当前库存");
@@ -1531,7 +1531,7 @@ function ts100033Field(key1, key2, key3) {
         var fields1 = editGoodsFields(key3, true);
         ret1 = checkShowFields(getScrollView(), fields1);
     }
-    delay();//防止无法触发返回按钮
+    delay();// 防止无法触发返回按钮
     tapReturn();
 
     tapMenu2("货品查询");

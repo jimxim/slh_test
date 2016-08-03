@@ -16,20 +16,19 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "ts100144");
  run("测试用例", "onlyTest");
+// run("测试用例", "test10_fuzzyQueryAndDropDownListCheck");
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    
-    
+
 // var json={"款号":"agc001","明细":[,2,,,8]};
 // editSales_order_distributeBill(json);
-    testSLH_8953();
+//    testSLH_8953();
  
 // debugObject(gCache,"gCache");
   return true;

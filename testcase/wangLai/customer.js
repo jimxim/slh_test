@@ -2918,7 +2918,7 @@ function test110045_110046() {
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
+    ret = isAnd(ret, isIn(alertMsg, "相同名称已存在"));//相同手机号已存在
 
     keys = { "手机" : r };
     fields = editCustomerLogisticsFields(keys);
