@@ -1316,11 +1316,12 @@ function test170039() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx",
-        "明细" : [ { "货品" : "k300", "数量" : 2, "折扣" : 0.58 } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : 2, "折扣" : 0.58 } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
-    var totalMoney = getTextFieldValue(window, 10);
+    var qr = json["明细值"];
+    var qr1 = json["输入框值"];
+    var totalMoney = qr1["总计"];
     var num = qr.data[0]["数量"];
     var price = qr.data[0]["单价"];
     saveAndAlertOk();
@@ -1345,7 +1346,7 @@ function test170039() {
 }
 function test170252() {
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
@@ -1521,8 +1522,8 @@ function test170260() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
+    json = editSalesBillSave({});
+    var qr = json["输入框值"];
 
     query();
     var qr1 = getQR();
