@@ -758,12 +758,12 @@ function test170046() {
 function test170047() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
-        "未付" : "yes", "onlytest" : "yes" };
+        "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var totalMoney = getTextFieldValue(window, 3);
-    var ret = isAnd(isEqual("", getTextFieldValue(window, 2)), isEqual(0,
-            getTextFieldValue(window, 4)));
+    var qr1 = json["输入框值"];
+    var totalMoney = qr1["应"];
+    var ret = isAnd(isEqual("", qr1["现金"]));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -926,8 +926,9 @@ function test170052() {
     var ret1 = isEqual("店长004", qr.data[0]["姓名"]);
 
     tapMenu("销售开单", "开  单+");
-    var ret = false;
-    var f = new TField("店员", TF_AC, 5, "00", -1);
+    var ret = false, ret2 = true;
+    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, staffTFindex, "00", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -937,11 +938,11 @@ function test170052() {
             break;
         }
     }
-    tapReturn();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
 
-    tapMenu("销售开单", "开  单+");
-    var ret2 = true;
-    var f = new TField("店员", TF_AC, 5, "l", -1);
+    staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, staffTFindex, "l", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -951,19 +952,15 @@ function test170052() {
             break;
         }
     }
-    tapReturn();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
 
-    tapMenu("销售开单", "开  单+");
-    var ret3 = true;
-    var f = new TField("店员", TF, 5, "vell");
+    var f = new TField("店员", TF, staffTFindex, "vell");
     var fields = [ f ];
     setTFieldsValue(window, fields);
-
     saveAndAlertOk();
     tapPrompt();
-
     var ret3 = isIn(alertMsg, "店员选择错误，请从弹出的列表中选择");
-
     tapReturn();
 
     logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2 + " ret3="
@@ -981,9 +978,7 @@ function test170053() {
     tapButton(window, 12);
     delay();
 
-    var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var ret = isAnd(isEqual("000,总经理", k0), isEqual(0, getTextFieldValue(
-            window, cashTFindex + 2)));
+    var ret = isAnd(isEqual("000,总经理", k0));
     tapReturn();
 
     return ret;
@@ -1098,7 +1093,7 @@ function test170055() {
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
-    var k1 = getTextFieldValue(window, cashTFindex - 1);
+    var k1 = getTextFieldValue(window, cashTFindex + 1);
     var k2 = getTextFieldValue(window, cardTFindex - 1);
     var totalCash = getTextFieldValue(window, cashTFindex);
     var money = getTextFieldValue(window, 11);

@@ -800,7 +800,7 @@ function test210032() {
     var ret3 = isAnd(isEqual("gh" + r, a), isEqual("财务员", a1), isEqual("常青店",
             a2), isEqual("财务员", a3), isEqual("gh" + r, gh), isEqual("财务员", xm),
             isEqual("常青店", md), isEqual("财务员", gw), isEqual("2001",
-                    qr.data[0]["工号"]), isEqual("总经理2001", qr.data[0]["姓名"]),
+                    qr.data[0]["工号"]), isIn(qr.data[0]["姓名"], "总经理2001"),
             isEqual("常青店", qr.data[0]["门店"]), isEqual("总经理", qr.data[0]["岗位"]));
 
     tapMenu("系统设置", "新增人员");
