@@ -853,7 +853,7 @@ function editSalesBillField(key, show) {
  * @returns {Number}
  */
 function getStaffTFindex() {
-    return getEditSalesTFindex("客户,厂商", "店员");
+    return getEditSalesTFindex2("客户,厂商", "店员");
 }
 function getCardTFindex() {
     return getEditSalesTFindex2("客户,厂商", "刷卡");

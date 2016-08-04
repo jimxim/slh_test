@@ -2658,31 +2658,31 @@ function test120017() {
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
-    tapMenu("采购入库", "新增入库+");
-    var json = {
-        "客户" : "vell",
-        "明细" : [ { "货品" : "4562", "数量" : "30" }, { "货品" : "3035", "数量" : "15" } ],
+    var n1 = getRandomNum(1, 100);
+    var n2 = getRandomNum(1, 100);
+    tapMenu2("新增入库+");
+    var json = { "客户" : "vell",
+        "明细" : [ { "货品" : "4562", "数量" : n1 }, { "货品" : "3035", "数量" : n2 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     runAndAlert("test120052Hang", OK);
     delay();
     tapReturn();
 
-    tapMenu("采购入库", "按批次查");
+    tapMenu2("按批次查");
     keys = { "作废挂单" : "挂单" };
     fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();
     var expected = { "批次" : 0, "日期" : getToday("yy"), "厂商" : "Vell",
-        "店员" : "总经理", "总数" : "45", "金额" : "4500", "现金" : "4500", "刷卡" : "0",
-        "汇款" : "0", "操作人" : "总经理" };
+        "店员" : "总经理", "总数" : n1 + n2, "金额" : (n1 + n2) * 100,
+        "现金" : (n1 + n2) * 100, "刷卡" : "0", "汇款" : "0", "操作人" : "总经理" };
     var ret = isEqualQRData1Object(qr, expected);
 
     tapFirstText();
-    tapButton(getScrollView(), "1");// 删除明细第二行内容
-    ret = isAnd(ret, isEqual("", getTextFieldValue(getScrollView(), 8)),
-            isEqual("", getTextFieldValue(getScrollView(), 11)), isEqual("",
-                    getTextFieldValue(getScrollView(), 12)));
+    tapButton(getScrollView(-1), "1");// 删除明细第二行内容
+    var qr = getQRDet();
+    ret = isAnd(ret, qr.data.length == 1);
     var jo = { "明细" : [ { "货品" : "k300", "数量" : "8" },
             { "货品" : "k200", "数量" : "12" } ] };
     editSalesBillDetNoColorSize(jo);
@@ -2700,9 +2700,9 @@ function test120017() {
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     tapFirstText();
-    tapButtonAndAlert(SAVE, OK);
-    tapReturn();
+    editSalesBillSave({});
 
+    tapMenu2("按批次查");
     query();
     qr = getQR();
     expected["批次"] = batch + 1;
@@ -3441,7 +3441,7 @@ function ts120106() {
 
     return isEqual(qr.data[0]["入库数"], -7);
 }
-// 多次重复保存不应该出错
+// 多次重复保存不应该出错 slh_4449
 function ts120108() {
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "rt" };
@@ -3455,11 +3455,12 @@ function ts120108() {
     for (var i = 0; i < 3; i++) {
         var r = getRandomNum(1, 100);
         tapFirstText();
-        var json = { "入库明细" : [ { "数量" : r } ] };
+        var json = { "入库明细" : [ { "数量" : r } ], "不返回" : "yes" };
         editPurInByOrderDet(json);
-        editSalesBillSave({});
-        delay();
+        editSalesBillSave(json);// 重复保存
+        delay();//
     }
+    tapReturn();
 
     return !isInAlertMsgs("only run on the main thread");
 }
