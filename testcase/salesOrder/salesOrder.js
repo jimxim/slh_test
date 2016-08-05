@@ -145,7 +145,7 @@ function ts160049() {
 
     tapFirstText();
     var jo2 = editSalesBillGetValue({});
-    var det2 = getQRDet(getScrollView(-1));
+    var det2 = getQRDet();
     ret = isAnd(ret, isEqualObject(jo1, jo2), isEqualDyadicArray(det1, det2));
     tapReturn();
 

@@ -394,6 +394,38 @@ function setSPCParams(key1, key2) {
 }
 
 // SLH_8953
+function setSales_fillnum_byinvnum_0() {
+    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
+    var o = { "新值" : "0", "数值" : [ "默认不填写", "in" ] };
+    return setGlobalParam(qo, o);
+}
+function setSales_fillnum_byinvnum_1() {
+    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
+    var o = { "新值" : "1", "数值" : [ "自动填写", "in" ] };
+    return setGlobalParam(qo, o);
+}
+// 基本数据准备，一个帐套一次
+function addGoodsSLH_8953() {
+    // a正库存 b负库存 c所有门店都0库存，d异地有正库存/负库存
+    var keys = { "款号" : "slh8953_a", "名称" : "slh8953", "进货价" : 100 };
+    addGoods(keys);
+    keys["款号"] = "slh8953_b";
+    addGoods(keys);
+    keys["款号"] = "slh8953_c";
+    addGoods(keys);
+    keys["款号"] = "slh8953_d";
+    addGoods(keys);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell",
+        "明细" : [ { "货品" : "slh8953_a", "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "slh8953_b", "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+    return true;
+}
 // 情况一：款号库存全为负数
 // 情况二：款号库存为正数和负数
 // 情况三：库存为0（新增的款号就订货）
@@ -405,49 +437,38 @@ function setSPCParams(key1, key2) {
 // 2.开启异地仓库，门店绑定仓库
 // 3.异地发货
 // 备注：2,3需注意取的是开单门店的库存还是发货门店的库存
-function setSales_fillnum_byinvnum_0() {
-    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
-    var o = { "新值" : "0", "数值" : [ "默认不填写", "in" ] };
-    return setGlobalParam(qo, o);
+function testSLH_8953_cur() {
+    var det = { "明细" : [ { "货品" : "slh8953_b", "数量" : [ 10 ] } ] };
+    var exclude = [ "slh8953_b" ];
+    var ret = testSLH_8953Field(det, exclude);
+
+    return ret;
 }
-function setSales_fillnum_byinvnum_1() {
-    var qo = { "备注" : "按订货开单是否按当前库存数自动填写发货数" };
-    var o = { "新值" : "1", "数值" : [ "自动填写", "in" ] };
-    return setGlobalParam(qo, o);
-}
-function testSLH_8953() {
-    var keys = addGoodsSimple();
-    var code1 = keys["款号"];// 负库存
 
-    keys = addGoodsSimple();
-    code2 = keys["款号"];// 0库存
-
-    keys = addGoodsSimple();
-    code3 = keys["款号"];// 正库存
-
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : code1, "数量" : [ 30 ] } ] };
-    editSalesBill(json, colorSize);
-
-    tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xw", "明细" : [ { "货品" : code3, "数量" : [ 30 ] } ] };
-    editSalesBill(json, colorSize);
-
+function testSLH_8953Field(det, exclude) {
     tapMenu("销售订货", "新增订货+");
-    var json = {
-        "客户" : "xw",
-        "明细" : [ { "货品" : code1, "数量" : [ 10 ] },
-                { "货品" : code2, "数量" : [ 10 ] },
-                { "货品" : code3, "数量" : [ 10 ] } ] };
+    var json = { "客户" : "xw", "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    json = mixObject(json, det);
     editSalesBill(json, colorSize);
-    
+
+    var det = json["明细值"].data;
+    var exp = [];
+    if (isDefined(exclude)) {
+        for (var i = 0; i < det.length; i++) {
+            var code = det[i]["货品"];
+            det[i]["已发"] = 0;
+            for (var j = 0; j < exclude.length; j++) {
+                if (!isIn(code, exclude[j])) {
+                    exp.push(det[i]);
+                }
+            }
+        }
+    }
+
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var det=getQRDet();
+    var data = getQRDet().data;
     tapReturn();
-}
-
-function testSLH_8953Field() {
-
+    return isEqualDyadicArray(exp, data);
 }

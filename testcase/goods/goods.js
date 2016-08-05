@@ -94,8 +94,9 @@ function setGoodsParams001() {
     o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    // 现在异地仓库的2种模式都需要开启这个参数
     qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "1", "数值" : [ "默认不启用" ] };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     // qo = { "备注" : "门店库存是否允许跨门店查询" };
@@ -317,12 +318,16 @@ function testGoods003() {
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入必填项信息", "ts100025");
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100046");
     // 颜色尺码
-    run("颜色尺码模式", "setGoodsColorParams");
-    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "ts100023");
-    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100024");
-    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项不包括款号", "ts100026");
-    run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
+    var ok = setGoodsColorParams();
+    if (ok) {
+        colorSize = "yes";
+        run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "ts100023");
+        run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100024");
+        run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项不包括款号", "ts100026");
+        run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
+    }
     run(" 均色均码模式", "setGoodsNoColorParams");
+    colorSize = "no";
 }
 
 function setPaymethod2() {
@@ -660,7 +665,7 @@ function test10_fuzzyQueryAndDropDownListCheck() {
     if (ok) {
         tapMenu("货品管理", "当前库存");
         var f = new TField("款号名称", TF, 1, "3035");
-        var expected = "4562Story200元0.91010pp";//去除了空格逗号
+        var expected = "4562Story200元0.91010pp";// 去除了空格逗号
         var ret1 = isAnd(dropDownListCheck(0, "456", expected),
                 checkFuzzyQuery(f, "款号", "名称"));
 
@@ -883,7 +888,7 @@ function test100006_1() {
 
     // 这里 仓库店与文一店不一定有数据，所以不一定有汇总值
     var arr = [ "库存", "价值", "常青店" ];
-    ret = ret && isEqualCounts(arr);
+    ret = isAnd(ret, isEqualCounts(arr));
 
     // 库存=各门店库存之和
     tapButton(window, QUERY);// 刷新界面，防止getQR出错
@@ -896,8 +901,8 @@ function test100006_1() {
     if (isDefined(counts["文一店"])) {
         b = counts["文一店"];
     }
-    ret = isAnd(ret, isEqual(counts["库存"], add(a, b, counts["常青店"],
-            counts["中洲店"])));
+    ret = isAnd(ret, isEqual(counts["库存"], Number(a) + Number(b)
+            + Number(counts["常青店"]) + Number(counts["中洲店"])));
 
     return ret;
 }
@@ -1293,15 +1298,19 @@ function test100020() {
     tapMenu("货品管理", "货品查询");
     query();
     tapFirstText();
-    var ret = isEqual(200, getTextFieldValue(getScrollView(), 9))// 零批价
-            && isEqual(180, getTextFieldValue(getScrollView(), 10))
-            && isEqual(160, getTextFieldValue(getScrollView(), 11))
-            && isEqual(140, getTextFieldValue(getScrollView(), 12));
-
+    keys = [ "零批价", "打包价", "大客户价", "Vip价格" ];
+    fields = editGoodsFields(keys);
+    var ret = isEqual(200, getTextFieldValue(getScrollView(),
+            fields["零批价"].index))
+            && isEqual(180, getTextFieldValue(getScrollView(),
+                    fields["打包价"].index))
+            && isEqual(160, getTextFieldValue(getScrollView(),
+                    fields["大客户价"].index))
+            && isEqual(140, getTextFieldValue(getScrollView(),
+                    fields["Vip价格"].index));
     tapReturn();
 
     return ret;
-
 }
 
 // 全局参数 仓管是否可以根据吊牌价生成价格 为 支持,部分客户需要
@@ -1845,7 +1854,7 @@ function test100054_1() {
     tapMenu("货品管理", "批量操作");
     delay();
     runAndAlert("test10_tapBatchStop", OK);
-    tapButtonAndAlert("none", OK, true);
+    tapButtonAndAlert("none", OK, true);//
     tapNaviLeftButton();
     ret = isAnd(ret, isInAlertMsgs("操作失败"));
     return ret;
@@ -2283,7 +2292,7 @@ function ts100142_143() {
     var code = qr.data[0]["款号"];
 
     tapFirstText();
-    var keys = { "厂商" : "rt", "允许退货" : "是" };// 不输入厂商无法触发界面滑动，则改不了允许退货
+    var keys = { "允许退货" : "是" };
     addGoods(keys, "yes");
 
     tapMenu("销售开单", ADDBILL);
@@ -2294,7 +2303,7 @@ function ts100142_143() {
     tapMenu("货品管理", "货品查询");
     tapButton(window, QUERY);
     tapFirstText();
-    var keys = { "厂商" : "rt", "允许退货" : "否" };
+    var keys = { "允许退货" : "否" };
     addGoods(keys, "yes");
 
     tapMenu("销售开单", ADDBILL);
@@ -2495,10 +2504,10 @@ function ts100147Field(title, type) {
     editSalesBill(json, colorSize);
 
     tapMenu(menu2, menu3);
-    query();
+    tapButton(window, QUNERY);
     tapFirstText();
     json = { "入库明细" : [ { "数量" : 10 } ] };
-    editSalesBill(json, colorSize);
+    editSalesBill(json, colorSize);//
 
     tapMenu(menu1, "按批次查");
     query();
@@ -3307,8 +3316,6 @@ function test10_type() {
     tapMenu("货品管理", "基本设置", "货品类别");
     query();
     var ret = goPageCheck();
-
-    var qr = getQR();
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("是否停用");
 
@@ -3317,6 +3324,7 @@ function test10_type() {
     query(fields);
     ret = isAnd(ret, checkQResult("名称", "毛衣", "in"));
 
+    var qr = getQR();
     var jo1 = qr.data[0];
     tapFirstText();
     tapButtonAndAlert(STOP, OK);

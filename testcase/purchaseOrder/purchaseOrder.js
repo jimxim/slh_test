@@ -894,6 +894,10 @@ function ts130010() {
 }
 
 function ts130011() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+
     var p1 = "lx", p2 = "vell";
     tapMenu("采购订货", "按批次查");
     query();

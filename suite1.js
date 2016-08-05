@@ -16,29 +16,43 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "onlyTest");
-// run("测试用例", "ts120108");
 
+ run("测试用例", "testSLH_8953_cur");
+// run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 
 // var json={"款号":"agc001","明细":[,2,,,8]};
 // editSales_order_distributeBill(json);
-// testSLH_8953();
-//    tapMenu("销售开单", ADDBILL);
-//    var json = { "客户" : "xw", "店员":"000","刷卡":[100,"交"],
-//        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ] };
-//    editSalesBill(json, colorSize);
-
  
+// testSLH_8953();
+ 
+
 // debugObject(gCache,"gCache");
-  return true;
+  return ret;
 }
 
+
+function loginTest001(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+       logDebug("1");
+       logout();
+    }
+}
+function loginTest002(){
+    var p1 = {"角色":"店长"};
+    var ok = login("004","000000",p1);
+    if( ok ) {
+       logDebug("2");
+       logout();
+    }
+}
 
 //
 function loginGoodsParams001(){

@@ -393,12 +393,7 @@ function test190018() {
     delay();
 
     var qr = getQR();
-    var ret = false;
-    if (qr.data[0]["金额"] != r) {
-        ret = true;
-    }
-
-    return ret;
+    return qr.data[0]["金额"] != r;
 }
 
 function test190019() {
@@ -1243,7 +1238,7 @@ function test190090() {
         tapMenu("统计分析", "新增收支", "新增支出");
         var r = "备注" + "a" + getTimestamp(6);
         var json = { "账户" : "现", "收支备注" : r,
-            "明细" : [ { "收入类别" : "物业", "金额" : sum + 1 } ] };
+            "明细" : [ { "收入类别" : "物业", "金额" : add(sum, 1) } ] };
         editStatisticAnalysisIn(json);
 
         tapMenu("统计分析", "收支流水");
@@ -2797,10 +2792,8 @@ function editStatisticAnalysisInDet(o) {
         var f0 = new TField("收入类别", TF_SC, tfNum * i + 0, d["收入类别"]);
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
-        var f1 = new TField("金额", TF_NUM, tfNum * i + 1, d["金额"]);
-        setTFieldsValue(getScrollView(-1), [ f1 ]);// 有时莫名其妙变成浮点数，原因不明
-        // var m = getTextFieldValue(getScrollView(-1), tfNum * i + 1);
-        // logDebug("金额=" + m);
+        var f1 = new TField("金额", TF, tfNum * i + 1, d["金额"]);
+        setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];
         if (isDefined(d["备注"])) {

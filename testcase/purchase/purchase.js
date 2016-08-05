@@ -61,7 +61,7 @@ function testPurchase002() {
     run("【采购入库-采购汇总】采购汇总->按类别汇总,正负零", "test120013_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查", "test120031_120032");
 
-//    run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
+    // run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
     run("【采购入库-新增入库】采购入库增加挂单功能,作废", "test120017_1");
     run("【采购入库-新增入库】挂单转正式采购入库单后打印", "test120058");
     run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
@@ -2581,7 +2581,7 @@ function test120047_2() {
     var ret = dropDownListCheck(f.inedx, "303", "3035jkk");
 
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
-        "日期从" : getToday(), "到" : getToday(), "门店" : "常青店" }
+        "日期从" : getDay(-15), "到" : getToday(), "门店" : "常青店" };
     var fields = purchaseQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
@@ -2683,6 +2683,7 @@ function test120017() {
     tapButton(getScrollView(-1), "1");// 删除明细第二行内容
     var qr = getQRDet();
     ret = isAnd(ret, qr.data.length == 1);
+
     var jo = { "明细" : [ { "货品" : "k300", "数量" : "8" },
             { "货品" : "k200", "数量" : "12" } ] };
     editSalesBillDetNoColorSize(jo);
@@ -2695,8 +2696,8 @@ function test120017() {
     tapButton(window, QUERY);
     qr = getQR();
     expected = { "批次" : 0, "日期" : getToday("yy"), "厂商" : "Vell", "店员" : "总经理",
-        "总数" : "50", "金额" : "6400", "现金" : "6400", "刷卡" : "0", "汇款" : "0",
-        "操作人" : "总经理" };
+        "总数" : n1 + 20, "金额" : (n1 + 20) * 100, "现金" : (n1 + 20) * 100,
+        "刷卡" : "0", "汇款" : "0", "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
     tapFirstText();

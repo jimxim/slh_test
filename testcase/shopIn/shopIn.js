@@ -169,9 +169,7 @@ function ts140001() {
         tapFirstText();
         var sIndata = getQRDet().data;
         tapButton(window, RETURN);
-        for (var i = 0; i < expData.length; i++) {
-            ret = isAnd(ret, isEqualObject2(expData[i], sIndata[i]));
-        }
+        ret = isAnd(ret, isEqualDyadicArray(expData, sIndata));
 
         // 验证未调入单的批次应该不显示
         tapMenu2("按批次查");

@@ -784,10 +784,8 @@ function editSalesBillFields(keys, show) {
     return getTFields("editSalesBillField", keys, show);
 }
 function editSalesBillField(key, show) {
-    var l = getTableViews().length;
-    var f, staffTFindex = getValueFromCacheF1("getStaffTFindex");
+    var f;
     var cardTFindex = getValueFromCacheF1("getCardTFindex");
-    var remitTFindex = getValueFromCacheF1("getRemitTFindex");
     switch (key) {
     case "customer":
     case "客户":
@@ -803,7 +801,8 @@ function editSalesBillField(key, show) {
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, staffTFindex, "000", -1, 0); // 5
+        var staffTFindex = getValueFromCacheF1("getStaffTFindex");
+        f = new TField("店员", TF_AC, staffTFindex, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -819,7 +818,7 @@ function editSalesBillField(key, show) {
         break;
     case "配货":
         var index = getEditSalesTFindex2("客户,厂商", "配货");
-        f = new TField("配货", TF_AC, index, "000", -1,0); 
+        f = new TField("配货", TF_AC, index, "000", -1, 0);
         break;
     case "day":
     case "日期":
@@ -839,6 +838,7 @@ function editSalesBillField(key, show) {
         f = new TField("折扣", TF, index, "0.6");//
         break;
     case "汇款":
+        var remitTFindex = getValueFromCacheF1("getRemitTFindex");
         f = new TField("汇款", TF, remitTFindex, 0, "NoNeedReturn");// 
         break;
     default:
@@ -860,6 +860,11 @@ function getCardTFindex() {
 }
 function getRemitTFindex() {
     return getEditSalesTFindex2("客户,厂商", "汇款");
+}
+//7.23销售单新增 结余优先
+function getBillBalTFindex() {
+    var staffTFindex = getValueFromCacheF1("getStaffTFindex");
+    return staffTFindex--;
 }
 /**
  * 

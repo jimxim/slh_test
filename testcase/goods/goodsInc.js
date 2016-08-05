@@ -1,5 +1,86 @@
 //LuXingXin <52619481 at qq.com> 20151214
 //一些不靠谱的方法
+/**
+ * 加
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
+function add(a, b) {
+    var c, d, e;
+    try {
+        c = a.toString().split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = b.toString().split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    e = Math.pow(10, Math.max(c, d));
+    return (mul(a, e) + mul(b, e)) / e;
+}
+/**
+ * 减
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
+function sub(a, b) {
+    var c, d, e;
+    try {
+        c = a.toString().split(".")[1].length;
+    } catch (f) {
+        c = 0;
+    }
+    try {
+        d = b.toString().split(".")[1].length;
+    } catch (f) {
+        d = 0;
+    }
+    e = Math.pow(10, Math.max(c, d));
+    return (mul(a, e) - mul(b, e)) / e;
+}
+/**
+ * 乘
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
+function mul(a, b) {
+    var c = 0, d = a.toString(), e = b.toString();
+    try {
+        c += d.split(".")[1].length;
+    } catch (f) {
+    }
+    try {
+        c += e.split(".")[1].length;
+    } catch (f) {
+    }
+    return Number(d.replace(".", "")) * Number(e.replace(".", ""))
+            / Math.pow(10, c);
+}
+/**
+ * 除
+ * @param a
+ * @param b
+ * @returns {Number}
+ */
+function div(a, b) {
+    var c, d, e = 0, f = 0;
+    try {
+        e = a.toString().split(".")[1].length;
+    } catch (g) {
+    }
+    try {
+        f = b.toString().split(".")[1].length;
+    } catch (g) {
+    }
+    c = Number(a.toString().replace(".", ""));
+    d = Number(b.toString().replace(".", ""));
+    return mul(c / d, Math.pow(10, f - e));
+}
 
 function cToEn(str) {
     var ret = str;
@@ -63,6 +144,9 @@ function addGoods(keys, isEdit, day) {
     tapButtonAndAlert(btn, OK);
     delay();
     tapReturn();
+
+    var cond = "window.buttons()['货品查询'].isVisible()";
+    waitUntil(cond, 5);
 }
 
 /**
@@ -275,17 +359,17 @@ function getQRDet(view, o) {
     for (var j = 0; j < line.length; j++) {
         if (texts[tfNum * j].value() != "") {
             var data1 = {};
-            var ignore = 0;
+            // var ignore = 0;
             for (var i = 0; i < tfNum; i++) {
                 var index = tfNum * j + i;
                 var v = texts[index].value();
                 var w = texts[index].rect().size.width;
                 if (w < 5) {
-                    ignore++;
+                    // ignore++;
                 } else {
-                    var num = i - ignore;
+                    // var num = i - ignore;
                     for ( var t in titles) {
-                        if (titles[t] == num) {
+                        if (titles[t] == i) {
                             data1[t] = v;
                             break;
                         }
@@ -954,7 +1038,7 @@ function isAqualOptimeX(expected, actual, allow) {
 }
 
 /**
- * 二维数组是否相等
+ * 二维数组是否相似
  * @param data1
  * @param data2
  * @returns {Boolean}
@@ -965,7 +1049,7 @@ function isEqualDyadicArray(data1, data2) {
     for (i = 0; i < length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
-        ret = ret && isEqualObject(arr1, arr2);
+        ret = ret && isEqualObject2(arr1, arr2);
     }
     return ret;
 }
@@ -984,7 +1068,7 @@ function isEqualObject2(expected, actual, allow) {
     var ret = true;
     var v1, v2;
     for ( var i in expected) {
-        if (actual.hasOwnProperty(expected[i])) {
+        if (actual.hasOwnProperty(i)) {
             v1 = expected[i];
             v2 = actual[i];
             if (ok && i == "操作日期") {
@@ -1573,11 +1657,11 @@ function getImages(view1) {
     return ret;
 }
 /**
- * 模拟键盘输入数字，防止直接设置变成浮点数
+ * 模拟键盘输入
  * @param view1
  * @param f
  */
-function setTextFieldNumValue(view1, f) {
+function setTextFieldValueByKb(view1, f) {
     var i = f.index;
     var value = String(f.value);
     var tf = view1.textFields()[i].textFields()[0];
