@@ -8,29 +8,17 @@
 // #import "/Users/hzdlmac/Documents/slh_test/suite2.js"
 // 总经理
 function test000All() {
-    colorSize = "no";
+    colorSize = "yes";
     debug = true;
-    ipadVer ="7.21"; // "6.59";// 7.13// 7.21
+    ipadVer ="7.21"; // 7.21
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");//
-// run("【销售开单-开单】均色均码款号合并", "test170103");
-// run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
-// run("【销售开单-开单】销售单已配货的单子只允许修改付款方式--只允许修改付款方式", "test170559_170697");
-// run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
-// run("【销售开单】按挂单--正常功能检查/翻页_排序_汇总", "test170305_1");
-// run("【销售开单－销售汇总-按款号汇总】清除功能", "test170309");
-// run("【销售开单－销售汇总-按客户上货】排序/翻页/快速翻页", "test170341_170342_170343_170346");
-// run("【销售开单+整单折扣+代收】挂单转为销售单", "test170365");
-// run("【销售开单+整单折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170366");
-// run("【销售开单+产品折扣+代收】挂单转为销售单", "test170375");
-// run("【销售开单+产品折扣+代收】销售开单+折扣值+二次挂单后代收收款", "test170376");
-// run("【销售开单-核销】开启跨门店核销核销不同门店的物流单", "test170687");
-
 // run("【销售开单-按批次查】待作废操作", "test170614");
+ run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_1");
     
 // run("", "test0");
 }
 function test0(){
-// debugElementTree(window);
+ debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
@@ -512,6 +500,7 @@ function test000SalesColorSize002() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
+        colorSize = "yes";
         testSalesColorSize002();
         
         logout();

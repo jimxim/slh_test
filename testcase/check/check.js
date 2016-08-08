@@ -53,7 +53,7 @@ function testCheckAll() {
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function checkPrepare_Off() {
-    tapMenu(window, "作 废");
+    tapButton(window, "作 废");
 }
 function checkPrepare() {
     tapMenu("销售开单", "按批次查");
@@ -63,17 +63,22 @@ function checkPrepare() {
 
     var qr = getQR();
     var t1 = qr.total;
-    for (var i = 0; i < t1; i++) {
+    var i;
+    for (i = 0; i < t1; i++) {
         tapFirstText();
         runAndAlert("checkPrepare_Off", OK);
         delay();
     }
+    tapMenu("销售开单", "按批次查");
+    tapButton(window, QUERY);
     qr = getQR();
     var t2 = qr.total;
     var ret = false;
     if (t2 < 1) {
         ret = true;
     }
+
+    logDebug(" t1=" + t1);
 
     return ret;
 }

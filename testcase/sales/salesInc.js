@@ -598,7 +598,10 @@ function editQuickAddGoodsFields(keys, show) {
     return getTFields("editQuickAddGoodsField", keys, show);
 }
 function editQuickAddGoodsField(key, show) {
-    var f;
+    var f, idx = 0;
+    if (colorSize == "yes") {
+        idx = 4;
+    }
     switch (key) {
     case "code":
     case "款号":
@@ -608,25 +611,33 @@ function editQuickAddGoodsField(key, show) {
     case "名称":
         f = new TField("名称", TF, 1, "连衣裙");
         break;
+    case "color":
+    case "颜色":
+        f = new TField("颜色", BTN_MC, 0, "花色");
+        break;
+    case "size":
+    case "尺码":
+        f = new TField("尺码", BTN_MC, 1, "S");
+        break;
     case "purchase-price":
     case "进货价":
-        f = new TField("进货价", TF, 2, "100");
+        f = new TField("进货价", TF, 2 + idx, "100");
         break;
     case "retail":
     case "零批价":
-        f = new TField("零批价", TF, 3, "200");
+        f = new TField("零批价", TF, 3 + idx, "200");
         break;
     case "pack":
     case "打包价":
-        f = new TField("打包价", TF, 4, "180");
+        f = new TField("打包价", TF, 4 + idx, "180");
         break;
     case "customerPrice":
     case "大客户价":
-        f = new TField("大客户价", TF, 5, "160");
+        f = new TField("大客户价", TF, 5 + idx, "160");
         break;
     case "vip":
     case "Vip价格":
-        f = new TField("Vip价格", TF, 6, "140");
+        f = new TField("Vip价格", TF, 6 + idx, "140");
         break;
     default:
         logWarn("未知key＝" + key);

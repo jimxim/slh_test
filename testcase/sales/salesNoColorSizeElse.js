@@ -3806,20 +3806,20 @@ function test170309() {
     tapKeyboardHide();
     query();
 
-    var ret1 = false;
-    f = new TField("厂商", TF_AC, 3, "v", -1);
-    cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "Vell")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    query();
+    // var ret1 = false;
+    // f = new TField("厂商", TF_AC, 3, "v", -1);
+    // cells = getTableViewCells(window, f);
+    // for (i = 0; i < cells.length; i++) {
+    // var cell = cells[i];
+    // var v = cell.name();
+    // if (isIn(v, "Vell")) {
+    // ret1 = true;
+    // break;
+    // }
+    // }
+    // delay();
+    // tapKeyboardHide();
+    // query();+ ", ret1=" + ret1 && ret1
 
     tapMenu("销售开单", "按汇总", "按款号汇总");
     var keys = { "日期从" : getDay(-10), "厂商" : "rt", "门店" : "常青店", "款号" : "k300",
@@ -3844,8 +3844,8 @@ function test170309() {
             "", a2), isEqual("", a3), isEqual("", a4), isEqual("", a5),
             isEqual("", a6), isEqual("", a7), isEqual("", a8), isEqual("", a9));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret2=" + ret2);
+    return ret && ret2;
 }
 function test170310_170311_170312() {
     tapMenu("销售开单", "按汇总", "按款号汇总");
