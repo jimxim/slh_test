@@ -305,7 +305,7 @@ function test160055_160056_160057_160058() {
 
     editSalesBillUnpay(json);
     var actual = editSalesBillGetValue({});
-    var exp = { "现金" : 0, "刷卡" : 0, "汇款" : 0, "实" : 0 };
+    var exp = { "现金" : 0, "刷卡" : 0, "汇款" : 0, "实收" : 0 };
     ret = isAnd(ret, isEqualObject(exp, actual));
 
     // tapButton(window, "核销");

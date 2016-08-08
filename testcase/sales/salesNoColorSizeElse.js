@@ -6337,7 +6337,7 @@ function test170433() {
     var xj = qr1["现金"];
     var sk = qr1["刷卡"];
     var hk = qr1["汇款"];
-    var ds = qr1["代收/实收"];
+    var ds = qr1["代收"];
     var money1 = qr1["总计"];
     var prePay = add(xj, sk, hk, ds);
 
@@ -6394,7 +6394,7 @@ function test170434() {
     var xj = qr1["现金"];
     var sk = qr1["刷卡"];
     var hk = qr1["汇款"];
-    var ds = qr1["代收/实收"];
+    var ds = qr1["代收"];
     var money1 = qr1["总计"];
     var prePay = add(xj, sk, hk, ds);
 

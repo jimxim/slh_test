@@ -442,6 +442,31 @@ function testSLH_8953_cur() {
     var exclude = [ "slh8953_b" ];
     var ret = testSLH_8953Field(det, exclude);
 
+    det = { "明细" : [ { "货品" : "slh8953_a", "数量" : [ 10 ] },
+            { "货品" : "slh8953_b", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_b" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = { "明细" : [ { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = { "明细" : [ { "货品" : "slh8953_a", "数量" : [ 10 ] },
+            { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = { "明细" : [ { "货品" : "slh8953_b", "数量" : [ 10 ] },
+            { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_b", "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = { "明细" : [ { "货品" : "slh8953_a", "数量" : [ 10 ] },
+            { "货品" : "slh8953_b", "数量" : [ 10 ] },
+            { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_b", "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
     return ret;
 }
 

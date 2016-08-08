@@ -852,16 +852,47 @@ function editSalesBillField(key, show) {
  * 开单界面上，客户到店员，标题与输入框是一直成对的，所以可以根据标题下标差算输入框下标，客户输入框下标为0
  * @returns {Number}
  */
+function getPayableTFindex() {
+    var index = getEditSalesTFindex2("客户,厂商", "应");
+    if (index < 0) {
+        index = getEditSalesTFindex2("客户,厂商", "应付");
+    }
+    return index;
+}
+function getPaidTFindex() {
+    var index = getEditSalesTFindex2("客户,厂商", "实");
+    if (index < 0) {
+        index = getEditSalesTFindex2("客户,厂商", "实收");
+    }
+    return index;
+}
 function getStaffTFindex() {
     return getEditSalesTFindex2("客户,厂商", "店员");
+}
+function getStoreTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "订货门店");
 }
 function getCardTFindex() {
     return getEditSalesTFindex2("客户,厂商", "刷卡");
 }
+function getAgencyTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "代收");
+}
+function getDateTFindex() {
+    var index = getEditSalesTFindex2("客户,厂商", "日期");
+    if (index < 0) {
+        var cardTFindex = getValueFromCacheF1("getCardTFindex");
+        index = cardTFindex + 2;// 
+    }
+    return index;
+}
+function getDiscountTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "折扣");
+}
 function getRemitTFindex() {
     return getEditSalesTFindex2("客户,厂商", "汇款");
 }
-//7.23销售单新增 结余优先
+// 7.23销售单新增 结余优先
 function getBillBalTFindex() {
     var staffTFindex = getValueFromCacheF1("getStaffTFindex");
     return staffTFindex--;
