@@ -649,7 +649,58 @@ function queryCustomerProviderAccountField(key, show) {
     }
     return f;
 }
-
+/**
+ * 物流商账款
+ * @returns
+ */
+function testCustomerLogisticsAccountsFields(keys, show) {
+    return getTFields("testCustomerLogisticsAccountsField", keys, show);
+}
+function testCustomerLogisticsAccountsField(key, show) {
+    var f;
+    switch (key) {
+    case "name":
+    case "名称":
+        f = new TField("名称", TF, 0, "a");
+        break;
+    case "logistics":
+    case "物流商":
+        f = new TField("物流商", TF_AC, 1, "sfkd", -1, 0);
+        if (show) {
+            f.value = "顺丰快递";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC，
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
+function testCustomerLogisticsAccountsDetFields(keys, show) {
+    return getTFields("testCustomerLogisticsAccountsDetField", keys, show);
+}
+function testCustomerLogisticsAccountsDetFields(key, show) {
+    var f;
+    switch (key) {
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "a", -1, 0);
+        if (show) {
+            f.value = "小王";
+        }
+        break;
+    case "是否收款":
+        f = new TField("是否收款", TF_SC, 1, "是");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 // 物流商查询
 function testQueryCustomerLogisticsFields() {
     var keys = [ "name", "staff", "mobile", "shop", "stop" ];

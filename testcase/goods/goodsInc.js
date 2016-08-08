@@ -93,8 +93,12 @@ function cToEn(str) {
 
 /**
  * 新增/修改客户
+ * @param keys 
+ * @param isEdit
+ * @param keys2 保存后验证
+ * @returns {Boolean}
  */
-function addCustomer(keys, isEdit, check) {
+function addCustomer(keys, isEdit, keys2) {
     var btn = EDIT_SAVE;
     if (isUndefined(isEdit) || isEdit == "no") {
         tapMenu("往来管理", "新增客户+");
@@ -107,13 +111,13 @@ function addCustomer(keys, isEdit, check) {
     tapReturn();// 防止出错，未返回
 
     var ret = true;
-    if (isDefined(check) && check == "yes") {
+    if (isDefined(keys2)) {
         tapMenu2("客户查询");
-        var qKeys = { "客户名称" : keys["名称"] };
-        fields = queryCustomerFields(qKeys);
-        query(fields);
-        var qr = getQR();
-        ret = isEqual(keys["名称"], qr.data[0]["名称"]);
+        query();
+        tapFirstText();
+        fields = editCustomerFields(keys2, true);
+        ret = checkShowFields(getScrollView(), fields);
+        tapReturn();
     }
     return ret;
 }

@@ -15,9 +15,12 @@ function testCustomer001() {
     run("【往来管理-客户活跃度】客户活跃度", "ts110033");
     run("【往来管理-积分查询】积分查询", "test110036");
     run("【往来管理-积分查询】数据验证", "test110036_1");
+    run("【往来管理-积分查询】门店列检查", "ts110090");
     run("【往来管理-厂商查询】翻页，排序，查询，清除", "ts110075");
     run("【往来管理-厂商账款】厂商门店账", "ts110041");
     run("【往来管理-厂商账款】厂商总账", "ts110042");
+    run("【往来管理-更多】物流商帐款-查询排序翻页汇总", "ts110091");
+    run("【往来管理-更多】物流商帐款-详细页面内容检查", "ts110092");
     run("【往来管理-物流商查询】物流商查询", "test110044");
     run("【往来管理-更多】客户回访", "test110048");
     run("【往来管理】下拉框验证", "testCheckCustomerDropDownList");
@@ -49,6 +52,8 @@ function testCustomer002() {
     run("【往来管理-新增客户】客户编码", "ts110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "ts110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
+    run("【往来管理-客户查询】往来管理-新增客户增加性别", "ts110087");// 7.21后
+    run("【往来管理-客户查询】清除客户适用价格", "ts110088");
 
     run("【往来管理-客户账款】详细页面_上下级模式", "test110022");//
     run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
@@ -63,6 +68,7 @@ function testCustomer002() {
     run("【往来管理-按上级单位】允许跨门店核销，门店不显示", "ts110079");
     run("【往来管理-按上级单位】详细页面+开启跨门店核销", "ts110081"); // 上下级模式
     run("【往来管理】是否欠款报警查询", "test110028");
+    run("【往来管理-客户帐款】客户帐款详细页面点未结,检查内容", "ts110089");
 
     run("【往来管理-客户活跃度】停用客户不应出现在客户活跃度中", "ts110034");
     run("【往来管理-客户活跃度】未拿货天数", "ts110035");
@@ -136,13 +142,19 @@ function test110001() {
     qr = getQR();
     ret = isAnd(ret, isEqual("0309", qr.data[0]["名称"]));
 
-    // 客户名称,手机模糊查询
     var f = new TField("名称", TF, 1, "xiao");
-    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
     f.value = "小";
-    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));
+    ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
     var f = new TField("手机", TF, 2, "139");
-    ret = isAnd(ret, checkFuzzyQuery(f, "手机"));
+    ret = isAnd(ret, checkFuzzyQuery(f, "手机"));// 手机模糊查询
+    var f = queryCustomerField("地址");
+    f.value = "杭州";
+    ret = isAnd(ret, checkFuzzyQuery(f, "地址"));// 地址模糊查询
+    f.value = "abc";
+    ret = isAnd(ret, checkFuzzyQuery(f, "地址"));// 地址模糊查询
+    f.value = "123";
+    ret = isAnd(ret, checkFuzzyQuery(f, "地址"));// 地址模糊查询
 
     keys = { "客户" : "zbs", "客户名称" : "赵本山", "手机" : "13922211121", "是否停用" : "否",
         "客户类别" : "VIP客户", "店员" : "000" };
@@ -3697,7 +3709,138 @@ function ts110085() {
     // ret = isAnd(ret, qr.data.length == 0);
     return ret;
 }
+function ts110087() {
+    var name = "cust" + getTimestamp(6);
+    var keys = { "名称" : name, "性别" : "男" };
+    var ret = addCustomer(keys, "no", keys);
 
+    name = "cust" + getTimestamp(6);
+    keys = { "名称" : name, "性别" : "女" };
+    ret = isAnd(ret, addCustomer(keys, "no", keys));
+
+    name = "cust" + getTimestamp(6);
+    keys = { "名称" : name };
+    var keys2 = { "名称" : name, "性别" : "" };
+    ret = isAnd(ret, addCustomer(keys, "no", keys2));
+
+    tapMenu2("客户查询");
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = { "性别" : "男" }
+    ret = isAnd(ret, addCustomer(keys, "yes", keys));
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = { "性别" : "女" }
+    ret = isAnd(ret, addCustomer(keys, "yes", keys));
+
+    tapButton(window, QUERY);
+    tapTitle(getScrollView(), "操作日期");// 找一个以前的客户
+    tapFirstText();
+    keys = { "性别" : "" };
+    fields = editCustomerFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+
+    return ret;
+}
+function ts110088() {
+    var name = "cust" + getTimestamp(6);
+    var keys = { "名称" : name, "适用价格" : "零批价" };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    query();
+    tapFirstText();
+    var keys = [ "适用价格" ];
+    fields = editCustomerFields(keys);
+    var idx = fields["适用价格"].index + 1;// 适用价格的清除按钮
+    tapButton(getScrollView(), idx);
+    tapButtonAndAlert(EDIT_SAVE, OK);
+    delay();
+    tapReturn();
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    keys = { "适用价格" : "" };
+    fields = editCustomerFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+    return ret;
+}
+function ts110089() {
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var ret = ts110089Field();
+
+    tapMenu("往来管理", "客户账款", "按上级单位");
+    ret = isAnd(ret, ts110089Field());
+
+    tapMenu("往来管理", "客户账款", "客户总账");
+    ret = isAnd(ret, ts110089Field());
+    return ret;
+}
+function ts110089Field() {
+    query();
+    tapFirstText();
+    var e = getElements(getScrollView(-1, 0));
+    for (var i = 0; i < e.length; i++) {
+        if (isUIAImage(e[i])) {
+            break;// 取二级界面第一个'箭头'图片
+        }
+    }
+    var obj = e[i - 1];// 箭头前一个元素就是未结信息
+    tap(obj, true);
+    delay(0.5)// 等待界面加载
+    var ret = !app.navigationBar().buttons()["所有统计"].isVisible();
+    tapNaviClose();
+    return ret;
+}
+function ts110090() {
+    var qo = { "备注" : "是否允许跨门店核销" };
+    var o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    var ok = setGlobalParam(qo, o);
+
+    tapMenu("往来管理", "积分查询");
+    var arr = [ "门店" ];
+    var ret = checkRightsField(true, getScrollView(), arr);
+
+    o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+
+    tapMenu("往来管理", "积分查询");
+    ret = isAnd(ret, checkRightsField(true, getScrollView(), arr));
+    return ret;
+}
+function ts110091() {
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("物流商");
+    ret = ret && sortByTitle("代收", IS_NUM);
+    ret = ret && sortByTitle("已收", IS_NUM);
+    ret = ret && sortByTitle("应收", IS_NUM);
+
+    var keys = { "名称" : "快递", "物流商" : "sfkd", "门店" : "常青店" };
+    var fields = testCustomerLogisticsAccountsFields(keys);
+    query(fields);
+    var qr = getQR();
+    ret = isAnd(ret, isEqual("顺丰快递", qr.data[0]["物流商"]));
+
+    query();
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)));
+
+    var arr = [ "代收", "已收", "应收" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
+}
+function ts110091(){
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    query();
+    tapFirstText();
+    
+}
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
     var f = new TField("客户", TF_AC, 0, "yun", -1);

@@ -477,15 +477,16 @@ function testSLH_8953Field(det, exclude) {
     editSalesBill(json, colorSize);
 
     var det = json["明细值"].data;
+    for (var j = 0; j < det.length; j++) {
+        debugObject(det[j]);
+    }
     var exp = [];
     if (isDefined(exclude)) {
         for (var i = 0; i < det.length; i++) {
-            var code = det[i]["货品"];
+            var code = det[i]["货品"].split(",");
             det[i]["已发"] = 0;
-            for (var j = 0; j < exclude.length; j++) {
-                if (!isIn(code, exclude[j])) {
-                    exp.push(det[i]);
-                }
+            if (!isInArray(exclude, code[0])) {
+                exp.push(det[i]);
             }
         }
     }
