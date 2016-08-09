@@ -8,21 +8,36 @@
 // #import "/Users/hzdlmac/Documents/slh_test/suite2.js"
 // 总经理
 function test000All() {
-    colorSize = "yes";
+    colorSize = "no";// yes
     debug = true;
     ipadVer ="7.21"; // 7.21
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");//
 // run("【销售开单-按批次查】待作废操作", "test170614");
- run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_1");
+// run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
+    run("【销售开单－按订货开单】清除按钮/下拉列表", "test170253");
     
 // run("", "test0");
 }
 function test0(){
- debugElementTree(window);
+// debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
+    
+    tapButton(window, "核销");
+    tapNaviButton(ALL);
+    tapNaviButton("完成");
+    delay();
+    var cashFindex = getEditSalesTFindex2("物流", "现金");
+    var cardTFindex = getEditSalesTFindex2("物流", "刷卡");
+    var ret3 = isAnd(!isEqual(0, getTextFieldValue(window, cardTFindex - 1)),
+            isEqual(getTextFieldValue(window, cashFindex - 1),
+                    getTextFieldValue(window, cardTFindex - 1)));
+    delay();
+    tapReturn();
+    
+    return ret3;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
