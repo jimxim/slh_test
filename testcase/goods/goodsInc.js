@@ -93,7 +93,7 @@ function cToEn(str) {
 
 /**
  * 新增/修改客户
- * @param keys 
+ * @param keys
  * @param isEdit
  * @param keys2 保存后验证
  * @returns {Boolean}
@@ -1678,6 +1678,9 @@ function setTextFieldValueByKb(view1, f) {
         } else {
             break;
         }
+    }
+    if (isDefined(f.p1)) {
+        tapTableViewCell(f);// 选择后键盘会自动收回
     }
 }
 /**

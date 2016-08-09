@@ -2792,7 +2792,7 @@ function editStatisticAnalysisInDet(o) {
         var f0 = new TField("收入类别", TF_SC, tfNum * i + 0, d["收入类别"]);
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
-        var f1 = new TField("金额", TF, tfNum * i + 1, d["金额"]);
+        var f1 = new TField("金额", TF_KB, tfNum * i + 1, d["金额"]);
         setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];

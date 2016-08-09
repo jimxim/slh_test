@@ -462,7 +462,7 @@ function test160001() {
     keys = { "店员" : "000", "日期从" : getDay(-30) };
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
-    ret = isAnd(ret, checkQResult(qr, "店员", "总经理"));
+    ret = isAnd(ret, checkQResult("店员", "总经理"));
 
     keys = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
     fields = salesOrderQueryBatchFields(keys);
@@ -1519,6 +1519,7 @@ function test160042() {
 
 function test160042QR() {
     tapFirstText();
+    delay(0.5);//
     var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -1527,16 +1528,13 @@ function test160042QR() {
                 break;
             }
         }
-        if (isDefined(jo)) {
-            break;
-        }
-        if (j < qr.totalPageNo) {
+        if (!isObject(jo) && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
         }
     }
     tapNaviLeftButton();
-    debugObject(jo, "jo=");
+    debugObject(jo, "jo");
     return jo;
 }
 

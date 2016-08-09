@@ -17,19 +17,21 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 //    run("测试用例", "setSales_fillnum_byinvnum_1");
- run("测试用例", "test120110");
-// run("测试用例", "onlyTest");
+ run("测试用例", "onlyTest");
+// run("测试用例", "ts160050");
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // query([],false);
-// var json={"款号":"agc001","明细":[,2,,,8]};
-// editSales_order_distributeBill(json);
-
-   
+    var r = "c" + getTimestamp(6);
+ var jo = { "名称" : r, "手机" : "p" + r, "店员" : "000", "适用价格" : "零批价",
+         "地址" : "a" };
+     editSalesBillAddCustomer(jo);
+ 
+ 
 // debugObject(gCache,"gCache");
   return true;
 }
