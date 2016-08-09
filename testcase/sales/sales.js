@@ -426,6 +426,17 @@ function addGoodsSLH_8953() {
     editSalesBill(json, colorSize);
     return true;
 }
+function prepareSLH_8953shop2() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell",
+        "明细" : [ { "货品" : "slh8953_b", "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "slh8953_a", "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+    return true;
+}
 // 情况一：款号库存全为负数
 // 情况二：款号库存为正数和负数
 // 情况三：库存为0（新增的款号就订货）
@@ -465,6 +476,48 @@ function testSLH_8953_cur() {
             { "货品" : "slh8953_b", "数量" : [ 10 ] },
             { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
     exclude = [ "slh8953_b", "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    return ret;
+}
+
+// 中洲店slh8953_a负库存 slh8953_b正库存 slh8953_c 0
+function testSLH_8953_paymethod15() {
+    var det = { "发货" : "中洲店", "明细" : [ { "货品" : "slh8953_a", "数量" : [ 10 ] } ] };
+    var exclude = [ "slh8953_a" ];
+    var ret = testSLH_8953Field(det, exclude);
+
+    det = {
+        "发货" : "中洲店",
+        "明细" : [ { "货品" : "slh8953_b", "数量" : [ 10 ] },
+                { "货品" : "slh8953_a", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_a" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = { "发货" : "中洲店", "明细" : [ { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = {
+        "发货" : "中洲店",
+        "明细" : [ { "货品" : "slh8953_b", "数量" : [ 10 ] },
+                { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = {
+        "发货" : "中洲店",
+        "明细" : [ { "货品" : "slh8953_a", "数量" : [ 10 ] },
+                { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_a", "slh8953_c" ];
+    ret = isAnd(ret, testSLH_8953Field(det, exclude));
+
+    det = {
+        "发货" : "中洲店",
+        "明细" : [ { "货品" : "slh8953_b", "数量" : [ 10 ] },
+                { "货品" : "slh8953_a", "数量" : [ 10 ] },
+                { "货品" : "slh8953_c", "数量" : [ 10 ] } ] };
+    exclude = [ "slh8953_a", "slh8953_c" ];
     ret = isAnd(ret, testSLH_8953Field(det, exclude));
 
     return ret;

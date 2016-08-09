@@ -1283,7 +1283,28 @@ function ts130038() {
 
     return ret;
 }
+function ts130039() {
+    tapMenu("采购订货", "按批次查");
+    var keys = { "日期从" : getDay(-365) };
+    var fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+    if (ret) {
+        ret = checkQResult("操作人", "采购员");
+    }
 
+    tapMenu2("按明细查");
+    fields = purchaseOrderQueryParticularFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret2 = qr.data.length > 0;
+    if (ret2) {
+        ret2 = checkQResult("操作人", "采购员");
+    }
+
+    return isAnd(ret, ret2);
+}
 /**
  * 验证整单复制整单粘贴功能
  * @param menu2 相应的新增菜单按钮

@@ -81,6 +81,8 @@ function testPurchase002() {
     run("【采购订货-新增订货】整单复制和整单粘贴", "ts120100");// kh的16个款号
     run("【采购入库-按批次查】查看修改日志（修改记录）", "ts120101");
     run("【采购入库-按批次查】查看修改日志（核销记录）", "ts120102");// 不稳定
+    run("【采购入库-新增入库】输入单价为0的款号保存成功（款号单价原来为0）", "test120109");
+    run("【采购入库-新增入库】修改款号单价为0保存成功（款号单价原来不为0）", "test120110");
 
     run("【采购入库-批量入库】均色均码+批量入库", "test120024");
     run("【采购入库-按订货入库】按订货入库", "test120025");
@@ -3454,6 +3456,78 @@ function ts120108() {
     tapReturn();
 
     return !isInAlertMsgs("only run on the main thread");
+}
+function test120109() {
+    return test120109Field(false);
+}
+function test120110() {
+    return test120109Field(true);
+}
+function test120109Field(edit) {
+    var qo = { "备注" : "销售允许单价为0的退货和开单" };
+    var o = { "新值" : "1", "数值" : [ "退货和销售价格允许为零" ] };
+    var ok = setGlobalParam(qo, o);
+
+    var r = "g" + getTimestamp(6), jo = {};
+    if (edit) {
+        r = "3035";
+        jo = { "明细" : [ { "货品" : r, "数量" : [ 30 ], "单价" : 0 } ] };
+    } else {
+        var keys = { "款号" : r, "名称" : r, "进货价" : "0" };
+        addGoods(keys);
+    }
+
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 30 ] } ] };
+    json = mixObject(json, jo);
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+
+    tapMenu2("批量入库+");
+    var json = { "店员" : "000", "明细" : [ { "货品" : r, "数量" : [ 30 ] } ] };
+    json = mixObject(json, jo);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按订货入库");
+    query();
+    tapFirstText();
+    editSalesBillSave({});
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : [ 30 ] } ] };
+    json = mixObject(json, jo);
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按订货开单");
+    query();
+    tapFirstText();
+    editSalesBillSave({});
+
+    if (colorSize == "yes") {
+        qo = { "备注" : "门店调拨是否可以填写价格" };
+        o = { "新值" : "1", "数值" : [ "调拨有价格选项", "in" ] };
+        ok = isAnd(ok, setGlobalParam(qo, o));
+
+        tapMenu("门店调出", "批量调出+");
+        var json = { "调出人" : "000", "接收店" : "中洲店",
+            "明细" : [ { "货品" : r, "数量" : [ 30 ] } ] };
+        json = mixObject(json, jo);
+        editShopOutDecruitIn(json, colorSize);
+
+        qo = { "备注" : "门店调拨是否可以填写价格" };
+        o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
+        ok = isAnd(ok, setGlobalParam(qo, o));
+    }
+
+    qo = { "备注" : "销售允许单价为0的退货和开单" };
+    o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零" ] };
+    ok = isAnd(ok, setGlobalParam(qo, o));
+    return !isInAlertMsgs("整单金额和明细金额合计不一致");
 }
 /**
  * 新增批量入库

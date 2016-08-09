@@ -9,30 +9,26 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-
-// run("测试用例", "ts110092");
- run("测试用例", "onlyTest");
+//    run("测试用例", "setSales_fillnum_byinvnum_1");
+ run("测试用例", "test120110");
+// run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // query([],false);
 // var json={"款号":"agc001","明细":[,2,,,8]};
 // editSales_order_distributeBill(json);
- 
- 
- tapMenu("销售开单", ADDBILL);
- var o = { "明细" : [ { "货品" : "agc001", "数量":[5] } ],"onlytest":"yes" };
- editSalesBill(o,colorSize);
+
    
 // debugObject(gCache,"gCache");
   return true;

@@ -21,6 +21,8 @@ function testCustomer001() {
     run("【往来管理-厂商账款】厂商总账", "ts110042");
     run("【往来管理-更多】物流商帐款-查询排序翻页汇总", "ts110091");
     run("【往来管理-更多】物流商帐款-详细页面内容检查", "ts110092");
+    run("【往来管理-更多】物流商帐款-详细页面数据检查--开启跨门店核销", "ts110093");
+    run("【往来管理-更多】物流商帐款-选择门店后再去检查详细页面的代收单", "ts110095");
     run("【往来管理-物流商查询】物流商查询", "test110044");
     run("【往来管理-更多】客户回访", "test110048");
     run("【往来管理】下拉框验证", "testCheckCustomerDropDownList");
@@ -85,6 +87,8 @@ function testCustomer002() {
     // run("【往来管理-厂商账款】异地核销_余款", "test110041Verify_2");
     run("【往来管理-厂商账款】厂商总账数值核对", "test110043");
 
+    run("【往来管理-更多】物流商帐款-详细页面--检查作废的物流单", "ts110094");
+    run("【往来管理-更多】物流商停用", "ts110096");
     run("【往来管理-物流商查询】总经理登录，显示所有门店物流商", "ts110061For000");
     run("【往来管理-物流商查询】检查物流商默认门店", "ts110062");
     run("【往来管理-物流商查询】新增物流商/物流商修改、停用、启用", "test110045_110046");
@@ -3836,9 +3840,9 @@ function ts110091() {
     return ret;
 }
 function ts110092() {
-    // tapMenu("往来管理", "getMenu_More", "物流商账款");
-    // query();
-    // tapFirstText();
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    query();
+    tapFirstText();
     var view = getScrollView(-1, 0);
     var keys = { "客户" : "xw", "是否收款" : "是" };
     var fields = testCustomerLogisticsAccountsDetFields(keys);
@@ -3851,8 +3855,94 @@ function ts110092() {
     ret = isAnd(ret, isEqual("", getTextFieldValue(view, 0)), isEqual("",
             getTextFieldValue(view, 1)));
 
+    ret = isAnd(ret, scrollPrevPageCheck2(view, "批次", "物流备注"));
     ret = ret && sortByTitle2(view, "批次", "物流备注", "批次", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "发生日期", IS_DATE2);
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "门店");
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "客户");
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "运单号");
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "代收金额", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "是否收款");
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "物流备注");
+    tapNaviClose();
 
+    return ret;
+}
+function ts110093() {
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    query();
+    var titles = getQR().titles;
+    var ret = !isInArray(titles, "门店");
+
+    tapFirstText();
+    var view = getScrollView(-1, 0);
+    var qr = getQR2(view, "批次", "物流备注");
+    var ret2 = isEqualQRData1ByTitle(qr, "门店", "中洲店");
+    if (!ret2) {
+        tapTitle(view, "门店");
+        tapTitle(view, "门店");
+        qr = getQR2(view, "批次", "物流备注");
+        ret2 = isEqualQRData1ByTitle(qr, "门店", "中洲店");
+    }
+    tapNaviClose();
+    return isAnd(ret, ret2);
+}
+function ts110094() {
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ],
+        "代收" : { "物流商" : "sfkd" } };
+    editSalesBill(json, colorSize);
+
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    var keys = { "物流商" : "sfkd" };
+    var fields = testCustomerLogisticsAccountsFields(keys);
+    query(fields);
+    tapFirstText();
+    var qr = getQR2(getScrollView(-1, 0), "批次", "物流备注");
+    var data = qr.data[0];
+    tapNaviLeftButton();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    tapButtonAndAlert(INVALID, OK);
+    var cond = "window.buttons()['按批次查'].isVisible()";
+    waitUntil(cond, 5);
+
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    tapButton(window, QUERY);
+    tapFirstText();
+    qr = getQR2(getScrollView(-1, 0), "批次", "物流备注");
+    var ret = !isEqualQRData1Object(qr, data);
+    tapNaviClose();
+
+    return ret;
+}
+function ts110095() {
+    tapMenu("往来管理", "getMenu_More", "物流商账款");
+    var keys = { "门店" : "常青店" };
+    var fields = testCustomerLogisticsAccountsFields(keys);
+    query(fields);
+    tapFirstText();
+    var view = getScrollView(-1, 0);
+    var qr = getQR2(view, "批次", "物流备注");
+    var ret = isEqualQRData1ByTitle2(qr, "门店", "常青店");
+    tapTitle(view, "门店");
+    tapTitle(view, "门店");
+    ret = isAnd(ret, isEqualQRData1ByTitle2(qr, "门店", "常青店"));
+    tapNaviClose();
+    return ret;
+}
+function ts110096() {
+    tapMenu("往来管理", "getMenu_More", "物流商查询");
+    var keys = { "名称" : "顺丰快递" };
+    var fields = queryCustomerLogisticsFields(keys);
+    query(fields);
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "不允许停用");
+    tapReturn();
     return ret;
 }
 function testCheckCustomerDropDownList() {
