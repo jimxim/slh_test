@@ -201,7 +201,7 @@ function ts120001_2() {
     return ret;
 }
 function ts120003() {
-    var jo = { "客户" : "vell", "goodsFieldIndex" : -2 };
+    var jo = { "客户" : "vell" };
     var det1 = {}, det2 = {}, det3 = {};
     switch (colorSize) {
     case "no":
@@ -2821,16 +2821,12 @@ function test120050Field(price) {
     return ret;
 }
 
-function ts120050Det(num1, num2, gIdx) {
+function ts120050Det(num1, num2) {
     if (isUndefined(num1)) {
         num1 = 20;
     }
     if (isUndefined(num2)) {
         num2 = 30;
-    }
-    // 销售开单界面是-3，订货与采购入库界面是-2
-    if (isUndefined(gIdx)) {
-        gIdx = -2;
     }
     var det = {};
     switch (colorSize) {
@@ -2839,10 +2835,8 @@ function ts120050Det(num1, num2, gIdx) {
                 { "货品" : "agc003", "数量" : num2 } ] };
         break;
     case "yes":
-        det = {
-            "明细" : [ { "货品" : "agc001", "数量" : [ num1 ] },
-                    { "货品" : "agc004", "数量" : [ num2 ] } ],
-            "goodsFieldIndex" : gIdx };
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ num1 ] },
+                { "货品" : "agc004", "数量" : [ num2 ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -2859,8 +2853,7 @@ function test120056() {
         det = { "明细" : [ { "货品" : "agc003", "数量" : 20 } ] };
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "agc004", "数量" : [ 20 ] } ],
-            "goodsFieldIndex" : -2 };
+        det = { "明细" : [ { "货品" : "agc004", "数量" : [ 20 ] } ] };
         break;
     default:
         break;
@@ -3177,10 +3170,8 @@ function ts120088() {
         det2 = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ], "单价" : 110 } ],
-            "goodsFieldIndex" : -2 };
-        det2 = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ],
-            "goodsFieldIndex" : -2 };
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ], "单价" : 110 } ] };
+        det2 = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -3291,8 +3282,7 @@ function ts120092Field(jo1, jo2) {
         addDet = {
             "按订货" : "yes",
             "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] },
-                    { "货品" : "agc002", "数量" : [ 30 ] } ],
-            "goodsFieldIndex" : -2 };
+                    { "货品" : "agc002", "数量" : [ 30 ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -3472,7 +3462,6 @@ function ts120108() {
 function editPurchaseBatch(o, colorSize) {
     editPurchaseBatchStaff(o);
     if (colorSize == "yes") {
-        // goodsFieldIndex=-2
         editSalesBillDetColorSize(o);
     }
     if (colorSize == "no") {

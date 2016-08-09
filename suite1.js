@@ -9,7 +9,7 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
@@ -17,40 +17,26 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 
-// run("测试用例", "testSLH_8953_cur");
+// run("测试用例", "ts110092");
  run("测试用例", "onlyTest");
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
+// query([],false);
 // var json={"款号":"agc001","明细":[,2,,,8]};
 // editSales_order_distributeBill(json);
+ 
+ 
+ tapMenu("销售开单", ADDBILL);
+ var o = { "明细" : [ { "货品" : "agc001", "数量":[5] } ],"onlytest":"yes" };
+ editSalesBill(o,colorSize);
    
 // debugObject(gCache,"gCache");
   return true;
 }
-
-
-function loginTest001(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-       logDebug("1");
-       logout();
-    }
-}
-function loginTest002(){
-    var p1 = {"角色":"店长"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-       logDebug("2");
-       logout();
-    }
-}
-
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};

@@ -2358,8 +2358,7 @@ function ts100145_146() {
         addGoods(keys);
 
         tapMenu("采购入库", "新增入库+");
-        var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ],
-            "goodsFieldIndex" : -2 };
+        var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
         editSalesBill(json, colorSize);
 
         tapMenu("门店调出", "批量调出+");

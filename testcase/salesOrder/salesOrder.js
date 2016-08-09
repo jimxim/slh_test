@@ -124,7 +124,7 @@ function ts160049() {
     var jo = { "客户" : "xw", "现金" : 1000, "刷卡" : [ 2000, "银" ],
         "汇款" : [ 3000, "银" ], "日期" : getDay(-1),
         "特殊货品" : { "抹零" : 20, "打包费" : 10 }, "备注" : "aaa" };
-    var det = addPOrderBillDet(30, -2, "bbb");
+    var det = addPOrderBillDet(30, "bbb");
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
     var jo1 = json["输入框值"];
@@ -182,8 +182,7 @@ function ts160050() {
         editSalesBillDetNoColorSize(jo);
         break;
     case "yes":
-        jo = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ],
-            "goodsFieldIndex" : -2 };
+        jo = { "明细" : [ { "货品" : "agc001", "数量" : [ 30 ] } ] };
         editSalesBillDetColorSize(jo);
         break;
     default:
@@ -1760,8 +1759,8 @@ function test160065() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "goodsFieldIndex" : -2,
-        "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ], "onlytest" : "yes" };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
     var a = getTextFieldValue(getScrollView(), 4);// 单价
     saveAndAlertOk();
@@ -1781,8 +1780,8 @@ function test160065() {
     delay();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "goodsFieldIndex" : -2,
-        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ], "onlytest" : "yes" };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
     var a = getTextFieldValue(getScrollView(), 4);
     saveAndAlertOk();
@@ -1797,8 +1796,8 @@ function test160065() {
     delay();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "goodsFieldIndex" : -2,
-        "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ], "onlytest" : "yes" };
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
     var a = getTextFieldValue(getScrollView(), 4);
     saveAndAlertOk();
@@ -1876,9 +1875,7 @@ function ts160073_74() {
         addDet = { "按订货" : "yes", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
         break;
     case "yes":
-        addDet = { "按订货" : "yes",
-            "明细" : [ { "货品" : "agc002", "数量" : [ 10 ] } ],
-            "goodsFieldIndex" : -3 };
+        addDet = { "按订货" : "yes", "明细" : [ { "货品" : "agc002", "数量" : [ 10 ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
@@ -2054,8 +2051,7 @@ function addBill160073(all) {
                 { "货品" : "4562", "数量" : 30 } ] };
         break;
     case "yes":
-        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 20, 30 ] } ],
-            "goodsFieldIndex" : -3 };
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 20, 30 ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);

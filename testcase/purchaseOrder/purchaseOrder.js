@@ -315,9 +315,8 @@ function ts130002_2() {
         break;
     case "yes":
         kCode = { "款号" : "agc001" };
-        det = {
-            "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ], "备注" : [ 123, 321 ] } ],
-            "goodsFieldIndex" : -2 };
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ],
+            "备注" : [ 123, 321 ] } ] };
         jo2 = { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "L",
             "单价" : 100, "数量" : 30, "金额" : 3000, "已入库" : 10, "备注" : "123" }
         break;
@@ -1008,9 +1007,8 @@ function ts130014() {
         det = { "明细" : [ { "货品" : "3035", "数量" : 30, "备注" : "123" } ] };
         break;
     case "yes":
-        det = {
-            "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ], "备注" : [ 123, 321 ] } ],
-            "goodsFieldIndex" : -2 };
+        det = { "明细" : [ { "货品" : "agc001", "数量" : [ 30, 20 ],
+            "备注" : [ 123, 321 ] } ] };
         remark = "321";
         break;
     default:
@@ -1172,7 +1170,7 @@ function ts130017() {
 
 function ts130024() {
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "goodsFieldIndex" : -2 };
+    var jo = { "客户" : "vell" };
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
@@ -1208,7 +1206,7 @@ function ts130026Prepare() {
     }
 
     tapMenu("采购订货", "新增订货+");
-    var jo = { "客户" : "vell", "onlytest" : "yes", "goodsFieldIndex" : -2 };
+    var jo = { "客户" : "vell", "onlytest" : "yes" };
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
     xCache = getQRDet().data;
@@ -1358,16 +1356,11 @@ function editOverLengthBillDet() {
 /**
  * 简单的开单明细
  * @param num 数量
- * @param gIdx 颜色尺码模式时，货品文本框的下标 默认-2
  * @param remarks 备注
  */
-function addPOrderBillDet(num, gIdx, remarks) {
+function addPOrderBillDet(num, remarks) {
     if (isUndefined(num)) {
         num = 30;
-    }
-    // 销售开单界面是-3，订货与采购入库界面是-2
-    if (isUndefined(gIdx)) {
-        gIdx = -2;
     }
     var det = {};
     switch (colorSize) {
@@ -1377,8 +1370,7 @@ function addPOrderBillDet(num, gIdx, remarks) {
         break;
     case "yes":
         det = { "名称" : "auto001", "颜色" : "花色", "尺码" : "L",
-            "明细" : [ { "货品" : "agc001", "数量" : [ num ] } ],
-            "goodsFieldIndex" : gIdx };
+            "明细" : [ { "货品" : "agc001", "数量" : [ num ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);

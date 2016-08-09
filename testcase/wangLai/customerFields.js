@@ -683,7 +683,7 @@ function testCustomerLogisticsAccountsField(key, show) {
 function testCustomerLogisticsAccountsDetFields(keys, show) {
     return getTFields("testCustomerLogisticsAccountsDetField", keys, show);
 }
-function testCustomerLogisticsAccountsDetFields(key, show) {
+function testCustomerLogisticsAccountsDetField(key, show) {
     var f;
     switch (key) {
     case "customer":

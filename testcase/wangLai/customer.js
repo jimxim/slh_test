@@ -1705,7 +1705,7 @@ function ts110034() {
 
     tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : r };
-    var det = addPOrderBillDet(15, -3);
+    var det = addPOrderBillDet(15);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -1742,13 +1742,13 @@ function ts110035() {
     // 开一个月前的欠款单
     tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : r, "日期" : getDay(-30), "未付" : "yes" };
-    var det = addPOrderBillDet(20, -3);
+    var det = addPOrderBillDet(20);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
     // 销售订货应该对客户活跃度没有影响
     tapMenu("销售订货", "新增订货+");
-    jo = { "客户" : r, "goodsFieldIndex" : -2 };
+    jo = { "客户" : r };
     json = mixObject(det, jo);
     editSalesBill(json, colorSize);// 当天的订货单
 
@@ -1763,7 +1763,7 @@ function ts110035() {
 
     tapMenu("销售开单", ADDBILL);
     jo = { "客户" : r };
-    det = addPOrderBillDet(-10, -3);
+    det = addPOrderBillDet(-10);
     json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -3241,7 +3241,7 @@ function ts110057Field(cond) {
     var o = { "名称" : r };
     editSalesBillAddCustomer(o);
     var jo = { "未付" : "yes" };
-    var det = addPOrderBillDet(30, -3);
+    var det = addPOrderBillDet(30);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -3550,12 +3550,12 @@ function ts110067() {
     tapReturn();
 
     fields = queryCustomerFields({ "是否停用" : "是" });
-    query(fields, "yes");
+    query(fields, false);
     var qr = getQR();
     var ret = isEqual(cus_h, qr.data[0]["名称"]);
 
     fields = queryCustomerFields({ "客户名称" : cus_l });
-    query(fields, "yes");
+    query(fields, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(cus_l, qr.data[0]["名称"]));
     tapFirstText();
@@ -3564,7 +3564,7 @@ function ts110067() {
 
     tapMenu2("客户查询");
     fields = queryCustomerFields({ "是否停用" : "否" });
-    query(fields, "yes");
+    query(fields, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(cus_l, qr.data[0]["名称"]));
 
@@ -3578,7 +3578,7 @@ function ts110067() {
 
     tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : cus_l, "未付" : "yes" };
-    var det = addPOrderBillDet(10, -3);
+    var det = addPOrderBillDet(10);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -3595,7 +3595,7 @@ function ts110067() {
 
     tapMenu("销售开单", ADDBILL);
     var jo = { "客户" : cus_l, "现金" : "6000" };
-    var det = addPOrderBillDet(10, -3);
+    var det = addPOrderBillDet(10);
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
@@ -3635,7 +3635,7 @@ function ts110081() {
     var ret = isEqual(a, counts["未结"]);
 
     fields = queryCustomerSuperFields({ "门店" : "常青店" });
-    query(fields, "yes");
+    query(fields, false);
     qr = getQR();
     var b = qr.data[0]["账户余额"];
 
@@ -3835,11 +3835,25 @@ function ts110091() {
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
-function ts110091(){
-    tapMenu("往来管理", "getMenu_More", "物流商账款");
-    query();
-    tapFirstText();
-    
+function ts110092() {
+    // tapMenu("往来管理", "getMenu_More", "物流商账款");
+    // query();
+    // tapFirstText();
+    var view = getScrollView(-1, 0);
+    var keys = { "客户" : "xw", "是否收款" : "是" };
+    var fields = testCustomerLogisticsAccountsDetFields(keys);
+    query(fields, true, view);
+    var qr = getQR2(view, "批次", "物流备注");
+    var ret = isAnd(isEqualQRData1ByTitle2(qr, "客户", "小王"),
+            isEqualQRData1ByTitle2(qr, "是否收款", "是"));
+
+    query([], true, view);
+    ret = isAnd(ret, isEqual("", getTextFieldValue(view, 0)), isEqual("",
+            getTextFieldValue(view, 1)));
+
+    ret = ret && sortByTitle2(view, "批次", "物流备注", "批次", IS_NUM);
+
+    return ret;
 }
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");

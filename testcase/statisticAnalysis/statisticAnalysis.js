@@ -2570,7 +2570,7 @@ function test190112Field(fn) {
 
     keys = { "门店" : "中洲店" };
     fields = getTFields(fn, keys);
-    query(fields, "yes");
+    query(fields, false);
     qr = getQR();
     ret = isAnd(ret, qr.data.length == 0);
     return ret;
