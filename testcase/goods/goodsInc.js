@@ -1679,9 +1679,6 @@ function setTextFieldValueByKb(view1, f) {
             break;
         }
     }
-    if (isDefined(f.p1)) {
-        tapTableViewCell(f);// 选择后键盘会自动收回
-    }
 }
 /**
  * 明细详细页面排序验证

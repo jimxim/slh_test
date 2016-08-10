@@ -15,14 +15,10 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-    run("测试用例", "onlyTest");
-// run("测试用例", "test190113");
-// run("测试用例", "ts120007");
-// run("测试用例", "test120008_2");
-// run("【采购入库-新增入库】挂单转正式采购入库单后打印", "test120058");
-// run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
-// run("【采购入库-批量入库】均色均码+批量入库", "test120024");
-// run("【采购入库-按订货入库】按订货入库", "test120025");
+    
+    run("测试用例", "ts190139");// 
+// run("测试用例", "onlyTest"); 
+
 }
 
 function onlyTest(){
@@ -30,11 +26,7 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // query([],false);
-    
-// var r = "c" + getTimestamp(6);
-// var jo = { "名称" : r, "手机" : "p" + r, "店员" : "000", "适用价格" : "零批价",
-// "地址" : "a" };
-// editSalesBillAddCustomer(jo);
+
 
 // debugObject(gCache,"gCache");
   return true;

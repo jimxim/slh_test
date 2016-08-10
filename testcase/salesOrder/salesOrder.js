@@ -65,6 +65,8 @@ function testSalesOrder002() {
     run("【销售订货—按明细查】销售订货-按明细查页面已发数汇总与销售订货-按批次查页面已发数对比", "test160096");
     // run("【销售订货—订货汇总】按款号图像-刷新图像", "test160026");//没有任何提示框
 
+    run("【销售订货-新增】加载挂单后，是否弹出打印询问窗口", "test160169");
+
     run("【销售订货—订货汇总】按款号-待发数数值检查", "test160035");
     run("【销售订货—订货汇总】按款号-未发数数值检查--多发", "test160036");
     // run("【销售订货—订货汇总】按款号-厂商查询", "test160037");
@@ -2248,6 +2250,42 @@ function test160124() {
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
 
     return ret;
+}
+// 常青店店长查看中洲店数据
+function test160168() {
+    tapMenu("销售订货", "按批次查");
+    var keys = { "日期从" : getDay(-365), "门店" : "中洲店" };
+    var fields = salesOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length == 0;
+
+    tapMenu2("按挂单");
+    fields = salesOrderHangFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+    return ret;
+}
+function test160169() {
+    var qo = { "备注" : "开单修改保存时是否直接询问打印" };
+    var o = { "新值" : "1", "数值" : [ "询问打印", "in" ] };
+    var ok = setGlobalParam(qo, o);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+    alertMsgs = [];
+
+    tapMenu2("新增订货+");
+    tapMenu("销售订货", MORE, "所有挂单");
+    loadHangBill(0);
+    editSalesBillSave({});
+
+    return isInAlertMsgs("是否打印");
 }
 // 翻页/排序/汇总
 function test16_Stockout_1() {

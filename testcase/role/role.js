@@ -95,6 +95,7 @@ function testShopkeeper004All() {
     run("【门店调出-按款号汇总】店长等非总经理登录-只能查看调出门店为本门店的汇总值", "ts150022");
     //
     run("【销售订货—按批次查】店长查看修改日志", "test160011_1");
+    run("【销售订货-按批次查】门店查询条件检查", "test160168");
 
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_2");
     run("【统计分析—汇总表-退货表】权限检查", "test190096ForElse");
@@ -102,6 +103,7 @@ function testShopkeeper004All() {
     run("【统计分析—汇总表-滞销表】权限检查", "test190103ForElse");
     run("【统计分析-汇总表-颜色销售表/尺码销售表/品牌/类别/厂商】店长登录，只统计本门店的数据", "test190112");
     run("【统计分析-收支流水】店长查看收支流水的权限", "ts190110");
+    run(" 【统计分析-收支表/综合汇总】门店权限", "ts190140");
 
 }
 
@@ -427,7 +429,7 @@ function checkRightsPurchase() {
 
     tapMenu2("批量入库+");
     arr = [ "单价", "小计" ];// 
-    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
+    ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
     tapMenu2("按订货入库");
@@ -496,8 +498,13 @@ function checkRightsPurchaseOrder() {
 function checkRightsShopIn() {
     tapMenu("门店调入", "按批次查");
     tapButton(window, QUERY);
-    var arr = [];// "金额"
+    var arr = [ "金额" ];// 7.21
     var ret = checkRightsField(hasRights, getScrollView(), arr);
+
+    tapMenu("门店调入", "按批次查");
+    tapButton(window, QUERY);
+    var arr = [];// "金额"
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("按明细查");
     arr = [ "单价" ];// , "金额"

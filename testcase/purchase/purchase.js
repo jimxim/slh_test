@@ -2344,21 +2344,19 @@ function ts120060() {
     tapMenu2("按批次查");
     query();
     tapFirstText();
+    tapButton(window, CLEAR);// 清除厂商
+    editSalesBillSave({});
+    var ret = isInAlertMsgs("客户或供应商信息不允许修改");
+    alertMsgs = [];
 
-    tapButton(window, CLEAR);
-    saveAndAlertOk();
-    delay();
-    tapPrompt();
-    var ret = isIn(alertMsg, "客户或供应商信息不允许修改");
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();
+    jo = { "客户" : "vell" };
+    editSalesBill(jo, colorSize);
+    ret = isAnd(ret, isInAlertMsgs("客户或供应商信息不允许修改"));
 
-    var f = new TField("厂商", TF_AC, 0, "vell", -1, 0);
-    setTFieldsValue(window, [ f ]);
-    saveAndAlertOk();
-    delay();
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "客户或供应商信息不允许修改"));
-    tapReturn();
-
+    tapMenu2("按批次查");
     tapButton(window, QUERY);
     var qr = getQR();
     ret = isAnd(ret, isEqual("Rt", qr.data[0]["厂商"]));
@@ -2386,7 +2384,8 @@ function test120079() {
     tapFirstText();
     json = { "客户" : "tbscs" };// 特步生产商 适用价格零批价
     editSalesBillCustomer(json);
-    tapButtonAndAlert("none", "刷新价格");// 注:采购入库和采购订货界面不会出现价格刷新窗口
+    tapButtonAndAlert("none", "刷新价格");
+    delay();
     // 刷新后应该依然为进货价100
     var data = getQRDet().data[0];
     ret = isAnd(ret, isEqual(100, data["单价"]), isEqual(data["小计"], data["数量"]
@@ -3058,39 +3057,20 @@ function test120041() {
 }
 function test120048() {
     tapMenu("采购入库", "批量入库+");
-    var f1 = new TField("货品", TF_AC, 1, "4562", -1, 0);
-    var f4 = new TField("数量", TF, 4, "17");
-    var fields3 = [ f1, f4 ];
-    setTFieldsValue(getScrollView(), fields3);
-
-    var a = getTextFieldValue(window, 0);
-
-    var ret = isEqual("", a);
-
-    tapButtonAndAlert(SAVE, OK);
-    delay();
-    tapPrompt();
-    tapReturn();
+    var json = addPOrderBillDet();
+    editPurchaseBatch(json, colorSize);
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "店员" : "000" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
+    query();
     var qr = getQR();
-    var b = qr.data[0]["店员"];
-    var ret1 = isEqual("总经理", b);
+    var ret = isEqual("总经理", qr.data[0]["店员"]);
 
     tapFirstText();
-    var c = getTextFieldValue(window, 4);
-    var c1 = getTextFieldValue(getScrollView(), 0);
-    var c2 = getTextFieldValue(getScrollView(), 3);
-    var ret2 = isAnd(isEqual("000,总经理", c), isEqual("4562,Story", c1), isEqual(
-            "17", c2));
-
+    var v = editSalesBillGetValue({});
     tapReturn();
+    ret = isAnd(ret, isEqual("000,总经理", v["店员"]))
 
-    return ret && ret1 && ret2;
+    return ret;
 }
 function test120051() {
     tapMenu("采购订货", "新增订货+");
@@ -3581,7 +3561,7 @@ function editPurchaseBatchSave(o) {
         return;
     }
 
-    tapButtonAndAlert(SAVE, OK);
+    saveAndAlertOk();
     o["操作日期"] = getOpTime();
     delay();
     if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
@@ -3589,46 +3569,5 @@ function editPurchaseBatchSave(o) {
         tapKeyboardHide();
     } else {
         tapReturn();
-    }
-}
-
-// sales.js里面也有一个~，看情况修改
-function editPurchaseBillAddGoods(o) {
-    var ot = o["新增货品"];
-    if (isDefined(ot)) {
-        delay();
-        if (window.buttons()["新增货品+"].isVisible()) {
-            tapButton(window, "新增货品+");
-        } else {
-            tapButton(window, "新增货品");
-        }
-
-        var fields = [], n;
-        n = ot["款号"];
-        if (isDefined(n)) {
-            fields.push(new TField("款号", TF, 0, n));
-        }
-        n = ot["名称"];
-        if (isDefined(n)) {
-            fields.push(new TField("名称", TF, 1, n));
-        }
-        n = ot["进货价"];
-        if (isDefined(n)) {
-            fields.push(new TField("进货价", TF, 2, n));
-        }
-        n = ot["零批价"];
-        if (isDefined(n)) {
-            fields.push(new TField("零批价", TF, 3, n));
-        }
-        var view1 = getPopOrView();
-        setTFieldsValue(view1, fields);
-
-        var view2 = getPop();
-        var btn = view2.buttons()[OK];
-        if (isUIAElementNil(btn)) {
-            view2 = getPopView();
-        }
-        tapButton(view2, OK);
-        tapButton(view2, CLOSE);
     }
 }

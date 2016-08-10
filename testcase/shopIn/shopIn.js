@@ -339,6 +339,7 @@ function ts140006() {
 }
 
 function ts140007_09() {
+    var arr=[];
     tapMenu("门店调入", "在途调拨");
     var keys = { "日期从" : getDay(-15) };
     var fields = shopInFlitFields(keys);
@@ -348,13 +349,17 @@ function ts140007_09() {
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("数量", IS_NUM);
+    if (ipadVer >= 7.21) {
+        ret = ret && sortByTitle("金额", IS_NUM);
+        arr.push["金额"];
+    }
     ret = ret && sortByTitle("送货人");
     ret = ret && sortByTitle("操作日期", IS_OPTIME);
     ret = ret && sortByTitle("操作人");
     ret = ret && sortByTitle("备注");
 
     // 7。01起不显示作废数据
-    var arr = [ "数量" ];
+    arr.push["数量"];
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }

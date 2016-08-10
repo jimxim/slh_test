@@ -13,6 +13,7 @@ function testShopOut001() {
         run("【门店调出-按明细查】条件查询，清除按钮,下拉框", "ts150010_2");
         run("【门店调出-按批次查】按批次查作废，汇总", "ts150001_09");
         run("【门店调出-批量调出】批量调出", "ts150003");
+        run("【门店调出-批量调出】切换左侧菜单进行其他操作", "ts150032");
     }
     run("【门店调出-按明细查】加工商品单价检查", "ts150011");
     run("【门店调出-按款号汇总】按款号汇总功能检查", "ts150016");
@@ -707,6 +708,42 @@ function ts150031() {
     tapButton(getScrollView(-1), 0);// 删除第一行数据
     editShopOutSave({});
     ret = isAnd(ret, isInAlertMsgs("空单不允许保存"));
+
+    return ret;
+}
+
+function ts150032() {
+    tapMenu("门店调出", "批量调出+");
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var arr = [ "单价", "小计" ];// 
+    var ret = checkRightsField(true, window, arr);
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    ret = isAnd(ret, checkRightsField(true, window, arr));
+    tapReturn();
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapFirstText();
+    ret = isAnd(ret, checkRightsField(true, window, arr));
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    ret = isAnd(ret, checkRightsField(true, window, arr));
+    tapReturn();
+
+    tapMenu("销售开单", ADDBILL);
+    ret = isAnd(ret, checkRightsField(true, window, arr));
+    tapReturn();
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    ret = isAnd(ret, checkRightsField(true, window, arr));
+    tapReturn();
 
     return ret;
 }

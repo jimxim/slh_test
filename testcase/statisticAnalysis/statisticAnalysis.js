@@ -71,6 +71,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—利润表】查看明细-按单利润表", "test190084");// 3种成本核算
     run("【统计分析—利润表】按单利润表排序翻页", "test190102");
     run("【统计分析—利润表】明细利润额和按单利润总和一致检查", "test190085");
+    run("【统计分析-日利润表】日利润表界面选择了条件查询后再到详细页面检查内容", "ts190139");
 
     run("【统计分析—综合汇总】查询", "test190030");
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_1");
@@ -2129,20 +2130,19 @@ function test190078_190080() {
     var arr2;
     qr = getQR();
     for (j = 1; j <= qr.totalPageNo; j++) {
+        var ok = false;
         for (i = 0; i < qr.data.length; i++) {
-            if (qr.data[i]["在途数"] > 0) {
-                if (qr.data[i]["库存"] == 0) {
-                    arr2 = qr.data[i];
-                    break;
-                }
-            } else {
+            if (qr.data[i]["在途数"] > 0 && qr.data[i]["库存"] == 0) {
+                arr2 = qr.data[i];
+                ok = true;
+                break;
+            }
+            if (qr.data[i]["在途数"] <= 0) {
+                ok = true;
                 break;
             }
         }
-        if (isDefined(arr2) || qr.data[i]["在途数"] <= 0) {
-            break;
-        }
-        if (j < qr.totalPageNo) {
+        if (!ok && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR();
         }
@@ -2447,16 +2447,16 @@ function test190042() {
 
     tapFirstText();
     var ret = scrollPrevPageCheck2(getScrollView(-1, 0), "款号", "利润额");
-
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "款号");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "名称");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "单价");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "折扣");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "进货价");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额");
-    ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");
+    // 暂不支持排序
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "款号");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "名称");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "数量");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "单价");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "折扣");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "销售额");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "进货价");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额");
+    // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");
 
     tapNaviLeftButton();
 
@@ -2582,6 +2582,7 @@ function test190113() {
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "颜色" : "均色", "款号" : "3035",
         "品牌" : "Adidas", "厂商" : "Vell" };
     var fields = salesCodeFields(keys);
+    query(fields);
     var qr = getQR();
     arr["实销数"] = qr.data[0]["实销数"];
 
@@ -2757,6 +2758,46 @@ function ts190138() {
     qr = getQR();
     ret = isAnd(ret, isEqual("单位[赵本山]", qr.data[0]["备注"]));
 
+    return ret;
+}
+
+function ts190139() {
+    tapMenu("统计分析", Menu_Profit);
+    var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "客户" : "xw",
+        "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
+    var fields = statisticAnalysisProfitFields(keys);
+    query(fields);
+    var data = getQR().data[0];
+
+    tapFirstText();
+    var sum = {};
+    var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+    for (var i = 0; i < qr.totalPageNo; i++) {
+        for (var j = 0; j < qr.curPageTotal; j++) {
+            sum = addObject(qr.data[j], sum);
+        }
+        if (i < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
+        }
+    }
+    tapNaviClose();
+    return isEqualObject2(sum, data);
+}
+
+function ts190140() {
+    tapMenu("统计分析", Menu_Profit);
+    var keys = { "日期从" : getDay(-365), "门店" : "中洲店" };
+    var fields = statisticAnalysisProfitFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length == 0;
+
+    tapMenu2("收支表");
+    fields = statisticAnalysisInOutFields(keys);
+    query(fields);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
     return ret;
 }
 /**
