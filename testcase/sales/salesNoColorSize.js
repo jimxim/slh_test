@@ -776,11 +776,11 @@ function test170046() {
 function test170047() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
-        "未付" : "yes" };
+        "未付" : "yes", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var qr1 = json["输入框值"];
-    var totalMoney = qr1["应"];
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
     var ret = isAnd(isEqual("", qr1["现金"]));
     saveAndAlertOk();
     tapPrompt();
@@ -2047,12 +2047,13 @@ function test170078() {
     editSalesBillNoColorSize(json);
 
     var qr = json["明细值"];
-    var totalMoney = Math.round(add(0.58 * Number(qr.data[0]["数量"])
-            * Number(qr.data[0]["单价"]), 11));
+    var totalMoney = Math.round(Number(0.58 * Number(qr.data[0]["数量"])
+            * Number(qr.data[0]["单价"]))
+            + Number(11));
 
     var qr1 = json["输入框值"];
     var ret1 = isAnd(isAqualNum(totalMoney, qr1["现金"]), isAqualNum(totalMoney,
-            qr1["应付"]));
+            qr1["总计"]));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2156,14 +2157,15 @@ function test170080_170084() {
 
     var qr = json["明细值"];
     var qr1 = json["输入框值"];
-    var k3 = qr1["应付"];
+    var k2 = qr1["现金"];
+    // var k3 = qr1["应付"];
     var num = qr.data[0]["数量"];
     var price = qr.data[0]["单价"];
     var zk = qr.data[0]["折扣"];
     var totalMoney = add(Math.round(price * num * zk), -19);
 
     ret = isAnd(ret, isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
-            totalMoney, k3));
+            totalMoney, k2));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2193,7 +2195,7 @@ function test170080_170084() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug("ret=" + ret + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
-            + ret4);
+            + ret4 + ", k2=" + k2);
     return ret && ret2 && ret3 && ret4;
 }
 function test170085() {
@@ -2215,11 +2217,11 @@ function test170085() {
     var qr = json["明细值"];
     var num = qr.data[0]["数量"];
     var price = qr.data[0]["单价"];
-    var totalMoney = add(price * num * 0.88, -27);
+    var totalMoney = Number(price * num * 0.88) + (-27);
 
     var qr1 = json["输入框值"];
     var k2 = qr1["现金"];
-    var k3 = qr1["应付"];
+    var k3 = qr1["总计"];
     var ret1 = isAnd(isEqual(k3, k2), isAqualNum(totalMoney, k2));
 
     var alertMsg1 = getArray1(alertMsgs, -1);
@@ -2244,7 +2246,7 @@ function test170085() {
 
     qr1 = json["输入框值"];
     k2 = qr1["现金"];
-    k3 = qr1["应付"];
+    k3 = qr1["总计"];
     var ret1 = isAnd(isEqual(k3, k2), isAqualNum(totalMoney1, k2));
 
     tapMenu("销售开单", "按订货开单");
@@ -2857,11 +2859,11 @@ function test170104() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : "1", "备注" : "mxbz" } ], "备注" : "zdbz",
+        "明细" : [ { "货品" : "4562", "数量" : 1, "备注" : "mxbz" } ], "备注" : "zdbz",
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "303", "表格行包含" : "Adidas" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
 
@@ -2874,7 +2876,7 @@ function test170104() {
     var a = qr.data[0]["款号"];
     var b = qr.data[0]["备注"];
 
-    var ret1 = isAnd(isEqual("3035", a), isEqual("mxbz", b), isIn(text, b));
+    var ret1 = isAnd(isEqual("4562", a), isEqual("mxbz", b), isIn(text, b));
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapReturn();
@@ -2883,7 +2885,7 @@ function test170104() {
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("备注=" + text);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", 备注=" + text);
     return ret && ret1;
 }
 function test170105() {
@@ -3041,7 +3043,7 @@ function test170107() {
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("c=" + c + ", ret=" + ret+ ", ret1=" + ret1);
+    logDebug("c=" + c + ", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170116_170660() {
@@ -3436,8 +3438,8 @@ function test170128() {
     var qr = json["明细值"];
     var qr1 = json["输入框值"];
     var k2 = qr1["现金"];
-    var k3 = qr1["应"];
-    var ret = isEqual(add(qr.data[0]["小计"], sub(r, 9)), k3);
+    var k3 = qr1["应付"];
+    var ret = isEqual(add(qr.data[0]["小计"], sub(r, 9)), k2);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -3464,7 +3466,7 @@ function test170128() {
 
     var ret1 = isAnd(isEqualObject(exp, qr.data[0]), isEqualObject(exp1,
             qr.data[1]), isEqualObject(exp2, qr.data[2]), isEqual(2, sl),
-            isEqual(k3, je), isAqualOptime(getOpTime(), opt, 2));
+            isEqual(k2, je), isAqualOptime(getOpTime(), opt, 2));
     tapReturn();
 
     logDebug("k2=" + k2 + ", k3=" + k3 + ", ret=" + ret + ", ret1=" + ret1);
@@ -5163,7 +5165,7 @@ function test170189() {
     var ret = isAnd(isEqual(r, a), isEqual(r, a1), isEqual(getToday("yy"), a2),
             isEqual("常青店", a3), isEqual("总经理", a4), isEqual("兑换单", a5));
 
-    logDebug(" a=" + a + ", a1=" + a1 + ", a2=" + a2);
+    logDebug(", ret=" + ret + " a=" + a + ", a1=" + a1 + ", a2=" + a2);
     return ret;
 }
 function test170191() {
@@ -9389,7 +9391,6 @@ function test170526() {
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "特殊货品" : { "抹零" : r, "打包费" : r1 } };
     editSalesBillNoColorSize(json);
-
     var qr1 = json["输入框值"];
 
     tapMenu("销售开单", "按批次查");
@@ -9403,12 +9404,13 @@ function test170526() {
     qr = getQRDet();
     var a = qr.data[0]["货品"];
     var b = qr.data[1]["货品"];
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var y = getTextFieldValue(window, cashTFindex + 1);
     var ret = isAnd(isEqual(Math.round(add(qr.data[0]["小计"], sub(r1, r))), Math
-            .round(qr1["应"])), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
+            .round(y)), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
             Number(-r), Number(qr.data[1]["小计"])), isEqual("00001,打包费",
             qr.data[2]["货品"]), isEqual(Number(r1), Number(qr.data[2]["小计"])),
-            isEqual(2, sl), isEqual(qr1["应"], je), isAqualOptime(getOpTime(),
-                    opt, 2));
+            isEqual(2, sl), isEqual(y, je), isAqualOptime(getOpTime(), opt, 2));
     tapReturn();
 
     logDebug(", ret=" + ret);
