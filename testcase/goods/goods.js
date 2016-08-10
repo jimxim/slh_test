@@ -2503,7 +2503,7 @@ function ts100147Field(title, type) {
     editSalesBill(json, colorSize);
 
     tapMenu(menu2, menu3);
-    tapButton(window, QUNERY);
+    tapButton(window, QUERY);
     tapFirstText();
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);//

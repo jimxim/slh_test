@@ -1154,6 +1154,7 @@ function test120023() {
     tapFirstText();
     var exp = editSalesBillGetValue({});
     tapReturn();
+    json["输入框值"]["店员"] = "000,总经理";
     var ret1 = isEqualObject2(exp, json["输入框值"]);
 
     tapMenu("货品管理", "当前库存");
@@ -2080,7 +2081,7 @@ function test120037() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
     var f = editCustomerProviderField("适用价格", true);
-    var ret = isEqual("进货价", getTextFieldValue(getScrollView(), f.index));
+    var ret = isEqual("进货价", getTextFieldValue(getScrollView(-1), f.index));
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2090,7 +2091,7 @@ function test120037() {
     editSalesBill(json, colorSize);
 
     var title = getSalesBillDetTfObject();
-    var a = getTextFieldValue(getScrollView(), title["单价"]);
+    var a = getTextFieldValue(getScrollView(-1), title["单价"]);
     ret = isAnd(ret, isEqual("100", a));
     // window.segmentedControls()[2].buttons()["进货价"].isVisible();
     tapReturn();
@@ -3369,7 +3370,7 @@ function ts120096_97() {
     qr = getQR();
     var data2 = qr.data[0];
     data2["批次"] = batch;
-    ret = isAnd(ret, isEqualObject2(data1, data2));
+    ret = isAnd(ret, isEqualObject2(data1, data2, 1));
     return ret;
 }
 

@@ -854,16 +854,20 @@ function editSalesBillField(key, show) {
  */
 function getPayableTFindex() {
     var index = getEditSalesTFindex2("客户,厂商", "应");
+    logDebug("index="+index);
     if (index < 0) {
         index = getEditSalesTFindex2("客户,厂商", "应付");
     }
+    logDebug("index="+index);
     return index;
 }
 function getPaidTFindex() {
     var index = getEditSalesTFindex2("客户,厂商", "实");
+    logDebug("index="+index);
     if (index < 0) {
         index = getEditSalesTFindex2("客户,厂商", "实收");
     }
+    logDebug("index="+index);
     return index;
 }
 function getStaffTFindex() {
