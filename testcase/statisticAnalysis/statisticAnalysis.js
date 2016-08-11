@@ -28,6 +28,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—收支汇总】进入详细", "test190010");
     run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
     run("【统计分析—收支汇总】检查底部数据", "test190011");// 补作废验证
+    run("【统计分析-综合汇总】开单模式影响", "ts190141");
 
     run("【统计分析—收支流水】查询清除", "test190022_190023");
     run("【统计分析—收支流水】翻页排序", "test190024");
@@ -2798,6 +2799,45 @@ function ts190140() {
     query(fields);
     qr = getQR();
     ret = isAnd(ret, qr.data.length == 0);
+    return ret;
+}
+// 开单模式2，6，10，18，19，21
+function ts190141() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "6", "数值" : [ "现金+刷卡+汇款+客户折扣", "in" ] };
+    var ok = setGlobalParam(qo, o);
+    var ret = ts190141Field(true);
+
+    o = { "新值" : "10", "数值" : [ "按组开单模式", "in" ] };
+    ok = setGlobalParam(qo, o);
+    ret = isAnd(ret, ts190141Field(true));
+
+    o = { "新值" : "18", "数值" : [ "整单折扣", "in" ] };
+    ok = setGlobalParam(qo, o);
+    ret = isAnd(ret, ts190141Field(true));
+
+    o = { "新值" : "19", "数值" : [ "产品折扣", "in" ] };
+    ok = setGlobalParam(qo, o);
+    ret = isAnd(ret, ts190141Field(true));
+
+    o = { "新值" : "21", "数值" : [ "异地发货", "in" ] };
+    ok = setGlobalParam(qo, o);
+    ret = isAnd(ret, ts190141Field(true));
+
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ok = setGlobalParam(qo, o);
+    ret = isAnd(ret, ts190141Field(true));
+
+    return ret;
+}
+function ts190141Field(hasRights) {
+    tapMenu("统计分析", "综合汇总");
+    var arr = [ "代收收款" ];
+    var ret = checkRightsField(hasRights, getScrollView(), arr);
+
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    arr = [ "代收" ];
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     return ret;
 }
 /**

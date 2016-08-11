@@ -1103,7 +1103,7 @@ function goodsSizeidsField(key, show) {
     return f;
 }
 
-// 新增尺码组
+// 新增尺码组 
 function testEditGoodsSizeidsFields() {
     var keys = [ "name" ];
     var fields = editGoodsSizeidsFields(keys);

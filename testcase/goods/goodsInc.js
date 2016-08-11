@@ -758,18 +758,22 @@ function testCheckFuzzyQuery() {
  * @returns {Boolean}
  */
 function checkQResult(title, expected, type, expected2) {
-    var regTotal = /共\s*(\d+)条/;
+    var regTotal = /共\s*(\d+)条/, ret;
     var oPage = getPageInfo(window, regTotal);
     var totalPageNo = oPage["totalPageNo"];
 
-    tapTitle(getScrollView(), title);
-    var ret = checkQResultField(title, expected, type, expected2);
-
-    if (totalPageNo > 1 && ret) {
+    if (totalPageNo > 1) {
         tapTitle(getScrollView(), title);
         ret = checkQResultField(title, expected, type, expected2);
+        if (ret) {
+            tapTitle(getScrollView(), title);
+            ret = checkQResultField(title, expected, type, expected2);
+        }
+        tapButton(window, QUERY);// 取消排序，防止影响后续操作
+    } else {
+        ret = checkQResultField(title, expected, type, expected2);
     }
-    tapButton(window, QUERY);// 取消排序，防止影响后续操作
+
     return ret;
 }
 function checkQResultField(title, expected, type, expected2) {
