@@ -1755,6 +1755,145 @@ function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
     return ret;
 }
 /**
+ * 条件查询 根据菜单直接找相应的fields
+ * @param keys
+ * @param tapClear false 不点击清除
+ * @param view 默认window
+ */
+function conditionQuery(keys, tapClear, view) {
+    var msg = gMenu1 + "-" + gMenu2;
+    if (isUndefined(view)) {
+        view = window;
+    }
+    if (isUndefined(tapClear) || tapClear) {
+        tapButton(view, CLEAR);
+    }
+    var qFields;
+    switch (gMenu1) {
+    case "货品管理":
+        switch (gMenu2) {
+        case "当前库存":
+            qFields = queryGoodsStockFields(keys);
+            break;
+        case "款号库存":
+            qFields = queryGoodsCodeStockFields(keys);
+            break;
+        case "库存分布":
+            qFields = queryGoodsDistributionFields(keys);
+            break;
+        case "货品进销存":
+            qFields = queryGoodsInOutFields(keys);
+            break;
+        case "货品查询":
+            qFields = queryGoodsFields(keys);
+            break;
+        case "基本设置":
+            switch (gMenu3) {
+            case "货品类别":
+                qFields = goodsTypeFields(keys);
+                break;
+            case "所有颜色":
+                qFields = goodsColorFields(keys);
+                break;
+            case "所有尺码":
+                qFields = goodsSizeFields(keys);
+                break;
+            case "所有品牌":
+                qFields = goodsBrandFields(keys);
+                break;
+            case "所有尺码组":
+                qFields = goodsSizeidsFields(keys);
+                break;
+            case "所有品牌折扣":
+                qFields = goodsBrandDiscountFields(keys);
+                break;
+            }
+            break;
+        case MORE:
+            switch (gMenu3) {
+            case "库存调整单":
+                qFields = goodsStockAdjustmentFields(keys);
+                break;
+            case "仓位列表":
+                qFields = goodsColorFields(keys);// 同所有颜色
+                break;
+            case "超储统计":
+            case "缺货统计":
+                qFields = goodsStatisticFields(keys);
+                break;
+            case "所有颜色组":
+                qFields = goodsSizeidsFields(keys);
+                break;
+            }
+            break;
+        }
+        break;
+    case "往来管理":
+        switch (gMenu2) {
+        case "客户查询":
+            qFields = queryCustomerFields(keys);
+            break;
+        case "客户账款":
+            switch (gMenu3) {
+            case "客户门店账":
+                qFields = queryCustomerShopAccountFields(keys);
+                break;
+            case "按上级单位":
+                qFields = queryCustomerSuperFields(keys);
+                break;
+            case "客户总账":
+                qFields = queryCustomerAccountFields(keys);
+                break;
+            }
+            break;
+        case "客户活跃度":
+            qFields = queryCustomerActiveFields(keys);
+            break;
+        case "积分查询":
+            qFields = queryCustomerScoreFields(keys);
+            break;
+        case "厂商查询":
+            qFields = queryCustomerProviderFields(keys);
+            break;
+        case "厂商账款":
+            switch (gMenu3) {
+            case "厂商门店账":
+                qFields = queryProviderShopAccountFields(keys);
+                break;
+            case "厂商总账":
+                qFields = queryCustomerProviderAccountFields(keys);
+                break;
+            }
+            break;
+        case MORE:
+            switch (gMenu3) {
+            case "物流商账款":
+                qFields = testCustomerLogisticsAccountsFields(keys);
+                break;
+            case "物流商查询":
+                qFields = queryCustomerLogisticsFields(keys);
+                break;
+            case "客户回访":
+                qFields = queryCustomerBackFields(keys);
+                break;
+            case "客户标签":
+            case "客户区域查询":
+                qFields = goodsColorFields(keys);// 同所有颜色
+                break;
+            case "积分调整":
+                qFields = editCustomerPointAdjFields(keys);
+                break;
+            }
+            break;
+        }
+    default:
+        logDebug("未知模块 " + msg);
+        break;
+    }
+    setTFieldsValue(view, qFields);
+    tapButton(view, QUERY);
+}
+/**
  * 去除字符串中的标点符号
  * @param str
  * @returns

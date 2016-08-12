@@ -517,8 +517,7 @@ function test190002_190003_190008() {
 
     key = { "收支类别" : "收入" };
     fields = statisticAnalysisInOutFields(key);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    query(fields, false);
     qr = getQR();
     var a = qr.counts["金额"];
     var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-银行账户", "简称" : "银",
@@ -526,8 +525,7 @@ function test190002_190003_190008() {
     var ret = isEqualObject(expected, qr.data[0]);
 
     fields["收支类别"].value = "支出";
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    query(fields, false);
     qr = getQR();
     var b = qr.counts["金额"];// 支出汇总值为负数
     expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
@@ -2371,8 +2369,9 @@ function test190086() {
 }
 function test190087_190101() {
     tapMenu("统计分析", Menu_Profit);
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035", "客户" : "xw",
-        "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035",
+        "款号名称" : "jkk", "客户" : "xw", "店员" : "000", "厂商" : "vell",
+        "品牌" : "adidas" };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
 

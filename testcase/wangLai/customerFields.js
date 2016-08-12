@@ -921,3 +921,29 @@ function editCustomerBackField(key, show) {
     }
     return f;
 }
+// 积分调整
+function editCustomerPointAdjFields(keys, show) {
+    return getTFields("editCustomerPointAdjField", keys, show);
+}
+function editCustomerPointAdjField(key, show) {
+    var f;
+    switch (key) {
+    case "发生日期从":
+        f = new TField("发生日期从", TF_DT, 0, getToday());
+        break;
+    case "发生日期到":
+        f = new TField("发生日期到", TF_DT, 1, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 3, "小王", -1, 0);
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}

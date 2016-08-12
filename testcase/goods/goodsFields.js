@@ -515,7 +515,7 @@ function editGoodsField(key, show, texts) {
         break;
     case "库存录入":
         idx = getEditGoodsIndex(texts, "库存录入");
-        f = new TField("库存录入", BTN, idx + 1, "");// index为新增+按钮
+        f = new TField("库存录入", BTN, idx[1] + 1, "");// index为新增+按钮
         if (show) {
             f.type = TV;
             f.index = 0;
@@ -1078,7 +1078,7 @@ function editGoodsBrandField(key, show) {
     return f;
 }
 
-// 所有尺码组
+// 所有尺码组、颜色组
 function testGoodsSizeidsFields() {
     var keys = [ "name" ];
     var fields = goodsSizeidsFields(keys);
@@ -1103,7 +1103,7 @@ function goodsSizeidsField(key, show) {
     return f;
 }
 
-// 新增尺码组 
+// 新增尺码组 ，颜色组
 function testEditGoodsSizeidsFields() {
     var keys = [ "name" ];
     var fields = editGoodsSizeidsFields(keys);

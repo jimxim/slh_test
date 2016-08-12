@@ -17,7 +17,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 // run("测试用例", "ts100160");//
- run("测试用例", "ts100163"); 
+ run("测试用例", "onlyTest"); 
 
 }
 
@@ -25,13 +25,21 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-// query([],false);
-// var view=getScrollView(-1,0);
-// var texts = getStaticTexts(view);
-// var tetles=getQResultTitle(texts,"批次");
+// var view1=getPopView();
+
+    tapMenu("货品管理", "积分查询");
+    var keys = { "款号名称" : "3035" };
+    conditionQuery(keys);
     
 // debugObject(gCache,"gCache");
   return true;
+}
+
+function editStockEntry(){
+   var view=getPopView(window,0); 
+   var view1=getTableView(view);
+
+
 }
 //
 function loginGoodsParams001(){

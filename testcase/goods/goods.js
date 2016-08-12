@@ -280,6 +280,8 @@ function testGoods002() {
     run("【货品管理-更多-库存调整单】当前库存有小数时进行库存调整", "ts100117");
     run("【货品查询-新增货品】检查没有加工价的版本没有看到是否加工及加工价字段", "ts100110");
     run("【 货品管理-基本设置 】停用价格名称", "ts100144");
+    run("【货品管理-更多】新增颜色组", "ts100163");
+    run("【货品管理-更多】所有颜色组", "ts100164");
 
     // 开单模式5
     run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
@@ -1953,6 +1955,19 @@ function test100111Field(label, keys, msg) {
     if (isUndefined(msg)) {
         msg = "不能有非法符号";
     }
+    editGoodsSettings(label, keys);
+    tapPrompt();
+    var ret = isIn(alertMsg, msg);
+
+    ts100145_146Field1();// 防止正常保存,返回一级界面
+
+    if (!ret) {
+        logDebug("-------新增" + label + "  未出现msg" + msg);
+    }
+    return ret;
+}
+
+function editGoodsSettings(label, keys) {
     var fields = {};
     switch (label) {
     case "类别":
@@ -1979,15 +1994,6 @@ function test100111Field(label, keys, msg) {
     }
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapPrompt();
-    var ret = isIn(alertMsg, msg);
-
-    ts100145_146Field1();// 防止正常保存,返回一级界面
-
-    if (!ret) {
-        logDebug("-------新增" + label + "  未出现msg" + msg);
-    }
-    return ret;
 }
 
 // 均色均码的只有一条记录
@@ -1997,32 +2003,40 @@ function ts100058() {
     var o = { "新值" : "1", "数值" : [ "关联颜色尺码" ] };
     setGlobalParam(qo, o);
 
-    var code, expected = {};
+    var code, expected = {};// 厂商都是Vell
     switch (colorSize) {
     case "no":
         code = "3035";
-        expected = [ { "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码",
-            "条码" : "3035508Vell" } ];
+        expected = [ { "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码" } ];
         break;
     case "yes":
         code = "agc001";
         expected = [
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "L",
-                    "条码" : "agc00101LVell" },
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "XL",
-                    "条码" : "agc00101XLVell" },
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "2XL",
-                    "条码" : "agc00101XXLVell" },
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "L",
-                    "条码" : "agc001HLVell" },
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "XL",
-                    "条码" : "agc001HXLVell" },
-                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "2XL",
-                    "条码" : "agc001HXXLVell" } ];
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "L" },
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "XL" },
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "花色", "尺码" : "2XL" },
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "L" },
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "XL" },
+                { "款号" : "agc001", "名称" : "auto001", "颜色" : "黑色", "尺码" : "2XL" } ];
         break;
     default:
         break;
     }
+
+    tapMenu("往来管理", "厂商查询");
+    var keys = { "厂商" : "Vell" };
+    var fields = queryCustomerProviderFields(keys);
+    query(fields);
+    tapFirstText();
+    var f = editCustomerProviderField("厂商编码");
+    f.value = "vell001";// 更改为另外一个厂商编码
+    if (getTextFieldValue(getScrollView(), f.index) == f.value) {
+        f.value = "vell002";
+    }
+    setTFieldsValue(getScrollView(), [ f ]);
+    tapButtonAndAlert(EDIT_SAVE, OK);
+    tapReturn();
+    expected = getBarCode(expected, f.value);// 生成条码
 
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : code };
@@ -2034,7 +2048,30 @@ function ts100058() {
     tapButton(window, "显示条码");
     var qr = getQRtable1();
     var ret = true;
-    // getTableViews(),"序号","条码"
+    for (var i = 0; i < expected.length; i++) {
+        ret = ret && isEqualQRData1Object(qr, expected[i]);
+        if (!ret) {
+            break;
+        }
+    }
+    tapNaviLeftButton();
+    tapReturn();
+
+    var r = "g" + getTimestamp(5);
+    var keys = { "款号" : r, "名称" : r, "颜色" : "花色", "尺码" : "S", "厂商" : "vell" };
+    if (colorSize == "no") {
+
+    }
+    addGoods(keys);
+    expected = getBarCode([ keys ], f.value);
+
+    tapMenu2("货品查询");
+    query();
+    tapFirstText();
+    tapButton(window, "重设条码");// 刷新
+    delay();
+    tapButton(window, "显示条码");
+    qr = getQRtable1();
     for (var i = 0; i < expected.length; i++) {
         ret = ret && isEqualQRData1Object(qr, expected[i]);
         if (!ret) {
@@ -2049,8 +2086,9 @@ function ts100058() {
 
 function getBarCode(arr, providercode) {
     for (var i = 0; i < arr.length; i++) {
-        arr["条码"] = arr[i]["款号"] + getColorCode(arr[i]["颜色"]) + arr[i]["尺码"]
-                + providercode;
+        var obj = arr[i];
+        obj["条码"] = obj["款号"] + getColorCode(obj["颜色"])
+                + getSizeCode(obj["尺码"]) + providercode;
     }
     return arr;
 }
@@ -2081,8 +2119,11 @@ function getColorCode(color) {
 function getSizeCode(size) {
     var f;
     switch (size) {
-    case "X":
-        f = "X";
+    case "S":
+        f = "S";
+        break;
+    case "L":
+        f = "L";
         break;
     case "XL":
         f = "XL";
@@ -3788,7 +3829,8 @@ function ts100106() {
 
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqual(qr.counts["调整数量", sub("调整前数量", "调整后数量")]));
+    ret = isAnd(ret, isEqual(qr.counts["调整数量"], sub(qr.counts["调整前数量"],
+            qr.counts["调整后数量"])));
     return ret;
 }
 
@@ -4266,8 +4308,55 @@ function ts100163() {
     var keys = { "名称" : "中" };
     var ret = test100111Field("颜色组", keys, "相同记录已存在");
 
-    var r="cG"+getTimestamp(6);
+    var r = "cG" + getTimestamp(6);
     keys = { "名称" : r };
+    editGoodsSettings("颜色组", keys);
+    tapReturn();// 防止出错什么的未返回
+
+    var fields = goodsSizeidsFields(keys);
+    query(fields);
+    var qr = getQR();
+    ret = isAnd(ret, qr.data[0]["组名称"] == r);
+
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+    tapReturn();// 防止未自动返回
+    return ret;
+}
+
+function ts100164() {
+    tapMenu("货品管理", "getMenu_More", "所有颜色组");
+    query();
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("组名称");
+    ret = ret && sortByTitle("操作日期");// 这个是帐套历史数据，不做清理，光月日不好判断
+
+    var keys = { "名称" : "杂色" };
+    fields = goodsSizeidsFields(keys);
+    query(fields);
+    tapFirstText();
+    keys = { "名称" : "蓝" };
+    ret = isAnd(ret, test100111Field("颜色组", keys, "相同记录已存在"));
+
+    keys = { "名称" : "杂色a" };
+    editGoodsSettings("颜色组", keys);// 正常修改
+
+    // 返回后自动返回所有颜色组，若是返回错误页面，剩下的操作会报错
+    tapMenu1("货品管理");// 刷新界面与防止未返回
+    fields = goodsSizeidsFields(keys);
+    query(fields);
+    var qr = getQR();
+    ret = isAnd(ret, qr.data[0]["组名称"] == "杂色a");
+
+    tapFirstText();
+    keys = { "名称" : "杂色" };
+    editGoodsSettings("颜色组", keys);
+
+    tapMenu1("货品管理");
+    tapButton(window, CLEAR);
+    ret = isAnd(ret, getTextFieldValue(window, 0) == "");
+
     return ret;
 }
 /**
