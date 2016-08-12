@@ -781,7 +781,7 @@ function test170047() {
 
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var totalMoney = getTextFieldValue(window, cashTFindex + 1);
-    var ret = isAnd(isEqual("", qr1["现金"]));
+    var ret = isAnd(isEqual("", getTextFieldValue(window, cashTFindex)));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1950,7 +1950,7 @@ function test170077_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -3542,7 +3542,7 @@ function test170129() {
 }
 function test170131() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
