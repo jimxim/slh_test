@@ -3926,15 +3926,6 @@ function test170139() {
             isEqualObject(exp13, qr.data[13]),
             isEqualObject(exp14, qr.data[14]),
             isEqualObject(exp15, qr.data[15]));
-
-    // var ret1 = isAnd(isIn(getTextFieldValue(getScrollView(-1), 0), "3035"),
-    // isEqual("均色", getTextFieldValue(getScrollView(-1), 1)), isEqual(
-    // "均码", getTextFieldValue(getScrollView(-1), 2)), isEqual(10,
-    // getTextFieldValue(getScrollView(-1), 3)), isEqual("",
-    // getTextFieldValue(getScrollView(-1), 6)), isEqual("", f0),
-    // isIn(f5, "总经理"), isEqual(getToday(), getTextFieldValue(window, 9)),
-    // isEqual(num, getTextFieldValue(window, 11)));
-
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
@@ -5189,12 +5180,11 @@ function test170191() {
 
     var qr = json["明细值"];
     var qr1 = json["输入框值"];
-    var k3 = qr1["应"];
+    // var k3 = qr1["应"];isEqual(k3, k12),
     var k12 = qr1["总计"];
     var money = Math.round(qr.data[0]["小计"]);
 
-    var ret1 = isAnd(isEqual(k3, k12), isEqual(k12, money), isEqual(0.899,
-            qr.data[0]["折扣"]));
+    var ret1 = isAnd(isEqual(k12, money), isEqual(0.899, qr.data[0]["折扣"]));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -5215,7 +5205,7 @@ function test170191() {
 function test170195() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",
-        "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : "-180" } ],
+        "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : "-180" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 

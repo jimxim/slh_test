@@ -2248,7 +2248,6 @@ function test210067() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("门店列表");
-
     query();
     tapFirstText();
     tapButtonAndAlert("停 用", OK);
@@ -2261,11 +2260,17 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增门店＋");
-
     var m = "test" + getTimestamp(8);
-    var keys = { "店名" : m, "类型" : "门店", "门店类型" : "加盟店", "地址" : "江城路889号",
-        "联系电话" : "3003008" };
+    var keys = { "店名" : m };
     var fields = editSystemShopAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isAnd(isIn(alertMsg, "门店类型不能为空"), isEqual(m, getTextFieldValue(
+            getScrollView(), 0)));
+
+    keys = { "类型" : "门店", "门店类型" : "加盟店", "地址" : "江城路889号", "联系电话" : "3003008" };
+    fields = editSystemShopAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -2273,26 +2278,37 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("门店列表");
-
     keys = { "名称" : m };
     fields = editSystemShopFields(keys);
     query(fields);
-    qr = getQR();
-    var ret = isEqual(m, qr.data[0]["门店"]);
+    var r = getQR();
+    ret = isAnd(ret, isEqual(m, r.data[0]["门店"]));
 
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
-
     var r = "zh" + getTimestamp(4);
     var r1 = getTimestamp(4);
-    var keys1 = { "账户全称" : r, "账户简称" : r1, "门店" : "test210069", "刷卡/汇款" : "通用" };
+    var keys1 = { "账户全称" : r };
     fields = editSystemAccountAddFields(keys1);
-
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret1 = isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2");
+    var ret1 = isIn(alertMsg, "账户简称不能为空");
+
+    keys1 = { "账户简称" : r1 };
+    fields = editSystemAccountAddFields(keys1);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    ret1 = isAnd(ret1, isIn(alertMsg, "门店不能为空"));
+
+    keys1 = { "门店" : "test210069", "刷卡/汇款" : "通用" };
+    fields = editSystemAccountAddFields(keys1);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    ret1 = isAnd(ret1, isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2"));
 
     var r2 = getTimestamp(2);
     keys1 = { "账户简称" : r2 };
@@ -2311,7 +2327,7 @@ function test210069_210070() {
     keys1 = { "名称" : r };
     fields = editSystemAccountFields(keys1);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var ret3 = isEqual(0, qr.data.length);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2 + " ret3="

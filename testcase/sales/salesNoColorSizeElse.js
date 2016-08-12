@@ -1914,10 +1914,8 @@ function test170268() {
     var qr = getQR();
     var ret4 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(165,
             qr.data[0]["订货数"]));
-    var t = qr.data.total;
+    var t = qr.total;
 
-    tapMenu("销售开单", "按订货开单");
-    query();
     tapFirstText();
     var qr = getQRDet();
     var ret1 = isAnd(isIn(qr.data[0]["货品"], s), isEqual(50, qr.data[0]["数量"]),
@@ -1928,6 +1926,10 @@ function test170268() {
     delay();
 
     tapMenu("销售开单", "按订货开单");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret5 = isEqual("是", getTextFieldValue(window, 8));
+
     query();
     qr = getQR();
     ret = isAnd(ret, isEqual(165, qr.data[0]["订货数"]), isEqual(140,
@@ -1955,17 +1957,16 @@ function test170268() {
     var fields = salesBillOrderFields(keys);
     query(fields);
     var qr = getQR();
-    var t1 = qr.data.total;
-    var ret5 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(165,
-            qr.data[0]["订货数"]), isEqual(t, t1));
+    var t1 = qr.total;
+    var ret6 = isAnd(isEqual(t, Number(t1) + 1));
 
     qo = { "备注" : "发货数" };
     o = { "新值" : "0", "数值" : [ "默认不填写" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170269() {
     // 设置全局参数 按订货开单是否按当前库存自动填写发货数 为 默认不填写 ,然后重新登录
@@ -9772,24 +9773,31 @@ function test170718() {
     var nhs = qr.data[0]["拿货次数"];
 
     tapFirstText();
-    var fd;
-    if (ipadVer >= "7.21") {
-        fd = "分店";
-    } else {
-        fd = "客户分店";
-    }
-    var qr1 = getQR2(getScrollView(-1, 0), "批次", fd);
     tapNaviRightButton();
     var qr2 = getQR2(getScrollView(-1, 0), "品牌", "退货率(%)");
-    var ns = qr2.data[0]["拿货数"];
-    var ts = qr2.data[0]["退货数"];
+    var ns = 0, ts = 0;
+    var totalPageNo = qr2.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr2.curPageTotal; i++) {
+            ns += Number(qr2.data[i]["拿货数"]);
+            ts += Number(qr2.data[i]["退货数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr2 = getQR2(getScrollView(-1, 0), "品牌", "退货率(%)");
+        }
+    }
     tapNaviLeftButton();
     tapNaviLeftButton();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : 3 }, { "货品" : "k300", "数量" : -2 } ],
+        "明细" : [ { "货品" : "k300", "数量" : 3 }, { "货品" : "k200", "数量" : -2 } ],
         "特殊货品" : { "抹零" : 4 } };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按汇总", "按客户销售");
@@ -9797,68 +9805,46 @@ function test170718() {
     qr = getQR();
     var ths1 = qr.data[0]["退货数"];
     var nhs1 = qr.data[0]["拿货次数"];
-    var ret = isAnd(isEqual(2, sub(ths1, ths)), isEqual(3, sub(nhs1, nhs)));
+    var ret = isAnd(isEqual(2, sub(ths1, ths)), isEqual(1, sub(nhs1, nhs)));
 
     tapFirstText();
-    var fd;
-    if (ipadVer >= "7.21") {
-        fd = "分店";
-    } else {
-        fd = "客户分店";
-    }
-    qr1 = getQR2(getScrollView(-1, 0), "批次", fd);
     tapNaviRightButton();
     qr2 = getQR2(getScrollView(-1, 0), "品牌", "退货率(%)");
-    var ns1 = qr2.data[0]["拿货数"];
-    var ts1 = qr2.data[0]["退货数"];
-    var ret1 = isAnd(isEqual(Number(qr2.data[0]["退货率(%)"])
-            * Number(qr2.data[0]["拿货数"]), qr2.data[0]["退货数"]), isEqual(0,
-            qr2.data[1]["品牌"]), isEqual(2, sub(ts1, ts)), isEqual(3, sub(ns1,
-            ns)));
+    var ns1 = 0, ts1 = 0;
+    var totalPageNo = qr2.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr2.curPageTotal; i++) {
+            ns1 += Number(qr2.data[i]["拿货数"]);
+            ts1 += Number(qr2.data[i]["退货数"]);
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr2 = getQR2(getScrollView(-1, 0), "品牌", "退货率(%)");
+        }
+    }
+    var ret1 = isAnd(isAqualNum(Number(qr2.data[0]["退货率(%)"])
+            * Number(qr2.data[0]["拿货数"]), 100 * qr2.data[0]["退货数"]), isEqual(
+            "", qr2.data[1]["品牌"]), !isEqual(1, qr2.total), isEqual(2, sub(ts1,
+            ts)), isEqual(Number(3 + Number(ns)), ns1));
     tapNaviLeftButton();
     tapNaviLeftButton();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("销售开单", "按批次查");
+    keys = { "客户" : "ls", "作废挂单" : "正常" };
+    fields = salesQueryBatchFields(keys);
+    query(fields);
+    var qr3 = getQR();
+    var cs = qr3.total;
+
+    var qKeys = [ "备注" ];
+    var qFields = salesQueryBatchFields(qKeys);
+    changeTFieldValue(qFields["备注"], "预付款");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr3 = getQR();
+    var cs1 = qr3.total;
+    var ret2 = isEqual(nhs1, sub(cs, cs1));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
-// function test170719() {
-// tapMenu("货品管理", "新增货品+");
-// var r = "anewkhao" + getTimestamp(4);
-// var keys = { "款号" : r, "名称" : r, "进货价" : 100 };
-// var fields = editGoodsFields(keys, false);
-// setTFieldsValue(getScrollView(), fields);
-// saveAndAlertOk();
-// delay(2);
-// tapReturn();
-//
-// tapMenu("销售开单", "开 单+");
-// var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : 20 } ] };
-// editSalesBillNoColorSize(json);
-//
-// tapMenu("货品管理", "新增货品+");
-// var s = "anewkhao" + getTimestamp(4);
-// var keys = { "款号" : s, "名称" : s, "进货价" : 200 };
-// var fields = editGoodsFields(keys, false);
-// setTFieldsValue(getScrollView(), fields);
-// saveAndAlertOk();
-// delay(2);
-// tapReturn();
-//
-// tapMenu("采购入库", "新增入库+");
-// var json = { "客户" : "vell", "明细" : [ { "货品" : s, "数量" : 50 } ], "现金" : 5000
-// };
-// editSalesBillNoColorSize(json);
-//
-// tapMenu("销售订货", "新增订货+");
-// var json = { "客户" : "lt",
-// "明细" : [ { "货品" : r, "数量" : 5 }, { "货品" : s, "数量" : 60 } ] };
-// editSalesBillNoColorSize(json);
-//
-// tapMenu("销售开单", "按订货开单");
-// var keys = { "按库存" : "是" };
-// var fields = salesBillOrderFields(keys);
-// query(fields);
-// var qr=getQR();
-// var ret=isEqual("");
-//    
-// }
