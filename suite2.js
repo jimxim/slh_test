@@ -20,8 +20,9 @@ function test000All() {
 // run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
 // run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
 // run("【销售开单-开单】童装模式手数需要四位数", "test170719");
+    run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     
- run("", "test0");
+// run("", "test0");
 }
 function test0(){
 // debugElementTree(window);
@@ -29,9 +30,6 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 4 } ], NOPAY : "yes",
-            "不返回" : "yes" };
-        editSalesBillNoColorSize(json);
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
