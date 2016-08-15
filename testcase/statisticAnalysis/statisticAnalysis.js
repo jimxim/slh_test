@@ -1207,22 +1207,7 @@ function test190106() {
 // 常青店店长004登陆验证
 function ts190110() {
     tapMenu("统计分析", "收支流水");
-    var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-
-    // 查询门店只有常青店，不能显示其他门店
-    var exp = "常青店";
-    tap(getTextField(window, fields["门店"].index));
-    var ret = isEqualDropDownListByExp(exp);
-
-    query(fields);
-    delay();
-    var qr = getQR();
-    var total = qr.total;
-
-    query();
-    qr = getQR();
-    return isAnd(ret, isEqual(total, qr.total));
+    return checkShopQueryRights("statisticAnalysisInOutAccountField");
 }
 
 function test190090() {
@@ -2545,36 +2530,22 @@ function test190102() {
 // 店长登陆
 function test190112() {
     tapMenu("统计分析", "汇总表", "颜色销售表");
-    var ret = test190112Field("statisticAnalysColorField");
+    var ret = checkShopQueryRights("statisticAnalysColorField");
 
     tapMenu("统计分析", "汇总表", "尺码销售表");
-    ret = isAnd(ret, test190112Field("statisticAnalysSizeField"));
+    ret = isAnd(ret, checkShopQueryRights("statisticAnalysSizeField"));
 
     tapMenu("统计分析", "汇总表", "品牌销售表");
-    ret = isAnd(ret, test190112Field("statisticAnalysBrandField"));
+    ret = isAnd(ret, checkShopQueryRights("statisticAnalysBrandField"));
 
     tapMenu("统计分析", "汇总表", "类别销售表");
-    ret = isAnd(ret, test190112Field("statisticAnalysTypeField"));
+    ret = isAnd(ret, checkShopQueryRights("statisticAnalysTypeField"));
 
     tapMenu("统计分析", "汇总表", "厂商销售表");
-    ret = isAnd(ret, test190112Field("statisticAnalysProviderField"));
+    ret = isAnd(ret, checkShopQueryRights("statisticAnalysProviderField"));
     return ret;
 }
 
-function test190112Field(fn) {
-    var keys = { "日期从" : getDay(-365), "门店" : "常青店" };
-    var fields = getTFields(fn, keys);
-    query(fields);
-    var qr = getQR();
-    var ret = qr.data.length > 0;
-
-    keys = { "门店" : "中洲店" };
-    fields = getTFields(fn, keys);
-    query(fields, false);
-    qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0);
-    return ret;
-}
 
 function test190113() {
     var arr = {};

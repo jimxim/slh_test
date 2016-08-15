@@ -17,7 +17,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 // run("测试用例", "ts100160");//
- run("测试用例", "onlyTest"); 
+ run("测试用例", "ts190110"); 
 
 }
 

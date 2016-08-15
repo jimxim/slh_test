@@ -808,6 +808,25 @@ function checkQResultField(title, expected, type, expected2) {
     return ret;
 }
 /**
+ * 验证其他角色门店查询结果
+ * @param fn
+ * @returns {Boolean}
+ */
+function checkShopQueryRights(fn) {
+    var keys = { "日期从" : getDay(-365), "门店" : "常青店" };
+    var fields = getTFields(fn, keys);
+    query(fields);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+
+    keys = { "门店" : "中洲店" };
+    fields = getTFields(fn, keys);
+    query(fields, false);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+    return ret;
+}
+/**
  * 清除指定下标的文本框的内容
  * @param view
  * @param index
