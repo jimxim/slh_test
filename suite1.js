@@ -17,21 +17,15 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 // run("测试用例", "ts100160");//
- run("测试用例", "ts190110"); 
+ run("测试用例", "onlyTest"); 
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-// var view1=getPopView();
 
-   
-  var arr=editSalesBillGetValue({});
-    
-    debugObject(arr);
-    
 // debugObject(gCache,"gCache");
   return true;
 }

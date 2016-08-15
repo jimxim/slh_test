@@ -1,7 +1,7 @@
 //LuXingXin <52619481 at qq.com> 20151109
 
-// 收入类别 订金 业务回扣1
-// 支出类别 物业 物损
+// 收入类别 订金 业务回扣1 预付款
+// 支出类别 物业 物损 快餐
 // 因为无法判断颜色，就没有做作废的操作，也就默认收支表中没有作废的数据，若有作废数据，可能对8，10造成影响
 function testStatisticAnalysis001() {
     run("【统计分析】数据准备", "testStatisticAnalysisPrepare");
@@ -1456,40 +1456,6 @@ function getDataFor190037() {
     return arr;
 }
 
-/**
- * 获取综合收支表指定内容的金额,需要已经在综合汇总界面
- * @param name 银行
- * @param type 收入or支出
- * @param value 单据类型
- * @returns {Number}
- */
-function getSACountsQR(name, type, value) {
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    tapNaviLeftButton();
-
-    var arr = qr.data;
-    var length = arr.length - 1// 最后一行为合计
-    var i, j, bank = "现", ret = 0;
-    for (i = 0; i < length; i++) {
-        if (isDefined(arr[i]["名称"])) {
-            bank = arr[i]["名称"];
-        }
-        if (name == bank && isIn(arr[i][type], value)) {
-            // 某个行现金,刷卡,汇款同时出现时,在综合收支界面体现出来,分别为刷卡**,汇款**
-            if (type == "收入") {
-                ret = Number(arr[i]["金额"]);
-            }
-            if (type == "支出") {
-                ret = Number(arr[i]["金额2"]);
-            }
-            break;
-        }
-    }
-    return ret;
-}
-
 function test190037() {
     var i, sum1 = 0, sum2 = 0;
     // debugElementTree(window);
@@ -1823,6 +1789,7 @@ function test190046Field() {
 
 function ts190109() {
     tapMenu("统计分析", "综合汇总");
+    query();
     var n1 = getSACountsQR();
 
 }
@@ -2546,7 +2513,6 @@ function test190112() {
     return ret;
 }
 
-
 function test190113() {
     var arr = {};
     tapMenu("销售开单", "按汇总", "按款号汇总");
@@ -2811,6 +2777,18 @@ function ts190141Field(hasRights) {
     arr = [ "代收" ];
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     return ret;
+}
+// 收入类别 订金 业务回扣1 预付款
+// 支出类别 物业 物损 快餐
+function ts190142() {
+    var r1 = getRandomNum(1, 100, 2), r2 = getRandomNum(1, 100, 2), r3 = getRandomNum(
+            1, 100, 2);
+    tapMenu("统计分析", "新增收支", "新增收入");
+    var json = {
+        "账户" : "现",
+        "明细" : [ { "收入类别" : "订金", "金额" : r1 }, { "收入类别" : "业务回扣1", "金额" : r2 },
+                { "收入类别" : "预付款", "金额" : r3 } ], "onlytest" : "yes" };
+    editStatisticAnalysisIn(json);
 }
 /**
  * 新增收支

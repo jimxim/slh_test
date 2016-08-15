@@ -153,6 +153,39 @@ function statisticAnalysisSynthesisField(key, show) {
     }
     return f;
 }
+/**
+ * 获取综合收支表指定内容的金额,需要已经在综合汇总界面
+ * @param name 银行
+ * @param type 收入or支出
+ * @param value 单据类型
+ * @returns {Number}
+ */
+function getSACountsQR(name, type, value) {
+    tapFirstText();
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    var qr = getQRverify(texts, "名称", 5);
+    tapNaviLeftButton();
+
+    var arr = qr.data;
+    var length = arr.length - 1// 最后一行为合计
+    var i, j, bank = "现", ret = 0;
+    for (i = 0; i < length; i++) {
+        if (isDefined(arr[i]["名称"])) {
+            bank = arr[i]["名称"];
+        }
+        if (name == bank && isIn(arr[i][type], value)) {
+            // 某个行现金,刷卡,汇款同时出现时,在综合收支界面体现出来,分别为刷卡**,汇款**
+            if (type == "收入") {
+                ret = Number(arr[i]["金额"]);
+            }
+            if (type == "支出") {
+                ret = Number(arr[i]["金额2"]);
+            }
+            break;
+        }
+    }
+    return ret;
+}
 // 款号利润表
 function statisticAnalysisCodeProfitFields(keys, show) {
     return getTFields("statisticAnalysisCodeProfitField", keys, show);
