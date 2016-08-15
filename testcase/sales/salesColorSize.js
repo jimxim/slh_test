@@ -5662,5 +5662,16 @@ function test170719() {
     var ret = isAnd(isEqual(1000, qr.data[6]["手数"]), isEqual(6000,
             qr.data[6]["数量"]));
 
-    return ret;
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    tapFirstText();
+    var qr1 = getQRDet();
+    tapReturn();
+
+    var ret1 = isAnd(isEqual(6000, qr.data[0]["数量"]), isEqual(1000,
+            qr1.data[6]["手数"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }

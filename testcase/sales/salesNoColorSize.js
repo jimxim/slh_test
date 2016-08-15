@@ -776,16 +776,19 @@ function test170046() {
 function test170047() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
-        "欠" : "yes" };
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    var qr1 = json["输入框值"];
 
-    // var cashTFindex = getEditSalesTFindex2("客户", "现金");, "onlytest" : "yes"
-    var totalMoney = qr1["总计"];
-    var ret = isAnd(isEqual("", qr1["现金"]));
-    // saveAndAlertOk();
-    // tapPrompt();
-    // tapReturn();
+    tapButton(window, NOPAY);
+
+    var cashTFindex = getEditSalesTFindex2("客户", "现金");
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
+    var ret = isAnd(isEqual("", getTextFieldValue(window, cashTFindex)));
+
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -801,7 +804,8 @@ function test170048() {
     editSalesBillNoColorSize(json);
 
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
     var ret = isEqual(getTextFieldValue(window, cashTFindex), totalMoney);
 
     tap(window.staticTexts()["刷卡"]);
@@ -830,11 +834,12 @@ function test170049() {
     editSalesBillNoColorSize(json);
 
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
     var ret = isEqual(getTextFieldValue(window, cashTFindex), totalMoney);
 
     tap(window.staticTexts()["汇款"]);
-    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    remitTFindex = getEditSalesTFindex2("客户", "汇款");
     ret = ret && isEqual(totalMoney, getTextFieldValue(window, remitTFindex));
 
     saveAndAlertOk();
@@ -911,12 +916,12 @@ function test170051() {
 
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
-    var remitTFindex = getEditSalesTFindex2("客户", "刷卡");
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
     var totalMoney = getTextFieldValue(window, cashTFindex);
-    var ret1 = isAnd(isEqual(getTextFieldValue(window, cashTFindex + 1),
+    var ret1 = isAnd(isEqual(getTextFieldValue(window, remitTFindex - 1),
             getTextFieldValue(window, cashTFindex)), isEqual(0,
             getTextFieldValue(window, cardTFindex)), isEqual(0,
-            getTextFieldValue(window, remitTFindex - 1)));
+            getTextFieldValue(window, cardTFindex - 1)));
 
     saveAndAlertOk();
     tapPrompt();
