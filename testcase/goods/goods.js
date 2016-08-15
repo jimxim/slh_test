@@ -213,6 +213,7 @@ function testGoods002() {
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "ts100101_118");
     run("【货品管理-当前库存】默认排序", "ts100125");// 检验agc几个款号的默认排序
     run("【货品管理-当前库存】增加类别查询条件", "ts100132");
+    run("【货品管理-当前库存】季节查询", "ts100167"); 
     run("【货品管理-款号库存】款号库存_详细", "test100005_3");
     run("【货品管理】品牌查询条件可以自动完成", "test100060");
     run(" 当前库存、款号库存、库存分布 检查底部数据汇总", "ts100123");
@@ -4358,6 +4359,83 @@ function ts100164() {
     ret = isAnd(ret, getTextFieldValue(window, 0) == "");
 
     return ret;
+}
+// 后台记录权限店长仅本人创建
+function ts100165() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035" };
+    conditionQuery(keys);
+    tapFirstText();
+    tapTextByFirstWithName("总经理", getScrollView(-1, 0));
+    var text = getStaticTexts(getScrollView(-1));
+    var ret = text.length != 0;
+    tapNaviClose();
+    return ret;
+}
+
+function ts100166() {
+    var qo = { "备注" : "门店库存是否允许跨门店查询" };
+    var o = { "新值" : "0", "数值" : [ "不允许门店相互查询", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "当前库存");
+    query();
+    var idx = queryGoodsStockField("门店").index;
+    var ret = isAnd(isDisabledTField(idx), checkQResult("仓库/门店", "常青店"));
+
+    idx = getButtonIndex(window, "...");
+    var f = new TField("门店", BTN_SC, idx, "中洲店");
+    query([ f ]);
+    var qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);// 参数 非总经理岗位是否只显示自己所在岗位 默认显示所有门店
+
+    o = { "新值" : "1", "数值" : [ "默认门店可自由查询", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "门店" : "中洲店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    return isAnd(ret, checkQResult("仓库/门店", "中洲店"));
+}
+
+function ts100167() {
+    tapMenu("货品管理", "当前库存");
+    query();
+    var qr = getQR();
+    var total = qr.total;
+
+    var keys = { "季节" : "" };
+    conditionQuery(keys);
+    qr = getQR();
+    var s0 = qr.total;
+
+    keys = { "款号" : "k300" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var ret = qr.data.length > 0;
+
+    keys = { "季节" : "春季" };
+    conditionQuery(keys);
+    qr = getQR();
+    var s1 = qr.total;
+
+    keys = { "季节" : "夏季" };
+    conditionQuery(keys);
+    qr = getQR();
+    var s2 = qr.total;
+
+    keys = { "季节" : "秋季" };
+    conditionQuery(keys);
+    qr = getQR();
+    var s3 = qr.total;
+
+    keys = { "季节" : "冬季" };
+    conditionQuery(keys);
+    qr = getQR();
+    var s4 = qr.total;
+
+    return isAnd(ret, (s0 + s1 + s2 + s3 + s4) == total);
 }
 /**
  * 简单的新增货品

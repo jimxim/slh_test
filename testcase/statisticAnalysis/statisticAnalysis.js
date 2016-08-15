@@ -17,6 +17,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—新增支出】删除", "test190019");
     run("【统计分析-新增收入】金额支持2位小数", "test190020");// 单价小数位元
     run("【统计分析-新增支出】金额支持2位小数", "test190021");// 单价小数位元
+    run("【统计分析-新增收支】添加多条明细后删除其中一条查看总额值", "ts190142");
 
     run("【统计分析—收支表】_翻页排序", "test190001");
     run("【统计分析—收支表】查询汇总清除", "test190002_190003_190008");
@@ -28,7 +29,6 @@ function testStatisticAnalysis001() {
     run("【统计分析—收支汇总】进入详细", "test190010");
     run("【统计分析—收支汇总】详细信息-作废", "test190005");// 作废后会对收支表汇总190008造成影响
     run("【统计分析—收支汇总】检查底部数据", "test190011");// 补作废验证
-    run("【统计分析-综合汇总】开单模式影响", "ts190141");
 
     run("【统计分析—收支流水】查询清除", "test190022_190023");
     run("【统计分析—收支流水】翻页排序", "test190024");
@@ -40,7 +40,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—收支类别】保存", "test190028");
     run("【统计分析—收支类别】返回", "test190029");
     run("【统计分析—收支流水】帐户余额允许为负", "test190090");
-    run("【统计分析-收支流水】销售开单/采购入库 退货并退款", "test190104");
+    run("【统计分析-收支流水】销售开单/采购入库 退货并退款", "test190104");// 保存时时间问题，有点不稳定
     run("【统计分析-收支流水】备注", "ts190138");// 部分做在13，17，25中
 
     run("【统计分析—汇总表-退货表】查询/清除", "test190068_190070");
@@ -86,6 +86,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—综合汇总】进入详细-欠款", "test190039");
     run("【统计分析—综合汇总】进入详细-还款", "test190040");
     run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
+    run("【统计分析-综合汇总】开单模式影响", "ts190141");
 }
 
 // 中洲店店长数据准备
@@ -1787,13 +1788,6 @@ function test190046Field() {
     return ret;
 }
 
-function ts190109() {
-    tapMenu("统计分析", "综合汇总");
-    query();
-    var n1 = getSACountsQR();
-
-}
-
 function test190068_190070() {
     tapMenu("统计分析", "汇总表", "退货表");
     var keys = { "日期从" : getDay(-30), "款号" : "3035", "款号名称" : "jkk",
@@ -2778,8 +2772,7 @@ function ts190141Field(hasRights) {
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     return ret;
 }
-// 收入类别 订金 业务回扣1 预付款
-// 支出类别 物业 物损 快餐
+
 function ts190142() {
     var r1 = getRandomNum(1, 100, 2), r2 = getRandomNum(1, 100, 2), r3 = getRandomNum(
             1, 100, 2);
@@ -2787,8 +2780,24 @@ function ts190142() {
     var json = {
         "账户" : "现",
         "明细" : [ { "收入类别" : "订金", "金额" : r1 }, { "收入类别" : "业务回扣1", "金额" : r2 },
-                { "收入类别" : "预付款", "金额" : r3 } ], "onlytest" : "yes" };
+                { "收入类别" : "中转1", "金额" : r3 } ], "onlytest" : "yes" };
     editStatisticAnalysisIn(json);
+    tapButton(getScrollView(-1), 1);// 删除r2
+    var idx = getEditSalesTFindex2("日期", "总额");
+    var ret = add(r1, r3) == getTextFieldValue(window, idx);
+    tapReturn();
+
+    tapMenu("统计分析", "新增收支", "新增支出");
+    json = {
+        "账户" : "现",
+        "明细" : [ { "收入类别" : "物业", "金额" : r1 }, { "收入类别" : "物损", "金额" : r2 },
+                { "收入类别" : "回笼", "金额" : r3 } ], "onlytest" : "yes" };
+    editStatisticAnalysisIn(json);
+    tapButton(getScrollView(-1), 2);// 删除r3
+    idx = getEditSalesTFindex2("日期", "总额");
+    ret = isAnd(ret, add(r1, r2) == getTextFieldValue(window, idx));
+    tapReturn();
+    return ret;
 }
 /**
  * 新增收支
