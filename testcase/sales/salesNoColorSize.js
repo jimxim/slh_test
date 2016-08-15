@@ -776,15 +776,16 @@ function test170046() {
 function test170047() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
-        "未付" : "yes", "onlytest" : "yes" };
+        "欠" : "yes" };
     editSalesBillNoColorSize(json);
+    var qr1 = json["输入框值"];
 
-    var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var totalMoney = getTextFieldValue(window, cashTFindex + 1);
-    var ret = isAnd(isEqual("", getTextFieldValue(window, cashTFindex)));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    // var cashTFindex = getEditSalesTFindex2("客户", "现金");, "onlytest" : "yes"
+    var totalMoney = qr1["总计"];
+    var ret = isAnd(isEqual("", qr1["现金"]));
+    // saveAndAlertOk();
+    // tapPrompt();
+    // tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
