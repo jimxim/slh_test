@@ -9,7 +9,7 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
@@ -22,14 +22,15 @@ function test000All() {
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // var view1=getPopView();
 
-    tapMenu("货品管理", "积分查询");
-    var keys = { "款号名称" : "3035" };
-    conditionQuery(keys);
+   
+  var arr=editSalesBillGetValue({});
+    
+    debugObject(arr);
     
 // debugObject(gCache,"gCache");
   return true;

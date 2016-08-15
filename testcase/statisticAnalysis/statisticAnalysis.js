@@ -2371,7 +2371,7 @@ function test190087_190101() {
     tapMenu("统计分析", Menu_Profit);
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035",
         "款号名称" : "jkk", "客户" : "xw", "店员" : "000", "厂商" : "vell",
-        "品牌" : "adidas" };
+        "品牌" : "adidas", "上架从" : "2015-05-13", "上架到" : getDay(-30) };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
 
@@ -2396,7 +2396,7 @@ function test190087_190101() {
     var ret = isEqualObject(expected, actual);
 
     tapButton(window, CLEAR);
-    for (var i = 0; i < 8; i++) {
+    for (var i = 0; i < 11; i++) {
         if (i == 0 || i == 1) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
@@ -2761,10 +2761,12 @@ function ts190138() {
     return ret;
 }
 
+// 190087_101中验证了外面数据全部查询条件的准确性，这里验证二级界面数据汇总与外层是否相同，若是不同，则有错
 function ts190139() {
     tapMenu("统计分析", Menu_Profit);
     var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "客户" : "xw",
-        "店员" : "000", "厂商" : "vell", "品牌" : "adidas" };
+        "店员" : "000", "厂商" : "vell", "品牌" : "adidas", "上架从" : "2015-05-13",
+        "上架到" : getDay(-30) };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
     var data = getQR().data[0];

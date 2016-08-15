@@ -76,7 +76,7 @@ function testShopkeeper004All() {
     run("【货品管理-货品进销存】店长权限查看货品进销存-查看范围", "test100120");// 后台PAD店长权限里勾上货品进销存
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For004");
     run("【货品管理-当前库存】 库存这一列受门店库存是否允许跨门店查询参数影响", "ts100012");// 后台勾选当前库存款号库存全局设置权限
-    run("【货品管理-当前库存】记录权限仅本人创建时，查看当前库存信息", "ts100158");//后台设置店长记录权限为仅本人创建
+    run("【货品管理-当前库存】记录权限仅本人创建时，查看当前库存信息", "ts100158");// 后台设置店长记录权限为仅本人创建
     run("【货品管理-基础设置-所有品牌】品牌不应该区分门店显示", "ts100150");
     run("【货品管理-基础设置-所有类别】类别不应该区分门店显示", "ts100151");
     run("【货品管理-新增货品】省代模式+店长新增货品", "test100019");// 默认店长权限
@@ -662,6 +662,13 @@ function checkRightsStatisticAnalysis() {
     f = statisticAnalysProviderFields([ "厂商" ]);
     arr = [];
     ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
+
+    // 后台-角色权限-ipad菜单权限，新增收支 勾选/不勾选
+    if (hasRights) {
+        ret = ret && getButtonIndex(window, "新增收支") != -1;
+    } else {
+        ret = ret && getButtonIndex(window, "新增收支") == -1;
+    }
 
     return ret;
 }
