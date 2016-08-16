@@ -133,8 +133,8 @@ function salesQueryParticularField(key, show) {
         f = new TField("类型", TF_SC, 5, "退货");
         break;
     case "pricetype":
-    case "适用价格":
-        f = new TField("适用价格", TF_SC, 6, "打包价");
+    case "价格类型":
+        f = new TField("价格类型", TF_SC, 6, "打包价");
         break;
     case "remarks":
     case "备注":
