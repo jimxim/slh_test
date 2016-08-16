@@ -1067,17 +1067,13 @@ function test120019() {
 
     tapFirstText();
     delay();
-    var keys = { "款号" : r };
-    var fields = queryGoodsDistributionDetFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    var data = getDetTS100006(r, "no");
     var today = getToday("yy");
     // today = today.replace("-", "月");
     expected = { "名称" : r + "," + r, "上架日期" : today, "库存" : 20, "价值" : 6000,
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
-    var ret1 = isEqualObject2(expected, qr.data[0]);
-
+    var ret1 = isEqualObject2(expected, data);
+    delay();//
     tapFirstText(getScrollView(-1, 0), "名称", 8);
     qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
     expected = { "名称" : r + "," + r, "颜色" : "均色", "尺码" : "均码", "库存" : 20,
@@ -3537,20 +3533,27 @@ function editPurchaseBatchStaff(o) {
 
 function editPurchaseBatchDet(o) {
     var details = o["明细"];
-    var tfNum = getSalesBillDetTfNum(o);
+    var title = getSalesBillDetTfObject();
+    var tfNum = title["明细输入框个数"];
     for ( var i in details) {
-        var start = tfNum * i;
+        var start = getBillDetInputIndex(tfNum);
         var d = details[i];
 
-        var f0 = new TField("货品", TF_AC, start + 1, d["货品"], -1, 0);
+        var f0 = new TField("货品", TF_AC, start + title["货品"], d["货品"], -1, 0);
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
-        var f1 = new TField("数量", TF, start + 4, d["数量"]);
+        var num;
+        if (isArray(d["数量"])) {
+            num = d["数量"][0];
+        } else {
+            num = d["数量"];
+        }
+        var f1 = new TField("数量", TF, start + title["数量"], num);
         setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];
         if (isDefined(d["单价"])) {
-            fields.push(new TField("单价", TF, start + 5, d["单价"]));
+            fields.push(new TField("单价", TF, start + title["单价"], d["单价"]));
         }
         setTFieldsValue(getScrollView(-1), fields);
     }

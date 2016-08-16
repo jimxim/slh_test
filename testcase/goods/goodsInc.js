@@ -154,16 +154,6 @@ function addGoods(keys, isEdit, day) {
 }
 
 /**
- * 库存调整单 r:调整后库存
- */
-function addGoodsStockAdjustment(r) {
-    tapFirstText();
-    tapNaviButton("库存调整");
-    setValue100090(r);
-    runAndAlert("test100090Field", OK);
-    tapNaviLeftButton();
-}
-/**
  * 新增物流核销单
  * @param o
  * @returns
@@ -1205,7 +1195,7 @@ function isHasSame(arr1, arr2) {
  */
 function isInAlertMsgs(str) {
     var msgs = arrayToString(alertMsgs);
-    msgs = msgs.replace(/[\ |\;|\；|\,|\，]/g, "");
+    msgs = msgs.replace(/[\ |\;|\；|\,|\，|\(|\)|\（|\）]/g, "");
     return isIn(msgs, str);
 }
 

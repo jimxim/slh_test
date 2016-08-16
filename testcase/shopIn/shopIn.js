@@ -24,21 +24,6 @@ function testShopIn002() {
     run("【门店调出-批量调出】 调拨启用密码验证", "ts150008");
 }
 
-/**
- * 做调入单
- */
-function editShopInFlitting(secure) {
-    if (isDefined(secure)) {
-        var f = new TField("接收人密码", TF_S, 0, secure);
-        var fields = [ f ];
-        setTFieldsValue(window, fields);
-    }
-
-    tapButtonAndAlert("调 入", OK);
-    delay();
-    tapPrompt();
-}
-
 // 在途调拨这里没有办法操作作废, 如果调出方作废,那么在调入方,在途调拨里就直接不显示 这个界面作废没什么用,
 // 需要现在B店做一个调出单，并作废
 function ts150002_1() {

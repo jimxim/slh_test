@@ -597,6 +597,15 @@ function editGoodsField(key, show, texts) {
             f.value = "Vell";
         }
         break;
+    case "厂商价格":
+        idx = getEditGoodsIndex(texts, "厂商价格");
+        f = new TField("厂商价格", BTN, idx[1] + 1, "");// index为新增+按钮
+        if (show) {
+            f.type = TV;
+            f.index = 1;
+            f.value = "Rt:50;";
+        }
+        break;
     case "useLastPrice":
     case "启用上次价":
         idx = getEditGoodsIndex(texts, "启用上次价");
@@ -730,6 +739,11 @@ function editGoodsField(key, show, texts) {
     case "备注":
         idx = getEditGoodsIndex(texts, "备注");
         f = new TField("备注", TF, idx[0], "123");
+        break;
+    case "picture":
+    case "图像":
+        idx = getEditGoodsIndex(texts, "图像");
+        f = new TField("图像", TF, idx[0], "");
         break;
     default:
         logWarn("未知key＝" + key);
