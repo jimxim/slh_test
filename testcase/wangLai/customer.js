@@ -616,10 +616,10 @@ function test110014() {
     var r = "a" + getTimestamp(6);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : "小王", "手机" : r };
-    var ret = test110014Field(keys, "名称重复");
+    var ret = test110014Field(keys, "相同名称已存在");
 
     keys = { "名称" : "vell" };
-    ret = isAnd(ret, test110014Field(keys, "名称重复"));
+    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
 
     var msg = "相同手机号已存在";
     if (ipadVer < 7.21) {
@@ -635,12 +635,31 @@ function test110014() {
     tapReturn();
     return ret;
 }
-
+/**
+ * 设置保存后验证弹窗
+ * @param keys
+ * @param msg
+ * @returns
+ */
 function test110014Field(keys, msg) {
-    var fields = editCustomerFields(keys);
+    var fields;
+    switch (gMenu1) {
+    case "往来管理":
+        switch (gMenu2) {
+        case "新增客户+":
+            fields = editCustomerFields(keys);
+            break;
+        case "新增厂商+":
+            fields = editCustomerProviderFields(keys);
+            break;
+        }
+        break;
+    default:
+        break;
+    }
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    tapButtonAndAlert("none", OK, true);
+    saveAndAlertOk();
+    tapPrompt();
     return isIn(alertMsg, msg);
 }
 
@@ -2028,14 +2047,14 @@ function ts110038() {
     var ret = isEqualDropDownList(arr, view1);
 
     var keys = { "名称" : "东灵公司" };
-    ret = isAnd(ret, test110038Field(keys, "名称重复"));
+    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
 
     keys = { "名称" : "小王" };
-    ret = isAnd(ret, test110038Field(keys, "名称重复"));
+    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
 
     var r = getTimestamp(8);
     keys = { "名称" : "cs" + r, "手机" : "13122221112" };// 厂商的手机号码
-    ret = isAnd(ret, test110038Field(keys, "相同手机号已存在"));
+    ret = isAnd(ret, test110014Field(keys, "相同手机号已存在"));
     delay();
 
     // 现在可以与客户的手机号一样
@@ -2060,14 +2079,6 @@ function ts110038() {
     tapReturn();
 
     return ret;
-}
-
-function test110038Field(keys, msg) {
-    var fields = editCustomerProviderFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(SAVE);
-    tapPrompt();
-    return isIn(alertMsg, msg);
 }
 
 function ts110039() {
@@ -2936,13 +2947,15 @@ function test110045_110046() {
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
+    tapPrompt();// 点掉警告框后再判断 否则不稳定
     var ret = isInAlertMsgs("相同名称已存在");
 
     keys = { "名称" : r, "手机" : "13833331112" };
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
-    ret = isAnd(ret, isIn(alertMsg, "相同名称已存在"));// 相同手机号已存在
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
 
     keys = { "手机" : r };
     fields = editCustomerLogisticsFields(keys);

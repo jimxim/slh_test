@@ -257,9 +257,9 @@ function testGoods002() {
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
     // run("【货品管理-批量调价】不选择任何货品，点击批量调价", "ts100051");//验证码
+    run("【货品管理-批量操作】批量停用-重复停用提示", "ts100108");
     run("【货品管理-批量操作】批量操作", "test100053");
     run("【货品管理-批量操作】批量停用-重复停用提示,当天停用", "test100054_1");
-    run("【货品管理-批量操作】批量停用-重复停用提示", "ts100108");
 
     run("【货品管理-基本设置】检查基本颜色新增", "ts100059Color");
     run("【货品管理-基本设置】检查基本类别新增", "ts100059Type");
@@ -2066,7 +2066,7 @@ function ts100058() {
     var r = "g" + getTimestamp(5);
     var keys = { "款号" : r, "名称" : r, "颜色" : "花色", "尺码" : "S", "厂商" : "vell" };
     if (colorSize == "no") {
-
+        keys = { "款号" : r, "名称" : r, "厂商" : "vell" };
     }
     addGoods(keys);
     expected = getBarCode([ keys ], f.value);
@@ -2110,14 +2110,11 @@ function getColorCode(color) {
     case "白色":
         f = "W";
         break;
-    case "均色":
-        f = "50";
-        break;
     case "红色":
         f = "8";
         break;
     default:
-        logDebug("未知颜色＝" + color);
+        f = "50";// 均色
         break;
     }
     return f;
@@ -2137,11 +2134,8 @@ function getSizeCode(size) {
     case "2XL":
         f = "XXL";
         break;
-    case "均码":
-        f = "8";
-        break;
     default:
-        logDebug("未知尺码＝" + size);
+        f = "8";// 均码
         break;
     }
     return f;
@@ -2174,7 +2168,7 @@ function ts100059Type() {
 }
 function ts100059Color() {
     var r = "color" + getTimestamp(5);
-    var keys = { "颜色类别" : "杂色", "名称" : r };
+    var keys = { "颜色类别" : "紫", "名称" : r };
     var qkeys = { "名称" : r };
     return ts100059Field("editGoodsColorField", "goodsColorField", keys,
             "新增颜色+", qkeys);
@@ -3834,8 +3828,8 @@ function ts100106() {
 
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqual(qr.counts["调整数量"], sub(qr.counts["调整前数量"],
-            qr.counts["调整后数量"])));
+    ret = isAnd(ret, isEqual(qr.counts["调整数量"], sub(qr.counts["调整后数量"],
+            qr.counts["调整前数量"])));
     return ret;
 }
 
@@ -3862,7 +3856,7 @@ function ts100108() {
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(name, qr.data[0]["名称"]));
+    ret = isAnd(ret, isIn(qr.data[0]["名称"]), name);
 
     tapChoose(getScrollView(), [ 0, 1, 2 ]);
     tapMenu2("批量操作");
@@ -4289,21 +4283,19 @@ function ts100160() {
 function ts100161() {
     // 手动输入已经覆盖，这里只验证按钮输入
     tapMenu("货品管理", "当前库存");
-    var idx = getButtonIndex(window, "...");
-    var f = new TField("颜色", BTN_SC, idx + 1, "花色");
-    query([ f ]);
+    var keys = { "颜色2" : "花色" };
+    conditionQuery(keys);
     var ret = checkQResult("颜色", "花色");
 
     tapMenu("销售开单", "按汇总", "按款号汇总");
-    idx = getButtonIndex(window, "...");
-    f.index = idx + 1;
-    query([ f ]);
+    keys = { "日期从" : getDay(-60), "颜色2" : "花色" };
+    var fields = salesCodeFields(keys);
+    query(fields);
     ret = isAnd(ret, checkQResult("颜色", "花色"));
 
     tapMenu("统计分析", "汇总表", "颜色销售表");
-    idx = getButtonIndex(window, "...");
-    f.index = idx + 1;
-    query([ f ]);
+    fields = statisticAnalysColorFields(keys);
+    query(fields);
     ret = isAnd(ret, checkQResult("颜色", "花色"));
     return ret;
 }
@@ -4387,9 +4379,8 @@ function ts100166() {
     var idx = queryGoodsStockField("门店").index;
     var ret = isAnd(isDisabledTField(idx), checkQResult("仓库/门店", "常青店"));
 
-    idx = getButtonIndex(window, "...");
-    var f = new TField("门店", BTN_SC, idx, "中洲店");
-    query([ f ]);
+    var keys = { "门店2" : "中洲店" };
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, qr.data.length == 0);// 参数 非总经理岗位是否只显示自己所在岗位 默认显示所有门店
 
@@ -4532,7 +4523,7 @@ function test100170Field(code) {
 }
 
 function ts100171() {
-    tapMenu("货品管理", "新增货品");
+    tapMenu("货品管理", "新增货品+");
     var ret = ts100171Field();
     tapReturn();
 
@@ -4553,7 +4544,7 @@ function ts100171Field() {
         var ok = isDisabledTField(fields[v].index, getScrollView(-1));
         ret = ret && ok;
         if (!ok) {
-            logDebug("i=" + i + "的文本框未灰化");
+            logDebug("gMenu2=" + gMenu2 + " v=" + v + "的文本框未灰化");
             break;
         }
     }

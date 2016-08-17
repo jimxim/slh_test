@@ -11,16 +11,17 @@ function testQueryGoodsStockFields() {
     return checkShowFields(window, showFields);
 }
 /**
- * 当前库存
+ * 当前库存 门店2为门店后面的。。。按钮输入
  * @param keys
  * @param show
  * @returns
  */
 function queryGoodsStockFields(keys, show) {
-    return getTFields("queryGoodsStockField", keys, show);
+    var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个...按钮下标
+    return getTFields("queryGoodsStockField", keys, show, idx);
 }
 
-function queryGoodsStockField(key, show) {
+function queryGoodsStockField(key, show, idx) {
     var f;
     switch (key) {
     case "code":
@@ -36,7 +37,14 @@ function queryGoodsStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "门店2":
+        var f = new TField("门店", BTN_SC, idx, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 2;
+        }
         break;
     case "provider":
     case "厂商":
@@ -48,6 +56,13 @@ function queryGoodsStockField(key, show) {
     case "color":
     case "颜色":
         f = new TField("颜色", TF, 4, "花色", -1, 0);// TF_SC
+        break;
+    case "颜色2":
+        var f = new TField("门店", BTN_SC, idx + 1, "花色", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 4;
+        }
         break;
     case "size":
     case "尺码":
@@ -74,6 +89,13 @@ function queryGoodsStockField(key, show) {
         f = new TField("品牌", TF_AC, 10, "1010pp", -1, 0);
         if (show) {
             f.value = "1010pp";
+        }
+        break;
+    case "品牌2":
+        var f = new TField("品牌", BTN_SC, idx + 2, "1010pp", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 10;
         }
         break;
     case "type":
@@ -696,7 +718,7 @@ function editGoodsField(key, show, texts) {
         break;
     case "operativeNorm":
     case "执行标准":
-        idx = getEditGoodsIndex(texts, "装箱数");
+        idx = getEditGoodsIndex(texts, "执行标准");
         f = new TField("执行标准", BTN_SC, idx[1], "执行标准A");
         if (show) {
             f.type = TF;

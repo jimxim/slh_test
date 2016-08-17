@@ -313,7 +313,7 @@ function test160055_160056_160057_160058() {
     // tapPrompt();
     // ret = isAnd(ret, isIn(alertMsg, "订货时不能做核销操作"));//按钮灰化
 
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     var tfNum = getSalesBillDetTfNum({});
     for (var i = 0; i < tfNum; i++) {
         ret = isAnd(ret, isEqual("", getTextFieldValue(getScrollView(), i)));
@@ -611,7 +611,7 @@ function test160006() {
     var jo1 = qr.data[0];
 
     tapFirstText();
-    tapButton(getScrollView(), 0);// 删除
+    tapButton(getScrollView(-1), 0);// 删除
     json = { "明细" : [ { "货品" : "k300", "数量" : "20" } ] };
     editSalesBillDetNoColorSize(json);
     editSalesBillSave(json);
@@ -658,7 +658,7 @@ function test160008() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    tapButton(getScrollView(), 0);// 删除第一条款号记录
+    tapButton(getScrollView(-1), 0);// 删除第一条款号记录
     json = { "明细" : [ { "货品" : "k300", "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
@@ -676,7 +676,7 @@ function test160008() {
     tapMenu("销售订货", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     json = { "明细" : [ { "货品" : "k300", "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
@@ -690,7 +690,7 @@ function test160008() {
     delay();
 
     tapFirstText();
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     json = { "明细" : [ { "货品" : "k300", "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
@@ -1948,7 +1948,7 @@ function ts160073_74() {
     alertMsgs = [];// 清空
     tapMenu("销售订货", "按批次查");
     tapFirstText();
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     editSalesBillSave({});
     ok = isInAlertMsgs("已发货的明细不允许删除");
     logDebug("------选择一条部分发货的款号，删除已发货的款号，保存 ok=" + ok);
@@ -1989,7 +1989,7 @@ function ts160073_74() {
 
     alertMsgs = [];// 清空
     tapFirstText();
-    tapButton(getScrollView(), 0);// 删除款号
+    tapButton(getScrollView(-1), 0);// 删除款号
     editSalesBillSave({});
     ok = isInAlertMsgs("订单已全部发货");
     logDebug("------选择一条全部发货的款号，删除款号，点保存 ok=" + ok);
@@ -2112,7 +2112,7 @@ function test160087Field(code, msg) {
     var f1 = new TField("货品", TF_AC, 16, code, -1, 0);
     var f2 = new TField("数量", TF, 19, "20");
     setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    tapButton(getScrollView(), 0);
+    tapButton(getScrollView(-1), 0);
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, msg);

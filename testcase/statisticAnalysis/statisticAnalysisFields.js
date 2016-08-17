@@ -380,9 +380,10 @@ function statisticAnalysisUnsalableField(key, show) {
 }
 // 颜色销售表
 function statisticAnalysColorFields(keys, show) {
-    return getTFields("statisticAnalysColorField", keys, show);
+    var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
+    return getTFields("statisticAnalysColorField", keys, show, idx);
 }
-function statisticAnalysColorField(key, show) {
+function statisticAnalysColorField(key, show, idx) {
     var f;
     switch (key) {
     case "day1":
@@ -403,11 +404,25 @@ function statisticAnalysColorField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");
+        f = new TField("门店", TF, 4, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "门店2":
+        f = new TField("门店", BTN_SC, idx, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 4;
+        }
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", TF, 5, "花色");// TF_SC
+        f = new TField("颜色", TF, 5, "花色", -1, 0);// 实际为TF_AC
+        break;
+    case "颜色2":
+        f = new TField("颜色", BTN_SC, idx + 1, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 5;
+        }
         break;
     case "code":
     case "款号":

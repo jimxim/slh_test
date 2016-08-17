@@ -2,6 +2,13 @@
 
 //货品管理
 /**
+ * 获取查询界面第一个...按钮的下标
+ * @returns
+ */
+function getQueryBtnIndex() {
+    return getButtonIndex(window, "...");
+}
+/**
  * 简单的新增货品
  */
 function addGoodsSimple() {

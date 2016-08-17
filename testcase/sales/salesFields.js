@@ -234,15 +234,10 @@ function testSalesCodeFields() {
 }
 
 function salesCodeFields(keys, show) {
-    return getTFields("salesCodeField", keys, show);
+    var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
+    return getTFields("salesCodeField", keys, show, idx);
 }
-function salesCodeField(key, show) {
-    var ty;
-    if (ipadVer >= "7.21") {
-        ty = TF;
-    } else {
-        ty = TF_SC;
-    }
+function salesCodeField(key, show,idx) {
     var f;
     switch (key) {
     case "day1":
@@ -255,7 +250,14 @@ function salesCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "门店2":
+        f = new TField("门店", BTN_SC, idx, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 2;
+        }
         break;
     case "provider":
     case "厂商":
@@ -281,7 +283,14 @@ function salesCodeField(key, show) {
         break;
     case "color":
     case "颜色":
-        f = new TField("颜色", ty, 7, "花色");
+        f = new TField("颜色", TF, 7, "花色", -1, 0);// 实际为TF_AC
+        break;
+    case "颜色2":
+        f = new TField("颜色", BTN_SC, idx + 1, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+            f.index = 7;
+        }
         break;
     case "size":
     case "尺码":
