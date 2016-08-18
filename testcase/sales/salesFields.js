@@ -237,7 +237,7 @@ function salesCodeFields(keys, show) {
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
     return getTFields("salesCodeField", keys, show, idx);
 }
-function salesCodeField(key, show,idx) {
+function salesCodeField(key, show, idx) {
     var f;
     switch (key) {
     case "day1":
@@ -1176,13 +1176,12 @@ function salesQueryLogisticsField(key, show) {
     }
     return f;
 }
-// 销售开单——核销
+// 销售开单——核销核销
 function logisticsVerifyFields(keys, show) {
     return getTFields("logisticsVerifyField", keys, show);
 }
 function logisticsVerifyField(key, show) {
-
-    var f;
+    var f, index;
     switch (key) {
     case "express":
     case "物流":
@@ -1190,39 +1189,40 @@ function logisticsVerifyField(key, show) {
         break;
     case "cash":
     case "现金":
-        var cashTFindex = getEditSalesTFindex2("物流", "现金");
-        f = new TField("现金", TF, cashTFindex, "0");
+        f = new TField("现金", TF, 2, "0");
         break;
-    case "phone":
-    case "手机":
-        f = new TField("手机", TF, cashTFindex + 1, "0");
+    case "MB":
+    case "手机付":
+        index = getEditSalesTFindex2("物流", "手机付");
+        f = new TField("手机付", TF, index, "0");
         break;
     case "staff":
     case "店员":
-        var staffTFindex = getEditSalesTFindex2("物流", "店员");
-        f = new TField("店员", TF_AC, staffTFindex, "000", -1, 0);
+        index = getEditSalesTFindex2("物流", "店员");
+        f = new TField("店员", TF_AC, index, "000", -1, 0);
         break;
     case "card":
     case "刷卡":
-        var cardTFindex = getEditSalesTFindex2("物流", "刷卡");
-        f = new TField("刷卡", TF, cardTFindex, "000", -1, 0);
+        index = getEditSalesTFindex2("物流", "刷卡");
+        f = new TField("刷卡", TF, index, "000", -1, 0);
         break;
     case "date":
     case "日期":
-        f = new TField("日期", TF_DT, cardTFindex + 2, getToday());
+        index = getEditSalesTFindex2("物流", "日期");
+        f = new TField("日期", TF_DT, index, getToday());
         break;
-    case "tip":
+    case "remark":
     case "备":
-        f = new TField("备", TF, 9, "a");
-        // f = new TField("备", TV, 0, "a");
+        f = new TField("备", TV, 0, "a");
         break;
     case "remit":
     case "汇款":
-        var remitTFindex = getEditSalesTFindex2("物流", "汇款");
-        f = new TField("汇款", TF, remitTFindex, "000", -1, 0);
+        index = getEditSalesTFindex2("物流", "汇款");
+        f = new TField("汇款", TF, index, "000", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }
