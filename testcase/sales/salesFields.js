@@ -1190,19 +1190,26 @@ function logisticsVerifyField(key, show) {
         break;
     case "cash":
     case "现金":
-        f = new TField("现金", TF, 2, "0");
+        var cashTFindex = getEditSalesTFindex2("物流", "现金");
+        f = new TField("现金", TF, cashTFindex, "0");
+        break;
+    case "phone":
+    case "手机":
+        f = new TField("手机", TF, cashTFindex + 1, "0");
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 4, "000", -1, 0);
+        var staffTFindex = getEditSalesTFindex2("物流", "店员");
+        f = new TField("店员", TF_AC, staffTFindex, "000", -1, 0);
         break;
     case "card":
     case "刷卡":
-        f = new TField("刷卡", TF, 6, "000", -1, 0);
+        var cardTFindex = getEditSalesTFindex2("物流", "刷卡");
+        f = new TField("刷卡", TF, cardTFindex, "000", -1, 0);
         break;
     case "date":
     case "日期":
-        f = new TField("日期", TF_DT, 8, getToday());
+        f = new TField("日期", TF_DT, cardTFindex + 2, getToday());
         break;
     case "tip":
     case "备":
