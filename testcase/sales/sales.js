@@ -18,7 +18,9 @@ var CONFIRM = "确 认";
 /** 本单查询 */
 var SELFQUERY = "本单查询";// 7.01及以前为"查 询",7.10为"本单查询"
 /** 欠 */
-var NOPAY = "欠";// 7.21及以前为"未付",7.23为"欠"
+var NOPAY = "欠";// 7.21及以前为"未付",7.23为"欠"Recieve
+/** 收款单撤销 */
+var RECIEVE = "收款单撤销";// 7.13及以前为"撤销",7.23为"收款单撤销"
 
 function testSalesBillAll() {
     // run("新增开单，特殊货品", "testSpecial");
