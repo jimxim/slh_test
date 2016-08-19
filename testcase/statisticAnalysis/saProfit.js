@@ -33,6 +33,7 @@ function setParamFin_price_base2() {
 }
 
 function textFin_price_base2_1() {
+    tapMenu("货品管理", "新增货品+");
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
@@ -61,6 +62,7 @@ function textFin_price_base2_1() {
 }
 
 function textFin_price_base2_2() {
+    tapMenu("货品管理", "新增货品+");
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
@@ -98,6 +100,7 @@ function textFin_price_base2_2() {
 }
 
 function textFin_price_base2_3() {
+    tapMenu("货品管理", "新增货品+");
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
@@ -178,6 +181,7 @@ function setParamFin_price_base3() {
 }
 
 function textFin_price_base3_1() {
+    tapMenu("货品管理", "新增货品+");
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);
@@ -240,6 +244,7 @@ function setParamFin_price_base0() {
 }
 
 function textFin_price_base0_1() {
+    tapMenu("货品管理", "新增货品+");
     var r = "BP" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : "100", "零批价" : "200" };
     addGoods(keys);

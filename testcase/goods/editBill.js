@@ -10,8 +10,11 @@ function getQueryBtnIndex() {
 }
 /**
  * 简单的新增货品
+ * @param keys2
+ * @returns o
  */
-function addGoodsSimple() {
+function addGoodsSimple(keys2, o) {
+    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(6);
     var keys = {};
     var code = "g" + r;
@@ -26,8 +29,56 @@ function addGoodsSimple() {
     default:
         break;
     }
-    addGoods(keys);
+    if (isDefined(keys2)) {
+        keys = mixObject(keys, keys2);
+    }
+    addGoods(keys, o);
     return keys;
+}
+/**
+ * 新增库存录入
+ * @param o
+ */
+function editStockEntry(o) {
+    var e = getEditGoodsElements(), addBtn, clearBtn;
+    var idx = getEditGoodsIndex(e, "库存录入");
+    if (idx[1] < 0) {
+        logDebug("未找到库存录入");
+        return;
+    } else {
+        clearBtn = idx[1];
+        addBtn = idx[1] + 1;
+        tapButtonScroll(getScrollView(), addBtn);// 一般都是输入厂商后再进行库存录入，需要滑动
+    }
+    var details = o["库存录入"];
+    setStockEntryValue(details);
+
+    if (isDefined(details["onlytest"])) {
+        return;
+    }
+    if (isDefined(details["cancel"])) {
+        tapButton(getPop(), CANCEL);
+    } else {
+        tapButton(getPop(), OK);
+    }
+}
+function setStockEntryValue(details) {
+    if (isDefined(details) && details.length > 0) {
+        for (var i = 0; i < details.length; i++) {
+            var det = details[i];
+            var color = det["颜色"];
+            var view = window.popover().scrollViews()[0].tableViews()[0]
+                    .cells()[color];
+            if (isDefined(view) && view.isVisible()) {
+                var fields = [], num = det["数量"];
+                for (var j = 0; j < num.length; j++) {
+                    var f = new TField("数量", TF, j, num[j]);// TF_KB
+                    fields.push(f)
+                }
+                setTFieldsValue(view, fields);
+            }
+        }
+    }
 }
 
 /**
@@ -41,7 +92,17 @@ function addGoodsStockAdjustment(r) {
     runAndAlert("test100090Field", OK);
     tapNaviClose();
 }
-
+/**
+ * 统一通知数，保存后由NULL变成0
+ * @param data
+ * @returns
+ */
+function unityNotice(data) {
+    for (var i = 0; i < data.length; i++) {
+        data[i]["通知数"] = 0;
+    }
+    return data;
+}
 // 门店调入
 /**
  * 做调入单

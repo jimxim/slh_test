@@ -934,6 +934,7 @@ function test120013_2() {
 }
 
 function test120013_3() {
+    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(6);
     var code = "g" + r;
     var keys = { "款号" : code, "名称" : "货品" + r, "进货价" : "100", "类别" : "登山服" };
@@ -2047,6 +2048,7 @@ function test120037() {
 }
 
 function test120042() {
+    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100" };// 新增无厂商的货品
     addGoods(keys);
@@ -2087,6 +2089,7 @@ function test120042() {
 }
 
 function test120043() {
+    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100", "类别" : "登山服" };
     addGoods(keys);
@@ -2725,11 +2728,10 @@ function test120050Field(price) {
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    var qr2 = getQRDet();
+    var data = getQRDet().data;
     tapReturn();
-    qr1.data[0]["通知数"] = 0;
-    qr1.data[1]["通知数"] = 0;
-    ret = isAnd(ret, isEqualDyadicArray(qr1.data, qr2.data));
+    data = unityNotice(data);
+    ret = isAnd(ret, isEqualDyadicArray(qr1.data, data));
 
     tapMenu2("批量入库+");
     editPurchaseBatch(det, colorSize);
@@ -2865,6 +2867,7 @@ function test120058() {
     var det = { "明细" : [ { "货品" : "3035", "数量" : [ 58 ] } ] }
     editSalesBill(det, colorSize);
     var data1 = det["明细值"].data;
+    data1 = unityNotice(data1);
 
     tapMenu2("按批次查");
     query();
@@ -2910,9 +2913,7 @@ function test120018() {
         "刷卡" : [ 800, "交" ], "汇款" : [ 1200, "建" ] };
     editSalesBillNoColorSize(json);
     var data1 = json["明细值"].data;
-    for (var i = 0; i < data1.length; i++) {
-        data1[i]["通知数"] = 0;
-    }
+    data1 = unityNotice(data1);
 
     tapMenu2("按批次查");
     query();
@@ -3392,6 +3393,7 @@ function test120109Field(edit) {
         r = "3035";
         jo = { "明细" : [ { "货品" : r, "数量" : [ 30 ], "单价" : 0 } ] };
     } else {
+        tapMenu("货品管理", "新增货品+");
         var keys = { "款号" : r, "名称" : r, "进货价" : "0" };
         addGoods(keys);
     }

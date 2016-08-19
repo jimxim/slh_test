@@ -125,34 +125,48 @@ function addCustomer(keys, isEdit, keys2) {
 /**
  * 新增货品
  * @param keys
- * @param isEdit 是否编辑模式
- * @param day 上架日期
+ * @param o
+ * @param isEdit
  */
-function addGoods(keys, isEdit, day) {
+function addGoods(keys, o) {
     if (isUndefined(keys)) {
         return;
     }
-
-    var btn = SAVE;
-    if (isUndefined(isEdit) || isEdit == "no") {
-        tapMenu("货品管理", "新增货品+");
-    } else {
-        btn = EDIT_SAVE;
+    if (isUndefined(o)) {
+        o = {};
+    }
+    if (isDefined(o["日期"])) {
+        changeMarketTime(o["日期"]);
     }
 
-    if (isDefined(day)) {
-        changeMarketTime(day);
-    }
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
+
+    if (isDefined(o["库存录入"])) {
+        editStockEntry(o);//
+    }
+
+    editGoodsSave(o)
+}
+function editGoodsSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+    var btn = SAVE;
+    if (gMenu2 == "货品查询") {
+        btn = EDIT_SAVE;
+    }
     tapButtonAndAlert(btn, OK);
     delay();
-    tapReturn();
-
-    var cond = "window.buttons()['货品查询'].isVisible()";
-    waitUntil(cond, 5);
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+        var cond = "window.buttons()['货品查询'].isVisible()";
+        waitUntil(cond, 5);
+    }
 }
-
 /**
  * 新增物流核销单
  * @param o

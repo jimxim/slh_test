@@ -10,33 +10,33 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
- run("测试用例", "onlyTest");//
-// run("测试用例", "ts100171");
+// run("测试用例", "ts100162");//
+ run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
+
+    keys = { "厂商" : "vell" };
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] },
+            { "颜色" : "深红", "数量" : [ "", 15 ] } ] ,"onlytest":"yes"};
+    var json = addGoodsSimple(keys, jo);
 
 // debugObject(gCache,"gCache");
   return true;
 }
 
-function editStockEntry(){
-   var view=getPopView(window,0); 
-   var view1=getTableView(view);
 
-
-}
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};

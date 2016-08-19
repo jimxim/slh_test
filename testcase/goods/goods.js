@@ -1302,6 +1302,7 @@ function test100019_1() {
 // 省代模式
 // 仓管员002登录
 function test100020() {
+    tapMenu("货品管理", "新增货品+");
     var r = getTimestamp(8);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200" };
     addGoods(keys);
@@ -1842,6 +1843,7 @@ function test100092Field(keys) {
 function test100054_1() {
     var r = "g" + getTimestamp(8);
     var ret = false;
+    tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
@@ -1857,10 +1859,11 @@ function test100054_1() {
     alertMsgs = [];
 
     // 新增相同款号, 名称不同
+    tapMenu2("新增货品+");
     keys = { "款号" : r, "名称" : "a" + r };
     addGoods(keys);
 
-    tapMenu("货品管理", "货品查询");
+    tapMenu2("货品查询");
     tapChoose(getScrollView(), [ 0 ]);
     tapMenu("货品管理", "批量操作");
     delay();
@@ -2068,6 +2071,7 @@ function ts100058() {
     if (colorSize == "no") {
         keys = { "款号" : r, "名称" : r, "厂商" : "vell" };
     }
+    tapMenu("货品管理", "新增货品+");
     addGoods(keys);
     expected = getBarCode([ keys ], f.value);
 
@@ -2404,7 +2408,7 @@ function ts100142_143() {
 
     tapFirstText();
     var keys = { "允许退货" : "是" };
-    addGoods(keys, "yes");
+    addGoods(keys);
 
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : -5 } ] };
@@ -2415,7 +2419,7 @@ function ts100142_143() {
     tapButton(window, QUERY);
     tapFirstText();
     var keys = { "允许退货" : "否" };
-    addGoods(keys, "yes");
+    addGoods(keys);
 
     tapMenu("销售开单", ADDBILL);
     editSalesBill(json, colorSize);
@@ -2466,6 +2470,7 @@ function ts100145_146() {
         var r = "g" + getTimestamp(8);
         var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "颜色" : "0,1",
             "尺码" : "0,1", "吊牌价" : "200", "进货价" : "100" };
+        tapMenu("货品管理", "新增货品+");
         addGoods(keys);
 
         tapMenu("采购入库", "新增入库+");
@@ -3152,7 +3157,7 @@ function test100079_100080_100081() {
     query();
     tapFirstText();
     var keys = { "最大库存" : "0" };
-    addGoods(keys, "yes");
+    addGoods(keys);
 
     tapMenu("货品管理", "getMenu_More", "超储统计");
     var keys = { "款号" : r };
@@ -3166,7 +3171,7 @@ function test100079_100080_100081() {
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "最大库存" : 100 };
-    addGoods(keys, "yes");
+    addGoods(keys);
 
     tapMenu("货品管理", "getMenu_More", "超储统计");
     tapButton(window, QUERY);
@@ -3178,7 +3183,7 @@ function test100079_100080_100081() {
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "最大库存" : 10 };
-    addGoods(keys, "yes");
+    addGoods(keys);
 
     tapMenu("门店调出", "批量调出+");
     var json = { "调出人" : "000", "接收店" : "中洲店",
@@ -3282,6 +3287,7 @@ function test100075_100076_100077_100078() {
     var r = "cc" + getTimestamp(6);
     var max = getRandomInt(9) + 1;
     var stock = getRandomInt(50) + 50;
+    tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "最大库存" : max };
     addGoods(keys);
 
@@ -3856,7 +3862,7 @@ function ts100108() {
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isIn(qr.data[0]["名称"]), name);
+    ret = isAnd(ret, isIn(qr.data[0]["名称"], name));
 
     tapChoose(getScrollView(), [ 0, 1, 2 ]);
     tapMenu2("批量操作");
@@ -4192,7 +4198,7 @@ function test100152() {
     // qo = { "备注" : "是否允许款号设置扩展条码打印" };
     // o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     // ok = isAnd(ok, setGlobalParam(qo, o));
-
+    tapMenu("货品管理", "新增货品+");
     var r = "g" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
@@ -4202,7 +4208,7 @@ function test100152() {
     tapFirstText();
     var keys1 = { "厂商" : "Rt", "面料" : "纯棉", "执行标准" : "执行标准A", "安全类别" : "安全类别A",
         "等级" : "一等品", "洗涤说明" : "0,1" };
-    addGoods(keys1, "yes");
+    addGoods(keys1);
 
     var cond = "window.buttons()['货品查询'].isVisible()";
     waitUntil(cond);
@@ -4268,6 +4274,7 @@ function ts100160() {
     var keys = { "款号" : r, "名称" : r,
         "颜色" : "花色,黑色,白色,灰色,深灰,浅灰,米色,均色,红色,桃红,深红,粉红,桔红,鲜红,黄色",
         "尺码" : "S,M,均色,L,XL,2XL,25,26,27,28,29,30,31,32,33,34,35" };
+    tapMenu("货品管理", "新增货品+");
     addGoods(keys);
     var ret = isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码");// （颜色数*尺码数小于200）
     alertMsgs = [];
@@ -4275,7 +4282,7 @@ function ts100160() {
     tapMenu2("货品查询");
     query();
     tapFirstText();
-    addGoods(keys, "yes");
+    addGoods(keys);
     ret = isAnd(ret, isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码"));
     return ret;
 }
@@ -4299,7 +4306,31 @@ function ts100161() {
     ret = isAnd(ret, checkQResult("颜色", "花色"));
     return ret;
 }
+function ts100162() {
+    tapMenu("采购入库", "按批次查");
+    var keys = { "门店" : "常青店" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    var batch = Number(getQR().data[0]["批次"]);
 
+    keys = { "厂商" : "vell" };
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] },
+            { "颜色" : "深红", "数量" : [ "", 15 ] } ] };
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : json["款号"] };
+    conditionQuery(keys);
+    var data = getQR().data;
+    var exp = [ { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "S",
+        "库存" : 50 } ];
+    var ret = isEqualDyadicArray(data, exp);
+
+    tapMenu("采购入库", "按批次查");
+    tapButton(window, QUERY);
+    ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
+    return ret;
+}
 function ts100163() {
     tapMenu("货品管理", "getMenu_More", "新增颜色组+");
     var keys = { "名称" : "中" };
@@ -4446,21 +4477,13 @@ function ts100168() {
 function ts100169() {
     tapMenu("货品管理", "当前库存");
     var keys = { "是否停用" : "是" };
-    conditionQuery(keys);
-    var qr = getQR();
-    var code1 = [];
-    for (var i = 0; i < qr.data.length; i++) {
-        code1.push(qr.data[i]["款号"]);
-    }
+    var fields = queryGoodsStockFields(keys);
+    var arr1 = get130004QR(fields, "款号");
 
     tapMenu2("货品进销存");
-    conditionQuery(keys);
-    qr = getQR();
-    var code2 = [];
-    for (var i = 0; i < qr.data.length; i++) {
-        code2.push(qr.data[i]["款号"]);
-    }
-    return isEqualObject(code1, code2);
+    fields = queryGoodsInOutFields(keys);
+    var arr2 = get130004QR(fields, "款号");
+    return isEqualObject(arr1, arr2);
 }
 function test100170() {
     var det = addPOrderBillDet();
@@ -4558,6 +4581,25 @@ function ts100172() {
         keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "颜色" : "花色,黑色",
             "尺码" : "S,M", "进货价" : "100", "季节" : " " };
     }
-
     return ts100033Field(keys1, keys2);
+}
+function ts100173() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "0", "数值" : [ "默认关闭", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
+    tapReturn();
+    return ret;
+}
+function ts100174() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
+    tapReturn();
+    return ret;
 }

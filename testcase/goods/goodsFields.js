@@ -103,7 +103,8 @@ function queryGoodsStockField(key, show, idx) {
         f = new TField("类别", TF_SC, 11, "登山服");
         break;
     default:
-        logWarn("未知key＝" + key);
+        logDebug("未知key＝" + key);
+        break;
     }
     return f;
 }
@@ -619,12 +620,16 @@ function editGoodsField(key, show, texts) {
             f.value = "Vell";
         }
         break;
+    case "suplPrice":
     case "厂商价格":
         idx = getEditGoodsIndex(texts, "厂商价格");
         f = new TField("厂商价格", BTN, idx[1] + 1, "");// index为新增+按钮
         if (show) {
             f.type = TV;
-            f.index = 1;
+            f.index = 1;// 新增界面
+            if (gMenu2 == "货品查询") {
+                f.index = 0;// 修改界面
+            }
             f.value = "Rt:50;";
         }
         break;
@@ -768,7 +773,7 @@ function editGoodsField(key, show, texts) {
         f = new TField("图像", TF, idx[0], "");
         break;
     default:
-        logWarn("未知key＝" + key);
+        logDebug("未知key＝" + key);
         break;
     }
     return f;

@@ -509,7 +509,12 @@ function ts130004_05_06Staff() {
     ret = isAnd(ret, qr.data.length == 0);
     return ret;
 }
-
+/**
+ * 获取目标标题的内容(已去重排序)
+ * @param fields
+ * @param title
+ * @returns {Array}
+ */
 function get130004QR(fields, title) {
     var arr = [];
     query(fields)
@@ -935,12 +940,7 @@ function ts130012() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "汇款" ];
-    if (ipadVer < 7.01) {
-        exp.push("实付");
-    } else {
-        exp.push("实收");
-    }
+    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];// 应收，实收显示不同，就模糊验证
     var titles = getSalesBillDetTfObject();
     var ret = isAnd(isHasStaticTexts(window, exp), titles.hasOwnProperty("单价"),
             titles.hasOwnProperty("小计"));

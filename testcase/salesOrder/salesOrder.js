@@ -1247,6 +1247,7 @@ function test160063_1() {
 
 // 款号停用
 function test160090() {
+    tapMenu("货品管理", "新增货品+");
     var r = "g" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "进货价" : 200 };
     addGoods(keys);
@@ -2314,6 +2315,7 @@ function test16_Stockout_1() {
 // 条件查询/数据验证/清除
 // 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
 function test16_Stockout_2() {
+    tapMenu("货品管理", "新增货品+");
     var r = "g" + getTimestamp(8);
     var keys = { "款号" : r, "名称" : "a" + r, "品牌" : "1010pp", "吊牌价" : "200",
         "季节" : "春季", "厂商" : "vell" };

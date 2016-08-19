@@ -2211,6 +2211,7 @@ function test190083() {
     o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    tapMenu("货品管理", "新增货品+");
     var r = "dc" + getTimestamp(6);
     var keys = { "款号" : r, "名称" : r, "品牌" : "1010pp", "吊牌价" : "200",
         "产品折扣" : "0.9" };
