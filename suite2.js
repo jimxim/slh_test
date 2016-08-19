@@ -22,8 +22,7 @@ function test000All() {
 // run("【销售开单－代收收款】清除功能", "test170286");//店员
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库/按款号汇总", "test170121_170523");//
-    run("【销售开单－开单】异地发货－－后台不绑仓库，开单时不选择发货仓库", "test170120");
-    run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库/按款号汇总", "test170121_170523");
+    run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450");
 // run("", "test0");
 }
 function test0(){
@@ -31,14 +30,7 @@ function test0(){
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
-// debugElements(window);
-    tapMenu("销售开单", "按汇总", "按款号汇总");
-    var keys = { "门店" : "常青店", "款号" : "3035" };
-    var fields = salesCodeFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret=isEqual(120,qr.data[0]["库存"]);
-    return ret;
+// debugElements(window);    
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
