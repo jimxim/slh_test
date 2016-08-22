@@ -115,6 +115,30 @@ function purchaseQueryParticularField(key, show) {
     }
     return f;
 }
+// 按挂单
+function purchaseHangFields(keys, show) {
+    return getTFields("purchaseHangField", keys, show);
+}
+function purchaseHangField(key, show) {
+    var f;
+    switch (key) {
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "厂商":
+        f = new TField("厂商", TF_AC, 2, "vell", -1, 0);
+        break;
+    case "门店":
+        f = new TField("门店", TF, 3, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 
 // 按金额汇总
 function testPurchasePriceFields() {

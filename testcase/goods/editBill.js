@@ -1,13 +1,3 @@
-//各种开单新增编辑数据
-
-//货品管理
-/**
- * 获取查询界面第一个...按钮的下标
- * @returns
- */
-function getQueryBtnIndex() {
-    return getButtonIndex(window, "...");
-}
 /**
  * 简单的新增货品
  * @param keys2
@@ -62,6 +52,10 @@ function editStockEntry(o) {
         tapButton(getPop(), OK);
     }
 }
+/**
+ * 库存录入界面设值
+ * @param details
+ */
 function setStockEntryValue(details) {
     if (isDefined(details) && details.length > 0) {
         for (var i = 0; i < details.length; i++) {
@@ -92,20 +86,81 @@ function addGoodsStockAdjustment(r) {
     runAndAlert("test100090Field", OK);
     tapNaviClose();
 }
+
 /**
- * 统一通知数，保存后由NULL变成0
- * @param data
- * @returns
+ * 新增批量入库
+ * @param o
  */
-function unityNotice(data) {
-    for (var i = 0; i < data.length; i++) {
-        data[i]["通知数"] = 0;
+function editPurchaseBatch(o, colorSize) {
+    editPurchaseBatchStaff(o);
+    if (colorSize == "yes") {
+        editSalesBillDetColorSize(o);
     }
-    return data;
+    if (colorSize == "no") {
+        editPurchaseBatchDet(o);
+    }
+    editPurchaseBatchSave(o)
+    return o;
 }
-// 门店调入
+
+function editPurchaseBatchStaff(o) {
+    var oc = o["店员"];
+    if (isDefined(oc)) {
+        var keys = [ "店员" ];
+        var fields = purchaseBatchEditFields(keys);
+        changeTFieldValue(fields["店员"], oc);
+        setTFieldsValue(window, fields);
+    }
+}
+
+function editPurchaseBatchDet(o) {
+    var details = o["明细"];
+    var title = getSalesBillDetTfObject();
+    var tfNum = title["明细输入框个数"];
+    for ( var i in details) {
+        var start = getBillDetInputIndex(tfNum);
+        var d = details[i];
+
+        var f0 = new TField("货品", TF_AC, start + title["货品"], d["货品"], -1, 0);
+        setTFieldsValue(getScrollView(-1), [ f0 ]);
+
+        var num;
+        if (isArray(d["数量"])) {
+            num = d["数量"][0];
+        } else {
+            num = d["数量"];
+        }
+        var f1 = new TField("数量", TF, start + title["数量"], num);
+        setTFieldsValue(getScrollView(-1), [ f1 ]);
+
+        var fields = [];
+        if (isDefined(d["单价"])) {
+            fields.push(new TField("单价", TF, start + title["单价"], d["单价"]));
+        }
+        setTFieldsValue(getScrollView(-1), fields);
+    }
+    o["标题"] = title;
+    return o;
+}
+
+function editPurchaseBatchSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+    o["明细值"] = getQRDet(getScrollView(-1), o);
+    saveAndAlertOk();
+    o["操作日期"] = getOpTime();
+    delay();
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+    }
+}
+
 /**
- * 做调入单
+ * 门店调入 做调入单
  */
 function editShopInFlitting(secure) {
     if (isDefined(secure)) {
@@ -117,4 +172,65 @@ function editShopInFlitting(secure) {
     tapButtonAndAlert("调 入", OK);
     delay();
     tapPrompt();
+}
+
+/**
+ * 新增收支
+ * @param o
+ */
+function editStatisticAnalysisIn(o) {
+    editStatisticAnalysisInField1(o, "日期");
+    editStatisticAnalysisInField1(o, "账户");
+    editStatisticAnalysisInField1(o, "收支备注");// 防止数据重复提交
+
+    editStatisticAnalysisInDet(o);
+
+    editStatisticAnalysisInSave(o);
+}
+
+function editStatisticAnalysisInField1(o, key) {
+    var v = o[key];
+    if (isDefined(v)) {
+        var keys = {};
+        keys[key] = v;
+        var fields = editStatisticAnalysisInFields(keys);
+        setTFieldsValue(window, fields);
+    }
+}
+
+function editStatisticAnalysisInDet(o) {
+    var details = o["明细"];
+    var tfNum = getSalesBillDetTfNum(o);
+    for ( var i in details) {
+        var d = details[i];
+
+        var f0 = new TField("收入类别", TF_SC, tfNum * i + 0, d["收入类别"]);
+        setTFieldsValue(getScrollView(-1), [ f0 ]);
+
+        var f1 = new TField("金额", TF_KB, tfNum * i + 1, d["金额"]);
+        setTFieldsValue(getScrollView(-1), [ f1 ]);
+
+        var fields = [];
+        if (isDefined(d["备注"])) {
+            fields.push(new TField("备注", TF, tfNum * i + 2, d["备注"]));
+        }
+        setTFieldsValue(getScrollView(-1), fields);
+    }
+}
+
+function editStatisticAnalysisInSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+
+    saveAndAlertOk();
+    o["操作日期"] = getOpTime();
+    tapPrompt();
+    delay();
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+    }
 }

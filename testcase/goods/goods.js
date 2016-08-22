@@ -623,47 +623,6 @@ function test100101Field(p1, first) {
 }
 
 /**
- * 名称模糊查询 款号下拉列表验证
- * @param n1为款号的下标
- * @param n2为名称的下标
- */
-function testGoods002Field(n1, n2) {
-    var i, j;
-    var ret = false;
-    var f = new TField("款号", TF_AC, n1, "303", -1);
-    var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "3035,jkk,200元,1,Adidas")) {
-            ret = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    tapButton(window, CLEAR);
-
-    f = new TField("款号名称", TF, n2, "303");
-    var fields = [ f ];
-    query(fields);
-    var qr = getQR();
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
-            if (!isIn(qr.data[i]["名称"], "303")) {
-                ret = false;
-                break;
-            }
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    return ret;
-}
-
-/**
  * 款号名称模糊查询 款号下拉列表验证产品折扣
  */
 function test10_fuzzyQueryAndDropDownListCheck() {
@@ -858,30 +817,6 @@ function ts100006() {
             window, 2)));
 
     return ret;
-}
-/**
- * 获取库存分布二级界面 款号的数据
- * @param code
- * @param close 是否返回 默认返回
- * @returns
- */
-function getDetTS100006(code, close) {
-    tapFirstText();
-    var keys = { "款号" : code };
-    var fields = queryGoodsDistributionDetFields(keys);
-    var view = getScrollView(-1, 0);
-    setTFieldsValue(view, fields);
-    tapButton(view, QUERY);
-
-    var qr = getQR2(view, "名称", "中洲店");
-    // 查询结果唯一
-    var data = qr.data[0];
-
-    if (isUndefined(close)) {
-        tapNaviLeftButton();
-    }
-
-    return data;
 }
 
 function test100006_1() {
@@ -2093,7 +2028,12 @@ function ts100058() {
 
     return ret;
 }
-
+/**
+ * 获取配码值
+ * @param arr
+ * @param providercode 厂商编码 用例要求变动
+ * @returns
+ */
 function getBarCode(arr, providercode) {
     for (var i = 0; i < arr.length; i++) {
         var obj = arr[i];
@@ -4306,31 +4246,7 @@ function ts100161() {
     ret = isAnd(ret, checkQResult("颜色", "花色"));
     return ret;
 }
-function ts100162() {
-    tapMenu("采购入库", "按批次查");
-    var keys = { "门店" : "常青店" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-    var batch = Number(getQR().data[0]["批次"]);
 
-    keys = { "厂商" : "vell" };
-    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] },
-            { "颜色" : "深红", "数量" : [ "", 15 ] } ] };
-    var json = addGoodsSimple(keys, jo);
-
-    tapMenu("货品管理", "当前库存");
-    keys = { "款号" : json["款号"] };
-    conditionQuery(keys);
-    var data = getQR().data;
-    var exp = [ { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "S",
-        "库存" : 50 } ];
-    var ret = isEqualDyadicArray(data, exp);
-
-    tapMenu("采购入库", "按批次查");
-    tapButton(window, QUERY);
-    ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
-    return ret;
-}
 function ts100163() {
     tapMenu("货品管理", "getMenu_More", "新增颜色组+");
     var keys = { "名称" : "中" };
@@ -4601,5 +4517,40 @@ function ts100174() {
     tapMenu("货品管理", "新增货品+");
     var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
     tapReturn();
+    return ret;
+}
+function ts100162() {
+    tapMenu("采购入库", "按批次查");
+    var keys = { "门店" : "常青店" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    var batch = Number(getQR().data[0]["批次"]);
+
+    keys = { "厂商" : "vell" };
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] },
+            { "颜色" : "深红", "数量" : [ "", 15 ] } ] };
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : json["款号"] };
+    conditionQuery(keys);
+    var data = getQR().data;
+    var exp = [
+            { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "S",
+                "库存" : 10, "数量" : 10, "单价" : 200 },
+            { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "M",
+                "库存" : 20, "数量" : 20, "单价" : 200 },
+            { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "深红", "尺码" : "M",
+                "库存" : 15, "数量" : 15, "单价" : 200 } ];
+    var ret = isEqualDyadicArray(data, exp);
+
+    tapMenu("采购入库", "按批次查");
+    tapButton(window, QUERY);
+    ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
+    tapFirstText();
+    data = getQRDet().data;
+    ret = isAnd(ret, isEqualDyadicArray(data, exp));
+    tapReturn()
+
     return ret;
 }
