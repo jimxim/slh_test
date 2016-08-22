@@ -1909,6 +1909,193 @@ function conditionQuery(keys, tapClear, view) {
             }
             break;
         }
+    case "采购入库":
+        switch (gMenu2) {
+        case "按批次查":
+            qFields = purchaseQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = purchaseQueryParticularFields(keys);
+            break;
+        case "按挂单":
+            qFields = purchaseHangFields(keys);
+            break;
+        case "按汇总":
+            switch (gMenu3) {
+            case "按金额汇总":
+                qFields = purchasePriceFields(keys);
+                break;
+            case "按款号汇总":
+                qFields = purchaseCodeFields(keys);
+                break;
+            case "按厂商返货":
+                qFields = purchaseProviderReturnFields(keys);
+                break;
+            case "按厂商汇总":
+                qFields = purchaseProviderFields(keys);
+                break;
+            case "出入库汇总":
+                qFields = purchaseInOutFields(keys);
+                break;
+            case "按类别汇总":
+                qFields = purchaseTypeFields(keys);
+                break;
+            case "按品牌汇总":
+                qFields = purchaseBrandFields(keys);
+                break;
+            }
+            break;
+        case "厂商账款":
+            switch (gMenu3) {
+            case "厂商总账":
+                qFields = purchaseProviderAccountFields(keys);
+                break;
+            case "厂商门店账":
+                qFields = purchaseShopAccountFields(keys);
+                break;
+            }
+            break;
+        }
+        break;
+    case "厂商账款":
+        switch (gMenu2) {
+        case "按批次查":
+            qFields = purchaseOrderQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = purchaseOrderQueryParticularFields(keys);
+            break;
+        case "按汇总":
+            switch (gMenu3) {
+            case "按款号":
+                qFields = purchaseOrderCodeFields(keys);
+                break;
+            case "按厂商":
+                qFields = purchaseOrderProviderFields(keys);
+                break;
+            case "按门店":
+                qFields = purchaseOrderShopFields(keys);
+                break;
+            }
+        }
+        break;
+    case "门店调入":
+        switch (gMenu2) {
+        case "在途调拨":
+            qFields = shopInFlitFields(keys);
+            break;
+        case "按批次查":
+            qFields = shopInQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = shopInQueryParticularFields(keys);
+            break;
+        case "按款号汇总":
+            qFields = shopInCodeFields(keys);
+            break;
+        }
+        break;
+    case "门店调出":
+        switch (gMenu2) {
+        case "按批次查":
+            qFields = testShopOutQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = shopOutQueryParticularFields(keys);
+            break;
+        case "按款号汇总":
+            qFields = shopOutCodeFields(keys);
+            break;
+        }
+        break;
+    case "销售订货":
+        switch (gMenu2) {
+        case "按批次查":
+            qFields = salesOrderQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = salesOrderQueryParticularFields(keys);
+            break;
+        case "按挂单":
+            qFields = salesOrderHangFields(keys);
+            break;
+        case "按汇总":
+            switch (gMenu3) {
+            case "按款号":
+                qFields = salesOrderCodeFields(keys);
+                break;
+            case "按店员":
+                qFields = salesOrderStaffFields(keys);
+                break;
+            case "按客户":
+                qFields = salesOrderCustomerFields(keys);
+                break;
+            case "按门店":
+                qFields = salesOrderShopFields(keys);
+                break;
+            }
+            break;
+        case "按厂商报单":
+            qFields = salesOrderCompanyFields(keys);
+            break;
+        case "订货对账单":
+            qFields = salesOrderBillFields(keys);
+            break;
+        case "按缺货查":
+            qFields = salesOrderQueryByStockoutFields(keys);
+            break;
+        }
+        break;
+    case "统计分析":
+        switch (gMenu2) {
+        case "收支表":
+            qFields = statisticAnalysisInOutFields(keys);
+            break;
+        case Menu_Profit:
+            qFields = statisticAnalysisProfitFields(keys);
+            break;
+        case "综合汇总":
+            qFields = statisticAnalysisSynthesisFields(keys);
+            break;
+        case "汇总表":
+            switch (gMenu3) {
+            case "款号利润表":
+                qFields = statisticAnalysisCodeProfitFields(keys);
+                break;
+            case "退货表":
+                qFields = statisticAnalysisReturnFields(keys);
+                break;
+            case "畅销表":
+                qFields = statisticAnalysisGoodMarketFields(keys);
+                break;
+            case "滞销表":
+                qFields = statisticAnalysisUnsalableFields(keys);
+                break;
+            case "颜色销售表":
+                qFields = statisticAnalysColorFields(keys);
+                break;
+            case "尺码销售表":
+                qFields = statisticAnalysSizeFields(keys);
+                break;
+            case "品牌销售表":
+                qFields = statisticAnalysBrandFields(keys);
+                break;
+            case "类别销售表":
+                qFields = statisticAnalysTypeFields(keys);
+                break;
+            case "厂商销售表":
+                qFields = statisticAnalysProviderFields(keys);
+                break;
+            }
+            break;
+        case "收支汇总":
+            qFields = statisticAnalysisInOutSummaryFields(keys);
+            break;
+        case "收支流水":
+            qFields = statisticAnalysisInOutAccountFields(keys);
+            break;
+        }
+        break;
     default:
         logDebug("未知模块 " + msg);
         break;
@@ -1966,3 +2153,4 @@ function isPositiveNumber(n) {
 function isNegativeNumber(n) {
     return Number(n) <= 0;
 }
+

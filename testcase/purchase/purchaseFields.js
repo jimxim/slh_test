@@ -323,7 +323,7 @@ function purchaseProviderField(key, show) {
     return f;
 }
 
-// 按出入库汇总
+// 出入库汇总
 function testPurchaseInOutFields() {
     var fields = purchaseInOutFields("day1", "day2");
     setTFieldsValue(window, fields);
@@ -407,12 +407,45 @@ function purchaseTypeField(key) {
         f = new TField("日期从", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 1, "2015-9-15");
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, "2015-9-15");
         break;
     case "type":
     case "类别":
         f = new TField("类别", TF_SC, 2, "登山服");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+/**
+ * 按品牌汇总
+ * @param keys
+ * @param show
+ * @returns
+ */
+function purchaseBrandFields(keys, show) {
+    return getTFields("purchaseBrandField", keys, show);
+}
+function purchaseBrandField(key) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF, 3, "1010pp", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);

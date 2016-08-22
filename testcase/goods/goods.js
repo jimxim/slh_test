@@ -4554,3 +4554,16 @@ function ts100162() {
 
     return ret;
 }
+/**
+ * 日期从，日期到验证
+ */
+function testDeadlineCheck() {
+    tapMenu("货品管理", "getMenu_More", "库存调整单");
+    checkDeadline();
+}
+function checkDeadline() {
+    var msg = gMenu1 + "-" + gMenu2;
+    var keys = { "日期从" : getDay(-30), "日期到" : getDay(-10) };
+    conditionQuery();
+    var ret = checkQResult("日期", getDay(-30), "day", getDay(-10))
+}

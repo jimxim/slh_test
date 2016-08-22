@@ -907,7 +907,7 @@ function test120013_1() {
 
 function test120013_2() {
     tapMenu("采购入库", "按汇总", "按类别汇总");
-    var keys = { "日期从" : getDay(-30), "到" : getToday(), "类别" : "登山服" }
+    var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "类别" : "登山服" }
     var fields = purchaseTypeFields(keys);
     query(fields);
     var qr = getQR();
@@ -2180,33 +2180,27 @@ function ts120044() {
 }
 function test120045() {
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    var keys = [ "款号", "厂商" ];
-    var fields = purchaseCodeFields(keys);
-    changeTFieldValue(fields["款号"], "3035");
-    changeTFieldValue(fields["厂商"], "vell");
-    query(fields);
+    var keys = { "款号" : "3035", "厂商" : "vell" };
+    conditionQuery(keys);
     var qr = getQR();
-    if (qr.total == 0) {
-        var a1 = 0;
-    } else {
+    var a1 = 0;
+    if (qr.total > 0) {
         a1 = qr.data[0]["数量"];
     }
 
-    changeTFieldValue(fields["厂商"], "rt");
-    query(fields);
+    keys = { "厂商" : "rt" }
+    conditionQuery(keys, false);
     qr = getQR();
-    if (qr.total == 0) {
-        var a2 = 0;
-    } else {
+    var a2 = 0;
+    if (qr.total > 0) {
         a2 = qr.data[0]["数量"];
     }
 
-    changeTFieldValue(fields["厂商"], "Adidas");
-    query(fields);
+    keys = { "厂商" : "Adidas" }
+    conditionQuery(keys, false);
     qr = getQR();
-    if (qr.total == 0) {
-        var a3 = 0;
-    } else {
+    var a3 = 0;
+    if (qr.total > 0) {
         a3 = qr.data[0]["数量"];
     }
 
@@ -2223,20 +2217,20 @@ function test120045() {
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
-    changeTFieldValue(fields["厂商"], "vell");
-    query(fields);
+    keys = { "厂商" : "vell" }
+    conditionQuery(keys, false);
     qr = getQR();
     var ret = isAnd(isEqual("Vell", qr.data[0]["厂商"]), isEqual("10", sub(
             qr.data[0]["数量"], a1)));
 
-    changeTFieldValue(fields["厂商"], "rt");
-    query(fields);
+    keys = { "厂商" : "rt" }
+    conditionQuery(keys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual("Rt", qr.data[0]["厂商"]), isEqual("20", sub(
             qr.data[0]["数量"], a2)));
 
-    changeTFieldValue(fields["厂商"], "Adidas");
-    query(fields);
+    keys = { "厂商" : "Adidas" }
+    conditionQuery(keys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual("Adidas公司", qr.data[0]["厂商"]), isEqual("30", sub(
             qr.data[0]["数量"], a3)));
