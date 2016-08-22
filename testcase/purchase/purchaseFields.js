@@ -342,6 +342,7 @@ function purchaseInOutField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     default:

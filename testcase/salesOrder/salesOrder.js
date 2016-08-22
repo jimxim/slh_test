@@ -314,11 +314,9 @@ function test160055_160056_160057_160058() {
     // ret = isAnd(ret, isIn(alertMsg, "订货时不能做核销操作"));//按钮灰化
 
     tapButton(getScrollView(-1), 0);
-    var tfNum = getSalesBillDetTfNum({});
-    for (var i = 0; i < tfNum; i++) {
-        ret = isAnd(ret, isEqual("", getTextFieldValue(getScrollView(), i)));
-    }
-    tapButtonAndAlert(RETURN);
+    var data = getQRDet().data;
+    ret = isAnd(ret, data.length == 0);
+    tapReturn();
 
     return ret;
 }
@@ -887,12 +885,6 @@ function test160019() {
     fields = salesOrderQueryParticularFields(keys);
     query(fields);
     ret = isAnd(ret, checkQResult("款号", "3035"));
-
-    keys = { "日期从" : getDay(-15), "日期到" : getDay(-10) };
-    fields = salesOrderQueryParticularFields(keys);
-    query(fields);
-    ret = isAnd(ret, checkQResult("日期", getDay(-15), "day", getDay(-10)));
-
     return ret;
 }
 
@@ -926,7 +918,7 @@ function test160020_160022() {
     tapButton(window, CLEAR);
     for (var i = 0; i < 7; i++) {
         if (i == 1 || i == 2) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+            ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, i)));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         }

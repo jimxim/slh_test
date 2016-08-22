@@ -804,7 +804,8 @@ function checkQResultField(title, expected, type, expected2) {
             break;
         }
         if (!ret) {
-            logDebug("第" + j + "页,第" + i + "行 expected=" + expected
+            var msg = gMenu1 + "-" + gMenu2;
+            logDebug(msg + " 第" + j + "页,第" + i + "行 expected=" + expected
                     + "  actual=" + value);
             break;
         }
@@ -2153,4 +2154,3 @@ function isPositiveNumber(n) {
 function isNegativeNumber(n) {
     return Number(n) <= 0;
 }
-
