@@ -577,14 +577,17 @@ function test170450Prepare() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 }
 function test170450_4() {
+    var qo, o, ret = true;
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : "k300" };
     var fields = queryGoodsFields(keys);
     query(fields);
     tapFirstText();
-
     var lprice = getTextFieldValue(getScrollView(), 9);
-
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -593,7 +596,6 @@ function test170450_4() {
     editSalesBillNoColorSize(json);
 
     var f4 = new TField("单价", TF, 4, Number(lprice - 10));
-
     var fields = [ f4 ];
     setTFieldsValue(getScrollView(), fields);
 
@@ -608,24 +610,127 @@ function test170450_4() {
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "k300", "数量" : "50" }, { "货品" : "4562", "数量" : "20" } ],
-        "onlytest" : "yes" };
+        "明细" : [ { "货品" : "k300", "数量" : "50", "单价" : Number(lprice - 10) },
+                { "货品" : "4562", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
-
-    var f4 = new TField("单价", TF, 4, Number(lprice - 10));
-
-    var fields = [ f4 ];
-    setTFieldsValue(getScrollView(), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "[第1行] [k300] 价格输入错误，因为启用了价格验证");
 
-    return ret && ret1;
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "0", "数值" : [ "采购价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 6, "单价" : 160 } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 20 } };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = isIn(alertMsg1, "[第1行] [k200] 价格输入错误，因为启用了价格验证");
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total = qr.total;
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 2, "单价" : 160 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total1 = qr.total;
+    var ret4 = isEqual(0, sub(total1, total));
+
+    // 销售开单价不能低于指定的价格类型-大客户 （前提大客户价低于打包价）
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "3", "数值" : [ "价格3", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ] };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret4 = isIn(alertMsg1, "[第1行] [3035] 价格输入错误，因为启用了价格验证");
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total2 = qr.total;
+    var ret5 = isEqual(0, sub(total2, total1));
+
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 150 } ] };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret6 = isIn(alertMsg1, "[第1行] [3035] 价格输入错误，因为启用了价格验证");
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 150 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total3 = qr.total;
+    var ret7 = isEqual(0, sub(total3, total2));
+
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 200 } ] };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret8 = isIn(alertMsg1, "[第1行] [3035] 价格输入错误，因为启用了价格验证");
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 200 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total4 = qr.total;
+    var ret9 = isEqual(0, sub(total4, total3));
+
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "0", "数值" : [ "不检查" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
+            && ret9;
 }
 function test170464() {
     // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店长：004
