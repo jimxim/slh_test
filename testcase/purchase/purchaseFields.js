@@ -100,15 +100,16 @@ function purchaseQueryParticularField(key, show) {
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 3, "2015-9-11");
+        f = new TField("日期从", TF_DT, 3, getToday());
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 4, "2015-9-15");
+    case "日期到":
+        f = new TField("到", TF_DT, 4, getToday());
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 5, "仓库店");// TF_SC
+        f = new TField("门店", TF, 5, "仓库店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -159,6 +160,7 @@ function purchasePriceField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     default:
@@ -272,6 +274,7 @@ function purchaseProviderReturnField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 2, "2015-9-15");
         break;
     case "provider":
@@ -308,6 +311,7 @@ function purchaseProviderField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     case "provider":
@@ -373,6 +377,7 @@ function purchaseQueryProviderField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, l - 2, "2015-9-15");
         break;
     case "provider":
@@ -524,6 +529,7 @@ function purchaseOrderField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     case "provider":

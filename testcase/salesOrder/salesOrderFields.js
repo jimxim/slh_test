@@ -187,6 +187,7 @@ function salesOrderPictureField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "code":
@@ -223,6 +224,7 @@ function salesOrderCodeField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "code":
@@ -278,6 +280,7 @@ function salesOrderStaffField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "staff":
@@ -314,6 +317,7 @@ function salesOrderCustomerField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "customer":
@@ -349,6 +353,7 @@ function salesOrderShopField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "shop":
@@ -413,6 +418,7 @@ function salesOrderBillField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 3, getToday());
         break;
     default:

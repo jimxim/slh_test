@@ -610,6 +610,7 @@ function customerExportField(key) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 3, getToday());
         break;
     default:
@@ -836,6 +837,7 @@ function queryCustomerBackField(key, show) {
         break;
     case "day2":
     case "到":
+    case "回访日期到":
         f = new TField("到", TF_DT, 1, "2015-09-10");
         break;
     case "customer":

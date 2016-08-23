@@ -20,6 +20,7 @@ function statisticAnalysisInOutField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "type":
@@ -142,6 +143,7 @@ function statisticAnalysisSynthesisField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "shop":
@@ -272,6 +274,7 @@ function statisticAnalysisReturnField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "code":
@@ -316,6 +319,7 @@ function statisticAnalysisGoodMarketField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "code":
@@ -360,6 +364,7 @@ function statisticAnalysisUnsalableField(key, show) {
         break;
     case "day2":
     case "到":
+    case "上架到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "code":
@@ -645,6 +650,7 @@ function statisticAnalysisInOutSummaryField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "type":
@@ -744,6 +750,7 @@ function statisticAnalysisInOutAccountField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
         break;
     case "account":

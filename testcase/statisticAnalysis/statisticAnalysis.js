@@ -2039,7 +2039,7 @@ function test190078_190080() {
     fields = statisticAnalysisUnsalableFields(keys);
     query(fields);
     qr = getQR();
-    // 前面的用例中开过单，最后销售日期应该为当天
+    // 前面的用例中开过单，最后销售日期应该为当天 滞销天数为0
     var expected = { "门店" : "常青店", "款号" : "3035", "名称" : "jkk",
         "上架日期" : "15-10-13", "最后售出日期" : getToday("yy"), "滞销天数" : "0",
         "库存" : stcok };

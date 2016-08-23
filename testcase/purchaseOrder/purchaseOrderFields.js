@@ -101,6 +101,7 @@ function purchaseOrderQueryParticularField(key, show) {
         f = new TField("日期从", TF_DT, 3, "2015-9-11");
         break;
     case "day2":
+    case "日期到":
     case "到":
         f = new TField("到", TF_DT, 4, "2015-9-15");
         break;
@@ -135,6 +136,7 @@ function purchaseOrderCodeField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     case "code":
@@ -179,6 +181,7 @@ function purchaseOrderProviderField(key, show) {
         break;
     case "day2":
     case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;
     case "provider":
@@ -218,6 +221,7 @@ function purchaseOrderShopField(key, show) {
         f = new TField("日期从", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
+    case "日期到":
     case "到":
         f = new TField("到", TF_DT, 1, "2015-9-15");
         break;

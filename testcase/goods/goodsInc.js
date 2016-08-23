@@ -135,8 +135,8 @@ function addGoods(keys, o) {
     if (isUndefined(o)) {
         o = {};
     }
-    if (isDefined(o["日期"])) {
-        changeMarketTime(o["日期"]);
+    if (isDefined(o["上架日期"])) {
+        changeMarketTime(o["上架日期"]);
     }
 
     var fields = editGoodsFields(keys, false);
@@ -314,7 +314,38 @@ function getCounts(cond) {
     }
     return sum;
 }
-
+/**
+ * 简单的月日转4位年月日 大于当日改成去年,需要定期清理数据 一般不会往后做数据
+ * @param day
+ * @returns {String}
+ */
+function getDay04(day) {
+    var d = new Date();
+    var y = d.getFullYear();
+    var s = formatDate(d, "MM-dd");
+    if (s < day) {
+        y--;
+    }
+    return y + "-" + day;
+}
+/**
+ * 将日期转化为4位年月日
+ * @param day
+ * @returns {String}
+ */
+function getDayToFullYear(day) {
+    var ret = day;
+    if (isDefined(day)) {
+        if (day.length > 6) {
+            ret = getDay24(day);
+        } else {
+            // if (day.length > 4) {
+            ret = getDay04(day);
+            // }
+        }
+    }
+    return ret;
+}
 /**
  * 获取开单界面window视图中的值,标题与文本框必须一一对应
  * @param firstTitle 起始标题
@@ -367,15 +398,11 @@ function getQRDet(view, o) {
     for (var j = 0; j < line.length; j++) {
         if (texts[tfNum * j].value() != "") {
             var data1 = {};
-            // var ignore = 0;
             for (var i = 0; i < tfNum; i++) {
                 var index = tfNum * j + i;
                 var v = texts[index].value();
-                var w = texts[index].rect().size.width;
-                if (w < 5) {
-                    // ignore++;
-                } else {
-                    // var num = i - ignore;
+                var w = texts[index].rect().size.width;// 宽度小于5的为隐藏字段，忽略
+                if (w > 5) {
                     for ( var t in titles) {
                         if (titles[t] == i) {
                             data1[t] = v;
@@ -661,7 +688,8 @@ function tapTextByFirstWithName(name, view1) {
         view1 = getScrollView();
     }
     var texts = getStaticTexts(view1);
-    var ok = tap(texts.firstWithName(name), true);
+    var str = String(name);
+    var ok = tap(texts.firstWithName(str), true);
     if (!ok) {
         logDebug("未找到name为" + name + "的StaticText");
     }
@@ -762,7 +790,7 @@ function testCheckFuzzyQuery() {
  * @returns {Boolean}
  */
 function checkQResult(title, expected, type, expected2) {
-    var regTotal = /共\s*(\d+)条/, ret;
+    var regTotal = /共\s*(\d+)条/, ret = true;
     var oPage = getPageInfo(window, regTotal);
     var totalPageNo = oPage["totalPageNo"];
 
@@ -775,7 +803,12 @@ function checkQResult(title, expected, type, expected2) {
         }
         tapButton(window, QUERY);// 取消排序，防止影响后续操作
     } else {
-        ret = checkQResultField(title, expected, type, expected2);
+        if (totalPageNo == 1) {
+            ret = checkQResultField(title, expected, type, expected2);
+        } else {
+            logWarn(gMenu1 + "-" + gMenu2 + "-" + gMenu3 + "  标题" + title
+                    + "的查询结果无数据，跳过验证");
+        }
     }
 
     return ret;
@@ -793,7 +826,7 @@ function checkQResultField(title, expected, type, expected2) {
             ret = expected <= value && value <= expected2;
             break;
         case "day":
-            value = getDay24(value);
+            value = getDayToFullYear(value);
             ret = expected <= value && value <= expected2;
             break;
         case "in":
@@ -1958,7 +1991,7 @@ function conditionQuery(keys, tapClear, view) {
             break;
         }
         break;
-    case "厂商账款":
+    case "采购订货":
         switch (gMenu2) {
         case "按批次查":
             qFields = purchaseOrderQueryBatchFields(keys);

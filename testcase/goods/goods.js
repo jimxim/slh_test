@@ -680,7 +680,7 @@ function test100005_1() {
 function test100005_2() {
     tapMenu("货品管理", "款号库存");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
-        "季节" : "春季", "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否" }
+        "季节" : "春季", "上架从" : "15-10-13", "到" : "15-10-13", "是否停用" : "否" }
     var fields = queryGoodsCodeStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -913,7 +913,7 @@ function ts100008_1() {
 function ts100008() {
     tapMenu("货品管理", "货品进销存");
     var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "厂商" : "Vell",
-        "是否停用" : "否", "上架从" : "2015-01-01", "到" : getToday(), "季节" : "春季",
+        "是否停用" : "否", "上架从" : "2015-10-13", "到" : "2015-10-13", "季节" : "春季",
         "品牌" : "Adidas", "类别" : "登山服", "经办人" : "000" };
     var fields = queryGoodsInOutFields(keys);
     query(fields);
@@ -1056,7 +1056,7 @@ function ts100010_100011_100013() {
 
     tapMenu2("货品查询");
     qKeys = { "厂商" : "vell", "款号名称" : code, "品牌" : "1010pp",
-        "上架从" : getDay(-1), "到" : getToday(), "颜色" : color, "经办人" : "000",
+        "上架从" : getDay(-1), "到" : getDay(-1), "颜色" : color, "经办人" : "000",
         "是否停用" : "否", "类别" : "登山服", "季节" : "夏季" };
     qFields = queryGoodsFields(qKeys);
     query(qFields);
@@ -3225,19 +3225,18 @@ function test100087_100088_100089() {
 
 function test100075_100076_100077_100078() {
     var r = "cc" + getTimestamp(6);
-    var max = getRandomInt(9) + 1;
-    var stock = getRandomInt(50) + 50;
+    var max = getRandomNum(1, 10);
+    var stock = getRandomNum(20, 50);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "最大库存" : max };
-    addGoods(keys);
+    var o = { "上架日期" : getDay(-1) };// 验证上架从和上架到
+    addGoods(keys, o);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : stock } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "getMenu_More", "超储统计");
-    var i, j;
-    var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
     var ret = goPageCheck();
     // 默认按超储数降序排序
@@ -3251,18 +3250,15 @@ function test100075_100076_100077_100078() {
     ret = ret && sortByTitle("超储数", IS_NUM);
 
     var arr = [ "现有库存", "最大库存", "超储数" ];
-    ret = ret && isEqualCounts(arr);
+    ret = isAnd(ret, isEqualCounts(arr));
 
-    var keys = { "款号" : r, "款号名称" : r, "上架从" : getToday(), "到" : getToday() };
+    var keys = { "款号" : r, "款号名称" : r, "上架从" : getDay(-1), "到" : getDay(-1) };
     var fields = goodsStatisticFields(keys);
     query(fields);
     var qr = getQR();
-    ret = ret && isEqual(r, qr.data[0]["款号"]) && isEqual(r, qr.data[0]["名称"])
-            && isEqual(getToday("yy"), qr.data[0]["上架日期"])
-            && isEqual(stock, qr.data[0]["现有库存"])
-            && isEqual(max, qr.data[0]["最大库存"])
-            && isEqual(sub(stock, max), qr.data[0]["超储数"])
-            && isEqual("1", qr.total) && isEqual("1", qr.totalPageNo);
+    var exp = { "款号" : r, "名称" : r, "上架日期" : getDay(-1, "yy"), "现有库存" : stock,
+        "最大库存" : max, "超储数" : sub(stock, max) };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
@@ -3275,25 +3271,20 @@ function test100075_100076_100077_100078() {
 
 function test100082_100083_100084_100085_100093() {
     var r = "cc" + getTimestamp(6);
-    var min = getRandomInt(50) + 50;
-    var stock = getRandomInt(min);
-    if (stock == 0) {
-        stock = 1;
-    }
+    var min = getRandomNum(50, 100);
+    var stock = getRandomNum(10, 20);
 
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "最小库存" : min, "最大库存" : "1000" };
-    addGoods(keys);
+    var o = { "上架日期" : getDay(-1) };// 验证上架从和上架到
+    addGoods(keys, o);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : stock } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "getMenu_More", "缺货统计");
-    var i, j;
-    var sum1 = 0, sum2 = 0, sum3 = 0;
     query();
-
     var ret = goPageCheck();
     // 默认按缺货数降序排序
     ret = ret && compareQR("缺货数", IS_NUM, "desc");
@@ -3308,16 +3299,13 @@ function test100082_100083_100084_100085_100093() {
     var arr = [ "现有库存", "最小库存", "缺货数" ];
     ret = isAnd(ret, isEqualCounts(arr));
 
-    var keys = { "款号" : r, "款号名称" : r, "上架从" : getToday(), "到" : getToday() };
+    var keys = { "款号" : r, "款号名称" : r, "上架从" : getDay(-1), "到" : getDay(-1) };
     var fields = goodsStatisticFields(keys);
     query(fields);
     var qr = getQR();
-    ret = ret && isEqual(r, qr.data[0]["款号"]) && isEqual(r, qr.data[0]["名称"])
-            && isEqual(getToday("yy"), qr.data[0]["上架日期"])
-            && isEqual(stock, qr.data[0]["现有库存"])
-            && isEqual(min, qr.data[0]["最小库存"])
-            && isEqual(sub(min, stock), qr.data[0]["缺货数"])
-            && isEqual("1", qr.total) && isEqual("1", qr.totalPageNo);
+    var exp = { "款号" : r, "名称" : r, "上架日期" : getDay(-1, "yy"), "现有库存" : stock,
+        "最小库存" : min, "缺货数" : sub(min, stock) };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     tapMenu("采购入库", "新增入库+");
     json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : -stock } ] };
@@ -3326,11 +3314,9 @@ function test100082_100083_100084_100085_100093() {
     tapMenu("货品管理", "getMenu_More", "缺货统计");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(r, qr.data[0]["款号"])
-            && isEqual(r, qr.data[0]["名称"]), isEqual(getToday("yy"),
-            qr.data[0]["上架日期"]), isEqual("0", qr.data[0]["现有库存"]), isEqual(min,
-            qr.data[0]["最小库存"]), isEqual(sub(min, qr.data[0]["现有库存"]),
-            qr.data[0]["缺货数"]));
+    exp = { "款号" : r, "名称" : r, "上架日期" : getDay(-1, "yy"), "现有库存" : 0,
+        "最小库存" : min, "缺货数" : min };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     tapMenu("采购入库", "新增入库+");
     json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : -stock } ] };
@@ -3339,11 +3325,9 @@ function test100082_100083_100084_100085_100093() {
     tapMenu("货品管理", "getMenu_More", "缺货统计");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(r, qr.data[0]["款号"]),
-            isEqual(r, qr.data[0]["名称"]), isEqual(getToday("yy"),
-                    qr.data[0]["上架日期"]), isEqual(-stock, qr.data[0]["现有库存"]),
-            isEqual(min, qr.data[0]["最小库存"]), isEqual(sub(min,
-                    qr.data[0]["现有库存"]), qr.data[0]["缺货数"]));
+    exp = { "款号" : r, "名称" : r, "上架日期" : getDay(-1, "yy"), "现有库存" : -stock,
+        "最小库存" : min, "缺货数" : sub(min, -stock) };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
@@ -4561,10 +4545,13 @@ function testDeadlineCheck() {
     tapMenu("货品管理", "getMenu_More", "库存调整单");
     var ret = checkDeadline();
 
-    tapMenu("采购入库", "按批次查");
-    ret = isAnd(ret, checkDeadline());
+    tapMenu("往来管理", "getMenu_More", "客户回访");
+    ret = isAnd(ret, checkDeadline("回访日期", "回访日期从", "回访日期到"));
 
-    tapMenu2("按明细查");
+    tapMenu("往来管理", "getMenu_More", "积分调整");
+    ret = isAnd(ret, checkDeadline("日期", "发生日期从", "发生日期到"));
+
+    tapMenu("采购入库", "按批次查");
     ret = isAnd(ret, checkDeadline());
 
     tapMenu("采购入库", "按汇总", "按金额汇总");
@@ -4573,10 +4560,47 @@ function testDeadlineCheck() {
     tapMenu("采购入库", "按汇总", "出入库汇总");
     ret = isAnd(ret, checkDeadline());
 
+    tapMenu("采购订货", "按批次查");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("门店调出", "按批次查");
+    ret = isAnd(ret, checkDeadline("调出日期"));
+
+    tapMenu("销售订货", "按批次查");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("销售订货", "按明细查");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("销售订货", "按挂单");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("统计分析", "收支表");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("统计分析", Menu_Profit);
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("统计分析", "综合汇总");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("统计分析", "汇总表", "款号利润表");
+    ret = isAnd(ret, checkDeadline());
+
+    tapMenu("统计分析", "汇总表", "滞销表");
+    ret = isAnd(ret, checkDeadline("上架日期", "上架从", "上架到"));
     return ret;
 }
-function checkDeadline() {
-    var keys = { "日期从" : getDay(-30), "日期到" : getDay(-10) };
-    conditionQuery();
-    return checkQResult("日期", getDay(-30), "day", getDay(-10));
+function checkDeadline(title, k1, k2) {
+    var keys = {};
+    if (isUndefined(title)) {
+        title = "日期";
+    }
+    if (isUndefined(k1)) {
+        k1 = "日期从", k2 = "日期到";
+    }
+    keys[k1] = getDay(-30);
+    keys[k2] = getDay(-10);
+    conditionQuery(keys);
+    return checkQResult(title, getDay(-30), "day", getDay(-10));
 }
