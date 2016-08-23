@@ -2584,7 +2584,6 @@ function test170096() {
     var qr = getQR();
     var bz = qr.data[0]["备注"];
     var opt = qr.data[0]["操作日期"];
-
     var ret = isAnd(isEqual("(11; -1)", bz), isAqualOptime(getOpTime(), opt, 2));
 
     return ret;
@@ -4973,6 +4972,8 @@ function test170180() {
 
     tapFirstText();
     tapMenu("销售开单", "getMenu_More", "设置已配货");
+    var cond = "isIn(alertMsg, '配货成功')";
+    waitUntil(cond, 10);
     tapPrompt();
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = (isIn(alertMsg1, "配货成功"));
@@ -4982,7 +4983,6 @@ function test170180() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-
     var ret1 = isEqual("是", qr.data[0]["配货"]);
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
