@@ -19,7 +19,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 // run("参数设置", "setGoodsColorParams");// setGoodsNoColorParams
-// run("测试用例", "ts110098");//
+// run("测试用例", "ts110099");//
  run("测试用例", "onlyTest");
 
 }
@@ -28,11 +28,8 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-  var qr=getQRDet();
-  debugObject(qr.titles);
-  for(var i=0;i<qr.data.length;i++){
-      debugObject(qr.data[i]);
-  }
+ var json={"未付":"yes"};
+ editSalesBillUnpay(json);
 // debugObject(gCache,"gCache");
  return true;
 }

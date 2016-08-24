@@ -57,6 +57,7 @@ function testCustomer002() {
     run("【往来管理-新增客户】连续新增客户不能出现闪退", "ts110097");
     run("【往来管理-客户查询】往来管理-新增客户增加性别", "ts110087");// 7.21后
     run("【往来管理-客户查询】清除客户适用价格", "ts110088");
+    run("【往来管理-新增客户】选择生日时自定义键盘隐藏", "ts110099");
 
     run("【往来管理-客户账款】详细页面_上下级模式", "test110022");//
     run("【往来管理-客户账款】上级客户核销下级客户账款_欠款", "test110022Verify1");
@@ -4053,6 +4054,22 @@ function ts110098phone(hasRights) {
     tapMenu2("按订货开单");
     ok = dropDownListCheck(3, "zbs", "13922211121");
     ret = isAnd(ret, ok == hasRights);
+    return ret;
+}
+function ts110099() {
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : "cust123", "手机" : "1234567789" };
+    var o = { "onlytest" : "yes" };
+    addCustomer(keys, o);
+
+    var index = editCustomerField("生日").index;
+    var tf = getScrollView().textFields()[index].textFields()[0];
+    tap(tf);
+    delay(0.5);
+    var kb = app.keyboard();
+    var ret = isUIAElementNil(kb);
+    window.popover().dismiss();// 防止挡住返回按钮
+    tapReturn();
     return ret;
 }
 function testCheckCustomerDropDownList() {

@@ -541,26 +541,7 @@ function getRandomNum(min, max, dn) {
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
-/**
- * 获取开单界面起始标题下标
- * @param texts
- * @returns {Number}
- */
-function getSalesBillDetTitle1Index(texts) {
-    var qrTitle1 = -1;
-    if (isUndefined(texts)) {
-        texts = getStaticTexts(window);
-    }
-    var arr = [ "选", "图", "#" ];
-    for (var i = 0; i < arr.length; i++) {
-        var title1 = arr[i];
-        qrTitle1 = getQResultTitle(texts, title1);
-        if (qrTitle1.index > 0) {
-            break;
-        }
-    }
-    return qrTitle1;
-}
+
 /**
  * 获取明细输入框个数，标题列号，从0开始
  * @param idx 明细输入框个数所在视图下标，默认-1
@@ -605,6 +586,26 @@ function getSalesBillDetTfObject(idx) {
     ret["明细输入框个数"] = tfNum;
 
     return ret;
+}
+/**
+ * 获取开单界面起始标题下标
+ * @param texts
+ * @returns {Number}
+ */
+function getSalesBillDetTitle1Index(texts) {
+    var qrTitle1 = -1;
+    if (isUndefined(texts)) {
+        texts = getStaticTexts(window);
+    }
+    var arr = [ "选", "图", "#" ];
+    for (var i = 0; i < arr.length; i++) {
+        var title1 = arr[i];
+        qrTitle1 = getQResultTitle(texts, title1);
+        if (qrTitle1.index > 0) {
+            break;
+        }
+    }
+    return qrTitle1;
 }
 /**
  * 获取按订货配货明细
