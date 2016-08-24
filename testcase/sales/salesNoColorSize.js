@@ -236,7 +236,7 @@ function testSalesNoColorSize003() {
 }
 function setNoColorSize_1Params() {
     var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
+    qo = { "名称" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 

@@ -697,7 +697,7 @@ function editQuickAddExpressField(key, show) {
  * @param o
  * @returns
  */
-function editLogisticsBillDe(o) {
+function editLogisticsBillDet(o) {
     if (!isDefined(o)) {
         return;
     }

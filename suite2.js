@@ -30,8 +30,9 @@ function test000All() {
 // run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// ///
 // run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
 // run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
-// run("【销售开单－按订货开单】清除数量", "test170267");
- run("", "test0");
+//    run("【销售开单－按订货开单】清除数量/根据选择内容进行发货", "test170267");
+    run("【销售开单-开单】物流单修改", "test170612");
+// run("", "test0");
 }
 function test0(){
 // debugElementTree(window);
@@ -39,11 +40,6 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    var qo, o, ret = true;
-    qo = { "备注" : "是否增加选择框" };
-    o = { "新值" : "0", "数值" : [ "默认不添加" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    return ret;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

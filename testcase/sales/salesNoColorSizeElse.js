@@ -98,7 +98,7 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】已终结的订单检查", "test170262");
     run("【销售开单－按订货开单】核销", "test170265");
     run("【销售开单－按订货开单】预付款", "test170266");
-    run("【销售开单－按订货开单】清除数量", "test170267");
+    run("【销售开单－按订货开单】清除数量/根据选择内容进行发货", "test170267");
     run("【销售开单－按订货开单】开单日期检查", "test170272");
     run("【销售开单-按批次查】打印作废单", "test170025");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");//
@@ -1948,15 +1948,14 @@ function test170267() {
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k200", "数量" : 5 },
-                { "货品" : "k300", "数量" : 12 }, { "货品" : "8989", "数量" : 12 } ],
+        "明细" : [ { "货品" : "3035", "数量" : 4 }, { "货品" : "k200", "数量" : 6 },
+                { "货品" : "k300", "数量" : 12 }, { "货品" : "8989", "数量" : 11 } ],
         "特殊货品" : { "免单" : 4 } };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-
     tapButton(window, "清除数量");
     var qr = getQRDet();
     var ret1 = isAnd(isEqual(0, qr.data[0]["数量"]),
@@ -1974,15 +1973,55 @@ function test170267() {
     var btns = getButtons(getScrollView(-1));
     // debugArray(btns);
     var a = btns[0].name();
-    var ret2 = isEqual("checkbox off", a);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = isAnd(isEqual("checkbox off", a), isIn(alertMsg, "空单不允许保存"));
+
+    tapButton(getScrollView(-1), 0);
+    tapButton(getScrollView(-1), 2);
+    tapButton(getScrollView(-1), 8);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret3 = isAnd(isIn(alertMsg, "保存成功"));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    qr = getQRDet();
     tapReturn();
+    var ret4 = isAnd(isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(0,
+            qr.data[0]["数量"]), isEqual("k200,范范", qr.data[1]["货品"]), isEqual(0,
+            qr.data[1]["数量"]), isEqual("k300,铅笔裤", qr.data[2]["货品"]), isEqual(
+            12, qr.data[2]["数量"]), isEqual("8989,我们", qr.data[3]["货品"]),
+            isEqual(11, qr.data[3]["数量"]),
+            isEqual("00002,免单", qr.data[4]["货品"]), isEqual(0, qr.data[4]["数量"]));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    qr = getQRDet();
+    tapReturn();
+    var ret5 = isAnd(isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(4,
+            qr.data[0]["数量"]), isEqual("k200,范范", qr.data[1]["货品"]), isEqual(6,
+            qr.data[1]["数量"]), isEqual("00002,免单", qr.data[2]["货品"]), isEqual(
+            -1, qr.data[2]["数量"]));
 
     qo = { "备注" : "是否增加选择框" };
     o = { "新值" : "0", "数值" : [ "默认不添加" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" a=" + a + ", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var btns = getButtons(getScrollView(-1));
+    var a1 = btns[0].name();
+    var ret6 = !isEqual("checkbox off", a1);
+    tapReturn();
+
+    logDebug(" a=" + a + ", a1=" + a1 + ", ret=" + ret + ", ret1=" + ret1
+            + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4=" + ret4
+            + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170268() {
     // (关闭参数异地发货仓库)，设置全局参数 按订货开单是否按当前库存自动填写发货数为自动填写 ,然后重新登录
@@ -8242,10 +8281,9 @@ function test170612() {
 
     tapMenu("销售开单", "物流单");
     query();
-
     var r = getTimestamp(8);
     var keys = { "运单号" : r, "备注" : "zz" };
-    editLogisticsBillDe(keys);
+    editLogisticsBillDet(keys);
 
     query();
     tapFirstText();
@@ -8253,8 +8291,28 @@ function test170612() {
             isEqual("zz", getTextFieldValue(getScrollView(-1), 10)));
     tapReturn();
 
-    logDebug(" ret=" + ret);
-    return ret;
+    tapMenu("销售开单", "物流单");
+    query();
+    tapFirstText();
+    ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(-1), 6)),
+            isEqual("zz", getTextFieldValue(getScrollView(-1), 10)));
+    tapReturn();
+
+    tapMenu("销售开单", "物流单");
+    query();
+    var r1 = getTimestamp(50);
+    var r2 = getTimestamp(100);
+    var keys = { "运单号" : r1, "备注" : r2 };
+    editLogisticsBillDet(keys);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isAnd(isIn(alertMsg2, "[运单号]值超过限制，最大允许长度为50"), isIn(alertMsg1,
+            "[备注]值超过限制，最大允许长度为100"));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170614() {
     var qo, o, ret = true;
