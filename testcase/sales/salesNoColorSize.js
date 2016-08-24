@@ -60,7 +60,6 @@ function testSalesNoColorSizeAll_1() {
     run("【销售开单－开单】查看修改日志（核销记录）", "test170167");
     run("【销售开单－开单】挂单保存", "test170169");
     run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-    run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
     run("【销售开单－开单】挂单转销售单", "test170171");
     run("【销售开单－开单】二次挂单功能检查", "test170173");
     run("【销售开单－开单】二次挂单后点代收，通过代收方式付款", "test170174");
@@ -988,7 +987,6 @@ function test170051() {
     var xj = qr.data[0]["现金"];
     var sk = qr.data[0]["刷卡"];
     var hk = qr.data[0]["汇款"];
-
     var ret = isAnd(isEqual(900, xj), isEqual(500, sk), isEqual(100, hk));
 
     query();
@@ -2469,7 +2467,7 @@ function test170093() {
     tapButton(getPop(), OK);
     tapPrompt();
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "相同名称已存在");
+    var ret1 = isIn(alertMsg1, "已存在");
     tapButton(getPop(), CLOSE);
 
     var r = "kd" + getRandomInt(600000);
@@ -3273,9 +3271,9 @@ function test170118() {
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret1 = isAnd(isIn(alertMsg1, "门店[常青店]中[" + r1 + "," + r1
-            + ",均色,均码] 库存不足，差"), isIn(alertMsg1, "4件"));
-
+    var ret1 = isAnd(
+            isIn(alertMsg1, "[常青店]中[" + r1 + "," + r1 + ",均色,均码] 库存不足"), isIn(
+                    alertMsg1, "差4件"));
     tapReturn();
 
     qo = { "备注" : "是否允许负库存" };
@@ -3551,7 +3549,7 @@ function test170121_170523() {
 }
 function test170128() {
     // 设置参数 销售开单同时订货为不启用
-    var r = "1" + getTimestamp(2);
+    var r = "1" + getRandomInt(100);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "特殊货品" : { "抹零" : 9, "打包费" : r } };
@@ -9330,7 +9328,7 @@ function test170506() {
     tapFirstText();
 
     tapButton(getScrollView(-1), 0);
-    var json = { "明细" : [ { "货品" : "k300", "数量" : 21 } ] };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 21 } ], "onlytest" : "yes" };
     editSalesBillDetNoColorSize(json);
 
     var qr = getQRDet();
@@ -10728,8 +10726,8 @@ function test170560() {
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
-        "特殊货品" : { "抹零" : 25 }, "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+        "特殊货品" : { "抹零" : 5 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();
@@ -10746,7 +10744,7 @@ function test170560() {
     query(fields);
     qr = getQR();
     var a1 = qr.data[0]["当前积分"];
-    var ret = isEqual(add(money, money1), sub(a1, a));
+    var ret1 = isEqual(add(money, money1), sub(a1, a));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "onlytest" : "yes" };
@@ -10755,13 +10753,14 @@ function test170560() {
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
     tapNaviLeftButton();
     tapReturn();
-    var ret1 = isIn(b, a1);
+    var ret2 = isIn(b, a1);
 
-    logDebug(" a=" + a + " b=" + b + ", ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" a=" + a + " b=" + b + ", ret=" + ret + ", ret1=" + ret1
+            + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170561() {
-    // 后台设置特殊货品 名称：打包费，核算到积分为否
+    // 后台设置特殊货品 名称：打包费、免单核算到积分为否
     var qo, o, ret = true;
     qo = { "备注" : "积分是否跨门店共享" };
     o = { "新值" : "1", "数值" : [ "共享" ] };
@@ -10776,8 +10775,8 @@ function test170561() {
     var a = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
-        "特殊货品" : { "打包费" : 27 }, "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ],
+        "特殊货品" : { "免单" : 27 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();

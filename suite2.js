@@ -21,19 +21,29 @@ function test000All() {
 // run("【销售开单-开单】童装模式手数需要四位数", "test170719");
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单－按批次查】是否未结", "test170005");// ///
- run("【销售开单-开单】均色均码模式，库存数检查", "test170723");//
+// run("【销售开单-开单】均色均码模式，库存数检查", "test170723");//
 // run("【销售开单－开单】 未拿货款号做退货时提醒--输入客户名称+均色均码", "test170209");//修改
 // run("【销售开单－开单】产品折扣,复制-粘贴", "test170139_2");
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");
 // run("【销售开单-收款撤销】收款撤销", "test170277");
-// run("", "test0");
+// run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
+// run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// ///
+// run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
+// run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
+// run("【销售开单－按订货开单】清除数量", "test170267");
+ run("", "test0");
 }
 function test0(){
 // debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
-// debugElements(window);    
+// debugElements(window);
+    var qo, o, ret = true;
+    qo = { "备注" : "是否增加选择框" };
+    o = { "新值" : "0", "数值" : [ "默认不添加" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
