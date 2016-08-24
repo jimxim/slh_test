@@ -94,11 +94,11 @@ function cToEn(str) {
 /**
  * 新增/修改客户
  * @param keys
- * @param isEdit
+ * @param o
  * @param keys2 保存后验证
  * @returns {Boolean}
  */
-function addCustomer(keys, isEdit, keys2) {
+function addCustomer(keys, o, keys2) {
     var btn = EDIT_SAVE;
     if (isUndefined(isEdit) || isEdit == "no") {
         tapMenu("往来管理", "新增客户+");
@@ -121,7 +121,28 @@ function addCustomer(keys, isEdit, keys2) {
     }
     return ret;
 }
-
+function editCustomerSave(o) {
+    if (isDefined(o["onlytest"])) {
+        return;
+    }
+    var btn = SAVE;
+    if (gMenu2 == "客户查询") {
+        btn = EDIT_SAVE;
+    }
+    tapButtonAndAlert(btn, OK);
+    delay();
+    if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
+        logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
+        tapKeyboardHide();
+    } else {
+        tapReturn();
+        var cond = "window.buttons()['客户查询'].isVisible()";
+        var ok = waitUntil(cond, 5);
+        if (!ok) {
+            tapReturn();// 有时保存时间过长，返回无效，重新尝试
+        }
+    }
+}
 /**
  * 新增货品
  * @param keys
@@ -164,7 +185,10 @@ function editGoodsSave(o) {
     } else {
         tapReturn();
         var cond = "window.buttons()['货品查询'].isVisible()";
-        waitUntil(cond, 5);
+        var ok = waitUntil(cond, 5);
+        if (!ok) {
+            tapReturn();// 有时保存时间过长，返回无效，重新尝试
+        }
     }
 }
 /**

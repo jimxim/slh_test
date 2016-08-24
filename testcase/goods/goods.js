@@ -230,6 +230,7 @@ function testGoods002() {
         run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "ts100114");
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "ts100033");
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入所有项信息+品牌+吊牌价", "ts100034");
+        run("【货品管理-新增货品】新增货品可以录入期初库存-均色均码下进行", "ts100175");
     }
     if (colorSize == "yes") {
         run("【货品管理-当前库存】检查累计销", "ts100159");
@@ -238,6 +239,7 @@ function testGoods002() {
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "ts100029");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "ts100031");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
+        run("【货品管理-新增货品】新增货品可以录入期初库存-支持多种颜色尺码", "ts100174");
     }
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
@@ -254,6 +256,9 @@ function testGoods002() {
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "ts100092");
     // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
+
+    run("【货品管理-新增货品】新增货品界面可以录入期初库存--库存归属地", "ts100173");
+
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
     // run("【货品管理-批量调价】不选择任何货品，点击批量调价", "ts100051");//验证码
@@ -4483,29 +4488,30 @@ function ts100172() {
     }
     return ts100033Field(keys1, keys2);
 }
-function ts100173() {
-    var qo = { "备注" : "不同厂商不同价格" };
-    var o = { "新值" : "0", "数值" : [ "默认关闭", "in" ] };
-    setGlobalParam(qo, o);
 
-    tapMenu("货品管理", "新增货品+");
-    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
-    tapReturn();
-    return ret;
+function ts100173() {
+    var keys = { "厂商" : "vell", "门店" : "中洲店" };
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+    if (colorSize == "no") {
+        jo["库存录入"][0]["颜色"] = "均色";
+    }
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : json["款号"] };
+    conditionQuery(keys);
+    var data = getQR().data;
+    var exp = { "仓库/门店" : "中洲店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "S",
+        "库存" : 10, "数量" : 10 };
+    if (colorSize == "no") {
+        exp["颜色"] = "均色";
+        exp["尺码"] = "均码";
+    }
+    return isEqualObject2(exp, data[0]);
 }
 function ts100174() {
-    var qo = { "备注" : "不同厂商不同价格" };
-    var o = { "新值" : "1", "数值" : [ "不同厂商不同价格", "in" ] };
-    setGlobalParam(qo, o);
-
-    tapMenu("货品管理", "新增货品+");
-    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
-    tapReturn();
-    return ret;
-}
-function ts100162() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-10), "门店" : "常青店" };
     var fields = purchaseQueryBatchFields(keys);
     query(fields);
     var batch = Number(getQR().data[0]["批次"]);
@@ -4518,24 +4524,88 @@ function ts100162() {
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : json["款号"] };
     conditionQuery(keys);
-    var data = getQR().data;
+    var data = getQR().data;// 库存核算价格按销价1计算
     var exp = [
             { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "S",
-                "库存" : 10, "数量" : 10, "单价" : 200 },
+                "库存" : 10, "数量" : 10, "单价" : 260 },
             { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "红色", "尺码" : "M",
-                "库存" : 20, "数量" : 20, "单价" : 200 },
+                "库存" : 20, "数量" : 20, "单价" : 260 },
             { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "深红", "尺码" : "M",
-                "库存" : 15, "数量" : 15, "单价" : 200 } ];
+                "库存" : 15, "数量" : 15, "单价" : 260 } ];
     var ret = isEqualDyadicArray(data, exp);
 
     tapMenu("采购入库", "按批次查");
     tapButton(window, QUERY);
     ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
     tapFirstText();
+    exp[0]["单价"] = 200, exp[1]["单价"] = 200, exp[2]["单价"] = 200;// 进货价
     data = getQRDet().data;
     ret = isAnd(ret, isEqualDyadicArray(data, exp));
     tapReturn()
 
+    return ret;
+}
+function ts100175() {
+    tapMenu("采购入库", "按批次查");
+    var keys = { "日期从" : getDay(-10), "门店" : "常青店" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    var batch = Number(getQR().data[0]["批次"]);
+
+    keys = { "厂商" : "vell" };
+    var jo = { "库存录入" : [ { "颜色" : "均色", "数量" : [ 10 ] } ] };
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : json["款号"] };
+    conditionQuery(keys);
+    var data = getQR().data;// 库存核算价格按销价1计算
+    var exp = { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "均色", "尺码" : "均码",
+        "库存" : 10, "数量" : 10, "单价" : 260 };
+    var ret = isEqualObject(exp, data[0]);
+
+    tapMenu("采购入库", "按批次查");
+    tapButton(window, QUERY);
+    ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
+    tapFirstText();
+    exp["单价"] = 200;// 进货价
+    data = getQRDet().data;
+    ret = isAnd(ret, isEqualObject(exp, data[0]));
+    tapReturn()
+
+    return ret;
+}
+function ts100176() {
+    var r = getTimestamp(6), o = {};
+    var code = "g" + r;
+    var keys = { "款号" : code, "名称" : "货品" + r };
+
+    if (colorSize == "yes") {
+        o = { "库存录入" : [], "onlytest" : "yes" };
+        addGoods(keys, o);
+        tapPrompt();
+    }
+
+    return ret;
+}
+function ts100177() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "0", "数值" : [ "默认关闭", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
+    tapReturn();
+    return ret;
+}
+function ts100178() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
+    tapReturn();
     return ret;
 }
 /**

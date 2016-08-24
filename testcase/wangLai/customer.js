@@ -3960,6 +3960,16 @@ function ts110096() {
     tapReturn();
     return ret;
 }
+function ts110097() {
+    var r = getTimestamp(6);
+    var keys = { "名称" : r };
+    var o = { "onlytest" : "yes" };
+    addCustomer(keys, o);
+
+    keys = { "名称" : "a" + r };
+    addCustomer(keys);
+    return true;// 验证闪退
+}
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
     var f = new TField("客户", TF_AC, 0, "yun", -1);

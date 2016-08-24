@@ -18,8 +18,9 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
- run("测试用例", "ts100162");//
-// run("测试用例", "onlyTest");
+// run("参数设置", "setGoodsColorParams");// setGoodsNoColorParams
+// run("测试用例", "ts100173");//
+ run("测试用例", "onlyTest");
 
 }
 
@@ -28,8 +29,12 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
  
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    setGlobalParam(qo, o);
+    
 // debugObject(gCache,"gCache");
-// return true;
+ return true;
 }
 
 
