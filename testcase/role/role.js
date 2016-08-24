@@ -71,6 +71,7 @@ function testShopkeeper004All() {
     run("【往来管理-物流商查询】检查物流商默认门店", "ts110062");
     run("【往来管理-客户查询】修改快速新增的客户名称", "ts110066");
     run("【往来管理-更多】物流商帐款-详细页面数据检查--开启跨门店核销", "ts110093");
+    run("【往来管理-新增客户】客户手机号码(新增可录入，编辑不可见)", "ts110098");
 
     // goods.js
     run("【货品管理-货品进销存】店长权限查看货品进销存-查看范围", "test100120");// 后台PAD店长权限里勾上货品进销存
@@ -307,12 +308,12 @@ function checkRightsCustomer() {
         ret = isAnd(ret, !isHasStaticTexts(getScrollView(-1, 0),
                 [ "13922211121" ]));
     }
-    tapNaviLeftButton();
+    tapNaviClose();
     tapReturn();
 
     tapMenu2("新增客户+");
-    arr = [ "信用额度", "欠款报警" ];
-    ret = ret && checkRightsField(hasRights, getScrollView(-1, 0), arr);
+    arr = [ "手机", "信用额度", "欠款报警" ];
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
     tapReturn();
 
     tapMenu2("客户账款");
@@ -329,7 +330,7 @@ function checkRightsCustomer() {
 
     tapMenu2("积分查询");
     tapButton(window, QUERY);
-    arr = [ "电话" ];
+    arr = [ "手机" ];// 电话
     f = queryCustomerScoreFields([ "手机" ]);
     ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
 
@@ -600,6 +601,7 @@ function checkRightsSales() {
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
             f));
 
+    ret = isAnd(ret, ts110098phone(hasRights));
     return ret;
 }
 function checkRightsCheck() {

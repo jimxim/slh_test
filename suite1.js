@@ -19,7 +19,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 // run("参数设置", "setGoodsColorParams");// setGoodsNoColorParams
-// run("测试用例", "ts100173");//
+// run("测试用例", "ts110098");//
  run("测试用例", "onlyTest");
 
 }
@@ -28,11 +28,11 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
- 
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
-    setGlobalParam(qo, o);
-    
+  var qr=getQRDet();
+  debugObject(qr.titles);
+  for(var i=0;i<qr.data.length;i++){
+      debugObject(qr.data[i]);
+  }
 // debugObject(gCache,"gCache");
  return true;
 }

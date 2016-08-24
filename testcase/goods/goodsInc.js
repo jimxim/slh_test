@@ -95,31 +95,18 @@ function cToEn(str) {
  * 新增/修改客户
  * @param keys
  * @param o
- * @param keys2 保存后验证
- * @returns {Boolean}
+ * @returns keys
  */
-function addCustomer(keys, o, keys2) {
-    var btn = EDIT_SAVE;
-    if (isUndefined(isEdit) || isEdit == "no") {
-        tapMenu("往来管理", "新增客户+");
-        btn = SAVE;
+function addCustomer(keys, o) {
+    if (isUndefined(o)) {
+        o = {};
     }
-
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, btn);// 保存后会自动返回
-    tapReturn();// 防止出错，未返回
 
-    var ret = true;
-    if (isDefined(keys2)) {
-        tapMenu2("客户查询");
-        query();
-        tapFirstText();
-        fields = editCustomerFields(keys2, true);
-        ret = checkShowFields(getScrollView(), fields);
-        tapReturn();
-    }
-    return ret;
+    editCustomerSave(o);
+
+    return keys;
 }
 function editCustomerSave(o) {
     if (isDefined(o["onlytest"])) {
@@ -554,8 +541,26 @@ function getRandomNum(min, max, dn) {
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
-//
-
+/**
+ * 获取开单界面起始标题下标
+ * @param texts
+ * @returns {Number}
+ */
+function getSalesBillDetTitle1Index(texts) {
+    var qrTitle1 = -1;
+    if (isUndefined(texts)) {
+        texts = getStaticTexts(window);
+    }
+    var arr = [ "选", "图", "#" ];
+    for (var i = 0; i < arr.length; i++) {
+        var title1 = arr[i];
+        qrTitle1 = getQResultTitle(texts, title1);
+        if (qrTitle1.index > 0) {
+            break;
+        }
+    }
+    return qrTitle1;
+}
 /**
  * 获取明细输入框个数，标题列号，从0开始
  * @param idx 明细输入框个数所在视图下标，默认-1
@@ -568,12 +573,7 @@ function getSalesBillDetTfObject(idx) {
     // debugElementTree(window);
     // 标题以#开头，表示序号，以操作结束
     var texts = getStaticTexts(window);
-    var title1 = "图";
-    var qrTitle1 = getQResultTitle(texts, title1); // 找不到为0
-    if (qrTitle1.index <= 0) {
-        title1 = "#";
-        qrTitle1 = getQResultTitle(texts, title1);
-    }
+    var qrTitle1 = getSalesBillDetTitle1Index(texts);
 
     var ret = {};
     var tfNum = 0, ignore = 0;

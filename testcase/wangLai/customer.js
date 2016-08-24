@@ -54,6 +54,7 @@ function testCustomer002() {
     run("【往来管理-新增客户】客户编码", "ts110056");
     run("【往来管理-新增客户】不存在相同的客户名称或手机号+新增客户", "ts110013");
     run("【往来管理-新增客户】存在相同的客户名称或手机号+新增客户", "test110014");
+    run("【往来管理-新增客户】连续新增客户不能出现闪退", "ts110097");
     run("【往来管理-客户查询】往来管理-新增客户增加性别", "ts110087");// 7.21后
     run("【往来管理-客户查询】清除客户适用价格", "ts110088");
 
@@ -242,6 +243,7 @@ function test110004() {
 
 function test110005() {
     var r = "a" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     addCustomer(keys);
 
@@ -506,6 +508,7 @@ function test110002_1() {
 
 function test110008() {
     var r = "q" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "允许退货" : "是" };
     addCustomer(keys);
 
@@ -1565,8 +1568,8 @@ function test110025() {
 
 function test110028() {
     var r = "alarm" + getTimestamp(6);
-    // 地址是为了新增界面向上滑动，使可以输入欠款报警
-    var keys = { "名称" : r, "地址" : "123", "欠款报警" : "2000" };
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "欠款报警" : "2000" };
     addCustomer(keys);
 
     // 开欠款单，不触发欠款报警
@@ -1706,11 +1709,6 @@ function ts110033() {
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 1)));
 
-    // 未开过单的客户是查询不到的
-    // var r = "c" + getTimestamp(6);
-    // keys = { "名称" : r, "适用价格" : "零批价" };
-    // addCustomer(keys);
-
     tapMenu2("客户活跃度");
     keys = { "客户" : "bkdkh", "门店" : "常青店" };// 不开单客户
     fields = queryCustomerActiveFields(keys);
@@ -1723,6 +1721,7 @@ function ts110033() {
 
 function ts110034() {
     var r = "c" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "适用价格" : "零批价" };
     addCustomer(keys);
 
@@ -1759,6 +1758,7 @@ function ts110034() {
 
 function ts110035() {
     var r = "act" + getTimestamp(6), i;
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     addCustomer(keys);
 
@@ -3151,6 +3151,7 @@ function test110053() {
 
 function test110054() {
     var name = "kh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : name, "上级客户" : "zbs" };// 赵本山
     addCustomer(keys);
 
@@ -3317,6 +3318,7 @@ function ts110057Field(cond) {
 // 仓库店 后台绑定仓库文一店
 function test110058_1() {
     var r = "wh" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     addCustomer(keys);
 
@@ -3374,6 +3376,7 @@ function test110058() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "wh" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     addCustomer(keys);
 
@@ -3505,6 +3508,7 @@ function test110060_1Field(fields, exp1, exp2, exp3) {
 
 function ts110064() {
     var r = "cus" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     addCustomer(keys);
 
@@ -3512,14 +3516,14 @@ function ts110064() {
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "上级客户" : r };
-    addCustomer(keys, "yes");
+    addCustomer(keys);
     var ret = isInAlertMsgs("上级客户不能选择自己");
 
     tapMenu2("客户查询");
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "上级客户" : "xjkh1" };// 下级客户1
-    addCustomer(keys, "yes");
+    addCustomer(keys);
     ret = isAnd(ret, isInAlertMsgs("选择的上级客户设置了上级客户不允许出现多层客户"));
 
     tapMenu2("客户查询");
@@ -3528,7 +3532,7 @@ function ts110064() {
     query(fields)
     tapFirstText();
     keys = { "上级客户" : r };
-    addCustomer(keys, "yes");
+    addCustomer(keys);
     ret = isAnd(ret, isInAlertMsgs("当前客户已经有子客户不允许设置上级客户"));
 
     return ret;
@@ -3555,9 +3559,11 @@ function ts110066() {
 function ts110067() {
     var r = getTimestamp(6);
     var cus_h = "h" + r, cus_l = "l" + r;
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : cus_h };
     addCustomer(keys);
 
+    tapMenu2("新增客户+");
     keys = { "名称" : cus_l, "上级客户" : cus_h };
     addCustomer(keys);
 
@@ -3730,28 +3736,36 @@ function ts110085() {
 }
 function ts110087() {
     var name = "cust" + getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : name, "性别" : "男" };
-    var ret = addCustomer(keys, "no", keys);
+    addCustomer(keys);
+    var ret = ts110087Field(keys);
 
     name = "cust" + getTimestamp(6);
     keys = { "名称" : name, "性别" : "女" };
-    ret = isAnd(ret, addCustomer(keys, "no", keys));
+    tapMenu2("新增客户+");
+    addCustomer(keys);
+    ret = isAnd(ret, ts110087Field(keys));
 
     name = "cust" + getTimestamp(6);
     keys = { "名称" : name };
     var keys2 = { "名称" : name, "性别" : "" };
-    ret = isAnd(ret, addCustomer(keys, "no", keys2));
+    tapMenu2("新增客户+");
+    addCustomer(keys);
+    ret = isAnd(ret, ts110087Field(keys2));
 
     tapMenu2("客户查询");
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "性别" : "男" }
-    ret = isAnd(ret, addCustomer(keys, "yes", keys));
+    addCustomer(keys);
+    ret = isAnd(ret, ts110087Field(keys));
 
     tapButton(window, QUERY);
     tapFirstText();
     keys = { "性别" : "女" }
-    ret = isAnd(ret, addCustomer(keys, "yes", keys));
+    addCustomer(keys);
+    ret = isAnd(ret, ts110087Field(keys));
 
     tapButton(window, QUERY);
     tapTitle(getScrollView(), "操作日期");// 找一个以前的客户
@@ -3763,9 +3777,20 @@ function ts110087() {
 
     return ret;
 }
+function ts110087Field(keys) {
+    tapMenu2("客户查询");
+    query();
+    tapFirstText();
+    fields = editCustomerFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+
+    return ret;
+}
 function ts110088() {
     var name = "cust" + getTimestamp(6);
     var keys = { "名称" : name, "适用价格" : "零批价" };
+    tapMenu("往来管理", "新增客户+");
     addCustomer(keys);
 
     tapMenu2("客户查询");
@@ -3962,13 +3987,73 @@ function ts110096() {
 }
 function ts110097() {
     var r = getTimestamp(6);
+    tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
-    var o = { "onlytest" : "yes" };
+    var o = { "不返回" : "yes" };
     addCustomer(keys, o);
 
     keys = { "名称" : "a" + r };
     addCustomer(keys);
-    return true;// 验证闪退
+    return true;// 连续新增 验证闪退
+}
+function ts110098() {
+    var hasRights = true;
+    tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
+    var arr = [ "手机" ];
+    var f = queryCustomerFields([ "手机" ]);
+    var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
+
+    var keys = { "客户" : "zbs" };
+    var fields = queryCustomerFields(keys);
+    query(fields);
+    tapFirstText();
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
+    tapReturn();
+
+    tapMenu2("新增客户+");
+    arr = [ "手机" ];
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
+    tapReturn();
+
+    tapMenu2("客户账款");
+    tapMenu3("客户门店账");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
+
+    tapMenu2("客户活跃度");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
+
+    tapMenu2("积分查询");
+    tapButton(window, QUERY);
+    ret = ret && checkRightsField(hasRights, getScrollView(), arr);
+
+    ret = isAnd(ret, ts110098phone(hasRights));
+    return ret;
+}
+function ts110098phone(hasRights) {
+    var ok, ret = true;
+    tapMenu("销售订货", "按批次查");
+    ok = dropDownListCheck(0, "zbs", "13922211121");
+    ret = isAnd(ret, ok == hasRights);
+
+    tapMenu2("按明细查");
+    ok = dropDownListCheck(3, "zbs", "13922211121");
+    ret = isAnd(ret, ok == hasRights);
+
+    tapMenu("销售开单", "按批次查");
+    ok = dropDownListCheck(0, "zbs", "13922211121");
+    ret = isAnd(ret, ok == hasRights);
+
+    tapMenu2("按明细查");
+    ok = dropDownListCheck(2, "zbs", "13922211121");
+    ret = isAnd(ret, ok == hasRights);
+
+    tapMenu2("按订货开单");
+    ok = dropDownListCheck(3, "zbs", "13922211121");
+    ret = isAnd(ret, ok == hasRights);
+    return ret;
 }
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
