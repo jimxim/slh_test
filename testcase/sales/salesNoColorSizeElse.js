@@ -8298,16 +8298,29 @@ function test170612() {
             isEqual("zz", getTextFieldValue(getScrollView(-1), 10)));
     tapReturn();
 
+    var a = randomWord(false, 53);
+    var a1 = randomWord(false, 103);
     tapMenu("销售开单", "物流单");
     query();
-    var r1 = getTimestamp(50);
-    var r2 = getTimestamp(100);
-    var keys = { "运单号" : r1, "备注" : r2 };
-    editLogisticsBillDet(keys);
+    tapFirstText();
+    var keys = { "运单号" : a };
+    var fields = editLogisticsBillDetFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    saveAndAlertOk();
+    tapPrompt();
+
+    tapMenu("销售开单", "物流单");
+    query();
+    tapFirstText();
+    keys = { "备注" : a1 };
+    fields = editLogisticsBillDetFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    saveAndAlertOk();
+    tapPrompt();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
+    var alertMsg2 = getArray1(alertMsgs, -3);
     var ret1 = isAnd(isIn(alertMsg2, "[运单号]值超过限制，最大允许长度为50"), isIn(alertMsg1,
             "[备注]值超过限制，最大允许长度为100"));
 

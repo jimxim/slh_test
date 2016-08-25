@@ -30,10 +30,11 @@ function test000All() {
 // run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// ///
 // run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
 // run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
-//    run("【销售开单－按订货开单】清除数量/根据选择内容进行发货", "test170267");
-    run("【销售开单-开单】物流单修改", "test170612");
+// run("【销售开单－按订货开单】清除数量/根据选择内容进行发货", "test170267");
+ run("【销售开单-开单】物流单修改", "test170612");
 // run("", "test0");
 }
+
 function test0(){
 // debugElementTree(window);
 // var texts = getStaticTexts(target.frontMostApp().navigationBar());
