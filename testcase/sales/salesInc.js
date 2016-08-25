@@ -570,7 +570,7 @@ function editQuickAddGoods(o, ret) {
     if (isUndefined(ret)) {
         ret = "no";
     }
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
     delay();

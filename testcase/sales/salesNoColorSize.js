@@ -789,14 +789,20 @@ function test170047() {
     var qr = getQR();
     ret = ret && isEqual(1700, -qr.data[0]["未结"]);
 
-    tapFirstText();
-    tapButtonAndAlert("挂 单", OK);
-    tapPrompt();
-    tapReturn();
+    var ret1;
+    if (ipadVer < "7.23") {
+        tapFirstText();
+        tapButtonAndAlert("挂 单", OK);
+        tapPrompt();
+        tapReturn();
 
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "本单不允许执行挂单操作");
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        ret1 = isIn(alertMsg1, "本单不允许执行挂单操作");
+        return ret1;
+    } else {
+        ret1 = true;
+    }
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
@@ -1632,8 +1638,13 @@ function test170065_1() {
     query();
     var qr = getQR();
     var batch = qr.data[0]["批次"];
-    tapFirstText(getScrollView(), 1, 25);
-    var json = { "明细" : [ { "货品" : "k200", "数量" : 8 } ] };
+    var batch1 = qr.data[1]["批次"];
+
+    var keys = { "批次从" : batch1, "批次到" : batch1 };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    json = { "明细" : [ { "货品" : "k200", "数量" : 8 } ] };
     editSalesBillNoColorSize(json);
 
     debugArray(alertMsgs);
@@ -3596,7 +3607,7 @@ function test170129() {
     var r = "anewkhao" + getRandomInt(600000);
     var r1 = "1" + getRandomInt(300);
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var o = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
@@ -3656,7 +3667,7 @@ function test170131() {
 
     var r = "anewKHao" + getTimestamp(6);
     var c = "1" + getTimestamp(3);
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var o = { "款号" : r, "名称" : r, "进货价" : c, "零批价" : c, "打包价" : c };
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
@@ -3676,7 +3687,7 @@ function test170131() {
 
     var r1 = "anewKHao1" + getTimestamp(3);
     var c1 = "2" + getTimestamp(3);
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var o = { "款号" : r1, "名称" : r1, "进货价" : c1, "零批价" : c1, "打包价" : c1 };
     var fields1 = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields1);
@@ -3736,7 +3747,7 @@ function test170132() {
 
     var r = "anewKHAO" + getTimestamp(4);
     var c = "1" + getTimestamp(3);
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var o = { "款号" : r, "名称" : r, "进货价" : c, "零批价" : c, "打包价" : c };
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
@@ -3813,7 +3824,7 @@ function test170133() {
 
     var r1 = "anewCode1" + getTimestamp(6);
     c = "1" + getTimestamp(3);
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var json = { "款号" : r1, "名称" : r1, "进货价" : c, "零批价" : c, "打包价" : c };
     editQuickAddGoods(json);
 
@@ -9439,7 +9450,7 @@ function test170509() {
     var r = "anewKH" + getTimestamp(4);
     var r1 = "1" + getTimestamp(3);
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var o = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
@@ -10921,7 +10932,7 @@ function test170593() {
     var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
 
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
 
     var g0 = new TField("款号", TF, 0, r);
     var fields = [ g0 ];
@@ -10933,7 +10944,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -10944,7 +10955,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -10960,7 +10971,7 @@ function test170593() {
 
     var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
 
     var g0 = new TField("款号", TF, 0, r);
     var fields = [ g0 ];
@@ -10972,7 +10983,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -10983,7 +10994,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -10999,7 +11010,7 @@ function test170593() {
 
     var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
     tapMenu("销售开单", "开  单+");
-    tapButton(window, "新增货品");
+    tapButton(window, GOODS);
     var g0 = new TField("款号", TF, 0, r);
     var fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -11010,7 +11021,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
@@ -11021,7 +11032,7 @@ function test170593() {
     tapReturn();
 
     tapMenu("采购订货", "新增订货+");
-    tapButton(window, "新增货品+");
+    tapButton(window, GOODS);
     g0 = new TField("款号", TF, 0, r);
     fields = [ g0 ];
     setTFieldsValue(getPopView(), fields);
