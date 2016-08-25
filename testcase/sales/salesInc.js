@@ -755,6 +755,23 @@ function editlogisticsVerifyDetField(key, show) {
     }
     return f;
 }
+// 按订货配货-按配货开单界面
+function editSaleOrderMatchFields(keys, show) {
+    return getTFields("editSaleOrderMatchField", keys, show);
+}
+function editSaleOrderMatchField(key, show) {
+    var f;
+    switch (key) {
+    case "custemer":
+    case "客户":
+        f = new TField("客户", TF_AC, 0, "ls", -1, 0);
+        break;
+    default:
+        logWarn("未知key＝" + key);
+        break;
+    }
+    return f;
+}
 /**
  * randomWord 产生任意长度随机字母数字组合 randomFlag-是否任意长度 min-任意长度最小位[固定位数] max-任意长度最大位
  */

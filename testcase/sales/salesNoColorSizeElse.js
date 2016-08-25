@@ -43,6 +43,7 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－更多-代收收款查询】单项查询", "test170295_170296_170297");
     run("【销售开单－更多-代收收款查询】底部数据汇总检查", "test170298");
     run("【销售开单－更多-代收收款查询】排序／翻页／下拉列表", "test170298_1");
+    run("【销售开单-按订货配货-按配货开单】查询、清除、排序、翻页", "test170727");
 }
 function testSalesNoColorSizeElse002() {
     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306_1");
@@ -253,11 +254,11 @@ function test170001_1_170010_170011_170012() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("销售开单", "按批次查");
-    query();
-    qr = getQR();
-    ret2 = isAnd(ret2, isEqual("是", qr.data[0]["打印"]), isEqual("李响",
-            qr.data[0]["客户"]));
+    // tapMenu("销售开单", "按批次查");
+    // query();
+    // qr = getQR();
+    // ret2 = isAnd(ret2, isEqual("是", qr.data[0]["打印"]), isEqual("李响",
+    // qr.data[0]["客户"]));
 
     // 点击翻页
     var ret = goPageCheck();
@@ -5467,8 +5468,6 @@ function test170368() {
 
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
-
-    // tapNaviRightButton();
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
 
@@ -5523,9 +5522,8 @@ function test170369() {
     var a = Number(qr.data[0]["代收"]);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
-        "特殊货品" : { "抹零" : 6 },
-        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "333" } };
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "8989", "数量" : "2" } ],
+        "代收" : { "物流商" : "ht", "运单号" : "123" } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
@@ -5790,10 +5788,8 @@ function test170378() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
-        "特殊货品" : { "抹零" : 6 },
         "代收" : { "物流商" : "ht", "运单号" : "1231111", "备注" : "aht" } };
     editSalesBillNoColorSize(json);
-
     var money = json["代收"]["代收金额"];
 
     tapMenu("销售开单", LogisticsVerify);
@@ -10277,4 +10273,23 @@ function test170726() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170727() {
+    tapMenu("销售开单", "按订货配货", "按配货开单");
+    var keys = { "客户" : "ls" };
+    var fields = editSaleOrderMatchFields(keys);
+    query(fields);
+
+    tapButton(window, CLEAR);
+    var ret1 = isEqual("", getTextFieldValue(window, 0));
+
+    var ret = true;
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("客户");
+    ret = ret && sortByTitle("配货数", IS_NUM);
+    ret = ret && sortByTitle("配货人");
+    ret = ret && sortByTitle("配货日期", IS_OPTIME);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
