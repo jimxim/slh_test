@@ -218,15 +218,20 @@ function checkMaterialField(key, show) {
         f = new TField("季节", TF_SC, 4, "夏季");
         break;
     case "day1":
-    case "日期从":
-        f = new TField("日期从", TF_DT, 5, "2015-9-11");
+    case "上架从":
+        f = new TField("上架从", TF_DT, 5, getToday());
         break;
     case "day2":
     case "到":
+    case "上架到":
         f = new TField("到", TF_DT, 6, getToday());
+        break;
+    case "厂商":
+        f = new TField("厂商", TF_AC, 7, "vell", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

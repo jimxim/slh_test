@@ -3841,16 +3841,17 @@ function ts110089Field() {
     return ret;
 }
 function ts110090() {
+    // 积分查询不受跨门店参数影响。跨门店核销开不开启，都会显示门店列
     var qo = { "备注" : "是否允许跨门店核销" };
-    var o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
-    var ok = setGlobalParam(qo, o);
+    // var o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };//有跨门店数据，关不掉了
+    // var ok = setGlobalParam(qo, o);
+    //
+    // tapMenu("往来管理", "积分查询");
+    // var arr = [ "门店" ];
+    // var ret = checkRightsField(true, getScrollView(), arr);
 
-    tapMenu("往来管理", "积分查询");
-    var arr = [ "门店" ];
-    var ret = checkRightsField(true, getScrollView(), arr);
-
-    o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
-    ok = isAnd(ok, setGlobalParam(qo, o));
+    var o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
+    setGlobalParam(qo, o);
 
     tapMenu("往来管理", "积分查询");
     ret = isAnd(ret, checkRightsField(true, getScrollView(), arr));

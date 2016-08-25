@@ -5,31 +5,31 @@
 #import "testcase/goods/editBill.js"
 
 // #import "lib/Msg_EN.js"
-
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
 // #import "/Users/sunway/Documents/slh_test/suite1.js"
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
-// run("参数设置", "setGoodsColorParams");// setGoodsNoColorParams
-// run("测试用例", "ts110099");//
- run("测试用例", "onlyTest");
+
+ run("测试用例", "test160040");//
+// run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
- var json={"未付":"yes"};
- editSalesBillUnpay(json);
+ var actual = editSalesBillGetValue({});
+ debugObject(actual,"actual");
+// logDebug(getQRDet().titles);
 // debugObject(gCache,"gCache");
  return true;
 }

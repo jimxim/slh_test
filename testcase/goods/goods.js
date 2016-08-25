@@ -4562,15 +4562,16 @@ function ts100175() {
     var data = getQR().data;// 库存核算价格按销价1计算
     var exp = { "仓库/门店" : "常青店", "款号" : json["款号"], "颜色" : "均色", "尺码" : "均码",
         "库存" : 10, "数量" : 10, "单价" : 260 };
-    var ret = isEqualObject(exp, data[0]);
+    var ret = isEqualObject2(exp, data[0]);
 
     tapMenu("采购入库", "按批次查");
     tapButton(window, QUERY);
     ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
     tapFirstText();
     exp["单价"] = 200;// 进货价
+    exp["货品"] = json["款号"] + "," + json["名称"];
     data = getQRDet().data;
-    ret = isAnd(ret, isEqualObject(exp, data[0]));
+    ret = isAnd(ret, isEqualObject2(exp, data[0]));
     tapReturn()
 
     return ret;

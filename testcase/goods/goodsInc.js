@@ -1282,7 +1282,7 @@ function isInQRData1Object(qr, expected) {
     var ret = false;
     for (var i = 0; i < qr.data.length; i++) {
         var data1 = qr.data[i];
-        ret = isEqualObject(data1, expected);
+        ret = isEqualObject2(data1, expected);
         if (ret) {
             break;
         }
@@ -1523,9 +1523,9 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
             ret = ret && (v1 == v2);
         }
     }
+    debugObject(sum, "sum=");
+    debugObject(qr.counts, "qr.counts=");
     if (!ret) {
-        debugObject(sum, "sum=");
-        debugObject(qr.counts, "qr.counts=");
         logDebug("汇总值错误");
     }
     var ret1 = true;
@@ -1756,6 +1756,7 @@ function setTextFieldValueByKb(view1, f) {
     var value = String(f.value);
     var tf = view1.textFields()[i].textFields()[0];
     tap(tf, true);//
+    delay(0.5);// 防止点击后键盘未马上触发导致输入失败
     var kb = app.keyboard();
     for (var i = 0; i < value.length; i++) {
         var c = value.charAt(i);

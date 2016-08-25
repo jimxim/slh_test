@@ -1550,23 +1550,9 @@ function test190036() {
     var keys = { "日期从" : getDay(-10) };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-
-    var qr = getQR(window, getScrollView(), "序号", 20);
-    var counts = qr.counts;
-    var arr = { "进数" : 0, "销数" : 0, "销额" : 0, "退数" : 0, "退额" : 0, "特殊货品" : 0,
-        "实销数" : 0, "实销额" : 0, "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0, "还款" : 0,
-        "欠款" : 0, "抵扣" : 0, "余款" : 0, "代收收款" : 0 };
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            arr = addObject(arr, qr.data[i]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR(window, getScrollView(), "序号", 20);
-        }
-    }
-
-    return isEqualObject(arr, counts);
+    var arr = [ "进数", "销数", "销额", "退数", "退额", "特殊货品", "实销数", "实销额", "现金", "刷卡",
+            "汇款", "代收", "还款", "欠款", "抵扣", "余款", "代收收款" ]
+    return isEqualCounts(arr);
 }
 
 function test190038() {
