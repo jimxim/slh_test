@@ -653,6 +653,42 @@ function getSalesOrderDistributeDet() {
     return oStock;
 }
 /**
+ * 点击第N行
+ * @param n 从0开始
+ * @param view
+ * @param firstTitle 标题行第一个标题
+ */
+function tapLine(n, view, firstTitle) {
+    if (isUndefined(n)) {
+        n = 0;
+    }
+    if (isUndefined(view)) {
+        view = getScrollView(-1);
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = TITLE_SEQ;
+    }
+    var y = 0, preY = 0, line = -1, i = 0;
+    var e = getElements(view);
+    for (; i < e.length; i++) {
+        if (e[i].value() == firstTitle) {
+            preY = getY(e[i]);
+            break;
+        }
+    }
+    for (i++; i < e.length; i++) {
+        y = getY(e[i]);
+        if (y > preY) {
+            line++;
+        }
+        if (line == n) {
+            break;
+        }
+        preY = y;
+    }
+    tap(e[i], true);
+}
+/**
  * 点击导航栏左按钮，防止用例出错卡界面
  * @param max 最大尝试次数
  */
@@ -1557,7 +1593,15 @@ function isEqualDropDownList(expected, view1) {
     target.frontMostApp().mainWindow().popover().dismiss();
     return ret;
 }
-
+/**
+ * 清理本地
+ */
+function localClean() {
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    var cond = "isInAlertMsgs('清理')";// 清理刷新结束，清理和刷新成功
+    waitUntil(cond, 30);
+}
 function logisticsVerifySetField(o, key) {
     var v = o[key];
     var msg = "key=" + key + " v=" + v;
@@ -1964,7 +2008,7 @@ function conditionQuery(keys, tapClear, view) {
                 qFields = goodsColorFields(keys);// 同所有颜色
                 break;
             case "积分调整":
-                qFields = editCustomerPointAdjFields(keys);
+                qFields = queryCustomerPointAdjFields(keys);
                 break;
             }
             break;

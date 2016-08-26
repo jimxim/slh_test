@@ -18,8 +18,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 
- run("测试用例", "test160040");//
-// run("测试用例", "onlyTest");
+// run("测试用例", "ts110100");//
+ run("测试用例", "ts110101");
 
 }
 
@@ -27,9 +27,7 @@ function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
- var actual = editSalesBillGetValue({});
- debugObject(actual,"actual");
-// logDebug(getQRDet().titles);
+
 // debugObject(gCache,"gCache");
  return true;
 }

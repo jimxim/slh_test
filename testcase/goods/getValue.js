@@ -26,7 +26,7 @@ function unityNotice(data) {
  * @returns
  */
 function getDetTS100006(code, close) {
-    tapFirstText();
+    tapLine();
     var keys = { "款号" : code };
     var fields = queryGoodsDistributionDetFields(keys);
     var view = getScrollView(-1, 0);

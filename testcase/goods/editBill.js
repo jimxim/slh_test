@@ -80,7 +80,7 @@ function setStockEntryValue(details) {
  * @param r 调整后库存
  */
 function addGoodsStockAdjustment(r) {
-    tapFirstText();
+    tapLine();
     tapNaviButton("库存调整");
     setValue100090(r);
     runAndAlert("test100090Field", OK);

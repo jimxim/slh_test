@@ -721,12 +721,20 @@ function test160011_1() {
  * @returns
  */
 function test160011Field(staff, menu1) {
+    var line = 0;
     tapMenu(menu1, "按批次查");
     var keys = { "日期从" : getDay(-30) };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
 
-    tapFirstText();
+    if (gMenu1 == "采购入库") {
+        var qr = getQR();
+        for (; line < qr.curPageTotal; line++) {
+            if (qr.data[line]["备注"] != "预付款")
+                break;// 预付款单不能修改保存
+        }
+    }
+    tapLine(line);
     // 取首次订货人和首次订货时间
     tapMenu(menu1, "getMenu_More", "查看修改日志");
     // 采购订货没有首次订货人与首次订货时间
@@ -742,7 +750,7 @@ function test160011Field(staff, menu1) {
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine(line);
     tapMenu(menu1, "getMenu_More", "查看修改日志");
     var jo2 = test160011Field_1();
     tapButton(getPop(), OK);

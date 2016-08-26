@@ -1993,6 +1993,10 @@ function test120033() {
 }
 
 function ts120034() {
+    var qo = { "备注" : "单据是否允许修改客户或厂商" };
+    var o = { "新值" : "0", "数值" : [ "不允许", "in" ] };
+    setGlobalParam(qo, o);
+
     tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "vell" };
     var det = addPOrderBillDet();
@@ -2435,10 +2439,7 @@ function test120065() {
     var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
     var ret = setGlobalParam(qo, o);
 
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
-    var cond = "isInAlertMsgs('清理和刷新成功')";
-    waitUntil(cond, 300);
+    localClean();
 
     ret = isAnd(ret, test120050Field(100));
 
@@ -2446,10 +2447,7 @@ function test120065() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
-    var cond = "isInAlertMsgs('清理和刷新成功')";
-    waitUntil(cond, 300);
+    localClean();
     tapMenu1("货品管理");// 随便点击一个菜单触发自动处理弹窗，否则有时会卡
 
     return ret;
@@ -2729,6 +2727,8 @@ function test120050Field(price) {
 
     tapMenu2("批量入库+");
     editPurchaseBatch(det, colorSize);
+    var cond = "window.buttons()['按批次查'].isVisible()";
+    waitUntil(cond, 5);
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);

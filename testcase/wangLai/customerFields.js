@@ -924,10 +924,10 @@ function editCustomerBackField(key, show) {
     return f;
 }
 // 积分调整
-function editCustomerPointAdjFields(keys, show) {
-    return getTFields("editCustomerPointAdjField", keys, show);
+function queryCustomerPointAdjFields(keys, show) {
+    return getTFields("queryCustomerPointAdjField", keys, show);
 }
-function editCustomerPointAdjField(key, show) {
+function queryCustomerPointAdjField(key, show) {
     var f;
     switch (key) {
     case "发生日期从":
@@ -943,6 +943,39 @@ function editCustomerPointAdjField(key, show) {
     case "customer":
     case "客户":
         f = new TField("客户", TF_AC, 3, "小王", -1, 0);
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+// 新增积分调整
+function editCustomerPointAdjFields(keys, show) {
+    return getTFields("editCustomerPointAdjField", keys, show);
+}
+function editCustomerPointAdjField(key, show) {
+    var f;
+    switch (key) {
+    case "门店":
+        f = new TField("门店", BTN_SC, 0, "常青店", -1, 0);
+        if (show) {
+            f.type = TF;
+        }
+        break;
+    case "客户":
+        f = new TField("客户", TF_AC, 1, "小王", -1, 0);
+        break;
+    case "当前积分":
+        f = new TField("当前积分", TF, 2, "");// 灰化，不可输入
+        break;
+    case "调整":
+        f = new TField("调整", TF, 3, "100");
+        break;
+    case "店员":
+        f = new TField("店员", TF_AC, 4, "000", -1, 0);
+        break;
+    case "备注":
+        f = new TField("备注", TV, 0, "");
         break;
     default:
         logWarn("未知key＝" + key);
