@@ -1324,7 +1324,7 @@ function test210049_1() {
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "打印小票" };
+    qo = { "备注" : "打印小票是否以尺码为头部" };
     o = { "新值" : "1", "数值" : [ "以尺码为小票明细的头部", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1332,7 +1332,7 @@ function test210049_1() {
     var fields = querySystemGlobalFields(qo);
     query(fields);
 
-    tapFirstText();
+    tapFirstText(getScrollView(), 1, 4);
     var setObj = {};
     setObj["数值"] = [ "默认均色均码", "in" ];
     setObj["授权码"] = [];
@@ -1344,7 +1344,7 @@ function test210049_1() {
             "当参数“是否需要颜色尺码” 设置为”默认均色均码“时，“打印小票是否以尺码为头部”不允许设置为”以尺码为小票明细的头部"));
     tapReturn();
 
-    qo = { "备注" : "打印小票" };
+    qo = { "备注" : "打印小票是否以尺码为头部" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1352,6 +1352,7 @@ function test210049_1() {
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test210050() {
