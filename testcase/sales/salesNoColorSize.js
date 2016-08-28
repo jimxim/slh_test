@@ -236,7 +236,7 @@ function testSalesNoColorSize003() {
 }
 function setNoColorSize_1Params() {
     var qo, o, ret = true;
-    qo = { "名称" : "是否需要颜色尺码" };
+    qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -448,9 +448,9 @@ function setNoColorSize_1Params() {
     o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "按明细" };
-    o = { "新值" : "1", "数值" : [ "显示与第1个价格的差额", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "按明细" };
+    // o = { "新值" : "1", "数值" : [ "显示与第1个价格的差额", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否增加选择框" };
     o = { "新值" : "0", "数值" : [ "默认不添加" ] };
@@ -616,7 +616,6 @@ function test170043() {
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
     tapPrompt();
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -4422,13 +4421,14 @@ function test170169() {
     delay();
     tapReturn();
 
-    tapMenu("销售开单", "按批次查");
-    var keys1 = [ "作废挂单" ];
-    var fields1 = salesQueryBatchFields(keys1);
-    changeTFieldValue(fields1["作废挂单"], "挂单");
-    query(fields1);
+    // tapMenu("销售开单", "按批次查");
+    // var keys1 = [ "作废挂单" ];
+    // var fields1 = salesQueryBatchFields(keys1);
+    // changeTFieldValue(fields1["作废挂单"], "挂单");
+    // query(fields1);
+    tapMenu("销售开单", "按挂单");
+    query();
     var qr = getQR();
-
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("0",
             qr.data[0]["批次"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
@@ -4448,12 +4448,13 @@ function test170170() {
     delay();
     tapReturn();
 
-    tapMenu("销售开单", "按批次查");
-    var keys1 = [ "作废挂单" ];
-    var fields1 = salesQueryBatchFields(keys1);
-    changeTFieldValue(fields1["作废挂单"], "挂单");
-    query(fields1);
-
+    // tapMenu("销售开单", "按批次查");
+    // var keys1 = [ "作废挂单" ];
+    // var fields1 = salesQueryBatchFields(keys1);
+    // changeTFieldValue(fields1["作废挂单"], "挂单");
+    // query(fields1);
+    tapMenu("销售开单", "按挂单");
+    query();
     tapFirstText();
     tapButton(getScrollView(-1), 1);
     tapButton(getScrollView(-1), 2);
@@ -10577,7 +10578,6 @@ function test170559_170697() {
 
     tapMenu("销售开单", "按批次查");
     query();
-
     tapFirstText();
     tapMenu("销售开单", "getMenu_More", "设置已配货");
     tapPrompt();
@@ -10585,6 +10585,8 @@ function test170559_170697() {
     // 修改客户名称/付款方式/明细/明细备注和整单备注/店员 信息后分别点保存按钮
     tapMenu("销售开单", "按批次查");
     query();
+    var qr = getQR();
+    var money = qr.data[0]["金额"];
     tapFirstText();
     var keys = { "客户" : "anewkhVip2" };
     var fields = editSalesBillFields(keys);
@@ -10599,6 +10601,7 @@ function test170559_170697() {
             qr.data[0]["单价"]));
     tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
     ret = isAnd(ret, isEqual(getTextFieldValue(window, 0), "李四"));
@@ -10608,13 +10611,16 @@ function test170559_170697() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret1 = isIn(alertMsg, "保存成功");
+    // var ret1 = isIn(alertMsg, "保存成功");
     tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-
-    var f10 = new TField("备注", TF, 10, "zdbz", -1, 0);
+    var logistindex = getEditSalesTFindex2("客户", "代收");
+    var ret1 = isEqual(money, getTextFieldValue(window, logistindex));
+    var tipindex = getEditSalesTFindex2("客户", "备");
+    var f10 = new TField("备注", TF, tipindex, "zdbz", -1, 0);
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
     saveAndAlertOk();
@@ -10622,9 +10628,11 @@ function test170559_170697() {
     var ret2 = isIn(alertMsg, "只能修改支付方式");
     tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    var f5 = new TField("店员", TF_AC, 5, "004", -1, 0);
+    var staffindex = getEditSalesTFindex2("客户", "店员");
+    var f5 = new TField("店员", TF_AC, staffindex, "004", -1, 0);
     var fields = [ f5 ];
     setTFieldsValue(window, fields);
 
@@ -10635,30 +10643,24 @@ function test170559_170697() {
     var ret3 = isIn(alertMsg1, "只能修改支付方式");
     tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    var idx, idx1;
+    var json = { "明细" : [ { "货品" : "8989", "数量" : 12 } ] };
+    editSalesBillNoColorSize(json);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret4 = isIn(alertMsg, "只能修改支付方式");
+
+    tapMenu("销售开单", "按批次查");
+    tapButton(window, QUERY);
+    tapFirstText();
+    var idx;
     if (ipadVer >= "7.21") {
         idx = 8;
     } else {
         idx = 7;
     }
-    if (ipadVer >= "7.21") {
-        idx1 = 12;
-    } else {
-        idx1 = 10;
-    }
-    var f7 = new TField("货品", TF_AC, idx, "8989", -1, 0);
-    f10 = new TField("数量", TF, idx1, 12);
-    var fields = [ f7, f10 ];
-    setTFieldsValue(getScrollView(-1), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    var ret4 = isIn(alertMsg, "只能修改支付方式");
-    tapReturn();
-
-    tapButton(window, QUERY);
-    tapFirstText();
     var f6 = new TField("备注", TF, idx - 1, "bz", -1, 0);
     var fields = [ f6 ];
     setTFieldsValue(getScrollView(-1), fields);
@@ -10667,11 +10669,12 @@ function test170559_170697() {
     var ret5 = isIn(alertMsg, "只能修改支付方式");
     tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    tapButtonAndAlert("挂 单", OK);
-    tapPrompt();
-    var ret6 = isIn(alertMsg, "本单不允许执行挂单操作");
+    // tapButtonAndAlert("挂 单", OK);
+    // tapPrompt();
+    // var ret6 = isIn(alertMsg, "本单不允许执行挂单操作");&& ret6+ ", ret6=" + ret6
     tapButtonAndAlert("打 印", "打印(客户用)");
     tapPrompt();
     delay(2);
@@ -10680,9 +10683,8 @@ function test170559_170697() {
     var ret7 = isIn(alertMsg1, "操作成功");
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret7=" + ret7);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret7;
 }
 function test170560() {
     // 后台设置特殊货品 名称：抹零，核算到积分为是

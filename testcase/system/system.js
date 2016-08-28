@@ -574,7 +574,7 @@ function test210023() {
     //
     // return ret;
 }
-function test210024() {
+function test210024_210025() {
     tapMenu("系统设置", "人员列表");
     var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
@@ -585,25 +585,23 @@ function test210024() {
     var a1 = qr.data[0]["姓名"];
     var a2 = qr.data[0]["门店"];
     var a3 = qr.data[0]["岗位"];
-
-    var ret = isAnd(isEqual("000", a), isEqual("总经理", a1), isEqual("常青店", a2),
+    var ret1 = isAnd(isEqual("000", a), isEqual("总经理", a1), isEqual("常青店", a2),
             isEqual("总经理", a3));
 
-    return ret;
-}
-function test210025() {
-    tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
-    var fields = querySystemStaffFields(keys);
-    query(fields);
-
     tapButton(window, CLEAR);
-
-    var ret = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
+    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 0)), isEqual("", getTextFieldValue(
             window, 0)), isEqual("", getTextFieldValue(window, 0)));
 
-    return ret;
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("工号", IS_NUM);
+    ret = ret && sortByTitle("姓名");
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("岗位");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210027() {
     tapMenu("系统设置", "人员列表");
