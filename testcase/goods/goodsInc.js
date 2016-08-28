@@ -541,7 +541,20 @@ function getRandomNum(min, max, dn) {
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
-
+/**
+ * 取N位随机字符串
+ * @param n
+ * @returns {String}
+ */
+function getRandomStr(n) {
+    var ret = "";
+    var str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
+    for (var i = 0; i < n; i++) {
+        var num = getRandomNum(0, 61);
+        ret += str.charAt(num);
+    }
+    return ret;
+}
 /**
  * 获取明细输入框个数，标题列号，从0开始
  * @param idx 明细输入框个数所在视图下标，默认-1
@@ -1307,7 +1320,24 @@ function isInAlertMsgs(str) {
     msgs = msgs.replace(/[\ |\;|\；|\,|\，|\(|\)|\（|\）]/g, "");
     return isIn(msgs, str);
 }
-
+/**
+ * 数组b是否包含数组a
+ * @param arr2
+ * @param arr1
+ * @returns {Boolean}
+ */
+function isInArray2(arr2, arr1) {
+    debugObject(arr2, "arr2");
+    debugObject(arr1, "arr1");
+    var str = arr2.toString();
+    for (var i = 0; i < arr1.length; i++) {
+        var ret = str.indexOf(arr1[i]) != -1;
+        if (!ret) {
+            break;
+        }
+    }
+    return ret;
+}
 /**
  * 如果expected里的内容包含查询结果数据中一行数据的内容 ，返回真
  * @param qr QResult对象

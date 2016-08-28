@@ -48,7 +48,6 @@ function testPurchasePrepare002() {
 function testPurchase002() {
     run("【采购入库-按批次查】按批次查->作废", "ts120003");
     run("【采购入库-按批次查】按批次查->作废、挂单操作和查询", "ts120044");
-    run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
     run("【采购入库】输入不存在的款号提示信息", "ts120005");
     run("【采购入库-按批次查】将供应商修改从无到有", "ts120046");
     run("【采购入库-按批次查】将供应商修改从有到无 和从A改到B", "ts120060");
@@ -60,11 +59,14 @@ function testPurchase002() {
     run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,正负零", "test120013_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查", "test120031_120032");
+    if (ipadVer < 7.23) {
+        run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
+        // run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
+        run("【采购入库-新增入库】采购入库增加挂单功能,作废", "test120017_1");
+        run("【采购入库-新增入库】挂单转正式采购入库单后打印", "test120058");
+        run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
+    }
 
-    // run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
-    run("【采购入库-新增入库】采购入库增加挂单功能,作废", "test120017_1");
-    run("【采购入库-新增入库】挂单转正式采购入库单后打印", "test120058");
-    run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
     run("【采购入库-新增入库】【采购入库-新增入库】新增入库+付款", "test120019");
     run("【采购入库-新增入库】退货+退款", "test120020");
     run("【采购入库-新增入库】退货+不退款", "test120021");
@@ -2159,12 +2161,14 @@ function ts120044() {
     qr = getQR();
     var ret = isEqualObject(jo, qr.data[0]);
 
-    keys = { "作废挂单" : "挂单" };
-    fields = purchaseQueryBatchFields(keys);
-    query(fields);
-    qr = getQR();
-    if (qr.data.length > 0) {
-        ret = isAnd(ret, !isEqualQRData1Object(qr, jo));
+    if (ipadVer < 7.23) {
+        keys = { "作废挂单" : "挂单" };
+        fields = purchaseQueryBatchFields(keys);
+        query(fields);
+        qr = getQR();
+        if (qr.data.length > 0) {
+            ret = isAnd(ret, !isEqualQRData1Object(qr, jo));
+        }
     }
 
     keys = { "作废挂单" : "正常" };
@@ -2559,7 +2563,7 @@ function test120052() {
     qr = getQR();
     ret = isAnd(ret, !isEqual(0, qr.data[0]["批次"]));
 
-    keys = { "作废挂单" : "挂单" };
+    keys = { "作废挂单" : "挂单" };// 7.23起去除
     fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();

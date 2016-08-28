@@ -2280,20 +2280,8 @@ function ts100132() {
     var fields = queryGoodsDistributionFields(keys);
     query(fields);
     tapFirstText();
-    var arr1 = [];
-    var qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            arr1.push(qr.data[i]["名称"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            delay();
-            qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-        }
-    }
+    var arr1 = get130004QR2("名称", "中洲店", "名称");
     tapNaviLeftButton();
-    arr1 = getUnique(arr1).sort();
 
     tapMenu("货品管理", "当前库存");
     fields = queryGoodsStockFields(keys);
@@ -4382,12 +4370,12 @@ function ts100168() {
 function ts100169() {
     tapMenu("货品管理", "当前库存");
     var keys = { "是否停用" : "是" };
-    var fields = queryGoodsStockFields(keys);
-    var arr1 = get130004QR(fields, "款号");
+    conditionQuery(keys);
+    var arr1 = get130004QR("款号");
 
     tapMenu2("货品进销存");
-    fields = queryGoodsInOutFields(keys);
-    var arr2 = get130004QR(fields, "款号");
+    conditionQuery(keys);
+    var arr2 = get130004QR("款号");
     return isEqualObject(arr1, arr2);
 }
 function test100170() {

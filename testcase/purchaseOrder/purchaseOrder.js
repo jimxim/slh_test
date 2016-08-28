@@ -456,8 +456,8 @@ function ts130004_2() {
 
     tapMenu2("按明细查");
     delete keys["类别"];
-    fields = purchaseOrderQueryParticularFields(keys);
-    var jo1 = get130004QR(fields, "厂商");
+    conditionQuery(keys);
+    var jo1 = get130004QR("厂商");
     var ret1 = isEqualObject(jo1, jo2);
     return ret && ret1;
 }
@@ -511,13 +511,11 @@ function ts130004_05_06Staff() {
 }
 /**
  * 获取目标标题的内容(已去重排序)
- * @param fields
  * @param title
  * @returns {Array}
  */
-function get130004QR(fields, title) {
+function get130004QR(title) {
     var arr = [];
-    query(fields)
     var qr = getQR();
     if (qr.data.length > 0) {
         for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -599,8 +597,8 @@ function ts130005_2() {
     }
 
     tapMenu2("按明细查");
-    fields = purchaseOrderQueryParticularFields(keys);
-    var jo1 = get130004QR(fields, "款号");
+    conditionQuery(keys);
+    var jo1 = get130004QR("款号");
     var ret1 = isEqualObject(jo1, jo2);
     return ret && ret1;
 }
@@ -646,8 +644,8 @@ function ts130006_2() {
     }
 
     tapMenu2("按明细查");
-    fields = purchaseOrderQueryParticularFields(keys);
-    var jo1 = get130004QR(fields, "款号");
+    conditionQuery(keys);
+    var jo1 = get130004QR("款号");
     var ret1 = isEqualObject(jo1, jo2);
     return ret && ret1;
 }

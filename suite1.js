@@ -18,20 +18,19 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
     
 
-// run("测试用例", "ts110100");//
- run("测试用例", "ts110101");
+ run("测试用例", "ts100109");//
+// run("测试用例", "test110022");
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 
 // debugObject(gCache,"gCache");
  return true;
 }
-
 
 
 //
