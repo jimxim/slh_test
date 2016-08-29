@@ -148,7 +148,7 @@ function addGoods(keys, o) {
     }
 
     var fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
 
     if (isDefined(o["库存录入"])) {
         editStockEntry(o);//

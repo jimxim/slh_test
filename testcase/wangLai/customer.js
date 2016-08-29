@@ -104,6 +104,7 @@ function testCustomer002() {
     run("【往来管理-更多-新增积分调整】积分跨门店共享开启，新增积分调整", "ts110101");
     run("【往来管理-更多-新增标签】新增", "ts110108");
     run("【往来管理-更多-客户标签】模糊查询", "ts110109");
+    run("【往来管理-更多-新增标签】不同门店新增相同名称的标签", "ts100110");
 }
 
 // 翻页_排序
@@ -4326,14 +4327,39 @@ function ts100108() {
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButton(window, SAVE);
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "超过限制"));
+    ret = isAnd(ret, isIn(alertMsg, "长度不能大于5") || isIn(alertMsg, "超过限制"));
     tapReturn();
     return ret;
 }
 function ts100109() {
     tapMenu("往来管理", "getMenu_More", "客户标签");
-    var f = new TField("名称", TF, 0, "z");
-    return checkFuzzyQuery(f, "名称");
+    var f = new TField("名称", TF, 0, "重");
+    var ret = checkFuzzyQuery(f, "名称");
+
+    f = new TField("名称", TF, 0, "z");
+    return isAnd(ret, checkFuzzyQuery(f, "名称"));
+}
+//数据准备 中洲店新增标签中洲店
+function ts100110() {
+    tapMenu("往来管理", "getMenu_More", "客户标签");
+    var keys = { "名称" : "中洲店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    if (qr.data.length > 0) {
+        tapLine();
+        tapButtonAndAlert("删 除", OK);
+    }
+
+    tapMenu("往来管理", "getMenu_More", "新增标签+");
+    var f = new TField("名称", TF, 0, "中洲店");
+    setTFieldsValue(getScrollView(-1), [ f ]);
+    tapButton(window, SAVE);
+    var ret = !isIn(alertMsg, "已存在");
+    tapReturn();
+
+    tapLine();
+    tapButtonAndAlert("删 除", OK);
+    return ret;
 }
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");

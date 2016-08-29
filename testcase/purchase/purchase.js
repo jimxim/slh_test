@@ -54,6 +54,8 @@ function testPurchase002() {
     run("【采购入库-按批次查】修改厂商后检查小计值", "test120079");
     run("【采购入库-按批次查】切换厂商后检查核销", "test120083");
     run("【采购入库-按批次查】反复修改同一张采购单后保存", "ts120108");
+    run("【采购入库-按批次查】库存不足时，修改支付方式验证", "test120112");
+    run(" 参数设置-按最新成交价/允许负库存", "test120112Field");// 防止test120112报错
 
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
     run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
@@ -65,6 +67,7 @@ function testPurchase002() {
         run("【采购入库-新增入库】采购入库增加挂单功能,作废", "test120017_1");
         run("【采购入库-新增入库】挂单转正式采购入库单后打印", "test120058");
         run("【采购入库-新增入库】采购入库的挂单加载后能正常修改保存", "test120018");
+        run("【采购入库-按批次查】采购挂单转采购单保存时，弹出打印询问窗口", "test120111");
     }
 
     run("【采购入库-新增入库】【采购入库-新增入库】新增入库+付款", "test120019");
@@ -3447,4 +3450,73 @@ function test120109Field(edit) {
     o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零" ] };
     ok = isAnd(ok, setGlobalParam(qo, o));
     return !isInAlertMsgs("整单金额和明细金额合计不一致");
+}
+function test120111() {
+    var qo = { "备注" : "开单修改保存时是否直接询问打印" };
+    var o = { "新值" : "1", "数值" : [ "询问打印", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    runAndAlert("test120052Hang", OK);
+    tapReturn();
+    alertMsgs = [];
+
+    tapMenu2("按批次查");
+    var keys = { "作废挂单" : "挂单" };
+    conditionQuery(keys);
+    tapLine();
+    editSalesBillSave({});
+
+    return isInAlertMsgs("是否打印");
+}
+function test120112() {
+//    var qo = { "备注" : "财务中货品成本价的核算方法" };
+//    var o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
+//    setGlobalParam(qo, o);
+//
+//    qo = { "备注" : "是否允许负库存" };
+//    o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ] };
+//    setGlobalParam(qo, o);
+//
+//    localClean();// 清理本地 核算方法
+
+    var keys = addGoodsSimple();
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "rt", "明细" : [ { "货品" : keys["款号"], "数量" : [ 9 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    json = { "客户" : "xw", "明细" : [ { "货品" : keys["款号"], "数量" : [ 9 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapLine();
+    json = { "刷卡" : [ 1000, "交" ] };
+    editSalesBill(json, colorSize);
+
+    tapLine();
+    json = { "入库明细" : [ { "数量" : "8" } ], "汇款" : [ 1000, "交" ] };
+    editSalesBill(json, colorSize);
+
+    tapLine();
+    json = { "入库明细" : [ { "数量" : "11" } ], "刷卡" : [ 500, "交" ],
+        "汇款" : [ 500, "交" ] };
+    editSalesBill(json, colorSize);
+
+    return !isInAlertMsgs("库存不足");
+}
+function test120112Field() {
+    var qo = { "备注" : "财务中货品成本价的核算方法" };
+    var o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
+    var ret = setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    localClean();// 清理本地
+    return ret;
 }

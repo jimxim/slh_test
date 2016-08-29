@@ -5,7 +5,8 @@
  */
 function addGoodsSimple(keys2, o) {
     tapMenu("货品管理", "新增货品+");
-    var r = getTimestamp(6);
+    delay();// 防止取不到吊牌价后的下标
+    var r = getRandomStr(6);
     var keys = {};
     var code = "g" + r;
     switch (colorSize) {
@@ -22,6 +23,7 @@ function addGoodsSimple(keys2, o) {
     if (isDefined(keys2)) {
         keys = mixObject(keys, keys2);
     }
+
     addGoods(keys, o);
     return keys;
 }
