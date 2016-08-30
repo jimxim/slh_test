@@ -17,8 +17,8 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- run("测试用例", "onlyTest");//
-// run("测试用例", "test120112");
+ run("测试用例", "ts130041");//
+// run("测试用例", "ts130024");
 
 }
 
@@ -26,14 +26,12 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    tapMenu("货品管理", "新增货品+");
-    delay();
- var keys={"吊牌价":"100","进货价":200,"零批价":1};
-var o={"onlytest":"yes"};
-addGoods(keys,o);
+
 // addGoodsSimple();
 // debugObject(gCache,"gCache");
+    tapStaffClear();
  return true;
+
 }
 
 

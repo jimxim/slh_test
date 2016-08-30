@@ -451,13 +451,12 @@ function test160001() {
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    var exp = { "批次" : batch, "日期" : getToday("yy"), "门店" : "常青店",
-        "店员" : "总经理", "客户" : "小王", "数量" : 50, "差异数" : 50, "发货状态" : "未发货",
-        "总额" : 10000, "现金" : 2000, "刷卡" : 3000, "汇款" : 5000, "客户分店" : "",
-        "操作日期" : qr.data[0]["操作日期"] };
+    var exp = { "批次" : batch, "门店" : "常青店", "店员" : "总经理", "客户" : "小王",
+        "数量" : 50, "差异数" : 50, "发货状态" : "未发货", "总额" : 10000, "现金" : 2000,
+        "刷卡" : 3000, "汇款" : 5000, "客户分店" : "", "操作日期" : qr.data[0]["操作日期"] };
     exp[title_Shipped] = 0;
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]),
-            checkQResult("发货状态", "未发货"));
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]), isIn(getToday(),
+            qr.data[0]["日期"]), checkQResult("发货状态", "未发货"));//不同版本日期格式不同
 
     tapMenu("销售开单", "按订货开单");
     query();
@@ -473,7 +472,7 @@ function test160001() {
     query(fields);
     qr = getQR();
     exp[title_Shipped] = 15, exp["差异数"] = 35, exp["发货状态"] = "部分发货";
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult("发货状态",
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]), checkQResult("发货状态",
             "部分发货"));
 
     tapMenu("销售开单", "按订货开单");
@@ -488,7 +487,7 @@ function test160001() {
     query(fields);
     qr = getQR();
     exp[title_Shipped] = 50, exp["差异数"] = 0, exp["发货状态"] = "全部发货";
-    ret = isAnd(ret, isEqualObject(exp, qr.data[0]), checkQResult("发货状态",
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]), checkQResult("发货状态",
             "全部发货"));
 
     return ret;
@@ -540,13 +539,13 @@ function test160002_160017() {
     keys = { "客户" : "xw", "日期从" : getDay(-30), "日期到" : getToday(),
         "店员" : "000", "批次从" : batch, "批次到" : batch + 1, "门店" : "常青店",
         "发货状态" : "未发货" };
-    fields = salesOrderQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
-    var expected = { "批次" : batch + 1, "日期" : getToday("yy"), "门店" : "常青店",
-        "店员" : "总经理", "客户" : "小王", "数量" : "10", "差异数" : "10", "发货状态" : "未发货" };
+    var expected = { "批次" : batch + 1, "门店" : "常青店", "店员" : "总经理", "客户" : "小王",
+        "数量" : "10", "差异数" : "10", "发货状态" : "未发货" };
     expected[title_Shipped] = 0;
-    var ret = isEqualObject(expected, qr.data[0]);
+    var ret = isAnd(isEqualObject2(expected, qr.data[0]), isIn(getToday(),
+            qr.data[0]["日期"]));
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 8; i++) {

@@ -3473,15 +3473,15 @@ function test120111() {
     return isInAlertMsgs("是否打印");
 }
 function test120112() {
-//    var qo = { "备注" : "财务中货品成本价的核算方法" };
-//    var o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
-//    setGlobalParam(qo, o);
-//
-//    qo = { "备注" : "是否允许负库存" };
-//    o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ] };
-//    setGlobalParam(qo, o);
-//
-//    localClean();// 清理本地 核算方法
+    var qo = { "备注" : "财务中货品成本价的核算方法" };
+    var o = { "新值" : "2", "数值" : [ "按移动加权平均价", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "1", "数值" : [ "必须先入库再出库", "in" ] };
+    setGlobalParam(qo, o);
+
+    localClean();// 清理本地 核算方法
 
     var keys = addGoodsSimple();
     tapMenu("采购入库", "新增入库+");
@@ -3519,4 +3519,7 @@ function test120112Field() {
     ret = isAnd(ret, setGlobalParam(qo, o));
     localClean();// 清理本地
     return ret;
+}
+function ts120113(){
+    
 }

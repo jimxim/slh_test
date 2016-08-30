@@ -22,6 +22,7 @@ function testPurchaseOrder001() {
 function testPurchaseOrder002() {
     // run("【采购订货-新增订货】取未保存", "ts130026");// 不能单独跑
     run("【采购订货-按批次查】增加发货状态列和发货状态查询条件", "ts130001");// 7.01新功能
+    run("【采购订货-按批次查】按批次查界面删除店员后，再整单复制，新增的采购订单店员验证", "ts130040");
     run("【采购订货-新增订货】快速新增", "ts130007_08");
     run("【采购订货】采购订货-按批次界面，部分发货的单子不允许作废", "ts130009");
     run("【采购订货】不输入店员时在单据修改界面检查店员显示", "ts130010");
@@ -34,6 +35,8 @@ function testPurchaseOrder002() {
     run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
     run("【采购订货-新增订货】整单复制和整单粘贴", "ts130024");
     run("【采购订货-按批次查】总经理查看修改日志", "ts130025_1");
+    // run("【采购订货-新增订货】采购退货-仅退货", "ts130041");
+    // run("【采购订货-新增订货】采购退货-退货并退款", "ts130042");
 }
 
 // 翻页_排序
@@ -908,7 +911,7 @@ function ts130011() {
     if (v == p1) {
         p1 = p2;
     }
-    json = { "客户" : p1, "不返回" : "yes" };
+    var json = { "客户" : p1, "不返回" : "yes" };
     editSalesBill(json, colorSize);
     var ret = isInAlertMsgs("客户或供应商信息不允许修改");
     delay();
@@ -1303,6 +1306,60 @@ function ts130039() {
 
     return isAnd(ret, ret2);
 }
+function ts130040() {
+    tapMenu("采购订货", "按批次查");
+    query();
+    tapLine();
+    delay();// 等待界面载入
+    tapStaffClear();
+    tapButton(window, "整单复制");
+
+    tapMenu2("新增订货+");
+    tapButton(window, "整单粘贴");
+    var json = editSalesBillSave({});
+    var ret = json["输入框值"]["店员"] == "";
+
+    tapMenu2("按批次查");
+    tapLine();
+    json = editSalesBillGetValue({});
+    tapReturn();
+    return isAnd(ret, isIn(json["店员"], "总经理"));
+}
+function ts130041() {
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : [ -5 ] } ] };
+    return ts130041Field(json);
+}
+function ts130042() {
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : [ -5 ] } ],
+        "现金" : -800 };
+    return ts130041Field(json);
+}
+function ts130041Field(json) {
+    tapMenu("采购订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    var cash = json["现金"];
+    if (isUndefined(cash)) {
+        cash = 0;
+    }
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var exp = { "总数" : -5, "现金" : cash, "备注" : "(0; -5)" };
+    var ret = isEqualObject2(exp, qr.data[0]);
+
+    tapMenu("采购订货", "按订货入库");
+    query();
+    qr = getQR();
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
+
+    tapMenu2("按批次查");
+    query();
+    qr = getQR();
+    ret = isAnd(ret, !isEqualObject2(exp, qr.data[0]));
+    return ret;
+}
+
 /**
  * 验证整单复制整单粘贴功能
  * @param menu2 相应的新增菜单按钮
@@ -1311,7 +1368,7 @@ function ts130039() {
 function checkCopyAndPaste(menu2) {
     tapMenu2("按批次查");
     query();
-    tapFirstText();
+    tapLine();
     // delay();
     var v1 = editSalesBillGetValue({});
     var data1 = getQRDet().data;
@@ -1332,12 +1389,15 @@ function checkCopyAndPaste(menu2) {
     editSalesBillSave({});
 
     tapMenu2("按批次查");
-    tapButton(window, QUERY);
-    tapFirstText();
+    tapButton(window, QUERY);// 刷新界面
+    tapLine();
+    var cond = "window.buttons()['整单复制'].isVisible()";
+    waitUntil(cond, 5);// 数据多的单据，进入有延迟
+    delay();// 进入后再等待数据加载
     var v2 = editSalesBillGetValue({});
     var data2 = getQRDet().data;
-    tapButton(window, RETURN);
-
+    tapReturn();
+    debugObject(v2, "v2");
     return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(data1, data2));
 }
 /**

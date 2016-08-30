@@ -48,7 +48,7 @@ function salesOrderQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");// TF_SC
+        f = new TField("门店", TF, 6, "常青店", -1, 0);// 实际为TF_AC
         break;
     case "shipping":
     case "发货状态":

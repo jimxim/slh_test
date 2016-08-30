@@ -66,6 +66,10 @@ function setGoodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1251,7 +1255,7 @@ function test100020() {
     query();
     tapFirstText();
     keys = [ "零批价", "打包价", "大客户价", "Vip价格" ];
-    fields = editGoodsFields(keys);
+    var fields = editGoodsFields(keys);
     var ret = isEqual(200, getTextFieldValue(getScrollView(),
             fields["零批价"].index))
             && isEqual(180, getTextFieldValue(getScrollView(),
@@ -2286,7 +2290,7 @@ function ts100132() {
     tapMenu("货品管理", "当前库存");
     fields = queryGoodsStockFields(keys);
     query(fields);
-    qr = getQR();
+    var qr = getQR();
     var arr2 = [];
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -4254,7 +4258,7 @@ function ts100164() {
     ret = ret && sortByTitle("操作日期");// 这个是帐套历史数据，不做清理，光月日不好判断
 
     var keys = { "名称" : "杂色" };
-    fields = goodsSizeidsFields(keys);
+    var fields = goodsSizeidsFields(keys);
     query(fields);
     tapFirstText();
     keys = { "名称" : "蓝" };
@@ -4427,7 +4431,7 @@ function test100170Field(code) {
     var arr = new Array(2);
     tapMenu("货品管理", "款号库存");
     tapButton(window, QUERY);
-    qr = getQR();
+    var qr = getQR();
     arr[0] = Number(qr.data[0]["累计进"]);
 
     tapMenu2("货品进销存");

@@ -665,6 +665,7 @@ function getSalesOrderDistributeDet() {
 
     return oStock;
 }
+
 /**
  * 点击第N行
  * @param n 从0开始
@@ -717,6 +718,13 @@ function tapNaviClose(max) {
             break;
         }
     }
+}
+/**
+ * 点击开单界面店员的清除按钮
+ */
+function tapStaffClear() {
+    var idx = getButtonIndex(window, CLEAR, 2);
+    tapButton(window, idx);
 }
 function tapStaticTextByValue(view1, txt1) {
     var texts = getStaticTexts(view1);
