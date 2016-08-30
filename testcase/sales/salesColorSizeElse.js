@@ -40,8 +40,6 @@ function test170001_1() {
     ret = ret && sortByTitle("操作日期");
     ret = ret && sortByTitle("操作人");
 
-    logDebug("ret=" + ret);
-
     query();
     var qr = getQR();
     var sum1 = 0;
