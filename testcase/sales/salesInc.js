@@ -563,12 +563,15 @@ function editQuickAddCustomerField(key, show) {
 /**
  * 快速新增货品
  * 
- * @param o
+ * @param o,o1,ret
  * @returns
  */
-function editQuickAddGoods(o, ret) {
+function editQuickAddGoods(o, o1, ret) {
     if (isUndefined(ret)) {
         ret = "no";
+    }
+    if (isUndefined(o1)) {
+        o1 = " ";
     }
     tapButton(window, GOODS);
     var fields = editQuickAddGoodsFields(o);
@@ -578,20 +581,41 @@ function editQuickAddGoods(o, ret) {
     tapButton(getPop(), CLOSE);
 
     if (ret == "yes") {
-        editQuickAddGoodsYes(o);
+        editQuickAddGoodsYes(o, o1);
     }
     if (ret == "no") {
-        editQuickAddGoodsNo(o);
+        editQuickAddGoodsNo(o, o1);
     }
-
     return ret;
 }
-function editQuickAddGoodsYes(o) {
+function editQuickAddGoodsYes(o, o1) {
     tapReturn();
     delay();
 }
-function editQuickAddGoodsNo(o) {
-    return;
+function editQuickAddGoodsNo(o, o1) {
+    var idx;
+    if (isUndefined(idx)) {
+        idx = -1;
+    }
+    var titles = {}, i = 0;
+    titles = getSalesBillDetTfObject();
+    var tfNum = titles["明细输入框个数"];
+    var f1 = getTextFieldValue(getScrollView(idx), 0);
+    var f8 = getTextFieldValue(getScrollView(idx), tfNum);
+    var qr = getQRDet();
+    var len = qr.data.length;
+    if (isAnd(!isEqual("", f1), !isEqual("", f8))) {
+        i = Number(tfNum) * Number(len) - 4;
+        var Fi = new TField("数量", TF, i, o1);
+        var fields = [ Fi ];
+        setTFieldsValue(getScrollView(idx), fields);
+    } else {
+        i = Number(tfNum) * (Number(len) + 1) - 4;
+        var Fi = new TField("数量", TF, i, o1);
+        var fields = [ Fi ];
+        setTFieldsValue(getScrollView(idx), fields);
+    }
+    logDebug(" tfNum=" + tfNum);
 }
 // 快速新增货品
 function editQuickAddGoodsFields(keys, show) {
