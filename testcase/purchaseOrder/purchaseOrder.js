@@ -35,8 +35,9 @@ function testPurchaseOrder002() {
     run("【采购订货-按批次查】单据修改界面检查付款方式", "ts130017");
     run("【采购订货-新增订货】整单复制和整单粘贴", "ts130024");
     run("【采购订货-按批次查】总经理查看修改日志", "ts130025_1");
-    // run("【采购订货-新增订货】采购退货-仅退货", "ts130041");
-    // run("【采购订货-新增订货】采购退货-退货并退款", "ts130042");
+    run("【采购订货-新增订货】采购退货-仅退货", "ts130041");
+    run("【采购订货-新增订货】采购退货-退货并退款", "ts130042");
+    run("【采购订货-新增订货】对采购退货的单据进行按订货入库", "ts130043"); 
 }
 
 // 翻页_排序
@@ -1348,7 +1349,7 @@ function ts130041Field(json) {
     var exp = { "总数" : -5, "现金" : cash, "备注" : "(0; -5)" };
     var ret = isEqualObject2(exp, qr.data[0]);
 
-    tapMenu("采购订货", "按订货入库");
+    tapMenu("采购入库", "按订货入库");
     query();
     qr = getQR();
     ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
@@ -1356,10 +1357,44 @@ function ts130041Field(json) {
     tapMenu2("按批次查");
     query();
     qr = getQR();
-    ret = isAnd(ret, !isEqualObject2(exp, qr.data[0]));
+    exp = { "总数" : 0, "现金" : cash, "备注" : "预付款" };// 预付款单检查
+    if (cash == 0) {
+        ret = isAnd(ret, !isEqualObject2(exp, qr.data[0]));
+    } else {
+        ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
+    }
+
     return ret;
 }
+function ts130043() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var stock = qr.data[0]["库存"];
 
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : [ -7 ] } ],
+        "现金" : -800 };
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapLine();
+    json = { "入库明细" : [ { "数量" : -7 } ] };// 全部入库，
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购订货", "按批次查");
+    query();
+    qr = getQR();
+    var exp = { "发货状态" : "全部入库", "操作日期" : json["操作日期"] };// 操作日期来确认单据
+    var ret = isEqualObject(exp, qr.data[0], 1);
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    return isAnd(ret, isEqual(sub(stock, qr.data[0]["库存"]), 7));
+}
 /**
  * 验证整单复制整单粘贴功能
  * @param menu2 相应的新增菜单按钮

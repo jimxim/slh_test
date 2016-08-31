@@ -48,6 +48,7 @@ function testSalesOrder002() {
             "test160055_160056_160057_160058");
     run("【销售订货－新增订货】打印功能", "test160108");
     run("【销售订货-新增订货】连续点击后检查在客户为空的情况下能否正常保存", "test160120");
+    run("【销售订货-新增订货】整单备注验证", "test160170");
     // run("【销售订货】销售订单先开一单预付款单，不填明细保存，然后修改本单添加货品明细保存", "test160062");
     // run("【销售订货】检查历史订货时间", "test160064");
     run("【销售开单-按订货开单】修改客户名称/客户或供应商信息不允许修改", "test160068_160069");
@@ -456,7 +457,7 @@ function test160001() {
         "刷卡" : 3000, "汇款" : 5000, "客户分店" : "", "操作日期" : qr.data[0]["操作日期"] };
     exp[title_Shipped] = 0;
     ret = isAnd(ret, isEqualObject2(exp, qr.data[0]), isIn(getToday(),
-            qr.data[0]["日期"]), checkQResult("发货状态", "未发货"));//不同版本日期格式不同
+            qr.data[0]["日期"]), checkQResult("发货状态", "未发货"));// 不同版本日期格式不同
 
     tapMenu("销售开单", "按订货开单");
     query();
@@ -1364,7 +1365,7 @@ function test160040() {
 
     keys = { "客户" : "xw" };
     conditionQuery(keys, false);
-    qr = getQR();
+    var qr = getQR();
     var ret2 = true;
     for (i = 0; i < qr.curPageTotal; i++) {
         var seq = qr.data[i]["序号"];
@@ -2240,6 +2241,80 @@ function test160169() {
     editSalesBillSave({});
 
     return isInAlertMsgs("是否打印");
+}
+function test160170() {
+    var rmk = getRandomStr(200);// 最长控制200字
+    var ret = test160170Fields("采购入库", "新增入库+", rmk);
+
+    rmk = getRandomStr(200);
+    ret = ret && test160170Fields("采购订货", "新增订货+", rmk)
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapLine();
+    ret = isAnd(ret, test160170Field(rmk));
+    tapReturn();
+
+    rmk = getRandomStr(200);
+    ret = ret && test160170Fields("销售订货", "新增订货+", rmk);
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    ret = isAnd(ret, test160170Field(rmk));
+    tapReturn();
+
+    rmk = getRandomStr(200);
+    ret = ret && test160170Fields("销售开单", ADDBILL, rmk);
+
+    rmk = getRandomStr(200);
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "中洲店",
+        "明细" : [ { "货品" : "3035", "数量" : 50 } ], "备注" : rmk };
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    ret = isAnd(ret, test160170Field(rmk));
+    tapReturn();
+    return ret;
+}
+/**
+ * 整单备注验证
+ * @param menu1
+ * @param menu2 开单菜单
+ * @param rmk
+ * @returns
+ */
+function test160170Fields(menu1, menu2, rmk) {
+    tapMenu(menu1, menu2);
+    var cust = "xw";
+    if (menu1 == "采购入库" || menu1 == "采购订货") {
+        cust = "rt";
+    }
+    var json = { "客户" : cust, "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "备注" : rmk };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var ret = test160170Field(rmk);
+    tapButton(window, "整单复制");// 自动返回
+
+    tapMenu2(menu2);
+    tapButton(window, "整单粘贴");
+    ret = isAnd(ret, test160170Field(rmk));
+    tapReturn();// 只是验证备注值，不保存
+    return ret;
+}
+function test160170Field(rmk) {
+    var r1 = getTextViewValue(window, 0);// 开单界面TV
+    tapTextByFirstWithName("备", window);
+    var view = getPopView(window, -1);
+    var r2 = getTextViewValue(view, 0);// 点击备后 出现的大的TV
+    tapButton(getPop(), CLOSE);
+
+    return isAnd(isEqual(rmk, r1), isEqual(rmk, r2));
 }
 // 翻页/排序/汇总
 function test16_Stockout_1() {

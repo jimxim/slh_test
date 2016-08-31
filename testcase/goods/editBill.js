@@ -193,6 +193,7 @@ function editStatisticAnalysisIn(o) {
 function editStatisticAnalysisInField1(o, key) {
     var v = o[key];
     if (isDefined(v)) {
+        delay();// 有卡顿，不等捕捉不到控件 0831
         var keys = {};
         keys[key] = v;
         var fields = editStatisticAnalysisInFields(keys);

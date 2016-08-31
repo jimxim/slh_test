@@ -156,7 +156,7 @@ function salesOrderHangField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "1");// TF_SC
+        f = new TField("门店", TF, 4, "1", -1, 0);// TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -247,7 +247,7 @@ function salesOrderCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店", -1, 0);// TF_AC
         break;
     case "customer":
     case "客户":
@@ -358,7 +358,7 @@ function salesOrderShopField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -410,7 +410,7 @@ function salesOrderBillField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 1, "常青店");// TF_SC
+        f = new TField("门店", TF, 1, "常青店", -1, 0);// TF_SC
         break;
     case "day1":
     case "日期从":
@@ -464,7 +464,7 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 7, "常青店");// TF_SC
+        f = new TField("门店", TF, 7, "常青店", -1, 0);// TF_AC
         break;
     case "brand":
     case "品牌":

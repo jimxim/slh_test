@@ -40,7 +40,7 @@ function salesQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店", -1, 0);// TF_SC
         break;
     case "remarks":
     case "备注":
@@ -126,7 +126,7 @@ function salesQueryParticularField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店", -1, 0);// TF_SC
         break;
     case "type":
     case "类型":
@@ -185,7 +185,7 @@ function salesQueryGuaDanField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -216,7 +216,7 @@ function salesPriceField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -339,7 +339,7 @@ function salesReturnField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店", -1, 0);// TF_SC
         break;
     case "type":
     case "类型":
@@ -387,7 +387,7 @@ function salesStaffField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店", TF, 3, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

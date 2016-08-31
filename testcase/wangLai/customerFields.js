@@ -414,7 +414,7 @@ function queryCustomerActiveField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 1, "仓库店");// TF_SC
+        f = new TField("门店", TF, 1, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "staff":
     case "所属店员":

@@ -182,7 +182,7 @@ function test190013() {
     tapNaviLeftButton();
 
     var rm = getRandomNum(100, 1000, 2);
-    var r = "备注" + "a" + getTimestamp(6);// 不输入备注会提示提交重复数据
+    var r = "备注" + getRandomStr(6);// 不输入备注会提示提交重复数据
     tapMenu2("新增收支");
     tapMenu3("新增收入");
     var json = { "账户" : "现", "收支备注" : r,
@@ -1571,11 +1571,10 @@ function test190038() {
     var qr = getQR();
     var a = qr.data[0]["余款"];
 
-    tapFirstText();
+    tapLine();
     tapNaviButton("余款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    // logDebug(qr);
     var sum = 0, actual = {};
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -1587,8 +1586,7 @@ function test190038() {
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
         }
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     var expected = { "客户" : "小王", "余款" : 1000, "销额" : 2000, "退额" : 1000,
         "现金" : 1000, "刷卡" : 400, "汇款" : 600, "代收" : 0, "核销" : 0 };

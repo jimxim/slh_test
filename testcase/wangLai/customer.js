@@ -3895,7 +3895,7 @@ function ts110090() {
     // var ok = setGlobalParam(qo, o);
     //
     // tapMenu("往来管理", "积分查询");
-    // var arr = [ "门店" ];
+    var arr = [ "门店" ];
     // var ret = checkRightsField(true, getScrollView(), arr);
 
     var o = { "新值" : "1", "数值" : [ "允许跨门核销", "in" ] };
@@ -4269,7 +4269,7 @@ function ts110104() {
 
     ret = ret && sortByTitle("批次");
     ret = ret && sortByTitle("日期", IS_DATE2);
-    ret = ret && sortByTitle("门店", IS_NUM);
+    ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("客户名称");
     ret = ret && sortByTitle("积分调整数额", IS_NUM);
     ret = ret && sortByTitle("积分余额", IS_NUM);
@@ -4339,7 +4339,7 @@ function ts100109() {
     f = new TField("名称", TF, 0, "z");
     return isAnd(ret, checkFuzzyQuery(f, "名称"));
 }
-//数据准备 中洲店新增标签中洲店
+// 数据准备 中洲店新增标签中洲店
 function ts100110() {
     tapMenu("往来管理", "getMenu_More", "客户标签");
     var keys = { "名称" : "中洲店" };
