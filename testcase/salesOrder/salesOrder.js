@@ -2276,6 +2276,30 @@ function test160170() {
     tapLine();
     ret = isAnd(ret, test160170Field(rmk));
     tapReturn();
+
+    return ret;
+}
+
+// 160170的门店调入部分，中州店登陆验证
+function test160170ShopIn() {
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var i = 0;
+    for (; i < qr.data.length; i++) {
+        var r = qr.data[i]["备注"];
+        if (isDefined(r) && r.length > 5)
+            break;
+    }
+    tapLine(i);
+    var rmk = getTextViewValue(window, 0);
+    tapButton(window, "整单复制");// 自动返回
+
+    tapMenu("采购入库", "新增入库+");
+    tapButton(window, "整单粘贴");
+    var ret = test160170Field(rmk);
+    tapReturn();
     return ret;
 }
 /**
@@ -2285,7 +2309,7 @@ function test160170() {
  * @param rmk
  * @returns
  */
-function test160170Fields(menu1, menu2, rmk) {
+function test160170Fields(menu1, menu2, rmk, hang) {
     tapMenu(menu1, menu2);
     var cust = "xw";
     if (menu1 == "采购入库" || menu1 == "采购订货") {
