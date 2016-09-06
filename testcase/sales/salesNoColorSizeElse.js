@@ -7782,8 +7782,15 @@ function test170574() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    delay();
     var qr = getQRtable1(window, 8, -2);
     var len = qr.data.length;
+    if (len == 0) {
+        for (var i = 0; i < 3; i++) {
+            qr = getQRtable1(window, 8, -2);
+        }
+    }
+    len = qr.data.length;
 
     if (len == 0) {
         for (var i = 0; i <= 3; i++) {
@@ -7803,12 +7810,18 @@ function test170574() {
         }
     }
 
-    var view = window.tableViews()[5].groups()["批次"];
+    var view = window.tableViews()[4].groups()["批次"];
     tapTitle(view, "门店");
     // tapTitle(view, "门店");
     delay(2);
-    var qr = getQRtable1(window, 8, -2);
-    var len = qr.data.length;
+    qr = getQRtable1(window, 8, -2);
+    len = qr.data.length;
+    if (len == 0) {
+        for (var i = 0; i < 3; i++) {
+            qr = getQRtable1(window, 8, -2);
+        }
+    }
+    len = qr.data.length;
 
     if (len == 0) {
         for (var i = 0; i <= 3; i++) {
@@ -8861,9 +8874,10 @@ function test170644() {
     editCheckAddNoColorSize(josn);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "退货" };
-    var fields = salesReturnFields(keys);
-    query(fields);
+    // var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "退货" };
+    // var fields = salesReturnFields(keys);
+    // query(fields);
+    tapButton(window, QUERY);
     var qr = getQR();
     var a1 = qr.data[0]["名称"];
     var totalReturn1 = qr.counts["数量"];
@@ -8877,7 +8891,6 @@ function test170644() {
     var ret = isAnd(isEqual("退货", a),
             isEqual(0, sub(totalReturn1, totalReturn)), isEqual(0, sub(
                     totalMoney1, totalMoney)), isEqual(0, sub(len1, len)));
-
     return ret;
 }
 function test170645() {
@@ -9947,7 +9960,10 @@ function test170718() {
             qr3 = getQR();
         }
     }
-    var totalPageNo = qr3.totalPageNo;
+
+    tapButton(window, QUERY);
+    qr3 = getQR();
+    totalPageNo = qr3.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr3.curPageTotal; i++) {
             if (isAnd(qr3.data[i]["数量"] <= 0, qr3.data[i]["金额"] > 0)) {

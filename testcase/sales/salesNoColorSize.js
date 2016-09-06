@@ -161,6 +161,7 @@ function testSalesNoColorSize001_1() {
     run("【销售开单】开单后是否显示打印确认窗口-显示", "test170199");
     run("【销售开单】开单货品列表是否显示品牌信息", "test170245");
     run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450");
+    run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_1");
     run("【销售开单-开单】产品折扣模式下自动取上次折扣值", "test170460");
     run("【销售开单-开单】客户折扣模式下自动取上次折扣值", "test170461");
     run("【销售开单－开单】异地发货－－后台不绑仓库，开单时不选择发货仓库", "test170120");
@@ -8018,6 +8019,7 @@ function test170450() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret2 = isIn(alertMsg1, "保存成功，是否打印");
 
+    delay();
     qo = { "备注" : "不能低于指定的价格类型" };
     o = { "新值" : "0", "数值" : [ "采购价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -8049,18 +8051,38 @@ function test170450() {
     var total1 = qr.total;
     var ret4 = isEqual(1, sub(total1, total));
 
+    qo = { "备注" : "允许改高" };
+    o = { "新值" : "0", "数值" : [ "不检查" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
+}
+function test170450_1() {
     // 销售开单价不能低于指定的价格类型-大客户 （前提大客户价低于打包价）
+    var qo, o, ret = true;
     qo = { "备注" : "不能低于指定的价格类型" };
     o = { "新值" : "3", "数值" : [ "价格3", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ] };
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ] };
     editSalesBillNoColorSize(json);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret4 = isIn(alertMsg1, "保存成功，是否打印");
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    var qr = getQR();
+    var total1 = qr.total;
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ],
@@ -8128,11 +8150,9 @@ function test170450() {
     o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9;
+    logDebug(", ret5=" + ret5 + ", ret6=" + ret6 + ", ret7=" + ret7 + ", ret8="
+            + ret8 + ", ret9=" + ret9);
+    return ret5 && ret6 && ret7 && ret8 && ret9;
 }
 function test170452() {
     // 有欠款单客户
@@ -10653,7 +10673,8 @@ function test170559_170697() {
     delay(2);
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    var ret7 = isIn(alertMsg1, "操作成功");
+    var ret7 = isIn(alertMsg1, "是否打印");
+    tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret7=" + ret7);
