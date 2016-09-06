@@ -61,6 +61,7 @@ function testSalesOrder002() {
     run("【销售订货-按批次查】修改单据保存再点打印", "test160072");
     run("【销售订货-按批次查】修改已发货的订单", "ts160073_74");
     // run("【销售订货-按批次查】均色均码+不允许修改已发货的订单", "test160087");
+    run("【销售订单-按批次查】修改部分发货的单子", "ts160172");
     run("【销售订货-按批次查】整单折扣模式只付预付款，检查折扣值", "test160089");// 开单模式7
     run("【销售订货-按明细查】作废订单后内容检查", "test160021");
     run("【销售订货—按明细查】销售订货-按明细查页面已发数汇总与销售订货-按批次查页面已发数对比", "test160096");
@@ -2246,8 +2247,13 @@ function test160170() {
     var rmk = getRandomStr(200);// 最长控制200字
     var ret = test160170Fields("采购入库", "新增入库+", rmk);
 
+    if (ipadVer >= 7.23) {
+        rmk = getRandomStr(200);
+        ret = ret && test160170Fields("采购入库", "新增入库+", rmk, "yes");// 挂单
+    }
+
     rmk = getRandomStr(200);
-    ret = ret && test160170Fields("采购订货", "新增订货+", rmk)
+    ret = ret && test160170Fields("采购订货", "新增订货+", rmk);
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
@@ -2264,6 +2270,9 @@ function test160170() {
 
     rmk = getRandomStr(200);
     ret = ret && test160170Fields("销售开单", ADDBILL, rmk);
+
+    rmk = getRandomStr(200);
+    ret = ret && test160170Fields("销售开单", ADDBILL, rmk, "yes");// 挂单
 
     rmk = getRandomStr(200);
     tapMenu("门店调出", "批量调出+");
@@ -2316,10 +2325,15 @@ function test160170Fields(menu1, menu2, rmk, hang) {
         cust = "rt";
     }
     var json = { "客户" : cust, "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
-        "备注" : rmk };
+        "备注" : rmk, "挂单" : hang };
     editSalesBill(json, colorSize);
 
-    tapMenu2("按批次查");
+    if (isDefined(hang) && hang == "yes") {
+        tapMenu2("按挂单");
+    } else {
+        tapMenu2("按批次查");
+    }
+
     query();
     tapLine();
     var ret = test160170Field(rmk);
@@ -2339,6 +2353,43 @@ function test160170Field(rmk) {
     tapButton(getPop(), CLOSE);
 
     return isAnd(isEqual(rmk, r1), isEqual(rmk, r2));
+}
+
+// 中州店总经理登陆
+function ts160171() {
+    tapMenu("销售开单", "按挂单");
+    var keys = { "日期从" : getDay(-365) };
+    conditionQuery(keys);
+    return checkQResult("门店", "常青店");
+}
+
+function ts160172() {
+    setSales_order_distribute_1();
+
+    var qo = { "备注" : "是否允许修改已发货的订单" };
+    var o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    json = { "入库明细" : [ { "数量" : 15 } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapLine();
+    json = { "入库明细" : [ { "数量" : 10 } ] };
+    editSalesBill(json, colorSize);
+    var ret = isInAlertMsgs("订货数不允许修改成比已发数小");
+
+    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
 }
 // 翻页/排序/汇总
 function test16_Stockout_1() {

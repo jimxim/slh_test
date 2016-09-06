@@ -2188,6 +2188,16 @@ function conditionQuery(keys, tapClear, view) {
             break;
         }
         break;
+    case "销售开单":
+        switch (gMenu2) {
+        case "按批次查":
+            qFields = salesQueryBatchFields(keys);
+            break;
+        case "按明细查":
+            qFields = salesQueryParticularFields(keys);
+            break;
+        }
+        break;
     case "统计分析":
         switch (gMenu2) {
         case "收支表":

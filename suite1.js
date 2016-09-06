@@ -23,10 +23,19 @@ function test000All() {
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
- 
+   var day="2016-08-31";
+   var arr=day.split("-");
+   var date=new Date(arr[0],arr[1],arr[2]);
+   logDebug("date="+date);
+   
+   var day="16-08-31";
+   var arr=day.split("-");
+   var date=new Date(arr[0],arr[1],arr[2]);
+   logDebug("date="+date);
+   
 // debugObject(gCache,"gCache");
  return true;
 
