@@ -245,6 +245,8 @@ function testGoods002() {
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
         run("【货品管理-新增货品】新增货品可以录入期初库存-支持多种颜色尺码", "ts100174");
     }
+    run("【货品管理-新增货品】厂商价格默认不显示", "ts100176");
+    run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100177");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "ts100038_100039_100040");
@@ -4568,20 +4570,8 @@ function ts100175() {
 
     return ret;
 }
+
 function ts100176() {
-    var r = getTimestamp(6), o = {};
-    var code = "g" + r;
-    var keys = { "款号" : code, "名称" : "货品" + r };
-
-    if (colorSize == "yes") {
-        o = { "库存录入" : [], "onlytest" : "yes" };
-        addGoods(keys, o);
-        tapPrompt();
-    }
-
-    return ret;
-}
-function ts100177() {
     var qo = { "备注" : "不同厂商不同价格" };
     var o = { "新值" : "0", "数值" : [ "默认关闭", "in" ] };
     setGlobalParam(qo, o);
@@ -4591,15 +4581,33 @@ function ts100177() {
     tapReturn();
     return ret;
 }
-function ts100178() {
+function ts100177() {
     var qo = { "备注" : "不同厂商不同价格" };
     var o = { "新值" : "1", "数值" : [ "不同厂商不同价格", "in" ] };
     setGlobalParam(qo, o);
 
-    tapMenu("货品管理", "新增货品+");
-    var ret = !isHasStaticTexts(getScrollView(), [ "厂商价格" ]);
-    tapReturn();
-    return ret;
+    // return ret;
+}
+
+function ts100178() {
+    tapMenu("货品管理", "当前库存");
+    query();
+    tapLine();
+    tapLine(0, getScrollView(-1, 0), "批次");
+    var texts = getStaticTexts(window);// 条目信息在window下
+    var regTotal = /总数\s*(\d+)条/;
+    for(var i=0;i<texts.length;i++){
+        if (regTotal.test(v)) {
+            var v = texts[i].value();
+            var a1 = regTotal.exec(v);
+            total = a1[1];
+            var v1 = texts[i + 1].value(); // 页码信息就在下一个
+            var a2 = v1.split("/");
+            curPageNo = a2[0];
+            totalPageNo = a2[1];
+            break;
+        }
+    }
 }
 /**
  * 日期从，日期到验证

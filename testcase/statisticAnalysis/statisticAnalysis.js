@@ -1386,7 +1386,7 @@ function test190031() {
     ret = ret && sortByTitle("欠款", IS_NUM);
     ret = ret && sortByTitle("抵扣", IS_NUM);
     ret = ret && sortByTitle("余款", IS_NUM);
-    ret = ret && sortByTitle("代收收款");// 暂不支持排序
+    // ret = ret && sortByTitle("代收收款");// 暂不支持排序
 
     return ret;
 }
@@ -1465,7 +1465,7 @@ function test190037() {
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
 
-    tapFirstText();
+    tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s1 = test190037_1Field(qr, "收入", "销售单");
@@ -1478,7 +1478,7 @@ function test190037() {
 
     tapMenu("统计分析", "综合汇总");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s2 = test190037_1Field(qr, "收入", "销售单");
@@ -1566,8 +1566,7 @@ function test190038() {
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.data[0]["余款"];
 
@@ -1575,12 +1574,12 @@ function test190038() {
     tapNaviButton("余款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    var sum = 0, actual = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual = qr.data[i];// 最新生成的在最后一条
+    var sum = 0, actual = {}, i, j;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["余款"]);
         }
+        actual = qr.data[i - 1];// 最新生成的在最后一条
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1590,8 +1589,7 @@ function test190038() {
 
     var expected = { "客户" : "小王", "余款" : 1000, "销额" : 2000, "退额" : 1000,
         "现金" : 1000, "刷卡" : 400, "汇款" : 600, "代收" : 0, "核销" : 0 };
-    var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
-    return ret;
+    return isAnd(isEqual(a, sum), isEqualObject(expected, actual));
 }
 
 function test190041() {
@@ -1605,22 +1603,20 @@ function test190041() {
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.data[0]["抵扣"];
 
-    tapFirstText();
+    tapLine();
     tapNaviButton("抵扣");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    // logDebug(qr);
-    var sum = 0, actual = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual = qr.data[i];// 最新生成的在最后一条
+    var sum = 0, actual = {}, i, j;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["抵扣"]);
         }
+        actual = qr.data[i - 1];// 最新生成的在最后一条
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
@@ -1630,8 +1626,7 @@ function test190041() {
 
     var expected = { "客户" : "小王", "抵扣" : 1000, "销额" : 4000, "退额" : 1000,
         "现金" : 1000, "刷卡" : 200, "汇款" : 800, "代收" : 0, "核销" : 1000 };
-    var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
-    return ret;
+    return isAnd(isEqual(a, sum), isEqualObject(expected, actual));
 }
 
 function test190039() {
@@ -1644,34 +1639,30 @@ function test190039() {
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.data[0]["欠款"];
 
-    tapFirstText();
+    tapLine();
     tapNaviButton("欠款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    // logDebug(qr);
-    var sum = 0, actual = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual = qr.data[i];// 最新生成的在最后一条
+    var sum = 0, actual = {}, i, j;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["欠款"]);
         }
+        actual = qr.data[i - 1];// 最新生成的在最后一条
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
         }
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     var expected = { "客户" : "小王", "欠款" : 1000, "销额" : 2000, "退额" : 1000,
         "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0, "核销" : 0 };
-    var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
-    return ret;
+    return isAnd(isEqual(a, sum), isEqualObject(expected, actual));
 }
 
 function test190040() {
@@ -1685,34 +1676,30 @@ function test190040() {
 
     tapMenu("统计分析", "综合汇总");
     var keys = { "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.data[0]["还款"];
 
-    tapFirstText();
+    tapLine();
     tapNaviButton("还款");
     delay();
     qr = getQR2(getScrollView(-1, 0), "批次", "核销");
-    // logDebug(qr);
-    var sum = 0, actual = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            actual = qr.data[i];// 最新生成的在最后一条
+    var sum = 0, actual = {}, i, j;
+    for (j = 1; j <= qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["还款"]);
         }
+        actual = qr.data[i - 1];// 最新生成的在最后一条
         if (j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "批次", "核销");
         }
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     var expected = { "客户" : "小王", "还款" : 1000, "销额" : 2000, "退额" : 1000,
         "现金" : 1000, "刷卡" : 1200, "汇款" : 1800, "代收" : 0, "核销" : -1000 };
-    var ret = isAnd(isEqual(a, sum), isEqualObject(expected, actual));
-    return ret;
+    return isAnd(isEqual(a, sum), isEqualObject(expected, actual));
 }
 
 function test190046() {
@@ -2153,7 +2140,7 @@ function test190084() {
 
     tapMenu("统计分析", Menu_Profit);
     query();
-    tapFirstText();
+    tapLine();
     tapNaviRightButton();
     qr = getQR2(getScrollView(-1, 0), "批次", "利润额");
     var expected1 = { "批次" : batch1, "日期" : getToday("yy"), "客户" : "小王",
@@ -2234,7 +2221,7 @@ function test190083() {
 
     tapMenu("统计分析", Menu_Profit);
     query();
-    tapFirstText();
+    tapLine();
     var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
     var ret1 = false, ret2 = false, ret3 = false, ret4 = false;
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2665,7 +2652,7 @@ function ts190138() {
 
     tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     jo = { "客户" : "zbs" };
     editSalesBill(jo, colorSize);
 

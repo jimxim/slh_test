@@ -49,6 +49,11 @@ function testSalesOrder002() {
     run("【销售订货－新增订货】打印功能", "test160108");
     run("【销售订货-新增订货】连续点击后检查在客户为空的情况下能否正常保存", "test160120");
     run("【销售订货-新增订货】整单备注验证", "test160170");
+    run("【销售订货-新增订货】订单无法使用积分抵现", "test160174");
+    run("【销售订货-新增订货】均色均码模式，库存数检查", "test160175");
+    run("【销售订货-新增订货】客户折扣模式下，整单复制/粘贴", "test160176");
+    run("【销售订货-新增订货】产品折扣模式下，整单复制/粘贴，库存数检查", "test160177");
+    run(" 设置开单模式2", "setPaymethod2");// 176，177修改了开单模式
     // run("【销售订货】销售订单先开一单预付款单，不填明细保存，然后修改本单添加货品明细保存", "test160062");
     // run("【销售订货】检查历史订货时间", "test160064");
     run("【销售开单-按订货开单】修改客户名称/客户或供应商信息不允许修改", "test160068_160069");
@@ -2391,12 +2396,94 @@ function ts160172() {
     setGlobalParam(qo, o);
     return ret;
 }
+
+// 后台-角色权限-功能参数-销售订货修改限制-不允许
+function test160173() {
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "挂单" : "yes" };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按挂单");
+    query();
+    tapLine();
+    editSalesBillSave({});
+    return isInAlertMsgs("保存成功");
+}
+function test160174() {
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "特殊货品" : { "积分抵现" : 30 } };// 积分抵现编码需要设置为666666
+    editSalesBill(json, colorSize);
+    return isInAlertMsgs("特殊货品[积分抵现]不能用于订单");
+}
+
+function test160175() {
+    if (colorSize != "no") {
+        return true;// 只需均色均码验证
+    }
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035", "门店" : "常青店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var stock = qr.data[0]["库存"];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "特殊货品" : { "打包费" : 10 } };
+    editSalesBill(json, colorSize);
+    var ret = isEqual(stock, json["明细值"].data[0]["库存"]);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    json = { "入库明细" : [ { "数量" : 20 } ] };
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(stock, json["明细值"].data[0]["库存"]));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    var qr = getQRDet();
+    ret = isAnd(ret, isEqual(stock, qr.data[0]["库存"]));
+    tapReturn();
+    return ret;
+}
+function test160176() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "6", "数值" : [ "现金+刷卡+汇款+客户折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ], };
+    editSalesBill(json, colorSize);
+
+    return checkCopyAndPaste("新增订货+");
+}
+function test160177() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "6", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "4562", "数量" : [ 30 ] } ] };// 4562产品折扣0.9
+    editSalesBill(json, colorSize);
+
+    return checkCopyAndPaste("新增订货+");
+}
 // 翻页/排序/汇总
 function test16_Stockout_1() {
     tapMenu("销售订货", "按缺货查");
     var keys = { "订货日期从" : getDay(-30) };
     var fields = salesOrderQueryByStockoutFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
     // 点击翻页
     var ret = goPageCheck();

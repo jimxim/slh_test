@@ -666,6 +666,14 @@ function getSalesOrderDistributeDet() {
     return oStock;
 }
 
+function subTime(day1, day2) {
+    var date1 = Date.parse(getDay24(day1));
+    var date2 = Date.parse(getDay24(day2));
+    var ret = (date1 - date2) / (24 * 60 * 60 * 1000);
+    logDebug("subTime   day1=" + day1 + "   day2=" + day2 + "   ret=" + ret);
+    return ret;
+}
+
 /**
  * 点击第N行
  * @param n 从0开始
@@ -995,6 +1003,22 @@ function totalAndPageCheck() {
     goPage(1, qr);
     delay();
     return ret;
+}
+/**
+ * 先等1S，等到没有弹窗为止
+ * @param maxSeconds
+ */
+function waitUntilAlertInvisible(maxSeconds) {
+    if (isUndefined(maxSeconds)) {
+        maxSeconds = 10;
+    }
+    for (var i = 0; i < maxSeconds; i++) {
+        delay();
+        var ok = isAlertVisible();
+        if (!ok) {
+            break;
+        }
+    }
 }
 /**
  * 等待loading图 有问题，待改

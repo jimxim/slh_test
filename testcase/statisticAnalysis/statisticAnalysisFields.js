@@ -163,7 +163,7 @@ function statisticAnalysisSynthesisField(key, show) {
  * @returns {Number}
  */
 function getSACountsQR(name, type, value) {
-    tapFirstText();
+    tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     tapNaviLeftButton();
@@ -556,7 +556,7 @@ function statisticAnalysBrandField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店",-1,0);
+        f = new TField("门店", TF, 3, "常青店", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -589,7 +589,7 @@ function statisticAnalysTypeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店",-1,0);
+        f = new TField("门店", TF, 3, "常青店", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -621,7 +621,7 @@ function statisticAnalysProviderField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店",-1,0);
+        f = new TField("门店", TF, 3, "常青店", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -759,7 +759,7 @@ function statisticAnalysisInOutAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店",-1,0);
+        f = new TField("门店", TF, 3, "常青店", -1, 0);
         break;
     case "remark":
     case "备注":

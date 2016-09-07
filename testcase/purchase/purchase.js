@@ -569,58 +569,29 @@ function test120009() {
     ret = ret && sortByTitle("尺码");
     ret = ret && sortByTitle("数量", IS_NUM);
 
-    var qr = getQR();
-    var sum1 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["数量"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["数量"], sum1));
-
+    var arr = [ "数量" ];
+    ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
 function test120009_1() {
     tapMenu("采购入库", "按汇总", "按厂商返货");
-    var i;
-    var ret = false;
-    var f = new TField("款号", TF_AC, 0, "303", -1);
-    var cells = getTableViewCells(window, f);
-    if (cells.length > 0) {
-        for (i = 0; i < cells.length; i++) {
-            var cell = cells[i];
-            var v = cell.name();
-            if (isIn(v, "3035,jkk,")) {
-                ret = true;
-                break;
-            }
-            delay();
-            tapKeyboardHide();
-        }
-    } else {
-        ret = isIn(getTextFieldValue(window, 0), "3035,jkk,");
-    }
+    var ret = dropDownListCheck(0, "303", "3035jkk");
 
     var keys = { "款号" : "3035", "日期从" : getDay(-30), "到" : getToday(),
-        "厂商" : "vell" }
+        "厂商" : "vell" };
     var fields = purchaseProviderReturnFields(keys);
     query(fields);
     var qr = getQR();
-    var num = qr.data[0]["数量"]
-    ret = isAnd(ret, isEqual("3035", qr.data[0]["款号"]), isEqual("jkk",
-            qr.data[0]["名称"]), isEqual("Vell", qr.data[0]["厂商"]), isEqual(
-            "15-10-13", qr.data[0]["上架日期"]), isEqual("均色", qr.data[0]["颜色"]),
-            isEqual("均码", qr.data[0]["尺码"]));
+    var num = qr.data[0]["数量"];
+    var exp = { "厂商" : "Vell", "款号" : "3035", "名称" : "jkk",
+        "上架日期" : "15-10-13", "颜色" : "均色", "尺码" : "均码" };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
-    tapMenu("采购入库", "新增入库+");
+    tapMenu2("新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "-2" } ] };
     editSalesBillNoColorSize(json);
 
-    tapMenu("采购入库", "新增入库+");
+    tapMenu2("新增入库+");
     json = { "客户" : "Rt", "明细" : [ { "货品" : "3035", "数量" : "-3" } ] };
     editSalesBillNoColorSize(json);
 
@@ -3520,6 +3491,6 @@ function test120112Field() {
     localClean();// 清理本地
     return ret;
 }
-function ts120113(){
-    
+function ts120113() {
+
 }

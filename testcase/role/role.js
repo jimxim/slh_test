@@ -102,6 +102,7 @@ function testShopkeeper004All() {
     //
     run("【销售订货—按批次查】店长查看修改日志", "test160011_1");
     run("【销售订货-按批次查】门店查询条件检查", "test160168");
+    run("【销售订货-按挂单】挂单转正式单，不受销售订货修改限制控制", "test160173");//后台-角色权限-功能参数-销售订货修改限制-不允许
 
     run("【统计分析—综合汇总】不同角色能查看到的门店", "test190100_2");
     run("【统计分析—汇总表-退货表】权限检查", "test190096ForElse");
@@ -230,7 +231,7 @@ function checkRightsGoods() {
     ret = ret && checkRightsGoodsField(hasRights);
     tapStaticTextIn(view, "销售出货");
     ret = ret && checkRightsGoodsField(hasRights);
-    tapStaticTextIn(view, "盘点入库");
+    tapStaticTextIn(view, "盘点入库");// app2缺少盘点入库数据准备
     ret = ret && checkRightsGoodsField(hasRights);
     tapStaticTextIn(view, "调整入库");
     ret = ret && checkRightsGoodsField(hasRights);

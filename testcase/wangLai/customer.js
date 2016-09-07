@@ -983,7 +983,7 @@ function test110020() {
     query();
     qr = getQR();
     var jo = qr.data[0];
-    tapFirstText(getScrollView(), TITLE_SEQ, 3);
+    tapLine();
 
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var totalPageNo = qr.totalPageNo;
