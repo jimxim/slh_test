@@ -34,12 +34,14 @@ function test000All() {
 // run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2_180004");
 // run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2_180014");
 // run("【销售开单－销售汇总-按款号上货】详细-检查一个客户对某款号是否上货", "test170459");//新增客户失败
-// run("【销售开单－销售汇总】按类别汇总", "test170356");
 // run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1_170648");
     
-    run("【盘点管理—盘点处理】部分处理", "test180026");
-    run("【盘点管理—盘点处理】全盘处理", "test180025");
-    
+ run("【销售开单-按挂单】挂单允许销售价格为0，转正式单不允许销售价格为0", "test170710");
+// run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");
+// run("【销售开单+产品折扣+代收】产品折扣+代收后核销物流单", "test170378");
+// run("销售开单+产品折扣+代收】销售开单-销售汇总-按金额汇总，检查代收", "test170381");
+// run("【销售开单+整单折扣+代收】整单折扣+代收后核销物流单", "test170368");
+
 // run("", "test0");
 }
 
@@ -50,26 +52,11 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
     
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total = qr.total;
-
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 2 } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 5, "单价" : 0 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    tapReturn();
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    var qr = getQR();
-    var total1 = qr.total;
-    var ret4 = isEqual(1, sub(total1, total));
     
-    return ret4;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

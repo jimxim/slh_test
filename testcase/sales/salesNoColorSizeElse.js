@@ -2183,7 +2183,7 @@ function test170269() {
 
     tapMenu("货品管理", "新增货品+");
     delay();
-    var r = "anewK269" + getTimestamp(4);
+    var r = "anewK269" + randomWord(false, 4);
     var keys = { "款号" : r, "名称" : r, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2197,7 +2197,7 @@ function test170269() {
 
     tapMenu("货品管理", "新增货品+");
     delay();
-    var s = "anewkhao" + getTimestamp(4);
+    var s = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s, "进货价" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2210,7 +2210,8 @@ function test170269() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "新增货品+");
-    var q = "anewkhao" + getTimestamp(4);
+    delay();
+    var q = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : q, "名称" : q, "进货价" : 200 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
@@ -2251,7 +2252,6 @@ function test170269() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-
     var ret2 = isAnd(isEqual("李天", qr.data[0]["客户"]), isEqual(178,
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
@@ -2349,6 +2349,7 @@ function test170273() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
+    delay();
     var r1 = "anewkhao" + getTimestamp(4);
     var keys = { "款号" : r1, "名称" : r1, "进货价" : 2000, "产品折扣" : "1.3" }
     var fields = editGoodsFields(keys, false);
@@ -5292,7 +5293,6 @@ function test170361_1_170648() {
             qr2 = getQR2(getScrollView(-1, 0), "图", "操作日期");
         }
     }
-
     tapNaviLeftButton();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -5380,6 +5380,7 @@ function test170365() {
 
     var r = "anewCustomer" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
+    delay();
     var keys = { "名称" : r, "允许退货" : "是", "拿货折扣" : "0.85" };
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -9643,24 +9644,10 @@ function test170710() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 5, "单价" : 0 } ] };
     editSalesBillNoColorSize(json);
-
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 5;
-    } else {
-        idx = 4;
-    }
-    var f4 = new TField("价格", TF, idx, 0);
-    var fields = [ f4 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
+    
     ret = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[k300]价格是否维护"));
-    tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     var keys = { "日期从" : "2015-01-01", "发货状态" : "未发货" };
@@ -9668,6 +9655,12 @@ function test170710() {
     query(fields);
 
     tapFirstText();
+    var idx;
+    if (ipadVer >= "7.21") {
+        idx = 5;
+    } else {
+        idx = 4;
+    }
     var f6 = new TField("价格", TF, idx + 2, 0);
     var fields = [ f6 ];
     setTFieldsValue(getScrollView(-1), fields);
@@ -9677,13 +9670,10 @@ function test170710() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : 0 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    f4 = new TField("价格", TF, idx, 0);
-    fields = [ f4 ];
-    setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert("挂 单", OK);
     delay();
     tapReturn();
@@ -9701,13 +9691,9 @@ function test170710() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "5" , "单价" : 0} ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
-    f4 = new TField("价格", TF, idx, 0);
-    fields = [ f4 ];
-    setTFieldsValue(getScrollView(-1), fields);
 
     saveAndAlertOk();
     tapPrompt();
@@ -9715,13 +9701,9 @@ function test170710() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : 0 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
-    f4 = new TField("价格", TF, idx, 0);
-    fields = [ f4 ];
-    setTFieldsValue(getScrollView(-1), fields);
 
     tapButtonAndAlert("挂 单", OK);
     delay();
