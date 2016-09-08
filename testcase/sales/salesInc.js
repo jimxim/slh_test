@@ -123,7 +123,9 @@ function test170637Prepare() {
 
     return ret;
 }
-
+/**
+ * 销售开单-开单-核销界面排序验证
+ */
 function test170064getQR() {
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10, 1);
     return qr;
@@ -151,9 +153,7 @@ function test170064Field1(title, type, order, pageInfoView, dataView,
 
     var ret = true, value, valuePre;
     if (isDefined(type)) {
-
         var qr = test170064getQR();
-
         for (var i = 0; i < qr.curPageTotal; i++) {
             value = qr.data[i][title];
             switch (type) {
@@ -185,7 +185,64 @@ function test170064Field1(title, type, order, pageInfoView, dataView,
             + getTakeTimeMsg(t1));
     return ret;
 }
+/**
+ * 销售开单-按厂商汇总详细页面排序验证
+ */
+function test170648Field(title, isNum, pageInfoView, dataView, firstTitle,
+        titleTotal) {
+    var t1 = getTimestamp();
+    tapTitle(getScrollView(-1, 0), title); // 点击一下后是升序
+    var ret1 = test170648Field1(title, isNum, "asc", pageInfoView, dataView,
+            firstTitle, titleTotal);
 
+    tapTitle(getScrollView(-1, 0), title); // 再点击一下后是降序
+    var ret2 = test170648Field1(title, isNum, "desc", pageInfoView, dataView,
+            firstTitle, titleTotal);
+
+    logDebug(getTakeTimeMsg(t1));
+    return isAnd(ret1, ret2);
+}
+function test170648Field1(title, type, order, pageInfoView, dataView,
+        firstTitle, titleTotal) {
+    var t1 = getTimestamp();
+    if (isUndefined(order)) {
+        order = "asc";
+    }
+
+    var ret = true, value, valuePre;
+    if (isDefined(type)) {
+        var qr = getQR2(getScrollView(-1, 0), "图", "操作日期");
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            value = qr.data[i][title];
+            switch (type) {
+            case IS_NUM:
+                value = Number(value);
+                break;
+            case IS_DATE2:
+                value = getDay24(value);
+                break;
+            case IS_OPTIME:
+                break;
+            default:
+                logInfo("未知type=" + type);
+            }
+            if (i > 0) {
+                var b;
+                if (order == "asc") {
+                    b = valuePre <= value;
+                } else {
+                    b = valuePre >= value;
+                }
+                ret = ret && b;
+            }
+            valuePre = value;
+        }
+    }
+
+    logDebug(title + "," + type + "," + order + ",ret=" + ret + ","
+            + getTakeTimeMsg(t1));
+    return ret;
+}
 /**
  * 明细详细页面排序验证
  * 
@@ -604,7 +661,7 @@ function editQuickAddGoodsNo(o, o1) {
     var f8 = getTextFieldValue(getScrollView(idx), tfNum);
     var qr = getQRDet();
     var len = qr.data.length;
-    if (isAnd(!isEqual("", f1), !isEqual("", f8))) {
+    if (isAnd(!isEqual("", f1))) {
         i = Number(tfNum) * Number(len) - 4;
         var Fi = new TField("数量", TF, i, o1);
         var fields = [ Fi ];
@@ -816,4 +873,52 @@ function randomWord(randomFlag, min, max) {
         str += arr[pos];
     }
     return str;
+}
+/**
+ * 二级页面翻页检验 每页数据不会完全相同
+ * @param pageInfoView
+ * @param dataView
+ * @param firstTitle
+ * @param titleTotal
+ * @returns {Boolean}
+ */
+function goPageCheckQR2(dataView, firstTitle, lastTitle) {
+    if (isUndefined(dataView)) {
+        dataView = getScrollView(-1, 0);
+    }
+    if (isUndefined(firstTitle)) {
+        firstTitle = "批次";
+    }
+    var qr = getQR2(dataView, firstTitle, lastTitle);
+    var totalPageNo = qr.totalPageNo;
+    var i = 0, ret = true;
+    if (totalPageNo == 1) {
+        if (qr.data.length > 0) {
+            // 只有一页的时候，滑动页面，检测有没有提示错误
+            scrollPrevPage();
+            qr = getQR2(dataView, firstTitle, lastTitle);
+            ret = isAnd(ret, !isEqual(0, qr.data.length), !isIn(alertMsg, "错误"));
+            scrollNextPage();
+            qr = getQR2(dataView, firstTitle, lastTitle);
+            ret = isAnd(ret, !isEqual(0, qr.data.length), !isIn(alertMsg, "错误"));
+        } else {
+            logDebug("data.length=0,跳过翻页验证");
+            ret = false;
+        }
+    } else {
+        var totalPageNo = qr.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal; i++) {
+                var arr1 = qr.data;
+            }
+            if (j < totalPageNo) {
+                scrollNextPage();
+                qr = getQR2(dataView, firstTitle, lastTitle);
+                var arr2 = qr.data;
+                var ret = isAnd(!isEqualDyadicArray(arr1, arr2));
+            }
+        }
+    }
+    logDebug("goPageCheck ret=" + ret);
+    return ret;
 }

@@ -5295,11 +5295,13 @@ function test170209() {
     json = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(json, -3);
     tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=3, [" + r + "," + r + "]");
 
-    json = { "特殊货品" : { "抹零" : 58, "打包费" : 300 } };
+    json = { "特殊货品" : { "抹零" : 5, "打包费" : 300 } };
     editSalesBillSpecial(json);
-    var ret2 = isAnd(!isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=58"), !isIn(
+    var ret2 = isAnd(!isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=5"), !isIn(
             alertMsg, "在对应款号的颜色组中不存在"));
     tapReturn();
 
@@ -9418,7 +9420,7 @@ function test170509() {
     var b = qr.data[0]["名称"];
 
     tapFirstText();
-    fields = editGoodsFields();
+    var fields = editGoodsFields();
     var ret1 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
