@@ -4517,7 +4517,7 @@ function ts100173() {
     exp["单价"] = 200;// 进货价
     data = getQRDet().data;
     ret = isAnd(ret, isEqualDyadicArray(data, exp));
-    tapReturn()
+    tapReturn();
     return ret;
 }
 function ts100174() {

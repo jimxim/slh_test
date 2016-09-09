@@ -493,7 +493,42 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var qResult = new QResult(titles, data, total, hasError);
     return qResult;
 }
-
+function getQRVerify(view, firstTitle) {
+    var i = 0, y = 0, yPre = 0, titles = {};
+    var texts = getStaticTexts(view);
+    for (; i < texts.length; i++) {
+        if (firstTitle == texts[i].value()) {
+            yPre = getY(texts[i]);
+            titles[firstTitle] = getX(texts[i]);
+            break;
+        }
+    }
+    for (; i < texts.length; i++) {
+        y = getY(texts[i]);
+        if (yPre == y) {
+            var key = texts[i].value();
+            titles[key] = getX(texts[i]);
+        } else {
+            break;
+        }
+        yPre = y;
+    }
+    debugObject(titles, "titles");
+    var data = [], data1 = {};
+    for (; i < texts.length; i++) {
+        y = getY(texts[i]);
+        if (y > yPre) {
+            data.push(data1);
+            data1 = {};
+        }
+        var v = texts[i].value();
+        var x = getX(texts[i]);
+        var t = getKeyByXy(titles, x);
+        data1[t] = v;
+        yPre = y;
+    }
+    return new QResult(data);
+}
 /**
  * 获取类似往来管理-客户账款-所有未结window界面的值
  * @param dataView

@@ -29,18 +29,8 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // debugObject(gCache,"gCache");
     
-    getQRVerify(getScrollView(-1,0),"门店");
-// tapMenu("采购入库","新增入库+");
-// keys = { "厂商" : "vell" };
-// editSalesBillCustomer(keys);
-// tapButton(window, "核销");
-// var text = getStaticTexts(getScrollView(-1, 0));
-// var qr = getQRverify(text, "门店", 10);
-// var exp = { "总额" : 9000, "未结金额" : -9000 };
-// var ret= isEqualObject(exp, qr.data[0]);
-// tapNaviLeftButton();
-// tapReturn();
-    
+
+
  return true;
 }
 
