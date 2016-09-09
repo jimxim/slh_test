@@ -693,7 +693,6 @@ function test180025_1() {
     var keys = { "款号" : s, "名称" : s };// , "进货价" : 100
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -871,6 +870,7 @@ function test180026_1() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
+    delay();
     var json = { "客户" : "Rt",
         "明细" : [ { "货品" : s, "数量" : "20", "单价" : "100" } ] };
     editSalesBillNoColorSize(json);
