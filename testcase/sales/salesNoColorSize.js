@@ -2357,6 +2357,7 @@ function test170090() {
     var ds = qr.data[0]["代收"];
 
     tapMenu("销售开单", "开  单+");
+    delay();
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "代收" : { "物流商" : "yt", "运单号" : "1234" } };
     editSalesBillNoColorSize(json);

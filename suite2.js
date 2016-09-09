@@ -16,8 +16,9 @@ function test000All() {
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单-收款撤销】收款撤销", "test170277");
 // run("【销售开单－开单】待作废参数与二次挂单功能检查", "test170172");//待作废按钮放到更多里了
-
-// run("", "test0");
+//    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
+//    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
+ run("", "test0");
 }
 
 function test0(){
@@ -27,6 +28,19 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 //    var qo,o,ret=true;
+//    tapMenu("采购入库", "新增入库+");
+//    var json = {
+//        "客户" : "Rt",
+//        "明细" : [ { "货品" :"3035", "数量" : "20", "单价" : "200" },
+//                { "货品" : "4562", "数量" : 5, "单价" : "280" } ] };
+//    editSalesBillNoColorSize(json);
+    var r = getTimestamp(8);
+    tapMenu("销售开单", "开  单+");
+    delay();
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
+        "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "现金" : 11, "刷卡" : [ 100, "交" ],
+        "汇款" : [ 200, "建" ], "代收" : { "物流商" : "yt", "运单号" : r, "代收金额" : 50 } };
+    editSalesBillNoColorSize(json);
 
 }
 function setSales001Params() {

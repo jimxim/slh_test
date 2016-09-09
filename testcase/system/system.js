@@ -183,7 +183,6 @@ function test210003() {
 
     tapMenu("系统设置", "打印机");
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-
     var ret4 = isAnd(isEqual(6, qr.total), isEqual(6, qr.data.length));
 
     return ret && ret1 && ret3 && ret4;// && ret2
