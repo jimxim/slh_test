@@ -181,6 +181,7 @@ function testGoods001() {
 
     run("【货品管理-当前库存】当前库存_翻页/排序/汇总", "test100001_1");
     run("【货品管理-当前库存】当前库存_条件查询_清除按钮", "test100001_2");
+    run("【货品管理-当前库存】第三层详细页面中，底部增加总数", "ts100178");
     run("【货品管理-款号库存】款号库存_翻页/排序/汇总", "test100005_1");
     run("【货品管理-款号库存】款号库存_条件查询_清除按钮_下拉框", "test100005_2");
     run("【货品管理-库存分布】库存分布", "ts100006");
@@ -245,6 +246,7 @@ function testGoods002() {
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
         run("【货品管理-新增货品】新增货品可以录入期初库存-支持多种颜色尺码", "ts100174");
     }
+    run("【货品管理-新增货品】库存录入+输入进货价弹窗判断", "ts100180");
     run("【货品管理-新增货品】厂商价格默认不显示", "ts100176");
     run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100177");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
@@ -4484,6 +4486,12 @@ function ts100172() {
 }
 
 function ts100173() {
+    tapMenu("采购入库", "按批次查");
+    var keys = { "日期从" : getDay(-10), "门店" : "中洲店" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    var batch = Number(getQR().data[0]["批次"]);
+
     var keys = { "厂商" : "vell", "门店" : "中洲店" };
     var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
     if (colorSize == "no") {
@@ -4501,7 +4509,16 @@ function ts100173() {
         exp["颜色"] = "均色";
         exp["尺码"] = "均码";
     }
-    return isEqualObject2(exp, data[0]);
+    var ret = isEqualObject2(exp, data[0]);
+
+    tapMenu("采购入库", "按批次查");
+    tapButton(window, QUERY);
+    ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
+    exp["单价"] = 200;// 进货价
+    data = getQRDet().data;
+    ret = isAnd(ret, isEqualDyadicArray(data, exp));
+    tapReturn()
+    return ret;
 }
 function ts100174() {
     tapMenu("采购入库", "按批次查");
@@ -4535,8 +4552,18 @@ function ts100174() {
     exp[0]["单价"] = 200, exp[1]["单价"] = 200, exp[2]["单价"] = 200;// 进货价
     data = getQRDet().data;
     ret = isAnd(ret, isEqualDyadicArray(data, exp));
-    tapReturn()
+    tapReturn();
 
+    tapMenu2("新增入库+");
+    keys = { "厂商" : "vell" };
+    editSalesBillCustomer(keys);
+    tapButton(window, "核销");
+    var text = getStaticTexts(getScrollView(-1, 0));
+    var qr = getQRverify(text, "门店", 10);
+    var exp = { "总额" : 9000, "未结金额" : -9000 };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
+    tapNaviLeftButton();
+    tapReturn();
     return ret;
 }
 function ts100175() {
@@ -4589,25 +4616,88 @@ function ts100177() {
     // return ret;
 }
 
+// 第三层详细页面总数验证 若需要数据多则查询kh000有超长订单数据
 function ts100178() {
     tapMenu("货品管理", "当前库存");
     query();
     tapLine();
+    delay();// 等待界面载入
     tapLine(0, getScrollView(-1, 0), "批次");
+    delay();// 等待界面载入
+    var total = -1;
     var texts = getStaticTexts(window);// 条目信息在window下
-    var regTotal = /总数\s*(\d+)条/;
-    for(var i=0;i<texts.length;i++){
+    var regTotal = /总数\S\s*(\d+)条/;
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].value();
         if (regTotal.test(v)) {
-            var v = texts[i].value();
             var a1 = regTotal.exec(v);
-            total = a1[1];
-            var v1 = texts[i + 1].value(); // 页码信息就在下一个
-            var a2 = v1.split("/");
-            curPageNo = a2[0];
-            totalPageNo = a2[1];
+            total = a1[1];// 获取总条数
             break;
         }
     }
+
+    texts = getStaticTexts(getScrollView(-1));// 详细信息，不包含标题行
+    var y = 0, yPre = 0, num = 0;
+    for (var i = 0; i < texts.length; i++) {
+        y = getY(texts[i]);
+        if (y > 0 && y != yPre) {
+            num++;
+        }
+        yPre = y;
+    }
+    tapNaviClose();
+    return isEqual(total, num);
+}
+function ts100179Pre() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "plczcs1" };
+    conditionQuery(keys);
+    tapLine();
+    delay();
+    var d = new Date();
+    var p = String(d.getMonth() + 1) + d.getDate();
+    keys = { "零批价" : p };
+    var o = { "onlytest" : "yes" };
+    addGoods(keys, o);
+    return true;
+}
+function ts100179() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "plczcs1" };// 批量操作参数进货价100不变
+    conditionQuery(keys);
+    tapLine();
+    delay();// 等待界面加载
+    var d = new Date();
+    var p = String(d.getMonth() + 1) + d.getDate();
+    var keys = { "进货价" : 100, "零批价" : p };
+    var fields = editGoodsFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+    return ret;
+}
+
+function ts100180() {
+    tapMenu("货品管理", "新增货品+");
+    delay();// 防止取不到吊牌价后的下标
+    var r = getRandomStr(6);
+    var code = "g" + r;
+    var keys = { "款号" : code, "名称" : "货品" + r };
+    var jo = { "onlytest" : "yes", "stockEntryCancel" : "yes" };
+    addGoods(keys, jo);
+    editStockEntry(jo);
+    tapPrompt();// 点去弹窗后，会自动返回新增货品界面
+    var ret = isIn(alertMsg, "必须先设置颜色尺码");//
+
+    if (colorSize != "no") {
+        keys = { "颜色" : "红色", "尺码" : "S", "进货价" : 200 };
+    } else {
+        keys = { "进货价" : 200 };
+    }
+    jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+    addGoods(keys, jo);
+    ret = isAnd(ret, isIn(alertMsg, "货品有进货价并录入库存之后"));//
+
+    return ret;
 }
 /**
  * 日期从，日期到验证

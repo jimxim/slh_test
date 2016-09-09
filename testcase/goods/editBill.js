@@ -45,10 +45,10 @@ function editStockEntry(o) {
     var details = o["库存录入"];
     setStockEntryValue(details);
 
-    if (isDefined(details["onlytest"])) {
+    if (isDefined(o["stockEntryOnlytest"])) {
         return;
     }
-    if (isDefined(details["cancel"])) {
+    if (isDefined(o["stockEntryCancel"])) {
         tapButton(getPop(), CANCEL);
     } else {
         tapButton(getPop(), OK);

@@ -495,7 +495,21 @@ function getEditGoodsIndex(texts, value) {
     }
     return idx;
 }
-
+/**
+ * 获取吊牌价的TF下标，有2个重合的TF，取后面一个
+ * @param idx
+ * @returns
+ */
+function getEditGoodsIndex2(idx) {
+    var obj1 = getScrollView().textFields()[idx];
+    var y1 = getY(obj1);
+    var obj2 = getScrollView().textFields()[idx + 1];
+    var y2 = getY(obj2);
+    if (y1 == y2) {
+        idx++;
+    }
+    return idx;
+}
 function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
@@ -558,21 +572,20 @@ function editGoodsField(key, show, texts) {
     case "tag":
     case "吊牌价":
         idx = getEditGoodsIndex(texts, "吊牌价");
-        f = new TField("吊牌价", TF, idx[0] + 1, "200");// 这个地方比较奇怪，有2个TF
+        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        f = new TField("吊牌价", TF, i, "200");
         break;
     case "purchase-price":
     case "进货价":
-        var i = 1;
-        if (isEqualsTexts1(texts, "吊牌价")) {
-            i = 0;
-        }
         idx = getEditGoodsIndex(texts, "进货价");
-        f = new TField("进货价", TF, idx[0] + i, "100");// 默认价格模式有2个TF
+        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        f = new TField("进货价", TF, i, "100");
         break;
     case "retail":
     case "零批价":
         idx = getEditGoodsIndex(texts, "零批价");
-        f = new TField("零批价", TF, idx[0], "200");
+        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        f = new TField("零批价", TF, i, "200");
         break;
     case "pack":
     case "打包价":

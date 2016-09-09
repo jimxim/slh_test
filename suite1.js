@@ -17,20 +17,32 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "test190084");//
+// run("测试用例", "ts100179Pre");//
+// run("测试用例", "ts100174");
  run("测试用例", "onlyTest");
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
 // debugObject(gCache,"gCache");
+    
+    getQRVerify(getScrollView(-1,0),"门店");
+// tapMenu("采购入库","新增入库+");
+// keys = { "厂商" : "vell" };
+// editSalesBillCustomer(keys);
+// tapButton(window, "核销");
+// var text = getStaticTexts(getScrollView(-1, 0));
+// var qr = getQRverify(text, "门店", 10);
+// var exp = { "总额" : 9000, "未结金额" : -9000 };
+// var ret= isEqualObject(exp, qr.data[0]);
+// tapNaviLeftButton();
+// tapReturn();
+    
  return true;
 }
-
 
 //
 function loginGoodsParams001(){
@@ -361,7 +373,22 @@ function loginShopkeeper004() {
      logout();
   }
 }
-
+function login004_000Prepare() {
+    var p1 = {"角色":"店长"};
+  var ok = login("004","000000",p1);
+  if( ok ) {
+     test004_000Prepare();
+     logout();
+  }
+}
+function login004_000() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("000","000000",p1);
+  if( ok ) {
+     test004_000();
+     logout();
+  }
+}
 
 // 开单员
 function loginBillClerk005_1() {
