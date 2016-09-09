@@ -417,8 +417,7 @@ function test180013_2_180014() {
     }
     delay();
     tapKeyboardHide();
-    query();
-
+    
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 150 },
             { "货品" : "k200", "数量" : -10 } ] };
@@ -430,13 +429,13 @@ function test180013_2_180014() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "按明细查");
+    delay();
     query();
     qr = getQR();
     var batch1 = qr.data[0]["批次"];
     var batch2 = qr.data[1]["批次"];
     var a1 = qr.data[0]["盘点数量"];
     var a2 = qr.data[1]["盘点数量"];
-
     var ret = isAnd(isEqual(batch, batch1), isEqual(batch, batch2), isEqual(
             "-10", a1), isEqual("150", a2));
 
@@ -454,7 +453,6 @@ function test180013_2_180014() {
     var a5 = qr.data[0]["尺码"];
     var a7 = qr.data[0]["操作人"];
     var a8 = qr.data[0]["操作日期"];
-
     var ret2 = isAnd(isEqual("3035", a), isEqual("jkk", a1),
             isEqual("登山服", a2), isEqual("Adidas", a3), isEqual("均色", a4),
             isEqual("均码", a5), isEqual("总经理", a7), isIn(a8, getToday("")));

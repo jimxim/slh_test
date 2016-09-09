@@ -99,6 +99,7 @@ function test210001() {
     f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButtonAndAlert(SAVE, OK);
+    delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret = isAnd(ret, isEqual(ip, qr.data[0]["数值"]));
 
@@ -110,6 +111,7 @@ function test210001() {
     f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButtonAndAlert(SAVE, OK);
+    delay();
 
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret = isAnd(ret, isEqual(r, qr.data[1]["数值"]));
@@ -2048,6 +2050,7 @@ function test210055() {
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
+    delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret1 = isEqual(ip, qr.data[3]["数值"]);
 
@@ -2056,6 +2059,7 @@ function test210055() {
     tapButton(getScrollView(), "本 机");
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
+    delay();
 
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret = isAnd(ret, isEqual("127.0.0.1", qr.data[3]["数值"]));
@@ -2076,7 +2080,7 @@ function test210056() {
     var f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
-
+    delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret = isEqual(r, qr.data[4]["数值"]);
 
@@ -2085,24 +2089,20 @@ function test210056() {
     tapReturn();
 
     tapFirstText(getScrollView(), "4", 4);
-
     ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
 
     var r1 = ";/";
     var f = new TField("数值", TF, 2, r1);
     setTFieldsValue(getScrollView(), [ f ]);
-
     tapButtonAndAlert(SAVE, OK);
-
+    delay();
     tapPrompt();
     ret1 = isAnd(ret1, isIn(alertMsg, "填入的值必须是数字"));
-
     tapReturn();
 
     // debugArray(alertMsgs);
     // var alertMsg1 = getArray1(alertMsgs, -1);
     // var ret1 = isIn(isIn(alertMsg1, "填入的值必须是数字"));
-
     // tapReturn();
 
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
@@ -2119,6 +2119,7 @@ function test210057() {
     var f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
+    delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret = isEqual(r, qr.data[5]["数值"]);
 
@@ -2127,17 +2128,14 @@ function test210057() {
     tapReturn();
 
     tapFirstText(getScrollView(), "5", 4);
-
     ret1 = isAnd(ret1, isEqual(r, getTextFieldValue(getScrollView(), 2)));
 
     var r1 = "<>/";
     var f = new TField("数值", TF, 2, r1);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
-
     tapPrompt();
     ret1 = isAnd(ret1, isIn(alertMsg, "填入的值必须是数字"));
-
     tapReturn();
 
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
@@ -2203,7 +2201,6 @@ function test210062() {
 // }
 function test210065() {
     tapMenu("系统设置", "打印机");
-
     tapTextByFirstWithName("2");
     var r = ";/";
     var ip = getRandomInt(100) + ".0.0.1";
@@ -2212,25 +2209,24 @@ function test210065() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     var ret = isIn(alertMsg, "填入的值必须是数字");
-
     tapReturn();
 
     tapFirstText(getScrollView(), "1", 4);
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
+    delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret1 = isEqual(ip, qr.data[1]["数值"]);
 
     tapMenu("系统设置", "打印机");
     tapFirstText(getScrollView(), "1", 4);
-
     ret1 = isAnd(ret1, isEqual(ip, getTextFieldValue(getScrollView(), 2)));
 
     tapButton(getScrollView(), "本 机");
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
-
+    delay();
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret2 = isAnd(ret2, isEqual("127.0.0.1", qr.data[1]["数值"]));
 

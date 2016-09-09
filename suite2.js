@@ -16,12 +16,6 @@ function test000All() {
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单-收款撤销】收款撤销", "test170277");
 // run("【销售开单－开单】待作废参数与二次挂单功能检查", "test170172");//待作废按钮放到更多里了
-    
-// run("【盘点管理—盘点处理】部分处理", "test180026");
-// run("【盘点管理—盘点处理】全盘处理", "test180025");
-// run("【盘点管理—按批次查】条件查询，清除按钮,下拉框", "test180001_2_180004");
-// run("【盘点管理—按明细查】条件查询，清除按钮,下拉框", "test180013_2_180014");
-    run("【盘点管理—盘点处理】全盘处理", "test180025");
 
 // run("", "test0");
 }
@@ -32,10 +26,8 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    var qo,o,ret=true;
-    qo = { "名称" : "sales_show_printdialog" };//开单界面，保存后显示是否打印确认窗口
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setLocalParam(qo, o));
+//    var qo,o,ret=true;
+
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

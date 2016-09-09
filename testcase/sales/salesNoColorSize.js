@@ -462,11 +462,11 @@ function setNoColorSize_1Params() {
     // o = { "新值" : "0", "数值" : [ "默认不允许" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
+    qo = { "名称" : "sales_show_printdialog" };//开单界面，保存后显示是否打印确认窗口
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
-    qo = { "备注" : "童装模式是否批发零售分开(按组按件分开)" };
+    qo = { "名称" : "sales_kidcloth_wholesale_retail" };// 童装模式是否批发零售分开(按组按件分开)
     o = { "新值" : "1", "数值" : [ "默认分开", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
