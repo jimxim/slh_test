@@ -513,7 +513,8 @@ function getQRVerify(view, firstTitle) {
         }
         yPre = y;
     }
-    debugObject(titles, "titles");
+    yPre = y;
+//    debugObject(titles, "titles");
     var data = [], data1 = {};
     for (; i < texts.length; i++) {
         y = getY(texts[i]);
@@ -527,7 +528,9 @@ function getQRVerify(view, firstTitle) {
         data1[t] = v;
         yPre = y;
     }
-    return new QResult(data);
+    var total = data.length;
+    var qResult = new QResult(titles, data, total);
+    return qResult;
 }
 /**
  * 获取类似往来管理-客户账款-所有未结window界面的值
