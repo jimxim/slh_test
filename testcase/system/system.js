@@ -605,9 +605,11 @@ function test210024_210025() {
 }
 function test210027() {
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "2006", "是否停用" : "否", "门店" : "常青店" };
+    var keys = { "是否停用" : "否", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
+    var qr = getQR();
+    var gh = qr.data[0]["工号"];
 
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
     var keys = { "工号" : "004" };
@@ -630,11 +632,11 @@ function test210027() {
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
     var ret1 = isEqual("y" + r, qr.data[0]["工号"]);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 5);
-    keys = { "工号" : "2006" };
-    fields = EditSystemStaffFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(EDIT_SAVE, OK);
+    // tapFirstText(getScrollView(), TITLE_SEQ, 5);
+    // keys = { "工号" : gh };
+    // fields = EditSystemStaffFields(keys);
+    // setTFieldsValue(getScrollView(), fields);
+    // tapButtonAndAlert(EDIT_SAVE, OK);
 
     return ret && ret1;
 }
@@ -763,7 +765,6 @@ function test210032() {
     var fields = querySystemStaffFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
-
     var ret2 = isAnd(isEqual("gh" + r, qr.data[0]["工号"]), isEqual("财务员",
             qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("财务员",
             qr.data[0]["岗位"]));
@@ -788,21 +789,22 @@ function test210032() {
     var md = getTextFieldValue(getScrollView(), 2);
     var gw = getTextFieldValue(getScrollView(), 3);
     tapReturn();
+    var ret3 = isAnd(isEqual("gh" + r, a), isEqual("财务员", a1), isEqual("常青店",
+            a2), isEqual("财务员", a3), isEqual("gh" + r, gh), isEqual("财务员", xm),
+            isEqual("常青店", md), isEqual("财务员", gw));
 
     tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "2001", "是否停用" : "是" };
+    var keys = { "是否停用" : "是" };
     var fields = querySystemStaffFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
-
-    var ret3 = isAnd(isEqual("gh" + r, a), isEqual("财务员", a1), isEqual("常青店",
-            a2), isEqual("财务员", a3), isEqual("gh" + r, gh), isEqual("财务员", xm),
-            isEqual("常青店", md), isEqual("财务员", gw), isEqual("2001",
-                    qr.data[0]["工号"]), isIn(qr.data[0]["姓名"], "总经理2001"),
-            isEqual("常青店", qr.data[0]["门店"]), isEqual("总经理", qr.data[0]["岗位"]));
+    var gh1 = qr.data[0]["工号"];
+    var xm1 = qr.data[0]["姓名"];
+    var md1 = qr.data[0]["门店"];
+    var gw1 = qr.data[0]["岗位"];
 
     tapMenu("系统设置", "新增人员");
-    keys = { "工号" : "2001", "姓名" : "财务员", "门店" : "常青店", "岗位" : "财务员" };
+    keys = { "工号" : gh1, "姓名" : xm1, "门店" : md1, "岗位" : gw1 };
     fields = EditSystemStaffFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert(SAVE, OK);
@@ -1154,7 +1156,7 @@ function test210041() {
 }
 function test210042() {
     var qo, o, ret = true;
-    qo = { "备注" : "建款" };
+    qo = { "备注" : "货品建款的价格模式" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1175,10 +1177,10 @@ function test210042() {
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]");
-    delay();
     tapReturn();
 
-    qo = { "备注" : "建款" };
+    delay();
+    qo = { "备注" : "货品建款的价格模式" };
     o = { "新值" : "0", "数值" : [ "默认价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1186,7 +1188,7 @@ function test210042() {
     o = { "新值" : "1", "数值" : [ "不同门店不同的价格体系", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "建款" };
+    qo = { "备注" : "货品建款的价格模式" };
     var fields = querySystemGlobalFields(qo);
     query(fields);
 
@@ -1222,25 +1224,27 @@ function test210043() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("数据清理授权");
+    delay();
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
     tapNaviRightButton();
-    var ret = isEqual(null, getTextViewValue(window, 0));
+    // var ret = isEqual(null, getTextViewValue(window, 0));//" ret=" + ret +ret
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权aa");
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
 
     tapKeyboardHide();
+    delay();
     tapButton(window, "保存");
     tapPrompt();
     var ret1 = isIn(alertMsg, "操作成功");
-    tapReturn();
     tapNaviLeftButton();
 
-    return ret && ret1;
+    logDebug(", ret1=" + ret1);
+    return ret1;
 }
 function test210045() {
     var qo, o, ret = true;

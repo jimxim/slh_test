@@ -1265,9 +1265,8 @@ function test170056() {
 }
 function test170057() {
     tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "xjkh1" };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
+    var json = { "客户" : "xjkh1", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     var o = { "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
     editSalesBillSpecial(o);
@@ -1276,9 +1275,9 @@ function test170057() {
     tapNaviLeftButton();
     var ret = isIn(a, "下级客户1 其他店");
 
-    var r = "anewkhao" + getTimestamp(6);
+    var r = "anewkhao" + randomWord(false, 6);
     var r1 = "1" + getTimestamp(3);
-    var json = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
+    json = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(json);
     tapButton(window, "核销");
     var b = getStaticTextValue(getScrollView(-1, 0), 0);
@@ -1318,7 +1317,7 @@ function test170057() {
     tapNaviLeftButton();
     var ret4 = isEqual(e, "下级客户1 其他店结余: 0.0");
 
-    var r = "anewkh" + getTimestamp(6);
+    var r = "anewkh" + randomWord(false, 6);
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
@@ -1483,7 +1482,6 @@ function test170061() {
     editSalesBillNoColorSize(json);
 
     var money = getTextFieldValue(window, 1);
-
     tapButton(window, "核销");
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var len = qr.data.length;
@@ -1494,7 +1492,6 @@ function test170061() {
     }
 
     tapSalesBillVerify_OK();
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -1506,10 +1503,8 @@ function test170061() {
     tapButton(window, "核销");
     qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var len1 = qr.data.length;
-
     tapNaviLeftButton();
     tapReturn();
-
     var ret1 = (sub(len, len1) == 2 || sub(len, len1) == 3);
 
     logDebug(", ret1=" + ret1 + ", len=" + len + ", len1=" + len1);
@@ -3690,8 +3685,8 @@ function test170131() {
 }
 function test170132() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     var r = "anewKHAO" + getTimestamp(4);
     var c = "1" + getTimestamp(3);
@@ -3843,13 +3838,19 @@ function test170138() {
     var batch = qr.data[0]["批次"];
     tapFirstText();
 
-    tapButtonAndAlert("待作废", OK);
-    tapButtonAndAlert(OK);
-
+    if (ipadVer >= "7.23") {
+        tapMenu2("getMenu_More");
+        tapMenu3("待作废");
+        tapButtonAndAlert(OK);
+    } else {
+        tapButtonAndAlert("待作废", OK);
+        tapButtonAndAlert(OK);
+    }
+    tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "作废成功"));
-    tapPrompt();
+    var ret = (isIn(alertMsg1, "待作废成功"));
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     var keys1 = [ "作废挂单" ];
@@ -3857,7 +3858,6 @@ function test170138() {
     changeTFieldValue(fields1["作废挂单"], "待作废");
     query(fields1);
     var qr = getQR();
-
     var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
@@ -4215,10 +4215,6 @@ function test170166() {
 
     var json = { "明细" : [ { "货品" : "k300", "数量" : 20 } ], "打印" : "yes" };
     editSalesBillNoColorSize(json);
-    //
-    // saveAndAlertOk();
-    // tapPrompt();
-    // tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -4741,11 +4737,11 @@ function test170178() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
+    delay();
     tapMenu2("getMenu_More");
     tapMenu3("所有挂单");
     delay();
     var qr = getQRtable1(getScrollView());
-
     var table1 = getTableViews(getScrollView(-1))[0];
     var cells = table1.cells();
     var len = cells.length;
@@ -4798,11 +4794,9 @@ function test170178() {
     tapMenu3("所有挂单");
     delay();
     var qr = getQRtable1(getScrollView());
-
     var table1 = getTableViews(getScrollView(-1))[0];
     var cells = table1.cells();
     var len1 = cells.length;
-
     tapNaviLeftButton();
     tapReturn();
 
@@ -6684,7 +6678,6 @@ function test170251() {
     var a2 = qr.data[0]["运单号"];
     var a3 = qr.data[0]["物流备注"];
     var a4 = qr.data[0]["代收货款"];
-
     var ret = isAnd(isEqual(batch, a), isEqual("天天物流", a1), isEqual(r, a2),
             isEqual(r1, a3), isEqual("是", a4));
 
@@ -6698,10 +6691,8 @@ function test170251() {
     var b = getStaticTextValue(getPopOrView(), index - 5);
     var c = getStaticTextValue(getPopOrView(), index + 3);
     var d = getStaticTextValue(getPopOrView(), index + 5);
-
     var ret1 = isAnd(isEqual("总经理", a), isEqual("", c), isEqual("", d),
             isAqualOptime(getOpTime(), b, 2));
-
     tapButton(getPop(), "关 闭");
     tapReturn();
 
@@ -9154,8 +9145,8 @@ function test170496() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    o = { "客户" : "ls" };
-    editSalesBillCustomer(o);
+    o = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(o);
 
     var json = { "特殊货品" : { "抹零" : 8, "打包费" : 48 } };
     editSalesBillSpecial(json);
@@ -11681,8 +11672,8 @@ function test170673() {
     var bz = json["代收"]["备注"];
 
     tapMenu("销售开单", LogisticsVerify);
-    json = { "客户" : "tt" };
-    editSalesBillCustomer(json);
+    json = { "客户" : "tt", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
@@ -11702,7 +11693,6 @@ function test170673() {
     var b3 = qr.data[0]["物流备注"];
     var b4 = qr.data[0]["代收货款"];
     var b5 = qr.data[0]["货款收讫"];
-
     var ret = isAnd(isEqual(money, b), isEqual(wls, b1), isEqual(ydh, b2),
             isEqual(bz, b3), isEqual("是", b4), isEqual("是", b5));
 
