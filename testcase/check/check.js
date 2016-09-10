@@ -417,7 +417,7 @@ function test180013_2_180014() {
     }
     delay();
     tapKeyboardHide();
-    
+
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 150 },
             { "货品" : "k200", "数量" : -10 } ] };
@@ -555,7 +555,8 @@ function test180021() {
             { "货品" : "k300", "数量" : 0 }, { "货品" : "3035", "数量" : 10 },
             { "货品" : "k200", "数量" : -11 }, { "货品" : "8989", "数量" : 0 },
             { "货品" : "3035", "数量" : 20 } ] };
-    editCheckAddNoColorSize(json);
+    // editCheckAddNoColorSize(json);
+    editSalesBillNoColorSize(json);
 
     tapMenu("盘点管理", "按批次查");
     query();
@@ -625,13 +626,13 @@ function test180023() {
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 100 } ], "onlytest" : "yes" };
     editCheckAddDetNoColorSize(josn);
 
-    tapReturn(window, CANCEL);
-    delay();
-    var qr = getQRDet();
-    var ret = isAnd(isEqual(100, qr.data[0]["数量"]), isEqual("3035,jkk",
-            qr.data[0]["货品"]), isEqual("均色", qr.data[0]["颜色"]), isEqual("均码",
-            qr.data[0]["尺码"]));
     tapReturn();
+    delay(3);
+    var ret = true;
+    var btn = window.buttons()["返 回"];
+    if (btn.isVisible()) {
+        ret = false;
+    }
 
     tapMenu("盘点管理", "按批次查");
     query();
@@ -1209,7 +1210,7 @@ function test180037() {
         }
     }
     var ret1 = isAnd(isEqual(sum1, qr.counts["盘前"]), isEqual(sum2,
-            qr.counts["盘后"]), isEqual(sum3, qr.counts["盈亏"]), isEqual(sum4,
+            qr.counts["盘后"]), isEqual(sum3, qr.counts["盈亏"]), isAqualNum(sum4,
             qr.counts["盈亏金额"]));
 
     return ret && ret1;

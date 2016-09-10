@@ -2308,11 +2308,9 @@ function test210069_210070() {
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapReturn();
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    tapPrompt();
     var ret2 = isIn(alertMsg1, "能够刷卡或汇款的账户不允许超过6个");
+    tapReturn();
 
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");

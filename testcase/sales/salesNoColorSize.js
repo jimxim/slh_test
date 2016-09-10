@@ -462,7 +462,7 @@ function setNoColorSize_1Params() {
     // o = { "新值" : "0", "数值" : [ "默认不允许" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "名称" : "sales_show_printdialog" };//开单界面，保存后显示是否打印确认窗口
+    qo = { "名称" : "sales_show_printdialog" };// 开单界面，保存后显示是否打印确认窗口
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
@@ -4213,12 +4213,12 @@ function test170166() {
     query();
     tapFirstText();
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : 20 } ], "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 20 } ], "打印" : "yes" };
     editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    //
+    // saveAndAlertOk();
+    // tapPrompt();
+    // tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -5302,8 +5302,8 @@ function test170209() {
 
     json = { "特殊货品" : { "抹零" : 5, "打包费" : 300 } };
     editSalesBillSpecial(json);
-    var ret2 = isAnd(!isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=5"), !isIn(
-            alertMsg, "在对应款号的颜色组中不存在"));
+    var ret2 = isAnd(!isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=5"), !isIn(alertMsg,
+            "在对应款号的颜色组中不存在"));
     tapReturn();
 
     qo = { "备注" : "未拿货款号做退货" };
@@ -6362,7 +6362,7 @@ function test170248() {
     o = { "新值" : "2", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "自动完成的列表只有单个记录时是否自动选择" };
+    qo = { "名称" : "clist_singlerec_select" };// 自动完成的列表只有单个记录时是否自动选择
     o = { "新值" : "1", "数值" : [ "适用于手写输入", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 

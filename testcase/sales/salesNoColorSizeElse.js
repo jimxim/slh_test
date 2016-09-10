@@ -200,7 +200,7 @@ function testSalesNoColorSizeElseAll_2() {
 
 }
 function test170001_1_170010_170011_170012() {
-    var r = getTimestamp(8);
+    var r = randomWord(false, 8);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "现金" : 11, "刷卡" : [ 100, "交" ],
@@ -5287,7 +5287,7 @@ function test170361_1_170648() {
     ret = ret && test170648Field("店员");
     ret = ret && test170648Field("操作日期", IS_OPTIME);
     tapNaviLeftButton();
-    
+
     tapButton(window, QUERY);
     tapFirstText();
     var qr2 = getQR2(getScrollView(-1, 0), "图", "操作日期");
