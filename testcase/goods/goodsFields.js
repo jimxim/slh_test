@@ -468,8 +468,12 @@ function getGoodsTFields(keys, show, texts) {
     return ret;
 }
 function getEditGoodsElements() {
+    // target.pushTimeout(2);
+//    delay();// 等待界面加载
     var view = getScrollView();
-    return getElements(view);
+    var e = getElements(view);
+    // target.popTimeout();
+    return e;
 }
 /**
  * 获取新增货品界面下标

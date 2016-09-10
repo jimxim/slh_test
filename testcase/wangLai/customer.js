@@ -201,16 +201,16 @@ function test110004() {
     var arr = new Array();
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["启用"] == "是") {
-            arr[i] = qr.data[i]["名称"];
+            arr.push(qr.data[i]["名称"]);
         }
     }
 
     tapMenu("往来管理", "新增客户+");
+    // delay();//7.23延迟
     var r = getTimestamp(6);
     var name = "cus" + r;
     var keys = { "名称" : name, "适用价格" : "零批价" };
     var fields = editCustomerFields(keys);
-
     // 适用价格下拉框内容验证
     tapButton(getScrollView(), fields["适用价格"].index);// 适用价格的选择按钮
     var view1 = window.popover().scrollViews()[0];
@@ -222,10 +222,9 @@ function test110004() {
 
     tapMenu2("客户查询");
     keys = { "客户" : name };
-    var fields = queryCustomerFields(keys);
-    query(fields);
+    conditionQuery(keys);
 
-    tapFirstText();
+    tapLine();
     keys = { "性别" : "男", "区域" : "黑龙江", "手机" : "p" + r, "微信" : "x123456",
         "门店" : "常青店", "生日" : getToday(), "店员" : "000", "客户类别" : "打包客户",
         "客户代码" : r, "允许退货" : "否", "适用价格" : "打包价", "传真号" : r, "备注" : "备注abc123",
@@ -240,7 +239,7 @@ function test110004() {
 
     tapMenu2("客户查询");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     fields = editCustomerFields(keys, true);
     fields["店员"].value = "000,总经理";
     var ret = checkShowFields(getScrollView(), fields);
@@ -266,9 +265,7 @@ function test110005() {
 
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : r };
-    editSalesBillCustomer(json);
-    saveAndAlertOk();
-    tapReturn();
+    editSalesBill(json, colorSize);
     // 这里输入客户后会等待一会儿，下拉框
     var ret = isInAlertMsgs("客户或厂商必须从下拉列表选择");
 
@@ -569,20 +566,15 @@ function test110012() {
     tapRefresh();
 
     keys = { "厂商" : r, "是否停用" : "是" };
-    var qFields = queryCustomerProviderFields(keys);
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     var qr = getQR();
     var ret = isAnd(isEqual(r, qr.data[0]["名称"]), dropDownListCheck(0, search,
             r));
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillCustomer(json);
-    saveAndAlertOk();
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "客户或厂商 必须从下拉列表选择"));
-    tapReturn();
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isInAlertMsgs("客户或厂商必须从下拉列表选择"));
 
     return ret;
 }
@@ -2737,10 +2729,6 @@ function test110041_1Field(o, n) {
     editSalesBillDetNoColorSize(o);
 
     tapButton(window, "核销");
-    // 日期降序，找到editBillForProviderAccount1的准备数据
-    // tapTitle(getScrollView(-1, 0), "日期");
-    // tapTitle(getScrollView(-1, 0), "日期");
-    // delay();
     var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
     var index = 4;// 起始下标为4
     for (var i = 0; i < qr.curPageTotal; i++) {

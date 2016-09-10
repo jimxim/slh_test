@@ -10,7 +10,7 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
@@ -18,7 +18,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "ts100179Pre");//
-// run("测试用例", "ts100174");
+// run("测试用例", "test110004");
  run("测试用例", "onlyTest");
 
 }
@@ -28,19 +28,12 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // debugObject(gCache,"gCache");
-
-  tapMenu("采购入库","新增入库+");
-  var keys = { "客户" : "vell" };
-  editSalesBillCustomer(keys);
-  tapButton(window, "核销");
-// var text = getStaticTexts(getScrollView(-1, 0));
-// var qr = getQRverify(text, "门店", 10);
-  var qr=getQRVerify(getScrollView(-1,0),"门店");
-  var exp = { "总额" : 9000, "未结金额" : -9000 };
-  var ret= isEqualObject(exp, qr.data[0]);
-  tapNaviLeftButton();
-  tapReturn();
-
+    tapMenu("往来管理","客户查询"); 
+UIATarget.localTarget().logElementTree();
+tapLine();
+delay();
+UIATarget.localTarget().logElementTree();
+tapReturn();
  return true;
 }
 

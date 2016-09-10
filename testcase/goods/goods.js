@@ -4555,11 +4555,10 @@ function ts100174() {
     tapReturn();
 
     tapMenu2("新增入库+");
-    keys = { "厂商" : "vell" };
+    keys = { "客户" : "vell" };
     editSalesBillCustomer(keys);
     tapButton(window, "核销");
-    var text = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(text, "门店", 10);
+    var qr = getQRVerify(getScrollView(-1, 0), "门店");
     var exp = { "总额" : 9000, "未结金额" : -9000 };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
     tapNaviLeftButton();

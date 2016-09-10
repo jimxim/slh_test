@@ -793,7 +793,7 @@ function editSalesBillFields(keys, show) {
     return getTFields("editSalesBillField", keys, show);
 }
 function editSalesBillField(key, show) {
-    var f;
+    var f, index;
     var cardTFindex = getValueFromCacheF1("getCardTFindex");
     switch (key) {
     case "customer":
@@ -810,8 +810,8 @@ function editSalesBillField(key, show) {
         break;
     case "staff":
     case "店员":
-        var staffTFindex = getValueFromCacheF1("getStaffTFindex");
-        f = new TField("店员", TF_AC, staffTFindex, "000", -1, 0);
+        index = getValueFromCacheF1("getStaffTFindex");
+        f = new TField("店员", TF_AC, index, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -826,7 +826,7 @@ function editSalesBillField(key, show) {
         f = new TField("刷卡", TF, cardTFindex, 0, "NoNeedReturn"); // 7
         break;
     case "配货":
-        var index = getEditSalesTFindex2("客户,厂商", "配货");
+        index = getValueFromCacheF1("getPackTFindex");
         f = new TField("配货", TF_AC, index, "000", -1, 0);
         break;
     case "day":
@@ -835,7 +835,7 @@ function editSalesBillField(key, show) {
         break;
     case "orderShop":
     case "订货门店":
-        var index = getEditSalesTFindex2("客户,厂商", "订货门店");
+        index = getValueFromCacheF1("getOrderShopTFindex");
         f = new TField("订货门店", TF_SC, index, "常青店");// 采购订货
         break;
     case "remarks":
@@ -843,12 +843,12 @@ function editSalesBillField(key, show) {
         f = new TField("备注", TV, 0, "123"); //
         break;
     case "折扣":
-        var index = getEditSalesTFindex2("客户,厂商", "折扣");
+        index = getEditSalesTFindex2("客户,厂商", "折扣");
         f = new TField("折扣", TF, index, "0.6");//
         break;
     case "汇款":
-        var remitTFindex = getValueFromCacheF1("getRemitTFindex");
-        f = new TField("汇款", TF, remitTFindex, 0, "NoNeedReturn");// 
+        index = getValueFromCacheF1("getRemitTFindex");
+        f = new TField("汇款", TF, index, 0, "NoNeedReturn");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -897,6 +897,12 @@ function getDateTFindex() {
 }
 function getDiscountTFindex() {
     return getEditSalesTFindex2("客户,厂商", "折扣");
+}
+function getOrderShopTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "订货门店");
+}
+function getPackTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "配货");
 }
 function getRemitTFindex() {
     return getEditSalesTFindex2("客户,厂商", "汇款");

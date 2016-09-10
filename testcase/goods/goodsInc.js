@@ -105,7 +105,6 @@ function addCustomer(keys, o) {
     setTFieldsValue(getScrollView(), fields);
 
     editCustomerSave(o);
-
     return keys;
 }
 function editCustomerSave(o) {
@@ -493,6 +492,12 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var qResult = new QResult(titles, data, total, hasError);
     return qResult;
 }
+/**
+ * 类似核销界面取值 标题和内容都在一个视图内
+ * @param view getScrollView(-1,0)
+ * @param firstTitle
+ * @returns {QResult}
+ */
 function getQRVerify(view, firstTitle) {
     var i = 0, y = 0, yPre = 0, titles = {};
     var texts = getStaticTexts(view);
@@ -514,7 +519,7 @@ function getQRVerify(view, firstTitle) {
         yPre = y;
     }
     yPre = y;
-//    debugObject(titles, "titles");
+    // debugObject(titles, "titles");
     var data = [], data1 = {};
     for (; i < texts.length; i++) {
         y = getY(texts[i]);

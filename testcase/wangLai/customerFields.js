@@ -52,30 +52,50 @@ function queryCustomerField(key, show) {
 
 // 新增客户
 function testEditCustomerFields() {
-    // "super",
-    // var keys = [ "name", "area","mobile", "weixin", "shop", "birthday",
-    // "staff", "type", "return",
-    // "price", "fax", "remarks","address",
-    // "discount", "credit", "alarm" ];
     var keys = [ "name", "area", "shop", "birthday", "staff", "super", "type",
             "return", "price", "mobile", "weixin", "fax", "address", "remarks",
             "discount", "credit", "alarm" ];
-    // var keys=["shop","birthday"];
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    // debugElements(getView());
     var showFields = editCustomerFields(keys, true);
     return checkShowFields(getScrollView(), showFields);
 }
 function editCustomerFields(keys, show) {
-    return getTFields("editCustomerField", keys, show);
+    var texts = getEditGoodsElements();
+    return getCustomerTFields(keys, show, texts);
+    // return getTFields("editCustomerField", keys, show);
 }
-function editCustomerField(key, show) {
-    var sexIdx = 1;
-    if (ipadVer < 7.20) {
-        sexIdx = 0;
+function getCustomerTFields(keys, show, texts) {
+    if (isUndefined(keys)) {
+        return {};
     }
-    var f;
+    var ret = {};
+
+    for ( var i in keys) {
+        var key = i;
+        if (isArray(keys)) {
+            key = keys[i];
+        }
+
+        var f = editCustomerField(key, show, texts);
+        if (isObject(keys)) {
+            var a1 = keys[i];
+            if (isArray(a1)) {
+                changeTFieldValue(f, getArray1(a1, 0), getArray1(a1, 1),
+                        getArray1(a1, 2), getArray1(a1, 3));
+            } else {
+                changeTFieldValue(f, a1);
+            }
+        }
+        logDebug("getTFields i=" + i + "  type=" + f.type + " index=" + f.index);
+        ret[key] = f;
+    }
+
+    return ret;
+}
+
+function editCustomerField(key, show, texts) {
+    var f, idx;
     switch (key) {
     case "name":
     case "名称":
@@ -91,97 +111,123 @@ function editCustomerField(key, show) {
         break;
     case "area":
     case "区域":
-        f = new TField("区域", BTN_AREA, 0 + sexIdx, "黑龙江", 0, "客户,东北");
+        idx = getEditGoodsIndex(texts, "区域");
+        f = new TField("区域", BTN_AREA, idx[1], "黑龙江", 0, "客户,东北");
         if (show) {
             f.type = TF;
-            f.index = 2 + sexIdx;
+            f.index = idx[0];
         }
         break;
     case "mobile":
     case "手机":
-        f = new TField("手机", TF, 3 + sexIdx, "10086");
+        idx = getEditGoodsIndex(texts, "手机");
+        f = new TField("手机", TF, idx[0], "10086");
         break;
     case "weixin":
     case "微信":
-        f = new TField("微信", TF, 4 + sexIdx, "x123456");
+        idx = getEditGoodsIndex(texts, "微信");
+        f = new TField("微信", TF, idx[0], "x123456");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", BTN_SC, 1 + sexIdx, "常青店");
+        idx = getEditGoodsIndex(texts, "门店*");
+        f = new TField("门店", BTN_SC, idx[1], "常青店");
         if (show) {
             f.type = TF;
-            f.index = 5 + sexIdx;
+            f.index = idx[0];
         }
         break;
     case "birthday":
     case "生日":
-        f = new TField("生日", TF_DT, 6 + sexIdx, "1980-09-10");
+        idx = getEditGoodsIndex(texts, "生日");
+        f = new TField("生日", TF_DT, idx[0], "1980-09-10");
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 7 + sexIdx, "000", -1, 0);
+        idx = getEditGoodsIndex(texts, "店员");
+        f = new TField("店员", TF_AC, idx[0], "000", -1, 0);
         if (show) {
             f.value = "000,总经理";
         }
         break;
     case "super":
     case "上级客户":
-        f = new TField("上级客户", TF_AC, 8 + sexIdx, "yvb", -1, 0);
+        idx = getEditGoodsIndex(texts, "上级客户");
+        f = new TField("上级客户", TF_AC, idx[0], "yvb", -1, 0);
         if (show) {
             f.value = "Yvb";
         }
         break;
     case "type":
     case "客户类别":
-        f = new TField("客户类别", BTN_SC, 2 + sexIdx, "零批客户");
+        idx = getEditGoodsIndex(texts, "客户类别");
+        f = new TField("客户类别", BTN_SC, idx[1], "零批客户");
         if (show) {
             f.type = TF;
-            f.index = 9 + sexIdx;
+            f.index = idx[0];
         }
         break;
     case "code":
     case "客户代码":
-        f = new TField("客户代码", TF, 11 + sexIdx, "1234567890");
+        idx = getEditGoodsIndex(texts, "客户代码");
+        f = new TField("客户代码", TF, idx[0], "1234567890");
         break;
     case "return":
     case "允许退货":
-        f = new TField("允许退货", BTN_SC, 4 + sexIdx, "是");
+        idx = getEditGoodsIndex(texts, "允许退货");
+        f = new TField("允许退货", BTN_SC, idx[1], "是");
         if (show) {
             f.type = TF;
-            f.index = 12 + sexIdx;
+            f.index = idx[0];
+        }
+        break;
+    case "isDebt":
+    case "是否欠款":
+        idx = getEditGoodsIndex(texts, "是否欠款");
+        f = new TField("是否欠款", BTN_SC, idx[1], "否");
+        if (show) {
+            f.type = TF;
+            f.index = idx[0];
         }
         break;
     case "price":
     case "适用价格":
-        f = new TField("适用价格", BTN_SC, 5 + sexIdx, "零批价");
+        idx = getEditGoodsIndex(texts, "适用价格");
+        f = new TField("适用价格", BTN_SC, idx[1], "零批价");
         if (show) {
             f.type = TF;
-            f.index = 14 + sexIdx;
+            f.index = idx[0];
         }
         break;
     case "fax":
     case "传真号":
-        f = new TField("传真号", TF, 15 + sexIdx, "55555");
+        idx = getEditGoodsIndex(texts, "传真号");
+        f = new TField("传真号", TF, idx[0], "55555");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 16 + sexIdx, "123");
+        idx = getEditGoodsIndex(texts, "备注");
+        f = new TField("备注", TF, idx[0], "123");
         break;
     case "address":
     case "地址":
-        f = new TField("地址", TF, 17 + sexIdx, "地址");
+        idx = getEditGoodsIndex(texts, "地址");
+        f = new TField("地址", TF, idx[0], "地址");
         break;
     case "discount":
     case "拿货折扣":
-        f = new TField("拿货折扣", TF, 18 + sexIdx, "0.9");
+        idx = getEditGoodsIndex(texts, "拿货折扣");
+        f = new TField("拿货折扣", TF, idx[0], "0.9");
         break;
     case "credit":
     case "信用额度":
-        f = new TField("信用额度", TF, 20 + sexIdx, "10000");
+        idx = getEditGoodsIndex(texts, "信用额度");
+        f = new TField("信用额度", TF, idx[0], "10000");
         break;
     case "alarm":
     case "欠款报警":
-        f = new TField("欠款报警", TF, 21 + sexIdx, "5000");
+        idx = getEditGoodsIndex(texts, "欠款报警");
+        f = new TField("欠款报警", TF, idx[0], "5000");
         break;
     default:
         logWarn("未知key＝" + key);
