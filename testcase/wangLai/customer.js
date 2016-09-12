@@ -206,7 +206,6 @@ function test110004() {
     }
 
     tapMenu("往来管理", "新增客户+");
-    // delay();//7.23延迟
     var r = getTimestamp(6);
     var name = "cus" + r;
     var keys = { "名称" : name, "适用价格" : "零批价" };
@@ -217,25 +216,22 @@ function test110004() {
     var ret = isEqualDropDownList(arr, view1);
 
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    tapReturn();
+    editCustomerSave({});
 
     tapMenu2("客户查询");
     keys = { "客户" : name };
     conditionQuery(keys);
-
     tapLine();
     keys = { "性别" : "男", "区域" : "黑龙江", "手机" : "p" + r, "微信" : "x123456",
         "门店" : "常青店", "生日" : getToday(), "店员" : "000", "客户类别" : "打包客户",
         "客户代码" : r, "允许退货" : "否", "适用价格" : "打包价", "传真号" : r, "备注" : "备注abc123",
-        "地址" : "地址" + r, "拿货折扣" : "0.678", "信用额度" : "2000", "欠款报警" : "3000" }
+        "地址" : "地址" + r, "拿货折扣" : "0.678", "信用额度" : "2000", "欠款报警" : "3000" };
     if (ipadVer < 7.21) {
         keys["性别"] = undefined;
     }
     fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButton(window, EDIT_SAVE);
-    // delay();
+    tapButton(window, EDIT_SAVE);// 自动返回
 
     tapMenu2("客户查询");
     tapButton(window, QUERY);

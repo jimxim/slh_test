@@ -10,15 +10,15 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "yes";
+// colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";// 7.01
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
-// run("测试用例", "ts100179Pre");//
-// run("测试用例", "test110004");
+// run("测试用例", "setSales_order_distribute_3");//
+// run("测试用例", "ts100185");
  run("测试用例", "onlyTest");
 
 }
@@ -28,13 +28,9 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // debugObject(gCache,"gCache");
-    tapMenu("往来管理","客户查询"); 
-UIATarget.localTarget().logElementTree();
-tapLine();
-delay();
-UIATarget.localTarget().logElementTree();
-tapReturn();
- return true;
+    var jo = { "订货" : [ 50 ], "开单" : [ 10, 15 ] };// 一次订货多次发货
+    var ret = ts100185Field(jo, 25);
+ return ret;
 }
 
 //

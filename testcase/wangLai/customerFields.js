@@ -87,7 +87,8 @@ function getCustomerTFields(keys, show, texts) {
                 changeTFieldValue(f, a1);
             }
         }
-        logDebug("getTFields i=" + i + "  type=" + f.type + " index=" + f.index);
+        // logDebug("getTFields i=" + i + " type=" + f.type + " index=" +
+        // f.index);
         ret[key] = f;
     }
 
@@ -170,7 +171,8 @@ function editCustomerField(key, show, texts) {
     case "code":
     case "客户代码":
         idx = getEditGoodsIndex(texts, "客户代码");
-        f = new TField("客户代码", TF, idx[0], "1234567890");
+        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        f = new TField("客户代码", TF, i, "1234567890");
         break;
     case "return":
     case "允许退货":
@@ -196,7 +198,7 @@ function editCustomerField(key, show, texts) {
         f = new TField("适用价格", BTN_SC, idx[1], "零批价");
         if (show) {
             f.type = TF;
-            f.index = idx[0];
+            f.index = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
         }
         break;
     case "fax":

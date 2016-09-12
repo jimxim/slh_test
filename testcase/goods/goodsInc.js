@@ -752,6 +752,7 @@ function tapLine(n, view, firstTitle) {
         preY = y;
     }
     tap(e[i], true);
+    delay();//等待界面加载
 }
 /**
  * 点击导航栏左按钮，防止用例出错卡界面

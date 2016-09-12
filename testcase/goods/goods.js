@@ -231,6 +231,7 @@ function testGoods002() {
     run("【货品管理-货品进销存】特殊货品不能显示", "ts100129");
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
     run("【货品管理-当前库存】上架天数检查", "ts100116");
+
     if (colorSize == "no") {
         run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "ts100114");
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "ts100033");
@@ -245,8 +246,11 @@ function testGoods002() {
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "ts100031");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
         run("【货品管理-新增货品】新增货品可以录入期初库存-支持多种颜色尺码", "ts100174");
+        run("【货品管理-新增货品】颜色尺码+库存录入+不输入进货价", "ts100181");
     }
     run("【货品管理-新增货品】库存录入+输入进货价弹窗判断", "ts100180");
+    run("【货品管理-新增货品】检查加工款库存录入取的价格是加工价", "ts100182");
+    run("【货品管理-新增货品】检查库存录入-清除按钮", "ts100184");
     run("【货品管理-新增货品】厂商价格默认不显示", "ts100176");
     run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100177");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
@@ -299,6 +303,9 @@ function testGoods002() {
     run("【货品管理-更多】新增颜色组", "ts100163");
     run("【货品管理-更多】所有颜色组", "ts100164");
 
+    run("设置销售订单发货模式3", "setSales_order_distribute_3");
+    run("【货品管理-当前库存】销售订单发货模式3，检查待发货", "ts100185");
+    run("设置销售订单发货模式1", "setSales_order_distribute_1");
     // 开单模式5
     run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
             "test10_fuzzyQueryAndDropDownListCheck");
@@ -4548,7 +4555,7 @@ function ts100174() {
     tapMenu("采购入库", "按批次查");
     tapButton(window, QUERY);
     ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
-    tapFirstText();
+    tapLine();
     exp[0]["单价"] = 200, exp[1]["单价"] = 200, exp[2]["单价"] = 200;// 进货价
     data = getQRDet().data;
     ret = isAnd(ret, isEqualDyadicArray(data, exp));
@@ -4561,7 +4568,7 @@ function ts100174() {
     var qr = getQRVerify(getScrollView(-1, 0), "门店");
     var exp = { "总额" : 9000, "未结金额" : -9000 };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
-    tapNaviLeftButton();
+    tapNaviClose();
     tapReturn();
     return ret;
 }
@@ -4587,13 +4594,22 @@ function ts100175() {
     tapMenu("采购入库", "按批次查");
     tapButton(window, QUERY);
     ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
-    tapFirstText();
+    tapLine();
     exp["单价"] = 200;// 进货价
     exp["货品"] = json["款号"] + "," + json["名称"];
     data = getQRDet().data;
     ret = isAnd(ret, isEqualObject2(exp, data[0]));
     tapReturn()
 
+    tapMenu2("新增入库+");
+    keys = { "客户" : "vell" };
+    editSalesBillCustomer(keys);
+    tapButton(window, "核销");
+    var qr = getQRVerify(getScrollView(-1, 0), "门店");
+    var exp = { "总额" : 2000, "未结金额" : -2000 };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
+    tapNaviClose();
+    tapReturn();
     return ret;
 }
 
@@ -4697,6 +4713,109 @@ function ts100180() {
     ret = isAnd(ret, isIn(alertMsg, "货品有进货价并录入库存之后"));//
 
     return ret;
+}
+function ts100181() {
+    var keys = { "进货价" : "" };// 不输入进货价
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] } ] };
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    tapLine();
+    var data = getQRDet();
+    var exp = [
+            { "货品" : json["款号"] + "," + json["名称"], "颜色" : "红色", "尺码" : "S",
+                "库存" : 10, "数量" : 10, "单价" : 0, "小计" : 0 },
+            { "货品" : json["款号"] + "," + json["名称"], "颜色" : "红色", "尺码" : "M",
+                "库存" : 20, "数量" : 20, "单价" : 0, "小计" : 0 } ];
+    var ret = isAnd(isEqual(getTextFieldValue(window, 0), ""),
+            isEqualDyadicArray(exp, data));// 厂商为空
+    tapReturn();
+    return ret;
+}
+function ts100182() {
+    var keys = { "厂商" : "vell", "进货价" : "100" };// 默认启用了进货价
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+    if (colorSize == "no") {
+        jo["库存录入"][0]["颜色"] = "均色";
+    }
+    var json = addGoodsSimple(keys, jo);
+
+    tapMenu("采购入库", "按批次查");
+    query();
+    var qr = getQR();
+    var ret = isEqual(qr.data[0]["金额"], 1000);
+
+    tapLine();
+    qr = getQRDet();
+    ret = isAnd(ret, isEqual(qr.data[0]["单价"], 100));
+    tapReturn();
+    return ret;
+}
+function ts100183() {
+    alertMsgExKeys = [ "确定保存吗" ];
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "门店" : "常青店" };
+    var fields = editGoodsFields(keys);
+    tapButtonScroll(getScrollView(), fields["门店"].index);
+    var ret = isEqualDropDownListByExp("常青店");
+
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+    if (colorSize == "no") {
+        jo["库存录入"][0]["颜色"] = "均色";
+    }
+    var json = addGoodsSimple(keys, jo);
+
+    return isAnd(ret, !hasAlerts());
+}
+function ts100184() {
+    var keys = {};
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ],
+        "stockEntryClear" : "yes", "onlytest" : "yes" };
+    if (colorSize == "no") {
+        jo["库存录入"][0]["颜色"] = "均色";
+    }
+    var json = addGoodsSimple(keys, jo);
+    var ret = isEqual(getTextViewValue(getScrollView(), 0), null);// 库存录入文本块值
+    tapReturn();
+    return ret;
+}
+// setSales_order_distribute_3
+function ts100185() {
+    var jo = { "订货" : [ 50 ], "开单" : [ 10, 15 ] };// 一次订货多次发货
+    var ret = ts100185Field(jo, 25);
+
+    jo = { "订货" : [ 15, 20 ], "开单" : [ 18 ] };// 多次订货一次发货
+    ret = isAnd(ret, ts100185Field(jo, 17));
+
+    jo = { "订货" : [ 16, 19 ], "开单" : [ 5, 6 ] };// 多次订货多次发货
+    ret = isAnd(ret, ts100185Field(jo, 24));
+
+    jo = { "订货" : [ 50 ], "开单" : [ 60 ] };// 超发
+    ret = isAnd(ret, ts100185Field(jo, 0));
+    return ret;
+}
+
+function ts100185Field(jo, dueout) {
+    var keys = addGoodsSimple();// 越早的越优先发货,使用已经存在的款号不方便验证
+    var code = keys["款号"];
+
+    var arr1 = jo["订货"], arr2 = jo["开单"], json = {};
+    for (var i = 0; i < arr1.length; i++) {
+        tapMenu("销售订货", "新增订货+");
+        json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ arr1[i] ] } ] };
+        editSalesBill(json, colorSize);
+    }
+    for (var i = 0; i < arr2.length; i++) {
+        tapMenu("销售开单", ADDBILL);
+        json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ arr2[i] ] } ] };
+        editSalesBill(json, colorSize);
+    }
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号名称" : code };
+    conditionQuery(keys);
+    var qr = getQR();
+    return isEqual(dueout, qr.counts["待发货"]);
 }
 /**
  * 日期从，日期到验证
