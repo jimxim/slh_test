@@ -4414,20 +4414,20 @@ function test170172() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var ret3 = false;
+    var ret3 = true;
     var bt = app.windows()[0].buttons()["挂 单"];
     if (!bt.isVisible()) {
-        ret3 = true;
+        ret3 = false;
     }
 
     if (ipadVer < "7.23") {
         tapButtonAndAlert("待作废", OK);
         tapPrompt();
-        ret = isAnd(ret, isIn(alertMsg, "待作废成功"));
+        var ret1 = isIn(alertMsg, "待作废成功");
     } else {
         runAndAlert("test170172Bad", OK);
         tapPrompt();
-        ret = isAnd(ret, isIn(alertMsg, "待作废成功"));
+        var ret1 = isIn(alertMsg, "待作废成功");
     }
 
     tapMenu("销售开单", "按批次查");
@@ -4435,9 +4435,8 @@ function test170172() {
     var fields1 = salesQueryBatchFields(keys1);
     changeTFieldValue(fields1["作废挂单"], "待作废");
     query(fields1);
-
     var qr = getQR();
-    ret = isAnd(ret, isEqual("李四", qr.data[0]["客户"]), isEqual("8",
+    ret1 = isAnd(ret1, isEqual("李四", qr.data[0]["客户"]), isEqual("8",
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     qo = { "备注" : "是否显示待作废按钮功能" };
@@ -4461,20 +4460,18 @@ function test170172() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    var ret1 = false;
+    var ret2 = false;
     if (ipadVer < "7.23") {
         var bt = app.mainWindow().buttons()["待作废"];
         if (isUIAElementNil(bt) || !bt.isVisible()) {
-            ret1 = true;
+            ret2 = true;
         }
     } else {
-        tapMenu("销售开单", "开  单+");
-        tapMenu("销售开单", "getMenu_More");
-
-        var ret = false;
-        var bt = app.mainWindow().buttons()["待作废"];
+        tapMenu1("销售开单");
+        tapMenu2("getMenu_More");
+        var bt = app.mainWindow().popover().buttons()["待作废"];
         if (isUIAElementNil(bt) || !bt.isVisible()) {
-            ret1 = true;
+            ret2 = true;
         }
         window.popover().dismiss();
     }
@@ -4487,13 +4484,13 @@ function test170172() {
     tapMenu("销售开单", "按挂单");
     query();
     qr = getQR();
-    var ret2 = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
+    var ret4 = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(2, qr.data[0]["数量"]), isAqualOptime(
             getOpTime(), qr.data[0]["操作日期"]));
 
     logDebug(" ret ＝" + ret + ", ret1 ＝" + ret1 + ", ret2 ＝" + ret2
-            + ", ret3 ＝" + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ", ret3 ＝" + ret3 + ", ret4 ＝" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170173() {
     // 全局参数，不显示待作废按钮

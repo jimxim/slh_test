@@ -10,7 +10,7 @@ function test001() {
 function test210043_1() {
     // 财务员001登录
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2("getMenu_More");
 
     var ret = false;
     var bt = app.mainWindow().popover().buttons()["数据清理授权"];

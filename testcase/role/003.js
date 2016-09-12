@@ -9,7 +9,7 @@ function test003() {
 }
 function test210043_3() {
     tapMenu1("系统设置");
-    tapMenu2("更多..");
+    tapMenu2("getMenu_More");
 
     var ret = false;
     var bt = app.mainWindow().popover().buttons()["数据清理授权"];

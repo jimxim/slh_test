@@ -63,8 +63,8 @@ function checkPrepare() {
 
     var qr = getQR();
     var t1 = qr.total;
-    var i;
-    for (i = 0; i < t1; i++) {
+    for (var i = 0; i < t1; i++) {
+        tapButton(window, QUERY);
         tapFirstText();
         runAndAlert("checkPrepare_Off", OK);
         delay();
@@ -90,6 +90,7 @@ function checkPrepare1() {
     var qr = getQR();
     var t1 = qr.total;
     for (var i = 0; i < t1; i++) {
+        tapButton(window, QUERY);
         tapFirstText();
         tapButtonAndAlert("删除计划", OK);
         tapPrompt();
@@ -1930,13 +1931,13 @@ function test180049_180036() {
                     qr.data[1]["款号"]), isEqual(25, qr.data[1]["盘后"]), isEqual(
                     20, qr.data[1]["盘前"]), isEqual(Number(sub(qr.data[1]["盘后"],
                     qr.data[1]["盘前"])), qr.data[1]["盈亏"]), isEqual(
-                    qr.data[1]["盈亏金额"], 200 * Number(qr.data[1]["盈亏"])),
-            isEqual("k200", qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]),
-            isEqual(-8, qr.data[2]["盘前"]), isEqual(Number(sub(qr.data[2]["盘后"],
-                    qr.data[2]["盘前"])), qr.data[2]["盈亏"]), isEqual(
-                    qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
-            isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
-            isEqual(-10, qr.data[3]["盘前"]), isEqual(Number(sub(
+                    qr.data[1]["盈亏金额"], 0), isEqual("k200", qr.data[2]["款号"]),
+            isEqual(0, qr.data[2]["盘后"]), isEqual(-8, qr.data[2]["盘前"]),
+            isEqual(Number(sub(qr.data[2]["盘后"], qr.data[2]["盘前"])),
+                    qr.data[2]["盈亏"]), isEqual(qr.data[2]["盈亏金额"], inprice4
+                    * Number(qr.data[2]["盈亏"])), isEqual("k300",
+                    qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]), isEqual(
+                    -10, qr.data[3]["盘前"]), isEqual(Number(sub(
                     qr.data[3]["盘后"], qr.data[3]["盘前"])), qr.data[3]["盈亏"]),
             isEqual(qr.data[3]["盈亏金额"], inprice3 * Number(qr.data[3]["盈亏"])),
             isEqual("8989", qr.data[4]["款号"]), isEqual(-5, qr.data[4]["盘后"]),
@@ -2070,18 +2071,19 @@ function test180049_1() {
     var fields = checkProfitAndLossFields(keys);
     query(fields);
     qr = getQR();
+    // 款号r对应的盈亏金额为250 * Number(qr.data[1]["盈亏"])
     var ret1 = isAnd(isEqual(r1, qr.data[0]["款号"]),
             isEqual(5, qr.data[0]["盘后"]), isEqual(5, qr.data[0]["盘前"]),
             isEqual(0, qr.data[0]["盈亏"]), isEqual(qr.data[0]["盈亏金额"],
                     300 * Number(qr.data[0]["盈亏"])), isEqual(r,
                     qr.data[1]["款号"]), isEqual(25, qr.data[1]["盘后"]), isEqual(
                     20, qr.data[1]["盘前"]), isEqual(5, qr.data[1]["盈亏"]),
-            isEqual(qr.data[1]["盈亏金额"], 250 * Number(qr.data[1]["盈亏"])),
-            isEqual("k200", qr.data[2]["款号"]), isEqual(0, qr.data[2]["盘后"]),
-            isEqual(-8, qr.data[2]["盘前"]), isEqual(8, qr.data[2]["盈亏"]),
-            isEqual(qr.data[2]["盈亏金额"], inprice4 * Number(qr.data[2]["盈亏"])),
-            isEqual("k300", qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]),
-            isEqual(-10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
+            isEqual(qr.data[1]["盈亏金额"], 0), isEqual("k200", qr.data[2]["款号"]),
+            isEqual(0, qr.data[2]["盘后"]), isEqual(-8, qr.data[2]["盘前"]),
+            isEqual(8, qr.data[2]["盈亏"]), isEqual(qr.data[2]["盈亏金额"], inprice4
+                    * Number(qr.data[2]["盈亏"])), isEqual("k300",
+                    qr.data[3]["款号"]), isEqual(-11, qr.data[3]["盘后"]), isEqual(
+                    -10, qr.data[3]["盘前"]), isEqual(-1, qr.data[3]["盈亏"]),
             isEqual(qr.data[3]["盈亏金额"], inprice3 * Number(qr.data[3]["盈亏"])),
             isEqual("8989", qr.data[4]["款号"]), isEqual(-5, qr.data[4]["盘后"]),
             isEqual(0, qr.data[4]["盘前"]), isEqual(-5, qr.data[4]["盈亏"]),
@@ -2090,6 +2092,7 @@ function test180049_1() {
             isEqual(qr.data[5]["盈亏金额"], inprice * Number(qr.data[5]["盈亏"])),
             isEqual(100, qr.data[5]["盘前"]), isEqual(-99, qr.data[5]["盈亏"]));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test180053() {
@@ -2173,17 +2176,6 @@ function test180057() {
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2);
     return ret1 && ret2;
 }
-function testAddBrandCheck() {
-    tapButton(getScrollView(), 1);
-
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[0];
-    var cells = table1.cells();
-    tap(getStaticText(cells["Adidas"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, "确定");
-}
 function test180061() {
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -2217,14 +2209,13 @@ function test180061() {
     var keys = { "门店" : "常青店" };
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
-
-    testAddBrandCheck();
+    // testAddBrandCheck();
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2232,7 +2223,7 @@ function test180061() {
     var qr = getQR();
     var ret3 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按品牌",
             qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
-            isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("",
+            isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 3), isEqual("",
                     qr.data[0]["盘点类别"]), isEqual("Adidas", qr.data[0]["盘点品牌"]),
             isEqual("", qr.data[0]["盘点厂商"]));
 
@@ -2253,7 +2244,7 @@ function test180062() {
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2276,6 +2267,7 @@ function test180062() {
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     var ret1 = isIn(alertMsg, "请处理完毕后新增计划");
+    delay();
     tapReturn();
 
     tapMenu("盘点管理", "盘点处理");
@@ -2317,13 +2309,13 @@ function test180062() {
     fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
-    testAddBrandCheck();
+    // testAddBrandCheck();
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2336,7 +2328,6 @@ function test180062() {
             isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("",
                     qr.data[0]["盘点类别"]), isEqual("Adidas", qr.data[0]["盘点品牌"]),
             isEqual("", qr.data[0]["盘点厂商"]));
-
     checkPrepare1();
 
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
@@ -2470,7 +2461,7 @@ function test180066() {
     delay();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2501,7 +2492,7 @@ function test180066() {
     var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2));
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2512,17 +2503,6 @@ function test180066() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
-}
-function testAddTypeCheck() {
-    tapButton(getScrollView(), 1);
-
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[1];
-    var cells = table1.cells();
-    tap(getStaticText(cells["登山服"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, 2);
 }
 function test180067() {
     tapMenu("盘点管理", "盘点计划+", "按类别+");
@@ -2538,7 +2518,7 @@ function test180067() {
     tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按类别+");
-    testAddTypeCheck();
+    testAddPlanCheck("按类别");
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     var ret2 = isIn(alertMsg, "门店不能为空");
@@ -2550,7 +2530,7 @@ function test180067() {
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2578,7 +2558,7 @@ function test180068() {
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2643,7 +2623,7 @@ function test180068() {
     tapReturn();
 
     if (ipadVer >= "7.21") {
-        tapMenu("盘点管理", MORE, "盘点计划表");
+        tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
@@ -2715,17 +2695,7 @@ function test180070() {
     logDebug(+" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function testAddProviderCheck() {
-    tapButton(getScrollView(), 1);
 
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[1];
-    var cells = table1.cells();
-    tap(getStaticText(cells["Vell"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, 2);
-}
 function test180073() {
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
     tapButtonAndAlert(SAVE, OK);

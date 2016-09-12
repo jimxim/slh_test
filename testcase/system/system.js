@@ -7,7 +7,7 @@ function testSystem001() {
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
     run("【系统设置—全局设置】查询/清除", "test210010_210011");
     run("【系统设置—打印机】保存/返回/参数生效", "test210012_210013_210014");
-    run("【系统设置—全局设置】翻页", "test210015_210016");
+    run("【系统设置—全局设置】翻页", "test210015_210016");// 翻页过程中获取页面为半页，实际看不到
     run("【系统设置—打印机】条码打印机IP", "test210055");
     run("【系统设置—打印机】条码打印机端口", "test210056");
     run("【系统设置—打印机】快递单打印端口", "test210057");
@@ -144,14 +144,14 @@ function test210002() {
 }
 function test210003() {
     var qo, o, ret = true;
-    qo = { "备注" : "远程" };
+    qo = { "备注" : "是否支持远程打印" };
     o = { "新值" : "1", "数值" : [ "支持本地和远程同时打印", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("系统设置", "打印机");
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret1 = isAnd(isEqual(7, qr.total), isEqual(7, qr.data.length), isEqual(
-            "商陆花远程打印iPad地址，保存后请重新登录商陆花", qr.data[6]["备注"]));
+            "sc_remote_mac", qr.data[6]["名称"]));
 
     var texts = getStaticTexts(getScrollView(-1));
     var i = getArrayIndexIn(texts, "sc_remote_mac");
@@ -177,7 +177,7 @@ function test210003() {
     var ret3 = isEqual(ip, qr.data[6]["数值"]);
 
     // var qo, o, ret = true;
-    qo = { "备注" : "远程" };
+    qo = { "备注" : "是否支持远程打印" };
     o = { "新值" : "0", "数值" : [ "默认本地打印", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -185,6 +185,8 @@ function test210003() {
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret4 = isAnd(isEqual(6, qr.total), isEqual(6, qr.data.length));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret3=" + ret3 + ", ret4="
+            + ret4);
     return ret && ret1 && ret3 && ret4;// && ret2
 }
 function test210004_210005_210006() {
@@ -284,9 +286,8 @@ function test210012_210013_210014() {
 }
 function test210015_210016() {
     tapMenu("系统设置", "全局设置");
-
+    delay();
     query();
-
     var ret = goPageCheck();
 
     return ret;
@@ -2257,7 +2258,7 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增门店＋");
-    var m = "test" + getTimestamp(8);
+    var m = "test" + randomWord(false, 8);
     var keys = { "店名" : m };
     var fields = editSystemShopAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -2284,7 +2285,7 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
-    var r = "zh" + getTimestamp(4);
+    var r = "zh" + randomWord(false, 4);
     var r1 = getTimestamp(4);
     var keys1 = { "账户全称" : r };
     fields = editSystemAccountAddFields(keys1);
@@ -2307,13 +2308,13 @@ function test210069_210070() {
     tapPrompt();
     ret1 = isAnd(ret1, isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2"));
 
-    var r2 = getTimestamp(2);
+    var r2 = randomWord(false, 2);
     keys1 = { "账户简称" : r2 };
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret2 = isIn(alertMsg1, "能够刷卡或汇款的账户不允许超过6个");
+    var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
     tapReturn();
 
     tapMenu1("系统设置");
