@@ -231,7 +231,7 @@ function testGoods002() {
     run("【货品管理-货品进销存】特殊货品不能显示", "ts100129");
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
     run("【货品管理-当前库存】上架天数检查", "ts100116");
-
+    run("【货品管理-当前库存】选择款号进入详细-检查备注列", "ts100186");
     if (colorSize == "no") {
         run("【货品管理-货品进销存】对快速新增货品做开单操作,然后在进销存界面检查累计销", "ts100114");
         run("【货品管理-新增货品】均色均码模式+省代价格模式+不自动生成款号：输入必填项信息+品牌+吊牌价", "ts100033");
@@ -251,8 +251,7 @@ function testGoods002() {
     run("【货品管理-新增货品】库存录入+输入进货价弹窗判断", "ts100180");
     run("【货品管理-新增货品】检查加工款库存录入取的价格是加工价", "ts100182");
     run("【货品管理-新增货品】检查库存录入-清除按钮", "ts100184");
-    run("【货品管理-新增货品】厂商价格默认不显示", "ts100176");
-    run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100177");
+    run("【货品管理-新增货品】厂商价格默认不显示", "ts100177");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "ts100038_100039_100040");
@@ -342,6 +341,7 @@ function setGoodsParams002() {
  */
 function testGoods003() {
     run("【货品管理-新增货品】款号修改界面吊牌价显示检查", "ts100057");
+    run("【货品管理-货品查询】不同门店不同价格在货品查询界面的数值验证", "ts100176");
     // 均色均码
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入必填项信息", "ts100025");
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100046");
@@ -356,6 +356,9 @@ function testGoods003() {
     }
     run(" 均色均码模式", "setGoodsNoColorParams");
     colorSize = "no";
+}
+function test200Goods003() {
+    run("【货品管理-货品查询】不同门店不同价格在货品查询界面的数值验证", "ts100176");
 }
 
 function setPaymethod2() {
@@ -4623,12 +4626,31 @@ function ts100176() {
     tapReturn();
     return ret;
 }
-function ts100177() {
-    var qo = { "备注" : "不同厂商不同价格" };
-    var o = { "新值" : "1", "数值" : [ "不同厂商不同价格", "in" ] };
+function ts100176() {
+    var qo = { "备注" : "价格模式" };
+    var o = { "新值" : "1", "数值" : [ "不同门店不同的价格体系", "in" ] };
     setGlobalParam(qo, o);
 
-    // return ret;
+    tapMenu("货品管理", "货品查询");
+    var price = 100;
+    var name = window.navigationBars()[1].name();
+    if (name.indexOf("中洲店") != -1) {
+        price = 200;
+    }
+    var keys = { "款号名称" : "ts100176" };// 数据准备，常青店100，中州店200
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = isEqual(qr.data[0]["进货价"], price);
+
+    tapLine();
+    keys = { "进货价" : price };
+    var fields = editGoodsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
+    tapReturn();
+
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
 }
 
 // 第三层详细页面总数验证 若需要数据多则查询kh000有超长订单数据
@@ -4695,21 +4717,32 @@ function ts100180() {
     tapMenu("货品管理", "新增货品+");
     delay();// 防止取不到吊牌价后的下标
     var r = getRandomStr(6);
-    var code = "g" + r;
+    var code = "g" + r, ret = true;
     var keys = { "款号" : code, "名称" : "货品" + r };
-    var jo = { "onlytest" : "yes", "stockEntryCancel" : "yes" };
+    var jo = { "onlytest" : "yes", "stockEntryCancel" : "yes" }, jo2;
     addGoods(keys, jo);
-    editStockEntry(jo);
-    tapPrompt();// 点去弹窗后，会自动返回新增货品界面
-    var ret = isIn(alertMsg, "必须先设置颜色尺码");//
 
     if (colorSize != "no") {
-        keys = { "颜色" : "红色", "尺码" : "S", "进货价" : 200 };
+        editStockEntry(jo);
+        tapPrompt();// 点去弹窗后，会自动返回新增货品界面
+        ret = isAnd(ret, isIn(alertMsg, "必须先设置颜色尺码"));
+
+        keys = { "颜色" : "红色" };
+        addGoods(keys, jo);
+        editStockEntry(jo);
+        tapPrompt();// 点去弹窗后，会自动返回新增货品界面
+        ret = isAnd(ret, isIn(alertMsg, "必须先设置颜色尺码"));
+
+        keys = { "尺码" : "S", "进货价" : 200 };
+        jo2 = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
     } else {
         keys = { "进货价" : 200 };
+        jo2 = { "库存录入" : [ { "颜色" : "均色", "数量" : [ 10 ] } ] };
     }
-    jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
-    addGoods(keys, jo);
+    editStockEntry(jo);// 进入库存录入后，直接点击取消
+    ret = isAnd(ret, !isIn(alertMsg, "货品有进货价并录入库存之后"));
+
+    addGoods(keys, jo2);
     ret = isAnd(ret, isIn(alertMsg, "货品有进货价并录入库存之后"));//
 
     return ret;
@@ -4816,6 +4849,29 @@ function ts100185Field(jo, dueout) {
     conditionQuery(keys);
     var qr = getQR();
     return isEqual(dueout, qr.counts["待发货"]);
+}
+// 后台参数当前库存-出入库明细备注显示内容 1,显示客户和厂商
+// 设置为显示时,如果厂商敏感字段没有勾上,就不显示,勾上就显示
+function ts100186() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "role0617" };
+    conditionQuery(keys);
+    tapLine();
+    var qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
+    var exp = { "调拨入库" : "调入门店：常青店，调出门店：中洲店", "调拨出库" : "调出门店：常青店，调入门店：中洲店",
+        "采购进货" : "Rt", "销售出货" : "小王", "调整入库" : "常青店" };
+    var act = {};
+    for (var i = 0; i < qr.data.length; i++) {
+        var k = qr.data[i]["名称"];
+        act[k] = qr.data[i]["备注"];
+    }
+    tapNaviClose();
+    return isEqualObject(exp, act);
+}
+function ts100187() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    setGlobalParam(qo, o);
 }
 /**
  * 日期从，日期到验证

@@ -2252,7 +2252,7 @@ function test160170() {
     var rmk = getRandomStr(200);// 最长控制200字
     var ret = test160170Fields("采购入库", "新增入库+", rmk);
 
-    if (ipadVer >= 7.23) {
+    if (ipadVer > 7.23) {
         rmk = getRandomStr(200);
         ret = ret && test160170Fields("采购入库", "新增入库+", rmk, "yes");// 挂单
     }

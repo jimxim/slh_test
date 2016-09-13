@@ -61,7 +61,7 @@ function testPurchase002() {
     run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,正负零", "test120013_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查", "test120031_120032");
-    if (ipadVer < 7.23) {
+    if (ipadVer < 7.25) {
         run("【采购入库-按批次查】默认不显示按挂单数据", "test120052");
         // run("【采购入库-新增入库】采购入库增加挂单功能", "test120017");
         run("【采购入库-新增入库】采购入库增加挂单功能,作废", "test120017_1");
@@ -2135,7 +2135,7 @@ function ts120044() {
     qr = getQR();
     var ret = isEqualObject(jo, qr.data[0]);
 
-    if (ipadVer < 7.23) {
+    if (ipadVer < 7.25) {
         keys = { "作废挂单" : "挂单" };
         fields = purchaseQueryBatchFields(keys);
         query(fields);

@@ -18,21 +18,51 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "setSales_order_distribute_3");//
-// run("测试用例", "ts100185");
- run("测试用例", "onlyTest");
+// run("测试用例", "ts100180");
+ run("测试用例", "ts100176");
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-// debugObject(gCache,"gCache");
-    var jo = { "订货" : [ 50 ], "开单" : [ 10, 15 ] };// 一次订货多次发货
-    var ret = ts100185Field(jo, 25);
- return ret;
-}
+    var n=window.navigationBars()[1].name();
 
+   logDebug("n="+n);
+ // debugObject(gCache,"gCache");
+ return true;
+}
+function testBillTimes(){
+    var arr=[],msg;
+    var jo = { "客户" : "xw" , "明细" : [ { "货品" : "3035", "数量" : 30 } ],"onlytest":"yes"};
+    gCache = {};
+    var o1 = { "是否打印" : "打印(客户用)" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    tapMenu1("销售开单");
+    for(var i=0;i<20;i++){
+        var t1 = getTimestamp();
+        tapMenu2(ADDBILL);   
+        editSalesBill(jo, colorSize); 
+        var t=testSave();
+        var t2=getTimestamp();
+        msg="保存耗时"+t+"  开单耗时"+(t2-t1);
+        arr.push(msg);
+    }
+    debugObject(arr);
+    return true;
+}
+function testSave() {
+    var t1 = getTimestamp();
+    saveAndAlertOk();
+    waitUntilAlertInvisible();
+    tapKeyboardHide();
+    tapReturn();
+    var cond = "window.buttons()['按批次查'].isVisible()";
+    waitUntil(cond);
+    var t2=getTimestamp();
+    return t2-t1;
+}
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理"};
@@ -122,7 +152,14 @@ function login000Goods003() {
      logout();
   }
 }
-
+function login200Goods003() {
+    var p1 = {"角色":"总经理"};
+  var ok = login("200","000000",p1);
+  if( ok ) {
+      test200Goods003();
+     logout();
+  }
+}
 
 
 // 中洲店总经理登陆，为常青店准备数据
