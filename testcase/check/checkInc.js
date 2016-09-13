@@ -25,6 +25,7 @@ function editCheckAdd(o, colorSize) {
  * @param o
  */
 function editCheckAddDetNoColorSize(o) {
+    delay();
     var details = o["明细"], mergeLine = 0, detLine = 0, byOrder = 0;
     // 输入超出当前页面显示条数时，比如8条时，tfNum会将前面10行内容都当做标题，因此只在最开始取一次标题数
     var tfNum = getSalesBillDetTfNum(o);
@@ -138,72 +139,26 @@ function editCheckAddSave(o) {
 function testAddPlanCheck(f) {
     delay();
     tapButton(getScrollView(), 1);
-    var view1 = getPopOrView(window, -1);
+    var view1 = getPop(window, -1);
     var table1 = getTableViews(view1)[0];
     var cells = table1.cells();
     var a;
     switch (f) {
     case "按品牌":
         tap(getStaticText(cells["Adidas"], 0));
+        tapButton(view1, SURE);
         break;
     case "按类别":
         tap(getStaticText(cells["登山服"], 0));
+        tapButton(view1, SURE);
         break;
     case "按厂商":
-        tap(getStaticText(cells["Vell"], 0));
+        tap(getStaticText(cells["Adida公司"], 0));// 款号：Adidas-001
+        tapButton(view1, SURE);
         break;
     default:
         logWarn("未知f＝" + f);
         break;
     }
     return f;
-    delay(10);
-    tapButton(view1, "确定");//"确定"
-}
-
-/**
- * 盘点计划-按品牌
- * 
- */
-function testAddBrandCheck() {
-    tapButton(getScrollView(), 1);
-
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[0];
-    var cells = table1.cells();
-    tap(getStaticText(cells["Adidas"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, "确定");
-}
-
-/**
- * 盘点计划-按类别
- * 
- */
-function testAddTypeCheck() {
-    tapButton(getScrollView(), 1);
-
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[1];
-    var cells = table1.cells();
-    tap(getStaticText(cells["登山服"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, 2);
-}
-/**
- * 盘点计划-按厂商
- * 
- */
-function testAddProviderCheck() {
-    tapButton(getScrollView(), 1);
-
-    var view1 = getPopOrView(window, -1);
-    var table1 = getTableViews(view1)[1];
-    var cells = table1.cells();
-    tap(getStaticText(cells["Vell"], 0));
-    // tap(getStaticText(cells["Adidas"], 0));
-
-    tapButton(view1, 2);
 }

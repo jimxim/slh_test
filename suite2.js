@@ -15,9 +15,8 @@ function test000All() {
 // run("【销售开单-开单】童装模式手数需要四位数", "test170719");
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单-收款撤销】收款撤销", "test170277");
-// run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
-// run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
-// run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
+    
+    
  run("", "test0");
 }
 
@@ -27,13 +26,14 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-    tapMenu("盘点管理", "盘点计划+", "按类别+");
-    testAddPlanCheck("按类别");
-    tapButtonAndAlert(SAVE, OK);
-    tapPrompt();
-    var ret2 = isIn(alertMsg, "门店不能为空");
-    return ret2;
-
+// debugArray(texts);
+//    tapButton(getScrollView(),0);
+//    var view1=getPop(window, -1);
+//    var view2=view1.scrollViews()[0];
+//    var texts=getStaticTexts(view2);
+//var ret=isInArray(texts,"常青店");
+//   logDebug(" texts="+texts);
+//   return texts;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
