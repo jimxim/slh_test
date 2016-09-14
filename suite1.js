@@ -18,8 +18,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run("测试用例", "setSales_order_distribute_3");//
-// run("测试用例", "ts100180");
- run("测试用例", "ts100188");
+// run("测试用例", "onlyTest");
+ run("测试用例", "ts100189");
 
 }
 
@@ -28,6 +28,7 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 
+    addGoodsSimple();
     
  // debugObject(gCache,"gCache");
  return true;

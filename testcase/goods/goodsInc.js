@@ -145,7 +145,6 @@ function addGoods(keys, o) {
     if (isDefined(o["上架日期"])) {
         changeMarketTime(o["上架日期"]);
     }
-    delay();
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(-1), fields);
 

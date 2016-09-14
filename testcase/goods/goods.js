@@ -269,6 +269,7 @@ function testGoods002() {
     // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
 
     run("【货品管理-新增货品】新增货品界面可以录入期初库存--库存归属地", "ts100173");
+    run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189"); 
 
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
@@ -308,7 +309,7 @@ function testGoods002() {
 
     // 启用上次价
     run("【货品管理-新增货品】开启或关闭 是否启用上次成交价作为本次开单单价  对启用上次价的影响", "ts100187");
-
+    run("【货品管理-新增货品】启用上次价-否", "ts100188");
     // 开单模式5
     run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
             "test10_fuzzyQueryAndDropDownListCheck");
@@ -4895,32 +4896,64 @@ function ts100187() {
 
 function ts100188() {
     var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    var o = { "新值" : "1", "数值" : [ "启用" ] };
     setGlobalParam(qo, o);
 
-    var jo = addGoodsSimple();
+    var keys = { "启用上次价" : "否" };
+    var jo = addGoodsSimple(keys);
     var code = jo["款号"];
 
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 15 ] } ] };
+    editSalesBill(json, colorSize);
+
     tapMenu("销售开单", ADDBILL);
-    var jo = { "客户" : "xw" };
-    var det = addPOrderBillDet();
-    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "新增入库+");
+    json["客户"] = "rt";
     editSalesBill(json, colorSize);
 
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : code };
-    conditionQuery();
+    conditionQuery(keys);
     tapLine();
     keys = { "进货价" : 100, "零批价" : 150 };
-    addGoods(keys);
+    addGoods(keys);// 修改进货价，销售价
 
-    tapMenu("销售开单", "按批次查");
-    query();
-    tapLine();
-    var qr = getQRDet();
-    var ret = isEqual(qr.data[0]["单价"], 150);
-    tapReturn();
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+    var ret = isEqual(100, json["明细值"].data[0]["单价"]);
 
+    json["客户"] = "xw";
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(150, json["明细值"].data[0]["单价"]));
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(150, json["明细值"].data[0]["单价"]));
+    return ret;
+}
+function ts100189() {
+    var keys = { "厂商" : "vell", "门店" : "仓库店" };// 绑定仓库为文一店
+    var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+    if (colorSize == "no") {
+        jo["库存录入"][0]["颜色"] = "均色";
+    }
+    var json = addGoodsSimple(keys, jo);
+    var code = json["款号"];
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : code, "门店" : "仓库店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = qr.data.length == 0;// 库存算到文一店，应该没有数据
+
+    keys = { "门店" : "文一店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(10, qr.data[0]["库存"]));
     return ret;
 }
 /**

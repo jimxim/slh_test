@@ -5,7 +5,6 @@
  */
 function addGoodsSimple(keys2, o) {
     tapMenu("货品管理", "新增货品+");
-    delay();// 防止取不到吊牌价后的下标
     var r = getRandomStr(8);
     var keys = {};
     var code = "g" + r;
