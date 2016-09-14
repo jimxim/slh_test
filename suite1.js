@@ -19,20 +19,20 @@ function test000All() {
 
 // run("测试用例", "setSales_order_distribute_3");//
 // run("测试用例", "ts100180");
- run("测试用例", "ts100176");
+ run("测试用例", "test190013");
 
 }
 
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
     var n=window.navigationBars()[1].name();
 
-   logDebug("n="+n);
  // debugObject(gCache,"gCache");
  return true;
 }
+// 检验开单时间
 function testBillTimes(){
     var arr=[],msg;
     var jo = { "客户" : "xw" , "明细" : [ { "货品" : "3035", "数量" : 30 } ],"onlytest":"yes"};
