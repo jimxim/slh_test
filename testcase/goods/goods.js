@@ -305,6 +305,10 @@ function testGoods002() {
     run("设置销售订单发货模式3", "setSales_order_distribute_3");
     run("【货品管理-当前库存】销售订单发货模式3，检查待发货", "ts100185");
     run("设置销售订单发货模式1", "setSales_order_distribute_1");
+
+    // 启用上次价
+    run("【货品管理-新增货品】开启或关闭 是否启用上次成交价作为本次开单单价  对启用上次价的影响", "ts100187");
+
     // 开单模式5
     run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
             "test10_fuzzyQueryAndDropDownListCheck");
@@ -4870,8 +4874,54 @@ function ts100186() {
 }
 function ts100187() {
     var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    var o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
     setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var ret = isHasStaticTexts(getScrollView(-1), [ "启用上次价" ]);// 关闭后不显示启用上次价
+    tapReturn();
+
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "启用上次价" : "是" };
+    var fields = testEditGoodsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));// 显示启用上次价，且默认为是
+    tapReturn();
+
+    return ret;
+}
+
+function ts100188() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    setGlobalParam(qo, o);
+
+    var jo = addGoodsSimple();
+    var code = jo["款号"];
+
+    tapMenu("销售开单", ADDBILL);
+    var jo = { "客户" : "xw" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : code };
+    conditionQuery();
+    tapLine();
+    keys = { "进货价" : 100, "零批价" : 150 };
+    addGoods(keys);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapLine();
+    var qr = getQRDet();
+    var ret = isEqual(qr.data[0]["单价"], 150);
+    tapReturn();
+
+    return ret;
 }
 /**
  * 日期从，日期到验证

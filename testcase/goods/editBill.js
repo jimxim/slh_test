@@ -185,6 +185,7 @@ function editShopInFlitting(secure) {
  * @param o
  */
 function editStatisticAnalysisIn(o) {
+    delay();// 有卡顿，不等捕捉不到控件 0831
     editStatisticAnalysisInField1(o, "日期");
     editStatisticAnalysisInField1(o, "账户");
     editStatisticAnalysisInField1(o, "收支备注");// 防止数据重复提交
@@ -197,7 +198,6 @@ function editStatisticAnalysisIn(o) {
 function editStatisticAnalysisInField1(o, key) {
     var v = o[key];
     if (isDefined(v)) {
-        delay();// 有卡顿，不等捕捉不到控件 0831
         var keys = {};
         keys[key] = v;
         var fields = editStatisticAnalysisInFields(keys);
