@@ -15,14 +15,9 @@ function test000All() {
 // run("【销售开单-开单】童装模式手数需要四位数", "test170719");
 // run("【销售开单】挂单界面打印时提示检查", "test170400");// 需参数发布
 // run("【销售开单-收款撤销】收款撤销", "test170277");
-//    run("【销售开单－开单】点击开单界面其它按钮后再去点核销按钮", "test170057");//界面取一半
-//    run("【销售开单－开单】款号较多时打印", "test170100");
-    run("【销售开单－开单】新增货品", "test170129");
-//    run("【销售开单－开单】连续新增货品", "test170131");
-//    run("【销售开单－开单】新增货品后再输入别的款号", "test170132");
-//    run("【销售开单－开单】开单保存后再增删款号", "test170133");
-//    run("【销售开单－开单】待作废", "test170138");
-//    run("【销售开单－开单】复制-粘贴", "test170139");
+    
+    run("【盘点管理-新增盘点】款号提示", "test180085");
+    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");
 // run("", "test0");
 }
 
@@ -33,13 +28,13 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
-//    tapButton(getScrollView(),0);
-//    var view1=getPop(window, -1);
-//    var view2=view1.scrollViews()[0];
-//    var texts=getStaticTexts(view2);
-//var ret=isInArray(texts,"常青店");
-//   logDebug(" texts="+texts);
-//   return texts;
+// tapButton(getScrollView(),0);
+// var view1=getPop(window, -1);
+// var view2=view1.scrollViews()[0];
+// var texts=getStaticTexts(view2);
+// var ret=isInArray(texts,"常青店");
+// logDebug(" texts="+texts);
+// return texts;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

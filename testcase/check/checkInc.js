@@ -153,7 +153,7 @@ function testAddPlanCheck(f) {
         tapButton(view1, SURE);
         break;
     case "按厂商":
-        tap(getStaticText(cells["Adida公司"], 0));// 款号：Adidas-001
+        tap(getStaticText(cells["Adida公司"], 0));
         tapButton(view1, SURE);
         break;
     default:
@@ -167,22 +167,39 @@ function testAddPlanCheck(f) {
  * @param f
  * @param i
  */
-function testAddPlanGroupCheck(i1, i2, i3, i4) {
+function testAddPlanGroupCheck(o) {
     delay();
-    tapButton(getScrollView(), 1);
-    tap(getStaticText(cells["登山服"], 0));
-    tapButton(view1, SURE);
+    if (isUndefined(o)) {
+        o = [ "类别", "品牌", "厂商", "季节" ];
+    }
+    var len = o.length;
+    var f = o[0];
+    var n;
+    switch (f) {
+    case "类别":
+        n = 1;
+        break;
+    case "品牌":
+        n = 2;
+        break;
+    case "厂商":
+        n = 3;
+        break;
+    case "季节":
+        n = 4;
+        break;
+    default:
+        logWarn("未知f＝" + f);
+        break;
+    }
 
-    tapButton(getScrollView(), 2);
-    tap(getStaticText(cells["Adidas"], 0));
-    tapButton(view1, SURE);
-
-    tapButton(getScrollView(), 3);
-    tap(getStaticText(cells["Adida公司"], 0));// 款号：Adidas-001
-    tapButton(view1, SURE);
-
-    tapButton(getScrollView(), 3);
-    tap(getStaticText(cells["春季"], 0));// 款号：Adidas-001
-    tapButton(view1, SURE);
-
+    var arr = [ "登山服", "Adidas", "Adida公司", "夏季" ];
+    for (var i = n; i <= 4; i++) {
+        tapButton(getScrollView(), i);
+        var view1 = getPop(window, -1);
+        var table1 = getTableViews(view1)[0];
+        var cells = table1.cells();
+        tap(getStaticText(cells[arr[i - 1]], 0));
+        tapButton(view1, SURE);
+    }
 }

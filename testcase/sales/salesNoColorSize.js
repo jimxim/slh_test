@@ -3838,7 +3838,7 @@ function test170138() {
     var batch = qr.data[0]["批次"];
     tapFirstText();
 
-    if (ipadVer >= "7.23") {
+    if (ipadVer >= "7.25") {
         tapMenu2("getMenu_More");
         tapMenu3("待作废");
         tapButtonAndAlert(OK);
@@ -4420,7 +4420,7 @@ function test170172() {
         ret3 = false;
     }
 
-    if (ipadVer < "7.23") {
+    if (ipadVer <= "7.23") {
         tapButtonAndAlert("待作废", OK);
         tapPrompt();
         var ret1 = isIn(alertMsg, "待作废成功");
@@ -9558,7 +9558,7 @@ function test170526() {
     qo = { "备注" : "总计是否需要四舍五入" };
     o = { "新值" : "0", "数值" : [ "不需要" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "单价小数位" };
     o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));

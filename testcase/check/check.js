@@ -55,6 +55,9 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180078");
     run("【盘点管理-盘点计划】按品牌/按类别/按厂商三个不能同时新增", "test180079");
     run("【盘点管理-盘点计划表】查询清除排序", "test180082_180083");
+    run("【盘点管理-盘点计划】盘点计划组合类型", "test180084");
+    run("【盘点管理-新增盘点】款号提示", "test180085");
+    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function checkPrepare_Off() {
@@ -2780,6 +2783,7 @@ function test180074_180082_180083() {
     tapPrompt();
 
     tapMenu("盘点管理", "新增盘点+");
+    // 款号：Adidas-001对应厂商Adida公司
     var josn = { "明细" : [ { "货品" : "adidas", "数量" : 50 } ] };
     editCheckAddNoColorSize(josn);
 
@@ -3149,12 +3153,13 @@ function test180082_180083() {
     var ret3 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 1)));
 
+    query();
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("计划类型");
     ret = ret && sortByTitle("操作人");
-    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("操作时间", IS_OPTIME);
     ret = ret && sortByTitle("盘点类别");
     ret = ret && sortByTitle("盘点品牌");
     ret = ret && sortByTitle("盘点厂商");
@@ -3165,6 +3170,141 @@ function test180082_180083() {
     return ret && ret1 && ret2 && ret3;
 }
 function test180084() {
+    checkPrepare();
+    checkPrepare1();
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理");
+    tapPrompt();
+    tapReturn();
+
     tapMenu("盘点管理", "盘点计划+", "按组合+");
-    
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
+    testAddPlanGroupCheck();
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "getMenu_More", "盘点计划表");
+    query();
+    var qr = getQR();
+    var ret = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual("按组合",
+            qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作时间"], 2), isEqual("登山服",
+                    qr.data[0]["盘点类别"]), isEqual("Adidas", qr.data[0]["盘点品牌"]),
+            isEqual("Adida公司", qr.data[0]["盘点厂商"]), isEqual("夏季",
+                    qr.data[0]["盘点季节"]));
+
+    var r = 1 + getTimestamp(2);
+    tapMenu("盘点管理", "新增盘点+");
+    var josn = { "明细" : [ { "货品" : "3035", "数量" : r } ] };
+    editCheckAddNoColorSize(josn);
+    var ret1 = isIn2(alertMsg, "款号:3035,不属于本次盘点计划");
+
+    tapMenu("盘点管理", "新增盘点+");
+    var josn = { "明细" : [ { "货品" : "adidas", "数量" : r } ] };
+    editCheckAddNoColorSize(josn);
+
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("全盘处理", OK);
+    delay(2);
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("盘点管理", "处理记录");
+    var keys = { "日期从" : "2015-01-01", "日期到" : getDay(1), "门店" : "常青店",
+        "是否撤销" : "否" };
+    var fields = checkProcessRecordFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret2 = isAnd(isEqual(r, qr.data[0]["盘后数量"]), isEqual("总经理",
+            qr.data[0]["处理人"]), isAqualOptime(getOpTime(), qr.data[0]["处理时间"],
+            2));
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test180085() {
+    tapMenu("盘点管理", "盘点计划+", "按厂商+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+
+    testAddPlanCheck("按厂商");
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "anew" };
+    var fields = queryGoodsFields(keys);
+    query(fields);
+    var qr = getQR();
+
+    tapMenu("盘点管理", "新增盘点+");
+    var josn = { "明细" : [ { "货品" : "3035", "数量" : 1 },
+            { "货品" : "k200", "数量" : 2 }, { "货品" : qr.data[0]["款号"], "数量" : 3 },
+            { "货品" : qr.data[1]["款号"], "数量" : 4 },
+            { "货品" : qr.data[2]["款号"], "数量" : 5 },
+            { "货品" : qr.data[3]["款号"], "数量" : 6 },
+            { "货品" : qr.data[4]["款号"], "数量" : 7 },
+            { "货品" : qr.data[5]["款号"], "数量" : 8 },
+            { "货品" : qr.data[6]["款号"], "数量" : 9 },
+            { "货品" : qr.data[7]["款号"], "数量" : 10 },
+            { "货品" : qr.data[8]["款号"], "数量" : 11 },
+            { "货品" : qr.data[9]["款号"], "数量" : 12 },
+            { "货品" : qr.data[10]["款号"], "数量" : 13 },
+            { "货品" : qr.data[11]["款号"], "数量" : 14 },
+            { "货品" : qr.data[12]["款号"], "数量" : 15 },
+            { "货品" : qr.data[13]["款号"], "数量" : 16 },
+            { "货品" : qr.data[14]["款号"], "数量" : 17 } ] };
+    editCheckAddNoColorSize(josn);
+    // var ret = isIn2(alertMsg, "款号:3035,不属于本次盘点计划");
+    // 款号:anewkhaoJGKWW6,anewkhaoVvAK,anewkhao1298,anewkhao5qIB,
+    // anewCDoTU,anewCyyk6,anewC1GnE,3035,anewKHAO7040,anewCB2vp,anewkhaoBW7j
+    // ,anewCUsG2,anewkhaoCgF1,k200,anewkhaoFaVhGa...不属于本次盘点计划
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var m = alertMsg1.match(/[^，。？]+(?=[，。？])/g);
+    var ret = isAnd(isIn(alertMsg1, "不属于本次盘点计划"), isEqual(alertMsg1,
+            qr.data[0]["款号"]), isEqual(alertMsg1, qr.data[1]["款号"]), isEqual(
+            alertMsg1, qr.data[2]["款号"]), isEqual(alertMsg1, qr.data[3]["款号"]),
+            isEqual(alertMsg1, qr.data[4]["款号"]), isEqual(alertMsg1,
+                    qr.data[5]["款号"]), isEqual(alertMsg1, qr.data[6]["款号"]),
+            isEqual(alertMsg1, qr.data[7]["款号"]), isEqual(alertMsg1,
+                    qr.data[8]["款号"]), isEqual(alertMsg1, qr.data[9]["款号"]),
+            isEqual(alertMsg1, qr.data[10]["款号"]), isEqual(alertMsg1,
+                    qr.data[11]["款号"]), isEqual(alertMsg1, qr.data[12]["款号"]),
+            isEqual(alertMsg1, qr.data[13]["款号"]), isEqual(alertMsg1,
+                    qr.data[14]["款号"]), isEqual(alertMsg1, "3035"), isEqual(
+                    alertMsg1, "k200"));
+
+    logDebug(" ret=" + ret + " m=" + m);
+    return ret;
+}
+function test180086() {
+    tapMenu("盘点管理", "getMenu_More", "未盘点款号");
+    var keys = { "款号" : "k300", "款号名称" : "铅笔裤", "品牌" : "adidas", "类别" : "登山服",
+        "厂商" : "rt", "门店" : "常青店", "日期从" : getDay(-7), "日期到" : getToday(),
+        "批次从" : 1, "批次到" : 100 };
+    var fields = checkUnCheckCodeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isAnd(isEqual("k300", qr.data[0]["款号"]), isEqual("铅笔裤",
+            qr.data[0]["名称"]), isEqual("常青店", qr.data[0]["门店"]));
+
+    return ret;
 }

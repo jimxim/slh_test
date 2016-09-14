@@ -351,3 +351,65 @@ function checkPlanAddField(key, show) {
     }
     return f;
 }
+// 盘点管理-未盘点款号
+function checkUnCheckCodeFields(keys, show) {
+    return getTFields("checkUnCheckCodeField", keys, show);
+}
+function checkUnCheckCodeField(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "a", 1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "aaa");
+        break;
+    case "brand":
+    case "品牌":
+        f = new TField("品牌", TF_SC, 2, "Addidas");
+        if (show) {
+            f.type = TF;
+            f.index = 1
+        }
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", TF_SC, 3, "登山服");
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 4, "adi", 1, 0);
+        if (show) {
+            f.value = "Adida公司";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 5, "常青店");
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 6, "2015-9-11");
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 7, getToday());
+        break;
+    case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 8, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("批次到", TF, 9, "20");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
