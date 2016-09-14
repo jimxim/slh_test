@@ -132,7 +132,7 @@ function editCheckAddSave(o) {
 }
 
 /**
- * 盘点计划-按品牌
+ * 新增盘点计划-按品牌、按类别、按厂商
  * @param f
  * @param i
  */
@@ -161,4 +161,28 @@ function testAddPlanCheck(f) {
         break;
     }
     return f;
+}
+/**
+ * 新增盘点计划-按组合
+ * @param f
+ * @param i
+ */
+function testAddPlanGroupCheck(i1, i2, i3, i4) {
+    delay();
+    tapButton(getScrollView(), 1);
+    tap(getStaticText(cells["登山服"], 0));
+    tapButton(view1, SURE);
+
+    tapButton(getScrollView(), 2);
+    tap(getStaticText(cells["Adidas"], 0));
+    tapButton(view1, SURE);
+
+    tapButton(getScrollView(), 3);
+    tap(getStaticText(cells["Adida公司"], 0));// 款号：Adidas-001
+    tapButton(view1, SURE);
+
+    tapButton(getScrollView(), 3);
+    tap(getStaticText(cells["春季"], 0));// 款号：Adidas-001
+    tapButton(view1, SURE);
+
 }

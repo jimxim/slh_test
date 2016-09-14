@@ -6353,7 +6353,7 @@ function test170248() {
     o = { "新值" : "2", "数值" : [ "默认打包价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "名称" : "clist_singlerec_select" };// 自动完成的列表只有单个记录时是否自动选择
+    qo = { "名称" : "aclist_singlerec_select" };// 自动完成的列表只有单个记录时是否自动选择
     o = { "新值" : "1", "数值" : [ "适用于手写输入", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
@@ -9557,6 +9557,10 @@ function test170526() {
     var qo, o, ret = true;
     qo = { "备注" : "总计是否需要四舍五入" };
     o = { "新值" : "0", "数值" : [ "不需要" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "单价小数位" };
+    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "0." + getRandomInt(300);

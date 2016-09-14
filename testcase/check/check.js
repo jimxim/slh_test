@@ -49,12 +49,12 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
     run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
     run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
-    run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074");
+    run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074_180082_180083");
     run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单", "test180076");
     run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180077");
     run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180078");
     run("【盘点管理-盘点计划】按品牌/按类别/按厂商三个不能同时新增", "test180079");
-
+    run("【盘点管理-盘点计划表】查询清除排序", "test180082_180083");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function checkPrepare_Off() {
@@ -88,7 +88,7 @@ function checkPrepare() {
     return ret;
 }
 function checkPrepare1() {
-    tapMenu("盘点管理", MORE, "盘点计划表");
+    tapMenu("盘点管理", "getMenu_More", "盘点计划表");
     var keys = { "是否处理" : "否" };
     var fields = checkPlanFields(keys);
     query(fields);
@@ -2747,7 +2747,7 @@ function test180073() {
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
     return ret1 && ret2 && ret3;
 }
-function test180074() {
+function test180074_180082_180083() {
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
@@ -2839,7 +2839,9 @@ function test180074() {
     } else {
         tapMenu("盘点管理", "盘点计划表");
     }
-    query();
+    var keys = { "门店" : "中洲店", "是否处理" : "否" };
+    var fields = checkPlanFields(keys);
+    query(fields);
     var qr = getQR();
     var ret3 = isAnd(isEqual("中洲店", qr.data[0]["门店"]), isEqual("按厂商",
             qr.data[0]["计划类型"]), isEqual("总经理", qr.data[0]["操作人"]),
@@ -2847,10 +2849,15 @@ function test180074() {
                     qr.data[0]["盘点类别"]), isEqual("", qr.data[0]["盘点品牌"]),
             isEqual("Adida公司", qr.data[0]["盘点厂商"]));
 
+    tapButton(window, CLEAR);
+    var ret4 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)));
+
     checkPrepare1();
 
-    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
-    return ret1 && ret2 && ret3;
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
+            + ret4);
+    return ret1 && ret2 && ret3 && ret4;
 }
 function test180076() {
     tapMenu("盘点管理", "盘点处理");
@@ -3122,5 +3129,42 @@ function test180079() {
 function test180081() {
     // 总经理门店下拉列表显示全部门店
     tapMenu("盘点管理", "盘点计划+", "按品牌+");
+
+}
+function test180082_180083() {
+    tapMenu("盘点管理", "getMenu_More", "盘点计划表");
+    var keys = { "门店" : "常青店", "是否处理" : "是" };
+    var fields = checkPlanFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret1 = !isEqual(0, qr.total);
+
+    tapButton(window, QUERY);
+    tapFirstText();
+    tapButtonAndAlert("删除计划", OK);
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "不能删除已执行的盘点计划");
+
+    tapButton(window, CLEAR);
+    var ret3 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)));
+
+    var ret = goPageCheck();
+
+    ret = ret && sortByTitle("门店");
+    ret = ret && sortByTitle("计划类型");
+    ret = ret && sortByTitle("操作人");
+    ret = ret && sortByTitle("操作日期", IS_OPTIME);
+    ret = ret && sortByTitle("盘点类别");
+    ret = ret && sortByTitle("盘点品牌");
+    ret = ret && sortByTitle("盘点厂商");
+    ret = ret && sortByTitle("盘点季节");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test180084() {
+    tapMenu("盘点管理", "盘点计划+", "按组合+");
     
 }

@@ -109,6 +109,6 @@ js_func="$js_func test000testStatisticPicture001"
 js_func="$js_func test000System001  test000System002"
 
 
-SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air 2 (9.2)"
+SIMULATOR_NAME_OR_DEVICE_UDID="iPad 2 (8.4)"
 
 . $D/run_uia.sh

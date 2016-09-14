@@ -624,6 +624,7 @@ function editQuickAddCustomerField(key, show) {
  * @returns
  */
 function editQuickAddGoods(o, o1, ret) {
+    delay();
     if (isUndefined(ret)) {
         ret = "no";
     }
