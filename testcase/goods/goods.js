@@ -208,7 +208,7 @@ function testGoods001() {
             "test100082_100083_100084_100085_100093");
     run("【货品管理-更多-库存调整单】条件查询_清除按钮", "test100104_100105");
     run("【货品管理-更多-库存调整单】翻页/排序/汇总", "ts100106");
-
+    run("【货品管理-更多-颜色组】页面跳转", "ts100195");
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证数据准备", "test100071_100072Prepare");
 }
 
@@ -252,6 +252,8 @@ function testGoods002() {
     run("【货品管理-新增货品】检查加工款库存录入取的价格是加工价", "ts100182");
     run("【货品管理-新增货品】检查库存录入-清除按钮", "ts100184");
     run("【货品管理-新增货品】厂商价格默认不显示", "ts100177");
+    // run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100192");//TF_AC需要优化
+    // run("【货品管理-新增货品】厂商价格-清除", "ts100193");//TF_AC需要优化
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "ts100038_100039_100040");
@@ -269,7 +271,7 @@ function testGoods002() {
     // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
 
     run("【货品管理-新增货品】新增货品界面可以录入期初库存--库存归属地", "ts100173");
-    run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189"); 
+    run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189");
 
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
@@ -285,6 +287,7 @@ function testGoods002() {
     run("【货品管理-基本设置】检查基本品牌新增", "ts100059Brand");
     run("【货品管理-基本设置】检查基本属性新增提示框验证", "ts100059Msg");
     run("【货品管理-基础设置-所有尺码】新增/显示配码", "ts100095_96");
+    run("【货品管理-基本设置-所有颜色】选择已停用的颜色类别的颜色保存", "ts100194");
     run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
     run("【货品管理-基本设置-新增品牌折扣】品牌折扣三位小数", "ts100121");
     run("【货品管理-基础设置-价格名称】修改价格名称重复", "ts100122");
@@ -310,9 +313,12 @@ function testGoods002() {
     // 启用上次价
     run("【货品管理-新增货品】开启或关闭 是否启用上次成交价作为本次开单单价  对启用上次价的影响", "ts100187");
     run("【货品管理-新增货品】启用上次价-否", "ts100188");
-    // 开单模式5
+    run("【货品管理-新增货品】启用上次价-否+先输款号，再输客户", "ts100190");
+    run("【货品管理-新增货品】启用上次价-否+对上次折扣也有影响", "ts100191");// 折扣模式，
+    run("关闭 是否启用上次成交价作为本次开单单价", "setSales_use_lastsaleprice_0");// 防止对后续用例造成影响
+
     run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
-            "test10_fuzzyQueryAndDropDownListCheck");
+            "test10_fuzzyQueryAndDropDownListCheck");// 开单模式5
     run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
     run("开单模式2", "setPaymethod2");
 }
@@ -4621,7 +4627,7 @@ function ts100175() {
     return ret;
 }
 
-function ts100176() {
+function ts100177() {
     var qo = { "备注" : "不同厂商不同价格" };
     var o = { "新值" : "0", "数值" : [ "默认关闭", "in" ] };
     setGlobalParam(qo, o);
@@ -4955,6 +4961,207 @@ function ts100189() {
     qr = getQR();
     ret = isAnd(ret, isEqual(10, qr.data[0]["库存"]));
     return ret;
+}
+function ts100190() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "1", "数值" : [ "启用" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否要弹出价格刷新窗口" };// 一般都是默认刷新，这里只是确认
+    o = { "新值" : "1", "数值" : [ "默认刷新" ] };
+    setGlobalParam(qo, o);
+
+    var keys = { "启用上次价" : "否" };
+    var jo = addGoodsSimple(keys);
+    var code = jo["款号"];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 15 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "新增入库+");
+    json["客户"] = "rt";
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : code };
+    conditionQuery(keys);
+    tapLine();
+    keys = { "进货价" : 100, "零批价" : 150 };
+    addGoods(keys);// 修改进货价，销售价
+
+    jo = { "客户" : "rt" };
+    json = { "明细" : [ { "货品" : code, "数量" : [ 15 ] } ], "onlytest" : "yes" };
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+    editSalesBill(jo, colorSize);// 先输入货品再输客户与100188相反
+    var ret = isEqual(100, jo["明细值"].data[0]["单价"]);
+
+    jo["客户"] = "xw";
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    editSalesBill(jo, colorSize);
+    ret = isAnd(ret, isEqual(150, jo["明细值"].data[0]["单价"]));
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    editSalesBill(jo, colorSize);
+    ret = isAnd(ret, isEqual(150, jo["明细值"].data[0]["单价"]));
+    return ret;
+}
+function ts100191() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "1", "数值" : [ "启用" ] };
+    setGlobalParam(qo, o);
+
+    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
+    var ret = ts100191Field(o);
+    o = { "新值" : "6", "数值" : [ "现金+刷卡+汇款+客户折扣", "in" ] };
+    ret = isAnd(ret, ts100191Field(o));
+    return ret;
+}
+function ts100191Field(o, keys2) {
+    var qo = { "备注" : "开单模式" };
+    setGlobalParam(qo, o);
+
+    var keys = { "启用上次价" : "否" };
+    var jo = addGoodsSimple(keys);
+    var code = jo["款号"];
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw",
+        "明细" : [ { "货品" : code, "数量" : [ 15 ], "折扣" : "0.7" } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : code };
+    conditionQuery(keys);
+    tapLine();
+    keys = { "进货价" : 100, "零批价" : 150 };
+    addGoods(keys);// 修改进货价，销售价
+
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    var ret = isAnd(isEqual(150, json["明细值"].data[0]["单价"]), isEqual(1,
+            json["明细值"].data[0]["折扣"]));
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(150, json["明细值"].data[0]["单价"]), isEqual(1,
+            json["明细值"].data[0]["折扣"]));
+    return ret;
+}
+function setSales_use_lastsaleprice_1() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "1", "数值" : [ "启用" ] };
+    return setGlobalParam(qo, o);
+}
+function setSales_use_lastsaleprice_0() {
+    var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
+    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    return setGlobalParam(qo, o);
+}
+function ts100192() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "使用不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    var keys = { "onlytest" : "yes" };
+    addGoodsSimple({}, keys);
+
+    keys = { "厂商价格" : [ { "厂商" : "zxcvasdf", "进货价" : 100 } ] };
+    editSupplierPrice(keys);// 输入不存在厂商
+    tapPrompt();
+    var ret = isIn(alertMsg, "必须从下拉列表选择");
+
+    var view = getPopView(window, -1);
+    tapButton(view, 0);// "添加+"
+    var tf = getTextFields(view);
+    ret = isAnd(ret, isEqual(12, tf.length));// 点新增后增加3行，共6行12个TF
+
+    tapButton(getPop(), CANCEL);// 点击取消返回新增货品界面
+    view = getPop();
+    ret = isAnd(ret, isUIAElementNil(view));
+
+    keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
+            { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
+    editSupplierPrice(keys);
+    var exp = "Rt:120;Vell:140;联想:160";
+    ret = isAnd(ret, isEqual(exp), getTextViewValue(window, -1));
+    editGoodsSave({});
+
+    tapMenu2("货品查询");
+    query();
+    tapLine();
+    keys = { "厂商价格" : exp };
+    var fields = editGoodsFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+
+    return ret;
+}
+function ts100193() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "使用不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    var keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
+            { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
+    var jo = { "supplierPriceClear" : "yes" };
+    addGoodsSimple(keys, jo);// 新增厂商价格后点击清楚按钮
+
+    tapMenu2("货品查询");
+    query();
+    tapLine();
+    keys = { "厂商价格" : null };
+    var fields = editGoodsFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+
+    return ret;
+}
+function ts100194() {
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    var keys = { "名称" : "停用颜色" };
+    conditionQuery(keys);
+    tapLine();
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "所选颜色类别已停用");
+    tapReturn();
+
+    tapMenu("货品管理", "基本设置", "所有尺码");
+    keys = { "名称" : "停用尺码" };
+    conditionQuery(keys);
+    tapLine();
+    saveAndAlertOk();
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "所选尺码类别已停用"));
+    tapReturn();
+    return ret;
+}
+function ts100195() {
+    tapMenu("货品管理", "getMenu_More", "所有颜色组");
+    query();
+    var qr = getQR();
+    var length = sub(qr.data.length, 1);
+    tapLine(getRandomNum(0, length));
+    saveAndAlertOk();
+    delay();
+    tapLine(getRandomNum(0, length));
+    tapReturn();
+    delay();
+    var qr2 = getQR();
+    return isEqualDyadicArray(qr.data, qr2.data);
+}
+function ts100196(){
+    
 }
 /**
  * 日期从，日期到验证

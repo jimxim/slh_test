@@ -79,7 +79,53 @@ function setStockEntryValue(details) {
         }
     }
 }
+/**
+ * 新增/修改厂商价格
+ * @param o
+ */
+function editSupplierPrice(o) {
+    var e = getEditGoodsElements(), addBtn, clearBtn;
+    var idx = getEditGoodsIndex(e, "厂商价格");
+    if (idx[1] < 0) {
+        logDebug("未找到厂商价格");
+        return;
+    } else {
+        clearBtn = idx[1];
+        addBtn = idx[1] + 1;
+        tapButtonScroll(getScrollView(), addBtn);// 需要滑动才可见
+    }
+    if (isDefined(o["supplierPriceAdd"])) {
+        tapButton(getPopView(window, -1), 0);// "添加+" 点击一次新增3行
+    }
+    var details = o["厂商价格"];
+    setSupplierPrice(details);
 
+    if (isDefined(o["supplierPriceOnlytest"])) {
+        return;
+    }
+    if (isDefined(o["supplierPriceCancel"])) {
+        tapButton(getPop(), CANCEL);
+    } else {
+        tapButton(getPop(), OK);
+    }
+    if (isDefined(o["supplierPriceClear"])) {
+        tapButton(getScrollView(), clearBtn);// 清除
+    }
+}
+function setSupplierPrice(details) {
+    if (isDefined(details) && details.length > 0) {
+        var view = getPopView(window, -1);
+        var fields = [], f;
+        for (var i = 0; i < details.length; i++) {
+            var d = details[i];
+            f = new TField("厂商", TF_AC, i * 2, d["厂商"], -1, 0);
+            fields.push(f)
+            f = new TField("进货价", TF, i * 2 + 1, d["进货价"]);// TF_KB
+            fields.push(f)
+        }
+        setTFieldsValue(view, fields);
+    }
+}
 /**
  * 做库存调整单
  * @param r 调整后库存

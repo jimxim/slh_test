@@ -151,7 +151,9 @@ function addGoods(keys, o) {
     if (isDefined(o["库存录入"])) {
         editStockEntry(o);//
     }
-
+    if (isDefined(o["厂商价格"])) {
+        editSupplierPrice(o);
+    }
     editGoodsSave(o)
 }
 function editGoodsSave(o) {
