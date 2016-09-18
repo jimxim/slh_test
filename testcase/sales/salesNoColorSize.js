@@ -450,6 +450,10 @@ function setNoColorSize_1Params() {
     o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "盘点时是否允许输入负数" };
+    o = { "新值" : "1", "数值" : [ "开启" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     // qo = { "备注" : "按明细" };
     // o = { "新值" : "1", "数值" : [ "显示与第1个价格的差额", "in" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
@@ -2063,20 +2067,14 @@ function test170077_2() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
+    var qr = json["明细值"];
     var ret1 = isEqual(0.688, qr.data[0]["折扣"]);
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
 
     tapMenu("销售订货", "按批次查");
     query();
-
     tapFirstText();
     qr = getQRDet();
     ret1 = isAnd(ret1, isEqual(0.688, qr.data[0]["折扣"]));
@@ -9378,8 +9376,8 @@ function test170509() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
+    var json = { "客户" : "ls", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     var r = "anewKH" + getTimestamp(4);
     var r1 = "1" + getTimestamp(3);
@@ -9395,7 +9393,7 @@ function test170509() {
     query();
     tapFirstText();
     var qr = getQRDet();
-    ret = isAnd(ret, isIn(qr.data[0]["货品"], r),
+    var ret1 = isAnd(isIn(qr.data[0]["货品"], r),
             isEqual("均色", qr.data[0]["颜色"]), isEqual("均码", qr.data[0]["尺码"]));
     tapReturn();
 
@@ -9410,15 +9408,15 @@ function test170509() {
 
     tapFirstText();
     var fields = editGoodsFields();
-    var ret1 = checkShowFields(getScrollView(-1), fields);
+    var ret2 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", 款号=" + a + ", 名称=" + b);
-    return ret && ret1;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170522() {
     var qo, o, ret = true;

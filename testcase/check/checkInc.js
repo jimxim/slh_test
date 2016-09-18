@@ -203,3 +203,111 @@ function testAddPlanGroupCheck(o) {
         tapButton(view1, SURE);
     }
 }
+
+/**
+ * 如果 查询结果数据中有数据等于expected ，返回真
+ * @param qr QResult对象
+ * @param qr1 期望QResult数据对象
+ * @returns {Boolean}
+ */
+function isEqualQRDataOfObject(qr, qr1) {
+    var ret = false;
+    for (var j = 0; j < qr1.data.length; j++) {
+        var expected = qr1.data[j];
+        for (var i = 0; i < qr.data.length; i++) {
+            var data1 = qr.data[i];
+            ret = isEqualObject3(expected, data1);
+            if (ret) {
+                break;
+            }
+        }
+    }
+    return ret;
+}
+
+/**
+ * 2个对象相同属性的值是否相等
+ * @param expected
+ * @param actual
+ * @returns {Boolean}
+ */
+function isEqualObject3(expected, actual, allow) {
+    debugObject(expected, "expected");
+    debugObject(actual, "actual");
+    var ok = isDefined(allow);
+    var ret = true;
+    var v1, v2;
+    for ( var i in expected) {
+        if (actual.hasOwnProperty(i)) {
+            v1 = expected[i];
+            v2 = actual[i];
+            if (ok) {
+                ret = ret && isAqualOptime(v1, v2, allow);
+            } else {
+                ret = ret && (v1 == v2);
+            }
+        }
+    }
+    logDebug(" ret=" + ret);
+    return ret;
+}
+
+// 可改进，类似test170648Field
+/**
+ * 盘点管理-处理记录详细页面排序验证
+ */
+function test180092Field(title, isNum, pageInfoView, dataView, firstTitle,
+        titleTotal) {
+    var t1 = getTimestamp();
+    tapTitle(getScrollView(-1, 0), title); // 点击一下后是升序
+    var ret1 = test180092Field1(title, isNum, "asc", pageInfoView, dataView,
+            firstTitle, titleTotal);
+    delay();
+    tapTitle(getScrollView(-1, 0), title); // 再点击一下后是降序
+    var ret2 = test180092Field1(title, isNum, "desc", pageInfoView, dataView,
+            firstTitle, titleTotal);
+
+    logDebug(getTakeTimeMsg(t1));
+    return isAnd(ret1, ret2);
+}
+function test180092Field1(title, type, order, pageInfoView, dataView,
+        firstTitle, titleTotal) {
+    var t1 = getTimestamp();
+    if (isUndefined(order)) {
+        order = "asc";
+    }
+
+    var ret = true, value, valuePre;
+    if (isDefined(type)) {
+        var qr = getQR2(getScrollView(-1, 0), "批次", "处理人");
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            value = qr.data[i][title];
+            switch (type) {
+            case IS_NUM:
+                value = Number(value);
+                break;
+            case IS_DATE2:
+                value = getDay24(value);
+                break;
+            case IS_OPTIME:
+                break;
+            default:
+                logInfo("未知type=" + type);
+            }
+            if (i > 0) {
+                var b;
+                if (order == "asc") {
+                    b = valuePre <= value;
+                } else {
+                    b = valuePre >= value;
+                }
+                ret = ret && b;
+            }
+            valuePre = value;
+        }
+    }
+
+    logDebug(title + "," + type + "," + order + ",ret=" + ret + ","
+            + getTakeTimeMsg(t1));
+    return ret;
+}

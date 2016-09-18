@@ -10380,3 +10380,15 @@ function test170727() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
+//function test170728() {
+//    tapMenu("销售开单", "按订货配货", "按款号配货");
+//    var f = new TField("款号", TF_AC, -2, "3035", -1, 0);
+//    setTFieldsValue(window, [ f ]);
+//    f = new TField("配货总数", TF, 0, "20");
+//    setTFieldsValue(getScrollView(-1), [ f ]);
+//    tapButton(window, OK);
+//    tapPrompt();
+//    tapNaviLeftButton();
+//
+//    
+//}

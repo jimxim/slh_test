@@ -371,7 +371,7 @@ function checkUnCheckCodeField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_SC, 2, "Addidas");
+        f = new TField("品牌", TF, 2, "Addidas");
         if (show) {
             f.type = TF;
             f.index = 1
