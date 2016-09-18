@@ -651,24 +651,29 @@ function editQuickAddGoodsYes(o, o1) {
     delay();
 }
 function editQuickAddGoodsNo(o, o1) {
-    var idx;
+    var idx, x = 4;
     if (isUndefined(idx)) {
         idx = -1;
     }
     var titles = {}, i = 0;
     titles = getSalesBillDetTfObject();
     var tfNum = titles["明细输入框个数"];
+    if (tfNum == 9) {
+        x = 5;
+    } else {
+        x = 4;
+    }
     var f1 = getTextFieldValue(getScrollView(idx), 0);
     var f8 = getTextFieldValue(getScrollView(idx), tfNum);
     var qr = getQRDet();
     var len = qr.data.length;
     if (isAnd(!isEqual("", f1))) {
-        i = Number(tfNum) * Number(len) - 4;
+        i = Number(tfNum) * Number(len) - x;
         var Fi = new TField("数量", TF, i, o1);
         var fields = [ Fi ];
         setTFieldsValue(getScrollView(idx), fields);
     } else {
-        i = Number(tfNum) * (Number(len) + 1) - 4;
+        i = Number(tfNum) * (Number(len) + 1) - x;
         var Fi = new TField("数量", TF, i, o1);
         var fields = [ Fi ];
         setTFieldsValue(getScrollView(idx), fields);
