@@ -528,8 +528,14 @@ function test170006() {
             isEqual(0, a7), isEqual("否", a8));
 
     tapFirstText();
-    runAndAlert("test170172Bad", OK);
-    tapPrompt();
+    var bt = app.mainWindow().buttons()["待作废"];
+    if (isUIAElementNil(bt) || !bt.isVisible()) {
+        tapButtonAndAlert("待作废", OK);
+        tapPrompt();
+    } else {
+        runAndAlert("test170172Bad", OK);
+        tapPrompt();
+    }
 
     tapMenu("销售开单", "按批次查");
     var keys2 = { "作废挂单" : "待作废" };
@@ -6194,8 +6200,8 @@ function test170406() {
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
-//    debugArray(alertMsgs);
-//    var alertMsg1 = getArray1(alertMsgs, -2);
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -2);
     var ret = (isIn(alertMsg, "货品编码和ID不匹配，请从下拉列表选择并不要手工修改，如要修改，点删除按钮"));
 
     return ret;
@@ -8038,7 +8044,7 @@ function test170577() {
 }
 function test170578() {
     tapMenu("销售开单", LogisticsVerify);
-    var keys = { "物流" : "tt" };
+    var keys = { "物流" : "sf" };
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");

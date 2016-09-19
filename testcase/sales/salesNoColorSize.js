@@ -4408,11 +4408,11 @@ function test170172() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var ret3 = false;
-    var bt = app.windows()[0].buttons()["挂 单"];
-    if (bt.isVisible()) {
-        ret3 = true;
-    }
+    // var ret3 = false;
+    // var bt = app.windows()[0].buttons()["挂 单"];
+    // if (bt.isVisible()) {
+    // ret3 = true;
+    // }+ ", ret3 ＝" + ret3&& ret3
 
     if (ipadVer <= "7.23") {
         tapButtonAndAlert("待作废", OK);
@@ -4483,8 +4483,8 @@ function test170172() {
             getOpTime(), qr.data[0]["操作日期"]));
 
     logDebug(" ret ＝" + ret + ", ret1 ＝" + ret1 + ", ret2 ＝" + ret2
-            + ", ret3 ＝" + ret3 + ", ret4 ＝" + ret4);
-    return ret && ret1 && ret2 && ret3 && ret4;
+            + ", ret4 ＝" + ret4);
+    return ret && ret1 && ret2 && ret4;
 }
 function test170173() {
     // 全局参数，不显示待作废按钮
@@ -9381,16 +9381,15 @@ function test170509() {
     tapButton(window, GOODS);
     var o = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(o, 3);
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var qr = getQRDet();
     var ret1 = isAnd(isIn(qr.data[0]["货品"], r),
-            isEqual("均色", qr.data[0]["颜色"]), isEqual("均码", qr.data[0]["尺码"]));
+            isEqual("均色", qr.data[0]["颜色"]), isEqual("均码", qr.data[0]["尺码"]),
+            isEqual("3", qr.data[0]["数量"]));
     tapReturn();
 
     tapMenu("货品管理", "货品查询");

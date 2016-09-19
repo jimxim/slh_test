@@ -21,7 +21,7 @@ function testCheckAll() {
     run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
     run("【盘点管理—按明细查】品牌,类别查询条件检查", "test180015");
     run("【盘点管理—新增盘点】", "test180019");
-    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");//
+    run("【盘点管理—新增盘点】整单复制、整单粘贴", "test180021");
     run("【盘点管理—新增盘点】返回", "test180023");
     run("【盘点管理—新增盘点】删除按钮", "test180024");
     run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
@@ -38,8 +38,8 @@ function testCheckAll() {
     run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
     run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
     run("【盘点管理—盘点撤销】", "test180033");
-    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
-    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
+    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");//
+    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");//
     run("【盘点管理-处理记录】详细界面的翻页、排序、底部数据汇总", "test180092");
     run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");// 用例不明确
     run("【盘点管理—盘点处理】处理日期设置", "test180027");
@@ -776,7 +776,7 @@ function test180025_1() {
     tapMenu("盘点管理", "按批次查");
     query();
     qr = getQR();
-    ret1 = isAnd(ret1, isEqualQRDataOfObject(qr, qr1), isEqual(
+    ret1 = isAnd(ret1, isEqualQRDataOfCheckProcessRecord(qr, qr1), isEqual(
             qr.data[0]["数量"], qr1.data[0]["数量"]));
 
     tapMenu("货品管理", "款号库存");
@@ -846,8 +846,10 @@ function test180025_1() {
 
     tapButton(getScrollView(), 0);
     tapButton(window, "盘点撤销");
+    delay(2);
 
-    tapButton(window, QUERY);
+    tapMenu("盘点管理", "处理记录");
+    tapButton(window,QUERY);
     qr = getQR();
     var total2 = qr.total;
     var ret7 = isEqual(1, sub(total1, total2));
@@ -959,7 +961,7 @@ function test180026_1() {
     tapMenu("盘点管理", "按批次查");
     query();
     qr = getQR();
-    ret1 = isAnd(ret1, isEqualQRDataOfObject(qr, qr1), isEqual(
+    ret1 = isAnd(ret1, isEqualQRDataOfCheckProcessRecord(qr, qr1), isEqual(
             qr.data[0]["数量"], qr1.data[0]["数量"]));
 
     tapMenu("货品管理", "款号库存");
@@ -3479,16 +3481,17 @@ function test180092() {
     tapReturn();
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "8989", "数量" : -2 },
-            { "货品" : "k200", "数量" : 0 } ] };
+    var josn = {
+        "明细" : [ { "货品" : "8989", "数量" : -2 }, { "货品" : "k200", "数量" : 0 } ],
+        "不返回" : "yes" };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "k300", "数量" : 10 } ] };
+    var josn = { "明细" : [ { "货品" : "k300", "数量" : 10 } ], "不返回" : "yes" };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : 30 } ] };
+    var josn = { "明细" : [ { "货品" : "3035", "数量" : 30 } ], "不返回" : "yes" };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "新增盘点+");
@@ -3528,10 +3531,9 @@ function test180092() {
     tapMenu("盘点管理", "按批次查");
     query();
     qr = getQR();// 处理记录详细界面总数没有检查
-    var ret1 = isAnd(isEqualQRDataOfObject(qr, qr1),
-            isEqual(4, qr1.data.length), !isEqual(batch, qr1.data[0]["批次"]),
-            !isEqual(opTime, qr1.data[0]["操作时间"]), isEqual(shop,
-                    qr1.data[0]["门店"]), isEqual(opStaff, qr1.data[0]["处理人"]));
+    var ret1 = isAnd(isEqualQRDataOfCheckProcessRecord(qr, qr1), isEqual(4,
+            qr1.data.length), !isEqual(batch, qr1.data[0]["批次"]), isEqual(shop,
+            qr1.data[0]["门店"]), isEqual(opStaff, qr1.data[0]["处理人"]));
 
     logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

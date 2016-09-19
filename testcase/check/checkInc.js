@@ -9,6 +9,7 @@ function editCheckAddNoColorSize(o) {
     return editCheckAdd(o, "no");
 }
 function editCheckAdd(o, colorSize) {
+    delay();
     debugObject(o);
 
     if (colorSize == "yes") {
@@ -205,20 +206,19 @@ function testAddPlanGroupCheck(o) {
 }
 
 /**
- * 如果 查询结果数据中有数据等于expected ，返回真
- * @param qr QResult对象
- * @param qr1 期望QResult数据对象
- * @returns {Boolean}
+ * 处理记录详细界面与按批次查界面数据对比
  */
-function isEqualQRDataOfObject(qr, qr1) {
-    var ret = false;
+function isEqualQRDataOfCheckProcessRecord(qr, qr1) {
+    var ret = true;
     for (var j = 0; j < qr1.data.length; j++) {
         var expected = qr1.data[j];
         for (var i = 0; i < qr.data.length; i++) {
             var data1 = qr.data[i];
-            ret = isEqualObject(expected, data1);
-            if (ret) {
-                break;
+            if (expected["批次"] == data1["批次"]) {
+                ret = isAnd(ret, isEqual(qr1.data[j]["操作时间"],
+                        qr.data[i]["盘点日期"]), isEqual(qr1.data[j]["数量"],
+                        qr.data[i]["数量"]), isEqual(qr1.data[j]["门店"],
+                        qr.data[i]["门店"]));
             }
         }
     }
