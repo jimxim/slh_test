@@ -469,7 +469,7 @@ function getGoodsTFields(keys, show, texts) {
 }
 function getEditGoodsElements() {
     // target.pushTimeout(2);
-//    delay();// 等待界面加载
+    // delay();// 等待界面加载
     var view = getScrollView();
     var e = getElements(view);
     // target.popTimeout();
@@ -1290,7 +1290,33 @@ function goodsCustomerField(key, show) {
     }
     return f;
 }
-
+// 款号管理
+function goodsStyleManagerFields(keys, show) {
+    return getTFields("goodsStyleManagerField", keys, show);
+}
+function goodsStyleManagerField(key, show) {
+    var f;
+    switch (key) {
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "3035", -1, 0);
+        break;
+    case "厂商":
+        f = new TField("厂商", TF_AC, 1, "rt", -1, 0);
+        break;
+    case "品牌":
+        f = new TField("品牌", TF_AC, 2, "1010pp", -1, 0);
+        break;
+    case "类别":
+        f = new TField("类别", BTN_SC, 0, "登山服", -1, 0, "collectionView");// 值显示在导航栏上
+        break;
+    case "季节":
+        f = new TField("季节", BTN_SC, 1, "春季", -1, 0, "collectionView");// 值显示在导航栏上
+        break;
+    default:
+        logWarn("位置key=" + key);
+    }
+    return f;
+}
 // 库存调整单
 function goodsStockAdjustmentFields(keys, show) {
     return getTFields("goodsStockAdjustmentField", keys, show);

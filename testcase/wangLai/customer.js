@@ -104,7 +104,7 @@ function testCustomer002() {
     run("【往来管理-更多-新增积分调整】积分跨门店共享开启，新增积分调整", "ts110101");
     run("【往来管理-更多-新增标签】新增", "ts110108");
     run("【往来管理-更多-客户标签】模糊查询", "ts110109");
-    run("【往来管理-更多-新增标签】不同门店新增相同名称的标签", "ts100110");
+    run("【往来管理-更多-新增标签】不同门店新增相同名称的标签", "ts110110");
 }
 
 // 翻页_排序
@@ -4277,7 +4277,7 @@ function ts110105() {
     return isAnd(ret, isInArray2(arr2, arr1));
 }
 function ts110106() {
-
+    tapMenu("往来管理", "getMenu_More", "客户区域查询");
 }
 function ts110107() {
     tapMenu("往来管理", "getMenu_More", "客户区域查询");
@@ -4290,7 +4290,7 @@ function ts110107() {
 
     return ret;
 }
-function ts100108() {
+function ts110108() {
     var tag = getRandomStr(5);
     tapMenu("往来管理", "getMenu_More", "新增标签+");
     var f = new TField("名称", TF, 0, tag);
@@ -4315,7 +4315,7 @@ function ts100108() {
     tapReturn();
     return ret;
 }
-function ts100109() {
+function ts110109() {
     tapMenu("往来管理", "getMenu_More", "客户标签");
     var f = new TField("名称", TF, 0, "重");
     var ret = checkFuzzyQuery(f, "名称");
@@ -4324,7 +4324,7 @@ function ts100109() {
     return isAnd(ret, checkFuzzyQuery(f, "名称"));
 }
 // 数据准备 中洲店新增标签中洲店
-function ts100110() {
+function ts110110() {
     tapMenu("往来管理", "getMenu_More", "客户标签");
     var keys = { "名称" : "中洲店" };
     conditionQuery(keys);

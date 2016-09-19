@@ -210,6 +210,8 @@ function testGoods001() {
     run("【货品管理-更多-库存调整单】翻页/排序/汇总", "ts100106");
     run("【货品管理-更多-颜色组】页面跳转", "ts100195");
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证数据准备", "test100071_100072Prepare");
+    run("【货品管理-更多-款号管理】查询，清除”", "ts100197");// 界面载入时间不稳定，放最后，防止卡用例
+    run("【货品管理-更多-款号管理】输入不存在内容查询验证弹窗”", "ts100198");
 }
 
 function testGoods002() {
@@ -252,8 +254,8 @@ function testGoods002() {
     run("【货品管理-新增货品】检查加工款库存录入取的价格是加工价", "ts100182");
     run("【货品管理-新增货品】检查库存录入-清除按钮", "ts100184");
     run("【货品管理-新增货品】厂商价格默认不显示", "ts100177");
-    // run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100192");//TF_AC需要优化
-    // run("【货品管理-新增货品】厂商价格-清除", "ts100193");//TF_AC需要优化
+    run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100192");
+    run("【货品管理-新增货品】厂商价格-清除", "ts100193");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "ts100038_100039_100040");
@@ -269,6 +271,7 @@ function testGoods002() {
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "ts100092");
     // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
+    run("【货品管理】均色均码下修改一有颜色尺码的款号", "ts100196");
 
     run("【货品管理-新增货品】新增货品界面可以录入期初库存--库存归属地", "ts100173");
     run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189");
@@ -4268,6 +4271,14 @@ function ts100163() {
     var qr = getQR();
     ret = isAnd(ret, qr.data[0]["组名称"] == r);
 
+    if (colorSize == "yes") {
+        tapMenu2("新增货品+");
+        var view = getPop(window, -1);
+        ret = isAnd(ret, isHasStaticTexts(view, [ r ]));
+        tapButton(view, CLOSE);
+        tapReturn();
+        tapMenu("货品管理", "getMenu_More", "所有颜色组");
+    }
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
     tapReturn();// 防止未自动返回
@@ -5075,7 +5086,7 @@ function ts100192() {
     var keys = { "onlytest" : "yes" };
     addGoodsSimple({}, keys);
 
-    keys = { "厂商价格" : [ { "厂商" : "zxcvasdf", "进货价" : 100 } ] };
+    keys = { "厂商价格" : [ { "厂商" : "undefined", "进货价" : 100 } ] };
     editSupplierPrice(keys);// 输入不存在厂商
     tapPrompt();
     var ret = isIn(alertMsg, "必须从下拉列表选择");
@@ -5091,9 +5102,9 @@ function ts100192() {
 
     keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
             { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
-    editSupplierPrice(keys);
+    var idx = editSupplierPrice(keys);
     var exp = "Rt:120;Vell:140;联想:160";
-    ret = isAnd(ret, isEqual(exp), getTextViewValue(window, -1));
+    ret = isAnd(ret, isEqual(exp, getTextViewValue(window, idx[0])));
     editGoodsSave({});
 
     tapMenu2("货品查询");
@@ -5111,17 +5122,17 @@ function ts100193() {
     var o = { "新值" : "1", "数值" : [ "使用不同厂商不同价格", "in" ] };
     setGlobalParam(qo, o);
 
-    var keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
-            { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
-    var jo = { "supplierPriceClear" : "yes" };
-    addGoodsSimple(keys, jo);// 新增厂商价格后点击清楚按钮
+    var jo = {
+        "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
+                { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ],
+        "supplierPriceClear" : "yes" };
+    addGoodsSimple({}, jo);// 新增厂商价格后点击清楚按钮
 
     tapMenu2("货品查询");
     query();
     tapLine();
-    keys = { "厂商价格" : null };
-    var fields = editGoodsFields(keys, true);
-    var ret = checkShowFields(getScrollView(), fields);
+    var fields = editGoodsFields([ "厂商价格" ], true);
+    var ret = isEqual(null, getTextViewValue(window, fields["厂商价格"].index));
     tapReturn();
 
     return ret;
@@ -5160,8 +5171,65 @@ function ts100195() {
     var qr2 = getQR();
     return isEqualDyadicArray(qr.data, qr2.data);
 }
-function ts100196(){
-    
+function ts100196() {
+    var qo = { "备注" : "取消颜色尺码时判断库存是否为零" };
+    var o = { "新值" : "1", "数值" : [ "默认判断", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号名称" : "g", "颜色" : "红色" }, i;
+    conditionQuery(keys);
+    var qr = getQR();
+    var code = qr.data[0]["款号"];
+
+    tapMenu2("货品查询");
+    keys = { "款号名称" : code };
+    conditionQuery(keys);
+    tapLine(i);
+    editGoodsSave({});
+    return isInAlertMsgs("该颜色存在库存不能取消")
+}
+function ts100197() {
+    tapMenu("货品管理", "getMenu_More", "款号管理");
+    var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
+    waitUntil(cond, 5);// collectionView载入时间不稳定
+    var keys = { "款号" : "3035", "厂商" : "vell", "品牌" : "adidas", "类别" : "登山服" };
+    conditionQuery(keys);// 查询条件在window上
+    var view = getCollectionView(getPop(window, -1), -1);
+    var c = view.cells();
+    var ret = isAnd(c.length == 1, isIn(c[0].name(), "3035"), isEqual(window
+            .navigationBars()[0].name(), "类别\(登山服\)"));// 查询结果唯一
+    keys = { "季节" : "春季" };// 季节与类别无法同时查询
+    conditionQuery(keys, false);
+    ret = isAnd(ret, c.length == 1, isIn(c[0].name(), "3035"), isEqual(window
+            .navigationBars()[0].name(), "季节\(春季\)"));// 查询结果唯一
+    tapButton(window, CLEAR);
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
+            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
+            window, 2)), isEqual(window.navigationBars()[0].name(), "款号管理"));// 这里的导航栏在window下
+    tapNaviClose();
+    return ret;
+}
+function ts100198() {
+    tapMenu("货品管理", "getMenu_More", "款号管理");
+    var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
+    waitUntil(cond, 5);// collectionView载入时间不稳定
+    var keys = { "款号" : "undefined" };
+    conditionQuery(keys);
+    tapPrompt();
+    var ret = isIn(alertMsg, "货品必须从下拉列表选择");
+
+    keys = { "厂商" : "undefined" };
+    conditionQuery(keys);
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "客户或厂商必须从下拉列表选择"));
+
+    keys = { "品牌" : "undefined" };
+    conditionQuery(keys);
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "从下拉列表选择品牌"));
+    tapNaviClose();
+    return ret;
 }
 /**
  * 日期从，日期到验证

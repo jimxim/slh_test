@@ -111,6 +111,7 @@ function editSupplierPrice(o) {
     if (isDefined(o["supplierPriceClear"])) {
         tapButton(getScrollView(), clearBtn);// 清除
     }
+    return idx;
 }
 function setSupplierPrice(details) {
     if (isDefined(details) && details.length > 0) {
@@ -118,7 +119,7 @@ function setSupplierPrice(details) {
         var fields = [], f;
         for (var i = 0; i < details.length; i++) {
             var d = details[i];
-            f = new TField("厂商", TF_AC, i * 2, d["厂商"], -1, 0);
+            f = new TField("厂商", TF_AC, i * 2, d["厂商"], -1, "pop");// popview
             fields.push(f)
             f = new TField("进货价", TF, i * 2 + 1, d["进货价"]);// TF_KB
             fields.push(f)

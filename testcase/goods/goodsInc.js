@@ -326,6 +326,26 @@ function getCounts(cond) {
     return sum;
 }
 /**
+ * 
+ * @param i
+ * @returns
+ */
+function getCollectionView(view, i) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    if (isUndefined(i)) {
+        i = 0;
+    }
+    if (i < 0) {
+        i = view.collectionViews().length + i;
+    }
+    return view.collectionViews()[i];
+}
+function getPopCollectionView(view, i) {
+    return getPop(view, i).collectionViews()[0];
+}
+/**
  * 简单的月日转4位年月日 大于当日改成去年,需要定期清理数据 一般不会往后做数据
  * @param day
  * @returns {String}
@@ -2045,6 +2065,9 @@ function conditionQuery(keys, tapClear, view) {
             break;
         case MORE:
             switch (gMenu3) {
+            case "款号管理":
+                qFields = goodsStyleManagerFields(keys);
+                break;
             case "库存调整单":
                 qFields = goodsStockAdjustmentFields(keys);
                 break;
