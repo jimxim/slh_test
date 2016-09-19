@@ -2649,7 +2649,6 @@ function test170098() {
 
     var qr = getQRtable1(getScrollView(-1));
     var len = qr.data.length;
-
     var ret1 = isAnd(isEqual(5, len), isEqual("3035,jkk", qr.data[0]["名称"]),
             isEqual(2, qr.data[0]["数量"]), isEqual("a", qr.data[0]["备注"]),
             isEqual("k200,范范", qr.data[1]["名称"]), isEqual(1, qr.data[1]["数量"]),
@@ -4173,7 +4172,6 @@ function test170164() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-
     var sum1 = qr.counts["现金"];
     var sum2 = qr.counts["刷卡"];
     var sum3 = qr.counts["汇款"];
@@ -4187,19 +4185,17 @@ function test170164() {
 
     runAndAlert("test170246Get", OK);
     tapPrompt();
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -1);&& ret2
+    // var ret2 = isIn(alertMsg1, "收款成功");+ ", ret2=" + ret2
 
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret2 = isIn(alertMsg1, "收款成功");
-
-    tapMenu("销售开单", "收款单");
-
+    tapMenu("销售开单", "getMenu_More", "收款单");
     var ret3 = isAnd(isEqual(sum1, qr.counts["现金"]), isEqual(sum2,
             qr.counts["刷卡"]), isEqual(sum3, qr.counts["汇款"]));
 
     logDebug(" alertMsg1=" + alertMsg1 + ", ret=" + ret + ", ret1=" + ret1
-            + ", ret2=" + ret2 + ", ret3=" + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ", ret3=" + ret3);
+    return ret && ret1 && ret3;
 }
 function test170166() {
     tapMenu("销售开单", "开  单+");
@@ -4412,10 +4408,10 @@ function test170172() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var ret3 = true;
+    var ret3 = false;
     var bt = app.windows()[0].buttons()["挂 单"];
-    if (!bt.isVisible()) {
-        ret3 = false;
+    if (bt.isVisible()) {
+        ret3 = true;
     }
 
     if (ipadVer <= "7.23") {

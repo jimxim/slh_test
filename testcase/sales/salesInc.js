@@ -577,46 +577,7 @@ function editQuickAddCustomerYes(o) {
 function editQuickAddCustomerNo(o) {
     return;
 }
-// 快速新增客户
-function editQuickAddCustomerFields(keys, show) {
-    return getTFields("editQuickAddCustomerField", keys, show);
-}
-function editQuickAddCustomerField(key, show) {
-    var f;
-    switch (key) {
-    case "name":
-    case "名称":
-        f = new TField("名称", TF, 0, "aaa");
-        break;
-    case "phone":
-    case "手机":
-        f = new TField("手机", TF, 1, "1234567890");
-        break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, 2, "000", -1, 0);
-        if (show) {
-            f.value = "000,总经理";
-        }
-        break;
-    case "proprice":
-    case "适用价格":
-        f = new TField("适用价格", BTN_SC, 0, "零批价", "", -1);
-        if (show) {
-            f.type = TF;
-            f.index = 0;
-        }
-        break;
-    case "address":
-    case "地址":
-        f = new TField("地址", TF, 4, "杭衣");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
-}
+
 /**
  * 快速新增货品
  * 
@@ -680,58 +641,7 @@ function editQuickAddGoodsNo(o, o1) {
     }
     logDebug(" tfNum=" + tfNum);
 }
-// 快速新增货品
-function editQuickAddGoodsFields(keys, show) {
-    return getTFields("editQuickAddGoodsField", keys, show);
-}
-function editQuickAddGoodsField(key, show) {
-    var f, idx = 0;
-    if (colorSize == "yes") {
-        idx = 4;
-    }
-    switch (key) {
-    case "code":
-    case "款号":
-        f = new TField("款号", TF, 0, "aaa");
-        break;
-    case "name":
-    case "名称":
-        f = new TField("名称", TF, 1, "连衣裙");
-        break;
-    case "color":
-    case "颜色":
-        f = new TField("颜色", BTN_MC, 0, "花色");
-        break;
-    case "size":
-    case "尺码":
-        f = new TField("尺码", BTN_MC, 1, "S");
-        break;
-    case "purchase-price":
-    case "进货价":
-        f = new TField("进货价", TF, 2 + idx, "100");
-        break;
-    case "retail":
-    case "零批价":
-        f = new TField("零批价", TF, 3 + idx, "200");
-        break;
-    case "pack":
-    case "打包价":
-        f = new TField("打包价", TF, 4 + idx, "180");
-        break;
-    case "customerPrice":
-    case "大客户价":
-        f = new TField("大客户价", TF, 5 + idx, "160");
-        break;
-    case "vip":
-    case "Vip价格":
-        f = new TField("Vip价格", TF, 6 + idx, "140");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
-}
+
 /**
  * 快速新增物流商
  * 
@@ -747,35 +657,6 @@ function editQuickAddExpress(o) {
     tapButton(getPop(), OK);
 
     return o;
-}
-// 快速新增物流商
-function editQuickAddExpressFields(keys, show) {
-    return getTFields("editQuickAddExpressField", keys, show);
-}
-function editQuickAddExpressField(key, show) {
-    var f;
-    switch (key) {
-    case "name":
-    case "名称":
-        f = new TField("名称", TF, 0, "华商物流");
-        break;
-    case "phone":
-    case "电话":
-        f = new TField("电话", TF, 1, "110");
-        break;
-    case "address":
-    case "地址":
-        f = new TField("地址", TF, 2, "江城路889");
-        break;
-    case "account":
-    case "账户":
-        f = new TField("账户", TF, 3, "200999");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
 }
 
 /**
@@ -796,69 +677,7 @@ function editLogisticsBillDet(o) {
 
     return o;
 }
-// 物流单明细界面
-function editLogisticsBillDetFields(keys, show) {
-    return getTFields("editLogisticsBillDetField", keys, show);
-}
-function editLogisticsBillDetField(key, show) {
-    var f;
-    switch (key) {
-    case "shipno":
-    case "运单号":
-        f = new TField("运单号", TF, 6, "12345678");
-        break;
-    case "tip":
-    case "备注":
-        f = new TField("备注", TF, 10, "天天");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
-}
-// 物流核销-核销明细界面
-function editlogisticsVerifyDetFields(keys, show) {
-    return getTFields("editlogisticsVerifyDetField", keys, show);
-}
-function editlogisticsVerifyDetField(key, show) {
-    var f;
-    switch (key) {
-    case "date":
-    case "日期":
-        f = new TField("日期", TF_DT, 14, getToday());
-        break;
-    case "date1":
-    case "到":
-        f = new TField("日期", TF_DT, 15, getToday());
-        break;
-    case "custemer":
-    case "客户":
-        f = new TField("客户", TF_AC, 16, "ls", -1, 0);
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
-}
-// 按订货配货-按配货开单界面
-function editSaleOrderMatchFields(keys, show) {
-    return getTFields("editSaleOrderMatchField", keys, show);
-}
-function editSaleOrderMatchField(key, show) {
-    var f;
-    switch (key) {
-    case "custemer":
-    case "客户":
-        f = new TField("客户", TF_AC, 0, "ls", -1, 0);
-        break;
-    default:
-        logWarn("未知key＝" + key);
-        break;
-    }
-    return f;
-}
+
 /**
  * randomWord 产生任意长度随机字母数字组合 randomFlag-是否任意长度 min-任意长度最小位[固定位数] max-任意长度最大位
  */
