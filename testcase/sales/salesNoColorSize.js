@@ -12325,7 +12325,7 @@ function test170722_1() {
     query();
     tapFirstText();
     qr1 = getQRDet();
-    var ret8 = isEqual(Number(cc) - 8, qr1.data[0]["库存"]);
+    var ret8 = isEqual(Number(Number(cc) - 8), qr1.data[0]["库存"]);
     tapReturn();
 
     tapMenu("销售开单", "开  单+");

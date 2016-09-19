@@ -216,39 +216,12 @@ function isEqualQRDataOfObject(qr, qr1) {
         var expected = qr1.data[j];
         for (var i = 0; i < qr.data.length; i++) {
             var data1 = qr.data[i];
-            ret = isEqualObject3(expected, data1);
+            ret = isEqualObject(expected, data1);
             if (ret) {
                 break;
             }
         }
     }
-    return ret;
-}
-
-/**
- * 2个对象相同属性的值是否相等
- * @param expected
- * @param actual
- * @returns {Boolean}
- */
-function isEqualObject3(expected, actual, allow) {
-    debugObject(expected, "expected");
-    debugObject(actual, "actual");
-    var ok = isDefined(allow);
-    var ret = true;
-    var v1, v2;
-    for ( var i in expected) {
-        if (actual.hasOwnProperty(i)) {
-            v1 = expected[i];
-            v2 = actual[i];
-            if (ok) {
-                ret = ret && isAqualOptime(v1, v2, allow);
-            } else {
-                ret = ret && (v1 == v2);
-            }
-        }
-    }
-    logDebug(" ret=" + ret);
     return ret;
 }
 
