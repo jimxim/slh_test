@@ -1073,12 +1073,12 @@ function test190104() {
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText();
+    tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称", 5);
     var s1 = test190037_1Field(qr, "支出", "销售退款");
     var p1 = test190037_1Field(qr, "收入", "采购退款");
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "-3" } ],
@@ -1114,12 +1114,12 @@ function test190104() {
 
     tapMenu2("综合汇总");// "统计分析"
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称", 5);
     var s2 = test190037_1Field(qr, "支出", "销售退款");
     var p2 = test190037_1Field(qr, "收入", "采购退款");
-    tapNaviLeftButton();
+    tapNaviClose();
 
     var actual1 = subObject(s2, s1);
     var actual2 = subObject(p2, p1);
@@ -1296,7 +1296,8 @@ function test190028() {
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("相同记录已存在"));
 
-    delay();
+    var cond = "window.buttons()['收支表'].isVisible()";
+    waitUntil(cond, 5);// 等待返回
     qr = getQR(window, getScrollView(), TITLE_SEQ, 3);
     var titles2 = qr.titles;
     ret = isAnd(ret, isEqualObject(titles1, titles2));// 验证返回回到收支类别界面
@@ -2177,10 +2178,9 @@ function test190085() {
 
 // 先跳过，有分歧
 function test190083() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
+    var ret = setGlobalParam(qo, o);
 
     tapMenu("货品管理", "新增货品+");
     var r = "dc" + getTimestamp(6);

@@ -28,6 +28,8 @@ js_func="$js_func login200SalesOrderPrepare login000SalesOrder001 login000SalesO
 js_func="$js_func loginTreasurer001 "
 #店长
 js_func="$js_func loginShopkeeper004 login004_000Prepare login004_000"
+#仓库店店长登陆验证 
+#js_func="$js_func loginShopkeeper104 "
 #开单员
 js_func="$js_func loginBillClerk005_1 "
 

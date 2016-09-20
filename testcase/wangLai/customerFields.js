@@ -987,13 +987,13 @@ function editCustomerAreaField(key, show) {
         f = new TField("名称", TF, 0, "杭州");
         break;
     case "拼音":
-        f = new TField("拼音", TF, 1, "小王", -1, 0);
+        f = new TField("拼音", TF, 1, "hz");
         break;
     case "上级区域":
         f = new TField("上级区域", BTN_SC, 0, "浙江", -1, 0);
         if (show) {
             f.type = TF;
-            f, index = 2;
+            f.index = 2;
         }
         break;
     default:

@@ -3492,5 +3492,27 @@ function test120112Field() {
     return ret;
 }
 function ts120113() {
+    var qo = { "备注" : "价格模式" };
+    var o = { "新值" : "2", "数值" : [ "相同进货价", "in" ] };
+    setGlobalParam(qo, o);
 
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
+
+}
+// 104店长登陆
+function ts120114() {
+    tapMenu("采购入库", "批量入库+");
+    var json = addPOrderBillDet();
+    editPurchaseBatch(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    return isEqual("仓库店", qr.data[0]["门店"]);
+}
+function ts120115() {
+    tapMenu("采购入库", "按汇总", "厂商对账单");
+    
 }

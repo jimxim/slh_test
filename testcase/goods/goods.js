@@ -1642,7 +1642,7 @@ function ts100102_100103() {
 
     tapMenu("货品管理", "货品查询");
     query();
-    tapFirstText();
+    tapLine();
     var code = getTextFieldValue(getScrollView(), 0);
     var keys = { "款号" : "款号" + code };
     var fields = editGoodsFields(keys, false);
@@ -1661,14 +1661,12 @@ function ts100102_100103() {
 
     tapMenu("货品管理", "货品查询");
     tapButton(window, QUERY);
-    tapFirstText();
-    tapButtonAndAlert(EDIT_SAVE, OK);//
+    tapLine();
+    tapButtonAndAlert(EDIT_SAVE, OK);// 出现提示 该款号包括了中文
+    tapPrompt();
 
     keys = { "款号" : code };
-    fields = editGoodsFields(keys, false);
-    setTFieldsValue(getScrollView(), fields);// 改回无中文版防止对后续用例造成影响
-    tapButtonAndAlert(EDIT_SAVE, OK);
-    tapReturn();
+    addGoods(keys)// 改回无中文版防止对后续用例造成影响
     ret = isAnd(ret, isInAlertMsgs("该款号包括了中文"));
 
     return ret;
@@ -2627,7 +2625,7 @@ function ts100157For004_2() {
     return ts100157Field("004", true);
 }
 function ts100157Field(staff, check) {
-    var code;
+    var code, ret;
     switch (colorSize) {
     case "no":
         code = "3035";
@@ -2641,17 +2639,13 @@ function ts100157Field(staff, check) {
 
     tapMenu("货品管理", "货品进销存");
     var keys = { "门店" : "常青店", "款号名称" : code };
-    var fields = queryGoodsInOutFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var exp = qr.counts;
 
     keys = { "门店" : "中洲店" };
-    fields = queryGoodsInOutFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys, false);
     qr = getQR();
-    var ret;
     if (staff == "000") {
         ret = qr.data.length > 0;
     } else {
@@ -2668,15 +2662,13 @@ function ts100157Field(staff, check) {
     } else {
         tapMenu("门店调入", "按明细查");
         keys = { "款号名称" : code, "调入门店" : "常青店", "日期从" : getDay(-365) };
-        fields = shopInQueryParticularFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         ret = isAnd(ret, isEqual(exp["累计调入"], qr.counts["数量"]));
 
         tapMenu("门店调出", "按明细查");
         keys = { "款号名称" : code, "调出门店" : "常青店", "日期从" : getDay(-365) };
-        fields = shopOutQueryParticularFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         ret = isAnd(ret, isEqual(exp["累计调出"], qr.counts["数量"]));
     }
@@ -5102,9 +5094,9 @@ function ts100192() {
 
     keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
             { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
-    var idx = editSupplierPrice(keys);
+    editSupplierPrice(keys);
     var exp = "Rt:120;Vell:140;联想:160";
-    ret = isAnd(ret, isEqual(exp, getTextViewValue(window, idx[0])));
+    ret = isAnd(ret, isEqual(exp, getTextViewValue(window, 1)));// 厂商价格
     editGoodsSave({});
 
     tapMenu2("货品查询");

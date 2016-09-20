@@ -17,16 +17,17 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "setSales_order_distribute_3");//
- run("测试用例", "ts100193");
-// run("测试用例", "");//
+ run("测试用例", "onlyTest");
+// run("测试用例", "ts110111");//
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
+    
+    
  // debugObject(gCache,"gCache");parent
  return true;
 }
@@ -413,7 +414,15 @@ function login004_000() {
      logout();
   }
 }
-
+// 仓库店店长登陆验证 绑定仓库为文一店
+function loginShopkeeper104() {
+    var p1 = {"角色":"店长"};
+  var ok = login("104","000000",p1);
+  if( ok ) {
+      test104();
+     logout();
+  }
+}
 // 开单员
 function loginBillClerk005_1() {
  var p1 = {"角色":"开单员"};

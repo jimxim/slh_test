@@ -111,7 +111,6 @@ function editSupplierPrice(o) {
     if (isDefined(o["supplierPriceClear"])) {
         tapButton(getScrollView(), clearBtn);// 清除
     }
-    return idx;
 }
 function setSupplierPrice(details) {
     if (isDefined(details) && details.length > 0) {

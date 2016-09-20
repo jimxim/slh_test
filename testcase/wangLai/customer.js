@@ -100,6 +100,8 @@ function testCustomer002() {
     run("【往来管理-更多】新增回访", "test110047");
     run("【往来管理-更多】客户回访记录修改和删除操作", "test110049");
     run("【往来管理-更多-新增回访】必填项为空时，检查提示语的准确性", "ts110100");
+    run("【往来管理-更多-新增客户区域】客户区域新增检查", "ts110106");
+    run("【往来管理-更多-客户区域查询】修改保存", "ts110111");
     run("【往来管理-更多-新增积分调整】积分跨门店共享关闭，新增积分调整", "ts110102");
     run("【往来管理-更多-新增积分调整】积分跨门店共享开启，新增积分调整", "ts110101");
     run("【往来管理-更多-新增标签】新增", "ts110108");
@@ -3532,9 +3534,7 @@ function test110060_1Field(fields, exp1, exp2, exp3) {
     tapFirstText(getScrollView(-1, 0), "批次", "未结", 9);
     var qr1 = getQR3(getScrollView(-1), "序号", "小计");
     var data = getQRStaticTexts(window, "批次", "操作人");
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
     return isAnd(isEqualObject(exp1, data), isEqualObject(exp2, qr1.data[0]),
             isEqualObject(exp3, qr1.data[1]));
 }
@@ -4277,7 +4277,90 @@ function ts110105() {
     return isAnd(ret, isInArray2(arr2, arr1));
 }
 function ts110106() {
+    tapMenu("往来管理", "getMenu_More", "新增客户区域+");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "名称不能为空");
+
+    var keys = { "名称" : "东北" };
+    var fields = editCustomerAreaFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "相同记录已存在"));
+
+    var str = "area" + getRandomStr(20);
+    keys = { "名称" : str };
+    ts110106Field(keys);
+    ret = isAnd(ret, ts110106Field2(keys, true));
+
+    tapMenu("往来管理", "getMenu_More", "新增客户区域+");
+    str = "area" + getRandomStr(5);
+    keys = { "名称" : str, "拼音" : "py", "上级区域" : "AreaTest" };
+    ts110106Field(keys);
+    ret = isAnd(ret, ts110106Field2(keys));// 这个ts110111跑完作废
+
+    return ret;
+}
+function ts110111() {
     tapMenu("往来管理", "getMenu_More", "客户区域查询");
+    query();
+    tapLine();
+    var keys = { "名称" : "" };
+    var fields = editCustomerAreaFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButtonAndAlert(EDIT_SAVE, OK);
+    tapPrompt();
+    var ret = isIn(alertMsg, "名称不能为空");
+
+    keys = { "名称" : "东北" };
+    fields = editCustomerAreaFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButtonAndAlert(EDIT_SAVE, OK);
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "相同记录已存在"));
+
+    var str = "area" + getRandomStr(5);
+    keys = { "名称" : str };
+    ts110106Field(keys);
+    ret = isAnd(ret, ts110106Field2(keys));
+
+    tapButton(window, QUERY);
+    tapLine();
+    str = "area" + getRandomStr(5);
+    keys = { "名称" : str, "拼音" : "pinyin", "上级区域" : "AreaTest" };
+    ts110106Field(keys);
+    ret = isAnd(ret, ts110106Field2(keys, true));
+
+    return ret;
+}
+function ts110106Field(keys) {
+    var fields = editCustomerAreaFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    if (gMenu3 == "新增客户区域+") {
+        saveAndAlertOk();// 不会自动返回
+        tapReturn();
+    } else {
+        tapButtonAndAlert(EDIT_SAVE, OK);// 会自动返回
+    }
+    var cond = "window.buttons()['客户查询'].isVisible()";
+    waitUntil(cond, 3);
+}
+function ts110106Field2(keys, invalid) {
+    var qKeys = { "名称" : keys["名称"] };
+    conditionQuery(qKeys);
+    var qr = getQR();
+    var ret = isEqualObject2(keys, qr.data[0]);
+    tapLine();
+    var fields = editCustomerAreaFields(keys, true);
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
+    if (invalid) {
+        tapButtonAndAlert("停用", OK);// STOP，防止新增修改客户界面区域过多
+    }
+    tapReturn();
+    var cond = "window.buttons()['客户查询'].isVisible()";
+    waitUntil(cond, 3);
+    return ret;
 }
 function ts110107() {
     tapMenu("往来管理", "getMenu_More", "客户区域查询");
