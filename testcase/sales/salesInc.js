@@ -58,7 +58,7 @@ function testSalesPrepare003() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "4" }, { "货品" : "4562", "数量" : "5" } ],
-        "代收" : { "物流商" : "tt" }, "备注" : "zy" };
+        "代收" : { "物流商" : "sf" }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -84,9 +84,7 @@ function testSalesPrepare004() {
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
-
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
-
     var r = "9" + getTimestamp(6);
     editExchangeScore(r);
     query();
@@ -600,18 +598,18 @@ function editQuickAddGoods(o, o1, ret) {
     tapButton(getPop(), CLOSE);
 
     if (ret == "yes") {
-        editQuickAddGoodsYes(o, o1);
+        editQuickAddGoodsYes(o1);
     }
     if (ret == "no") {
-        editQuickAddGoodsNo(o, o1);
+        editQuickAddGoodsNo(o1);
     }
     return ret;
 }
-function editQuickAddGoodsYes(o, o1) {
+function editQuickAddGoodsYes(o1) {
     tapReturn();
     delay();
 }
-function editQuickAddGoodsNo(o, o1) {
+function editQuickAddGoodsNo(o1) {
     var idx, x = 4;
     if (isUndefined(idx)) {
         idx = -1;
@@ -745,5 +743,54 @@ function goPageCheckQR2(dataView, firstTitle, lastTitle) {
         }
     }
     logDebug("goPageCheck ret=" + ret);
+    return ret;
+}
+
+/**
+ * 单据修改数量
+ * @param o
+ * @param ret为是否返回
+ * @returns
+ */
+function editChangeSalesBillOrderNum(o, ret) {
+    delay();
+    if (isUndefined(ret)) {
+        ret = "yes";
+    }
+    var titles = getSalesBillDetTfObject();
+    var title_num = "数量";
+    var tfNum = titles["明细输入框个数"];
+    var len = o.length;
+    for (var j = 0; j < len; j++) {
+        var d = o[j];
+        var num = Number(d["数量"]);
+        var Fi = new TField("数量", TF, titles[title_num] + tfNum * j, num);
+        var fields = [ Fi ];
+        setTFieldsValue(getScrollView(-1), fields);
+    }
+
+    if (ret == "yes") {
+        editChangeSalesBillOrderNumSave("yes");
+    }
+    if (ret == "no") {
+        editChangeSalesBillOrderNumSave("no");
+    }
+    return ret;
+}
+/**
+ * 修改单据保存
+ */
+function editChangeSalesBillOrderNumSave(ret) {
+    if (ret == "no") {
+        return;
+    } else {
+        saveAndAlertOk();
+        tapPrompt();
+        delay();
+        var bt = app.mainWindow().buttons()[RETURN];
+        if (!isUIAElementNil(bt) || bt.isVisible()) {
+            tapReturn();
+        }
+    }
     return ret;
 }

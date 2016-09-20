@@ -4414,7 +4414,8 @@ function test170172() {
     // ret3 = true;
     // }+ ", ret3 ＝" + ret3&& ret3
 
-    if (ipadVer <= "7.23") {
+    var bt = app.mainWindow().buttons()["待作废"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
         tapButtonAndAlert("待作废", OK);
         tapPrompt();
         var ret1 = isIn(alertMsg, "待作废成功");
@@ -12550,18 +12551,8 @@ function test240003_240007_240006() {
             qr.data[1]["货品"], "抹零"), isEqual("-1", qr.data[1]["数量"]), isIn(
             qr.data[2]["货品"], "打包费"), isEqual(1, qr.data[2]["数量"]));
 
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 6;
-    } else {
-        idx = 5;
-    }
-    var f5 = new TField("数量", TF, idx, "3");
-    var fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
+    var o = { "数量" : "3" };
+    editChangeSalesBillOrderNum(o);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     ret1 = isAnd(ret1, (isIn(alertMsg1, "保存成功")));

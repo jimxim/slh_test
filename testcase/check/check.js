@@ -3270,6 +3270,9 @@ function test180084() {
     return ret && ret1 && ret2;
 }
 function test180085() {
+    checkPrepare();
+    checkPrepare1();
+    
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
     var keys = { "门店" : "常青店" };
     var fields = checkPlanAddFields(keys);
@@ -3562,7 +3565,7 @@ function test180093() {
 
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
-    var ret1 = isIn(alertMsg, "盘点内容不能为空");
+    var ret1 = isIn(alertMsg, "所有盘点计划不能全部为空");
     tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按组合+");
