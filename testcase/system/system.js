@@ -44,6 +44,7 @@ function testSystem001() {
     run("【系统设置-更多】门店停用规则", "test210067");
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
+    run("【系统设置-全局设置】异地发货开单模式必须先开启异地仓库", "test210072");
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -820,9 +821,41 @@ function test210032() {
 function test210033() {
     tapMenu("系统设置", "新增人员");
     var r = getRandomInt(10000);
-    var keys = { "工号" : "y" + r, "姓名" : "财务员", "门店" : "常青店", "岗位" : "财务员" };
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg4 = getArray1(alertMsgs, -1);
+
+    var keys = { "工号" : "y" + r };
     var fields = EditSystemStaffFields(keys);
     setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg3 = getArray1(alertMsgs, -1);
+
+    keys = { "姓名" : "财务员" };
+    fields = EditSystemStaffFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg2 = getArray1(alertMsgs, -1);
+
+    keys = { "门店" : "常青店" };
+    fields = EditSystemStaffFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isAnd(isIn(alertMsg1, "岗位不能为空"), isIn(alertMsg2, "门店不能为空"), isIn(
+            alertMsg3, "姓名不能为空"), isIn(alertMsg4, "工号不能为空"));
+
+    keys = { "岗位" : "财务员" };
+    fields = EditSystemStaffFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(SAVE, OK);
     tapReturn();
 
     tapMenu("系统设置", "人员列表");
@@ -830,9 +863,26 @@ function test210033() {
     var fields = querySystemStaffFields(keys);
     query(fields);
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
-    var ret = isEqual(0, qr.data.length);
+    var ret1 = isAnd(isEqual("y" + r, qr.data[0]["工号"]), isEqual("财务员",
+            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("财务员",
+            qr.data[0]["岗位"]));
 
-    return ret;
+    tapFirstText();
+    keys = { "岗位" : "总经理" };
+    fields = EditSystemStaffFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert(EDIT_SAVE, OK);
+    tapReturn();
+
+    tapMenu("系统设置", "人员列表");
+    tapButton(window, QUERY);
+    qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
+    var ret2 = isAnd(isEqual("y" + r, qr.data[0]["工号"]), isEqual("财务员",
+            qr.data[0]["姓名"]), isEqual("常青店", qr.data[0]["门店"]), isEqual("总经理",
+            qr.data[0]["岗位"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210034() {
     tapMenu("系统设置", "新增人员");
@@ -1177,7 +1227,7 @@ function test210042() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret1 = isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]");
+    var ret1 = isIn(alertMsg, "【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在");
     tapReturn();
 
     delay();
@@ -1201,7 +1251,7 @@ function test210042() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret2 = isIn(alertMsg, "[【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在]");
+    var ret2 = isIn(alertMsg, "【不同门店不同的价格体系】的价格模式与【省代价格模式】的货品建款的价格模式，不能同时存在");
     tapReturn();
 
     qo = { "备注" : "价格模式" };
@@ -2273,10 +2323,19 @@ function test210069_210070() {
     saveAndAlertOk();
     tapReturn();
 
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    if (ipadVer >= "7.21") {
+        var cond = "isIn(alertMsg, '清理刷新结束')";
+    } else {
+        var cond = "isIn(alertMsg, '清理和刷新成功')";
+    }
+    waitUntil(cond, 300);
+
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("门店列表");
-    keys = { "名称" : m };
+    keys = { "名称" : m, "部门" : m };
     fields = editSystemShopFields(keys);
     query(fields);
     var r = getQR();
@@ -2285,6 +2344,11 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "账户全称不能为空");
+
     var r = "zh" + randomWord(false, 4);
     var r1 = getTimestamp(4);
     var keys1 = { "账户全称" : r };
@@ -2292,21 +2356,26 @@ function test210069_210070() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret1 = isIn(alertMsg, "账户简称不能为空");
+    ret1 = isAnd(ret1, isIn(alertMsg, "账户简称不能为空"), !isEqual("",
+            getTextFieldValue(getScrollView(), 0)));
 
     keys1 = { "账户简称" : r1 };
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    ret1 = isAnd(ret1, isIn(alertMsg, "门店不能为空"));
+    ret1 = isAnd(ret1, isIn(alertMsg, "门店不能为空"), !isEqual("",
+            getTextFieldValue(getScrollView(), 0)), !isEqual("",
+            getTextFieldValue(getScrollView(), 1)));
 
-    keys1 = { "门店" : "test210069", "刷卡/汇款" : "通用" };
+    keys1 = { "门店" : m, "刷卡/汇款" : "通用" };
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    ret1 = isAnd(ret1, isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2"));
+    ret1 = isAnd(ret1, isIn(alertMsg, "账户简称]值超过限制，最大允许长度为2"), !isEqual("",
+            getTextFieldValue(getScrollView(), 0)), !isEqual("",
+            getTextFieldValue(getScrollView(), 1)));
 
     var r2 = randomWord(false, 2);
     keys1 = { "账户简称" : r2 };
@@ -2365,4 +2434,56 @@ function test210071() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
+}
+function test210072() {
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var menu1 = "系统设置";
+    var menu2 = "全局设置";
+    tapMenu(menu1, menu2);
+
+    qo = { "备注" : "开单模式" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "异地发货", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
+    tapReturn();
+
+    delay();
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var ret2 = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
+    ret2 = isAnd(ret2, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    runAndAlert("test210020Clear", OK);
+    tapPrompt();
+    if (ipadVer >= "7.21") {
+        var cond = "isIn(alertMsg, '清理刷新结束')";
+    } else {
+        var cond = "isIn(alertMsg, '清理和刷新成功')";
+    }
+    waitUntil(cond, 300);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+
 }

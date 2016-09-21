@@ -2510,7 +2510,12 @@ function test170277() {
 
     tapMenu("销售开单", "getMenu_More", RECIEVE);
     delay();
-    var ret2 = isIn(alertMsg, "撤销成功");
+    var cond = "isIn(alertMsg, '撤销成功')";
+    waitUntil(cond, 30);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isIn(alertMsg1, "撤销成功");
 
     logDebug(" ret=" + ret + ", ret2=" + ret2);
     return ret && ret2;
@@ -9034,9 +9039,9 @@ function test170686() {
     if (isEqual(0, Number(money))) {
         tapNaviButton("全 选");
         for (var i = 0; i < 3; i++) {
-            var texts = getStaticTexts(app.navigationBar());
-            var index = getArrayIndexIn(texts, ".");
-            var money = getStaticTextValue(app.navigationBar(), index);
+            texts = getStaticTexts(app.navigationBar());
+            index = getArrayIndexIn(texts, ".");
+            money = getStaticTextValue(app.navigationBar(), index);
         }
     }
     tapNaviButton("完成");
