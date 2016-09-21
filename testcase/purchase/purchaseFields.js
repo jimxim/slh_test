@@ -45,7 +45,7 @@ function purchaseQueryBatchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "仓库店",-1,0);// 实际为TF_AC
+        f = new TField("门店", TF, 6, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "staff":
     case "店员":
@@ -354,7 +354,38 @@ function purchaseInOutField(key, show) {
     }
     return f;
 }
-
+/**
+ * 厂商对账单
+ * @param keys
+ * @param show
+ * @returns
+ */
+function purchaseStatementBillFields(keys, show) {
+    return getTFields("purchaseStatementBillField", keys, show);
+}
+function purchaseStatementBillField(key, show) {
+    var f;
+    switch (key) {
+    case "厂商":
+        f = new TField("厂商", TF_AC, 0, "", -1, 0);
+        break;
+    case "门店":
+        f = new TField("门店", TF, 1, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "对账单排序方式":
+        f = new TField("对账单排序方式", TF_SC, 2, "日期优先");
+        break;
+    case "日期从":
+        f = new TField("日期从", TF_DT, 3, getToday());
+        break;
+    case "日期到":
+        f = new TField("到", TF_DT, 4, getToday());
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
 // 供应商对账单
 function testPurchaseQueryProviderFields() {
     var keys = [ "day1", "day2", "provider" ];
@@ -640,7 +671,7 @@ function purchaseShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店",-1,0);// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

@@ -9,6 +9,7 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->按金额汇总", "ts120007");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,翻页/排序/汇总", "test120008");
     run("【采购入库-采购汇总】采购汇总->按款号汇总_准确性校", "ts120008_1");
+    run("【采购入库-按汇总-按款号汇总】拿货次数验证", "ts120121");
     run("【采购入库-采购汇总】采购汇总->按款号汇总,条件查询/清除/下拉框", "test120008_2");
     run("【采购入库-采购汇总】采购汇总->按厂商返货,翻页/排序/汇总", "test120009");
     run("【采购入库-采购汇总】采购汇总->按厂商返货,条件查询/清除/下拉框", "test120009_1");
@@ -19,6 +20,8 @@ function testPurchase001() {
     run("【采购入库-采购汇总】采购汇总->汇总", "test120011_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总，翻页排序汇总", "test120013_1");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,查询清除", "test120013_2");
+    run("【采购入库-按汇总-按品牌汇总】翻页、排序、底部数据汇总", "ts120120");
+    run("【采购入库-按汇总-按品牌汇总】查询清除，详细界面数据验证", "ts120119");
 
     run("【采购入库-按订货入库】翻页_排序_汇总", "test120025_1");
     run("【采购入库-按订货入库】条件查询，清除按钮,下拉框", "test120025_2");
@@ -27,6 +30,8 @@ function testPurchase001() {
     run("【采购入库-厂商账款】厂商账款->厂商门店账_翻页_排序_汇总", "test120030_1");
     run("【采购入库-厂商账款】厂商账款->厂商门店账_条件查询，清除按钮,下拉框", "test120030_2");
 
+    run("【采购入库-按汇总-厂商对账单】做过导出操作后，检查下拉列表", "ts120116");
+    run("【采购入库-按汇总-厂商对账单】厂商查询条件输入客户名导出", "ts120117");
 }
 
 function testPurchasePrepare002() {
@@ -58,7 +63,8 @@ function testPurchase002() {
     run(" 参数设置-按最新成交价/允许负库存", "test120112Field");// 防止test120112报错
 
     run("【采购入库-采购汇总】采购汇总->按款号汇总,增加厂商查询条件,以采购单输入的厂商为准", "test120045");
-    run("【采购入库-采购汇总】采购汇总->出入库汇总,明细", "test120011_3");
+    run("【采购入库-按汇总-出入库汇总】明细", "test120011_3");
+    run("【采购入库-按汇总-出入库汇总】挂单的数据不应该显示", "ts120118");
     run("【采购入库-采购汇总】采购汇总->按类别汇总,正负零", "test120013_3");
     run("【采购入库-采购汇总】采购汇总->按类别汇总_功能检查_打包费的数量正确性检查", "test120031_120032");
     if (ipadVer < 7.25) {
@@ -89,7 +95,10 @@ function testPurchase002() {
     run("【采购入库-新增入库】输入单价为0的款号保存成功（款号单价原来为0）", "test120109");
     run("【采购入库-新增入库】修改款号单价为0保存成功（款号单价原来不为0）", "test120110");
 
-    run("【采购入库-批量入库】均色均码+批量入库", "test120024");
+    if (colorSize == "no") {
+        run("【采购入库-批量入库】均色均码+批量入库", "test120024");
+        run("【采购入库-批量入库】均色均码+单价和数量不输入验证", "ts120122");
+    }
     run("【采购入库-按订货入库】按订货入库", "test120025");
     run("【采购入库-按订货入库】不支持按订货开单的跨门店操作", "test120026");
     run("【采购入库－按订货入库】对原有款号不能修改，但可以新增", "test120027");
@@ -3512,7 +3521,208 @@ function ts120114() {
     var qr = getQR();
     return isEqual("仓库店", qr.data[0]["门店"]);
 }
+// 常青店店长登陆
 function ts120115() {
     tapMenu("采购入库", "按汇总", "厂商对账单");
+    var idx = getQueryBtnIndex();
+    tapButton(window, idx);// 第一个都是门店...按钮
+    var ret = isEqualDropDownListByExp("常青店");// 只显示本门店
+
+    tapMenu("销售订货", "订货对账单");
+    idx = getQueryBtnIndex();
+    tapButton(window, idx);
+    ret = isAnd(ret, isEqualDropDownListByExp("常青店"));
+
+    tapMenu("销售开单", "按汇总", "客户对账单");
+    idx = getQueryBtnIndex();
+    tapButton(window, idx);
+    ret = isAnd(ret, isEqualDropDownListByExp("常青店"));
+    return ret;
+}
+function ts120116() {
+    tapMenu("采购入库", "按批次查");// 用例需要,先点到按批次查
+    tapMenu("采购入库", "按汇总", "厂商对账单");
+    tapButton(window, CLEAR);
+    var keys = { "厂商" : "rt", "门店" : "常青店", "对账单排序方式" : "日期优先" };
+    var fields = purchaseStatementBillFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, EXPORT);
+    tapButton(window, "对账单(按批次)");
+    tapNaviClose();
+
+    tapMenu2("按批次查");
+    keys = { "厂商" : "rt", "店员" : "rt" };
+    conditionQuery(keys);
+    tapPrompt();
+    tapButton(window, CLEAR);
+    return isInAlertMsgs("[店员]的查询必须从列表中选择");
+}
+function ts120117() {
+    tapMenu("采购入库", "按汇总", "厂商对账单");
+    tapButton(window, CLEAR);
+    var f = new TField("厂商", TF, 0, "小王");// 强制输入客户
+    setTFieldsValue(window, [ f ]);
+    tapButton(window, EXPORT);
+    tapButton(window, "对账单(按批次)");
+    tapPrompt();
+    tapNaviClose();
+    return isInAlertMsgs("请选择正确的厂商");
+}
+function ts120118() {
+    tapMenu("采购入库", "新增入库+");
+    var jo = { "客户" : "vell", "挂单" : "yes" };
+    var det = addPOrderBillDet();
+    var json = mixObject(jo, det);
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按挂单");
+    query();
+    var qr = getQR();
+    var data = qr.data[0];
+
+    tapMenu("采购入库", "按汇总", "出入库汇总");
+    query();
+    qr = getQR();
+    var ret = !isEqualObject2(qr.data[0], data);//
+
+    tapTitle(getScrollView(), "批次");// 改成升序
+    qr = getQR();
+    ret = isAnd(ret, qr.data[0]["批次"] > 0);
+    return ret;
+}
+
+function ts120119() {
+    tapMenu("采购入库", "按汇总", "按品牌汇总");
+    var keys = { "日期从" : getDay(-15), "门店" : "常青店", "品牌" : "1010pp" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = isEqual(qr.data[0]["品牌"], "1010pp");
+    var counts = qr.counts;
+
+    tapLine();
+    var sum = {}, i, j, num = 0, retNum = 0, valuePre, value;
+    qr = getQR2(getScrollView(-1, 0), "款号", "金额");
+    for (j = 0; j < qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            value = Number(qr.data[i]["数量"]);
+            sum = addObject(qr.data[i], sum);
+            if (i > 0) {
+                ret = ret && valuePre >= value;// 默认按数量降序排序
+            }
+            valuePre = value;
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR2(getScrollView(-1, 0), "款号", "金额");
+        }
+    }
+    var jo = qr.data[0];
+    tapNaviClose();
+    ret = isAnd(ret, isEqualObject2(sum, counts));
+
+    tapMenu2("按明细查");
+    keys = { "款号" : jo["款号"], "日期从" : getDay(-15), "门店" : "常青店" };
+    conditionQuery(keys);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(jo["数量"], qr.counts["数量"]), isEqual(jo["金额"],
+            qr.counts["小计"]));
+    for (j = 0; j < qr.totalPageNo; j++) {
+        for (i = 0; i < qr.curPageTotal; i++) {
+            var n = qr.data[i]["数量"];
+            if (n > 0) {
+                num++;// 就按明细来 一条大于0的明细记录算一次拿货
+            }
+            if (n < 0) {
+                retNum = add(retNum, n);
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    ret = isAnd(ret, isEqual(jo["退货数"], -retNum), isEqual(jo["拿货次数"], num),
+            isEqual(jo["拿货数"], add(jo["数量"], jo["退货数"])));
+    return ret;
+}
+function ts120120() {
+    tapMenu("采购入库", "按汇总", "按品牌汇总");
+    var keys = { "日期从" : getDay(-365) };// 汇总数据较少
+    conditionQuery(keys);
+    var ret = goPageCheck();
+    ret = ret && sortByTitle("品牌");
+    ret = ret && sortByTitle("数量", IS_NUM);
+    ret = ret && sortByTitle("拿货数", IS_NUM);
+    ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("金额", IS_NUM);
+    var arr = [ "数量", "拿货数", "退货数", "金额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
+    return ret;
+}
+function ts120121() {
+    tapMenu("采购入库", "新增入库+");
+    var json = {
+        "客户" : "vell",
+        "明细" : [ { "货品" : "4562", "数量" : [ 6 ] },
+                { "货品" : "4562", "数量" : [ -10 ] } ] };
+    editSalesBill(json, colorSize);// 既拿货又退货，退货数>拿货数，算一次拿货
+
+    tapMenu2("按明细查");
+    var keys = { "款号" : "4562", "日期从" : getDay(-7), "门店" : "常青店" };
+    conditionQuery(keys);
+    var num = ts120121Field();
+    keys = { "厂商" : "vell" };
+    conditionQuery(keys, false);
+    var numVell = ts120121Field();
+
+    tapMenu("采购入库", "按汇总", "按款号汇总");
+    keys = { "款号" : "4562", "日期从" : getDay(-7), "门店" : "常青店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = isEqual(num, qr.data[0]["拿货次数"]);
+
+    keys = { "厂商" : "vell" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(numVell, qr.data[0]["拿货次数"]));
+    return ret;
+}
+/**
+ * 获取拿货次数
+ * @returns {Number}
+ */
+function ts120121Field() {
+    var qr = getQR(), num = 0;
+    for (var j = 0; j < qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            if (qr.data[i]["数量"] > 0) {
+                num++;// 就按明细来 一条大于0的明细记录算一次拿货
+            }
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return num;
+}
+function ts120122() {
+    tapMenu("采购入库", "批量入库+");
+    var title = getSalesBillDetTfObject();
+    var f = new TField("货品", TF_AC, title["货品"], "4562", -1, 0);
+    setTFieldsValue(getScrollView(-1), [ f ]);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "请填写数量");
+
+    var f = new TField("单价", TF, title["单价"], 120);
+    setTFieldsValue(getScrollView(-1), [ f ]);
+    saveAndAlertOk();
+    tapPrompt();
+    ret = isAnd(ret, isIn(alertMsg, "请填写数量"));
+    tapReturn();
+    return ret;
+}
+function ts120123(){
     
 }

@@ -91,6 +91,7 @@ function testShopkeeper004All() {
     run("【采购入库-按汇总】按款号汇总,检查明细值", "test120080");
     run("【新增入库】采购入库界面切换到销售订货或销售开单界面，不能出现异常", "test120087");
     run("【采购入库-按汇总】店长查看门店范围检查", "ts120095");
+    run("【采购入库-按汇总】店长登录,导出门店检查", "ts120115");
 
     run("【采购订货-按汇总】其他角色只能查看本门店数据", "ts130004_05_06Staff");
     run("【采购订货-按批次查】店长查看修改日志", "ts130025_2");
@@ -441,6 +442,16 @@ function checkRightsPurchase() {
     tapButton(window, QUERY);
     arr = [ "总额" ];// 
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
+
+    tapMenu2("按汇总");
+    tapMenu3("按品牌汇总");
+    tapButton(window, QUERY);
+    arr = [ "金额" ];// 
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
+    tapLine();
+    var qr = getQR2(getScrollView(-1, 0), "款号", "金额");
+    ret = isAnd(ret, isEqual(qr.data[0]["金额"], ""));
+    tapNaviClose();
 
     tapMenu2("新增入库+");
     arr = [ "结余", "核销", "总额", "现金", "刷卡", "汇款", "应付", "实付", "单价", "小计" ];

@@ -12,13 +12,13 @@
 function test000All() {
 // colorSize = "yes";
     debug = true;
-// ipadVer = "7.21";// 7.01
+// ipadVer = "7.21";//
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "setSales_order_distribute_3");//
- run("测试用例", "onlyTest");
-// run("测试用例", "ts110111");//
+ run("测试用例", "ts120122");
+// run("测试用例", "ts120117");//
 
 }
 
@@ -26,7 +26,7 @@ function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    
+
     
  // debugObject(gCache,"gCache");parent
  return true;
