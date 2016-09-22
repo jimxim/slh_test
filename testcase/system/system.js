@@ -113,7 +113,6 @@ function test210001() {
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButtonAndAlert(SAVE, OK);
     delay();
-
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret = isAnd(ret, isEqual(r, qr.data[1]["数值"]));
 
@@ -198,7 +197,6 @@ function test210004_210005_210006() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 4);
     var ret1 = isEqual(3, getTextFieldValue(getScrollView(), 2));
-
     tapReturn();
 
     qo = { "备注" : "打印份数" };
@@ -221,14 +219,12 @@ function test210010_210011() {
     var fields = querySystemGlobalFields(keys);
     query(fields);
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-
     var ret = isEqual("开单模式", qr.data[0]["备注"]);
 
     keys = { "备注" : "开单模式" };
     fields = querySystemGlobalFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-
     var ret1 = isAnd(isEqual("开单模式", qr.data[0]["备注"]), isEqual("paymethod",
             qr.data[0]["名称"]));
 
@@ -250,7 +246,6 @@ function test210010_210011() {
     fields = querySystemGlobalFields(keys);
     query(fields);
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-
     var ret3 = isAnd(isEqual("开单模式", qr.data[0]["备注"]), isEqual("paymethod",
             qr.data[0]["名称"]));
 
@@ -258,7 +253,6 @@ function test210010_210011() {
     var b = getTextFieldValue(window, 0);
     var b1 = getTextFieldValue(window, 1);
     var b2 = getTextFieldValue(window, 2);
-
     var ret4 = isAnd(isEqual("", b), isEqual("", b1), isEqual("", b2));
 
     return ret && ret1 && ret2 && ret3 && ret4;
@@ -280,7 +274,6 @@ function test210012_210013_210014() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 4);
     var ret2 = isIn(getTextFieldValue(getScrollView(-1), 2), "货品单价精确到元");
-
     tapReturn();
 
     return ret && ret1 && ret2;
@@ -559,7 +552,6 @@ function test210023() {
     if (bt = isUIAButton) {
         ret1 = true;
     }
-
     tapNaviLeftButton();
 
     return ret1;
@@ -594,7 +586,6 @@ function test210024_210025() {
     var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 0)), isEqual("", getTextFieldValue(
             window, 0)), isEqual("", getTextFieldValue(window, 0)));
-
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("工号", IS_NUM);
@@ -680,10 +671,8 @@ function test210028_210029() {
 }
 function test210030() {
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "222222");
-    var f2 = new TField("确认密码", TF_S, 2, "222222");
-    var fields = [ f0, f1, f2 ];
+    var keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
     tapPrompt();
@@ -698,10 +687,8 @@ function test210030() {
     var ret = isIn(alertMsg, "密码会重置为000000");
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "222222");
-    var f2 = new TField("确认密码", TF_S, 2, "222222");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
     tapPrompt();
@@ -709,10 +696,8 @@ function test210030() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "222222");
-    var f1 = new TField("新密码", TF_S, 1, "000000");
-    var f2 = new TField("确认密码", TF_S, 2, "000000");
-    var fields = [ f0, f1, f2 ];
+    var keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
     tapPrompt();
@@ -898,82 +883,63 @@ function test210034() {
 }
 function test210035() {
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "111");
-    var f2 = new TField("确认密码", TF_S, 2, "111");
-    var fields = [ f0, f1, f2 ];
+    var keys = { "原密码" : "000000", "新密码" : "111", "确认密码" : "111" };
+    var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
     var ret = isIn(alertMsg, "密码必须为6位");
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
     delay();
 
     tapMenu("系统设置", "改密码");
-    f0 = new TField("原密码", TF_S, 0, "000000");
-    f1 = new TField("新密码", TF_S, 1, "");
-    f2 = new TField("确认密码", TF_S, 2, "");
-    fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "000000", "新密码" : "", "确认密码" : "" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
     var ret1 = isIn(alertMsg, "密码必须为6位");
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000001");
-    var f1 = new TField("新密码", TF_S, 1, "111111");
-    var f2 = new TField("确认密码", TF_S, 2, "111111");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "000001", "新密码" : "111111", "确认密码" : "111111" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret2 = isIn(alertMsg1, "请确认原密码输入是否正确");
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "111111");
-    var f2 = new TField("确认密码", TF_S, 2, "111112");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "000000", "新密码" : "111111", "确认密码" : "111112" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
     debugArray(alertMsgs);
     var alertMsg2 = getArray1(alertMsgs, -1);
     var ret3 = isIn(alertMsg2, "两次输入的密码不同");
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "222222");
-    var f2 = new TField("确认密码", TF_S, 2, "222222");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
     tapPrompt();
     var ret4 = isIn(alertMsg, "操作成功");
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "222222");
-    var f1 = new TField("新密码", TF_S, 1, "000000");
-    var f2 = new TField("确认密码", TF_S, 2, "000000");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
-
     var ret5 = isIn(alertMsg, "操作成功");
-
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     // tapMenu("系统设置", "人员列表");
     // var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
@@ -989,21 +955,14 @@ function test210035() {
 }
 function test210036() {
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "222222");
-    var f2 = new TField("确认密码", TF_S, 2, "222222");
-    var fields = [ f0, f1, f2 ];
+    var keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "000000");
-    var f1 = new TField("新密码", TF_S, 1, "222222");
-    var f2 = new TField("确认密码", TF_S, 2, "222222");
-    var fields = [ f0, f1, f2 ];
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
 
@@ -1011,21 +970,16 @@ function test210036() {
     if (isIn(alertMsg, "操作成功")) {
         ret = true;
     }
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var f0 = new TField("原密码", TF_S, 0, "222222");
-    var f1 = new TField("新密码", TF_S, 1, "000000");
-    var f2 = new TField("确认密码", TF_S, 2, "000000");
-    var fields = [ f0, f1, f2 ];
+    keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, OK);
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "操作成功");
-
-    tapButton(window, "关 闭");
+    tapButton(window, CLOSE);
 
     // tapMenu("系统设置", "人员列表");
     // var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
@@ -1087,11 +1041,8 @@ function test210039_210068() {
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(-1), fields);
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret2 = isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式");
-
     tapReturn();
 
     // qo = { "备注" : "是否显示颜色尺码字样" };
@@ -2004,11 +1955,8 @@ function test210053() {
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "操作失败，[开启启用上次成交价作为本次开单单价时，必须先开启颜色尺码下，开单显示上次单价] ");
-
     tapReturn();
 
     return ret && ret1;
@@ -2034,11 +1982,8 @@ function test210053_1() {
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "操作失败，[关闭颜色尺码下，开单显示上次单价时，必须先关闭启用上次成交价作为本次开单单价]");
-
     tapReturn();
 
     return ret && ret1;
@@ -2060,11 +2005,8 @@ function test210053_2() {
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
-
     tapReturn();
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
@@ -2078,11 +2020,8 @@ function test210053_2() {
     var fields = editSystemGlobalFields(setObj);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret2 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
-
     tapReturn();
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -2335,7 +2274,7 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("门店列表");
-    keys = { "名称" : m, "部门" : m };
+    keys = { "名称" : m };
     fields = editSystemShopFields(keys);
     query(fields);
     var r = getQR();
@@ -2350,7 +2289,7 @@ function test210069_210070() {
     var ret1 = isIn(alertMsg, "账户全称不能为空");
 
     var r = "zh" + randomWord(false, 4);
-    var r1 = getTimestamp(4);
+    var r1 = randomWord(false, 4);
     var keys1 = { "账户全称" : r };
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
@@ -2378,21 +2317,28 @@ function test210069_210070() {
             getTextFieldValue(getScrollView(), 1)));
 
     var r2 = randomWord(false, 2);
-    keys1 = { "账户简称" : r2 };
+    keys1 = { "门店" : "test210069", "账户简称" : r2 };
     fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+
+    // keys1 = { "门店" : "m" };
+    // fields = editSystemAccountAddFields(keys1);
+    // setTFieldsValue(getScrollView(), fields);
+    // saveAndAlertOk();
+    // tapPrompt();
     tapReturn();
 
-    tapMenu1("系统设置");
-    tapMenu2("getMenu_More");
-    tapMenu3("账户列表");
+    tapMenu("系统设置", "getMenu_More", "账户列表");
     keys1 = { "名称" : r };
     fields = editSystemAccountFields(keys1);
     query(fields);
     var qr = getQR();
+    // var ret3 = isAnd(isEqual(1, qr.data.length),
+    // isEqual(r, qr.data[0]["账户名称"]), isEqual(r2, qr.data[0]["简称"]),
+    // isEqual(m, qr.data[0]["门店"]));
     var ret3 = isEqual(0, qr.data.length);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2 + " ret3="
@@ -2404,22 +2350,15 @@ function test210071() {
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
 
-    var r = "zh" + getTimestamp(4);
-    var r1 = getTimestamp(2);
-
-    var f0 = new TField("账户全称", TF, 0, r);
-    var f1 = new TField("账户简称", TF, 1, r1);
-    var f2 = new TField("门店", BTN_SC, 0, "常青店");
-    var f3 = new TField("刷卡/汇款", BTN_SC, 1, "通用");
-    var fields = [ f0, f1, f2, f3 ];
+    var r = "zh" + randomWord(false, 4);
+    var r1 = randomWord(false, 2);
+    var keys = { "账户全称" : r, "账户简称" : r1, "门店" : "常青店", "刷卡/汇款" : "通用" };
+    var fields = editSystemAccountAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
     saveAndAlertOk();
-
     tapPrompt();
-
     var ret = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
-
     tapReturn();
 
     tapMenu1("系统设置");
@@ -2427,9 +2366,7 @@ function test210071() {
     tapMenu3("账户列表");
 
     query();
-
     var qr = getQR();
-
     var ret1 = !isEqual(r, qr.data[0]["账户名称"]);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
