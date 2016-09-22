@@ -1119,6 +1119,7 @@ function goPage2(page, qr) {
     if (total > 1 && page <= total && page > 0) {
         window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : {
             x : 0.08, y : 0.55 } });
+        // window.elements()[curPageIndex].tap();
         delay(); // 为了让跳转页面加载完成
 
         var index = getTextFieldIndex(window, -1);
@@ -1202,8 +1203,9 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
                     isDifferentArray(page1, page3, 1), isDifferentArray(page2,
                             page3, 1));
 
-            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
             ret = isAnd(ret, goPageCheckField());
+            tapKeyboardHide();// 防止键盘挡住
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
             goPage2(1, qr);
         }
     } else {
@@ -1234,6 +1236,7 @@ function goPageCheckField() {
     var curPageIndex = curPageNo + "/" + total;
     window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : { x : 0.08,
         y : 0.55 } });
+    // window.elements()[curPageIndex].tap();
     delay(); // 为了让跳转页面加载完成
 
     var index = getTextFieldIndex(window, -1);
@@ -2232,7 +2235,7 @@ function conditionQuery(keys, tapClear, view) {
     case "门店调出":
         switch (gMenu2) {
         case "按批次查":
-            qFields = testShopOutQueryBatchFields(keys);
+            qFields = shopOutQueryBatchFields(keys);
             break;
         case "按明细查":
             qFields = shopOutQueryParticularFields(keys);

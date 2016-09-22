@@ -533,8 +533,8 @@ function test100001_3() {
     // 调入数据准备中的4562 50件
     tapMenu("门店调入", "在途调拨");
     query();
-    tapFirstText();
-    editShopInFlitting();
+    tapLine();
+    editShopInFlitting({});
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);

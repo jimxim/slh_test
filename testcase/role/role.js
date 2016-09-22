@@ -15,6 +15,8 @@ function loginWarehouse001() {
 function testWarehouseAll() {
     run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
     run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
+    run("【门店调出-批量调出】开启参数支持异地仓库+后台绑定仓库时做门店调出", "ts150034");
+    run("【门店调出】门店绑定仓库调出门店为当前门店", "ts150035");
 }
 
 function repealWarehouseSalesBill() {
@@ -58,6 +60,8 @@ function testBuyer003() {
     run("【采购订货-按批次查】采购员修改订货门店", "ts130037");
     run("【采购订货-按批次查】采购员能看到的订单范围检查", "ts130038");
     run("【采购订货-按批次查】采购员仅看自己建的采购单", "ts130039");
+    run("【采购订货-新增订货】参数对订货门店的影响", "ts130044");
+    run("【采购订货-新增订货】采购员给别的门店做采购订货", "ts130045");
 }
 
 function testShopkeeper004All() {

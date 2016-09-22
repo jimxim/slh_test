@@ -726,7 +726,7 @@ function test120011_2() {
     var fields = shopInFlitFields(keys);
     query(fields);
     tapFirstText();
-    editShopInFlitting();
+    editShopInFlitting({});
 
     tapMenu("门店调入", "按批次查");
     query();
@@ -3421,7 +3421,6 @@ function test120109Field(edit) {
         json = mixObject(json, jo);
         editShopOutDecruitIn(json, colorSize);
 
-        qo = { "备注" : "门店调拨是否可以填写价格" };
         o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
         ok = isAnd(ok, setGlobalParam(qo, o));
     }
@@ -3723,6 +3722,6 @@ function ts120122() {
     tapReturn();
     return ret;
 }
-function ts120123(){
-    
+function ts120123() {
+
 }

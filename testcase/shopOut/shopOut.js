@@ -7,6 +7,7 @@ function testShopOut001() {
     run("【门店调出-按批次查】翻页_排序", "ts150001_1");
     run("【门店调出-按明细查】翻页_排序_汇总", "ts150010_1");
     run("【门店调出-按批次查】作废", "ts150002");
+    run("【门店调出-批量调出】修改单价为0保存", "ts150036");
     var ok = setShopOutParams();
     if (ok) {
         run("【门店调出-按批次查】条件查询，清除按钮,下拉框", "ts150001_2");
@@ -79,6 +80,7 @@ function ts150001_1() {
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
+    ret = ret && sortByTitle("调出日期", IS_DATE2);
     ret = ret && sortByTitle("调出门店");
     ret = ret && sortByTitle("调入门店");
     ret = ret && sortByTitle("送货人");
@@ -750,7 +752,97 @@ function ts150032() {
 
     return ret;
 }
+function ts150033() {
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "常青店", "日期" : getDay(-1),
+        "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editShopOutDecruitIn(json, colorSize);
 
+    tapMenu2("按批次查");
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var exp = { "调出日期" : getDay(-1, "yy"), "操作日期" : json["操作日期"] };
+    return isEqualObject(exp, qr.data[0]);
+}
+// 仓库店店员登陆 调出到文一店
+function ts150034() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035", "门店" : "文一店" };
+    conditionQuery(keys);
+    var d = getQR().data[0];
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "100", "接收店" : "文一店",
+        "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按批次查");
+    keys = { "调出门店" : "仓库店", "调入门店" : "文一店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = isAqualOptimeX(json["操作日期"], qr.data[0]);
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    ret = isAnd(ret, isEqual(sub(d["库存"], 5), qr.data[0]["库存"]), isEqual(add(
+            d["在途数"], 5), qr.data[0]["在途数"]));
+    return ret;
+}
+// 仓库店登陆
+function ts150035() {
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "100", "接收店" : "常青店",
+        "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapTitle(getScrollView(), "操作日期");
+    tapTitle(getScrollView(), "操作日期");// 找刚才开的单子
+    var qr = getQR();
+    var ret = isEqual("仓库店", qr.data[0]["调出门店"]);
+
+    tapLine();
+    json = { "接收店" : "中洲店" };
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
+    tapTitle(getScrollView(), "操作日期");
+    tapTitle(getScrollView(), "操作日期");// 找刚才开的单子
+    qr = getQR();
+    ret = isAnd(ret, isEqual("仓库店", qr.data[0]["调出门店"]));
+    return ret;
+}
+function ts150036() {
+    if (colorSize == "no") {
+        return true;
+    }
+    var qo = { "备注" : "门店调拨是否可以填写价格" };
+    var o = { "新值" : "1", "数值" : [ "调拨有价格选项", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("门店调出", "批量调出+");
+    var json = { "调出人" : "200", "接收店" : "常青店",
+        "明细" : [ { "货品" : "agc001", "数量" : [ 5 ], "单价" : 0 } ] };
+    editShopOutDecruitIn(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var ret = isEqual(0, qr.data[0]["金额"]);
+
+    tapLine();
+    qr = getQRDet();
+    ret = isAnd(ret, isEqual(0, qr.data[0]["单价"]));
+    tapReturn();
+
+    o = { "新值" : "0", "数值" : [ "默认只有数量", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
+}
 function shopInPrepare() {
     var det = {};
     switch (colorSize) {
@@ -764,7 +856,6 @@ function shopInPrepare() {
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);
-        break;
     }
 
     tapMenu("门店调出", "批量调出+");
@@ -811,16 +902,17 @@ function editShopOutSave(o) {
     }
 
     saveAndAlertOk();// 保存后会清空页面数
-
+    o["操作日期"] = getOpTime();
     // 保存成功，是否打印?
     var o1 = { "是否打印" : CANCEL };
     setValueToCache(ALERT_MSG_KEYS, o1);
 
     delay();
+    tapKeyboardHide();
     // 保存成功后，开单界面会清空
     if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
         logDebug("不返回=" + o["不返回"] + " 点击键盘隐藏");
-        tapKeyboardHide();
+        // tapKeyboardHide();
     } else {
         tapReturn();
     }

@@ -11,6 +11,8 @@ function testShopIn001() {
     run("【门店调入-在途调拨】全部清除", "ts140010");
     run("【门店调入-在途调拨】返回", "ts140011");
     run("【门店调入-在途调拨】翻页_排序_汇总", "ts140007_09");
+    run("【门店调入-在途调拨】调入单作废后检查", "ts140030");
+    run("【门店调入-在途调拨】可以补录以前的单据", "ts140031");
     run("【门店调入-按批次查】翻页_排序_汇总", "ts140012_19");
     run("【门店调入-按批次查】返回按钮", "ts140015");
     run("【门店调入-按明细查】翻页_排序_汇总", "ts140016_20");
@@ -54,7 +56,7 @@ function ts150002_1() {
         query(fields);
 
         tapFirstText();
-        editShopInFlitting();
+        editShopInFlitting({});
         tapButtonAndAlert("调 入");
         tapPrompt();
         return isIn(alertMsg, "调入错误，调出方已经作废该批次");
@@ -78,13 +80,13 @@ function ts150008() {
     tapMenu2("在途调拨");
     tapButton(window, QUERY);
     tapFirstText();
-    editShopInFlitting("999999");
+    editShopInFlitting({ "接收人密码" : "999999" });
     ret = isAnd(ret, isIn(alertMsg, "操作人/接收人密码错误"));
 
     tapMenu2("在途调拨");
     tapButton(window, QUERY);
     tapFirstText();
-    editShopInFlitting("000000");
+    editShopInFlitting({ "接收人密码" : "000000" });
     // 大师说是操作成功的，以后要是变成保存成功，就去打死大师
     ret = isAnd(ret, isIn(alertMsg, "操作成功"));
     return ret;
@@ -194,7 +196,7 @@ function ts140001() {
         tapMenu("门店调入", "在途调拨");
         tapButton(window, QUERY);
         tapFirstText();
-        editShopInFlitting();
+        editShopInFlitting({});
 
         // 调入后，在途调拨中应该不再显示该批次
         tapButton(window, QUERY);
@@ -548,5 +550,82 @@ function ts140028() {
     var qr = getQR();// 有时标题栏会循环显示，这里因为明细为空，所以汇总值可能会取不到
     ret = isAnd(ret, qr.data.length == 0, qr.counts["数量"] == 0
             || qr.counts["数量"] == undefined);
+    return ret;
+}
+function ts140030() {
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : getDay(-7) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var data = qr.data[0];
+    tapLine();
+    qr = getQRDet();
+    var d = qr.data[0];// 获取作废的款号等信息
+    tapReturn();
+
+    var good = d["货品"].split(",");
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : good[0], "颜色" : d["颜色"], "尺码" : d["尺码"], "门店" : "常青店" };
+    conditionQuery(keys);
+    qr = getQR();
+    var d1 = qr.data[0];
+    keys = { "门店" : data["调出门店"] };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var d2 = qr.data[0];
+
+    tapMenu("门店调入", "在途调拨");
+    tapButton(window, QUERY);
+    tapLine();
+    tapButtonAndAlert(INVALID, OK);
+    tapReturn();// 会自动返回
+
+    tapButton(window, QUERY);// 刷新
+    qr = getQR();
+    var ret = !isEqualObject(data, qr.data[0]);// 作废后不再显示
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    qr = getQR();
+    d2["库存"] = add(d2["库存"], d["数量"]);
+    d2["核算金额"] = add(d2["核算金额"], mul(d2["单价"], d["数量"]));
+    ret = isAnd(ret, isEqualObject(d2, qr.data[0]));
+
+    keys = { "门店" : "常青店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    d1["在途数"] = sub(d1["在途数"], d["数量"]);
+    d1["核算金额"] = sub(d1["核算金额"], mul(d1["单价"], d["数量"]));
+    ret = isAnd(ret, isEqualObject(d1, qr.data[0]));
+    return ret;
+}
+function ts140031() {
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : getDay(-15), "日期到" : getDay(-1) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var outBatch = qr.data[0]["批次"];
+    tapLine();
+    editShopInFlitting({});// 默认为今天
+
+    tapMenu2("按批次查");
+    keys = { "调出批次从" : outBatch, "调出批次到" : outBatch };
+    conditionQuery(keys);
+    qr = getQR();
+    var ret = qr.data.length == 1;
+
+    tapMenu2("在途调拨");
+    tapButton(window, QUERY);
+    qr = getQR();
+    outBatch = qr.data[0]["批次"];
+    tapLine();
+    editShopInFlitting({ "日期" : getDay(-1) });
+
+    tapMenu2("按批次查");
+    keys = { "日期从" : getDay(-1), "日期到" : getDay(-1), "调出批次从" : outBatch,
+        "调出批次到" : outBatch };
+    conditionQuery(keys);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 1);
     return ret;
 }

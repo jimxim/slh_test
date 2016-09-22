@@ -37,7 +37,7 @@ function testPurchaseOrder002() {
     run("【采购订货-按批次查】总经理查看修改日志", "ts130025_1");
     run("【采购订货-新增订货】采购退货-仅退货", "ts130041");
     run("【采购订货-新增订货】采购退货-退货并退款", "ts130042");
-    run("【采购订货-新增订货】对采购退货的单据进行按订货入库", "ts130043"); 
+    run("【采购订货-新增订货】对采购退货的单据进行按订货入库", "ts130043");
 }
 
 // 翻页_排序
@@ -281,8 +281,7 @@ function ts130020_2() {
 function ts130002_1() {
     tapMenu("采购订货", "按明细查");
     var keys = { "日期从" : getDay(-7), "到" : getToday() };
-    var fields = purchaseOrderQueryParticularFields(keys);
-    query(fields);
+    conditionQuery(keys);
     // 点击翻页
     var ret = goPageCheck();
 
@@ -928,9 +927,9 @@ function ts130011() {
 }
 // 采购入库模式--默认复杂模式
 function ts130012() {
-    // var qo = { "备注" : "采购入库模式" };
-    // var o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
-    // var ret = setGlobalParam(qo, o);
+    var qo = { "备注" : "采购入库模式" };
+    var o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
+    setGlobalParam(qo, o);
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
@@ -1394,6 +1393,66 @@ function ts130043() {
     tapButton(window, QUERY);
     qr = getQR();
     return isAnd(ret, isEqual(sub(stock, qr.data[0]["库存"]), 7));
+}
+function ts130044() {
+    var qo = { "备注" : "采购入库模式" };
+    var o = { "新值" : "1", "数值" : [ "默认简单模式" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
+    o = { "新值" : "1", "数值" : [ "所有查询列表只出现自己门店" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "采购入库->简单模式" };
+    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("采购订货", "新增订货+");
+    var idx = getEditSalesTFindex2("客户,厂商", "订货门店");
+    var exp = "仓库店 常青店 文一店 中洲店";
+    tap(window.textFields()[idx].textFields()[0]);
+    var ret = isEqualDropDownListByExp(exp);
+    tapReturn();
+
+    qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
+    o = { "新值" : "0", "数值" : [ "默认显示所有门店" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "采购入库->简单模式" };
+    o = { "新值" : "1", "数值" : [ "支持" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("采购订货", "新增订货+");
+    tap(window.textFields()[idx].textFields()[0]);
+    ret = isAnd(ret, isEqualDropDownListByExp(exp));
+    tapReturn();
+
+    return ret;
+}
+function ts130045() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "rt", "订货门店" : "中洲店", "店员" : "003",
+        "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    var keys = { "门店" : "中洲店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = qr.data.length > 0;
+    if (ret) {
+        var batch = qr.data[0]["批次"];
+        tapLine();
+        var idx = getEditSalesTFindex2("客户,厂商", "订货门店");
+        ret = isEqual("中洲店", getTextFieldValue(window, idx));
+        tapReturn();
+
+        tapMenu2("按明细查");
+        conditionQuery(keys);
+        qr = getQR();
+        ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]));
+    }
+    return ret;
 }
 /**
  * 验证整单复制整单粘贴功能

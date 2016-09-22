@@ -213,16 +213,22 @@ function editPurchaseBatchSave(o) {
 /**
  * 门店调入 做调入单
  */
-function editShopInFlitting(secure) {
-    if (isDefined(secure)) {
-        var f = new TField("接收人密码", TF_S, 0, secure);
-        var fields = [ f ];
-        setTFieldsValue(window, fields);
+function editShopInFlitting(o) {
+    var f, fields = [];
+    if (isDefined(o["日期"])) {
+        f = new TField("日期", TF_DT, 0, o["日期"]);
+        fields.push(f);
     }
-
+    if (isDefined(o["接收人密码"])) {
+        f = new TField("接收人密码", TF_S, 0, secure);
+        fields.push(f);
+    }
+    setTFieldsValue(window, fields);
     tapButtonAndAlert("调 入", OK);
+    o["操作日期"] = getOpTime();
     delay();
-    tapPrompt();
+    // tapPrompt();
+    return o;
 }
 
 /**
