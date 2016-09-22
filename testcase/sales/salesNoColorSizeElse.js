@@ -850,18 +850,12 @@ function test170019() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var ss;
-    if (ipadVer >= "7.01") {
-        ss = "实收";
-    } else {
-        ss = "实付";
-    }
     var ret = isAnd(isEqual(getToday(""), qr.data[0]["日期"]), isEqual("李响",
             qr.data[0]["客户"]), isEqual(-4, qr.data[0]["数量"]), isEqual(
             Number(money), qr.data[0]["金额"]), isEqual(Number(money / 3),
             qr.data[0]["现金"]), isEqual(Number(money / 3), qr.data[0]["刷卡"]),
             isEqual(Number(money / 3), qr.data[0]["汇款"]), isEqual(
-                    Number(money), qr.data[0]["实收"]), isEqual(0,
+                    Number(money), qr.data[0]["实付"]), isEqual(0,
                     qr.data[0]["未结"]));
 
     tapMenu("统计分析", "收支流水");
@@ -1442,7 +1436,7 @@ function test170252() {
     var ret = isEqual("未发货", a);
 
     tapFirstText();
-    var o = { "数量" : "3" };
+    var o = { "数量" : [ 3 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1454,7 +1448,7 @@ function test170252() {
     var ret1 = isEqual("部分发货", b);
 
     tapFirstText();
-    o = { "数量" : "7" };
+    o = { "数量" : [ 7 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1640,7 +1634,7 @@ function test170260() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = { "数量" : "50" };
+    var o = { "数量" : [ 50 ] };
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -1688,7 +1682,7 @@ function test170261() {
             isEqual(14, a3));
 
     tapFirstText();
-    var o = { "数量" : "0" };
+    var o = { "数量" : [ 0 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1749,7 +1743,7 @@ function test170262() {
     query(fields);
 
     tapFirstText();
-    var o = { "数量" : "0" };
+    var o = { "数量" : [ 0 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售订货", "按批次查");
@@ -1791,7 +1785,7 @@ function test170264() {
     query();
 
     tapFirstText();
-    var o = { "数量" : "0" };
+    var o = { "数量" : [ 0 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -3372,7 +3366,7 @@ function test170303() {
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var o = { "数量" : "8" };
+    var o = { "数量" : [ 8 ] };
     editChangeSalesBillOrderNum(o, "no");
 
     var json = { "明细" : [ { "货品" : "k300", "数量" : 1 },
@@ -6249,7 +6243,7 @@ function test170419() {
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var o = { "数量" : r };
+    var o = { "数量" : [ r ] };
     editChangeSalesBillOrderNum(o, "no");
 
     saveAndAlertOk();
@@ -6346,7 +6340,7 @@ function test170432() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    var o = { "数量" : "30" };
+    var o = { "数量" : [ 30 ] };
     editChangeSalesBillOrderNum(o, "no");
 
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -6395,7 +6389,7 @@ function test170433() {
             qr.data[0]["已付"])));
 
     tapFirstText();
-    var o = { "数量" : "0" };
+    var o = { "数量" : [ 0 ] };
     editChangeSalesBillOrderNum(o, "no");
 
     var r = getTimestamp(8);
@@ -6484,7 +6478,7 @@ function test170435() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = { "数量" : "0" };
+    var o = { "数量" : [ 0 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按批次查");
@@ -6844,7 +6838,7 @@ function test170454() {
     query(fields);
 
     tapFirstText();
-    var o = { "数量" : "-9" };
+    var o = { "数量" : [ -9 ] };
     editChangeSalesBillOrderNum(o, "no");
     editSalesBillSave({});
 
@@ -8088,13 +8082,13 @@ function test170596() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = [ { "数量" : "0" } ];
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    var o = [ { "数量" : "5" }, { "数量" : "8" } ];
+    var o = [ { "数量" : [ 5, 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     var json = { "明细" : [ { "货品" : "k300", "数量" : 6 } ] };
@@ -8110,13 +8104,13 @@ function test170596() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    o = [ { "数量" : "0" } ];
+    o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    o = [ { "数量" : "5" }, { "数量" : "6" } ];
+    o = [ { "数量" : [ 5, 6 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     saveAndAlertOk();
@@ -8138,14 +8132,14 @@ function test170596() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    o = [ { "数量" : "5" }, { "数量" : "8" } ];
+    o = [ { "数量" : [ 5, 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "订单已全部发货，不允许修改");
 
-    o = [ { "数量" : "7" } ];
+    o = [ { "数量" : [7] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -8179,7 +8173,7 @@ function test170603_170669() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = [ { "数量" : "9" } ];
+    var o = [ { "数量" : [9] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -8189,7 +8183,7 @@ function test170603_170669() {
     var ret = isAnd(isEqual(0, qr.data[0]["数量"]),
             !isEqual(-6, qr.data[0]["数量"]));
 
-    o = [ { "数量" : "50" } ];
+    o = [ { "数量" : [50] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -8905,7 +8899,7 @@ function test170682() {
             qr.data[0]["订货"]), isEqual(0, qr.data[0]["已发"]), isEqual(20,
             qr.data[0]["数量"]), isEqual("李四", getTextFieldValue(window, 0)));
 
-    var o = { "数量" : "10" };
+    var o = { "数量" : [10] };
     editChangeSalesBillOrderNum(o, "no");
 
     storeTFindex = getEditSalesTFindex2("客户", "发货");
@@ -9663,7 +9657,7 @@ function test170713() {
     var ret = isEqual("未发货", a);
 
     tapFirstText();
-    var o = { "数量" : "3" };
+    var o = { "数量" : [3] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -9675,7 +9669,7 @@ function test170713() {
     var ret1 = isEqual("部分发货", b);
 
     tapFirstText();
-    var o = { "数量" : "8" };
+    var o = { "数量" : [8] };
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();

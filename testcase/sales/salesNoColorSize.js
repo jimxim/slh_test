@@ -3121,7 +3121,7 @@ function test170116_170660() {
     editSalesBillNoColorSize(json);
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg1 = getArray1(alertMsgs, -2) || getArray1(alertMsgs, -1);
     ret = isAnd(ret, isIn(alertMsg1, "库存不足，差"), isIn(alertMsg1, "2件"), isIn(
             alertMsg1, r));
 
@@ -3140,10 +3140,8 @@ function test170116_170660() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-
-    var f = new TField("数量", TF, 3, 8);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    var o = { "数量" : [8] };
+    editChangeSalesBillOrderNum(o, "no");
 
     tapStaticText(window, "刷卡");
     saveAndAlertOk();
@@ -3164,9 +3162,8 @@ function test170116_170660() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    var f = new TField("数量", TF, 3, 11);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "数量" : [11] };
+    editChangeSalesBillOrderNum(o, "no");
 
     tapStaticText(window, "刷卡");
     saveAndAlertOk();
@@ -3256,9 +3253,8 @@ function test170118() {
     json = { "明细" : [ { "货品" : r1, "数量" : 4, "单价" : 280 } ] };
     editSalesBillDetNoColorSize(json);
 
-    tapButton(window, PRINT);
-    tapButtonAndAlert("none", "打印(客户用)");
-
+    tapButtonAndAlert(PRINT, "打印(客户用)");
+    tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isAnd(
@@ -12551,7 +12547,7 @@ function test240003_240007_240006() {
             qr.data[1]["货品"], "抹零"), isEqual("-1", qr.data[1]["数量"]), isIn(
             qr.data[2]["货品"], "打包费"), isEqual(1, qr.data[2]["数量"]));
 
-    var o = { "数量" : "3" };
+    var o = { "数量" : [3] };
     editChangeSalesBillOrderNum(o);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);

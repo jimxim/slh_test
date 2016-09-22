@@ -14,8 +14,9 @@ function test000All() {
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");//
 // run("【销售开单-开单】童装模式手数需要四位数", "test170719");
 // run("【盘点管理-新增盘点】款号提示", "test180085");//漏输款号
+// run("【销售开单－开单】开单时不允许负库存", "test170116_170660");
     
-// run("", "test0");
+//    run("", "test0");
 }
 
 function test0(){
@@ -32,6 +33,8 @@ function test0(){
 // var ret=isInArray(texts,"常青店");
 // logDebug(" texts="+texts);
 // return texts;
+// tapFirstText();
+
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
