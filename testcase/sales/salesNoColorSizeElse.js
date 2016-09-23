@@ -1074,7 +1074,7 @@ function test170025() {
     var fields = salesQueryBatchFields(keys);
     query(fields);
     tapFirstText();
-    tapButtonAndAlert("打 印", "打印(客户用)");
+    tapButtonAndAlert(PRINT, "打印(客户用)");
     tapPrompt();
 
     var ret1 = false;
@@ -1522,7 +1522,7 @@ function test170253() {
     tapButton(window, QUERY);
     tapFirstText();
     saveAndAlertOk();
-    var o1 = { "是否打印" : OK };
+    var o1 = { "是否打印" : "打印(客户用)" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
     ret4 = isAnd(ret4, isEqual("是", getTextFieldValue(window, 8)));
@@ -3483,7 +3483,6 @@ function test170305_1() {
         "门店" : "常青店" };
     var fields = salesQueryGuaDanFields(keys);
     query(fields);
-
     var qr = getQR();
     var a1 = qr.data[0]["日期"];
     var a2 = qr.data[0]["门店"];
@@ -6102,8 +6101,7 @@ function test170400() {
     query(fields);
 
     tapFirstText();
-    tapButton(window, "打 印");
-    tapButtonAndAlert("none", "打印(客户用)");
+    tapButtonAndAlert(PRINT, "打印(客户用)");
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = (isIn(alertMsg1, "无法打印"));
@@ -8139,7 +8137,7 @@ function test170596() {
     tapPrompt();
     var ret2 = isIn(alertMsg, "订单已全部发货，不允许修改");
 
-    o = [ { "数量" : [7] } ];
+    o = [ { "数量" : [ 7 ] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -8173,7 +8171,7 @@ function test170603_170669() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = [ { "数量" : [9] } ];
+    var o = [ { "数量" : [ 9 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -8183,7 +8181,7 @@ function test170603_170669() {
     var ret = isAnd(isEqual(0, qr.data[0]["数量"]),
             !isEqual(-6, qr.data[0]["数量"]));
 
-    o = [ { "数量" : [50] } ];
+    o = [ { "数量" : [ 50 ] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -8819,20 +8817,7 @@ function test170646() {
     editSalesBillAgency2(json);
 
     delay(5);
-    // tapButton(window, "打 印");
-    tapButtonAndAlert("打 印", "打印(客户用)");
-
-    // tapButtonAndAlert("none", "打印(客户用)", 3);
-    // tap(app.alert().buttons()[1]);
-    //
-    // var bt = window.buttons()["返 回"];
-    // if(bt.isVisible()){
-    // tapReturn();
-    // }
-    // else{
-    // tapPrompt();
-    // }
-
+    tapButtonAndAlert(PRINT, "打印(客户用)");
     tapPrompt();
 
     debugArray(alertMsgs);
@@ -8899,7 +8884,7 @@ function test170682() {
             qr.data[0]["订货"]), isEqual(0, qr.data[0]["已发"]), isEqual(20,
             qr.data[0]["数量"]), isEqual("李四", getTextFieldValue(window, 0)));
 
-    var o = { "数量" : [10] };
+    var o = { "数量" : [ 10 ] };
     editChangeSalesBillOrderNum(o, "no");
 
     storeTFindex = getEditSalesTFindex2("客户", "发货");
@@ -9086,9 +9071,11 @@ function test170687() {
     query(fields);
     var qr1 = getQR();
 
-    var keys = { "门店" : "中洲店", "账户" : "现" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
+    var qKeys = [ "门店" ];
+    var qFields = statisticAnalysisInOutAccountFields(qKeys);
+    changeTFieldValue(qFields["门店"], "中洲店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
     var qr2 = getQR();
     var ret1 = isAnd(isEqual(0, qr1.data.length), isEqual(0, qr2.data.length));
 
@@ -9478,8 +9465,9 @@ function test170710() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 5, "单价" : 0 } ] };
     editSalesBillNoColorSize(json);
-
-    ret = isAnd(ret, isIn(alertMsg, "销售价不能为零，请核对款号[k300]价格是否维护"));
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    ret = isAnd(ret, isIn(alertMsg1, "销售价不能为零，请核对款号[k300]价格是否维护"));
 
     tapMenu("销售开单", "按订货开单");
     var keys = { "日期从" : "2015-01-01", "发货状态" : "未发货" };
@@ -9657,7 +9645,7 @@ function test170713() {
     var ret = isEqual("未发货", a);
 
     tapFirstText();
-    var o = { "数量" : [3] };
+    var o = { "数量" : [ 3 ] };
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -9669,7 +9657,7 @@ function test170713() {
     var ret1 = isEqual("部分发货", b);
 
     tapFirstText();
-    var o = { "数量" : [8] };
+    var o = { "数量" : [ 8 ] };
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();

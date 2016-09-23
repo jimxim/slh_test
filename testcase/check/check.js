@@ -198,7 +198,6 @@ function test180001_2_180004() {
         "处理时间从" : getToday(), "处理时间到" : getToday(), "门店" : "常青店" };
     var fields = queryCheckBatchFields(keys);
     query(fields);
-
     var qr = getQR();
     var a1 = qr.data[0]["门店"];
     var a2 = qr.data[0]["数量"];
@@ -207,7 +206,6 @@ function test180001_2_180004() {
     var a5 = qr.data[0]["处理时间"];
     var a6 = qr.data[0]["处理人"];
     var a7 = qr.data[0]["批次"];
-
     var ret1 = isAnd(isEqual("常青店", a1), isEqual("100", a2), isAqualOptime(
             getOpTime(), a3, 2), isEqual("总经理", a4), isAqualOptime(getOpTime(),
             a5, 2), isEqual("总经理", a6), isEqual(batch + 1, a7));

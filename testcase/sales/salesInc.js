@@ -840,7 +840,7 @@ function editChangeSalesBillOrderPrice(o, ret) {
  * @param ret为是否返回
  * @returns
  */
-function editChangeSalesBillOrderTip(o, ret) {
+function editChangeSalesBillOrderDiscount(o, ret) {
     delay();
     if (isUndefined(ret)) {
         ret = "yes";
@@ -870,6 +870,41 @@ function editChangeSalesBillOrderTip(o, ret) {
     return ret;
 }
 /**
+ * 单据修改备注
+ * @param o
+ * @param ret
+ * @returns
+ */
+function editChangeSalesBillOrderRemarks(o, ret) {
+    delay();
+    if (isUndefined(ret)) {
+        ret = "yes";
+    }
+    var titles = getSalesBillDetTfObject();
+    var title_num = "备注";
+    var tfNum = titles["明细输入框个数"];
+    var num = o["备注"];
+    var fields, f;
+    if (num && num.length > 0) {
+        fields = [];
+        for (var ni = 0; ni < num.length; ni++) {
+            f = new TField("备注", TF, titles[title_num] + tfNum * ni, num[ni]);
+            fields.push(f);
+        }
+    }
+    setTFieldsValue(getScrollView(-1), fields);
+
+    if (ret == "yes") {
+        editChangeSalesBillOrderNumSave("yes");
+    }
+    if (ret == "no") {
+        editChangeSalesBillOrderNumSave("no");
+    }
+
+    logDebug(" tfNum=" + tfNum);
+    return ret;
+}
+/**
  * 单据修改
  * @param o
  * @param ret
@@ -882,11 +917,13 @@ function editChangeSalesBillOrder(o, ret) {
     }
     var d = o["明细"];
     var d1 = d["数量"];
-    var d1 = d["单价"];
-    var d1 = d["折扣"];
+    var d2 = d["单价"];
+    var d3 = d["折扣"];
+    var d4 = d["备注"];
     editChangeSalesBillOrderNum(d1, ret);
     editChangeSalesBillOrderPrice(d2, ret);
-    editChangeSalesBillOrderTip(d3, ret);
+    editChangeSalesBillOrderDiscount(d3, ret);
+    editChangeSalesBillOrderRemarks(d4, ret);
 
     return ret;
 }
