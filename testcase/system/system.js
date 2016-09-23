@@ -33,7 +33,7 @@ function testSystem001() {
     run("【系统设置—人员列表】详细-密码重置", "test210030");
     run("【系统设置—改密码】关闭", "test210036");
     run("【系统设置—改密码】修改", "test210035");
-    run("【系统设置】紧急模式上传异常", "test210061");
+    run("【系统设置】紧急模式上传异常", "test210061");// 用例需确认
     // run("【系统设置-全局参数】异地发货参数互斥", "test210063");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
@@ -671,7 +671,7 @@ function test210028_210029() {
 }
 function test210030() {
     tapMenu("系统设置", "改密码");
-    var keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    var keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -687,7 +687,7 @@ function test210030() {
     var ret = isIn(alertMsg, "密码会重置为000000");
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -696,7 +696,7 @@ function test210030() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    var keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    var keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -883,7 +883,7 @@ function test210034() {
 }
 function test210035() {
     tapMenu("系统设置", "改密码");
-    var keys = { "原密码" : "000000", "新密码" : "111", "确认密码" : "111" };
+    var keys = { "原密码" : "000000", "新密码" : "111", "密码确认" : "111" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -893,7 +893,7 @@ function test210035() {
     delay();
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "000000", "新密码" : "", "确认密码" : "" };
+    keys = { "原密码" : "000000", "新密码" : "", "密码确认" : "" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -902,7 +902,7 @@ function test210035() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "000001", "新密码" : "111111", "确认密码" : "111111" };
+    keys = { "原密码" : "000001", "新密码" : "111111", "密码确认" : "111111" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -913,7 +913,7 @@ function test210035() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "000000", "新密码" : "111111", "确认密码" : "111112" };
+    keys = { "原密码" : "000000", "新密码" : "111111", "密码确认" : "111112" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -924,7 +924,7 @@ function test210035() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -933,7 +933,7 @@ function test210035() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -955,7 +955,8 @@ function test210035() {
 }
 function test210036() {
     tapMenu("系统设置", "改密码");
-    var keys = { "原密码" : "000000", "新密码" : "222222", "确认密码" : "222222" };
+    delay();
+    var keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, CLOSE);
@@ -973,7 +974,7 @@ function test210036() {
     tapButton(window, CLOSE);
 
     tapMenu("系统设置", "改密码");
-    keys = { "原密码" : "222222", "新密码" : "000000", "确认密码" : "000000" };
+    keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
@@ -2142,12 +2143,9 @@ function test210061() {
     tapMenu2("getMenu_More");
     tapMenu3("紧急模式上传异常");
 
-    tapButton(getScrollView(1), "删除紧急模式数据");
+    tapButton(getScrollView(-1), "删除紧急模式数据");
     tapPrompt();
-    tapPrompt();
-
     var ret = isIn(alertMsg, "操作成功");
-
     tapNaviLeftButton();
 
     return ret;
@@ -2159,7 +2157,6 @@ function test210062() {
 
     var cond = "isIn(alertMsg, '操作成功')";
     waitUntil(cond, 50);
-
     var ret = isIn(alertMsg, "操作成功");
 
     return ret;

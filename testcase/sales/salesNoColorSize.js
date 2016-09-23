@@ -5495,14 +5495,9 @@ function test170215() {
     json = { "明细" : [ { "货品" : "3035", "数量" : "-2" } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = json["明细值"];
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isAnd(isEqual(-2, qr.data[0]["数量"]));
-
     tapMenu("销售开单", "按批次查");
     query();
-    qr = getQR();
+    var qr = getQR();
     var kh = qr.data[0]["客户"];
     var je = qr.data[0]["金额"];
     var sl = qr.data[0]["数量"];
@@ -5537,8 +5532,8 @@ function test170215() {
     o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug("ret=" + ret + ", ret2=" + ret2);
+    return ret && ret2;
 }
 function test170216() {
     var qo, o, ret = true;
@@ -5580,7 +5575,7 @@ function test170216() {
     tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    ret = isAnd(ret, isIn(alertMsg1, "操作提醒，该款属于补货不能退货 ]\n [3035,jkk"));
+    var ret3 = isAnd(isIn(alertMsg1, "该款属于补货不能退货"), isIn(alertMsg1, "3035,jkk"));
 
     var qr = getQRDet();
     var idx;
@@ -5646,8 +5641,9 @@ function test170216() {
     o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170226() {
     var qo, o, ret = true;
@@ -7121,6 +7117,10 @@ function test170424() {
     o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var r = "anewkhVip" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "客户类别" : "VIP客户", "适用价格" : "Vip价格", "允许退货" : "是" };
@@ -7230,7 +7230,11 @@ function test170424_1() {
     o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "anewkhVip" + getTimestamp(5);
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkhVip" + randomWord(false, 5);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "客户类别" : "VIP客户", "适用价格" : "Vip价格", "允许退货" : "是" };
     var fields = editCustomerFields(keys);
@@ -7249,6 +7253,16 @@ function test170424_1() {
     var keys = { "客户" : "anewkhVip" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+    delay();
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    var keys = { "客户" : "anewkhVip" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    delay();
 
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
@@ -7320,7 +7334,6 @@ function test170424_1() {
 
     query();
     var qr = getQR();
-
     var ret4 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
             qr.data[0]["数量"]),
             isEqual(Math.round(1800 * zk), qr.data[0]["金额"]), isAqualOptime(
@@ -7363,6 +7376,15 @@ function test170424_2() {
     var keys = { "客户" : "anewkhVip" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    var keys = { "客户" : "anewkhVip" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    delay();
 
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
@@ -7575,10 +7597,14 @@ function test170443() {
     return ret && ret1;
 }
 function test170445() {
-    // var qo, o, ret = true;
-    // qo = { "备注" : "单据是否允许修改客户或厂商" };
-    // o = { "新值" : "1", "数值" : [ "允许" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "单据是否允许修改客户或厂商" };
+    o = { "新值" : "1", "数值" : [ "允许" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "anewkhVip" + getTimestamp(5);
     tapMenu("往来管理", "新增客户+");
@@ -7716,6 +7742,15 @@ function test170445_1() {
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
 
+    var keys = { "客户" : "anewkhVip" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    delay();
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
     qr = getQRDet();
     ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"));
 
@@ -7818,6 +7853,15 @@ function test170445_2() {
     var keys = { "客户" : "anewkhVip" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    var keys = { "客户" : "anewkhVip" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    delay();
 
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
@@ -9737,80 +9781,53 @@ function test170536() {
     //
     // var ret = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 7;
-    } else {
-        idx = 6;
-    }
-
-    var f6 = new TField("备注", TF, idx, "<>");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var o = { "备注" : [ "<>" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     var ret1 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var f6 = new TField("备注", TF, idx, "'");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = { "备注" : [ "'" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     var ret2 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var f6 = new TField("备注", TF, idx, "\"");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = { "备注" : [ "\"" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     var ret3 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var f6 = new TField("备注", TF, idx, "?");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = { "备注" : [ "?" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret4 = isIn(alertMsg1, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var f6 = new TField("备注", TF, idx, "&");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = { "备注" : [ "&" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret5 = isIn(alertMsg1, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var f6 = new TField("备注", TF, idx, "$");
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = { "备注" : [ "$" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret6 = isIn(alertMsg1, "非法字符");
-
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
     qr = getQR();
     var total2 = qr.total;
-
     var ret7 = isEqual(total1, total2);
 
     logDebug(", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
@@ -10190,7 +10207,7 @@ function test170552() {
             r))), getTextFieldValue(window, 2)), isEqual("00000,抹零",
             qr.data[1]["货品"]), isEqual(r, qr.data[1]["单价"]), isEqual(
             "00001,打包费", qr.data[2]["货品"]), isEqual(r1, qr.data[2]["单价"]),
-            isEqual(20, sl), isEqual(getTextFieldValue(window, 3), je),
+            isEqual(20, sl), isEqual(getTextFieldValue(window, 2), je),
             isAqualOptime(getOpTime(), opt));
     tapReturn();
 
@@ -10498,8 +10515,7 @@ function test170559_170697() {
     delay(5);
 
     var qr = getQRDet();
-    ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(140,
-            qr.data[0]["单价"]));
+    ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"));
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
@@ -10556,15 +10572,8 @@ function test170559_170697() {
     tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 8;
-    } else {
-        idx = 7;
-    }
-    var f6 = new TField("备注", TF, idx - 1, "bz", -1, 0);
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    var o = { "备注" : [ "bz" ] };
+    editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret5 = isIn(alertMsg, "只能修改支付方式");
@@ -12600,16 +12609,8 @@ function test240008() {
 
     var qr = getQRDet();
     var tip = qr.data[0]["折扣"];
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 6;
-    } else {
-        idx = 5;
-    }
-    var f5 = new TField("折扣", TF, idx, sub(tip, 0.01));
-    var fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var o = { "折扣" : [ sub(tip, 0.01) ] };
+    editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);
@@ -12618,16 +12619,14 @@ function test240008() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+    json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var qr = getQRDet();
-    var tip = qr.data[0]["折扣"];
-    var f5 = new TField("折扣", TF, idx, sub(tip1, 0.01));
-    var fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    qr = getQRDet();
+    var tip1 = qr.data[0]["折扣"];
+    o = { "折扣" : [ sub(tip1, 0.01) ] };
+    editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);
@@ -12808,7 +12807,7 @@ function test240013() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+    json = { "客户" : "anewCus", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -12866,15 +12865,8 @@ function test240014() {
 
     var qr = getQRDet();
     var tip = qr.data[0]["折扣"];
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 6;
-    } else {
-        idx = 5;
-    }
-    var f5 = new TField("折扣", TF, idx, sub(tip, 0.01));
-    fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    var o = { "折扣" : [ sub(tip, 0.01) ] };
+    editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);
@@ -12883,15 +12875,14 @@ function test240014() {
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : 10 } ],
+    json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : 10 } ],
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     qr = getQRDet();
     var tip1 = qr.data[0]["折扣"];
-    var f5 = new TField("折扣", TF, idx, sub(tip1, 0.01));
-    fields = [ f5 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "折扣" : [ sub(tip1, 0.01) ] };
+    editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);

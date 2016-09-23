@@ -957,6 +957,7 @@ function test170023() {
     setTFieldsValue(window, fields);
 
     tapButton(window, "核销");
+    delay();
     qr = getQRtable1(window, 8, -2);
     if (qr.length == 0) {
         for (var i = 0; i < 3; i++) {
@@ -992,6 +993,7 @@ function test170023() {
     setTFieldsValue(window, fields);
 
     tapButton(window, "核销");
+    delay();
     qr = getQRtable1(window, 8, -2);
     if (qr.length == 0) {
         for (var i = 0; i < 3; i++) {
@@ -8529,7 +8531,6 @@ function test170638() {
 
     tapMenu("销售开单", "按批次查");
     query();
-
     tapFirstText();
     tapMenu("销售开单", "getMenu_More", "设置已配货");
     tapPrompt();
@@ -8543,7 +8544,6 @@ function test170638() {
     qr = getQR();
     var batch1 = qr.data[0]["批次"];
     var a1 = qr.data[0]["配货"];
-
     tapFirstText();
     tapMenu("销售开单", "getMenu_More", "设置已配货");
     tapPrompt();
@@ -8607,7 +8607,6 @@ function test170639_170640() {
     qr = getQRtable1(getScrollView());
     tapNaviLeftButton();
     tapButton(window, RETURN);
-
     var ret2 = isAnd(isEqual("李响", qr.data[0]["客户"]), isEqual(1,
             qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
@@ -8687,7 +8686,6 @@ function test170643() {
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["厂商"];
-
     ret = isAnd(ret, isEqual("", a), isEqual(batch, qr.data[0]["批次"]));
 
     qo = { "备注" : "进货入库" };
@@ -8721,9 +8719,6 @@ function test170644() {
     editCheckAddNoColorSize(josn);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    // var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "退货" };
-    // var fields = salesReturnFields(keys);
-    // query(fields);
     tapButton(window, QUERY);
     var qr = getQR();
     var a1 = qr.data[0]["名称"];
@@ -9475,15 +9470,8 @@ function test170710() {
     query(fields);
 
     tapFirstText();
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 5;
-    } else {
-        idx = 4;
-    }
-    var f6 = new TField("价格", TF, idx + 2, 0);
-    var fields = [ f6 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    var o = { "单价" : [ 0 ] };
+    editChangeSalesBillOrderPrice(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "销售价不能为零");
