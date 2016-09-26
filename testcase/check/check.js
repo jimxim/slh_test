@@ -751,10 +751,10 @@ function test180025_1() {
     tapButtonAndAlert("全盘处理");
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 30);
-    var ret = false;
-    if (isIn(alertMsg, "处理完成")) {
-        ret = true;
-    }
+    // var ret = false;
+    // if (isIn(alertMsg, "处理完成")) {
+    // ret = true;
+    // }//提示语现为灰色型
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
@@ -827,12 +827,7 @@ function test180025_1() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
     delay(3);
-
-    var ret6 = false;
-    if (isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对")) {
-        ret6 = true;
-    }
-
+    var ret6 = isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对");
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
@@ -858,10 +853,10 @@ function test180025_1() {
     tapNaviLeftButton();
     var ret8 = isEqual(0, qr1.data.length);
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
+    logDebug(", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
+            + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6 + ", ret7=" + ret7
+            + ", ret8=" + ret8);
+    return ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test180026() {
     // 先处理掉以前的盘点单
@@ -939,7 +934,7 @@ function test180026_1() {
 
     var cond = "isIn(alertMsg, '处理完成')";
     waitUntil(cond, 10);
-    var ret = isIn(alertMsg, "处理完成");
+    // var ret = isIn(alertMsg, "处理完成");//提示语现为灰色型
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
@@ -993,9 +988,9 @@ function test180026_1() {
     var ret5 = isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水，请核对");
     tapReturn();
 
-    logDebug(" r=" + r + ", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2
-            + ", ret3=" + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+    logDebug(" r=" + r + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3
+            + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180027() {
     tapMenu("盘点管理", "新增盘点+");

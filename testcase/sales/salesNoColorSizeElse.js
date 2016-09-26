@@ -919,6 +919,7 @@ function test170023() {
     setTFieldsValue(window, fields);
 
     tapButton(window, "核销");
+    delay();
     var qr = getQRtable1(window, 8, -2);
     if (qr.length == 0) {
         for (var i = 0; i < 3; i++) {

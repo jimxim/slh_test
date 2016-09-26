@@ -4169,13 +4169,17 @@ function test170164() {
     // debugArray(alertMsgs);
     // var alertMsg1 = getArray1(alertMsgs, -1);&& ret2
     // var ret2 = isIn(alertMsg1, "收款成功");+ ", ret2=" + ret2
+    
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
 
     tapMenu("销售开单", "getMenu_More", "收款单");
     var ret3 = isAnd(isEqual(sum1, qr.counts["现金"]), isEqual(sum2,
             qr.counts["刷卡"]), isEqual(sum3, qr.counts["汇款"]));
 
-    logDebug(" alertMsg1=" + alertMsg1 + ", ret=" + ret + ", ret1=" + ret1
-            + ", ret3=" + ret3);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret3=" + ret3);
     return ret && ret1 && ret3;
 }
 function test170166() {
@@ -7755,7 +7759,6 @@ function test170445_1() {
     ret = isAnd(ret, isIn(alertMsg, "是否需要重新刷新明细价格等信息"));
 
     var ret1 = isEqual(140, qr.data[0]["单价"]);
-
     var keys = { "客户" : "Ll" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
@@ -7776,7 +7779,7 @@ function test170445_1() {
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
 
-    var keys = { "客户" : " " };
+    var keys = { "客户" : "" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
 
