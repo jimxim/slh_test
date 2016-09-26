@@ -124,9 +124,11 @@ function testShopkeeper004All() {
  */
 function test004_000Prepare() {
     run("100179数据准备", "ts100179Pre");// 用到plczcs1
+    run("130046数据准备", "ts130046Pre");
 }
 function test004_000() {
     run("【货品管理-货品查询】店长修改零批价，总经理查看，进货价不能为0", "ts100179");
+    run("【采购订货-新增订货】无权限看进货价的店员 在不同厂商不同价格进行订货", "ts130046");
 }
 // 仓库店店长登陆验证 绑定仓库为文一店
 function test104() {

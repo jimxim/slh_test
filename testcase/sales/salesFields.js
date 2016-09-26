@@ -862,18 +862,10 @@ function editSalesBillField(key, show) {
  * @returns {Number}
  */
 function getPayableTFindex() {
-    var index = getEditSalesTFindex2("客户,厂商", "应");
-    if (index < 0) {
-        index = getEditSalesTFindex2("客户,厂商", "应付");
-    }
-    return index;
+    return getEditSalesTFindex2("客户,厂商", "应", "in");
 }
 function getPaidTFindex() {
-    var index = getEditSalesTFindex2("客户,厂商", "实");
-    if (index < 0) {
-        index = getEditSalesTFindex2("客户,厂商", "实收");
-    }
-    return index;
+    return getEditSalesTFindex2("客户,厂商", "实", "in");
 }
 function getStaffTFindex() {
     return getEditSalesTFindex2("客户,厂商", "店员");
@@ -959,9 +951,10 @@ function getEditSalesTFindex(title1, title2) {
  * 取开单界面文本输入框的下标（需要文本框与前面的标签一一对应）
  * @param title1
  * @param title2
+ * @param type in
  * @returns {Number}
  */
-function getEditSalesTFindex2(title1, title2) {
+function getEditSalesTFindex2(title1, title2, type) {
     var stCustomerIndex = -1, tfNum = -1, ret = -1;
     var a1t = title1.split(",");
 
@@ -976,7 +969,10 @@ function getEditSalesTFindex2(title1, title2) {
                 && e.rect().size.width > 5) {
             tfNum++;// 宽度小于5的应该是隐藏的TF
         }
-        if (stCustomerIndex != -1 && isUIAStaticText(e) && e.value() == title2) {
+        if (stCustomerIndex != -1
+                && isUIAStaticText(e)
+                && ((e.value() == title2) || (type == "in" && e.value()
+                        .indexOf(title2) != -1))) {
             ret = tfNum + 1;// 加1即为标签相应的文本输入框
             break;
         }
@@ -1026,7 +1022,7 @@ function editSalesBillDetailField(key, show) {
     }
     return f;
 }
-//快速新增客户
+// 快速新增客户
 function editQuickAddCustomerFields(keys, show) {
     return getTFields("editQuickAddCustomerField", keys, show);
 }
@@ -1066,7 +1062,7 @@ function editQuickAddCustomerField(key, show) {
     }
     return f;
 }
-//快速新增货品
+// 快速新增货品
 function editQuickAddGoodsFields(keys, show) {
     return getTFields("editQuickAddGoodsField", keys, show);
 }
@@ -1118,7 +1114,7 @@ function editQuickAddGoodsField(key, show) {
     }
     return f;
 }
-//快速新增物流商
+// 快速新增物流商
 function editQuickAddExpressFields(keys, show) {
     return getTFields("editQuickAddExpressField", keys, show);
 }
@@ -1147,7 +1143,7 @@ function editQuickAddExpressField(key, show) {
     }
     return f;
 }
-//物流单明细界面
+// 物流单明细界面
 function editLogisticsBillDetFields(keys, show) {
     return getTFields("editLogisticsBillDetField", keys, show);
 }

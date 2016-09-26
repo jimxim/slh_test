@@ -1686,7 +1686,7 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
         var v1 = qr.counts[i];
         var v2 = sum[i];
         if (v1 != "") {
-            ret = ret && (v1 == v2);
+            ret = ret && isAqualNum(v1, v2, 0.0001);// (v1 == v2)
         }
     }
     debugObject(sum, "sum=");

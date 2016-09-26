@@ -18,18 +18,18 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "setSales_order_distribute_3");//
 // run("测试用例", "ts130044");
- run("测试用例", "ts130045");//
+ run("测试用例", "onlyTest");//
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // tapButton(window,QUERY);
 
  // debugObject(gCache,"gCache");parent
- return ret;
+ return true;
 }
 // 检验开单时间
 function testBillTimes(){

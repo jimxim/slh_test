@@ -941,7 +941,7 @@ function ts130012() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];// 应收，实收显示不同，就模糊验证
+    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];//应和实为模糊查询验证
     var titles = getSalesBillDetTfObject();
     var ret = isAnd(isHasStaticTexts(window, exp), titles.hasOwnProperty("单价"),
             titles.hasOwnProperty("小计"));
@@ -972,12 +972,7 @@ function ts130013() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应付", "核销", "刷卡", "汇款" ];
-    if (ipadVer < 7.01) {
-        exp.push("实付");
-    } else {
-        exp.push("实收");
-    }
+    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];// 应和实为模糊查询验证
     var titles = getSalesBillDetTfObject();
     var ret = isAnd(!isHasStaticTexts(window, exp), !titles
             .hasOwnProperty("单价"), !titles.hasOwnProperty("小计"));
@@ -1452,6 +1447,69 @@ function ts130045() {
         qr = getQR();
         ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]));
     }
+    return ret;
+}
+
+function ts130046Pre000() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "使用不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    var keys = { "款号" : "ts130046" + getToday(), "名称" : "不同厂商不同价格" };
+    var jo = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 100 },
+            { "厂商" : "vell", "进货价" : 90 }, { "厂商" : "lx", "进货价" : 80 } ] };
+    addGoodsSimple(keys, jo);// 默认进货价为200
+    return true;
+}
+function ts130046Pre004() {
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "rt",
+        "明细" : [ { "货品" : "ts130046" + getToday(), "数量" : [ 5 ] } ] };
+    editSalesBill(json, colorSize);
+
+    json["客户"] = "vell";
+    tapMenu("采购订货", "新增订货+");
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+
+    json["客户"] = "vell";
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+    return ret;
+}
+function ts130046() {
+    return isAnd(ts130046Field("采购订货"), ts130046Field("采购入库"));
+}
+function ts130046Field(menu1) {
+    tapMenu(menu1, "按明细查");
+    var keys = { "款号" : "ts130046" + getToday(), "厂商" : "rt" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var batchRt = qr.data[0]["批次"];
+    var ret = isEqual(100, qr.data[0]["单价"]);
+
+    keys = { "厂商" : "vell" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var batchVell = qr.data[0]["批次"];
+    ret = isAnd(ret, isEqual(90, qr.data[0]["单价"]));
+
+    tapMenu2("按批次查");
+    keys = { "门店" : "常青店", "批次到" : batchRt };
+    conditionQuery(keys);
+    tapLine();
+    qr = getQRDet();
+    ret = isAnd(ret, qr.data[0]["单价"] == 100);
+    tapReturn();
+
+    keys = { "批次到" : batchVell };
+    conditionQuery(keys, false);
+    tapLine();
+    qr = getQRDet();
+    ret = isAnd(ret, qr.data[0]["单价"] == 90);
+    tapReturn();
     return ret;
 }
 /**

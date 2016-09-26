@@ -2870,11 +2870,9 @@ function test120018() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "店员" : "000",
         "明细" : [ { "货品" : "4562", "数量" : "30" } ], "现金" : 500,
-        "刷卡" : [ 1000, "银" ], "汇款" : [ 2000, "银" ], "onlytest" : "yes" };
+        "刷卡" : [ 1000, "银" ], "汇款" : [ 2000, "银" ], "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-    var exp = editSalesBillGetValue({});
-    runAndAlert("test120052Hang", OK);
-    tapReturn();
+    var exp = json["输入框值"];
 
     tapMenu("采购入库", "按批次查");
     keys = { "作废挂单" : "挂单" };
@@ -3039,7 +3037,7 @@ function ts120061() {
     var actual = editSalesBillGetValue({});
     tapReturn();
 
-    var newObj = { "现金" : 0, "应付" : 0, "核销" : 3000, "实收" : 0 };// 这里的代收是实收
+    var newObj = { "现金" : 0, "应" : 0, "核销" : 3000, "实" : 0 };
     var exp = mixObject(oldObj, newObj);
     return isEqualObject(exp, actual);
 }
@@ -3507,7 +3505,6 @@ function ts120113() {
     o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
     setGlobalParam(qo, o);
     return ret;
-
 }
 // 104店长登陆
 function ts120114() {

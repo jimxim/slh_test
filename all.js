@@ -9,6 +9,8 @@
 
 #import "testcase/basicSetUp/basicSetUp.js"
 
+#import "testcase/busiarea/busiarea.js"
+
 #import "testcase/check/check.js"
 #import "testcase/check/checkFields.js"
 #import "testcase/check/checkInc.js"

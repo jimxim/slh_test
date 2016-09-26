@@ -1098,14 +1098,13 @@ function ts100010_100011_100013() {
     qFields = queryGoodsFields(qKeys);
     query(qFields);
     qr = getQR();
-    delay();
     var expected = { "厂商" : "Vell", "类别" : "登山服", "款号" : code, "名称" : name,
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "品牌" : "1010pp",
         "总库存" : "0", "备注" : "123", "建档人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected),
             isEqual("1", qr.total), isEqual("1", qr.totalPageNo));
 
-    tapFirstText();
+    tapLine();
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
     tapReturn();
 
@@ -3493,29 +3492,27 @@ function test10_brand() {
     ret = ret && sortByTitle("操作日期");// , IS_OPTIME没有年份无法判断
 
     var keys = { "名称" : "品牌" };
-    var fields = goodsBrandFields(keys);
-    query(fields);
-    var ret1 = checkQResult("名称", "品牌", "in");
+    conditionQuery(keys);
+    var ret1 = checkQResult("名称", "品牌", "in");// 下拉列表验证
 
     keys = { "名称" : "1010pp" };
-    fields = goodsBrandFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
+    tapReturn();// 不确定是否自动返回
 
-    keys = { "名称" : "1010pp", "是否停用" : "是" };
-    fields = goodsBrandFields(keys);
-    query(fields);
+    keys = { "是否停用" : "是" };
+    conditionQuery(keys, false);
     qr = getQR();
     var ret2 = isAnd(isEqual("1010pp", qr.data[0]["名称"]),
             isEqual("1", qr.total), isEqual("1", qr.totalPageNo));
 
-    tapFirstText();
-    tapButtonAndAlert(START);
+    tapLine();
+    tapButtonAndAlert(START, OK);
+    tapReturn();// 不确定是否自动返回
 
-    keys = { "名称" : "1010pp", "是否停用" : "否" };
-    fields = goodsBrandFields(keys);
-    query(fields);
+    keys = { "是否停用" : "否" };
+    conditionQuery(keys, false);
     qr = getQR();
     ret2 = isAnd(ret2, isEqual("1010pp", qr.data[0]["名称"]), isEqual("1",
             qr.total), isEqual("1", qr.totalPageNo));
@@ -4699,6 +4696,7 @@ function ts100178() {
     tapNaviClose();
     return isEqual(total, num);
 }
+
 function ts100179Pre() {
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : "plczcs1" };
@@ -4712,6 +4710,7 @@ function ts100179Pre() {
     addGoods(keys, o);
     return true;
 }
+// 总经理登陆查看
 function ts100179() {
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : "plczcs1" };// 批量操作参数进货价100不变
