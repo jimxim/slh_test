@@ -26,7 +26,18 @@ function tapSegmentedControlButton(i, value) {
     delay();
     return ok;
 }
-function testBusiarea() {
+function tapBusiareaMenu2(menu2) {
+    tapSegmentedControlButton(0, menu2s);
+}
+function ts220001() {
     tapMenu1("我的商圈");
-    return tapSegmentedControlButton(0, "购物车");
+    scrollNextPage();
+    debugElementTree();
+
+    tapBusiareaMenu2("购物车");
+    scrollNextPage();
+    debugElementTree();
+
+
+
 }

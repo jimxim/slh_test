@@ -135,6 +135,7 @@ function addGoodsStockAdjustment(r) {
     tapNaviButton("库存调整");
     setValue100090(r);
     runAndAlert("test100090Field", OK);
+    delay();
     tapNaviClose();
 }
 

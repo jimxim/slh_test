@@ -165,7 +165,7 @@ function testGoodsPrepare001() {
 
     // 使3035在中洲店有库存，主要是防止帐套清理之后 相关查询用例的运行
     tapMenu("采购入库", "新增入库+");
-    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
         "未付" : "yes" };
     editSalesBill(json, colorSize);
 
@@ -471,23 +471,20 @@ function test100001_1() {
 
 // 条件查询，清除按钮
 function test100001_2() {
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
-    editSalesBillNoColorSize(json);
+    // 防止帐套数据清空
+    // tapMenu("采购入库", "新增入库+");
+    // var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ]
+    // };
+    // editSalesBill(json, colorSize);
 
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
         "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas", "季节" : "春季",
-        "上架从" : "2015-01-01", "到" : getToday(), "是否停用" : "否", "类别" : "登山服" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+        "上架从" : "2015-01-01", "到" : getDay(-30), "是否停用" : "否", "类别" : "登山服" };
+    conditionQuery(keys);
     var qr = getQR();
-    var exp = { "厂商" : "Vell", "仓库/门店" : "常青店", "款号" : "3035", "名称" : "jkk",
-        "颜色" : "均色", "尺码" : "均码", "品牌" : "Adidas" };
-    var ret = isAnd(isEqualObject(exp, qr.data[0]), isEqual(qr.data[0]["库存"],
-            qr.counts["库存"]), isEqual(qr.data[0]["在途数"], qr.counts["在途数"]),
-            isEqual(qr.data[0]["核算金额"], qr.counts["核算金额"]), isEqual(
-                    qr.data[0]["累计销"], qr.counts["累计销"]));
+    var arr = [ "库存", "在途数", "累计销", "核算金额" ];
+    var ret = isAnd(isEqualObject2(keys, qr.data[0]), isEqualCounts(arr));
 
     tapButton(window, CLEAR);
     // 是否停用清除不了
@@ -2654,7 +2651,7 @@ function ts100157Field(staff, check) {
     if (check) {
         tapMenu("盘点管理", "盈亏表");
         keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-365) };
-        fields = checkProfitAndLossFields(keys);
+        var fields = checkProfitAndLossFields(keys);
         query(fields);
         qr = getQR();
         ret = isAnd(ret, isEqual(exp["盈亏数量"], qr.counts["盈亏"]));
@@ -3701,40 +3698,33 @@ function getIndex100090() {
 }
 
 function test100104_100105() {
-    // 取门店
-    tapMenu("货品管理", "当前库存");
-    var keys = { "款号名称" : "g" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var shop = qr.data[0]["仓库/门店"];
+    var gKeys = addGoodsSimple();//
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell",
+        "明细" : [ { "货品" : gKeys["款号"], "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
 
-    tapMenu2("getMenu_More");
-    tapMenu3("库存调整单");
-    var keys = { "日期从" : getDay(-30), "门店" : shop };
-    var fields = goodsStockAdjustmentFields(keys);
-    query(fields);
+    tapMenu("货品管理", "getMenu_More", "库存调整单");
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    conditionQuery(keys);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu2("当前库存");
-    tapButton(window, QUERY);
-    var qr = getQR();
+    keys = { "款号" : gKeys["款号"] };
+    conditionQuery(keys);
+    qr = getQR();
     var jo = qr.data[0];
-
     var r = getRandomNum(1, 100);// 调整后数量
     addGoodsStockAdjustment(r);
 
-    tapMenu2("getMenu_More");
-    tapMenu3("库存调整单");
-    var keys = { "批次从" : batch, "批次到" : batch + 1 };
-    var fields = goodsStockAdjustmentFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    tapMenu("货品管理", "getMenu_More", "库存调整单");
+    keys = { "批次从" : batch, "批次到" : batch + 1 };
+    conditionQuery(keys, false);
     qr = getQR();
-    var exp = { "批次" : batch + 1, "门店" : jo["仓库/门店"], "日期" : getToday("yy"),
-        "款号" : jo["款号"], "名称" : jo["名称"], "颜色" : jo["颜色"], "尺码" : jo["尺码"],
-        "调整前数量" : jo["库存"], "调整后数量" : r, "调整数量" : sub(r, jo["库存"]) };
+    var exp = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday("yy"),
+        "款号" : gKeys["款号"], "名称" : gKeys["名称"], "颜色" : jo["颜色"],
+        "尺码" : jo["尺码"], "调整前数量" : "30", "调整后数量" : r, "调整数量" : sub(r, 30) };
     var ret = isEqualObject(exp, qr.data[0]);
 
     tapButton(window, CLEAR);
@@ -4433,8 +4423,8 @@ function test100170() {
     tapMenu("采购入库", "批量入库+");
     editPurchaseBatch(json, colorSize);
     var arr1 = test100170Field(code);
-    logDebug("arr1[0]=" + arr1[0] + "  arr1[1]=" + arr1[1] + "  arr[0]"
-            + arr[0] + "  arr[1]=" + arr[1]);
+    // logDebug("arr1[0]=" + arr1[0] + " arr1[1]=" + arr1[1] + " arr[0]"
+    // + arr[0] + " arr[1]=" + arr[1]);
     ret = isAnd(ret, sub(arr1[0], arr[0]) == 10, sub(arr1[1], arr[1]) == 10);
 
     tapMenu("采购订货", "新增订货+");
@@ -4444,11 +4434,11 @@ function test100170() {
 
     tapMenu("采购入库", "按订货入库");
     query();
-    tapFirstText();
+    tapLine();
     editSalesBillSave({});
     arr1 = test100170Field(code);
-    logDebug("arr1[0]=" + arr1[0] + "  arr1[1]=" + arr1[1] + "  arr[0]"
-            + arr[0] + "  arr[1]=" + arr[1]);
+    // logDebug("arr1[0]=" + arr1[0] + " arr1[1]=" + arr1[1] + " arr[0]"
+    // + arr[0] + " arr[1]=" + arr[1]);
     ret = isAnd(ret, sub(arr1[0], arr[0]) == 20, sub(arr1[1], arr[1]) == 20);
     return ret;
 }
@@ -5178,7 +5168,7 @@ function ts100196() {
     conditionQuery(keys);
     tapLine(i);
     editGoodsSave({});
-    return isInAlertMsgs("该颜色存在库存不能取消")
+    return isInAlertMsgs("该颜色存在库存不能取消");
 }
 function ts100197() {
     tapMenu("货品管理", "getMenu_More", "款号管理");

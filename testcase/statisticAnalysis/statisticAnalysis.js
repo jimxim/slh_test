@@ -2290,11 +2290,9 @@ function test190087_190101() {
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "款号" : "3035",
         "款号名称" : "jkk", "客户" : "xw", "店员" : "000", "厂商" : "vell",
         "品牌" : "adidas", "上架从" : "2015-05-13", "上架到" : getDay(-30) };
-    var fields = statisticAnalysisProfitFields(keys);
-    query(fields);
-
+    conditionQuery(keys);
     var qr = getQR();
-    var jo1 = qr.data[0];
+    var jo1 = qr.data[0];// 取不到值可能是有用例吧品牌改了
 
     tapMenu("销售开单", ADDBILL);
     var json = {
@@ -2482,8 +2480,8 @@ function test190112() {
 function test190113() {
     var arr = {};
     tapMenu("销售开单", "按汇总", "按款号汇总");
-    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "颜色" : "均色", "款号" : "3035",
-        "品牌" : "Adidas", "厂商" : "Vell" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "厂商" : "Vell",
+        "款号" : "3035", "颜色" : "均色", "品牌" : "Adidas" };// 款号品牌不能连续输入
     var fields = salesCodeFields(keys);
     query(fields);
     var qr = getQR();
@@ -2670,11 +2668,10 @@ function ts190139() {
     var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "客户" : "xw",
         "店员" : "000", "厂商" : "vell", "品牌" : "adidas", "上架从" : "2015-05-13",
         "上架到" : getDay(-30) };
-    var fields = statisticAnalysisProfitFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var data = getQR().data[0];
 
-    tapFirstText();
+    tapLine();
     var sum = {};
     var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
     for (var i = 0; i < qr.totalPageNo; i++) {
