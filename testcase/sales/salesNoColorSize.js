@@ -1,7 +1,7 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-    run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-    run("【销售开单－开单】客户新增按钮", "test170043");
+    // run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+    // run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
@@ -139,9 +139,9 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】整单折扣,复制-粘贴", "test170139_1");
     run("【销售开单-开单】开单模式-整单折扣", "test170085");
     run("【销售开单-开单】均色均码款号合并", "test170103");
-    run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");
-    run("【销售开单－开单】查看上次成交价", "test170105");
-    run("【销售开单－开单】使用上次成交价", "test170107");
+    // run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");
+    // run("【销售开单－开单】查看上次成交价", "test170105");
+    // run("【销售开单－开单】使用上次成交价", "test170107");
     run("【销售开单－开单】挂单保存,转为正式销售单时自动调用打印功能", "test170179");
     run("【销售开单－开单】查看上次成交记录-更多：显示全部门店记录", "test170522");
     run("【开单  】开单修改保存时是否直接询问打印-不询问", "test170549");
@@ -3530,7 +3530,7 @@ function test170128() {
     var qr = json["明细值"];
     var qr1 = json["输入框值"];
     var k2 = qr1["现金"];
-    var k3 = qr1["应付"];
+    var k3 = qr1["应"];
     var ret = isEqual(add(qr.data[0]["小计"], sub(r, 9)), k2);
 
     tapMenu("销售开单", "按批次查");
@@ -4169,7 +4169,7 @@ function test170164() {
     // debugArray(alertMsgs);
     // var alertMsg1 = getArray1(alertMsgs, -1);&& ret2
     // var ret2 = isIn(alertMsg1, "收款成功");+ ", ret2=" + ret2
-    
+
     var bt = app.mainWindow().buttons()[RETURN];
     if (!isUIAElementNil(bt) || bt.isVisible()) {
         tapReturn();
@@ -11277,7 +11277,7 @@ function test170668() {
     tapFirstText();
     tapButtonAndAlert("停 用", OK);
     tapPrompt();
-    var ret = isIn(alertMsg, "停用成功");
+    // var ret = isIn(alertMsg, "停用成功");" ret=" + ret +ret &&
     tapRefresh();
 
     tapMenu("销售开单", "按批次查");
@@ -11299,11 +11299,11 @@ function test170668() {
     tapFirstText();
     tapButtonAndAlert("启 用", OK);
     tapPrompt();
-    var ret2 = isIn(alertMsg, "启用成功");
+    // var ret2 = isIn(alertMsg, "启用成功");+ ", ret2=" + ret2&& ret2
     tapRefresh();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(", ret1=" + ret1);
+    return ret1;
 }
 function test170671() {
     var qo, o, ret = true;
