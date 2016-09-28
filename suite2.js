@@ -22,9 +22,11 @@ function test000All() {
 // run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");//更多按钮不会点击
 // run("【销售开单－开单】查看上次成交价", "test170105");
 // run("【销售开单－开单】使用上次成交价", "test170107");
-//    run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");//
-    run("【销售开单-开单】配货员业绩统计-销售订货", "test170631");
-      
+// run("【销售开单－开单】待作废", "test170138");
+// run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
+// run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
+// run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
+
 // run("", "test0");
 }
 function test0(){
@@ -34,13 +36,6 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
-// tapButton(getScrollView(),0);
-// var view1=getPop(window, -1);
-// var view2=view1.scrollViews()[0];
-// var texts=getStaticTexts(view2);
-// var ret=isInArray(texts,"常青店");
-// logDebug(" texts="+texts);
-// return texts;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

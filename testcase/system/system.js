@@ -523,21 +523,16 @@ function test210022() {
 function test210020_210021() {
     runAndAlert("test210020Clear", OK);
     tapPrompt();
-    var cond;
-    if (ipadVer >= "7.21") {
-        cond = "isIn(alertMsg, '清理刷新结束')";
-    } else {
-        cond = "isIn(alertMsg, '清理和刷新成功')";
-    }
-    waitUntil(cond, 300);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isIn(alertMsg1, "确定操作吗");
 
-    var Msg;
-    if (ipadVer >= "7.21") {
-        Msg = "清理刷新结束";
-    } else {
-        Msg = "清理和刷新成功";
-    }
-    var ret = isIn(alertMsg, Msg);
+//    var Msg;
+//    if (ipadVer >= "7.21") {
+//        Msg = "清理刷新结束";
+//    } else {
+//        Msg = "清理和刷新成功";
+//    }
 
     return ret;
 }
