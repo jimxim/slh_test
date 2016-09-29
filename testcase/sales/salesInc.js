@@ -749,7 +749,7 @@ function goPageCheckQR2(dataView, firstTitle, lastTitle) {
  * @returns
  */
 function editChangeSalesBillOrderNum(o, ret) {
-    delay();
+    delay(2);
     if (isUndefined(ret)) {
         ret = "yes";
     }

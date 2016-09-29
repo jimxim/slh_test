@@ -41,7 +41,6 @@ function test200017() {
     var keys = { "日期从" : getDay(-30), "到" : getToday() };
     var fields = pictureShopSummaryFields(keys);
     query(fields);
-
     var qr = getQR();
     var a = qr.counts["销数"];
     var a2 = qr.counts["退数"];
@@ -54,7 +53,6 @@ function test200017() {
     var fields = statisticAnalysisSynthesisFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
-
     var qr = getQR();
     var b = qr.counts["销数"];
     var b1 = qr.counts["销额"];
@@ -68,7 +66,6 @@ function test200017() {
     fields = salesQueryBatchFields(keys);
     setTFieldsValue(window, fields);
     query(fields);
-
     qr = getQR();
     var c = qr.counts["数量"];
     var c1 = qr.counts["金额"];
@@ -80,7 +77,6 @@ function test200017() {
     query(fields);
     qr = getQR();
     var t = qr.counts["数量"];
-
     var ret = isAnd(isEqual(a, b), isEqual(a2, b2), isEqual(a3, b3), isEqual(
             a4, b4), isEqual(a5, b5), isEqual(a4, c), isEqual(b2, t));
 
@@ -156,7 +152,6 @@ function test200021() {
     }
 
     tapButton(window, CLEAR);
-
     var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             getToday(), getTextFieldValue(window, 1)), isEqual("",
             getTextFieldValue(window, 2)), isEqual("", getTextFieldValue(

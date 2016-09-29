@@ -2030,7 +2030,7 @@ function test170077_1() {
 
     var qr = getQRDet();
     var money = Math.round(qr.data[0]["小计"]);
-    var ret2 = isEqual(0.688, qr.data[0]["折扣"]);
+    var ret1 = isEqual(0.688, qr.data[0]["折扣"]);
     saveAndAlertOk();
     tapPrompt();
     // var ret3 = isIn(alertMsg, "保存成功");&& ret3
@@ -2039,19 +2039,19 @@ function test170077_1() {
     tapMenu("销售开单", "按批次查");
     query();
     qr = getQR();
-    var ret4 = isAnd(isEqual(money, qr.data[0]["金额"]), isEqual(money,
+    var ret2 = isAnd(isEqual(money, qr.data[0]["金额"]), isEqual(money,
             qr.data[0]["现金"]), isEqual(0, qr.data[0]["未结"]));
 
     tapFirstText();
     qr = getQRDet();
-    var ret5 = isAnd(isEqual(money, getTextFieldValue(window, 2)), isEqual(
+    var ret3 = isAnd(isEqual(money, getTextFieldValue(window, 2)), isEqual(
             "3035,jkk", qr.data[0]["货品"]), isEqual(1, qr.data[0]["数量"]),
             isEqual(0.688, qr.data[0]["折扣"]));
     tapReturn();
 
-    logDebug(" ret＝" + ret + ", ret2=" + ret2 + ", ret4=" + ret4 + ", ret5="
-            + ret5);
-    return ret && ret2 && ret4 && ret5;
+    logDebug(" ret＝" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170077_2() {
     var qo, o, ret = true;
@@ -4217,7 +4217,6 @@ function test170167() {
     var b = getStaticTextValue(getPopOrView(), index - 5);
     var c = getStaticTextValue(getPopOrView(), index + 3);
     var d = getStaticTextValue(getPopOrView(), index + 5);
-
     var ret = isAnd(isEqual("总经理", a), isAqualOptime(getOpTime(), c, 2),
             isEqual(batch, d), isAqualOptime(getOpTime(), b, 2));
     tapButton(getPop(), OK);
@@ -5090,6 +5089,7 @@ function test170189() {
     var json = { "客户" : "ls" };
     editSalesBillCustomer(json);
     tapButton(window, "核销");
+    delay();
     var r = "1" + getTimestamp(2);
     editExchangeScore(r, r, "no");
     tapButton(window, "核销");
@@ -7113,7 +7113,7 @@ function test170424() {
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
-    
+
     var keys = { "客户" : "anewkhVip" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
@@ -7476,7 +7476,7 @@ function test170424_3() {
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(6);
-    
+
     var keys = { "客户" : "Ll" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
@@ -7612,7 +7612,7 @@ function test170445() {
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
-    
+
     var keys = { "客户" : "anewkhVip" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
@@ -9987,7 +9987,6 @@ function test170545() {
     tapButton(window, "核销");
     var score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a1 = score1.split(": ");
-
     var ret = isEqual(a1[1], sub(a[1], f));
 
     // 负，正
@@ -9999,7 +9998,6 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a2 = score1.split(": ");
-
     ret = isAnd(ret, isEqual(a2[1], sub(a1[1], g)));
 
     // 负，0
@@ -10009,7 +10007,6 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a3 = score1.split(": ");
-
     var ret1 = isEqual(a3[1], sub(a2[1], r));
 
     // 正，负
@@ -10021,7 +10018,6 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a4 = score1.split(": ");
-
     ret1 = isAnd(ret1, isEqual(a4[1], sub(a3[1], h)));
 
     // 正，0
@@ -10031,12 +10027,10 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a5 = score1.split(": ");
-
     var ret2 = isEqual(a5[1], sub(a4[1], r));
 
     // 0，0
     editExchangeScore(0, 0, "no");
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret3 = isIn(alertMsg1, "请输入有意义的积分值");
@@ -10047,7 +10041,6 @@ function test170545() {
 
     // 0，正
     editExchangeScore(0, 1, "no");
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     ret3 = isAnd(ret3, isIn(alertMsg1, "请输入有意义的积分值"));
@@ -10055,10 +10048,8 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a7 = score1.split(": ");
-
     // 0，负
     editExchangeScore(0, -1, "no");
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     ret3 = isAnd(ret3, isIn(alertMsg1, "请输入有意义的积分值"));
@@ -10066,10 +10057,8 @@ function test170545() {
     tapButton(window, "核销");
     score1 = getStaticTextValue(getScrollView(-1, 0), 1);
     var a8 = score1.split(": ");
-
     tapNaviLeftButton();
     tapReturn();
-
     ret3 = isAnd(ret3, isEqual(a6[1], a5[1]), isEqual(a7[1], a6[1]), isEqual(
             a8[1], a7[1]));
 
@@ -10083,7 +10072,6 @@ function test170545() {
         "操作人" : "总经理" };
     var exp2 = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money2,
         "操作人" : "总经理" };
-
     var ret4 = isAnd(isEqualObject(exp, qr.data[2]), isEqualObject(exp1,
             qr.data[1]), isEqualObject(exp2, qr.data[0]));
 
