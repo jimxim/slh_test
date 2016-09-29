@@ -203,7 +203,7 @@ function ts120001_2() {
         "厂商" : "Rt", "店员" : "总经理", "厂商" : "Rt", "总数" : "30", "金额" : "3000",
         "现金" : "1000", "刷卡" : "200", "汇款" : "300", "订货号" : "0", "操作日期" : time,
         "备注" : "abc", "操作人" : "总经理" };
-    var ret = isEqualObject(expected, qr.data[0]);
+    var ret = isEqualObject(expected, qr.data[0], 1);
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 9; i++) {
@@ -1772,20 +1772,10 @@ function test120029_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    var qr = getQR();
-    var sum1 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["余额"], sum1));
+    var arr = [ "余额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
 
-    return ret && ret1;
+    return ret;
 }
 function test120029_2() {
     tapMenu("采购入库", "厂商账款", "厂商总账");
@@ -1898,21 +1888,11 @@ function test120030_1() {
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
 
-    query(feilds);
-    var qr = getQR();
-    var sum1 = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    var ret1 = isAnd(isEqual(qr.counts["余额"], sum1));
+    query();
+    var arr = [ "余额" ];
+    ret = isAnd(ret, isEqualCounts(arr));
 
-    return ret && ret1;
+    return ret;
 }
 function test120030_2() {
     tapMenu("采购入库", "厂商账款", "厂商门店账");
@@ -2165,7 +2145,7 @@ function ts120044() {
     tapTextByFirstWithName("预付款");
     tapButtonAndAlert(INVALID, OK);
     tapReturn();
-    ret = isAnd(ret, isInAlertMsgs("本批次是采购订货预付款单"));
+    ret = isAnd(ret, isInAlertMsgs("采购订货预付款单"));
 
     return ret;
 }
@@ -3303,13 +3283,13 @@ function ts120102() {
     var qr = getQR();
     var verifyBatch = qr.data[0]["批次"];
 
-    tapTextByFirstWithName("2", getScrollView());// 欠款单
+    tapLine(1);// 进入第一条的欠款单
     tapMenu("采购入库", "getMenu_More", "查看修改日志");
     var actual = test160011Field_1();
     tapButton(getPop(), OK);
     tapReturn();
-    var exp = { "核销时间" : opTime, "核销批次" : verifyBatch };
-    return isEqualObject(exp, actual);
+    return isAnd(isAqualOptime(opTime, actual["核销时间"], 1), isEqual(verifyBatch,
+            actual["核销批次"]));
 }
 
 function ts120106() {

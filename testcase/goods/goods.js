@@ -198,6 +198,7 @@ function testGoods001() {
     run("【货品管理-基本设置】所有颜色", "test10_color");
     run("【货品管理-基本设置】所有尺码", "test10_size");
     run("【货品管理-基本设置】所有品牌", "test10_brand");
+    run("【货品管理-基本设置】所有品牌启用1010pp", "test10_brandstart");
     run("【货品管理-基本设置】所有尺码组", "test10_sizeID");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序，操作日期不验证排序是否正确，没有年份
 
@@ -212,6 +213,8 @@ function testGoods001() {
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证数据准备", "test100071_100072Prepare");
     run("【货品管理-更多-款号管理】查询，清除”", "ts100197");// 界面载入时间不稳定，放最后，防止卡用例
     run("【货品管理-更多-款号管理】输入不存在内容查询验证弹窗”", "ts100198");
+
+    run("按清除x后重新输入查询，结果验证", "tsClearTField");
 }
 
 function testGoods002() {
@@ -472,10 +475,9 @@ function test100001_1() {
 // 条件查询，清除按钮
 function test100001_2() {
     // 防止帐套数据清空
-    // tapMenu("采购入库", "新增入库+");
-    // var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ]
-    // };
-    // editSalesBill(json, colorSize);
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035", "款号名称" : "jkk", "门店" : "常青店", "厂商" : "Vell",
@@ -1038,24 +1040,22 @@ function ts100114() {
 
 // 照片无法验证
 function ts100010_100011_100013() {
-    var qo, o, ok = true;
     // 开启这个参数，新增货品界面的门店才能修改保存成功
-    qo = { "备注" : "款号是否按门店区分" };
-    o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
-    ok = isAnd(ok, setGlobalParam(qo, o));
+    var qo = { "备注" : "款号是否按门店区分" };
+    var o = { "新值" : "1", "数值" : [ "门店只能选择自己的款号", "in" ] };
+    var ok = setGlobalParam(qo, o);
 
     var keys = addGoodsSimple();
     var code = keys["款号"], name = keys["名称"];
-    var color = "花色";
+    var color = "红色";
 
     tapMenu("货品管理", "货品查询");
     var qKeys = { "款号名称" : code };
-    var qFields = queryGoodsFields(qKeys);
-    query(qFields);
+    conditionQuery(qKeys);
     var qr = getQR();
     var ret = isEqualObject2(keys, qr.data[0]);
 
-    tapFirstText();
+    tapLine();
     var fields = editGoodsFields(keys, true);
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
 
@@ -1085,16 +1085,21 @@ function ts100010_100011_100013() {
     keys1["经办人"] = "000,总经理";
     keys = mixObject(keys, keys1);
     fields = editGoodsFields(keys, true);
-    tapButtonAndAlert(EDIT_SAVE, OK);
+    tapButtonAndAlert(EDIT_SAVE, OK);// debugElement
     tapReturn();// 防止未自动返回
 
     tapMenu2("货品查询");
     qKeys = { "厂商" : "vell", "款号名称" : code, "品牌" : "1010pp",
         "上架从" : getDay(-1), "到" : getDay(-1), "颜色" : color, "经办人" : "000",
         "是否停用" : "否", "类别" : "登山服", "季节" : "夏季" };
-    qFields = queryGoodsFields(qKeys);
+    var qFields = queryGoodsFields(qKeys);
     query(qFields);
     qr = getQR();
+    if (qr.data.length == 0) {
+        o = { "新值" : "0", "数值" : [ "默认不区分" ] };
+        setGlobalParam(qo, o);
+        return false;
+    }
     var expected = { "厂商" : "Vell", "类别" : "登山服", "款号" : code, "名称" : name,
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "品牌" : "1010pp",
         "总库存" : "0", "备注" : "123", "建档人" : "总经理" };
@@ -1211,7 +1216,8 @@ function test100015Field() {
         var value = CC2PY(v).toUpperCase();// 中文转拼音
         ret = ret && value.indexOf("P") != -1;
         if (!ret) {
-            logDebug("品牌 value=" + value + "   中不包含p")
+            // 不一定错误，不是完全按拼音匹配(方言等) 如 波比
+            logDebug("品牌 value=" + value + "   中不包含p");
             break;
         }
     }
@@ -1232,10 +1238,11 @@ function test100019() {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
 
-    var ret = isEqual(200, getTextFieldValue(getScrollView(), 9))
-            && isEqual(180, getTextFieldValue(getScrollView(), 10))
-            && isEqual(160, getTextFieldValue(getScrollView(), 11))
-            && isEqual(140, getTextFieldValue(getScrollView(), 12));
+    var idx = fields["吊牌价"].index;// 日期到价格有一个无效的TF
+    var ret = isEqual(200, getTextFieldValue(getScrollView(), idx + 1))
+            && isEqual(180, getTextFieldValue(getScrollView(), idx + 2))
+            && isEqual(160, getTextFieldValue(getScrollView(), idx + 3))
+            && isEqual(140, getTextFieldValue(getScrollView(), idx + 4));
 
     saveAndAlertOk();
     tapPrompt();
@@ -3520,7 +3527,20 @@ function test10_brand() {
 
     return isAnd(ret, ret1, ret2);
 }
-
+// 防止test10_brand出错，使1010pp停用
+function test10_brandstart() {
+    tapMenu("货品管理", "基本设置", "所有品牌");
+    var keys = { "名称" : "1010pp", "是否停用" : "是" };
+    conditionQuery(keys);
+    var qr = getQR();
+    if (qr.data.length > 0) {
+        tapLine();
+        tapButtonAndAlert(START, OK);
+        tapReturn();
+    }
+    query();
+    return true;
+}
 function test10_sizeID() {
     tapMenu("货品管理", "基本设置", "所有尺码组");
     query();
@@ -3667,9 +3687,7 @@ function ts100090() {
 function ts100090_1() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-
+    conditionQuery(keys);
     var r = getRandomNum(1, 100);
     addGoodsStockAdjustment(r);
     return isInAlertMsgs("存在在途数不能做调整");
@@ -4404,12 +4422,10 @@ function test100170() {
     var keys = { "款号" : code, "门店" : "常青店" };
     conditionQuery(keys);
     var qr = getQR();
-    var num1 = Number(qr.data[0]["累计进"]);
+    var num = Number(qr.data[0]["累计进"]);
 
     tapMenu2("货品进销存");
     conditionQuery(keys);
-    qr = getQR();
-    var num2 = Number(qr.data[0]["累计进"]);
 
     tapMenu("采购入库", "新增入库+");
     var json = {
@@ -4417,46 +4433,38 @@ function test100170() {
         "明细" : [ { "货品" : code, "数量" : [ 20 ] },
                 { "货品" : code, "数量" : [ -10 ] } ] };
     editSalesBill(json, colorSize);
-    var arr = test100170Field(code);
-    var ret = isAnd(sub(arr[0], num1) == 10, sub(arr[1], num2) == 10);
+    var ret = test100170Field(num + 10);
 
     tapMenu("采购入库", "批量入库+");
     editPurchaseBatch(json, colorSize);
-    var arr1 = test100170Field(code);
-    // logDebug("arr1[0]=" + arr1[0] + " arr1[1]=" + arr1[1] + " arr[0]"
-    // + arr[0] + " arr[1]=" + arr[1]);
-    ret = isAnd(ret, sub(arr1[0], arr[0]) == 10, sub(arr1[1], arr[1]) == 10);
+    ret = isAnd(ret, test100170Field(num + 20));
 
     tapMenu("采购订货", "新增订货+");
     editSalesBill(json, colorSize);
-    arr = test100170Field(code);
-    ret = isAnd(ret, arr1[0] == arr[0], arr1[1] == arr[1]);
+    ret = isAnd(ret, test100170Field(num + 20));
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
     editSalesBillSave({});
-    arr1 = test100170Field(code);
-    // logDebug("arr1[0]=" + arr1[0] + " arr1[1]=" + arr1[1] + " arr[0]"
-    // + arr[0] + " arr[1]=" + arr[1]);
-    ret = isAnd(ret, sub(arr1[0], arr[0]) == 20, sub(arr1[1], arr[1]) == 20);
+    ret = isAnd(ret, test100170Field(num + 30));
     return ret;
 }
-function test100170Field(code) {
+function test100170Field(num) {
     var arr = new Array(2);
     tapMenu("货品管理", "款号库存");
     tapButton(window, QUERY);
+    delay();
     var qr = getQR();
-    arr[0] = Number(qr.data[0]["累计进"]);
+    var ret = isEqual(qr.data[0]["累计进"], num);
 
     tapMenu2("货品进销存");
     tapButton(window, QUERY);
+    delay();
     qr = getQR();
-    arr[1] = Number(qr.data[0]["累计进"]);
-
-    return arr;
+    ret = isAnd(ret, isEqual(qr.data[0]["累计进"], num));
+    return ret;
 }
-
 function ts100171() {
     tapMenu("货品管理", "新增货品+");
     var ret = ts100171Field();
@@ -5198,7 +5206,7 @@ function ts100198() {
     var keys = { "款号" : "undefined" };
     conditionQuery(keys);
     tapPrompt();
-    var ret = isIn(alertMsg, "货品必须从下拉列表选择");
+    var ret = isIn(alertMsg, "必须从下拉列表选择");
 
     keys = { "厂商" : "undefined" };
     conditionQuery(keys);
@@ -5277,4 +5285,23 @@ function checkDeadline(title, k1, k2) {
     keys[k2] = getDay(-10);
     conditionQuery(keys);
     return checkQResult(title, getDay(-30), "day", getDay(-10));
+}
+// AC SC点击清除的×后，再输入内容查询，还是显示为第一次的查询结果
+function tsClearTField() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "厂商" : "vell", "类别" : "登山服" };// 厂商为AC，类别为SC
+    var fields = queryGoodsFields(keys);
+    query(fields);
+
+    clearTFieldsByIndex(window, fields["厂商"].index);
+    keys = { "厂商" : "rt" };
+    conditionQuery(keys, false);
+    var ret = checkQResult("厂商", "Rt");
+
+    clearTFieldsByIndex(window, fields["类别"].index, "SC");// 
+    tap(window.textFields()[0].textFields()[0]);// 随便点击一个其他的文本框，否则无法触发SC
+    keys = { "类别" : "鞋" };
+    conditionQuery(keys, false);
+    ret = isAnd(ret, checkQResult("类别", "鞋"));
+    return ret;
 }

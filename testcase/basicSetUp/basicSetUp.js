@@ -7,11 +7,11 @@ function testBasicSetUpAll() {
     run("赵本山", "setZhaoBenShan");
     run("上级客户1", "setCustomer001");
     run("下级客户1", "setCustomer002");
-    run("李四", "setCustomer003");
-    run("李响", "setCustomer004");
-    run("李天", "setCustomer005");
-    run("李六", "setCustomer006");
-    run("韩红", "setCustomer007");
+    // run("李四", "setCustomer003");
+    // run("李响", "setCustomer004");
+    // run("李天", "setCustomer005");
+    // run("李六", "setCustomer006");
+    // run("韩红", "setCustomer007");
     run("综合汇总1", "setCustomer008");// 新综合汇总
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
     run("上级不开单客户", "setCustomer009_1");// 不做开单操作，无欠余款
@@ -26,16 +26,16 @@ function testBasicSetUpAll() {
     run("联想", "setProvider004");
     run("yun厂商", "setProvider007");// 下拉框验证
 
-    run("特步生产商", "setProvider005");// 适用价：零批价
-    run("新百伦生产商", "setProvider006");// 适用价：打包价
+    // run("特步生产商", "setProvider005");// 适用价：零批价
+    // run("新百伦生产商", "setProvider006");// 适用价：打包价
     // 类别
     run("登山服", "setGoodsType001");
     run("鞋", "setGoodsType002");
     run("铅笔裤", "setGoodsType003");
 
-    run("夹克", "setGoodsType004");
-    run("跑步鞋", "setGoodsType005");
-    run("围巾", "setGoodsType006");
+    // run("夹克", "setGoodsType004");
+    // run("跑步鞋", "setGoodsType005");
+    // run("围巾", "setGoodsType006");
     // 品牌
     run("1010pp", "setGoodsBrand001");
     run("Adidas", "setGoodsBrand002");
@@ -179,7 +179,8 @@ function editCustomerBasicSetUp(keys) {
     query(fields);
 
     delay();
-    if (isIn(alertMsg, "查询必须从列表中选择")) {
+    if (isIn(alertMsg, "必须从列表中选择")) {
+        tapMenu2("新增客户+");
         addCustomer(keys);
     } else {
         tapFirstText();
@@ -487,7 +488,7 @@ function basicSetUpByBrandDiscount(keys) {
     var qKeys = { "品牌" : keys["品牌"] };
     var qFields = goodsBrandDiscountFields(qKeys);
     query(qFields);
-
+    tapPrompt();
     var qr = getQR();
     if (qr.total == 0) {
         tapMenu("货品管理", "基本设置", "新增品牌折扣+");
@@ -612,7 +613,7 @@ function setGoods001() {
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
         "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0",
         "经办人" : "000" };
-    return editGoodsBasicSetUp(keys, "2015-10-13");
+    return editGoodsBasicSetUp(keys);//, "2015-10-13"
 }
 
 // "上架日期" : "2014-03-14",
@@ -621,7 +622,7 @@ function setGoods002() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
         "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys, "2014-03-14");
+    return editGoodsBasicSetUp(keys);//, "2014-03-14"
 }
 
 // "上架日期" : "2015-10-13",
@@ -630,7 +631,7 @@ function setGoods003() {
         "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
         "Vip价格" : "0", "产品折扣" : "1", "季节" : "", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys, "2015-10-13");
+    return editGoodsBasicSetUp(keys);//, "2015-10-13"
 }
 // "上架日期" : "2015-10-13",
 function setGoods004() {
@@ -638,7 +639,7 @@ function setGoods004() {
         "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
         "产品折扣" : "1", "季节" : "春季", "类别" : "登山服", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys, "2015-10-13");
+    return editGoodsBasicSetUp(keys);//, "2015-10-13"
 }
 // "上架日期" : "2015-03-17",
 function setGoods005() {
@@ -646,7 +647,7 @@ function setGoods005() {
         "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
         "产品折扣" : "0.985", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys, "2015-03-17");
+    return editGoodsBasicSetUp(keys);//, "2015-03-17"
 }
 function setGoods006() {
     var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1", "品牌" : "1010pp",

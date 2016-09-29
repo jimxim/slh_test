@@ -874,8 +874,7 @@ function test160019() {
 function test160020_160022() {
     tapMenu("销售订货", "按明细查");
     var keys = { "门店" : "常青店", "日期从" : getDay(-30) };
-    var fields = salesOrderQueryParticularFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapTitle(getScrollView(), "批次");
     tapTitle(getScrollView(), "批次");// 找常青店最大批次号
     var qr = getQR();
@@ -889,11 +888,10 @@ function test160020_160022() {
     editSalesBill(json, colorSize);
 
     tapMenu2("按明细查");
-    keys = { "门店" : "常青店", "日期从" : getDay(-30), "日期到" : getDay(-1),
-        "客户" : "xw", "批次从" : batch, "批次到" : batch, "款号" : "3035" };
-    fields = salesOrderQueryParticularFields(keys);
-    query(fields);
-    qr = getQR();
+    keys = { "日期到" : getDay(-1), "客户" : "xw", "批次从" : batch, "批次到" : batch,
+        "款号" : "3035" };
+    conditionQuery(keys, false);
+    qr = getQR();// 取值太快可能为空
     var expected = { "批次" : batch, "日期" : getDay(-1, "yy"), "客户" : "小王",
         "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : "10",
         "差异数" : "10", "价格" : "200", "总额" : "2000" };
@@ -1471,22 +1469,23 @@ function test160042() {
 }
 
 function test160042QR() {
-    tapFirstText();
+    var jo = {};
+    tapLine();
     delay(0.5);//
     var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i]["款号"] == "3035") {
-                var jo = qr.data[i];
+                jo = qr.data[i];
                 break;
             }
         }
-        if (!isObject(jo) && j < qr.totalPageNo) {
+        if (jo.length == 0 && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
     debugObject(jo, "jo");
     return jo;
 }
@@ -1518,7 +1517,7 @@ function test160044() {
     query(fields);
     var qr = getQR();
     var jo1 = qr.data[0];
-    var arr1 = test160042QR();
+    var arr1 = test160042QR();// 取3035的信息
 
     tapMenu("销售订货", "新增订货+");
     var json = {
@@ -1553,7 +1552,7 @@ function test160044() {
     var actual = subObject(jo2, jo1);
     var expected = { "名称" : "小王", "数量" : 50, "差异数" : 30, "小计" : 10000 };
     expected[title_Shipped] = 20;
-    var arr2 = test160042QR();
+    var arr2 = test160042QR();// 取3035的信息
     var actual2 = subObject(arr2, arr1);
     var expected2 = { "名称" : "jkk", "数量" : 20, "差异数" : 10 };
     expected2[title_Shipped] = 10;

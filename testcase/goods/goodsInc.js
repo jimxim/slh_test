@@ -136,9 +136,9 @@ function editCustomerSave(o) {
  * @param isEdit
  */
 function addGoods(keys, o) {
-    if (isUndefined(keys)) {
-        return;
-    }
+    // if (isUndefined(keys)) {
+    // return;
+    // }
     if (isUndefined(o)) {
         o = {};
     }
@@ -218,10 +218,10 @@ function addObject(jo1, jo2) {
             if (isDefined(jo2) && !isNaN(jo2[i])) {
                 v1 = jo2[i];
             }
-            ret[i] = Number(v) + Number(v1);
+            ret[i] = add(Number(v), Number(v1));
         }
     }
-    debugObject(ret, "addObject result=");
+    // debugObject(ret, "addObject result=");
     return ret;
 }
 
@@ -1681,12 +1681,16 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
             qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
         }
     }
+    if (qr.counts.length <= 1) {
+        delay();// 等待获取数据
+        qr = getQR();
+    }
     var ret = true;
     for ( var i in qr.counts) {
         var v1 = qr.counts[i];
         var v2 = sum[i];
         if (v1 != "") {
-            ret = ret && isAqualNum(v1, v2, 0.0001);// (v1 == v2)
+            ret = ret && (v1 == v2);// isAqualNum(v1, v2, 0.0001)
         }
     }
     debugObject(sum, "sum=");
@@ -1805,6 +1809,7 @@ function editLogisticsVerify(o, idx) {
             idx = -2;
         }
         tapButton(window, "核销");
+        delay();//
         tapButton(window, QUERY);// 刷新界面
         var a1 = o["核销"];
         // debugElementTree(window);
