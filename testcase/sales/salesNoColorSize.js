@@ -5009,7 +5009,6 @@ function test170187() {
     query(fields1);
     qr = getQR();
     var jf1 = qr.data[0]["当前积分"];
-
     var ret = isAnd(isEqual(jf1, Number(jf - r)), isEqual(a1[0], "当前积分"),
             isEqual(a1[1], sub(a[1], r)));
 
@@ -10154,13 +10153,7 @@ function test170552() {
     if (!isIn(num, "区分，门店只能选择自己的款号")) {
         runAndAlert("test210020Clear", OK);
         tapPrompt();
-
-        if (ipadVer >= "7.21") {
-            var cond = "isIn(alertMsg, '清理刷新结束')";
-        } else {
-            var cond = "isIn(alertMsg, '清理和刷新成功')";
-        }
-        waitUntil(cond, 60);
+        waitUntil("", 5);
     }
     delay(2);
 
@@ -11641,7 +11634,6 @@ function test170673() {
     json = { "核销" : [ 0 ] };
     editLogisticsVerify(json);
 
-    // tapNaviRightButton();
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
 
@@ -11975,7 +11967,6 @@ function test170692() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-
     json = { "特殊货品" : { "积分抵现" : 1 } };
     editSalesBillSpecial(json);
     editSalesBillSave({});

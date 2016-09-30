@@ -1173,15 +1173,15 @@ function editlogisticsVerifyDetField(key, show) {
     switch (key) {
     case "date":
     case "日期":
-        f = new TField("日期", TF_DT, 14, getToday());
+        f = new TField("日期", TF_DT, 15, getToday());
         break;
     case "date1":
     case "到":
-        f = new TField("日期", TF_DT, 15, getToday());
+        f = new TField("日期", TF_DT, 16, getToday());
         break;
     case "custemer":
     case "客户":
-        f = new TField("客户", TF_AC, 16, "ls", -1, 0);
+        f = new TField("客户", TF_AC, 17, "ls", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
