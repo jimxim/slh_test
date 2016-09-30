@@ -17,9 +17,9 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "setSales_order_distribute_3");//
- run("测试用例", "test160042QR");
+// run("测试用例", "ts100191");
 
-// run("测试用例", "test160044");
+ run("测试用例", "test160044");
 // run("清除查询", "tsClearTField");//
 
 }
@@ -29,11 +29,7 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // tapButton(window,QUERY);
-    tapMenu("货品管理", "getMenu_More", "款号管理");
-    var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
-    waitUntil(cond, 5);// collectionView载入时间不稳定
-    var keys = { "款号" : "undefined" };
-    conditionQuery(keys);
+   
  // debugObject(gCache,"gCache");parent
  return true;
 }

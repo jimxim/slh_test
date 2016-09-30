@@ -9,9 +9,13 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "价格模式" };
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "货品建款的价格模式" };
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ret = isAnd(ret, setGlobalParam(qo, o));// 统一的价格体系才能切省代模式
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -3564,8 +3568,6 @@ function test10_discount() {
     tapMenu("货品管理", "基本设置", "所有品牌折扣");
     query();
     var ret = goPageCheck();
-
-    var qr = getQR();
     // 操作日期为MM-DD没有年份，比较难度较大，则先跳过验证
     ret = ret && sortByTitle("操作日期");// , IS_OPTIME
     ret = ret && sortByTitle("品牌");
@@ -3576,9 +3578,8 @@ function test10_discount() {
     ret = ret && sortByTitle("Vip价格");// , IS_NUM
 
     var keys = { "品牌" : "1010pp" };
-    var fields = goodsBrandDiscountFields(keys);
-    query(fields);
-    qr = getQR();
+    conditionQuery(keys);
+    var qr = getQR();
     ret = isAnd(ret, isEqual("1010pp", qr.data[0]["品牌"]));
 
     tapButton(window, CLEAR);
@@ -3876,12 +3877,10 @@ function ts100116() {
 function ts100117() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号名称" : "g" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-
+    conditionQuery(keys);
     addGoodsStockAdjustment(15.5);
 
-    tapFirstText();
+    tapLine();
     tapNaviButton("库存调整");
     var stockIndex = getIndex100090();
     var stock = getTextFieldValue(window, stockIndex - 3);// 当前库存
@@ -4423,44 +4422,46 @@ function test100170() {
     conditionQuery(keys);
     var qr = getQR();
     var num = Number(qr.data[0]["累计进"]);
-
+    logDebug("num=" + num);
     tapMenu2("货品进销存");
     conditionQuery(keys);
 
+    var r1 = getRandomNum(21, 50), r2 = getRandomNum(-20, -1);
+    var dif = add(r1, r2);
     tapMenu("采购入库", "新增入库+");
     var json = {
         "客户" : "vell",
-        "明细" : [ { "货品" : code, "数量" : [ 20 ] },
-                { "货品" : code, "数量" : [ -10 ] } ] };
+        "明细" : [ { "货品" : code, "数量" : [ r1 ] }, { "货品" : code, "数量" : [ r2 ] } ] };
     editSalesBill(json, colorSize);
-    var ret = test100170Field(num + 10);
+    var ret = test100170Field(add(num, dif));
 
     tapMenu("采购入库", "批量入库+");
     editPurchaseBatch(json, colorSize);
-    ret = isAnd(ret, test100170Field(num + 20));
+    ret = isAnd(ret, test100170Field(add(num, 2 * dif)));
 
     tapMenu("采购订货", "新增订货+");
     editSalesBill(json, colorSize);
-    ret = isAnd(ret, test100170Field(num + 20));
+    ret = isAnd(ret, test100170Field(add(num, 2 * dif)));
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
-    editSalesBillSave({});
-    ret = isAnd(ret, test100170Field(num + 30));
+    json = { "入库明细" : [ {}, { "数量" : r2 } ] };// 默认负数的入库数为0
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, test100170Field(add(num, 3 * dif)));
     return ret;
 }
 function test100170Field(num) {
     var arr = new Array(2);
     tapMenu("货品管理", "款号库存");
-    tapButton(window, QUERY);
     delay();
+    tapButton(window, QUERY);
     var qr = getQR();
     var ret = isEqual(qr.data[0]["累计进"], num);
 
     tapMenu2("货品进销存");
+    delay();// 数据刷新慢，只点一次查询还是旧数据
     tapButton(window, QUERY);
-    delay();
     qr = getQR();
     ret = isAnd(ret, isEqual(qr.data[0]["累计进"], num));
     return ret;
@@ -4730,7 +4731,7 @@ function ts100180() {
     var r = getRandomStr(6);
     var code = "g" + r, ret = true;
     var keys = { "款号" : code, "名称" : "货品" + r };
-    var jo = { "onlytest" : "yes", "stockEntryCancel" : "yes" }, jo2;
+    var jo = { "onlytest" : "yes", "stockEntryCancel" : "yes" }, jo2 = {};
     addGoods(keys, jo);
 
     if (colorSize != "no") {
@@ -4885,7 +4886,7 @@ function ts100187() {
     setGlobalParam(qo, o);
 
     tapMenu("货品管理", "新增货品+");
-    var ret = isHasStaticTexts(getScrollView(-1), [ "启用上次价" ]);// 关闭后不显示启用上次价
+    var ret = !isHasStaticTexts(getScrollView(-1), [ "启用上次价" ]);// 关闭后不显示启用上次价
     tapReturn();
 
     o = { "新值" : "1", "数值" : [ "启用" ] };
@@ -4893,7 +4894,7 @@ function ts100187() {
 
     tapMenu("货品管理", "新增货品+");
     var keys = { "启用上次价" : "是" };
-    var fields = testEditGoodsFields(keys, true);
+    var fields = editGoodsFields(keys, true);
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));// 显示启用上次价，且默认为是
     tapReturn();
 
@@ -5047,6 +5048,7 @@ function ts100191Field(o, keys2) {
     addGoods(keys);// 修改进货价，销售价
 
     tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 10 ] } ] };
     editSalesBill(json, colorSize);
     var ret = isAnd(isEqual(150, json["明细值"].data[0]["单价"]), isEqual(1,
             json["明细值"].data[0]["折扣"]));
@@ -5092,8 +5094,10 @@ function ts100192() {
     keys = { "厂商价格" : [ { "厂商" : "rt", "进货价" : 120 },
             { "厂商" : "vell", "进货价" : 140 }, { "厂商" : "lx", "进货价" : 160 } ] };
     editSupplierPrice(keys);
-    var exp = "Rt:120;Vell:140;联想:160";
-    ret = isAnd(ret, isEqual(exp, getTextViewValue(window, 1)));// 厂商价格
+    delay();
+    var exp = "Rt:120;Vell:140;联想:160".replace(/[\ |\;|\；|\,|\，]/g, "");
+    ret = isAnd(ret, isEqual(exp, getTextViewValue(getScrollView(-1), 1)
+            .replace(/[\ |\;|\；|\,|\，]/g, "")));// 厂商价格
     editGoodsSave({});
 
     tapMenu2("货品查询");
@@ -5101,7 +5105,7 @@ function ts100192() {
     tapLine();
     keys = { "厂商价格" : exp };
     var fields = editGoodsFields(keys, true);
-    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));
     tapReturn();
 
     return ret;

@@ -1822,14 +1822,14 @@ function test120030() {
     // 同门店核销，先做一张入库欠款单
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "15" } ],
-        "现金" : "0", };
+        "未付" : "yes", };
     editSalesBillNoColorSize(json);
 
     // 核销欠款，输入抹零，点未付，保存
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "核销" : [ 4 ],
         "明细" : [ { "货品" : "3035", "数量" : "1" } ], "特殊货品" : { "抹零" : 100 },
-        "现金" : "0" };
+        "未付" : "yes" };
     editSalesBillNoColorSize(json);
 
     // // 做一张入库余款单
@@ -1853,22 +1853,22 @@ function test120030() {
     var a1 = qr.data[0]["名称"];
     var a2 = qr.data[0]["余额"];
 
-    var ret = isAnd(isEqual("Vell", a1));
+    var ret = isEqual("Vell", a1), ret1;
 
-    tapFirstText();
+    tapLine();
     qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     for (var i = 0; i <= 13; i++) {
-        var ret1 = isEqual(Number(qr.data[i + 1]["累计未结"])
+        ret1 = isEqual(Number(qr.data[i + 1]["累计未结"])
                 + Number(qr.data[i]["付款"]) - Number(qr.data[i]["金额"])
                 + Number(qr.data[i]["异地核销"]), Number(qr.data[i]["累计未结"]));
     }
     var ret2 = isEqual(Number(qr.data[0]["累计未结"]), a2);
 
     delay();
-    tapNaviLeftButton();
+    tapNaviClose();
     query();
 
-    return ret && ret1 && ret2;
+    return isAnd(ret, ret1, ret2);
 }
 function test120030_1() {
     tapMenu("采购入库", "新增入库+");
