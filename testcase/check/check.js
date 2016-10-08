@@ -3275,12 +3275,11 @@ function test180085() {
     var cond = "isIn(alertMsg, '处理完成')" || "服务操作失败";
     waitUntil(cond, 10);
     var ret = isIn(alertMsg, "处理完成");
-
     tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
-    var keys = { "门店" : "常青店" };
-    var fields = checkPlanAddFields(keys);
+    keys = { "门店" : "常青店" };
+    fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
 
@@ -3295,47 +3294,50 @@ function test180085() {
     query(fields);
     delay();
     var qr = getQR();
+    qr = qr.data;
+    if (qr.total <= 14) {
+        for (var i = 0, len = 15 - Number(qr.total); i < len; i++) {
+            tapMenu("货品管理", "新增货品+");
+            var r = "anewkhao" + randomWord(false, 5);
+            var keys = { "款号" : r, "名称" : r };
+            addGoods(keys);
+        }
+        qr.push(r);
+    }
 
     tapMenu("盘点管理", "新增盘点+");
+    delay();
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 1 },
-            { "货品" : qr.data[0]["款号"], "数量" : 3 },
-            { "货品" : qr.data[1]["款号"], "数量" : 4 },
-            { "货品" : qr.data[2]["款号"], "数量" : 5 },
-            { "货品" : qr.data[3]["款号"], "数量" : 6 },
-            { "货品" : qr.data[4]["款号"], "数量" : 7 },
-            { "货品" : qr.data[5]["款号"], "数量" : 8 },
-            { "货品" : qr.data[6]["款号"], "数量" : 9 },
-            { "货品" : qr.data[7]["款号"], "数量" : 10 },
-            { "货品" : qr.data[8]["款号"], "数量" : 11 },
-            { "货品" : qr.data[9]["款号"], "数量" : 12 },
-            { "货品" : qr.data[10]["款号"], "数量" : 13 },
-            { "货品" : qr.data[11]["款号"], "数量" : 14 },
-            { "货品" : qr.data[12]["款号"], "数量" : 15 },
-            { "货品" : qr.data[13]["款号"], "数量" : 16 },
-            { "货品" : qr.data[14]["款号"], "数量" : 16 },
-            { "货品" : qr.data[15]["款号"], "数量" : 16 } ] };
+            { "货品" : qr[0]["款号"], "数量" : 3 }, { "货品" : qr[1]["款号"], "数量" : 4 },
+            { "货品" : qr[2]["款号"], "数量" : 5 }, { "货品" : qr[3]["款号"], "数量" : 6 },
+            { "货品" : qr[4]["款号"], "数量" : 7 }, { "货品" : qr[5]["款号"], "数量" : 8 },
+            { "货品" : qr[6]["款号"], "数量" : 9 }, { "货品" : qr[7]["款号"], "数量" : 1 },
+            { "货品" : qr[8]["款号"], "数量" : 3 }, { "货品" : qr[9]["款号"], "数量" : 2 },
+            { "货品" : qr[10]["款号"], "数量" : 3 },
+            { "货品" : qr[11]["款号"], "数量" : 4 },
+            { "货品" : qr[12]["款号"], "数量" : 5 },
+            { "货品" : qr[13]["款号"], "数量" : 6 },
+            { "货品" : qr[14]["款号"], "数量" : 7 } ] };
     editCheckAddNoColorSize(josn);
-    // var ret = isIn2(alertMsg, "款号:3035,不属于本次盘点计划");
-    // 款号:anewkhaoJGKWW6,anewkhaoVvAK,anewkhao1298,anewkhao5qIB,
-    // anewCDoTU,anewCyyk6,anewC1GnE,3035,anewKHAO7040,anewCB2vp,anewkhaoBW7j
-    // ,anewCUsG2,anewkhaoCgF1,k200,anewkhaoFaVhGa...不属于本次盘点计划
-
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isAnd(isIn(alertMsg1, "不属于本次盘点计划"), isIn(alertMsg1,
-            qr.data[0]["款号"]), isIn(alertMsg1, qr.data[1]["款号"]), isIn(
-            alertMsg1, qr.data[2]["款号"]), isIn(alertMsg1, qr.data[3]["款号"]),
-            isIn(alertMsg1, qr.data[4]["款号"]),
-            isIn(alertMsg1, qr.data[5]["款号"]),
-            isIn(alertMsg1, qr.data[6]["款号"]),
-            isIn(alertMsg1, qr.data[7]["款号"]),
-            isIn(alertMsg1, qr.data[8]["款号"]),
-            isIn(alertMsg1, qr.data[9]["款号"]), isIn(alertMsg1,
-                    qr.data[10]["款号"]), isIn(alertMsg1, qr.data[11]["款号"]),
-            isIn(alertMsg1, qr.data[12]["款号"]), isIn(alertMsg1,
-                    qr.data[13]["款号"]), isIn(alertMsg1, qr.data[14]["款号"]),
-            isIn(alertMsg1, "3035"), isIn(alertMsg1, "k200"), isIn(alertMsg1,
-                    "3035"), isIn(alertMsg1, "..."));
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = isAnd(isIn(alertMsg1, "不属于本次盘点计划"), isIn(alertMsg1, "..."));
+    ret = isAnd(ret, isEqual(Number(isIn(alertMsg1, qr[0]["款号"]))
+            + Number(isIn(alertMsg1, qr[1]["款号"]))
+            + Number(isIn(alertMsg1, qr[2]["款号"]))
+            + Number(isIn(alertMsg1, qr[3]["款号"]))
+            + Number(isIn(alertMsg1, qr[4]["款号"]))
+            + Number(isIn(alertMsg1, qr[5]["款号"]))
+            + Number(isIn(alertMsg1, qr[6]["款号"]))
+            + Number(isIn(alertMsg1, qr[7]["款号"]))
+            + Number(isIn(alertMsg1, qr[8]["款号"]))
+            + Number(isIn(alertMsg1, qr[9]["款号"]))
+            + Number(isIn(alertMsg1, qr[10]["款号"]))
+            + Number(isIn(alertMsg1, qr[11]["款号"]))
+            + Number(isIn(alertMsg1, qr[12]["款号"]))
+            + Number(isIn(alertMsg1, qr[13]["款号"]))
+            + Number(isIn(alertMsg1, qr[14]["款号"]))
+            + Number(isIn(alertMsg1, "3035")), 15));
 
     checkPrepare1();
 

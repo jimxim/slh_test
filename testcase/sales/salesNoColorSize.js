@@ -2872,10 +2872,9 @@ function test170104_170105() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "4562", "数量" : 2, "单价" : r, "备注" : "mxbz" } ],
-        "备注" : "zdbz" };
+        "备注" : "zdbz", "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
@@ -2898,7 +2897,6 @@ function test170104_170105() {
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapReturn();
-
     ret = isAnd(ret, isEqual("4562", k), isEqual("mxbz", t), isIn(tip, t),
             isEqual(a1[0], "日期"), isAqualOptime(a1[1], getOpTime()), isEqual(
                     "数量: 2  价格: " + r + " 折扣: 1", num), isIn(a, getToday("")),
@@ -2951,7 +2949,6 @@ function test170105_1() {
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapReturn();
-
     ret = isAnd(ret, isEqual(a1[0], "日期"), isAqualOptime(a1[1], getOpTime()),
             isEqual("数量: 2  价格: " + r + " 折扣: " + Number(r1), num), isIn(a,
                     getToday("")), isEqual(2, b), isEqual(r, c), isEqual(
@@ -3747,11 +3744,11 @@ function test170138() {
         tapButtonAndAlert("待作废", OK);
         tapButtonAndAlert(OK);
     }
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "待作废成功"));
-    tapReturn();
+    // tapPrompt();
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -1);
+    // var ret = (isIn(alertMsg1, "待作废成功"));//灰化
+    // tapReturn();+ " ret" + ret ret &&
 
     tapMenu("销售开单", "按批次查");
     var keys1 = [ "作废挂单" ];
@@ -3762,8 +3759,7 @@ function test170138() {
     var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
 
-    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
-    return ret && ret1;
+    return ret1;
 }
 function test170139() {
     tapMenu("销售开单", "开  单+");
@@ -4009,7 +4005,6 @@ function test170139_3() {
     var staffTFindex = getEditSalesTFindex2("客户", "店员");
     var f0 = getTextFieldValue(window, 0);
     var f5 = getTextFieldValue(window, staffTFindex);
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
