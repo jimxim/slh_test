@@ -17,14 +17,8 @@ function test000All() {
 // run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");//键盘输入失败
 // run("【销售开单－开单】客户新增按钮", "test170043");//输入中文失败
 // run("【销售开单－按批次查】键盘检查", "test170014");
-// run("【销售开单－开单】款号较多时打印", "test170100");//款号输入不全
-// run("【销售开单－开单】复制-粘贴", "test170139");
-// run("【销售开单－开单】上次成交价界面显示备注信息", "test170104");//更多按钮不会点击
-// run("【销售开单－开单】查看上次成交价", "test170105");
 // run("【销售开单－开单】使用上次成交价", "test170107");
 // run("【销售开单－开单】待作废", "test170138");
- run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-
 // run("", "test0");
 }
 function test0(){
@@ -33,11 +27,7 @@ function test0(){
 // var qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
 // debugQResult(qr);
 // debugElements(window);
-// debugArray(texts);
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
-    editSalesBillCustomer(json);
-    editSalesBillDetTapCell(json);
+// debugArray(texts);  
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
