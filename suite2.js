@@ -23,10 +23,7 @@ function test000All() {
 // run("【销售开单－开单】查看上次成交价", "test170105");
 // run("【销售开单－开单】使用上次成交价", "test170107");
 // run("【销售开单－开单】待作废", "test170138");
-// run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
-// run("【销售开单-按汇总-按退货汇总】变动款号季节", "test170725");//季节没有改为空
-// run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");//
-    run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170308");
+ run("【销售开单－开单】挂单修改界面新增删除操作", "test170170");
 
 // run("", "test0");
 }
@@ -37,6 +34,10 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
+    editSalesBillCustomer(json);
+    editSalesBillDetTapCell(json);
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
