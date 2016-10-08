@@ -19,7 +19,7 @@ function test000All() {
 // run("测试用例", "setSales_order_distribute_3");//
 // run("测试用例", "ts100191");
 
- run("测试用例", "test160044");
+ run("测试用例", "onlyTest");
 // run("清除查询", "tsClearTField");//
 
 }
@@ -30,6 +30,14 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // tapButton(window,QUERY);
    
+    tapMenu("门店调出", "批量调出+");
+    var jo = { "调出人" : "000", "接收店" : "中洲店", "备注" : "abc123" ,"onlytest":"yes"};
+    var det = editOverLengthBillDet();
+    var json = mixObject(jo, det);
+    editShopOutDecruitIn(json, colorSize);
+
+    
+    
  // debugObject(gCache,"gCache");parent
  return true;
 }
