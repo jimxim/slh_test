@@ -1471,7 +1471,7 @@ function test160042() {
 function test160042QR() {
     var jo = {};
     tapLine();
-    delay(0.5);//
+    delay(0.5);// waitForLoad()
     var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -1480,7 +1480,7 @@ function test160042QR() {
                 break;
             }
         }
-        if (jo.length == 0 && j < qr.totalPageNo) {
+        if (isEmptyObject(jo) && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
         }
@@ -1513,8 +1513,7 @@ function test160043() {
 function test160044() {
     tapMenu("销售订货", "按汇总", "按客户");
     var keys = { "日期从" : getDay(-30), "客户" : "xw" }
-    var fields = salesOrderCustomerFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var jo1 = qr.data[0];
     var arr1 = test160042QR();// 取3035的信息

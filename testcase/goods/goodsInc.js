@@ -1086,28 +1086,29 @@ function waitUntilAlertInvisible(maxSeconds) {
     }
 }
 /**
- * 等待loading图 有问题，待改
+ * 等待loading图 activityIndicator
  * @param maxTime最大等待时间，默认60s
  */
-// function waitForLoad(maxTime) {
-// if (isUndefined(maxTime)) {
-// maxTime = 60;
-// }
-// var times = 0;
-// while (times < maxTime) {
-// var indicator = window.activityIndicators()[0];
-// if (indicator != "[object UIAElementNil]") {
-// // UIALogger.logMessage("loading");
-// times += 1;
-// } else {
-// break;
-// }
-// delay();
-// }
-// if (times == maxTime) {
-// logDebug("加载超时" + maxTime + "s");
-// }
-// }
+function waitForLoad(maxTime) {
+    if (isUndefined(maxTime)) {
+        maxTime = 60;
+    }
+    var times = 0;
+    while (times < maxTime) {
+        // var indicator = window.activityIndicators()[i];
+        var length = window.activityIndicators().length;
+        if (length > 0) {
+            UIALogger.logMessage("loading");
+            times += 1;
+        } else {
+            break;
+        }
+        delay();
+    }
+    if (times == maxTime) {
+        logDebug("加载超时" + maxTime + "s");
+    }
+}
 /**
  * 跳转到指定页面(输入值)
  * @param page
@@ -1728,13 +1729,11 @@ function isEqualDropDownList(expected, view1) {
     return ret;
 }
 /**
- * 清理本地
+ * 清理本地 现在为自定义弹窗
  */
 function localClean() {
     runAndAlert("test210020Clear", OK);
-    tapPrompt();
-    var cond = "isInAlertMsgs('清理')";// 清理刷新结束，清理和刷新成功
-    waitUntil(cond, 30);
+    waitForLoad();
 }
 function logisticsVerifySetField(o, key) {
     var v = o[key];
