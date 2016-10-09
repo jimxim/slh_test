@@ -7,7 +7,7 @@ function testSystem001() {
     run("【系统设置—打印机】翻页/页码切换", "test210007_210008");
     run("【系统设置—全局设置】查询/清除", "test210010_210011");
     run("【系统设置—打印机】保存/返回/参数生效", "test210012_210013_210014");
-    run("【系统设置—全局设置】翻页", "test210015_210016");// 翻页过程中获取页面为半页，实际看不到
+    run("【系统设置—全局设置】翻页", "test210015_210016");
     run("【系统设置—打印机】条码打印机IP", "test210055");
     run("【系统设置—打印机】条码打印机端口", "test210056");
     run("【系统设置—打印机】快递单打印端口", "test210057");
@@ -34,7 +34,7 @@ function testSystem001() {
     run("【系统设置—改密码】关闭", "test210036");
     run("【系统设置—改密码】修改", "test210035");
     run("【系统设置】紧急模式上传异常", "test210061");// 用例需确认
-    // run("【系统设置-全局参数】异地发货参数互斥", "test210063");
+    run("【系统设置-全局参数】异地发货参数互斥", "test210063");
     run("【系统设置】设置本地参数为默认", "test210062");
     run("【系统设置】数据清理授权", "test210043");
     run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
@@ -176,7 +176,6 @@ function test210003() {
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret3 = isEqual(ip, qr.data[6]["数值"]);
 
-    // var qo, o, ret = true;
     qo = { "备注" : "是否支持远程打印" };
     o = { "新值" : "0", "数值" : [ "默认本地打印", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -187,7 +186,7 @@ function test210003() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret3=" + ret3 + ", ret4="
             + ret4);
-    return ret && ret1 && ret3 && ret4;// && ret2
+    return ret && ret1 && ret3 && ret4;
 }
 function test210004_210005_210006() {
     var qo, o, ret = true;
@@ -265,7 +264,6 @@ function test210012_210013_210014() {
 
     tapFirstText(getScrollView(), TITLE_SEQ, 4);
     var ret1 = isIn(getTextFieldValue(getScrollView(-1), 2), "货品单价精确到角");
-
     tapReturn();
 
     qo = { "备注" : "单价小数位" };
@@ -276,6 +274,7 @@ function test210012_210013_210014() {
     var ret2 = isIn(getTextFieldValue(getScrollView(-1), 2), "货品单价精确到元");
     tapReturn();
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test210015_210016() {
@@ -287,8 +286,6 @@ function test210015_210016() {
     return ret;
 }
 function test210017() {
-    tapMenu("系统设置", "小票信息");
-
     tapMenu("系统设置", "小票信息");
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 6);
     var ret = isAnd(isEqualQRData1ByTitle(qr, "门店", "常青店"),
@@ -527,13 +524,6 @@ function test210020_210021() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret = isIn(alertMsg1, "确定操作吗");
 
-//    var Msg;
-//    if (ipadVer >= "7.21") {
-//        Msg = "清理刷新结束";
-//    } else {
-//        Msg = "清理和刷新成功";
-//    }
-
     return ret;
 }
 function test210020Clear() {
@@ -553,12 +543,9 @@ function test210023() {
 
     // tapButtonAndAlert("刷新大图", OK);
     // tapPrompt();
-    //
     // var cond = "isIn(alertMsg, '操作成功')";
     // waitUntil(cond, 300);
-    //
     // var ret = isIn(alertMsg, "操作成功");
-    //
     // tapNaviLeftButton();
     //
     // return ret;
@@ -620,12 +607,6 @@ function test210027() {
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 5);
     var ret1 = isEqual("y" + r, qr.data[0]["工号"]);
 
-    // tapFirstText(getScrollView(), TITLE_SEQ, 5);
-    // keys = { "工号" : gh };
-    // fields = EditSystemStaffFields(keys);
-    // setTFieldsValue(getScrollView(), fields);
-    // tapButtonAndAlert(EDIT_SAVE, OK);
-
     return ret && ret1;
 }
 function test210028_210029() {
@@ -633,7 +614,6 @@ function test210028_210029() {
     var keys = { "工号" : "008", "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
     tapButtonAndAlert("停 用", CANCEL);
     var ret = isEqual("008", getTextFieldValue(getScrollView(), 0));
@@ -656,7 +636,6 @@ function test210028_210029() {
     keys = { "工号" : "008", "是否停用" : "否" };
     fields = querySystemStaffFields(keys);
     query(fields);
-
     tapFirstText(getScrollView(), TITLE_SEQ, 5);
     ret = isAnd(ret, isEqual("008", getTextFieldValue(getScrollView(), 0)),
             isEqual("008", getTextFieldValue(getScrollView(), 1)));
@@ -936,14 +915,6 @@ function test210035() {
     var ret5 = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
 
-    // tapMenu("系统设置", "人员列表");
-    // var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
-    // var fields = querySystemStaffFields(keys);
-    // query(fields);
-    //
-    // tapFirstText();
-    // tapButtonAndAlert("密码重置", OK);
-
     logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
@@ -976,14 +947,6 @@ function test210036() {
     tapPrompt();
     var ret1 = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
-
-    // tapMenu("系统设置", "人员列表");
-    // var keys = { "工号" : "000", "是否停用" : "否", "姓名" : "总经理", "门店" : "常青店" };
-    // var fields = querySystemStaffFields(keys);
-    // query(fields);
-    //
-    // tapFirstText();
-    // tapButtonAndAlert("密码重置", OK);
 
     return ret && ret1;
 }
@@ -1130,7 +1093,6 @@ function test210041() {
     var keys = { "是否停用" : "否" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-
     var qr = getQR();
 
     var len = qr.data.length;
@@ -1228,7 +1190,6 @@ function test210043() {
     var fields = [ f0 ];
     setTFieldsValue(window, fields);
     tapNaviRightButton();
-    // var ret = isEqual(null, getTextViewValue(window, 0));//" ret=" + ret +ret
 
     var f0 = new TField("服务描述", TV, 0, "数据清理授权aa");
     var fields = [ f0 ];
@@ -1299,7 +1260,6 @@ function test210049() {
     qo = { "备注" : "打印小票" };
     var fields = querySystemGlobalFields(qo);
     query(fields);
-
     tapFirstText();
     var setObj = {};
     setObj["数值"] = [ "以尺码为小票明细的头部", "in" ];
@@ -1308,15 +1268,11 @@ function test210049() {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-
-    var ret = false;
-    if (isIn(alertMsg,
-            "当参数“是否需要颜色尺码” 设置为”默认均色均码“时，“打印小票是否以尺码为头部”不允许设置为”以尺码为小票明细的头部")) {
-        ret = true;
-    }
+    var ret1 = isIn(alertMsg,
+            "当参数“是否需要颜色尺码” 设置为”默认均色均码“时，“打印小票是否以尺码为头部”不允许设置为”以尺码为小票明细的头部");
     tapReturn();
 
-    return ret;
+    return ret && ret1;
 }
 function test210049_1() {
     var qo, o, ret = true;
@@ -1567,10 +1523,6 @@ function test210050() {
     tapPrompt();
     var ret10 = isIn(alertMsg, "保存成功");
     tapReturn();
-
-    // logDebug(" ret10=" + ret10 + ", ret11=" + ret11 + ", ret8=" + ret8
-    // + ", ret9=" + ret9);
-    // return ret8 && ret9 && ret10 && ret11;
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
@@ -1852,7 +1804,6 @@ function test210052_1() {
 
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     ret = isAnd(ret, isIn(alertMsg1, "系统设定不允许修改开单日期"));
@@ -1864,10 +1815,8 @@ function test210052_1() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "系统设定不允许修改开单日期");
@@ -1880,7 +1829,6 @@ function test210052_1() {
     tapFirstText();
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
     var ret5 = isIn(alertMsg1, "系统设定不允许修改开单日期");
@@ -1892,10 +1840,8 @@ function test210052_1() {
     tapMenu("采购订货", "按批次查");
     query();
     tapFirstText();
-
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
     var ret2 = isIn(alertMsg1, "系统设定不允许修改开单日期");
@@ -1903,7 +1849,6 @@ function test210052_1() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
@@ -1918,10 +1863,8 @@ function test210052_1() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-
     var json = { "日期" : getDay(-1), "明细" : [ { "货品" : "4562", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
     var ret3 = isIn(alertMsg1, "系统设定不允许修改开单日期");
@@ -2089,11 +2032,6 @@ function test210056() {
     ret1 = isAnd(ret1, isIn(alertMsg, "填入的值必须是数字"));
     tapReturn();
 
-    // debugArray(alertMsgs);
-    // var alertMsg1 = getArray1(alertMsgs, -1);
-    // var ret1 = isIn(isIn(alertMsg1, "填入的值必须是数字"));
-    // tapReturn();
-
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     var ret2 = isEqual(r, qr.data[4]["数值"]);
 
@@ -2156,34 +2094,31 @@ function test210062() {
 
     return ret;
 }
-// function test210063() {
-// // 常青店没有绑定仓库
-// var qo, o, ret = true;
-// qo = { "备注" : "支持异地仓库" };
-// o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-// ret = isAnd(ret, setGlobalParam(qo, o));
-//
-// qo = { "备注" : "开单模式" };
-// var fields = querySystemGlobalFields(qo);
-// query(fields);
-//
-// tapFirstText();
-// var setObj = {};
-// setObj["数值"] = [ "15,异地发货开单模式", "in" ];
-// setObj["授权码"] = [];
-// var fields = editSystemGlobalFields(setObj);
-// setTFieldsValue(getScrollView(), fields);
-// saveAndAlertOk();
-//
-// tapPrompt();
-//
-// var ret1 = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
-//
-// tapReturn();
-//
-// logDebug(" ret=" + ret + ", ret1=" + ret1);
-// return ret && ret1;
-// }
+function test210063() {
+    // 常青店没有绑定仓库
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "15,异地发货开单模式", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "操作失败，[当开单模式设置成异地发货模式，必须先开启异地仓库的参数");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
 function test210065() {
     tapMenu("系统设置", "打印机");
     tapTextByFirstWithName("2");

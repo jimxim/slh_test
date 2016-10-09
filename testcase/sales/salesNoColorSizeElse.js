@@ -3,7 +3,7 @@
 function testSalesNoColorSizeElse001() {
     run("【销售开单－按批次查】翻页_排序_汇总", "test170001_1_170010_170011_170012");
     run("【销售开单－按批次查】条件查询，清除按钮,下拉框",
-            "test170001_2_170002_170003_170004_170008_170020_170485");
+            "test170001_2_170002_170003_170004_170020_170485");
     run("【销售开单－按批次查】底部数据统计检查", "test170018");
     run("【销售开单－按明细查】翻页_排序_汇总", "test170031_170032_170033");
     run("【销售开单－按明细查】下拉框", "test170028_2_1_170524");
@@ -34,7 +34,7 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－按订货开单】清除按钮/下拉列表", "test170253");
     run("【销售开单－按订货开单】排序/翻页/快速翻页", "test170255_170256_170257");
     run("【销售开单－按订货开单】底部数据统计汇总", "test170436");
-    run("【销售开单-收款记录】查询", "test170275");// （无数据）
+    run("【销售开单-收款记录】查询", "test170275");// 
     run("【销售开单－物流单查询】正常查询/查询条件组合查询", "test170278_170285_170284");
     run("【销售开单－物流单查询】按客户查询", "test170279");
     run("【销售开单－物流单查询】排序", "test170280_170281_170282");
@@ -84,9 +84,10 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按批次查】是否未结", "test170005");// ///
     run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
     run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");// 上次审核用例到这里
+    run("【销售开单－按批次查】是否配货", "test170008");
     run("【销售开单－按批次查】页面跳转检查", "test170013");
-    // run("【销售开单－按批次查】键盘检查", "test170014");
-    // run("【销售开单－按明细查】键盘检查", "test170034");
+    run("【销售开单－按批次查】键盘检查", "test170014");
+    run("【销售开单－按明细查】键盘检查", "test170034");
     run("【销售开单－按批次查】修改代收内容", "test170024");
     run("【销售开单-按明细查】作废开单后内容检查", "test170030");
     run("【销售开单－按明细查】类型输入条件检查", "test170037");
@@ -102,7 +103,7 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】开单日期检查", "test170272");
     run("【销售开单-按批次查】打印作废单", "test170025");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");//
-    // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
+    run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 }
 function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】修改界面检查明细内容输入区域", "test170419");
@@ -138,7 +139,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按款号上货】详细-检查一个客户对某款号是否上货", "test170459");
     run("【销售开单－销售汇总】按类别汇总", "test170356");
     run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1_170648");
-    // run("【销售开单－销售汇总-按厂商汇总】键盘输入检查", "test170362");//键盘暂不检查
+    run("【销售开单－销售汇总-按厂商汇总】键盘输入检查", "test170362");
     run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
@@ -152,7 +153,7 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");
     run("【销售开单－代收收款】清除功能", "test170286");
-    run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// 综合收支表界面需要修改取值
+    run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// xx那边专门检查
     run("【销售开单－代收收款】核销代收收款功能", "test170287");
     run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
     run("【销售开单－代收收款】店员下拉框检查", "test170289");
@@ -321,7 +322,7 @@ function test170001_1_170010_170011_170012() {
             + ", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test170001_2_170002_170003_170004_170008_170020_170485() {
+function test170001_2_170002_170003_170004_170020_170485() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "备注" : "zdbz" };
@@ -676,34 +677,32 @@ function test170007() {
     logDebug(" ret=" + ret + ", ret2=" + ret2);
     return ret && ret2;
 }
-// function test170008() {
-// tapMenu("销售开单", "开 单+");
-// var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : "1" } ] };
-// editSalesBillNoColorSize(json);
-// var opt = json["操作日期"];
-//
-// tapMenu("销售开单", "按批次查");
-// var keys = { "配货" : "否" };
-// var fields = salesQueryBatchFields(keys);
-// query(fields);
-//
-// var qr = getQR(window, getScrollView(), TITLE_SEQ, 21);
-// var a1 = qr.data[0]["日期"];
-// var a2 = qr.data[0]["门店"];
-// var a3 = qr.data[0]["客户"];
-// var a4 = qr.data[0]["店员"];
-// var a5 = qr.data[0]["金额"];
-// var a6 = qr.data[0]["数量"];
-// var a7 = qr.data[0]["未结"];
-// var a8 = qr.data[0]["配货"];
-// var a10 = qr.data[0]["操作日期"];
-// var ret = isAnd(isEqual(getToday(""), a1), isEqual("常青店", a2), isEqual(
-// "李响", a3), isEqual("总经理", a4), isEqual("1", a6), isEqual("0", a7),
-// isEqual("否", a8), isEqual(opt, a10));
-//
-// logDebug("ret=" + ret);
-// return ret;
-// }
+function test170008() {
+    tapMenu("销售开单", "按批次查");
+    var keys = { "配货" : "否" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isAnd(isEqual("否", qr.data[0]["配货"]));
+
+    var ret1 = false, macth;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            macth = qr.data[i]["配货"];
+            if (isEqual("否", macth)) {
+                ret1 = true;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
 function test170013() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
@@ -1868,7 +1867,6 @@ function test170266() {
     var a2 = getStaticTextValue(getPopOrView(), index + 8);
     var a3 = getStaticTextValue(getPopOrView(), index + 9);
     var a4 = getStaticTextValue(getPopOrView(), index + 10);
-
     var ret = isAnd(isEqual(getDay(), a), isEqual("002,仓管员", a1), isEqual(500,
             a2), isEqual(100, a3), isEqual(200, a4));
     window.popover().dismiss();
@@ -3978,7 +3976,6 @@ function test170313() {
     var sl = qr.counts["数量"];
     var xj = qr.counts["小计"];
 
-    keys = [ "类型" ];
     fields = salesQueryParticularFields(keys);
     changeTFieldValue(fields["类型"], "换码");
     setTFieldsValue(window, fields);
@@ -4037,7 +4034,7 @@ function test170314() {
     var ret = isAnd(isEqual("", a), isEqual(getToday(), a1), isEqual(
             getToday(), a2), isEqual("", a3), isEqual("", a4));
 
-    logDebug("ret=" + ret);
+    logDebug(" ret=" + ret);
     return ret;
 }
 function test170315_170316_170317() {
