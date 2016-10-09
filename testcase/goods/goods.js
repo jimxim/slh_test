@@ -433,7 +433,11 @@ function setTagprice_invperson_1() {
 
     return ret;
 }
-
+function setSc_use_custom_keyboard_0() {
+    var qo = { "备注" : "是否启用自定义键盘" };
+    var o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    return setGlobalParam(qo, o);
+}
 // 数据准备，中洲店库存调整，然后常青店登陆查看调整单
 function test100107() {
     tapMenu("货品管理", "当前库存");

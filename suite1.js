@@ -19,8 +19,8 @@ function test000All() {
 // run("测试用例", "setSales_order_distribute_3");//
 // run("测试用例", "ts100191");
 
-// run("测试用例", "onlyTest");
- run("测试用例", "test160044");//
+ run("测试用例", "onlyTest");
+// run("测试用例", "test160044");//
 
 }
 
@@ -30,12 +30,37 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // tapButton(window,QUERY);
     
- runAndAlert("test210020Clear", OK);
- waitForLoad();
- tapMenu("货品管理","当前库存");
+// var qo = { "备注" : "是否需要颜色尺码" };
+// var o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+// setGlobalParam(qo, o);
+    gCache={};
+    tapMenu("销售开单",ADDBILL);
+    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+// alertRet=true;
+    var o1 = { "是否需要重新刷新明细价格等信息" : "保留当前" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    
+    var r = "c"+getRandomStr(6);
+    var json = { "名称" : r, "手机" : r, "适用价格" : "Vip价格", "地址" : r };
+    editQuickAddCustomer(json);
+
+
+    gCache={};
+// alertRet = false;
+    o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    var r1 =  "c"+getRandomStr(6);
+    json = { "名称" : r1, "手机" : r1, "适用价格" : "Vip价格", "地址" : r1 };
+    editQuickAddCustomer(json);
+
+
+    // delay(5);
+// alertRet=false;
 
  // debugObject(gCache,"gCache");parent
- return jo.length==0;
+ return true;
 }
 // 检验开单时间
 function testBillTimes(){

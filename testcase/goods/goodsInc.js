@@ -1091,7 +1091,7 @@ function waitUntilAlertInvisible(maxSeconds) {
  */
 function waitForLoad(maxTime) {
     if (isUndefined(maxTime)) {
-        maxTime = 60;
+        maxTime = 20;
     }
     var times = 0;
     while (times < maxTime) {

@@ -32,6 +32,8 @@ function testPurchase001() {
 
     run("【采购入库-按汇总-厂商对账单】做过导出操作后，检查下拉列表", "ts120116");
     run("【采购入库-按汇总-厂商对账单】厂商查询条件输入客户名导出", "ts120117");
+    run("【采购入库-新增入库】快速新增货品界面当输入款号或名称时,输入法检查", "ts120094");
+    run(" 设置参数-是否启用自定义键盘-不启用", "setSc_use_custom_keyboard_0");
 }
 
 function testPurchasePrepare002() {
@@ -3092,7 +3094,7 @@ function ts120091() {
     var keys = { "日期从" : getDay(-30) };
     var fields = shopInQueryBatchFields(keys);
     query(fields);
-    tapFirstText();
+    tapLine();
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
     delay(0.5);
@@ -3179,18 +3181,74 @@ function ts120092Field(jo1, jo2) {
 
     tapMenu("采购入库", "按订货入库");
     query();
-    tapFirstText();
+    tapLine();
     editPurInByOrderDet(jo1);// 数据准备
     editSalesBillSave({});
 
     if (isDefined(jo2)) {
         tapMenu2("按订货入库");
         tapButton(window, QUERY);// 刷新界面
-        tapFirstText();
+        tapLine();
         editPurInByOrderDet(jo2);
         editSalesBillSave({});
     }
     delay();
+}
+function ts120094() {
+    var qo = { "备注" : "是否启用自定义键盘" };
+    var o = { "新值" : "1", "数值" : [ "默认启用", "in" ] };
+    setGlobalParam(qo, o);
+    tapMenu("采购入库", "新增入库+");
+    var ret = ts120094Field();
+    tapMenu("采购订货", "新增订货+");
+    ret = isAnd(ret, ts120094Field());
+    tapMenu("销售开单", ADDBILL);
+    ret = isAnd(ret, ts120094Field());
+
+    o = { "新值" : "2", "数值" : [ "启用", "in" ] };
+    setGlobalParam(qo, o);
+    tapMenu("采购入库", "新增入库+");
+    ret = isAnd(ret, ts120094Field());
+    tapMenu("采购订货", "新增订货+");
+    ret = isAnd(ret, ts120094Field());
+    tapMenu("销售开单", ADDBILL);
+    ret = isAnd(ret, ts120094Field());
+
+    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
+    setGlobalParam(qo, o);
+    tapMenu("采购入库", "新增入库+");
+    ret = isAnd(ret, ts120094Field());
+    tapMenu("采购订货", "新增订货+");
+    ret = isAnd(ret, ts120094Field());
+    tapMenu("销售开单", ADDBILL);
+    ret = isAnd(ret, ts120094Field());
+
+    return ret;
+}
+/**
+ * 自定义键盘返回false
+ * @returns
+ */
+function ts120094Field() {
+    tapButton(window, "货品+");
+    var view = getPopView();
+    var tf = view.textFields()[0].textFields()[0];// 款号
+    tf.setValue("");
+    delay(0.5);// 等待弹出键盘
+    var kb = app.keyboard();
+    var ret = kb.buttons()["下一个键盘"].isVisible();// 自定义键盘切换键盘的按钮
+    tapKeyboardHide();
+
+    tf = view.textFields()[1].textFields()[0];// 名称
+    tf.setValue("");
+    delay(0.5);// 等待弹出键盘
+    kb = app.keyboard();
+    ret = isAnd(ret, kb.buttons()["下一个键盘"].isVisible());
+    tapKeyboardHide();
+
+    tapButton(getPop(), CLOSE);
+    tapReturn();
+    return ret;
 }
 /**
  * 店长开单员只能看到本门店的数据
@@ -3415,15 +3473,13 @@ function test120111() {
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes" };
     editSalesBill(json, colorSize);
-    runAndAlert("test120052Hang", OK);
     tapReturn();
     alertMsgs = [];
 
-    tapMenu2("按批次查");
-    var keys = { "作废挂单" : "挂单" };
-    conditionQuery(keys);
+    tapMenu2("按挂单");
+    query();
     tapLine();
     editSalesBillSave({});
 
@@ -3455,10 +3511,12 @@ function test120112() {
     json = { "刷卡" : [ 1000, "交" ] };
     editSalesBill(json, colorSize);
 
+    query();
     tapLine();
     json = { "入库明细" : [ { "数量" : "8" } ], "汇款" : [ 1000, "交" ] };
     editSalesBill(json, colorSize);
 
+    query();
     tapLine();
     json = { "入库明细" : [ { "数量" : "11" } ], "刷卡" : [ 500, "交" ],
         "汇款" : [ 500, "交" ] };
@@ -3495,7 +3553,12 @@ function ts120114() {
     tapMenu2("按批次查");
     query();
     var qr = getQR();
-    return isEqual("仓库店", qr.data[0]["门店"]);
+    var ret = isEqual("仓库店", qr.data[0]["门店"]);
+
+    tapLine();
+    ret = isAnd(ret, "仓库店" == qr.data[0]["门店"]);
+    tapReturn();
+    return ret;
 }
 // 常青店店长登陆
 function ts120115() {
@@ -3595,6 +3658,9 @@ function ts120119() {
     var jo = qr.data[0];
     tapNaviClose();
     ret = isAnd(ret, isEqualObject2(sum, counts));
+
+    tapButton(window, CLEAR);
+    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 2)));
 
     tapMenu2("按明细查");
     keys = { "款号" : jo["款号"], "日期从" : getDay(-15), "门店" : "常青店" };
