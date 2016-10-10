@@ -725,7 +725,8 @@ function editChangeSalesBillOrderNum(o, ret) {
     var titles = getSalesBillDetTfObject();
     var title_num = "数量";
     var tfNum = titles["明细输入框个数"];
-    var num = o["数量"];
+    var d = o[0];
+    var num = d["数量"];
     var fields, f;
     if (num && num.length > 0) {
         fields = [];
@@ -733,8 +734,9 @@ function editChangeSalesBillOrderNum(o, ret) {
             f = new TField("数量", TF, titles[title_num] + tfNum * ni, num[ni]);
             fields.push(f);
         }
+        var view1 = getScrollView(-1);
+        setTFieldsValue(view1, fields);
     }
-    setTFieldsValue(getScrollView(-1), fields);
 
     if (ret == "yes") {
         editChangeSalesBillOrderNumSave("yes");
@@ -743,7 +745,7 @@ function editChangeSalesBillOrderNum(o, ret) {
         editChangeSalesBillOrderNumSave("no");
     }
 
-    logDebug(" tfNum=" + tfNum);
+    logDebug(" tfNum=" + tfNum + " num=" + num);
     return ret;
 }
 /**

@@ -704,7 +704,6 @@ function test180025() {
 }
 function test180025_1() {
     tapMenu("货品管理", "新增货品+");
-    delay();
     var s = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : 100
     var fields = editGoodsFields(keys, false);
@@ -884,7 +883,6 @@ function test180026() {
 }
 function test180026_1() {
     tapMenu("货品管理", "新增货品+");
-    delay();
     var s = "anewC" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : "100"
     var fields = editGoodsFields(keys, false);
@@ -1873,7 +1871,6 @@ function test180049_180036() {
     delay();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r = "akhao" + randomWord(false, 8);
     var keys = { "款号" : r, "名称" : r };// , "进货价" : "200"
     var fields = editGoodsFields(keys, false);
@@ -1883,7 +1880,6 @@ function test180049_180036() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r1 = "akhao" + randomWord(false, 8);
     var keys = { "款号" : r1, "名称" : r1 };
     var fields = editGoodsFields(keys, false);
@@ -2022,7 +2018,6 @@ function test180049_1() {
     delay();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r = "aCode1" + randomWord(false, 8);
     var keys = { "款号" : r, "名称" : r };// , "进货价" : 200, "零批价" : 250
     var fields = editGoodsFields(keys, false);
@@ -2032,7 +2027,6 @@ function test180049_1() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r1 = "aCode2" + randomWord(false, 8);
     var keys = { "款号" : r1, "名称" : r1 };// , "进货价" : 200, "零批价" : 300
     var fields = editGoodsFields(keys, false);

@@ -1971,13 +1971,12 @@ function test170268() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : r, "名称" : r };// , "进货价" : 100
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay(2);
+    delay();
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -1985,13 +1984,12 @@ function test170268() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var s = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : 200
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay(2);
+    delay();
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2000,13 +1998,12 @@ function test170268() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var q = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : q, "名称" : q };// , "进货价" : 300
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay(2);
+    delay();
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -2093,7 +2090,6 @@ function test170269() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r = "anewK269" + randomWord(false, 4);
     var keys = { "款号" : r, "名称" : r };// , "进货价" : 100
     var fields = editGoodsFields(keys, false);
@@ -2107,7 +2103,6 @@ function test170269() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var s = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : 200
     var fields = editGoodsFields(keys, false);
@@ -2121,7 +2116,6 @@ function test170269() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var q = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : q, "名称" : q };// , "进货价" : 200
     var fields = editGoodsFields(keys, false);
@@ -2263,7 +2257,6 @@ function test170273() {
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r1 = "anewkhao" + getTimestamp(4);
     var keys = { "款号" : r1, "名称" : r1 };// , "进货价" : 2000, "产品折扣" : "1.3"
     var fields = editGoodsFields(keys, false);
@@ -5131,7 +5124,6 @@ function test170361_1_170648() {
     tapFirstText();
     var qr1 = getQR2(getScrollView(-1, 0), "图", "操作日期");
     var ret = goPageCheckQR2(getScrollView(-1, 0), "图", "操作日期");
-
     ret = ret && test170648Field("批次", IS_NUM);
     ret = ret && test170648Field("日期", IS_DATE2);
     ret = ret && test170648Field("款号");
@@ -5140,7 +5132,7 @@ function test170361_1_170648() {
     ret = ret && test170648Field("尺码");
     ret = ret && test170648Field("数量", IS_NUM);
     ret = ret && test170648Field("单价", IS_NUM);
-    ret = ret && test170648Field("折扣", IS_NUM);
+    // ret = ret && test170648Field("折扣", IS_NUM);
     ret = ret && test170648Field("小计", IS_NUM);
     ret = ret && test170648Field("店员");
     ret = ret && test170648Field("操作日期", IS_OPTIME);
@@ -6915,7 +6907,6 @@ function test170479() {
     test170482_prepare();
 
     tapMenu("货品管理", "新增货品+");
-    delay();
     var r = "aKH" + getTimestamp(7);
     var keys = { "款号" : r, "名称" : r, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
@@ -7938,7 +7929,7 @@ function test170596() {
     query();
     tapFirstText();
     var o = [ { "数量" : [ 0 ] } ];
-    editChangeSalesBillOrderNum(o);
+    editChangeSalesBillOrderNum(o,"no");
 
     tapMenu("销售订货", "按批次查");
     query();
@@ -7946,7 +7937,7 @@ function test170596() {
     var o = [ { "数量" : [ 5, 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
-    var json = { "明细" : [ { "货品" : "k300", "数量" : 6 } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : 6 } ] };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -9155,7 +9146,6 @@ function test170708() {
 
     tapFirstText();
     tapNaviRightButton();
-
     qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
     var sum8 = 0, sum9 = 0, sum10 = 0, sum11 = 0, sum12 = 0, sum13 = 0;
@@ -9183,12 +9173,11 @@ function test170708() {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-
     var ret = isAnd(isAqualNum(xj, sum1), isAqualNum(sk, sum2), isAqualNum(hk,
             sum3), isAqualNum(ds, sum4), isAqualNum(te, sum5), isAqualNum(xs,
             sum6), isAqualNum(ts, sum7), isAqualNum(sxs, sum8), isAqualNum(sxe,
-            sum9), isAqualNum(ml, sum10), isEqual(Number(sxe2), Number(sum11)),
-            isAqualNum(qt, sum12), isAqualNum(qk, sum13));
+            sum9), isAqualNum(ml, sum10), isEqual(Number(sxe2), Number(sum11
+            .toFixed(2))), isAqualNum(qt, sum12), isAqualNum(qk, sum13));
 
     return ret;
 }
@@ -9242,7 +9231,6 @@ function test170709() {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-
     var ret = isAnd(isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk, sum3),
             isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6), isEqual(
                     ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
@@ -9255,7 +9243,6 @@ function test170709() {
     var fields = salesStaffFields(keys);
     query(fields);
     var qr = getQR();
-
     var xj = qr.counts["现金"];
     var sk = qr.counts["刷卡"];
     var hk = qr.counts["汇款"];
@@ -9299,7 +9286,6 @@ function test170709() {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-
     var ret1 = isAnd(isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk, sum3),
             isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6), isEqual(
                     ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
