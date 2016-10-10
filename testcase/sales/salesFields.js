@@ -833,6 +833,10 @@ function editSalesBillField(key, show) {
     case "日期":
         f = new TField("日期", TF_DT, cardTFindex + 2, getToday()); // 9
         break;
+    case "instockShop":
+    case "入库门店":
+        f = new TField("入库门店", TF_SC, 1, "常青店");// 采购入库简单模式
+        break;
     case "orderShop":
     case "订货门店":
         index = getValueFromCacheF1("getOrderShopTFindex");

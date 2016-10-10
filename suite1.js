@@ -10,7 +10,7 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "yes";
+ colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";//
 // var caseName="测试用例";
@@ -18,8 +18,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "setSales_order_distribute_3");//
 // run("测试用例", "ts100191");
-
- run("测试用例", "onlyTest");
+ 
+ run("测试用例", "ts100161");
 // run("测试用例", "test160044");//
 
 }
@@ -33,27 +33,7 @@ function onlyTest(){
 // var qo = { "备注" : "是否需要颜色尺码" };
 // var o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
 // setGlobalParam(qo, o);
-    gCache={};
-    tapMenu("销售开单",ADDBILL);
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-// alertRet=true;
-    var o1 = { "是否需要重新刷新明细价格等信息" : "保留当前" };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    
-    var r = "c"+getRandomStr(6);
-    var json = { "名称" : r, "手机" : r, "适用价格" : "Vip价格", "地址" : r };
-    editQuickAddCustomer(json);
-
-
-    gCache={};
-// alertRet = false;
-    o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    var r1 =  "c"+getRandomStr(6);
-    json = { "名称" : r1, "手机" : r1, "适用价格" : "Vip价格", "地址" : r1 };
-    editQuickAddCustomer(json);
+   localClean();
 
 
     // delay(5);

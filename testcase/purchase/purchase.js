@@ -129,21 +129,23 @@ function setDwxx_not_allow_edit_0Params() {
 
     return ret;
 }
-function setPurchase_type_2Params() {
-    var qo, o, ret = true;
-    qo = { "备注" : "采购入库模式" };
-    o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
+/**
+ * 采购入库模式--默认复杂模式
+ * @returns
+ */
+function setPurchase_type_2() {
+    var qo = { "备注" : "采购入库模式" };
+    var o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
+    return setGlobalParam(qo, o);
 }
-function setPurchase_type_1Params() {
-    var qo, o, ret = true;
-    qo = { "备注" : "采购入库模式" };
-    o = { "新值" : "1", "数值" : [ "默认简单模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    return ret;
+/**
+ * 采购入库模式--默认简单模式
+ * @returns
+ */
+function setPurchase_type_1() {
+    var qo = { "备注" : "采购入库模式" };
+    var o = { "新值" : "1", "数值" : [ "默认简单模式", "in" ] };
+    return setGlobalParam(qo, o);
 }
 // 翻页_排序_汇总
 function ts120001_1() {
@@ -3468,22 +3470,34 @@ function test120109Field(edit) {
 }
 function test120111() {
     var qo = { "备注" : "开单修改保存时是否直接询问打印" };
-    var o = { "新值" : "1", "数值" : [ "询问打印", "in" ] };
+    var o = { "新值" : "0", "数值" : [ "默认不询问打印", "in" ] };
     setGlobalParam(qo, o);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "挂单" : "yes" };
     editSalesBill(json, colorSize);
-    tapReturn();
     alertMsgs = [];
 
     tapMenu2("按挂单");
     query();
     tapLine();
     editSalesBillSave({});
+    var ret = !isInAlertMsgs("是否打印");// SLH-11269 没有保存成功之类的提示
 
-    return isInAlertMsgs("是否打印");
+    o = { "新值" : "1", "数值" : [ "询问打印" ] };//
+    setGlobalParam(qo, o);
+
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+    alertMsgs = [];
+
+    tapMenu2("按挂单");
+    query();
+    tapLine();
+    editSalesBillSave({});
+    ret = isAnd(ret, isInAlertMsgs("是否打印"));
+    return ret;
 }
 function test120112() {
     var qo = { "备注" : "财务中货品成本价的核算方法" };
@@ -3556,7 +3570,8 @@ function ts120114() {
     var ret = isEqual("仓库店", qr.data[0]["门店"]);
 
     tapLine();
-    ret = isAnd(ret, "仓库店" == qr.data[0]["门店"]);
+    var value = editSalesBillGetValue({});
+    ret = isAnd(ret, "仓库店" == value["入库门店"]);
     tapReturn();
     return ret;
 }
@@ -3660,7 +3675,10 @@ function ts120119() {
     ret = isAnd(ret, isEqualObject2(sum, counts));
 
     tapButton(window, CLEAR);
-    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 2)));
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)), isEqual("",
+                    getTextFieldValue(window, 2)), isEqual("",
+                    getTextFieldValue(window, 3)));
 
     tapMenu2("按明细查");
     keys = { "款号" : jo["款号"], "日期从" : getDay(-15), "门店" : "常青店" };
@@ -3766,5 +3784,46 @@ function ts120122() {
     return ret;
 }
 function ts120123() {
+    setPurchase_type_1();
+    var qo = { "名称" : "pur_in_by_cross_store" };
+    var o = { "新值" : "1", "数值" : [ "支持" ] };
+    setGlobalParam(qo, o);
 
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号名称" : "3035" };
+    conditionQuery(keys);
+    var s1 = 0, s2 = 0;
+    var qr = getQR();
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["仓库/门店"] == "常青店") {
+            s1 = qr.data[i]["库存"];
+        }
+        if (qr.data[i]["仓库/门店"] == "中洲店") {
+            s2 = qr.data[i]["库存"];
+        }
+    }
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "rt", "入库门店" : "中洲店",
+        "明细" : [ { "货品" : "3035", "数量" : "30" } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var S1 = 0, S2 = 0;
+    var qr = getQR();
+    for (var i = 0; i < qr.curPageTotal; i++) {
+        if (qr.data[i]["仓库/门店"] == "常青店") {
+            S1 = qr.data[i]["库存"];
+        }
+        if (qr.data[i]["仓库/门店"] == "中洲店") {
+            S2 = qr.data[i]["库存"];
+        }
+    }
+
+    setPurchase_type_2();
+    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
+    setGlobalParam(qo, o);
+    logDebug("s2=" + s2 + " S2=" + S2);
+    return isAnd(s1 == S1, Number(s2) + 30 == S2);
 }

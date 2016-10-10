@@ -140,6 +140,7 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    localClean();// 清理本地，刷新数据
     return ret;
 }
 
@@ -2339,7 +2340,7 @@ function ts100132() {
             qr = getQR()
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
     arr2 = getUnique(arr2).sort();
 
     return isEqualObject(arr1, arr2);
@@ -4222,7 +4223,7 @@ function ts100160() {
     // 15*17 防止已有颜色尺码被点掉
     var keys = { "款号" : r, "名称" : r,
         "颜色" : "花色,黑色,白色,灰色,深灰,浅灰,米色,均色,红色,桃红,深红,粉红,桔红,鲜红,黄色",
-        "尺码" : "S,M,均色,L,XL,2XL,25,26,27,28,29,30,31,32,33,34,35" };
+        "尺码" : "S,M,均码,L,XL,2XL,25,26,27,28,29,30,31,32,33,34,35" };
     tapMenu("货品管理", "新增货品+");
     addGoods(keys);
     var ret = isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码");// （颜色数*尺码数小于200）
@@ -4647,7 +4648,7 @@ function ts100176() {
 
     tapMenu("货品管理", "货品查询");
     var price = 100;
-    var name = window.navigationBars()[1].name();
+    var name = window.navigationBars()[1].name();// 获取当前登陆门店
     if (name.indexOf("中洲店") != -1) {
         price = 200;
     }
@@ -4783,7 +4784,7 @@ function ts100181() {
     return ret;
 }
 function ts100182() {
-    var keys = { "厂商" : "vell", "进货价" : "100" };// 默认启用了进货价
+    var keys = { "厂商" : "vell", "进货价" : "100", "是否加工款" : "是", "加工价" : "120" };// 默认启用了进货价
     var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
     if (colorSize == "no") {
         jo["库存录入"][0]["颜色"] = "均色";
@@ -4793,11 +4794,11 @@ function ts100182() {
     tapMenu("采购入库", "按批次查");
     query();
     var qr = getQR();
-    var ret = isEqual(qr.data[0]["金额"], 1000);
+    var ret = isEqual(qr.data[0]["金额"], 1200);
 
     tapLine();
     qr = getQRDet();
-    ret = isAnd(ret, isEqual(qr.data[0]["单价"], 100));
+    ret = isAnd(ret, isEqual(qr.data[0]["单价"], 120));
     tapReturn();
     return ret;
 }

@@ -1474,7 +1474,7 @@ function ts130046Pre004() {
     tapMenu("采购入库", "新增入库+");
     editSalesBill(json, colorSize);
 
-    json["客户"] = "vell";
+    json["客户"] = "rt";
     tapMenu("采购入库", "新增入库+");
     editSalesBill(json, colorSize);
     return ret;
