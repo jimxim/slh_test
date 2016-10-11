@@ -23,8 +23,7 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单－销售汇总-按客户销售】排序/翻页/快速翻页", "test170327_170328_170329_170330");
     run("【销售开单－销售汇总-按客户未结】清除/汇总／下拉列表功能", "test170333_170332");
     run("【销售开单－销售汇总-按客户未结】排序/翻页/快速翻页", "test170334_70335_170336");
-    run("【销售开单－销售汇总-按客户上货】品牌查询", "test170339_170705");
-    run("【销售开单－销售汇总-按客户上货】清除功能", "test170340");
+    run("【销售开单－销售汇总-按客户上货】品牌查询/清除功能", "test170340_170339_170705");
     run("【销售开单－销售汇总-按客户上货】排序/翻页/快速翻页", "test170341_170342_170343_170346");
     run("【销售开单－销售汇总-客户对帐单】清除功能", "test170351");
     run("【销售开单－销售汇总-按类别汇总】清除功能/查询条件／下拉列表", "test170357");
@@ -1310,7 +1309,7 @@ function test170034() {
 }
 function test170037() {
     var qo, o, ret = true;
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1403,7 +1402,7 @@ function test170252() {
     var ret = isEqual("未发货", a);
 
     tapFirstText();
-    var o = { "数量" : [ 3 ] };
+    var o = [ { "数量" : [ 3 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1415,7 +1414,7 @@ function test170252() {
     var ret1 = isEqual("部分发货", b);
 
     tapFirstText();
-    o = { "数量" : [ 7 ] };
+    o = [ { "数量" : [ 7 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1601,7 +1600,7 @@ function test170260() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = { "数量" : [ 50 ] };
+    var o = [ { "数量" : [ 50 ] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -1649,7 +1648,7 @@ function test170261() {
             isEqual(14, a3));
 
     tapFirstText();
-    var o = { "数量" : [ 0 ] };
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -1710,7 +1709,7 @@ function test170262() {
     query(fields);
 
     tapFirstText();
-    var o = { "数量" : [ 0 ] };
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售订货", "按批次查");
@@ -1751,7 +1750,7 @@ function test170264() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = { "数量" : [ 0 ] };
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -2812,7 +2811,8 @@ function test170289() {
     setTFieldsValue(window, fields);
 
     var ret = false;
-    var f = new TField("店员", TF_AC, 4, "88", -1);
+    var index = getEditSalesTFindex2("物流", "店员");
+    var f = new TField("店员", TF_AC, index, "88", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -2825,7 +2825,7 @@ function test170289() {
     delay();
 
     var ret1 = true;
-    var f = new TField("店员", TF_AC, 4, "ls", -1);
+    var f = new TField("店员", TF_AC, index, "ls", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -3075,7 +3075,6 @@ function test170294_170609() {
     tapButton(window, "核销");
     var qr = getQRtable1(window, 8, -2);
     var len = qr.data.length;
-
     if (len == 0) {
         for (var i = 0; i <= 3; i++) {
             qr = getQRtable1(window, 8, -2);
@@ -3296,7 +3295,7 @@ function test170303() {
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var o = { "数量" : [ 8 ] };
+    var o = [ { "数量" : [ 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     var json = { "明细" : [ { "货品" : "k300", "数量" : 1 },
@@ -3706,10 +3705,10 @@ function test170307_170306() {
     return ret && ret1 && ret2;
 }
 function test170308() {
-    // var qo, o, ret = true;
-    // qo = { "备注" : "支持异地仓库" };
-    // o = { "新值" : "1", "数值" : [ "启用" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035", "门店" : "常青店" };
@@ -3817,17 +3816,19 @@ function test170308() {
     var ret4 = isEqual(totalSale, qr.counts["实销数"]);
 
     tapMenu("统计分析", "日利润表");
-    var keys = { "day1" : getDay(-30), "day2" : getToday(), "code" : "3035" };
-    var fields = statisticAnalysisProfitFields(keys);
-    query(fields);
-    qr = getQR();
-    var ret5 = isEqual(b5, qr.counts["数量"]);
-
     var keys = { "day1" : getDay(-30), "day2" : getToday() };
     var fields = statisticAnalysisProfitFields(keys);
     query(fields);
     qr = getQR();
-    var ret6 = isAnd(isEqual(totalSale, qr.counts["数量"]));
+    var ret5 = isAnd(isEqual(totalSale, qr.counts["数量"]));
+
+    keys = [ "code" ];
+    fields = statisticAnalysisProfitFields(keys);
+    changeTFieldValue(fields["code"], "3035");
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret6 = isEqual(b5, qr.counts["数量"]);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
@@ -4789,22 +4790,7 @@ function test170338_170344() {
             + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test170339_170705() {
-    tapMenu("销售开单", "按汇总", "按客户上货");
-    var keys = { "客户" : "ls", "上架从" : "2015-01-01", "上架到" : getToday(),
-        "款号" : "k300", "品牌" : "Adidas", "日期从" : getDay(-10),
-        "日期到" : getToday(), "类别" : "登山服", "季节" : "春季" };
-    var fields = salesCustomerSupplyFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["品牌"];
-
-    var ret = isAnd(isEqual("Adidas", a), isEqual("李四", qr.data[0]["客户"]),
-            isEqual("k300", qr.data[0]["款号"]));
-
-    return ret;
-}
-function test170340() {
+function test170340_170339_170705() {
     tapMenu("销售开单", "按汇总", "按客户上货");
     var i;
     var ret = false;
@@ -4846,9 +4832,13 @@ function test170340() {
 
     tapMenu("销售开单", "按汇总", "按客户上货");
     var keys = { "客户" : "ls", "上架从" : "2015-01-01", "上架到" : getToday(),
-        "款号" : "k300", "品牌" : "Adidas", "日期从" : getDay(-10), "日期到" : getToday() };
+        "款号" : "k300", "品牌" : "Adidas", "日期从" : getDay(-10),
+        "日期到" : getToday(), "类别" : "登山服", "季节" : "春季" };
     var fields = salesCustomerSupplyFields(keys);
     query(fields);
+    qr = getQR();
+    var ret1 = isAnd(isEqual("Adidas", qr.data[0]["品牌"]), isEqual("李四",
+            qr.data[0]["客户"]), isEqual("k300", qr.data[0]["款号"]));
 
     tapButton(window, CLEAR);
     var a = getTextFieldValue(window, 0);
@@ -4858,12 +4848,15 @@ function test170340() {
     var a4 = getTextFieldValue(window, 4);
     var a5 = getTextFieldValue(window, 5);
     var a6 = getTextFieldValue(window, 6);
-    var ret1 = isAnd(isEqual("", a), isEqual("", a1), isEqual("", a2), isEqual(
+    var a7 = getTextFieldValue(window, 7);
+    var a8 = getTextFieldValue(window, 8);
+    var ret2 = isAnd(isEqual("", a), isEqual("", a1), isEqual("", a2), isEqual(
             "", a3), isEqual("", a4), isEqual(getToday(), a5), isEqual(
-            getToday(), a6));
+            getToday(), a6), isEqual("", a7), isEqual("", a8));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + "sum1=" + sum1 + "sum2=" + sum2);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", sum1="
+            + sum1 + ", sum2=" + sum2);
+    return ret && ret1 && ret2;
 }
 function test170341_170342_170343_170346() {
     tapMenu("销售开单", "按汇总", "按客户上货");
@@ -5274,7 +5267,7 @@ function test170365() {
     tapFirstText();
     logistindex = getEditSalesTFindex2("客户", "代收");
     var k3 = getTextFieldValue(window, logistindex);
-    var ret1 = isAnd(isEqual(price * num * zk, k3), isEqual(money, k3),
+    var ret1 = isAnd(isAqualNum(price * num * zk, k3), isEqual(money, k3),
             isEqual(0.85, zk));
     saveAndAlertOk();
     tapPrompt();
@@ -6109,7 +6102,7 @@ function test170419() {
     var fields = [ f0 ];
     setTFieldsValue(getScrollView(-1), fields);
 
-    var o = { "数量" : [ r ] };
+    var o = [ { "数量" : [ r ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     saveAndAlertOk();
@@ -6206,7 +6199,7 @@ function test170432() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    var o = { "数量" : [ 30 ] };
+    var o = [ { "数量" : [ 30 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -6255,7 +6248,7 @@ function test170433() {
             qr.data[0]["已付"])));
 
     tapFirstText();
-    var o = { "数量" : [ 0 ] };
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     var r = getTimestamp(8);
@@ -6344,7 +6337,7 @@ function test170435() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var o = { "数量" : [ 0 ] };
+    var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按批次查");
@@ -6678,17 +6671,17 @@ function test170454() {
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : -2, "单价" : 180 } ],
+    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : -2, "单价" : 180 } ],
         "备注" : "退货" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls", "备注" : "退货" };
-    var fields = salesQueryBatchFields(keys);
+    keys = { "客户" : "ls", "备注" : "退货" };
+    fields = salesQueryBatchFields(keys);
     query(fields);
 
     tapFirstText();
-    var o = { "数量" : [ -9 ] };
+    var o = [ { "数量" : [ -9 ] } ];
     editChangeSalesBillOrderNum(o, "no");
     editSalesBillSave({});
 
@@ -7929,7 +7922,7 @@ function test170596() {
     query();
     tapFirstText();
     var o = [ { "数量" : [ 0 ] } ];
-    editChangeSalesBillOrderNum(o,"no");
+    editChangeSalesBillOrderNum(o, "no");
 
     tapMenu("销售订货", "按批次查");
     query();
@@ -8486,7 +8479,7 @@ function test170642() {
     tapButton(window, QUERY);
     tapFirstText();
     var index = getEditSalesTFindex2("客户", "日期");
-    var ret1 = !isEqual(getToday(), getTextFieldValue(window, index));
+    var ret1 = isEqual(getToday(), getTextFieldValue(window, index));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -8696,8 +8689,8 @@ function test170682() {
     var qr = getQR();
     var kc = qr.data[0]["库存"];
 
-    var keys = { "款号" : "3035", "门店" : "仓库店" };
-    var fields = queryGoodsStockFields(keys);
+    keys = { "款号" : "3035", "门店" : "仓库店" };
+    fields = queryGoodsStockFields(keys);
     query(fields);
     qr = getQR();
     var ck = qr.data[0]["库存"];
@@ -8728,7 +8721,7 @@ function test170682() {
             qr.data[0]["订货"]), isEqual(0, qr.data[0]["已发"]), isEqual(20,
             qr.data[0]["数量"]), isEqual("李四", getTextFieldValue(window, 0)));
 
-    var o = { "数量" : [ 10 ] };
+    var o = [ { "数量" : [ 10 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     storeTFindex = getEditSalesTFindex2("客户", "发货");
@@ -8738,14 +8731,14 @@ function test170682() {
 
     tapMenu("货品管理", "款号库存");
     query();
-    var keys = { "款号" : "3035", "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
+    keys = { "款号" : "3035", "门店" : "常青店" };
+    fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var kc1 = qr.data[0]["库存"];
 
-    var keys = { "款号" : "3035", "门店" : "仓库店" };
-    var fields = queryGoodsStockFields(keys);
+    keys = { "款号" : "3035", "门店" : "仓库店" };
+    fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var ck1 = qr.data[0]["库存"];
@@ -9477,7 +9470,7 @@ function test170713() {
     var ret = isEqual("未发货", a);
 
     tapFirstText();
-    var o = { "数量" : [ 3 ] };
+    var o = [ { "数量" : [ 3 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按订货开单");
@@ -9489,7 +9482,7 @@ function test170713() {
     var ret1 = isEqual("部分发货", b);
 
     tapFirstText();
-    var o = { "数量" : [ 8 ] };
+    o = [ { "数量" : [ 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();

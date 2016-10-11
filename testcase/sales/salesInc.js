@@ -891,6 +891,27 @@ function editChangeSalesBillOrder(o, ret) {
     editChangeSalesBillOrderPrice(d2, ret);
     editChangeSalesBillOrderDiscount(d3, ret);
     editChangeSalesBillOrderRemarks(d4, ret);
+    
+//    for (var i = 0, len = o.length; i < len; i++) {
+//        var d = o[i];
+//        var x = d[0];
+//        switch (x) {
+//        case "数量":
+//            editChangeSalesBillOrderNum(d1, ret);
+//            break;
+//        case "单价":
+//            editChangeSalesBillOrderPrice(d2, ret);
+//            break;
+//        case "折扣":
+//            editChangeSalesBillOrderDiscount(d3, ret);
+//            break;
+//        case "备注":
+//            editChangeSalesBillOrderRemarks(d4, ret);
+//            break;
+//        default:
+//            break;
+//        }
+//    }
 
     return ret;
 }

@@ -1825,7 +1825,7 @@ function test170072() {
 function test170074() {
     // 开启参数 开单保存开启退货数和上次购买数的比对验证,默认是开启的
     var qo, o, ret = true;
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1860,7 +1860,7 @@ function test170074() {
     var ret2 = isIn(alertMsg, "款号【" + r + "," + r, "均色,均码】退货数量高于拿货总数量，请核对");
     tapReturn();
 
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1870,7 +1870,7 @@ function test170074() {
 function test170075() {
     // 开启参数 开单保存开启退货数和上次购买数的比对验证,默认是开启的
     var qo, o, ret = true;
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -1890,7 +1890,7 @@ function test170075() {
     var ret2 = isAnd(isEqual(200, qr.data[0]["金额"]), isEqual("(6; -5)",
             qr.data[0]["备注"]));
 
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -2890,7 +2890,7 @@ function test170104_170105() {
     var a = qr.data[0]["日期"];
     var b = qr.data[0]["数量"];
     var c = qr.data[0]["单价"];
-    var z = qr.data[0]["折扣"];
+    // var z = qr.data[0]["折扣"];, isEqual("1", z)
     var k = qr.data[0]["款号"];
     var t = qr.data[0]["备注"];
     tapNaviLeftButton();
@@ -2899,7 +2899,7 @@ function test170104_170105() {
     ret = isAnd(ret, isEqual("4562", k), isEqual("mxbz", t), isIn(tip, t),
             isEqual(a1[0], "日期"), isAqualOptime(a1[1], getOpTime()), isEqual(
                     "数量: 2  价格: " + r + " 折扣: 1", num), isIn(a, getToday("")),
-            isEqual("2", b), isEqual(r, c), isEqual("1", z));
+            isEqual("2", b), isEqual(r, c));
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
@@ -3054,7 +3054,7 @@ function test170116_170660() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    var o = { "数量" : [ 8 ] };
+    var o = [ { "数量" : [ 8 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     tapStaticText(window, "刷卡");
@@ -3066,8 +3066,8 @@ function test170116_170660() {
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
+    keys = { "款号" : r, "门店" : "常青店" };
+    fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var k = qr.data[0]["库存"];
@@ -3076,7 +3076,7 @@ function test170116_170660() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    o = { "数量" : [ 11 ] };
+    o = [ { "数量" : [ 11 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     tapStaticText(window, "刷卡");
@@ -3370,7 +3370,7 @@ function test170121_170523() {
     ret2 = isAnd(ret2, isEqual(Number(stock) - 7, qr1.data[0]["库存"]), isEqual(
             Number(stock1) - 8, qr1.data[1]["库存"]));
 
-    var o = { "数量" : [ 9 ] };
+    var o = [ { "数量" : [ 9 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按批次查");
@@ -5136,7 +5136,7 @@ function test170200() {
 }
 function test170209() {
     var qo, o, ret = true;
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5163,7 +5163,7 @@ function test170209() {
             "在对应款号的颜色组中不存在"));
     tapReturn();
 
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5172,7 +5172,7 @@ function test170209() {
 }
 function test170210() {
     var qo, o, ret = true;
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5210,7 +5210,7 @@ function test170210() {
     var ret1 = isIn(alertMsg, "操作提醒，该款累计拿货数量=0,本次退货=40, [3035,jkk]");
     tapReturn();
 
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5218,7 +5218,7 @@ function test170210() {
 }
 function test170211() {
     var qo, o, ret = true;
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5234,7 +5234,7 @@ function test170211() {
     var ret1 = isIn(alertMsg, "往来单位为空不允许有欠款或余额，请核对客户是否填写或支付是否正确");
     tapReturn();
 
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5538,11 +5538,11 @@ function test170216() {
 }
 function test170226() {
     var qo, o, ret = true;
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5589,7 +5589,7 @@ function test170226() {
             isAqualOptime(getOpTime(), opt));
     tapReturn();
 
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5598,7 +5598,7 @@ function test170226() {
 }
 function test170227() {
     var qo, o, ret = true;
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5626,7 +5626,7 @@ function test170227() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-    var o = { "数量" : [ -6 ] };
+    var o = [ { "数量" : [ -6 ] } ];
     editChangeSalesBillOrderNum(o, "no");
 
     saveAndAlertOk();
@@ -5654,7 +5654,7 @@ function test170227() {
             isEqual(-6, sl), isAqualOptime(getOpTime(), opt));
     tapReturn();
 
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5667,7 +5667,7 @@ function test170228() {
     o = { "新值" : "1", "数值" : [ "退货和销售价格允许为零", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "退货数" };
+    qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5675,7 +5675,7 @@ function test170228() {
     o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "未拿货款号做退货" };
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
     o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -5982,13 +5982,8 @@ function test170245() {
 
     runAndAlert("test210020Clear", OK);
     tapPrompt();
-
-    if (ipadVer >= "7.21") {
-        var cond = "isIn(alertMsg, '清理刷新结束')";
-    } else {
-        var cond = "isIn(alertMsg, '清理和刷新成功')";
-    }
-    waitUntil(cond, 300);
+    var cond = "isIn(alertMsg, '清理')";
+    waitUntil(cond, 30);
 
     tapMenu("销售开单", "开  单+");
     var ret = true;
@@ -5996,7 +5991,7 @@ function test170245() {
     var cells = getTableViewCells(getScrollView(-1), f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        debugElementTree(cell);
+        // debugElementTree(cell);
         var v = cell.name();
         if (isIn(v, "Adidas")) {
             ret = false;
@@ -6016,7 +6011,7 @@ function test170245() {
     var cells = getTableViewCells(getScrollView(-1), f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        debugElementTree(cell);
+        // debugElementTree(cell);
         var v = cell.name();
         if (isIn(v, "Adidas")) {
             ret1 = true;
@@ -9148,7 +9143,7 @@ function test170522() {
     var mc = qr.data[0]["名称"];
     var sl = qr.data[0]["数量"];
     var dj = qr.data[0]["单价"];
-    var zk = qr.data[0]["折扣"];
+    // var zk = qr.data[0]["折扣"];isEqual(zk, "1"),
     var xj = qr.data[0]["小计"];
     var bz = qr.data[0]["备注"];
 
@@ -9176,7 +9171,7 @@ function test170522() {
     var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isIn(rq,
             getToday("")), isEqual(dy, "仓管员"), isEqual(kh, "4562"), isEqual(ys,
             "均色"), isEqual(cm, "均码"), isEqual(mc, "Story"), isEqual(sl, "2"),
-            isEqual(zk, "1"), isEqual(bz, "mxbz"));
+            isEqual(bz, "mxbz"));
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
@@ -10220,6 +10215,7 @@ function test170559_170697() {
     tapFirstText();
     var logistindex = getEditSalesTFindex2("客户", "代收");
     var ret1 = isEqual(money, getTextFieldValue(window, logistindex));
+
     var tipindex = getEditSalesTFindex2("客户", "备");
     var f10 = new TField("备注", TF, tipindex, "zdbz", -1, 0);
     var fields = [ f10 ];
@@ -11435,12 +11431,12 @@ function test170674_170675() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    var qr = getQR();
+    var qr = getQR(window,getScrollView(),"序号",20);
     var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(5500, qr.data[0]["代收"]));
 
-    tapFirstText();
+    tapFirstText(getScrollView(),"序号",20);
     qr = getQRDet();
     staffTFindex = getEditSalesTFindex2("客户", "店员");
     logistTFindex = getEditSalesTFindex2("客户", "代收");
@@ -12044,7 +12040,7 @@ function test170723() {
     var ret2 = isAnd(isEqual(Number(kc) - 10, qr1.data[0]["库存"]), isEqual("",
             qr1.data[1]["库存"]), isEqual("", qr1.data[2]["库存"]));
 
-    var o = { "数量" : [ 12 ] };
+    var o = [ { "数量" : [ 12 ] } ];
     editChangeSalesBillOrderNum(o);
 
     tapMenu("销售开单", "按批次查");
