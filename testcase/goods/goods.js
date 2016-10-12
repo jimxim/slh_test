@@ -1983,7 +1983,7 @@ function editGoodsSettings(label, keys) {
     default:
         break;
     }
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
     saveAndAlertOk();
 }
 
@@ -4251,8 +4251,7 @@ function ts100161() {
     ret = isAnd(ret, checkQResult("颜色", "花色"));
 
     tapMenu("统计分析", "汇总表", "颜色销售表");
-    fields = statisticAnalysColorFields(keys);
-    query(fields);
+    conditionQuery(keys);
     ret = isAnd(ret, checkQResult("颜色", "花色"));
     return ret;
 }
@@ -4265,22 +4264,27 @@ function ts100163() {
     var r = "cG" + getTimestamp(6);
     keys = { "名称" : r };
     editGoodsSettings("颜色组", keys);
+    delay(1.5);// 自定义弹窗“操作成功”,导致无法点击返回
     tapReturn();// 防止出错什么的未返回
 
-    var fields = goodsSizeidsFields(keys);
-    query(fields);
+    tapMenu("货品管理", "getMenu_More", "所有颜色组");
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, qr.data[0]["组名称"] == r);
 
     if (colorSize == "yes") {
+        tapRefresh();// 刷新
         tapMenu2("新增货品+");
+        tapButton(getScrollView(-1), 2);// 颜色-选择
         var view = getPop(window, -1);
         ret = isAnd(ret, isHasStaticTexts(view, [ r ]));
         tapButton(view, CLOSE);
         tapReturn();
         tapMenu("货品管理", "getMenu_More", "所有颜色组");
+        tapButton(window, QUERY);
     }
-    tapFirstText();
+
+    tapLine();
     tapButtonAndAlert(STOP, OK);
     tapReturn();// 防止未自动返回
     return ret;
@@ -4668,10 +4672,11 @@ function ts100176() {
     return ret;
 }
 
-// 第三层详细页面总数验证 若需要数据多则查询kh000有超长订单数据
+// 第三层详细页面总数和滑动验证
 function ts100178() {
     tapMenu("货品管理", "当前库存");
-    query();
+    var keys = { "款号" : "kh000" };// 超长订单用，一般有16条数据
+    conditionQuery(keys);
     tapLine();
     delay();// 等待界面载入
     tapLine(0, getScrollView(-1, 0), "批次");
@@ -4689,16 +4694,26 @@ function ts100178() {
     }
 
     texts = getStaticTexts(getScrollView(-1));// 详细信息，不包含标题行
-    var y = 0, yPre = 0, num = 0;
-    for (var i = 0; i < texts.length; i++) {
+    var y = 0, yPre = 0, num = 0, i, arr = [];
+    for (i = 0; i < texts.length; i++) {
         y = getY(texts[i]);
         if (y > 0 && y != yPre) {
             num++;
         }
         yPre = y;
+        arr.push(texts[i].value());
     }
+    var y1 = getY(texts[i - 1]);// 滑动前
+    target.flickFromTo({ x : 470.00, y : 549.00 }, { x : 470.00, y : 225.00 });// dragFromToForDuration
+
+    var arr2 = [];
+    texts = getStaticTexts(getScrollView(-1));
+    for (i = 0; i < texts.length; i++) {
+        arr2.push(texts[i].value());
+    }
+    var y2 = getY(texts[i - 1]);// 滑动后
     tapNaviClose();
-    return isEqual(total, num);
+    return isAnd(isEqual(total, num), isEqualObject(arr, arr2), y1 > y2);// 验证滑动前后数据不变，Y轴变小
 }
 
 function ts100179Pre() {
@@ -5162,7 +5177,7 @@ function ts100195() {
     var length = sub(qr.data.length, 1);
     tapLine(getRandomNum(0, length));
     saveAndAlertOk();
-    delay();
+    delay();// element 
     tapLine(getRandomNum(0, length));
     tapReturn();
     delay();
@@ -5197,10 +5212,20 @@ function ts100197() {
     var c = view.cells();
     var ret = isAnd(c.length == 1, isIn(c[0].name(), "3035"), isEqual(window
             .navigationBars()[0].name(), "类别\(登山服\)"));// 查询结果唯一
+    keys = { "类别" : "鞋" };
+    conditionQuery(keys, false);
+    c = view.cells();
+    ret = isAnd(ret, c.length == 0);// 验证类别查询条件是否失效
+
     keys = { "季节" : "春季" };// 季节与类别无法同时查询
     conditionQuery(keys, false);
+    c = view.cells();
     ret = isAnd(ret, c.length == 1, isIn(c[0].name(), "3035"), isEqual(window
             .navigationBars()[0].name(), "季节\(春季\)"));// 查询结果唯一
+    keys = { "季节" : "夏季" };
+    conditionQuery(keys, false);
+    c = view.cells();
+    ret = isAnd(ret, c.length == 0);// 验证季节查询条件是否失效
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(

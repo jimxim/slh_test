@@ -234,6 +234,9 @@ function testSalesCodeFields() {
 }
 
 function salesCodeFields(keys, show) {
+    if (isUndefined(show)) {
+        show = false;
+    }
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
     return getTFields("salesCodeField", keys, show, idx);
 }
@@ -286,7 +289,7 @@ function salesCodeField(key, show, idx) {
         f = new TField("颜色", TF, 7, "花色", -1, 0);// 实际为TF_AC
         break;
     case "颜色2":
-        f = new TField("颜色", BTN_SC, idx + 1, "常青店", -1, 0);
+        f = new TField("颜色", BTN_SC, idx + 1, "花色", -1, 0);
         if (show) {
             f.type = TF;
             f.index = 7;
