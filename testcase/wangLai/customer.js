@@ -1437,7 +1437,7 @@ function test110022Verify3() {
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
-    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    var qr = getQRVerify_x(getScrollView(-1, 0), "门店");
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["未结金额"] < 0) {
             var index = i;
@@ -1488,7 +1488,7 @@ function test110022Verify4() {
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
-    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    var qr = getQRVerify_x(getScrollView(-1, 0), "门店");
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "中洲店" && qr.data[i]["未结金额"] > 0) {
             var index = i;
@@ -2727,7 +2727,7 @@ function test110041_1Field(o, n) {
     editSalesBillDetNoColorSize(o);
 
     tapButton(window, "核销");
-    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 10);
+    var qr = getQRVerify_x(getScrollView(-1, 0), "门店");
     var index = 4;// 起始下标为4
     for (var i = 0; i < qr.curPageTotal; i++) {
         // && qr.data[i]["备注"] == "异地核销"

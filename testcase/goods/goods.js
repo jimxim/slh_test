@@ -4587,7 +4587,7 @@ function ts100174() {
     keys = { "客户" : "vell" };
     editSalesBillCustomer(keys);
     tapButton(window, "核销");
-    var qr = getQRVerify(getScrollView(-1, 0), "门店");
+    var qr = getQRVerify_x(getScrollView(-1, 0), "门店");
     var exp = { "总额" : 9000, "未结金额" : -9000 };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
     tapNaviClose();
@@ -4627,7 +4627,7 @@ function ts100175() {
     keys = { "客户" : "vell" };
     editSalesBillCustomer(keys);
     tapButton(window, "核销");
-    var qr = getQRVerify(getScrollView(-1, 0), "门店");
+    var qr = getQRVerify_x(getScrollView(-1, 0), "门店");
     var exp = { "总额" : 2000, "未结金额" : -2000 };
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));// 生成一个欠款核销单
     tapNaviClose();
@@ -5177,7 +5177,7 @@ function ts100195() {
     var length = sub(qr.data.length, 1);
     tapLine(getRandomNum(0, length));
     saveAndAlertOk();
-    delay();// element 
+    delay();// element
     tapLine(getRandomNum(0, length));
     tapReturn();
     delay();

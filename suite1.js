@@ -27,15 +27,13 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    tapButton(window,QUERY);
-// var texts = getStaticTexts(getScrollView());
-// var qrTitle = getQResultTitle(texts,"上架天数");
-    var qr=getQR();
-    debugObject(qr.data[0]);
-// localClean();
-// var qr=getQRDet();
-// debugObject(qr.data[0]);
+// tapButton(window,QUERY);
 
+    query();
+    tapFirstText();
+ var texts = getStaticTexts(getScrollView(-1, 0));
+ var qr = getQRverify(texts, "名称", 5);
+debugObject(qr.data[0]);
  // debugObject(gCache,"gCache");parent
  return true;
 }

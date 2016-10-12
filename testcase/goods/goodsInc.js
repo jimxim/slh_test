@@ -519,7 +519,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
  * @param firstTitle
  * @returns {QResult}
  */
-function getQRVerify(view, firstTitle) {
+function getQRVerify_x(view, firstTitle) {
     var i = 0, y = 0, yPre = 0, titles = {};
     var texts = getStaticTexts(view);
     for (; i < texts.length; i++) {
@@ -631,33 +631,31 @@ function getSalesBillDetTfObject(idx) {
     // debugElementTree(window);
     // 标题以#开头，表示序号，以操作结束
     var texts = getStaticTexts(window);
-    var qrTitle1 = getSalesBillDetTitle1Index(texts);
+    var qrTitle1 = getSalesBillDetTitle1Index(texts);// 标题起始下标
 
     var ret = {};
     var tfNum = 0, ignore = 0;
     var y = 0, yPre = 0;
 
     var view1 = getScrollView(idx);
-    var a1 = view1.elements();
-    for (var i = 0; i < a1.length; i++) {
-        var e = a1[i];
+    var tf = getTextFields(view1);// 根据明细输入框确定有效标题
+    for (var i = 0; i < tf.length; i++) {
+        var t = tf[i];
         yPre = y;
-        y = e.rect().origin.y;
-        // 新增的图片列中的图片目前找到的最大偏移量为5
+        y = getY(t);
         if (yPre > 0 && !isAqualNum(y, yPre, 10)) {
-            break;// 第二行跳出
+            break;// Y轴可能存在偏移为5， 第二行跳出
         }
-        if (isUIATextField(e)) {
-            tfNum++;
-            var width = e.rect().size.width;
-            // 隐藏的TF，宽度为0,设置为5保险~
-            if (width < 5) {
-                ignore++;
-            } else {
-                var j = qrTitle1.index + tfNum - ignore;
-                var title = texts[j].name();
-                ret[title] = tfNum - 1;
-            }
+
+        tfNum++;
+        var width = t.rect().size.width;
+        // 隐藏的TF，宽度为0,设置为5保险~
+        if (width < 5) {
+            ignore++;//
+        } else {
+            var j = qrTitle1.index + tfNum - ignore;
+            var title = texts[j].value();// name
+            ret[title] = tfNum - 1;
         }
     }
     ret["明细输入框个数"] = tfNum;
@@ -677,7 +675,7 @@ function getSalesBillDetTitle1Index(texts) {
     var arr = [ "选", "图", "#" ];
     for (var i = 0; i < arr.length; i++) {
         var title1 = arr[i];
-        qrTitle1 = getQResultTitle(texts, title1);
+        qrTitle1 = getQResultTitle(texts, title1, "#");
         if (qrTitle1.index > 0) {
             break;
         }
