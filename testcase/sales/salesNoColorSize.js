@@ -1,7 +1,7 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-    // run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-    // run("【销售开单－开单】客户新增按钮", "test170043");
+     run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+     run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
@@ -11684,7 +11684,7 @@ function test170693() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt" };
+    json = { "客户" : "lt" };
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
@@ -11710,7 +11710,7 @@ function test170693() {
     tapButtonAndAlert("作 废", OK);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt" };
+    json = { "客户" : "lt" };
     editSalesBillCustomer(json);
     tapButton(window, "核销");
     tapButton(getScrollView(-1, 0), "兑换记录");

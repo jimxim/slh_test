@@ -707,6 +707,7 @@ function test170013() {
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
+    tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var qr = getQRDet();
@@ -1592,7 +1593,7 @@ function test170260() {
     qr = getQRDet();
     var ret = isAnd(isEqual("预付款", a),
             isEqual(add(batch, 1), qr2.data[0]["批次"]), isEqual("全部发货", a1),
-            isEqual("", a2), isAqualOptime1(opt, a3), isEqual(cash, je),
+            isEqual("", a2), isAqualOptime(opt, a3), isEqual(cash, je),
             isEqual(20, sl), isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(20,
                     qr.data[0]["数量"]));
     tapReturn();

@@ -387,37 +387,6 @@ function compareQR4(title, type, order, dataView, firstTitle, lastTitle) {
 }
 
 /**
- * approximately equals 近似等于,操作时间,格式 mm-dd hh:mm
- * 
- * @param expected
- * @param actual
- * @param allow 允许偏差分钟数，默认1
- */
-function isAqualOptime1(expected, actual, allow) {
-    var a1 = expected.split(" ");
-    var a2 = actual.split(" ");
-
-    if (a1[0] == a2[0]) {
-        allow = Number(add(Math.floor(Math.random() * 10), 1));
-        var ret = a1[0] == a2[0];
-    }
-
-    else {
-        allow = Number(add(Math.floor(Math.random() * 10), 59));
-        var ret = a1[0] != a2[0];
-    }
-
-    if (isDefined(a1[1]) && isDefined(a2[1])) {
-        var a11 = a1[1].split(":");
-        var a21 = a2[1].split(":");
-        ret = isAnd(ret, isAqualNum(a11[1], a21[1], allow));
-    }
-    logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
-            + ",ret=" + ret);
-    return ret;
-}
-
-/**
  * 获取更多按钮 7.10之前版本不统一
  * 
  * @returns
@@ -891,27 +860,27 @@ function editChangeSalesBillOrder(o, ret) {
     editChangeSalesBillOrderPrice(d2, ret);
     editChangeSalesBillOrderDiscount(d3, ret);
     editChangeSalesBillOrderRemarks(d4, ret);
-    
-//    for (var i = 0, len = o.length; i < len; i++) {
-//        var d = o[i];
-//        var x = d[0];
-//        switch (x) {
-//        case "数量":
-//            editChangeSalesBillOrderNum(d1, ret);
-//            break;
-//        case "单价":
-//            editChangeSalesBillOrderPrice(d2, ret);
-//            break;
-//        case "折扣":
-//            editChangeSalesBillOrderDiscount(d3, ret);
-//            break;
-//        case "备注":
-//            editChangeSalesBillOrderRemarks(d4, ret);
-//            break;
-//        default:
-//            break;
-//        }
-//    }
+
+    // for (var i = 0, len = o.length; i < len; i++) {
+    // var d = o[i];
+    // var x = d[0];
+    // switch (x) {
+    // case "数量":
+    // editChangeSalesBillOrderNum(d1, ret);
+    // break;
+    // case "单价":
+    // editChangeSalesBillOrderPrice(d2, ret);
+    // break;
+    // case "折扣":
+    // editChangeSalesBillOrderDiscount(d3, ret);
+    // break;
+    // case "备注":
+    // editChangeSalesBillOrderRemarks(d4, ret);
+    // break;
+    // default:
+    // break;
+    // }
+    // }
 
     return ret;
 }
