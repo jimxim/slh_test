@@ -251,7 +251,7 @@ function testGoods002() {
     if (colorSize == "yes") {
         run("【货品管理-当前库存】检查累计销", "ts100159");
         run("【货品管理-货品查询】输入过多颜色尺码时", "ts100160");
-        run("【货品管理-新增货品】新增配码的货品", "ts100097");
+        // run("【货品管理-新增货品】新增配码的货品", "ts100097");//配码功能去除
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入所有项信息", "ts100029");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+不自动生成款号：输入必填项+品牌+吊牌价", "ts100031");
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
@@ -297,7 +297,7 @@ function testGoods002() {
     run("【货品管理-基本设置】检查基本尺码组新增", "ts100059SizeID");
     run("【货品管理-基本设置】检查基本品牌新增", "ts100059Brand");
     run("【货品管理-基本设置】检查基本属性新增提示框验证", "ts100059Msg");
-    run("【货品管理-基础设置-所有尺码】新增/显示配码", "ts100095_96");
+    // run("【货品管理-基础设置-所有尺码】新增/显示配码", "ts100095_96");//配码功能去除
     run("【货品管理-基本设置-所有颜色】选择已停用的颜色类别的颜色保存", "ts100194");
     run("【货品管理-基础设置】新增品牌特殊符号校验", "test100111");
     run("【货品管理-基本设置-新增品牌折扣】品牌折扣三位小数", "ts100121");
@@ -1823,22 +1823,21 @@ function test100092Field(keys) {
 }
 
 function test100054_1() {
-    var r = "g" + getTimestamp(8);
-    var ret = false;
+    var r = "g" + getRandomStr(6);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r };
     addGoods(keys);
 
     tapMenu2("货品查询");
     var qKeys = { "款号名称" : keys["款号"] };
-    var qFields = queryGoodsFields(qKeys);
-    query(qFields);
+    conditionQuery(qKeys)
     tapChoose(getScrollView(), [ 0 ]);
     tapMenu2("批量操作");
     delay();
     runAndAlert("test10_tapBatchStop", OK);
     var ret = !isInAlertMsgs("操作失败");
     alertMsgs = [];
+    tapNaviClose();// 放出错，
 
     // 新增相同款号, 名称不同
     tapMenu2("新增货品+");
@@ -5175,9 +5174,13 @@ function ts100195() {
     query();
     var qr = getQR();
     var length = sub(qr.data.length, 1);
-    tapLine(getRandomNum(0, length));
-    saveAndAlertOk();
+    var r = getRandomNum(0, length)
+    tapLine(r);
+    saveAndAlertOk();// 保存后操作日期更变
+    var optime = getOpTime();
+    qr.data[r]["操作日期"] = optime;
     delay();// element
+    tapButton(window, QUERY);// 刷新界面，防止无法点击
     tapLine(getRandomNum(0, length));
     tapReturn();
     delay();

@@ -43,3 +43,10 @@ function getDetTS100006(code, close) {
 
     return data;
 }
+
+function getQRScroll(){
+    var texts=getStaticTexts(window);//固定的视图部分
+    var texts1=getStaticTexts(getScrollView(0));//滑动部分的标题
+    var texts2=getStaticTexts(getScrollView(1));//滑动部分的
+    
+}

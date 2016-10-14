@@ -18,22 +18,17 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
  
-// run("测试用例", "ts100195");
- run("测试用例", "onlyTest");//
+ run("测试用例", "test120029_1");
+// run("测试用例", "onlyTest");//
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // tapButton(window,QUERY);
 
-    query();
-    tapFirstText();
- var texts = getStaticTexts(getScrollView(-1, 0));
- var qr = getQRverify(texts, "名称", 5);
-debugObject(qr.data[0]);
  // debugObject(gCache,"gCache");parent
  return true;
 }

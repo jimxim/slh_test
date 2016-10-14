@@ -159,14 +159,14 @@ function statisticAnalysisSynthesisField(key, show) {
  * 获取综合收支表指定内容的金额,需要已经在综合汇总界面
  * @param name 银行
  * @param type 收入or支出
- * @param value 单据类型
+ * @param value 单据类型 eg 销售单
  * @returns {Number}
  */
 function getSACountsQR(name, type, value) {
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
-    tapNaviLeftButton();
+    var qr = getQRverify(texts, "名称");
+    tapNaviClose();
 
     var arr = qr.data;
     var length = arr.length - 1// 最后一行为合计
@@ -181,7 +181,7 @@ function getSACountsQR(name, type, value) {
                 ret = Number(arr[i]["金额"]);
             }
             if (type == "支出") {
-                ret = Number(arr[i]["金额2"]);
+                ret = Number(arr[i]["金额2"]);// 600,
             }
             break;
         }

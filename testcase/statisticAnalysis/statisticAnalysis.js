@@ -169,7 +169,7 @@ function test190013() {
     query(fields);
     tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称", 5);
+    qr = getQRverify(texts, "名称");
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["名称"] == "银") {
             break;
@@ -213,7 +213,7 @@ function test190013() {
     tapButton(window, QUERY);
     tapFirstText();
     texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称", 5);
+    qr = getQRverify(texts, "名称");
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["名称"] == "银") {
             break;
@@ -318,7 +318,7 @@ function test190017() {
     query(fields);
     tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称", 5);
+    qr = getQRverify(texts, "名称");
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["名称"] == "银") {
             break;
@@ -361,7 +361,7 @@ function test190017() {
     tapButton(window, QUERY);// 刷新界面，防止getQR出错
     tapFirstText();
     texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称", 5);
+    qr = getQRverify(texts, "名称");
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["名称"] == "银") {
             break;
@@ -1075,7 +1075,7 @@ function test190104() {
     query(fields);
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
+    var qr = getQRverify(texts, "名称");
     var s1 = test190037_1Field(qr, "支出", "销售退款");
     var p1 = test190037_1Field(qr, "收入", "采购退款");
     tapNaviClose();
@@ -1116,7 +1116,7 @@ function test190104() {
     tapButton(window, QUERY);
     tapLine();
     texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称", 5);
+    qr = getQRverify(texts, "名称");
     var s2 = test190037_1Field(qr, "支出", "销售退款");
     var p2 = test190037_1Field(qr, "收入", "采购退款");
     tapNaviClose();
@@ -1452,7 +1452,7 @@ function getDataFor190037() {
     query(fields);
     tapFirstText();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
+    var qr = getQRverify(texts, "名称");
     tapNaviLeftButton();
     var arr = qr.data;
     return arr;
@@ -1468,7 +1468,7 @@ function test190037() {
 
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
+    var qr = getQRverify(texts, "名称");
     var s1 = test190037_1Field(qr, "收入", "销售单");
     tapNaviLeftButton();
 
@@ -1481,7 +1481,7 @@ function test190037() {
     tapButton(window, QUERY);
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称", 5);
+    var qr = getQRverify(texts, "名称");
     var s2 = test190037_1Field(qr, "收入", "销售单");
     var a = getStaticTextValue(getScrollView(-1, 0), -3);// 收入合计
     var b = getStaticTextValue(getScrollView(-1, 0), -2);// 支出合计
