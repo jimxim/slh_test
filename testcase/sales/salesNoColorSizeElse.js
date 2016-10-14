@@ -102,7 +102,7 @@ function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】开单日期检查", "test170272");
     run("【销售开单-按批次查】打印作废单", "test170025");
     run("【销售开单-按批次查】销售单作废（付款方式为代收）", "test170023");//
-    run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
+    // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");//
 }
 function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】修改界面检查明细内容输入区域", "test170419");
@@ -9918,15 +9918,16 @@ function test170725() {
     keys = { "门店" : "常青店", "类型" : "退货", "季节" : " " };
     fields = salesReturnFields(keys);
     query(fields);
-    var qr = getQR();
-    var ret = isEqual(0, qr.total);
+    var qr1 = getQR();
+    // var ret = isEqual(0, qr.total);" ret=" + ret +ret &&
 
     keys = [ "季节" ];
     fields = salesReturnFields(keys);
     changeTFieldValue(fields["季节"], "春季");
-    query(fields);
-    qr = getQR();
-    var ret1 = !isEqual(0, qr.total);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var ret1 = isAnd(!isEqual(0, qr.total), !isEqual(qr.total, qr1.total));
 
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "店员", "日期");
@@ -9934,8 +9935,8 @@ function test170725() {
             qr.data[0]["数量"]));
     tapNaviLeftButton();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(", ret1=" + ret1);
+    return ret1;
 }
 function test170726() {
     tapMenu("销售开单", "按汇总", "按金额汇总");

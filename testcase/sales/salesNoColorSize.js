@@ -1,7 +1,7 @@
 // Zhangy <15068165765 at 139.com>  10.23
 function testSalesNoColorSizeAll() {
-     run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
-     run("【销售开单－开单】客户新增按钮", "test170043");
+    run("【销售开单－开单】客户输入检查【字母】/客户输入检查【汉字】", "test170040_170041");
+    run("【销售开单－开单】客户新增按钮", "test170043");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247_1");
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
@@ -4666,15 +4666,14 @@ function test170178() {
     qr = getQRDet();
     var logistTFindex = getEditSalesTFindex2("客户", "代收");
     var staffTFindex = getEditSalesTFindex2("客户", "店员");
-    var ret1 = isAnd(isEqual("李响", getTextFieldValue(window, 0)), isEqual(
-            "005,开单员005", getTextFieldValue(window, staffTFindex)), isEqual(
-            money, getTextFieldValue(window, logistTFindex)), isEqual(
-            "3035,jkk", qr.data[0]["货品"]), isEqual(2, qr.data[0]["数量"]),
-            isEqual("8989,我们", qr.data[1]["货品"]), isEqual(5, qr.data[1]["数量"]),
-            isEqual("k200,范范", qr.data[2]["货品"]), isEqual(4, qr.data[2]["数量"]),
-            isEqual("李响", kh), isEqual("开单员005", dy), isEqual(11, sl), isEqual(
-                    "0", xj), isEqual(money, ds), isAqualOptime(getOpTime(),
-                    opt, 2));
+    var ret1 = isAnd(isEqual("李响", getTextFieldValue(window, 0)), isIn(
+            getTextFieldValue(window, staffTFindex), "开单员005"), isEqual(money,
+            getTextFieldValue(window, logistTFindex)), isEqual("3035,jkk",
+            qr.data[0]["货品"]), isEqual(2, qr.data[0]["数量"]), isEqual("8989,我们",
+            qr.data[1]["货品"]), isEqual(5, qr.data[1]["数量"]), isEqual("k200,范范",
+            qr.data[2]["货品"]), isEqual(4, qr.data[2]["数量"]), isEqual("李响", kh),
+            isEqual("开单员005", dy), isEqual(11, sl), isEqual("0", xj), isEqual(
+                    money, ds), isAqualOptime(getOpTime(), opt, 2));
     tapButton(window, RETURN);
 
     tapMenu("销售开单", "开  单+");
@@ -11431,12 +11430,12 @@ function test170674_170675() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    var qr = getQR(window,getScrollView(),"序号",20);
+    var qr = getQR(window, getScrollView(), "序号", 20);
     var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(5500, qr.data[0]["代收"]));
 
-    tapFirstText(getScrollView(),"序号",20);
+    tapFirstText(getScrollView(), "序号", 20);
     qr = getQRDet();
     staffTFindex = getEditSalesTFindex2("客户", "店员");
     logistTFindex = getEditSalesTFindex2("客户", "代收");
