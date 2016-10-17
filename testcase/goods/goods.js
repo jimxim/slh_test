@@ -2145,7 +2145,7 @@ function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
     var qr = getQR();
     var ret = isEqual(keys["名称"], qr.data[0]["名称"]);
 
-    tapFirstText();
+    tapLine();
     tapButtonAndAlert(STOP, OK);
     tapReturn();
 
@@ -3790,12 +3790,10 @@ function ts100106() {
     return ret;
 }
 
-// 当天第二次跑可能出错 eg款号已存在
 function ts100108() {
     tapMenu("货品管理", "货品查询");
-    var qKeys = { "款号名称" : "g" };
-    var qFields = queryGoodsFields(qKeys);
-    query(qFields);
+    var qKeys = { "款号名称" : "g" };// 默认是否停用为否
+    conditionQuery(qKeys);
     var qr = getQR();
     var name = qr.data[0]["名称"];
 
@@ -3806,20 +3804,21 @@ function ts100108() {
     var ret = !isInAlertMsgs("操作失败");
 
     var cond = "window.buttons()['当前库存'].isVisible()";
-    waitUntil(cond);
+    waitUntil(cond);// 可能会卡界面
 
+    tapMenu2("货品查询");
     qKeys = { "是否停用" : "是" };
-    qFields = queryGoodsFields(qKeys);
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    conditionQuery(qKeys, false);
     qr = getQR();
-    ret = isAnd(ret, isIn(qr.data[0]["名称"], name));
+    ret = isAnd(ret, isIn(qr.data[0]["名称"], name)
+            || isIn(qr.data[1]["名称"], name) || isIn(qr.data[2]["名称"], name));// 顺序会变化
 
     tapChoose(getScrollView(), [ 0, 1, 2 ]);
     tapMenu2("批量操作");
     delay();
     runAndAlert("test10_tapBatchStop", OK);
     ret = isAnd(ret, !isInAlertMsgs("操作失败"));
+    tapNaviClose();
     return ret;
 }
 

@@ -618,20 +618,16 @@ function test110014() {
     var r = "a" + getTimestamp(6);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : "小王", "手机" : r };
-    var ret = test110014Field(keys, "相同名称已存在");
+    var ret = test110014Field(keys, "已存在[小王]名称的[客户]");
 
     keys = { "名称" : "vell" };
-    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
+    ret = isAnd(ret, test110014Field(keys, "已存在[vell]名称的[厂商]"));
 
-    var msg = "相同手机号已存在";
-    if (ipadVer < 7.21) {
-        msg = "手机号码重复";
-    }
     keys = { "名称" : r, "手机" : "13922211121" };// 客户手机
-    ret = isAnd(ret, test110014Field(keys, msg));// 
+    ret = isAnd(ret, test110014Field(keys, "已存在[13922211121]号码的[客户]"));// 
 
     keys = { "手机" : "13122221112" };// 厂商手机
-    ret = isAnd(ret, test110014Field(keys, msg));
+    ret = isAnd(ret, test110014Field(keys, "已存在[13122221112]号码的[客户]"));
 
     delay();
     tapReturn();
@@ -855,30 +851,17 @@ function test110018() {
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("名称");
-    ret = ret && sortByTitle("账户余额");// ,IS_SUM
+    ret = ret && sortByTitle("账户余额");// 暂不支持排序,IS_SUM
 
     var keys = { "客户名称" : "上级客户1", "客户" : "sjkh1" };
-    var fields = queryCustomerSuperFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
 
     query();
+    var arr = [ "账户余额" ];
     ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
-            getTextFieldValue(window, 1)));
-
-    var sum = 0;
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum += Number(qr.data[i]["账户余额"]);
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    ret = isAnd(ret, isEqual(qr.counts["账户余额"], sum));
-
+            getTextFieldValue(window, 1)), isEqualCounts(arr));
     return ret;
 }
 
@@ -3236,7 +3219,7 @@ function test110054() {
 function ts110056() {
     tapMenu("往来管理", "客户查询");
     query();
-    tapFirstText();
+    tapLine();
     var keys = { "客户代码" : "&" };
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -3244,33 +3227,27 @@ function ts110056() {
     tapPrompt();
     var ret = isIn(alertMsg, "包含特殊字符");
 
-    keys = { "客户代码" : "'" };
-    fields = editCustomerFields(keys);
+    fields["客户代码"].value = "'";
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "包含特殊字符"));
 
-    keys = { "客户代码" : "xw001" };
-    fields = editCustomerFields(keys);
+    fields["客户代码"].value = "xw001";
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, "修改保存");
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "相同客户编码已存在"));
 
-    var r = "客户代码abc" + getTimestamp(6);
-    keys = { "客户代码" : r };
-    fields = editCustomerFields(keys);
+    var r = "客户代码abc" + getRandomStr(6);
+    fields["客户代码"].value = r;
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);// 保存后会自动返回客户查询界面
     tapReturn();
 
-    var cond = "window.buttons()['客户查询'].isVisible()";
-    waitUntil(cond, 5);
-
     tapMenu2("客户查询");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     var index = fields["客户代码"].index;
     ret = isAnd(ret, isEqual(r, getTextFieldValue(getScrollView(), index)));
     tapReturn();
@@ -4094,7 +4071,7 @@ function ts110099() {
     var o = { "onlytest" : "yes" };
     addCustomer(keys, o);
 
-    var index = editCustomerField("生日").index;
+    var index = editCustomerFields([ "生日" ])["生日"].index;
     var tf = getScrollView().textFields()[index].textFields()[0];
     tap(tf);
     delay(0.5);
@@ -4430,88 +4407,88 @@ function ts110110() {
 }
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
-    var f = new TField("客户", TF_AC, 0, "yun", -1);
+    var f = new TField("客户", TF_AC, 0, "yun", -1, 0);
     var ret = testCheckCustomerDropDownListField(f);
-    f = new TField("店员", TF_AC, 5, "y", -1);
+    f = new TField("店员", TF_AC, 5, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
-    f = new TField("客户", TF_AC, 1, "yun", -1);
+    f = new TField("客户", TF_AC, 1, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
-    f = new TField("店员", TF_AC, 3, "y", -1);
+    f = new TField("店员", TF_AC, 3, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "客户账款", "按上级单位");
-    f = new TField("客户", TF_AC, 1, "y", -1);
+    f = new TField("客户", TF_AC, 1, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "客户账款", "客户总账");
-    f = new TField("客户", TF_AC, 1, "yun", -1);
+    f = new TField("客户", TF_AC, 1, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "客户活跃度");
-    f = new TField("客户", TF_AC, 0, "yun", -1);
+    f = new TField("客户", TF_AC, 0, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "积分查询");
-    f = new TField("客户", TF_AC, 1, "yun", -1);
+    f = new TField("客户", TF_AC, 1, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "厂商查询");
-    f = new TField("厂商", TF_AC, 0, "yu", -1);
+    f = new TField("厂商", TF_AC, 0, "yu", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
-    f = new TField("厂商", TF_AC, 0, "yu", -1);
+    f = new TField("厂商", TF_AC, 0, "yu", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
-    f = new TField("厂商", TF_AC, 0, "yu", -1);
+    f = new TField("厂商", TF_AC, 0, "yu", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "getMenu_More", "物流商查询");
-    f = new TField("店员", TF_AC, 1, "y", -1);
+    f = new TField("店员", TF_AC, 1, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "getMenu_More", "客户回访");
-    f = new TField("客户", TF_AC, 2, "yun", -1);
+    f = new TField("客户", TF_AC, 2, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
-    f = new TField("店员", TF_AC, 5, "y", -1);
+    f = new TField("店员", TF_AC, 5, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f));
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "新增客户+");
     var view = getScrollView();
     var fields = editCustomerFields([ "店员", "上级客户" ]);
-    f = new TField("店员", TF_AC, fields["店员"].index, "y", -1);
+    f = new TField("店员", TF_AC, fields["店员"].index, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
-    f = new TField("客户", TF_AC, fields["上级客户"].index, "yun", -1);
+    f = new TField("客户", TF_AC, fields["上级客户"].index, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
     view = getScrollView();
-    f = new TField("店员", TF_AC, 1, "y", -1);
+    f = new TField("店员", TF_AC, 1, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
     tapMenu("往来管理", "getMenu_More", "新增回访+");
     view = getScrollView();
-    f = new TField("客户", TF_AC, 1, "yun", -1);
+    f = new TField("客户", TF_AC, 1, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     delay();// 有时候下拉框会挡住客户的输入框
-    f = new TField("店员", TF_AC, 2, "y", -1);
+    f = new TField("店员", TF_AC, 2, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
@@ -4555,7 +4532,6 @@ function testCheckCustomerDropDownListField(f, view) {
             }
         }
     }
-
     switch (f.label) {
     case "客户":
         ret = isAnd(r1, !r2, !r3, !r4, !r5);
@@ -4572,13 +4548,15 @@ function testCheckCustomerDropDownListField(f, view) {
     case "品牌":
         ret = isAnd(!r1, !r2, !r3, !r4, r5);
         break;
-
     default:
         logWarn("未知key＝" + key);
+        break;
     }
 
     delay();
-    tapKeyboardHide();
+    tapTableViewCell(f);// 随便选一个,去掉下拉框，防止无法点击后续内容
+    // tapKeyboardHide();//清除时会自动去键盘
+    // tapButton(window, CLEAR);//
     return ret;
 }
 

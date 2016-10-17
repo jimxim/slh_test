@@ -2387,12 +2387,13 @@ function getUnique(arr) {
 function isRepetitione(arr) {
     var hash = {};
     for ( var i in arr) {
-        if (hash[arr[i]])
+        if (hash[arr[i]]) {
+            logDebug(arr[i]);
             return true;
+        }
         hash[arr[i]] = true;
     }
     return false;
-
 }
 
 function isPositiveNumber(n) {

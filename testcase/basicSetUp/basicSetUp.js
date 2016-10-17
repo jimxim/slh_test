@@ -180,16 +180,14 @@ function editCustomerBasicSetUp(keys) {
 
     delay();
     if (isIn(alertMsg, "必须从列表中选择")) {
+        tapPrompt();
         tapMenu2("新增客户+");
-        addCustomer(keys);
     } else {
-        tapFirstText();
-        fields = editCustomerFields(keys);
-        setTFieldsValue(getScrollView(), fields);
-        tapButton(window, EDIT_SAVE);
+        tapLine();
     }
-
-    query();
+    addCustomer(keys);
+    tapMenu2("客户查询");
+    query(fields);
     var qr = getQR();
     return isEqual(keys["名称"], qr.data[0]["名称"]);
 }
@@ -613,7 +611,7 @@ function setGoods001() {
         "Vip价格" : "140", "产品折扣" : "1", "季节" : "春季", "类别" : "登山服",
         "厂商" : "Vell", "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0",
         "经办人" : "000" };
-    return editGoodsBasicSetUp(keys);//, "2015-10-13"
+    return editGoodsBasicSetUp(keys);// , "2015-10-13"
 }
 
 // "上架日期" : "2014-03-14",
@@ -622,7 +620,7 @@ function setGoods002() {
         "进货价" : "100", "零批价" : "200", "打包价" : "180", "大客户价" : "160",
         "Vip价格" : "140", "产品折扣" : "0.9", "季节" : "春季", "类别" : "鞋", "厂商" : "Rt",
         "计量单位" : "件", "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys);//, "2014-03-14"
+    return editGoodsBasicSetUp(keys);// , "2014-03-14"
 }
 
 // "上架日期" : "2015-10-13",
@@ -631,7 +629,7 @@ function setGoods003() {
         "进货价" : "200", "零批价" : "300", "打包价" : "300", "大客户价" : "0",
         "Vip价格" : "0", "产品折扣" : "1", "季节" : "", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys);//, "2015-10-13"
+    return editGoodsBasicSetUp(keys);// , "2015-10-13"
 }
 // "上架日期" : "2015-10-13",
 function setGoods004() {
@@ -639,7 +637,7 @@ function setGoods004() {
         "零批价" : "200", "打包价" : "170", "大客户价" : "0", "Vip价格" : "0",
         "产品折扣" : "1", "季节" : "春季", "类别" : "登山服", "厂商" : "Rt", "计量单位" : "件",
         "仓位" : "默认", "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys);//, "2015-10-13"
+    return editGoodsBasicSetUp(keys);// , "2015-10-13"
 }
 // "上架日期" : "2015-03-17",
 function setGoods005() {
@@ -647,7 +645,7 @@ function setGoods005() {
         "零批价" : "417", "打包价" : "416", "大客户价" : "416", "Vip价格" : "416",
         "产品折扣" : "0.985", "季节" : "春季", "厂商" : "Rt", "计量单位" : "件", "仓位" : "默认",
         "最小库存" : "0", "最大库存" : "0" };
-    return editGoodsBasicSetUp(keys);//, "2015-03-17"
+    return editGoodsBasicSetUp(keys);// , "2015-03-17"
 }
 function setGoods006() {
     var keys = { "款号" : "plczcs1", "名称" : "批量操作测试1", "品牌" : "1010pp",
