@@ -3062,7 +3062,7 @@ function testCs170177() {
     delay();
     var qr = getQRtable1();
 
-    debugQResult(qr);
+//    debugQResult(qr);
     loadHangBill(0);
 
     var a = getTextFieldValue(getScrollView(), 0);

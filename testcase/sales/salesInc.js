@@ -125,9 +125,7 @@ function test170637Prepare() {
  * 销售开单-开单-核销界面排序验证
  */
 function test170064getQR() {
-    var titleTexts = getStaticTexts(window);
-    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 0,
-            titleTexts);
+    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店");
     return qr;
 }
 function test170064Field(title, isNum, pageInfoView, dataView, firstTitle,

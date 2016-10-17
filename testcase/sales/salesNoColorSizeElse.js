@@ -163,7 +163,8 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单－更多-代收收款查询】进入代收收款内容明细/检查代收收款金额", "test170300_170410");
     run("【销售开单】按挂单--正常功能检查", "test170303");
     run("【销售开单】按挂单--挂单作废", "test170304");
-    run("【销售开单】挂单界面打印时提示检查", "test170400");
+    // run("【销售开单】挂单界面打印时提示检查", "test170400");//打印按钮灰化，无法点击
+    // run("【销售开单】挂单界面打印时提示检查", "test170400_2");//打印按钮灰化，无法点击
     run("【销售开单】均色均码模式下，开单输入款号之后的款号框不能修改", "test170406");
     run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单-核销】物流单核销-特殊货品", "test170569");
@@ -2405,7 +2406,6 @@ function test170275() {
 
     var sum1 = 0, sum2 = 0, sum3 = 0;
     var qr = getQR();
-    debugQResult(qr);
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -4461,13 +4461,7 @@ function test170331() {
     var a = qr.data[0]["名称"];
 
     tapFirstText();
-    var fd;
-    if (ipadVer >= "7.21") {
-        fd = "分店";
-    } else {
-        fd = "客户分店";
-    }
-    var qr1 = getQR2(getScrollView(-1, 0), "批次", fd);
+    var qr1 = getQR2(getScrollView(-1, 0), "批次", "分店");
     var b = qr1.data[0]["批次"];
     var b1 = qr1.data[0]["客户"];
     var b2 = qr1.data[0]["金额"];
@@ -5967,13 +5961,20 @@ function test170400() {
     var fields = salesQueryGuaDanFields(keys);
     query(fields);
 
+    // tapButtonAndAlert(PRINT, "打印(客户用)");
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -1);
+    // var ret1 = (isIn(alertMsg1, "无法打印"));
+    // tapReturn();
     tapFirstText();
-    tapButtonAndAlert(PRINT, "打印(客户用)");
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = (isIn(alertMsg1, "无法打印"));
+    var ret1 = false;
+    var bt = app.mainWindow().buttons()[PRINT];
+    if (isUIAElementNil(bt) || !bt.isVisible()) {
+        ret1 = true;
+    }
     tapReturn();
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170400_2() {
@@ -6009,9 +6010,11 @@ function test170406() {
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
-    // debugArray(alertMsgs);
-    // var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret = (isIn(alertMsg, "货品编码和ID不匹配，请从下拉列表选择并不要手工修改，如要修改，点删除按钮"));
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret = isIn(alertMsg1, "货品编码和ID不匹配，请从下拉列表选择并不要手工修改，如要修改，点删除按钮")
+            || isIn(alertMsg2, "货品编码和ID不匹配，请从下拉列表选择并不要手工修改，如要修改，点删除按钮");
 
     return ret;
 }
@@ -8586,14 +8589,15 @@ function test170645() {
 
     tapFirstText();
     var dateTFindex = getEditSalesTFindex2("客户", "日期");
-    var ret = !isEqual(getToday(), getTextFieldValue(window, dateTFindex));
+    var ret = isEqual(getToday(), getTextFieldValue(window, dateTFindex));// 日期默认当天
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    ret = isAnd(ret, isIn(alertMsg1, "保存成功"));
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    ret = isAnd(ret, isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功"));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -8624,7 +8628,7 @@ function test170645() {
     tapButton(getScrollView(-1), 1);
     tapButton(getScrollView(-1), 2);
     dateTFindex = getEditSalesTFindex2("客户", "日期");
-    var ret2 = !isEqual(getToday(), getTextFieldValue(window, dateTFindex));
+    var ret2 = isEqual(getToday(), getTextFieldValue(window, dateTFindex));// 日期默认当天
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -9599,87 +9603,69 @@ function test170718() {
 }
 function test170720() {
     // 销售开单、销售订货、采购订货、采购入库
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "店员" : "004",
-        "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
-    editSalesBillNoColorSize(json);
-
     tapMenu("销售开单", "按批次查");
-    query();
+    var keys = { "日期从" : getDay(-1), "作废挂单" : "正常" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
     tapFirstText();
     tapMenu("销售开单", "getMenu_More", "查看修改日志");
     var texts = getStaticTexts(getPopOrView());
-    var index = getArrayIndexIn(texts, "核销批次");
-    var date = getStaticTextValue(getPopOrView(), index + 2);
-    var opt = getStaticTextValue(getPopOrView(), index + 3);
-    var staff = getStaticTextValue(getPopOrView(), index + 4);
-    var staff1 = getStaticTextValue(getPopOrView(), index + 5);
     tapButton(getPop(), OK);
     tapReturn();
-    var ret = isAnd(!isAqualOptime("作废时间", date), !isAqualOptime(getOpTime(),
-            opt, 2), !isEqual("作废人", staff), !isEqual("总经理", staff1));
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : 8 }, { "货品" : "k200", "数量" : 2 } ] };
-    editSalesBillNoColorSize(json);
+    var v1 = "作废人", v2 = "作废时间", ret = true, arr = [];
+    for (var i = 0; i < texts.length; i++) {
+        var v = texts[i].name();
+        arr.push(v);
+    }
 
     tapMenu("销售订货", "按批次查");
-    query();
+    var keys = { "日期从" : getDay(-10), "发货状态" : "未发货" };
+    var fields = salesOrderQueryBatchFields(keys);
+    query(fields);
     tapFirstText();
     tapMenu("销售订货", "getMenu_More", "查看修改日志");
     texts = getStaticTexts(getPopOrView());
-    index = getArrayIndexIn(texts, "核销批次");
-    date = getStaticTextValue(getPopOrView(), index + 2);
-    opt = getStaticTextValue(getPopOrView(), index + 3);
-    staff = getStaticTextValue(getPopOrView(), index + 4);
-    staff1 = getStaticTextValue(getPopOrView(), index + 5);
     tapButton(getPop(), OK);
     tapReturn();
-    var ret1 = isAnd(!isAqualOptime("作废时间", date), !isAqualOptime(getOpTime(),
-            opt, 2), !isEqual("作废人", staff), !isEqual("总经理", staff1));
-
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
-    editSalesBillNoColorSize(json);
+    for (var i = 0; i < texts.length; i++) {
+        v = texts[i].name();
+        arr.push(v);
+    }
 
     tapMenu("采购订货", "按批次查");
-    query();
+    var keys = { "日期从" : getDay(-10), "发货状态" : "未入库" };
+    var fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
     tapFirstText();
     tapMenu("采购订货", "getMenu_More", "查看修改日志");
     texts = getStaticTexts(getPopOrView());
-    index = getArrayIndexIn(texts, "核销批次");
-    date = getStaticTextValue(getPopOrView(), index + 2);
-    opt = getStaticTextValue(getPopOrView(), index + 3);
-    staff = getStaticTextValue(getPopOrView(), index + 4);
-    staff1 = getStaticTextValue(getPopOrView(), index + 5);
     tapButton(getPop(), OK);
     tapReturn();
-    var ret2 = isAnd(!isAqualOptime("作废时间", date), !isAqualOptime(getOpTime(),
-            opt, 2), !isEqual("作废人", staff), !isEqual("总经理", staff1));
-
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
-    editSalesBillNoColorSize(json);
+    for (var i = 0; i < texts.length; i++) {
+        v = texts[i].name();
+        arr.push(v);
+    }
 
     tapMenu("采购入库", "按批次查");
-    query();
+    var keys = { "日期从" : getDay(-10), "作废挂单" : "正常" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
     tapFirstText();
     tapMenu("采购入库", "getMenu_More", "查看修改日志");
     texts = getStaticTexts(getPopOrView());
-    index = getArrayIndexIn(texts, "核销批次");
-    date = getStaticTextValue(getPopOrView(), index + 2);
-    opt = getStaticTextValue(getPopOrView(), index + 3);
-    staff = getStaticTextValue(getPopOrView(), index + 4);
-    staff1 = getStaticTextValue(getPopOrView(), index + 5);
     tapButton(getPop(), OK);
     tapReturn();
-    var ret3 = isAnd(!isAqualOptime("作废时间", date), !isAqualOptime(getOpTime(),
-            opt, 2), !isEqual("作废人", staff), !isEqual("总经理", staff1));
+    for (var i = 0; i < texts.length; i++) {
+        v = texts[i].name();
+        arr.push(v);
+    }
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+    if (isIn(arr, v1) || isIn(arr, v2)) {
+        ret = false;
+    }
+
+    logDebug(" ret=" + ret);
+    return ret;
 }
 function test170721() {
     // 销售开单、销售订货、采购订货、采购入库
