@@ -125,17 +125,21 @@ function test170637Prepare() {
  * 销售开单-开单-核销界面排序验证
  */
 function test170064getQR() {
-    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店");
+    var titleTexts = getStaticTexts(window);
+    var qr = getQRverify(getStaticTexts(getScrollView(-1, 0)), "门店", 0,
+            titleTexts);
     return qr;
 }
 function test170064Field(title, isNum, pageInfoView, dataView, firstTitle,
         titleTotal) {
     var t1 = getTimestamp();
-    tapTitle(getScrollView(-1, 0), title); // 点击一下后是升序
+    tapTitle(getScrollView(-1, 0), title, "门店"); // 点击一下后是升序
+    delay(2);
     var ret1 = test170064Field1(title, isNum, "asc", pageInfoView, dataView,
             firstTitle, titleTotal);
 
-    tapTitle(getScrollView(-1, 0), title); // 再点击一下后是降序
+    tapTitle(getScrollView(-1, 0), title, "门店"); // 再点击一下后是降序
+    delay(2);
     var ret2 = test170064Field1(title, isNum, "desc", pageInfoView, dataView,
             firstTitle, titleTotal);
 

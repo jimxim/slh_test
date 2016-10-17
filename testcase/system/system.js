@@ -1978,7 +1978,7 @@ function test210055() {
     tapPrompt();
     var ret = isIn(alertMsg, "填入的值必须是数字");
 
-    tapFirstText(getScrollView(), "3", 4);
+    tapFirstText(getScrollView(), "3");
     var f = new TField("数值", TF, 2, ip);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
@@ -1987,7 +1987,7 @@ function test210055() {
     var ret1 = isEqual(ip, qr.data[3]["数值"]);
 
     tapMenu("系统设置", "打印机");
-    tapFirstText(getScrollView(), "3", 4);
+    tapFirstText(getScrollView(), "3");
     tapButton(getScrollView(), "本 机");
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapButtonAndAlert(SAVE, OK);
@@ -1996,7 +1996,7 @@ function test210055() {
     qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
     ret = isAnd(ret, isEqual("127.0.0.1", qr.data[3]["数值"]));
 
-    tapFirstText(getScrollView(), "3", 4);
+    tapFirstText(getScrollView(), "3");
     var ret3 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
@@ -2086,11 +2086,13 @@ function test210061() {
 function test210062() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
-    tapMenu3("设置本地参数为默认");
 
-    var cond = "isIn(alertMsg, '操作成功')";
-    waitUntil(cond, 50);
-    var ret = isIn(alertMsg, "操作成功");
+    var ret = false;
+    var bt = app.mainWindow().popover().buttons()["设置本地参数为默认"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret = true;
+    }
+    window.popover().dismiss();
 
     return ret;
 }

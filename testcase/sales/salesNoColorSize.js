@@ -5018,7 +5018,8 @@ function test170189() {
     tapButton(getScrollView(-1, 0), "兑换记录");
     var texts = getStaticTexts(getScrollView(-1));
     var titleTexts = getStaticTexts(window);
-    var qr = getQRverify(texts, TITLE_SEQ, 7, 0, titleTexts);
+    var qr = getQRverify(texts, TITLE_SEQ, 0, titleTexts);
+    debugQResult(qr);
     var a = qr.data[0]["兑换积分"];
     var a1 = qr.data[0]["兑换金额"];
     var a2 = qr.data[0]["日期"];
@@ -11435,7 +11436,7 @@ function test170674_170675() {
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(5500, qr.data[0]["代收"]));
 
-    tapFirstText(getScrollView(), "序号", 20);
+    tapFirstText(getScrollView(), "序号");
     qr = getQRDet();
     staffTFindex = getEditSalesTFindex2("客户", "店员");
     logistTFindex = getEditSalesTFindex2("客户", "代收");

@@ -852,7 +852,7 @@ function test170019() {
             isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
 
     // tapMenu("统计分析", "综合汇总");
-    // tapFirstText(getScrollView(-1), "序号", 20);
+    // tapFirstText(getScrollView(-1), "序号");
     // texts = getStaticTexts(getScrollView(-1, 0));
     // qr = getQRverify(texts, "名称", 5);
     //
@@ -4473,7 +4473,7 @@ function test170331() {
     var b2 = qr1.data[0]["金额"];
     var b3 = qr1.data[0]["操作日期"];
 
-    tapFirstText(getScrollView(-1, 0), "批次", 7);
+    tapFirstText(getScrollView(-1, 0), "批次");
     var texts = getStaticTexts(getScrollView(-1, 0));
     var index = getArrayIndexIn(texts, "批次号");
     var batch = getStaticTextValue(getScrollView(-1, 0), index);
@@ -4539,13 +4539,13 @@ function test170332_170337() {
     var customer = getStaticTextValue(getScrollView(-1, 0), index);
     var r = getQR2(getScrollView(-1, 0), "批次", "操作日期");
 
-    var titleTotal;
-    if (ipadVer >= "7.23") {
-        titleTotal = 10;
-    } else {
-        titleTotal = 9;
-    }
-    tapFirstText(getScrollView(-1, 0), "批次", titleTotal);
+    // var titleTotal;
+    // if (ipadVer >= "7.23") {
+    // titleTotal = 10;
+    // } else {
+    // titleTotal = 9;
+    // }
+    tapFirstText(getScrollView(-1, 0), "批次");
     var texts = getStaticTexts(window);
     var index = getArrayIndexIn(texts, "批次");
     var batch = getStaticTextValue(window, index);
@@ -5352,7 +5352,7 @@ function test170366() {
 
     tapMenu("销售开单", "按挂单");
     query();
-    tapFirstText(getScrollView(-1), "序号", 20);
+    tapFirstText(getScrollView(-1), "序号");
     logistindex = getEditSalesTFindex2("客户", "代收");
     var ret1 = isAnd(isEqual(500, getTextFieldValue(window, logistindex)));
     saveAndAlertOk();
