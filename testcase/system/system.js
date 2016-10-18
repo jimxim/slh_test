@@ -644,7 +644,13 @@ function test210028_210029() {
     return ret;
 }
 function test210030() {
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     var keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -660,7 +666,13 @@ function test210030() {
     tapButtonAndAlert("密码重置", OK);
     var ret = isIn(alertMsg, "密码会重置为000000");
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -669,7 +681,13 @@ function test210030() {
     var ret1 = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     var keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -678,6 +696,7 @@ function test210030() {
     var ret2 = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test210031() {
@@ -856,7 +875,13 @@ function test210034() {
     return ret;
 }
 function test210035() {
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     var keys = { "原密码" : "000000", "新密码" : "111", "密码确认" : "111" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -866,7 +891,13 @@ function test210035() {
     tapButton(window, CLOSE);
     delay();
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "000000", "新密码" : "", "密码确认" : "" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -875,7 +906,13 @@ function test210035() {
     var ret1 = isIn(alertMsg, "密码必须为6位");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "000001", "新密码" : "111111", "密码确认" : "111111" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -886,7 +923,13 @@ function test210035() {
     var ret2 = isIn(alertMsg1, "请确认原密码输入是否正确");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "000000", "新密码" : "111111", "密码确认" : "111112" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -897,7 +940,13 @@ function test210035() {
     var ret3 = isIn(alertMsg2, "两次输入的密码不同");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -906,7 +955,13 @@ function test210035() {
     var ret4 = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -920,26 +975,40 @@ function test210035() {
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test210036() {
-    tapMenu("系统设置", "改密码");
-    delay();
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     var keys = { "原密码" : "000000", "新密码" : "222222", "密码确认" : "222222" };
     var fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, OK);
     tapPrompt();
 
-    var ret = false;
-    if (isIn(alertMsg, "操作成功")) {
-        ret = true;
-    }
+    var ret = isIn(alertMsg, "操作成功");
     tapButton(window, CLOSE);
 
-    tapMenu("系统设置", "改密码");
+    if (ipadVer >= "7.25") {
+        tapMenu1("系统设置");
+        tapMenu2("密码设置");
+        tapMenu3("修改密码");
+    } else {
+        tapMenu("系统设置", "改密码");
+    }
     keys = { "原密码" : "222222", "新密码" : "000000", "密码确认" : "000000" };
     fields = editSystemPasswordFields(keys);
     setTFieldsValue(window, fields);
@@ -2075,10 +2144,16 @@ function test210061() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("紧急模式上传异常");
+    // tapButton(getScrollView(-1), "删除紧急模式数据");
+    // tapPrompt();
+    // var ret = isIn(alertMsg, "操作成功");
+    // tapNaviLeftButton();
 
-    tapButton(getScrollView(-1), "删除紧急模式数据");
-    tapPrompt();
-    var ret = isIn(alertMsg, "操作成功");
+    var ret = false;
+    var bt = getScrollView(-1).buttons()["删除紧急模式数据"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret = true;
+    }
     tapNaviLeftButton();
 
     return ret;

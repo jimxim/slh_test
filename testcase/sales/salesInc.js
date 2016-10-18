@@ -886,3 +886,36 @@ function editChangeSalesBillOrder(o, ret) {
 
     return ret;
 }
+/**
+ * 单据修改
+ * @param o
+ * @param ret
+ * @returns
+ */
+function editLogisticsVerifyDet(o) {
+    var bt = window.buttons()["查 询"];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
+
+    var qr = getQRtable1(window, 8, -2), batch;
+    if (isDefined(o["核销"])) {
+        var a1 = o["核销"];
+        for (var i = 0; i < a1.length; i++) {
+            batch = qr.data[i]["批次"];
+            getTableView(window, -2).cells().firstWithName(batch).tap();
+        }
+        tapNaviButton("完成");
+    }
+
+    if (isDefined(o["save"] && o["save"] == "yes")) {
+        tapButtonAndAlert(SAVE, OK);
+        tapPrompt();
+    }
+
+    if (isDefined(o["back"] && o["back"] == "yes")) {
+        tapKeyboardHide();
+        tapReturn();
+    }
+
+    return o;
+}

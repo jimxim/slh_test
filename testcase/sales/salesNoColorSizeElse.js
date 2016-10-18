@@ -3074,6 +3074,9 @@ function test170294_170609() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    var bt = window.buttons()["查 询"];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     var qr = getQRtable1(window, 8, -2);
     var len = qr.data.length;
     if (len == 0) {
@@ -3086,15 +3089,14 @@ function test170294_170609() {
         }
     }
 
-    var json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
+    var json = { "核销" : [ 0 ], "save" : "yes" };
+    editLogisticsVerifyDet(json);
 
     var keys = { "物流" : "yt" };
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    waitUntil(cond, 10);
     var qr1 = getQRtable1(window, 8, -2);
     var len1 = qr1.data.length;
 
@@ -3108,18 +3110,16 @@ function test170294_170609() {
         }
     }
 
-    json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
+    json = { "核销" : [ 0 ], "save" : "yes" };
+    editLogisticsVerifyDet(json);
 
     var keys = { "物流" : "ht" };
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    waitUntil(cond, 10);
     var qr2 = getQRtable1(window, 8, -2);
     var len2 = qr2.data.length;
-
     if (len2 == 0) {
         for (var i = 0; i <= 3; i++) {
             qr2 = getQRtable1(window, 8, -2);
@@ -3130,11 +3130,8 @@ function test170294_170609() {
         }
     }
 
-    json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
-    tapReturn();
+    json = { "核销" : [ 0 ], "save" : "yes", "back" : "yes" };
+    editLogisticsVerifyDet(json);
     var ret = isAnd(!isEqual(0, len), !isEqual(0, len1), !isEqual(0, len2));
 
     logDebug("ret=" + ret);
@@ -3245,29 +3242,31 @@ function test170300_170410() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+
+    var bt = window.buttons()["查 询"];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     var qr = getQRtable1(window, 8, -2);
     var money = qr.data[0]["代收金额"];
 
-    var json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var json = { "核销" : [ 0 ], "save" : "yes", "back" : "yes" };
+    editLogisticsVerifyDet(json);
 
     tapMenu("销售开单", "getMenu_More", "代收收款查询");
     query();
     qr = getQR();
-    var ret1 = isAnd(isEqual("汇通快递", qr.data[0]["物流商"]), isIn(getToday("yy"),
+    var ret = isAnd(isEqual("汇通快递", qr.data[0]["物流商"]), isIn(getToday("yy"),
             qr.data[0]["日期"]), isEqual("常青店", qr.data[0]["门店"]), isEqual(money,
             qr.data[0]["金额"]));
 
     tapFirstText();
-    ret1 = isAnd(ret1, isEqual(getToday(), getTextFieldValue(getScrollView(-1),
-            0)), isEqual("常青店", getTextFieldValue(getScrollView(-1), 1)),
-            isEqual(money, getTextFieldValue(getScrollView(-1), 2)));
+    var dataView = getScrollView(-1);
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(dataView, 0)),
+            isEqual("常青店", getTextFieldValue(dataView, 1)), isEqual(money,
+                    getTextFieldValue(dataView, 2)));
     tapButton(window, RETURN);
 
-    return ret1;
+    return ret;
 }
 function addHang() {
     tapMenu("销售开单", "开  单+");
@@ -6715,42 +6714,43 @@ function test170455_170456_170457_170458() {
             qr.data[0]["名称"]));
 
     tapFirstText();
-    delay();
-    var keys = { "客户" : "ls", "是否上货" : "是" };
-    var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
+    var dataView = getScrollView(-1, 0);
+    qr = getQR2(dataView, "名称", "是否上货");
+    var ret1 = isAnd(isEqual("", getTextFieldValue(dataView, 0)), isEqual("",
+            getTextFieldValue(dataView, 1)), isEqual(add(total, total1),
+            qr.total));
 
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
-    var ret1 = isAnd(isEqual("李四", qr.data[0]["名称"]), isEqual("是",
-            qr.data[0]["是否上货"]));
-
-    delay(2);
-    tapButton(getScrollView(-1, 0), CLEAR);
-    delay();
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
-    var ret2 = isAnd(isEqual("", getTextFieldValue(getScrollView(-1, 0), 0)),
-            isEqual("", getTextFieldValue(getScrollView(-1, 0), 1)), isEqual(
-                    add(total, total1), qr.total));
-
-    var keys = { "是否上货" : "否" };
-    var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
-
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
+    var key = [ "是否上货" ];
+    var fields = salesCodeDetailSupplyFields(key);
+    changeTFieldValue(fields["是否上货"], "否");
+    setTFieldsValue(dataView, fields);
+    tapButton(dataView, QUERY);
+    delay();// 点击查询和清除按钮很慢，需要延时1s
+    qr = getQR2(dataView, "名称", "是否上货");
     var ret3 = isAnd(isEqual(total1, qr.total));
 
-    var keys = { "是否上货" : "是" };
-    var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
-
+    changeTFieldValue(fields["是否上货"], "是");
+    setTFieldsValue(dataView, fields);
+    tapButton(dataView, QUERY);
+    delay();
+    qr = getQR2(dataView, "名称", "是否上货");
     var ret4 = isEqual(total, qr.total);
-    tapButton(getScrollView(-1, 0), CLEAR);
-    scrollPrevPageCheck2(getScrollView(-1, 0), "名称", "是否上货");
+
+    key = [ "客户" ];
+    fields = salesCodeDetailSupplyFields(key);
+    changeTFieldValue(fields["客户"], "ls");
+    setTFieldsValue(dataView, fields);
+    tapButton(dataView, QUERY);
+    delay();
+    qr = getQR2(dataView, "名称", "是否上货");
+    var ret2 = isAnd(isEqual("李四", qr.data[0]["名称"]), isEqual("是",
+            qr.data[0]["是否上货"]));
+
+    tapButton(dataView, CLEAR);
+    delay();
+    tapButton(dataView, QUERY);
+    delay();
+    var ret5 = scrollPrevPageCheck2(dataView, "名称", "是否上货");
     tapNaviLeftButton();
 
     tapMenu("往来管理", "客户查询");
@@ -6759,11 +6759,11 @@ function test170455_170456_170457_170458() {
     query(feilds);
     var qr = getQR();
     var num = qr.total;
-    ret4 = isAnd(ret4, isEqual(num, add(total, total1)));
+    var ret6 = isEqual(num, add(total, total1));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4);
-    return ret && ret1 && ret2 && ret3 && ret4;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170459() {
     var r = "anewkh" + getTimestamp(5);
@@ -6782,18 +6782,17 @@ function test170459() {
     var qr = getQR();
     var total = qr.data[0]["上货客户"];
     var total1 = qr.data[0]["未上货客户"];
-
     var ret = isAnd(isEqual("3035", qr.data[0]["款号"]), isEqual("jkk",
             qr.data[0]["名称"]));
 
     tapFirstText();
+    var dataView = getScrollView(-1, 0);
     var keys = { "客户" : r };
     var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
+    setTFieldsValue(dataView, fields);
 
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
-
+    tapButton(dataView, QUERY);
+    qr = getQR2(dataView, "名称", "是否上货");
     var ret1 = isAnd(isEqual(r, qr.data[0]["名称"]), isEqual("否",
             qr.data[0]["是否上货"]));
     tapNaviLeftButton();
@@ -6810,11 +6809,9 @@ function test170459() {
     tapFirstText();
     var keys = { "客户" : r };
     var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
-
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
-
+    setTFieldsValue(dataView, fields);
+    tapButton(dataView, QUERY);
+    qr = getQR2(dataView, "名称", "是否上货");
     ret1 = isAnd(ret1, isEqual(r, qr.data[0]["名称"]), isEqual("是",
             qr.data[0]["是否上货"]));
     tapNaviLeftButton();
@@ -6835,10 +6832,10 @@ function test170459() {
     tapFirstText();
     var keys = { "客户" : r };
     var fields = salesCodeDetailSupplyFields(keys);
-    setTFieldsValue(getScrollView(-1, 0), fields);
+    setTFieldsValue(dataView, fields);
 
-    tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "是否上货");
+    tapButton(dataView, QUERY);
+    qr = getQR2(dataView, "名称", "是否上货");
     ret1 = isAnd(ret1, isEqual(r, qr.data[0]["名称"]), isEqual("否",
             qr.data[0]["是否上货"]));
     tapNaviLeftButton();
@@ -8885,22 +8882,27 @@ function test170687() {
     var fields = [ f ];
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    delay(2);
+    var bt = window.buttons()["查 询"];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     var qr = getQRtable1(window, 8, -2);
 
     if (qr.data[0]["门店"] == "常青店") {
         var dataView = window.tableViews()[4].groups()["批次"];
         tapTitle(dataView, "门店");
-        delay();
     }
 
-    if (qr.data[0]["门店"] != "常青店") {
+    var bt = window.buttons()["查 询"];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
+    qr = getQRtable1(window, 8, -2);
+    var shop = qr.data[0]["门店"];
+    if (shop != "常青店") {
         var batch = qr.data[0]["批次"];
         var batch1 = qr.data[7]["批次"];
-        getTableView(window, -2).cells().firstWithName(batch).tap();
-        tapNaviButton("完成");
-        saveAndAlertOk();
-        tapReturn();
+        var json = { "核销" : [ 0 ], "save" : "yes", "back" : "yes" };
+        editLogisticsVerifyDet(json);
+        ret = isAnd(ret, ret = true);
     } else {
         tapNaviLeftButton();
         tapReturn();
@@ -9677,7 +9679,6 @@ function test170721() {
     tapMenu("销售订货", "按批次查");
     query();
     var qr = getQR();
-    var batch = qr.data[0]["批次"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
@@ -9697,14 +9698,12 @@ function test170721() {
             opt, 2), isEqual("作废人", staff), isEqual("总经理", staff1));
 
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "lt",
-        "明细" : [ { "货品" : "3035", "数量" : 8 }, { "货品" : "k200", "数量" : 2 } ] };
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : 9 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购订货", "按批次查");
     query();
     var qr = getQR();
-    var batch = qr.data[0]["批次"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
@@ -9724,14 +9723,13 @@ function test170721() {
             opt, 2), isEqual("作废人", staff), isEqual("总经理", staff1));
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "ls", "店员" : "004",
+    var json = { "客户" : "rt", "店员" : "004",
         "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "按批次查");
     query();
     var qr = getQR();
-    var batch = qr.data[0]["批次"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
@@ -9901,7 +9899,7 @@ function test170725() {
     delay(2);
 
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    keys = { "门店" : "常青店", "类型" : "退货", "季节" : " " };
+    keys = { "日期从" : getDay(-3), "门店" : "常青店", "类型" : "退货", "季节" : " " };
     fields = salesReturnFields(keys);
     query(fields);
     var qr1 = getQR();
@@ -9913,7 +9911,8 @@ function test170725() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     var qr = getQR();
-    var ret1 = isAnd(!isEqual(0, qr.total), !isEqual(qr.total, qr1.total));
+    var ret1 = isAnd(!isEqual(0, qr.total), !isEqual(qr.counts["数量"],
+            qr1.counts["数量"]));
 
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "店员", "日期");

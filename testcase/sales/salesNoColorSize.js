@@ -10024,7 +10024,7 @@ function test170556_170610() {
 
     tapMenu("销售开单", "开  单+");
     tapButton(window, "新增+");
-    var r1 = "anewkh" + getTimestamp(false, 6);
+    var r1 = "anewkh" + randomWord(false, 6);
     var json = { "名称" : r1 };
     var fields = editQuickAddCustomerFields(json);
     setTFieldsValue(getPopView(window, -1), fields);
@@ -11522,16 +11522,15 @@ function test170676() {
     tapMenu("销售开单", "getMenu_More", "所有挂单");
     delay();
     var qr = getQRtable1(getScrollView());
-
-    // ret = isAnd(ret, isEqual("常青店", qr.data[0]["门店"]),
-    // isEqual(getToday("yy"),
-    // qr.data[0]["日期"]), isEqual("李四", qr.data[0]["客户"]), isEqual("总经理",
-    // qr.data[0]["店员"]), isEqual(20, qr.data[0]["数量"]), isEqual(4800,
-    // qr.data[0]["金额"]), isEqual(0, qr.data[0]["现金"]), isEqual(0,
-    // qr.data[0]["刷卡"]), isEqual(0, qr.data[0]["汇款"]), isEqual(5000,
-    // qr.data[0]["代收"]), isEqual("", qr.data[0]["备注"]), isEqual("总经理",
-    // qr.data[0]["操作人"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"],
-    // 2));
+    debugQResult(qr);
+    var ret6 = isAnd(isEqual("常青店", qr.data[0]["门店"]), isEqual(getToday("yy"),
+            qr.data[0]["日期"]), isEqual("李四", qr.data[0]["客户"]), isEqual("总经理",
+            qr.data[0]["店员"]), isEqual(20, qr.data[0]["数量"]), isEqual(4800,
+            qr.data[0]["金额"]), isEqual(0, qr.data[0]["现金"]), isEqual(0,
+            qr.data[0]["刷卡"]), isEqual(0, qr.data[0]["汇款"]), isEqual(5000,
+            qr.data[0]["代收"]), isEqual("", qr.data[0]["备注"]), isEqual("总经理",
+            qr.data[0]["操作人"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"],
+            2));
 
     var table1 = getTableViews(getScrollView(-1))[0];
     var cells = table1.cells();
@@ -11540,10 +11539,10 @@ function test170676() {
     delay(2);
 
     qr = getQRDet();
-    var staffTFindex = getEditSalesTFindex2("客户", "店员");
+    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
     var logistTFindex = getEditSalesTFindex2("客户", "代收");
     ret = isAnd(ret,
-            isEqual("中洲店", getTextFieldValue(window, staffTFindex + 1)),
+            isEqual("中洲店", getTextFieldValue(window, cardTFindex - 2)),
             isEqual(5000, getTextFieldValue(window, logistTFindex)), isIn(
                     qr.data[0]["货品"], "3035"), isEqual(10, qr.data[0]["数量"]));
 
@@ -11576,12 +11575,12 @@ function test170676() {
             qr.data[0]["实收"]), isEqual(5000, qr.data[0]["代收"]));
 
     tapFirstText();
-    var ret4 = isAnd(isEqual("中洲店", getTextFieldValue(window, 6)), isEqual(
-            5000, getTextFieldValue(window, 9)), isIn(getTextFieldValue(
-            getScrollView(-1), 0), "3035"), isEqual(10, getTextFieldValue(
-            getScrollView(-1), 3)), isIn(
-            getTextFieldValue(getScrollView(-1), 8), "k300"), isEqual(10,
-            getTextFieldValue(getScrollView(-1), 11)));
+    qr = getQRDet();
+    var ret4 = isAnd(
+            isEqual("中洲店", getTextFieldValue(window, cardTFindex - 2)),
+            isEqual(5000, getTextFieldValue(window, logistTFindex)), isIn(
+                    qr.data[0]["货品"], "3035"), isEqual(10, qr.data[0]["数量"]),
+            isIn(qr.data[1]["货品"], "k300"), isEqual(10, qr.data[1]["数量"]));
 
     tapStaticText(window, "代收");
     ret = isAnd(ret, isEqual("天天物流", getTextFieldValue(window, 17)), isEqual(r,
@@ -11594,7 +11593,7 @@ function test170676() {
     var keys = { "物流商" : "天天物流", "运单号" : r };
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
     var b = qr.data[0]["代收金额"];
     var b1 = qr.data[0]["物流商"];
     var b2 = qr.data[0]["运单号"];
@@ -11691,7 +11690,7 @@ function test170693() {
     var index = getArrayIndexIn(titleTexts, "条");
     var value = getStaticTextValue(window, index);
     var len = value.replace(/[^0-9]/ig, "");
-    var qr = getQRverify(texts, "序号");
+    var qr = getQRverify(texts, "序号", 0, titleTexts);
     tapNaviLeftButton();
     tapNaviLeftButton();
     tapReturn();
