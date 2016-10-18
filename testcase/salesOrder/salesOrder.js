@@ -712,26 +712,27 @@ function ts160009() {
 }
 
 function test160011() {
-    return test160011Field("总经理", "销售订货");
+    var keys = { "日期从" : getDay(-30), "发货状态" : "未发货" };
+    return test160011Field("总经理", "销售订货", keys);
 }
 
 // 人员B 店长修改验证
 function test160011_1() {
-    return test160011Field("店长", "销售订货");
+    var keys = { "日期从" : getDay(-30), "发货状态" : "未发货" };
+    return test160011Field("店长", "销售订货", keys);
 }
 
 /**
- * 验证查看修改日志 需要按批次查第一个单据为正常单据
+ * 验证查看修改日志 需要为正常单据
  * @param staff 登陆角色
  * @param menu1
+ * @param keys 查询条件
  * @returns
  */
-function test160011Field(staff, menu1) {
+function test160011Field(staff, menu1, keys) {
     var line = 0;
     tapMenu(menu1, "按批次查");
-    var keys = { "日期从" : getDay(-30) };
-    var fields = salesOrderQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
 
     if (gMenu1 == "采购入库") {
         var qr = getQR();

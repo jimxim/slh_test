@@ -941,7 +941,7 @@ function ts130012() {
     tapMenu("采购订货", "新增订货+");
     // 检查右上角支付方式
     // 检查明细区域 单价和小计这两列内容
-    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];//应和实为模糊查询验证
+    var exp = [ "结余", "现金", "应", "实", "核销", "刷卡", "汇款" ];// 应和实为模糊查询验证
     var titles = getSalesBillDetTfObject();
     var ret = isAnd(isHasStaticTexts(window, exp), titles.hasOwnProperty("单价"),
             titles.hasOwnProperty("小计"));
@@ -1091,7 +1091,7 @@ function ts130016_1() {
     var qr = getQR();
     var total = qr.total;
 
-    tapFirstText();
+    tapLine();
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
@@ -1100,7 +1100,7 @@ function ts130016_1() {
     qr = getQR();
     var batch = qr.data[0]["批次"];
 
-    tapFirstText();
+    tapLine();
     runAndAlert("test130015EndBill", OK);
     tapReturn();
     var ret = isInAlertMsgs("订单终结成功");
@@ -1175,11 +1175,13 @@ function ts130024() {
 }
 
 function ts130025_1() {
-    return test160011Field("总经理", "采购订货");
+    var keys = { "日期从" : getDay(-30), "发货状态" : "未入库" };
+    return test160011Field("总经理", "采购订货", keys);
 }
 
 function ts130025_2() {
-    return test160011Field("店长", "采购订货");
+    var keys = { "日期从" : getDay(-30), "发货状态" : "未入库" };
+    return test160011Field("店长", "采购订货", keys);
 }
 
 function ts130026Prepare() {
@@ -1315,6 +1317,7 @@ function ts130040() {
     var ret = json["输入框值"]["店员"] == "";
 
     tapMenu2("按批次查");
+    tapButton(window, QUERY);// 刷新，防止元素无效
     tapLine();
     json = editSalesBillGetValue({});
     tapReturn();

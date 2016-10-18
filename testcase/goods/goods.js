@@ -2137,6 +2137,9 @@ function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
     saveAndAlertOk();
     tapReturn();
 
+    var cond = "window.buttons()['当前库存'].isVisible";// 防返回不彻底
+    waitUntil(cond, 10);
+    tapMenu1("货品管理");// 刷新界面用
     if (isDefined(qkeys)) {
         keys = qkeys;
     }
@@ -3710,6 +3713,10 @@ function setValue100090(r) {
     setTFieldsValue(window, [ f ]);
 }
 
+/**
+ * 库存调整起始下标，接上一级界面
+ * @returns {Number}
+ */
 function getIndex100090() {
     var index;
     if (ipadVer >= 7.01) {
@@ -4299,7 +4306,7 @@ function ts100164() {
     var keys = { "名称" : "杂色" };
     var fields = goodsSizeidsFields(keys);
     query(fields);
-    tapFirstText();
+    tapLine();
     keys = { "名称" : "蓝" };
     ret = isAnd(ret, test100111Field("颜色组", keys, "相同记录已存在"));
 
@@ -4313,7 +4320,7 @@ function ts100164() {
     var qr = getQR();
     ret = isAnd(ret, qr.data[0]["组名称"] == "杂色a");
 
-    tapFirstText();
+    tapLine();
     keys = { "名称" : "杂色" };
     editGoodsSettings("颜色组", keys);
 
@@ -4979,6 +4986,7 @@ function ts100189() {
     conditionQuery(keys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(10, qr.data[0]["库存"]));
+    query();//防止对后续用例造成影响
     return ret;
 }
 function ts100190() {

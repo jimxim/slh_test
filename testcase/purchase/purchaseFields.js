@@ -56,7 +56,8 @@ function purchaseQueryBatchField(key, show) {
         break;
     case "invalid":
     case "作废挂单":
-        f = new TField("作废挂单", TF_SC, 8, "正常");
+    case "作废状态":// 7.21后去除了挂单
+        f = new TField("作废状态", TF_SC, 8, "正常");
         break;
 
     default:

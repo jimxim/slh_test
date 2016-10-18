@@ -150,11 +150,9 @@ function setPurchase_type_1() {
 // 翻页_排序_汇总
 function ts120001_1() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : getDay(-15), "日期到" : getToday(), "门店" : "常青店",
-        "作废挂单" : "正常" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-    // 翻页
+    var keys = { "日期从" : getDay(-10), "日期到" : getToday(), "门店" : "常青店",
+        "作废状态" : "正常" };
+    conditionQuery(keys);
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次");
@@ -316,7 +314,7 @@ function test120003Field(json, s1, s2) {
 function ts120005() {
     if (colorSize == "no") {
         // 输入不存在的款号
-        var det = { "明细" : [ { "货品" : "zwlyttwj", "数量" : "10" } ] };
+        var det = { "明细" : [ { "货品" : "undefined", "数量" : "10" } ] };
 
         tapMenu("采购入库", "新增入库+");
         var jo = { "客户" : "vell", "onlytest" : "yes" };
@@ -361,7 +359,7 @@ function ts120005() {
         var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
         var fields = salesBillOrderFields(keys);
         query(fields);
-        tapFirstText();
+        tapLine();
         jo = { "按订货" : "yes", "onlytest" : "yes" };
         json2 = mixObject(jo, det);
         editSalesBill(json2, colorSize);
@@ -3323,7 +3321,8 @@ function ts120100() {
 }
 
 function ts120101() {
-    return test160011Field("总经理", "采购入库");
+    var keys = { "日期从" : getDay(-30), "作废状态" : "正常" };
+    return test160011Field("总经理", "采购入库", keys);
 }
 function ts120102() {
     tapMenu("采购入库", "新增入库+");

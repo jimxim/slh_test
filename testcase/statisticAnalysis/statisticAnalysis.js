@@ -162,31 +162,18 @@ function test190013() {
     var qr = getQR();
     var counts = Number(qr.counts["金额"]);
 
-    var a1 = 0, a2 = 0, i;
     tapMenu2("综合汇总");
     var keys = { "门店" : "常青店" };
     var fields = statisticAnalysisSynthesisFields(keys);
     query(fields);
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称");
-    for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["名称"] == "银") {
-            break;
-        }
-        if (qr.data[i]["收入"] == "订金") {
-            a1 = Number(qr.data[i]["金额"]);
-            break;
-        }
-    }
-    tapNaviLeftButton();
+    var a1 = getSACountsQR("现", "收入", "订金");
 
     var rm = getRandomNum(100, 1000, 2);
     var r = "备注" + getRandomStr(6);// 不输入备注会提示提交重复数据
     tapMenu2("新增收支");
     tapMenu3("新增收入");
     var json = { "账户" : "现", "收支备注" : r,
-        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };
+        "明细" : [ { "收入类别" : "订金", "金额" : rm } ] };// 有时输入变成浮点数
     editStatisticAnalysisIn(json);
 
     tapMenu2("收支表");
@@ -200,7 +187,7 @@ function test190013() {
     tapMenu2("收支汇总");
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isAqualNum(counts + rm, qr.counts["金额"], 0.001));
+    ret = isAnd(ret, isAqualNum(add(counts, rm), qr.counts["金额"], 0.001));
 
     tapTextByFirstWithName("订金");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
@@ -211,19 +198,7 @@ function test190013() {
 
     tapMenu2("综合汇总");
     tapButton(window, QUERY);
-    tapFirstText();
-    texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称");
-    for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["名称"] == "银") {
-            break;
-        }
-        if (qr.data[i]["收入"] == "订金") {
-            a2 = Number(qr.data[i]["金额"]);
-            break;
-        }
-    }
-    tapNaviLeftButton();
+    var a2 = getSACountsQR("现", "收入", "订金");
     var result = sub(a2, a1);
     ret = isAnd(ret, isAqualNum(rm, result, 0.001));
 
@@ -608,6 +583,7 @@ function test190009() {
 function test190094() {
     var a2, b2, i, j;
     var r = "备注" + "a" + getTimestamp(6);
+    var rm = getRandomNum(100, 1000, 2);
 
     tapMenu("统计分析", "收支汇总");
     var key = { "日期从" : getDay(-30) };
@@ -627,12 +603,11 @@ function test190094() {
 
     tapMenu("统计分析", "新增收支", "新增收入");
     var json = { "账户" : "银", "收支备注" : r,
-        "明细" : [ { "收入类别" : "业务回扣1", "金额" : 234.56 } ] };
+        "明细" : [ { "收入类别" : "业务回扣1", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
-
+    delay();// 可能还未返回就触发下一步
     tapMenu("统计分析", "新增收支", "新增支出");
-    json = { "账户" : "现", "收支备注" : r,
-        "明细" : [ { "收入类别" : "物损", "金额" : 234.56 } ] };
+    json = { "账户" : "现", "收支备注" : r, "明细" : [ { "收入类别" : "物损", "金额" : rm } ] };
     editStatisticAnalysisIn(json);
 
     tapMenu("统计分析", "收支汇总");
@@ -654,7 +629,7 @@ function test190094() {
             qr = getQR();
         }
     }
-    var ret = isAnd(isAqualNum(b1, sub(b2, 234.56), 0.001), isAqualNum(
+    var ret = isAnd(isAqualNum(b1, sub(b2, rm), 0.001), isAqualNum(
             qr.counts["金额"], sum1, 0.001));
 
     key = { "收支类别" : "支出" };
@@ -675,7 +650,7 @@ function test190094() {
             qr = getQR();
         }
     }
-    ret = isAnd(ret, isAqualNum(a1, sub(a2, 234.56), 0.001), isAqualNum(
+    ret = isAnd(ret, isAqualNum(a1, sub(a2, rm), 0.001), isAqualNum(
             qr.counts["金额"], -sum2, 0.001));// 支出的汇总为负数
 
     query();
@@ -1470,12 +1445,12 @@ function test190037() {
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称");
     var s1 = test190037_1Field(qr, "收入", "销售单");
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
         "现金" : "1000", "刷卡" : [ 400, "银" ], "汇款" : [ 600, "银" ] };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("统计分析", "综合汇总");
     tapButton(window, QUERY);
@@ -1498,7 +1473,7 @@ function test190037() {
     var expected = { "刷" : 400, "汇" : 600, "金额" : 1000 };
     var ret = isAnd(isEqual(a, sum1), isEqual(b, sum2), isEqual(c, sub(a, b)),
             isEqualObject(expected, subObject(s2, s1)));
-    tapNaviLeftButton();
+    tapNaviClose();
     return ret;
 }
 /**
@@ -2381,14 +2356,13 @@ function test190042() {
 
 function test190043() {
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "20" } ],
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
         "特殊货品" : { "抹零" : 15, "打包费" : 20 } };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("统计分析", Menu_Profit);
     query();
-
-    tapFirstText();
+    tapLine();
     var ret1, ret2, r1 = true, r2 = true;
     var qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -2397,7 +2371,6 @@ function test190043() {
                 if (qr.data[i]["名称"] == "打包费") {
                     ret1 = isAnd(isPositiveNumber(qr.data[i]["数量"]),
                             isPositiveNumber(qr.data[i]["单价"]),
-                            isPositiveNumber(qr.data[i]["折扣"]),
                             isPositiveNumber(qr.data[i]["销售额"]), isEqual(0,
                                     qr.data[i]["进货价"]), isEqual(0,
                                     qr.data[i]["成本额"]),
@@ -2409,7 +2382,6 @@ function test190043() {
                 if (qr.data[i]["名称"] == "抹零") {
                     ret2 = isAnd(isNegativeNumber(qr.data[i]["数量"]),
                             isPositiveNumber(qr.data[i]["单价"]),
-                            isPositiveNumber(qr.data[i]["折扣"]),
                             isNegativeNumber(qr.data[i]["销售额"]), isEqual(0,
                                     qr.data[i]["进货价"]), isEqual(0,
                                     qr.data[i]["成本额"]),
@@ -2426,7 +2398,7 @@ function test190043() {
             qr = getQR2(getScrollView(-1, 0), "款号", "利润额");
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     return isAnd(ret1, ret2);
 }

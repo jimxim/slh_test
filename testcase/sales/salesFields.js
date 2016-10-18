@@ -1253,7 +1253,7 @@ function salesBillOrderField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 4, "常青店");// TF_SC
+        f = new TField("门店", TF, 4, "常青店", -1,0);// 实际为TF_AC
         break;
     case "batch1":
     case "批次从":

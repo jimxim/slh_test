@@ -152,8 +152,9 @@ function ts140001() {
     var ret = false;
     if (qr.data.length > 0) {
         // 与门店调出对比
+        qr.data[0]["送货人"] = qr.data[0]["送货人"].substr(0, 3);
         ret = isEqualObject2(qr.data[0], outExp);
-        tapFirstText();
+        tapLine();
         var sIndata = getQRDet().data;
         tapButton(window, RETURN);
         ret = isAnd(ret, isEqualDyadicArray(expData, sIndata));

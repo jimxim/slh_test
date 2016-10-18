@@ -18,7 +18,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
  
- run("测试用例", "ts100117");
+ run("测试用例", "ts160171");
 // run("测试用例", "onlyTest");//
 
 }
@@ -27,9 +27,10 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-// tapButton(window,QUERY);
-
-    
+    tapMenu2("按订货开单");
+    var keys = {"门店" : "常青店" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
  // debugObject(gCache,"gCache");parent
  return true;
 }

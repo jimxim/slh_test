@@ -1703,7 +1703,6 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
             if (!qr.counts.hasOwnProperty(arr[i])) {
                 ret1 = false;
                 logDebug("缺少汇总值  " + arr[i]);
-
             }
         }
     }
