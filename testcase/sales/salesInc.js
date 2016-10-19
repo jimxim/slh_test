@@ -450,12 +450,17 @@ function editExchangeScore(r, r1, ret) {
         ret = "yes";
     }
     tapButton(getScrollView(-1, 0), ExchangeScore);
+    var bt = app.mainWindow().popover().buttons()[CLOSE];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
     var r, r1;
     var g0 = new TField("兑换积分*", TF, 0, r);
     var g1 = new TField("兑换金额*", TF, 1, r1);
     var fields = [ g0, g1 ];
     setTFieldsValue(getPopView(), fields);
     tapButton(getPop(), OK);
+    var cond = isUIAElementNil(bt) || !bt.isVisible();
+    waitUntil(cond, 5);
 
     tapSalesBillVerify_OK();
 
@@ -467,7 +472,7 @@ function editExchangeScore(r, r1, ret) {
     }
     delay();
 
-    logDebug(" r=" + r + ", r1=" + r1);
+    logDebug(" r=" + r + ", r1=" + r1 + " bt=" + bt);
     return r && r1;
 }
 function editExchangeScoreYes(r) {
@@ -889,7 +894,6 @@ function editChangeSalesBillOrder(o, ret) {
 /**
  * 单据修改
  * @param o
- * @param ret
  * @returns
  */
 function editLogisticsVerifyDet(o) {
@@ -918,4 +922,24 @@ function editLogisticsVerifyDet(o) {
     }
 
     return o;
+}
+/**
+ * 新增VIP客户,刷新客户用例需要，统一了较方便
+ * @param r
+ * @returns
+ */
+function editAddVipCustomer(r) {
+    if (isUndefined(r)) {
+        r = "anewkhVip" + randomWord(false, 5);
+    }
+    tapMenu("往来管理", "新增客户+");
+    delay();
+    var keys = { "名称" : r, "客户类别" : "VIP客户", "适用价格" : "Vip价格", "允许退货" : "是" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    return r;
 }
