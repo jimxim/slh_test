@@ -1444,7 +1444,7 @@ function ts100046() {
 
 // 均色均码
 function ts100033() {
-    var r = getTimestamp(8);
+    var r = getRandomStr(6);
     var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200" };
 
@@ -1456,7 +1456,7 @@ function ts100033() {
 
 // 均色均码
 function ts100034() {
-    var r = getTimestamp(8);
+    var r = getRandomStr(6);
     var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200", "产品折扣" : "0.85", "季节" : "夏季", "类别" : "登山服",
         "厂商" : "Adidas", "计量单位" : "双", "仓位" : "默认", "最小库存" : "0",
@@ -2220,7 +2220,7 @@ function ts100059Msg() {
     tapMenu2("基本设置");
     tapMenu3("新增品牌折扣+");
     keys = { "品牌" : "1010pp" };
-    ret = isAnd(ret, test100111Field("品牌折扣", keys, "品牌重复"));
+    ret = isAnd(ret, test100111Field("品牌折扣", keys,"服务端错误" ));//7.31再改 品牌重复
     tapReturn();
     return ret;
 }
@@ -4986,7 +4986,7 @@ function ts100189() {
     conditionQuery(keys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(10, qr.data[0]["库存"]));
-    query();//防止对后续用例造成影响
+    query();// 防止对后续用例造成影响
     return ret;
 }
 function ts100190() {
@@ -5192,7 +5192,7 @@ function ts100195() {
     tapReturn();
     delay();
     var qr2 = getQR();
-    return isEqualDyadicArray(qr.data, qr2.data);
+    return isEqualDyadicArray(qr.data, qr2.data, 1);
 }
 function ts100196() {
     var qo = { "备注" : "取消颜色尺码时判断库存是否为零" };

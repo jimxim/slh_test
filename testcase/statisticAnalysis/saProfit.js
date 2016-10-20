@@ -204,6 +204,7 @@ function textFin_price_base3_1() {
     editSalesBillNoColorSize(json);
 
     editFPBCheckPrice(r, 110);
+    tapRefresh();//刷新价格
 
     tapMenu("销售开单", ADDBILL);
     json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : "1" } ] };

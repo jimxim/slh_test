@@ -18,7 +18,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
     
- run("测试用例", "ts150006");//
+ run("测试用例", "ts160073_74");//
 
 }
 
@@ -26,7 +26,13 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    changeSecure("123456","000000");
+    tapMenu1("销售订货");
+   for(var i=0;i<10;i++){
+       tapMenu2("新增订货+");
+       tapReturn();
+   }
+
+// window.staticTexts().firstWithPredicate(cond).tap();
  // debugObject(gCache,"gCache");parent
  return true;
 }

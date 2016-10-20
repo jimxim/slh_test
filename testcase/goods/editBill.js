@@ -266,8 +266,8 @@ function editStatisticAnalysisInDet(o) {
         var f0 = new TField("收入类别", TF_SC, tfNum * i, d["收入类别"]);
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
-        var f1 = new TField("金额", TF, tfNum * i + 1, d["金额"]);// 跑10次可能会有1/2次变成浮点数
-                                                                // TF_KB 
+        var f1 = new TField("金额", TF_KB, tfNum * i + 1, d["金额"]);// 直接设置可能变成浮点数
+                                                                   // TF_KB 逐字输入
         setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];

@@ -136,7 +136,7 @@ function editCustomerSave(o) {
  * @param isEdit
  */
 function addGoods(keys, o) {
-    delay(0.5);// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
+    delay();// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
     // if (isUndefined(keys)) {
     // return;
     // }
@@ -748,7 +748,7 @@ function tapLine(n, view, firstTitle) {
         n = 0;
     }
     if (isUndefined(view)) {
-        view = getScrollView(-1);
+        view = getScrollView(0);//网格模式
     }
     if (isUndefined(firstTitle)) {
         firstTitle = TITLE_SEQ;
@@ -1117,17 +1117,15 @@ function goPage2(page, qr) {
     var total = qr.totalPageNo;
     var curPageIndex = qr.curPageNo + "/" + total;
     if (total > 1 && page <= total && page > 0) {
-        window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : {
-            x : 0.08, y : 0.55 } });
-        // window.elements()[curPageIndex].tap();
+        // window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : {
+        // x : 0.08, y : 0.55 } });//坐标不稳定
+        window.elements()[curPageIndex].tap();
         delay(); // 为了让跳转页面加载完成
 
         var index = getTextFieldIndex(window, -1);
         var tf = window.textFields()[index].textFields()[0];
         tf.setValue(page);
         tapKeyboardHide();
-        // var f = new TField("", TF, index, page);
-        // setTFieldsValue(window, f);
         tapButton(window, OK);
     } else {
         logDebug("goPage 目标页=" + page + " 总页数=" + total + "，无需换页或失败");
@@ -1280,15 +1278,16 @@ function isAqualOptimeX(expected, actual, allow) {
  * 二维数组是否相似
  * @param data1
  * @param data2
+ * @param allow 操作时间允许的误差值，默认为0
  * @returns {Boolean}
  */
-function isEqualDyadicArray(data1, data2) {
+function isEqualDyadicArray(data1, data2, allow) {
     var i, ret = true;
     var length = Math.min(data1.length, data2.length)
     for (i = 0; i < length; i++) {
         var arr1 = data1[i];
         var arr2 = data2[i];
-        ret = ret && isEqualObject2(arr1, arr2);
+        ret = ret && isEqualObject2(arr1, arr2, allow);
     }
     return ret;
 }

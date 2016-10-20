@@ -145,14 +145,14 @@ function ts160049() {
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
     qr = getQR();
-    var expected = { "批次" : batch, "日期" : getDay(-1, "yy"), "门店" : "常青店",
+    var expected = { "批次" : batch, "日期" : getDay(-1, ""), "门店" : "常青店",
         "店员" : "总经理", "客户" : "小王", "数量" : "30", "差异数" : "30", "发货状态" : "未发货",
         "总额" : "5990", "现金" : "1000", "刷卡" : "2000", "汇款" : "3000",
         "操作日期" : json["操作日期"] };
     expected[title_Shipped] = 0;
     var ret = isEqualObject(expected, qr.data[0], 1);
 
-    tapFirstText();
+    tapLine();
     var jo2 = editSalesBillGetValue({});
     var det2 = getQRDet();
     ret = isAnd(ret, isEqualObject(jo1, jo2), isEqualDyadicArray(det1, det2));
@@ -703,10 +703,10 @@ function ts160009() {
     qr = getQR();
     ret = isAnd(ret, isInAlertMsgs("确定作废吗"), isEqualDyadicArray(data, qr.data));
 
-    tapFirstText();
+    tapLine();
     tapButtonAndAlert(INVALID, OK);
     tapReturn();
-    ret = isAnd(ret, isInAlertMsgs("已作废的批次不能执行这个操作"));
+    ret = isAnd(ret, isInAlertMsgs("已作废不允许重复作废"));// 已作废的批次不能执行这个操作
 
     return ret;
 }
@@ -1855,7 +1855,7 @@ function ts160073_74() {
     tapButton(window, QUERY);
     tapFirstText();// getScrollView(),"序号",16
     editSalesBill(addDet, colorSize);// 新增货品
-    var ok = isInAlertMsgs("已作废的批次不能执行这个操作");
+    var ok = isInAlertMsgs("订单已作废不允许修改");// 已作废的批次不能执行这个操作
     logDebug("选择一条已作废的订单，增加款号点保存 ok=" + ok);
     ret = ret && ok;
 

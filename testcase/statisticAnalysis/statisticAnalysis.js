@@ -1464,14 +1464,14 @@ function test190037() {
     // 最后一行为合计,qr的合计取值有问题，便重新取
     for (i = 0; i < qr.data.length - 1; i++) {
         if (isDefined(qr.data[i]["金额"])) {
-            sum1 = add(sum1, Number(qr.data[i]["金额"]));
+            sum1 = add(sum1, Number(qr.data[i]["金额"]));//取值可能为浮点数，加起来有0.01左右误差，忽略
         }
         if (isDefined(qr.data[i]["金额2"])) {
-            sum2 = add(sum2, Number(qr.data[i]["金额2"]));
+            sum2 = add(sum2, Number(qr.data[i]["金额2"]));//取值可能为浮点数，加起来有0.01左右误差，忽略
         }
     }
     var expected = { "刷" : 400, "汇" : 600, "金额" : 1000 };
-    var ret = isAnd(isEqual(a, sum1), isEqual(b, sum2), isEqual(c, sub(a, b)),
+    var ret = isAnd(isAqualNum(a, sum1), isAqualNum(b, sum2), isEqual(c, sub(a, b)),
             isEqualObject(expected, subObject(s2, s1)));
     tapNaviClose();
     return ret;
