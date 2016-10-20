@@ -897,7 +897,7 @@ function editChangeSalesBillOrder(o, ret) {
  * @returns
  */
 function editLogisticsVerifyDet(o) {
-    var bt = window.buttons()["查 询"];
+    var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);
 

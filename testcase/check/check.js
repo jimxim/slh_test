@@ -42,6 +42,7 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     run("【盘点管理-处理记录】详细界面的翻页、排序、底部数据汇总", "test180092");
     run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");// 用例不明确
+    run("【盘点管理-新增盘点】盘点时是否允许允许输入负数", "test180091_1");
     run("【盘点管理—盘点处理】处理日期设置", "test180027");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
@@ -929,10 +930,9 @@ function test180026_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理", OK);
-
-    var cond = "isIn(alertMsg, '处理完成')";
+    var bt = window.buttons()[RETURN];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);
-    // var ret = isIn(alertMsg, "处理完成");//提示语现为灰色型
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
@@ -991,8 +991,21 @@ function test180026_1() {
     return ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180027() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点日期" : getDay(2), "盘点门店" : [ "常青店", "in" ] };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert("部分处理", OK);
+    tapPrompt();
+    var bt = window.buttons()[RETURN];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
+    tapReturn();
+
+    var r = "1" + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : 10 }, ] };
+    var josn = { "明细" : [ { "货品" : "3035", "数量" : r }, ] };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "盘点处理");
@@ -1000,53 +1013,65 @@ function test180027() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     tapButtonAndAlert("部分处理", OK);
     tapPrompt();
-    if (isIn(alertMsg, "盘点处理日期最多选到第二天，请重新选择")) {
-        var ret = true;
-    }
+    var ret = isIn(alertMsg, "盘点处理日期最多选到第二天，请重新选择");
 
-    var keys = { "盘点日期" : getDay(1) };
-    var fields = checkProcessFields(keys);
+    keys = { "盘点日期" : getDay(1) };
+    fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
     tapButtonAndAlert("部分处理", OK);
     tapPrompt();
-    var cond = "isIn(alertMsg, '处理完成')";
-    waitUntil(cond, 30);
-    if (isIn(alertMsg, "处理完成")) {
-        var ret1 = true;
-    }
+    waitUntil(cond, 5);
     tapReturn();
 
+    tapMenu("盘点管理", "处理记录");
+    query();
+    var qr = getQR();
+    var ret1 = isAnd(isEqual(getDay(1), qr.data[0]["盘点日期"]), isEqual(r,
+            qr.data[0]["盘后数量"]), isAqualOptime(getOpTime(), qr.data[0]["处理时间"]));
+
+    var r1 = "1" + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "k300", "数量" : 20 }, ] };
+    var josn = { "明细" : [ { "货品" : "k300", "数量" : r1 }, ] };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : [ "常青店", "in" ] };
-    var fields = checkProcessFields(keys);
+    keys = { "盘点门店" : [ "常青店", "in" ] };
+    fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
     tapButtonAndAlert("部分处理", OK);
     delay(2);
     tapPrompt();
-
     if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确")) {
         var ret2 = true;
     }
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    var keys = { "日期到" : getDay(1), "门店" : "常青店", "是否撤销" : "否" };// "日期从" :
-    // getToday(),
-    var fields = checkProcessRecordFields(keys);
+    keys = { "日期到" : getDay(2) };
+    fields = checkProcessRecordFields(keys);
     query(fields);
+    qr = getQR();
+    var batch = qr.data[0]["批次"];
 
-    tapButton(getScrollView(), 0);
-    tapButton(window, "盘点撤销");
-    delay(5);
+    var Keys = [ "日期从", "是否撤销" ];
+    var Fields = checkProcessRecordFields(Keys);
+    changeTFieldValue(Fields["日期从"], getDay(1));
+    changeTFieldValue(Fields["是否撤销"], "否");
+    setTFieldsValue(window, Fields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var t1 = qr.total;
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    for (var i = 0; i < t1; i++) {
+        tapButton(getScrollView(), 0);
+        tapButton(window, "盘点撤销");
+        waitUntil(cond, 5);
+    }
 
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : [ "常青店", "in" ] };
@@ -1055,10 +1080,14 @@ function test180027() {
     delay();
     tapButtonAndAlert("部分处理", OK);
     tapPrompt();
-    if (isIn(alertMsg, "处理完成")) {
-        var ret3 = true;
-    }
+    // if (isIn(alertMsg, "处理完成")) {
+    // var ret3 = true;
+    // }
+    waitUntil(cond, 5);
     tapReturn();
+    var ret3 = isAnd(isEqual(Number(batch) + 1, qr.data[0]["批次"]), isEqual(
+            getToday(), qr.data[0]["盘点日期"]), isEqual(r1, qr.data[0]["盘后数量"]),
+            isAqualOptime(getOpTime(), qr.data[0]["处理时间"]));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -1070,7 +1099,7 @@ function test180030() {
     var fields = checkProcessRecordFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = isEqual(0, qr.data.length);
+    var ret = !isEqual(0, qr.data.length);
 
     var qKeys = [ "门店" ];
     var qFields = checkProcessRecordFields(qKeys);
@@ -1078,9 +1107,12 @@ function test180030() {
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
-    var ret1 = isEqual(0, qr.data.length);
+    var ret1 = !isEqual(0, qr.data.length);
 
-    return ret && ret1;
+    var ret2 = Number(ret) + Number(ret1);
+
+    logDebug(" ret=" + ret + ", ert1=" + ret1 + ", ert2=" + ret2);
+    return ret2;
 }
 function test180029_180031_180032() {
     tapMenu("盘点管理", "处理记录");
@@ -1296,6 +1328,7 @@ function test180042Prepare() {
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "批量调出+");
+    delay();
     var f0 = new TField("调出人", TF_AC, 0, "000", -1, 0);
     var f1 = new TField("接收店", TF_SC, 1, "中洲店");
     var fields = [ f0, f1 ];
@@ -1330,19 +1363,17 @@ function test180042() {
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理", OK);
     delay(2);
-
-    var ret = isIn(alertMsg, "处理完成");
+    // var ret = isIn(alertMsg, "处理完成");
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "门店" : "常青店", "作废挂单" : "正常" };
-    var fields = purchaseQueryBatchFields(keys);
+    keys = { "门店" : "常青店", "作废挂单" : "正常" };
+    fields = purchaseQueryBatchFields(keys);
     query(fields);
 
     tapFirstText();
-    var josn = { "明细" : [ { "货品" : "3035", "数量" : 50 } ] };
-    editCheckAddDetNoColorSize(josn);
-
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "盘点之前的流水不允许修改");
@@ -1351,55 +1382,39 @@ function test180042() {
     tapMenu("门店调出", "按批次查");
     query();
     tapFirstText();
-    var f3 = new TField("数量", TF, 3, "11");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(1), fields);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "盘点之前的流水不允许修改");
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 4;
-    } else {
-        idx = 3;
-    }
-    var f3 = new TField("数量", TF, idx, "11");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(1), fields);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret3 = isIn(alertMsg, "盘点之前的流水不允许修改");
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+    logDebug(", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
+    return ret1 && ret2 && ret3;
 }
 function test180042_1() {
-    // var qo, o, ret = true;
-    // qo = { "备注" : "不允许修改盘点之前出入库流水" };
-    // o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo, o, ret = true;
+    qo = { "备注" : "不允许修改盘点之前出入库流水" };
+    o = { "新值" : "1", "数值" : [ "盘点后不允许修改", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     // 准备数据：采购入库、门店调出、销售开单都开一单数据，款号k300
     test180042Prepare();
 
     // 全盘处理
-
     tapMenu("盘点管理", "新增盘点+");
     var r = "1" + getRandomInt(100);
-    var josn = { "明细" : [ { "货品" : "k300", "数量" : r },
-            { "货品" : "k200", "数量" : 0 }, { "货品" : "8989", "数量" : -22 } ] };
+    var josn = { "明细" : [ { "货品" : "k300", "数量" : r } ] };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "盘点处理");
@@ -1407,59 +1422,36 @@ function test180042_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理", OK);
-
-    var cond = "isIn(alertMsg, '处理完成')"
-            || "isIn(alertMsg, '本仓库(店铺)没有新录入的盘点流水')";
-    waitUntil(cond, 300);
+    var bt = window.buttons()[RETURN];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     tapReturn();
 
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-01-01", "门店" : "常青店", "作废挂单" : "正常" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
-    var f3 = new TField("数量", TF, 3, "50");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "全盘之前出入库流水不允许修改");
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-01-01" }
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
-    var f3 = new TField("数量", TF, 3, "11");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "全盘之前出入库流水不允许修改");
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-01-01", "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 4;
-    } else {
-        idx = 3;
-    }
-    var f0 = new TField("货品", TF_AC, 0, "3035", -1, 0);
-    var f3 = new TField("数量", TF, idx, "11");
-    var fields = [ f0, f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "全盘之前出入库流水不允许修改");
@@ -1470,10 +1462,7 @@ function test180042_1() {
 }
 function test180042_2() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "门店" : "常青店", "作废挂单" : "正常" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -1489,10 +1478,7 @@ function test180042_2() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -1504,10 +1490,7 @@ function test180042_2() {
 }
 function test180042_3() {
     tapMenu("采购入库", "按批次查");
-    var keys = { "日期从" : "2015-01-01", "门店" : "常青店", "作废挂单" : "正常" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -1515,10 +1498,7 @@ function test180042_3() {
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
-    var keys = { "日期从" : "2015-01-01" }
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -1526,10 +1506,7 @@ function test180042_3() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "日期从" : "2015-1-1", "日期到" : getToday(), "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-
+    query();
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -1546,10 +1523,8 @@ function test180042_4() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-    var f3 = new TField("数量", TF, 3, "50");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "操作成功") || isIn(alertMsg, "保存成功");
@@ -1566,15 +1541,17 @@ function test180042_4() {
 
     tapMenu("门店调出", "按批次查");
     query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
     tapFirstText();
-    var f3 = new TField("数量", TF, 3, "11");
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o);
 
-    saveAndAlertOk();
-    tapPrompt();
-    var ret1 = isIn(alertMsg, "操作成功");
-    tapReturn();
+    tapMenu("门店调出", "按批次查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("50",
+            qr.data[0]["数量"]));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
@@ -1583,14 +1560,12 @@ function test180042_4() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 11 } ] };
-    editSalesBillDetNoColorSize(json);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "保存成功");
-    // tapReturn();
+    tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -1603,10 +1578,8 @@ function test180042_5() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
-
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 50 } ] };
-    editSalesBillDetNoColorSize(json);
-
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "操作成功") || isIn(alertMsg, "保存成功");
@@ -1617,22 +1590,22 @@ function test180042_5() {
     var f1 = new TField("接收店", TF_SC, 1, "中洲店");
     var fields = [ f0, f1 ];
     setTFieldsValue(window, fields);
-
     var json = { "明细" : [ { "货品" : "k300", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "按批次查");
     query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
     tapFirstText();
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o);
 
-    var f3 = new TField("数量", TF, 3, 11);
-    var fields = [ f3 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    var ret1 = isIn(alertMsg, "操作成功");
-    tapReturn();
+    tapMenu("门店调出", "按批次查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret1 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual(50,
+            qr.data[0]["数量"]));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
@@ -1641,44 +1614,35 @@ function test180042_5() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 11 } ] };
-    editSalesBillDetNoColorSize(json);
-
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "保存成功");
+    tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test180042_6() {
     tapMenu("采购入库", "按批次查");
-    query();
+    var keys = { "作废状态" : "正常" }
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
     var qr = getQR();
     var batch = qr.data[0]["批次"];
     tapFirstText();
-
     tapButtonAndAlert("作 废", OK);
 
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
     tapMenu("采购入库", "按批次查");
-    var keys = { "作废挂单" : "作废" }
-    var fields = purchaseQueryBatchFields(keys);
+    keys = { "作废挂单" : "作废" }
+    fields = purchaseQueryBatchFields(keys);
     query(fields);
     qr = getQR();
     var ret = isEqual(batch, qr.data[0]["批次"]);
-
-    // tapMenu("货品管理", "当前库存");
-    // keys = { "款号" : "k300", "门店" : "常青店" };
-    // fields = queryGoodsStockFields(keys);
-    // query(fields);
-    // qr = getQR();
-    // var b = Number(qr.data[0]["库存"]);
-
-    // tapMenu("门店调出", "批量调出+");
-    // var json = { "调出人" : "000", "接收店" : "中洲店",
-    // "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    // editShopOutDecruitIn(json,colorSize);
 
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "k300", "门店" : "常青店" };
@@ -1689,32 +1653,34 @@ function test180042_6() {
 
     tapMenu("门店调出", "按批次查");
     query();
+    qr = getQR();
+    var num = qr.data[0]["数量"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
+    waitUntil(cond, 5);
     tapMenu("货品管理", "当前库存");
-    keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    tapButton(window, QUERY);
     qr = getQR();
     var b2 = Number(qr.data[0]["库存"]);
-    var ret1 = isEqual(11, sub(b2, b1));
+    var ret1 = isEqual(num, sub(b2, b1));
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    qr = getQR();
     var batch2 = qr.data[0]["批次"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
+    waitUntil(cond, 5);
     tapMenu("销售开单", "按批次查");
-    tapMenu("销售开单", "按批次查");
-    var keys = { "作废挂单" : "作废" };
-    var fields = salesQueryBatchFields(keys);
+    keys = { "作废挂单" : "作废" };
+    fields = salesQueryBatchFields(keys);
     query(fields);
     qr = getQR();
     var ret2 = isEqual(batch2, qr.data[0]["批次"]);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test180042_7() {
@@ -1723,8 +1689,11 @@ function test180042_7() {
     var qr = getQR();
     var batch = qr.data[0]["批次"];
     tapFirstText();
-
     tapButtonAndAlert("作 废", OK);
+
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
 
     tapMenu("采购入库", "按批次查");
     var keys = { "作废挂单" : "作废" }
@@ -1750,51 +1719,39 @@ function test180042_7() {
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "当前库存");
-    keys = { "款号" : "k300", "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    tapButton(window, QUERY);
     qr = getQR();
     var b1 = Number(qr.data[0]["库存"]);
 
     tapMenu("门店调出", "按批次查");
     query();
+    qr = getQR();
+    var num = qr.data[0]["数量"];
     tapFirstText();
-
     tapButtonAndAlert("作 废", OK);
 
+    waitUntil(cond, 5);
     tapMenu("货品管理", "当前库存");
     keys = { "款号" : "k300", "门店" : "常青店" };
     fields = queryGoodsStockFields(keys);
     query(fields);
     qr = getQR();
     var b2 = Number(qr.data[0]["库存"]);
-
-    var ret1 = isAnd(isEqual(b, b2), isEqual("10", sub(b, b1)));
-
-    // tapMenu("门店调出", "按批次查");
-    // var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "调出门店" : "中洲店" }
-    // var fields = shopOutQueryBatchFields(keys);
-    // query(fields);
-    // qr = getQR();
-
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ] };
-    // editSalesBillNoColorSize(json);
+    var ret1 = isAnd(isEqual(b, b2), isEqual(num, sub(b, b1)));
 
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
     var batch2 = qr.data[0]["批次"];
     tapFirstText();
-
     tapButtonAndAlert("作 废", OK);
 
+    waitUntil(cond, 5);
     tapMenu("销售开单", "按批次查");
     var keys = { "作废挂单" : "作废" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-
     var ret2 = isEqual(batch2, qr.data[0]["批次"]);
 
     tapMenu("盘点管理", "处理记录");
@@ -1802,7 +1759,6 @@ function test180042_7() {
         "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-
     tapButton(getScrollView(), 0);
     tapButton(window, "盘点撤销");
 
@@ -3455,25 +3411,51 @@ function test180090_180091() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "4562", "数量" : r },
-            { "货品" : "k200", "数量" : 0 }, { "货品" : "8989", "数量" : -5 } ] };
+    josn = { "明细" : [ { "货品" : "4562", "数量" : r }, { "货品" : "k200", "数量" : 0 },
+            { "货品" : "8989", "数量" : -5 } ] };
     editCheckAddNoColorSize(josn);
 
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+    var ret2 = isEqual("-5", qr.data[0]["数量"]);
+
     tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点门店" : "常青店" };
-    var fields = checkProcessFields(keys);
+    keys = { "盘点门店" : "常青店" };
+    fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理", OK);
     delay(2);
     tapPrompt();
     tapReturn();
 
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret2 = isIn(alertMsg1, "处理完成");
+    tapMenu("货品管理", "当前库存");
+    keys = { "款号" : "8989", "门店" : "常青店" };
+    fields = queryGoodsStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret3 = isEqual("-5", qr.data[0]["库存"]);
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test180091_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "盘点时是否允许输入负数" };
+    o = { "新值" : "0", "数值" : [ "默认不开启" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var josn = { "明细" : [ { "货品" : "8989", "数量" : -2 },
+            { "货品" : "k200", "数量" : 0 }, { "货品" : "4562", "数量" : r } ] };
+    editCheckAddNoColorSize(josn);
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = isAnd(isIn(alertMsg1, "盘点不允许有负数[-2]"));
+
+    return ret && ret1;
 }
 function test180092() {
     // 先处理掉以前的盘点单
