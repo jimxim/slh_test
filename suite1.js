@@ -17,9 +17,8 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
- 
- run("测试用例", "ts160171");
-// run("测试用例", "onlyTest");//
+    
+ run("测试用例", "ts150006");//
 
 }
 
@@ -27,10 +26,7 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    tapMenu2("按订货开单");
-    var keys = {"门店" : "常青店" };
-    var fields = salesBillOrderFields(keys);
-    query(fields);
+    changeSecure("123456","000000");
  // debugObject(gCache,"gCache");parent
  return true;
 }

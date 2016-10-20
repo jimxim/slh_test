@@ -707,7 +707,7 @@ function test120011_1() {
         ret = false;
         logDebug("日期错误 day1=" + day1 + "超过日期范围");
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),

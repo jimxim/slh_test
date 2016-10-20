@@ -400,6 +400,7 @@ function ts150006() {
     tf.setValue("123456");
     tapButton(window, index);
     delay();
+    tapNaviClose();//防止异常
     tapReturn();
 
     ret = isAnd(ret, changeSecure("123456", "000000"));

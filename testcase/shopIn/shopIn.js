@@ -87,8 +87,7 @@ function ts150008() {
     tapButton(window, QUERY);
     tapFirstText();
     editShopInFlitting({ "接收人密码" : "000000" });
-    // 大师说是操作成功的，以后要是变成保存成功，就去打死大师
-    ret = isAnd(ret, isIn(alertMsg, "操作成功"));
+    ret = isAnd(ret, isIn(alertMsg, "成功"));
     return ret;
 }
 

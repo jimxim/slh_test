@@ -136,6 +136,7 @@ function editCustomerSave(o) {
  * @param isEdit
  */
 function addGoods(keys, o) {
+    delay(0.5);// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
     // if (isUndefined(keys)) {
     // return;
     // }
@@ -856,7 +857,7 @@ function tapTextByFirstWithName(name, view1) {
  */
 
 function changeSecure(oldSecure, newSecure) {
-    tapMenu("系统设置", "改密码");
+    tapMenu("系统设置", "密码设置", "修改密码");
     var tf = window.secureTextFields()[0].secureTextFields()[0];
     tf.setValue(oldSecure);
     tf = window.secureTextFields()[1].secureTextFields()[0];
@@ -867,7 +868,7 @@ function changeSecure(oldSecure, newSecure) {
     tapButton(window, OK);
     tapPrompt();
     var ret = isIn(alertMsg, "操作成功");
-    tapNaviLeftButton();
+    tapNaviClose();
 
     // 刷新，使新密码生效
     tapRefresh();

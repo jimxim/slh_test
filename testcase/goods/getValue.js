@@ -43,10 +43,8 @@ function getDetTS100006(code, close) {
 
     return data;
 }
+//网格滑动取值  getQR scrollViews length>1
+function getQRfixed() {
+    var scrollViews = window.scrollViews();// 0为标题,1为数据,3为汇总值
 
-function getQRScroll(){
-    var texts=getStaticTexts(window);//固定的视图部分
-    var texts1=getStaticTexts(getScrollView(0));//滑动部分的标题
-    var texts2=getStaticTexts(getScrollView(1));//滑动部分的
-    
 }
