@@ -1034,6 +1034,8 @@ function test190025_3() {
     json = { "物流" : "sf", "核销" : [ 0 ] };
     addLogisticsVerify(json);
     jo1 = getStatisticAnalysisSynthesis();
+    var cond = "window.buttons()['按批次查'].isVisible()"
+    waitUntil(cond, 5);
     var n2 = getSACountsQR("代", "收入", "销售单");
     var exp = { "销数" : 8, "销额" : 1600, "实销数" : 8, "实销额" : 1600, "代收" : 1600,
         "代收收款" : 1600 };
@@ -1464,15 +1466,15 @@ function test190037() {
     // 最后一行为合计,qr的合计取值有问题，便重新取
     for (i = 0; i < qr.data.length - 1; i++) {
         if (isDefined(qr.data[i]["金额"])) {
-            sum1 = add(sum1, Number(qr.data[i]["金额"]));//取值可能为浮点数，加起来有0.01左右误差，忽略
+            sum1 = add(sum1, Number(qr.data[i]["金额"]));// 取值可能为浮点数，加起来有0.01左右误差，忽略
         }
         if (isDefined(qr.data[i]["金额2"])) {
-            sum2 = add(sum2, Number(qr.data[i]["金额2"]));//取值可能为浮点数，加起来有0.01左右误差，忽略
+            sum2 = add(sum2, Number(qr.data[i]["金额2"]));// 取值可能为浮点数，加起来有0.01左右误差，忽略
         }
     }
     var expected = { "刷" : 400, "汇" : 600, "金额" : 1000 };
-    var ret = isAnd(isAqualNum(a, sum1), isAqualNum(b, sum2), isEqual(c, sub(a, b)),
-            isEqualObject(expected, subObject(s2, s1)));
+    var ret = isAnd(isAqualNum(a, sum1), isAqualNum(b, sum2), isEqual(c, sub(a,
+            b)), isEqualObject(expected, subObject(s2, s1)));
     tapNaviClose();
     return ret;
 }

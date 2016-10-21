@@ -2220,7 +2220,7 @@ function ts100059Msg() {
     tapMenu2("基本设置");
     tapMenu3("新增品牌折扣+");
     keys = { "品牌" : "1010pp" };
-    ret = isAnd(ret, test100111Field("品牌折扣", keys,"服务端错误" ));//7.31再改 品牌重复
+    ret = isAnd(ret, test100111Field("品牌折扣", keys, "服务端错误"));// 7.31再改 品牌重复
     tapReturn();
     return ret;
 }
@@ -4225,10 +4225,10 @@ function ts100159() {
 
 function ts100160() {
     var r = getTimestamp(6);
-    // 15*17 防止已有颜色尺码被点掉
+    // 14*16 防止已有颜色尺码被点掉
     var keys = { "款号" : r, "名称" : r,
-        "颜色" : "花色,黑色,白色,灰色,深灰,浅灰,米色,均色,红色,桃红,深红,粉红,桔红,鲜红,黄色",
-        "尺码" : "S,M,均码,L,XL,2XL,25,26,27,28,29,30,31,32,33,34,35" };
+        "颜色" : "花色,黑色,白色,灰色,深灰,浅灰,米色,红色,桃红,深红,粉红,桔红,鲜红,黄色",
+        "尺码" : "S,M,L,XL,2XL,25,26,27,28,29,30,31,32,33,34,35" };
     tapMenu("货品管理", "新增货品+");
     addGoods(keys);
     var ret = isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码");// （颜色数*尺码数小于200）
@@ -4236,7 +4236,7 @@ function ts100160() {
 
     tapMenu2("货品查询");
     query();
-    tapFirstText();
+    tapFirstText();//不能取消含有库存的颜色尺码
     addGoods(keys);
     ret = isAnd(ret, isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码"));
     return ret;
@@ -4411,7 +4411,7 @@ function ts100168() {
     tapMenu("货品管理", "当前库存");
     var keys = { "门店" : "中洲店" };
     conditionQuery(keys);
-    tapTitle(getScrollView(), "在途数");// 升序找在途数为0的做库存调整
+     tapTitle(getScrollView(), "在途数");// 升序找在途数为0的做库存调整
     var r = getRandomNum(1, 100);
     addGoodsStockAdjustment(r);
     return isInAlertMsgs("非总经理角色只能调整本仓库/门店的库存");
@@ -4770,7 +4770,7 @@ function ts100180() {
         tapPrompt();// 点去弹窗后，会自动返回新增货品界面
         ret = isAnd(ret, isIn(alertMsg, "必须先设置颜色尺码"));
 
-        keys = { "尺码" : "S", "进货价" : 200 };
+        keys = { "颜色" : "红色", "尺码" : "S", "进货价" : 200 };
         jo2 = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
     } else {
         keys = { "进货价" : 200 };

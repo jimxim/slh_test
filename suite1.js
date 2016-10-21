@@ -18,7 +18,7 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
     
- run("测试用例", "ts160073_74");//
+ run("测试用例", "ts100168");//
 
 }
 
@@ -26,7 +26,7 @@ function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-    tapMenu1("销售订货");
+   tapMenu1("销售订货");
    for(var i=0;i<10;i++){
        tapMenu2("新增订货+");
        tapReturn();

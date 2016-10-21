@@ -411,7 +411,10 @@ function onlytest() {
     editSalesBillNoColorSize(edit1);
 }
 
-// 
+/**
+ * 获取综合汇总第一条数据，一般为当天数据
+ * @returns
+ */
 function getStatisticAnalysisSynthesis() {
     tapMenu1("统计分析");
     tapMenu2("综合汇总");
