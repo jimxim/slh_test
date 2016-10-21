@@ -76,19 +76,19 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
-    run("【销售开单-开单】明细备注特殊字符检查", "test170536");// ///
+    run("【销售开单-开单】明细备注特殊字符检查", "test170536");
     run("【销售开单-开单】更多-预览（可排序）", "test170098");
     run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// ///
-    run("【销售开单－开单】积分兑换", "test170186");// /
+    run("【销售开单－开单】积分兑换", "test170186");
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");// //
-    run("【开单  】积分兑换时输入负数", "test170545");// //／
+    run("【开单  】积分兑换时输入负数", "test170545");
     run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单-开单】特价商品不计算积分", "test170695");// //／
 
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认打包价", "test170424_3");
-    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认零批价", "test170424");//
+    run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认零批价", "test170424");
     run("销售订货价格刷新", "test170445");
 
     run("销售开单价格刷新+上次价/代收2", "test170491");
@@ -98,10 +98,10 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】特殊货品不影响客户积分", "test170561");
     run("【销售开单-开单】后台积分兑换是否影响实际销售额", "test170587");
     run("【销售开单-开单】均色均码故意输入不存在的款号和数量后保存,检查结果", "test170595");
-    run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");// //
-    run("【开单  】同款不同价提醒", "test170539");// //
-    run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");// ///
-    run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");// ////
+    run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
+    run("【开单  】同款不同价提醒", "test170539");
+    run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");// //
+    run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");// 不用返回，直接修改免单金额，用例已转化
     run("【 开单】快速新增客户时自动刷新检查", "test170538");
     // run("【销售开单－开单】汇款需填写客户", "test170582");//
     // run("【销售开单－开单】汇款无需填写客户", "test170583");//
@@ -456,6 +456,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "销售开单逐条进行退货数大于拿货数验证时，是否允许继续输入" };
     o = { "新值" : "1", "数值" : [ "仅提醒，允许输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "盘点时是否允许输入负数" };
+    o = { "新值" : "1", "数值" : [ "开启" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "名称" : "sales_show_printdialog" };// 开单界面，保存后显示是否打印确认窗口
@@ -6502,14 +6506,9 @@ function test170251() {
     var keys = { "物流" : "tt" };
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
-    // tapButton(window, "核销");
-
-    json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-
-    tapNaviRightButton();
-    tapButtonAndAlert(SAVE, OK);
-    tapReturn();
+    tapButton(window, "核销");
+    json = { "核销" : [ 0 ], "save" : "yes", "back" : "yes" };
+    editLogisticsVerifyDet(json);
 
     tapMenu("销售开单", "物流单");
     query();
@@ -6813,10 +6812,6 @@ function test170423() {
 }
 function test170424() {
     var qo, o, ret = true;
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "刷新窗口" };
     o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -6932,10 +6927,6 @@ function test170424_1() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "成交价" };
@@ -7054,10 +7045,6 @@ function test170424_2() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("往来管理", "客户查询");
@@ -7187,16 +7174,19 @@ function test170424_3() {
         editAddVipCustomer();
     }
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "anewkhVip", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     var qr = getQRDet();
-    var ret1 = isEqual(140, qr.data[0]["单价"]);
+    var ret1 = isEqual(180, qr.data[0]["单价"]);
 
     clearCache();
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
+
+    var keys = { "客户" : "anewkhVip" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
 
     // 李六为无适用价格的客户
     var keys = { "客户" : "Ll" };
@@ -7281,12 +7271,12 @@ function test170443() {
 }
 function test170445() {
     var qo, o, ret = true;
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "默认显示价格类型" };
+    o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("往来管理", "客户查询");
@@ -9342,73 +9332,70 @@ function test170533() {
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    json = { "客户" : "xw", "核销" : [ 5 ], "特殊货品" : { "免单" : 21 } };
+    json = { "客户" : "xw", "核销" : [ 5 ], "特殊货品" : { "免单" : 21 },
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret2 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
+    var ret2 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
 
-    tapMenu("销售开单", "开  单+");
-    json = { "客户" : "xw", "核销" : [ 5 ], "特殊货品" : { "免单" : 20 } };
-    editSalesBillNoColorSize(json);
+    var o = [ { "单价" : [ 20 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret1 = isIn(alertMsg1, "保存成功")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
-
-    tapMenu("销售开单", "开  单+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "特殊货品" : { "免单" : 20 }, "不返回" : "yes" };
-    editSalesBillNoColorSize(json);
-    debugArray(alertMsgs);
-    alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret3 = isIn(alertMsg1, "保存成功")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
+    var ret1 = isIn(alertMsg1, "保存成功");
 
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "特殊货品" : { "免单" : 21 } };
+        "特殊货品" : { "免单" : 21 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret4 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
+    var ret4 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
 
-    tapMenu("销售开单", "开  单+");
+    o = [ { "单价" : [ 20 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = isIn(alertMsg1, "保存成功");
+
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "未付" : "yes",
         "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
     json = { "客户" : "xw", "核销" : [ 5 ], "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "特殊货品" : { "免单" : 41 } };
+        "特殊货品" : { "免单" : 41 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret6 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
+    var ret6 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
 
-    tapMenu("销售开单", "开  单+");
-    json = { "客户" : "xw", "核销" : [ 5 ], "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "特殊货品" : { "免单" : 40 } };
-    editSalesBillNoColorSize(json);
+    o = [ { "单价" : [ 20 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     var ret5 = isIn(alertMsg1, "保存成功");
 
-    tapMenu("销售开单", "开  单+");
     json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "特殊货品" : { "打包费" : 200, "免单" : 21 } };
+        "特殊货品" : { "打包费" : 200, "免单" : 21 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    alertMsg2 = getArray1(alertMsgs, -2);
-    var ret7 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例")
-            || isIn(alertMsg2, "特殊货品[00002,免单]金额超出最高比例");
+    var ret7 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
+    tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
@@ -9427,7 +9414,8 @@ function test170536() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    // 目前没有控制括号
+    // 备注中括号,尖括号,单引号,双引号等非法字符,或有生僻字
+    // 目前没有控制圆括号和中括号
     // var f6 = new TField("备注", TF, 6, "()");
     // var fields = [ f6 ];
     // setTFieldsValue(getScrollView(-1), fields);
@@ -9545,11 +9533,13 @@ function test170539() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = 9 + getRandomInt(200);
+    var r1 = 7 + getRandomInt(200);
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "K300", "数量" : 1 },
-                { "货品" : "K300", "数量" : 1, "单价" : r } ], "onlytest" : "yes" };
+                { "货品" : "K300", "数量" : 1, "单价" : r },
+                { "货品" : "K300", "数量" : 1, "单价" : r1 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -10348,6 +10338,7 @@ function test170561() {
     var json = { "客户" : "ls", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButton(window, "核销");
+    delay();
     var b = getStaticTextValue(getScrollView(-1, 0), 1);
     tapNaviLeftButton();
     tapReturn();
@@ -10943,14 +10934,23 @@ function test170668() {
 
     tapMenu("销售开单", "按批次查");
     query();
+    var qr = getQR();
     tapFirstText();
     tapButton(window, PRINT);
-    tapButtonAndAlert("none", "打印(客户用)");
-    tapPrompt();
+    // tapButtonAndAlert("none", "打印(客户用)");
+    // tapPrompt();
+    var o = { "打印" : "打印(客户用)" };
+    editSalesBillSave(o);
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isAnd(!isIn(alertMsg1, "款号已停用"), isIn(alertMsg1, "是否打印"));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr1 = getQR();
+    ret1 = isAnd(ret1, isEqual("否", qr.data[0]["打印"]), isEqual("是",
+            qr1.data[0]["打印"]));
 
     tapMenu("货品管理", "货品查询");
     tapButton(window, CLEAR);

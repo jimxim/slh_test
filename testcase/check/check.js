@@ -688,22 +688,8 @@ function test180025() {
     tapButtonAndAlert("部分处理", OK);
     delay(2);
     tapPrompt();
+    tapReturn();
 
-    var ret = true;
-    if (isIn(alertMsg, "本仓库(店铺)没有新录入的盘点流水") || isIn(alertMsg, "处理完成")) {
-
-        tapReturn();
-        ret = test180025_1();
-
-    } else {
-        // if (isIn(alertMsg, "操作失败，[本仓库(店铺)存在更新的盘点记录，请核对盘点日期是否正确！")) {
-        ret = false;
-        tapReturn();
-        // }
-    }
-    return ret;
-}
-function test180025_1() {
     tapMenu("货品管理", "新增货品+");
     var s = "anewkhao" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : 100
@@ -749,12 +735,7 @@ function test180025_1() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("全盘处理");
-    var cond = "isIn(alertMsg, '处理完成')";
-    waitUntil(cond, 30);
-    // var ret = false;
-    // if (isIn(alertMsg, "处理完成")) {
-    // ret = true;
-    // }//提示语现为灰色型
+    delay(3);
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
@@ -991,18 +972,6 @@ function test180026_1() {
     return ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180027() {
-    tapMenu("盘点管理", "盘点处理");
-    var keys = { "盘点日期" : getDay(2), "盘点门店" : [ "常青店", "in" ] };
-    var fields = checkProcessFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    delay();
-    tapButtonAndAlert("部分处理", OK);
-    tapPrompt();
-    var bt = window.buttons()[RETURN];
-    var cond = !isUIAElementNil(bt) || bt.isVisible();
-    waitUntil(cond, 5);
-    tapReturn();
-
     var r = "1" + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : r }, ] };
@@ -1027,10 +996,12 @@ function test180027() {
     tapReturn();
 
     tapMenu("盘点管理", "处理记录");
-    query();
+    keys = { "日期到" : getDay(2) };
+    fields = checkProcessRecordFields(keys);
+    query(fields);
     var qr = getQR();
-    var ret1 = isAnd(isEqual(getDay(1), qr.data[0]["盘点日期"]), isEqual(r,
-            qr.data[0]["盘后数量"]), isAqualOptime(getOpTime(), qr.data[0]["处理时间"]));
+    var ret1 = isAnd(isEqual(getDay(1, "yy"), qr.data[0]["盘点日期"]),
+            isAqualOptime(getOpTime(), qr.data[0]["处理时间"], 4));
 
     var r1 = "1" + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
@@ -1080,14 +1051,15 @@ function test180027() {
     delay();
     tapButtonAndAlert("部分处理", OK);
     tapPrompt();
-    // if (isIn(alertMsg, "处理完成")) {
-    // var ret3 = true;
-    // }
     waitUntil(cond, 5);
     tapReturn();
+
+    tapMenu("盘点管理", "处理记录");
+    query();
+    qr = getQR();
     var ret3 = isAnd(isEqual(Number(batch) + 1, qr.data[0]["批次"]), isEqual(
-            getToday(), qr.data[0]["盘点日期"]), isEqual(r1, qr.data[0]["盘后数量"]),
-            isAqualOptime(getOpTime(), qr.data[0]["处理时间"]));
+            getToday("yy"), qr.data[0]["盘点日期"]), isAqualOptime(getOpTime(),
+            qr.data[0]["处理时间"]));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -3377,6 +3349,23 @@ function test180089() {
     logDebug(", ret=" + ret);
     return ret;
 }
+function test180091_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "盘点时是否允许输入负数" };
+    o = { "新值" : "0", "数值" : [ "默认不开启" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var josn = { "明细" : [ { "货品" : "8989", "数量" : -2 },
+            { "货品" : "k200", "数量" : 0 }, { "货品" : "4562", "数量" : r } ] };
+    editCheckAddNoColorSize(josn);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -2);
+    var ret1 = isAnd(isIn(alertMsg1, "盘点不允许有负数[-2]"));
+
+    return ret && ret1;
+}
 function test180090_180091() {
     var qo, o, ret = true;
     qo = { "备注" : "盘点时是否允许输入负数" };
@@ -3439,23 +3428,6 @@ function test180090_180091() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
     return ret && ret1 && ret2 && ret3;
-}
-function test180091_1() {
-    var qo, o, ret = true;
-    qo = { "备注" : "盘点时是否允许输入负数" };
-    o = { "新值" : "0", "数值" : [ "默认不开启" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("盘点管理", "新增盘点+");
-    var r = "1" + getRandomInt(100);
-    var josn = { "明细" : [ { "货品" : "8989", "数量" : -2 },
-            { "货品" : "k200", "数量" : 0 }, { "货品" : "4562", "数量" : r } ] };
-    editCheckAddNoColorSize(josn);
-    debugArray(alertMsgs);
-    alertMsg1 = getArray1(alertMsgs, -2);
-    var ret1 = isAnd(isIn(alertMsg1, "盘点不允许有负数[-2]"));
-
-    return ret && ret1;
 }
 function test180092() {
     // 先处理掉以前的盘点单

@@ -4045,13 +4045,16 @@ function test170651() {
 
     var r = "anewCuanMa" + getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "M,S",
         "吊牌价" : 200, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     delay();
-    tapButton(window, RETURN);
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ],
@@ -4067,7 +4070,7 @@ function test170651() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "花色", "尺码" : "M" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "M" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4200,13 +4203,16 @@ function test170652() {
 
     var r = "anewCuanMa" + getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "M,S",
         "吊牌价" : 200, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay(2);
-    tapButton(window, RETURN);
+    delay();
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 20 ] } ],
@@ -4222,7 +4228,7 @@ function test170652() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4371,12 +4377,16 @@ function test170653() {
 
     var r = "anewCuanMa" + getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "M,S",
         "吊牌价" : 200, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    tapReturn();
+    delay();
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 20 ] } ],
@@ -4392,7 +4402,7 @@ function test170653() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : r, "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4522,7 +4532,7 @@ function test170654() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4678,7 +4688,7 @@ function test170655() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4816,7 +4826,7 @@ function test170656() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -4951,7 +4961,7 @@ function test170657() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "花色", "尺码" : "S" };
+    var keys = { "款号" : "anewCuanMa", "门店" : "常青店", "颜色" : "红色", "尺码" : "S" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
@@ -5245,13 +5255,16 @@ function test170660() {
 
     var r = "anewCuanMa" + getTimestamp(6);
     tapMenu("货品管理", "新增货品+");
-    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,花色", "尺码" : "M,S",
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "M,S",
         "吊牌价" : 200, "进货价" : 100 };
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay(2);
-    tapReturn();
+    delay();
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ 0, 10 ] } ],

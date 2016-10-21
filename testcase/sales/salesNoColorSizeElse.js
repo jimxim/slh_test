@@ -2425,51 +2425,53 @@ function test170275() {
     return ret && ret1;
 }
 function test170277() {
-    test170275Prepare();
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ] };
-    editSalesBillNoColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
-
-    tapMenu("销售开单", "按批次查");
-    var keys = { "日期到" : getDay(1), "作废挂单" : "正常" };
-    var fields = salesQueryBatchFields(keys);
+    tapMenu("销售开单", MORE, "收款单");
+    var keys = { "日期从" : getDay(-30), "到" : getDay(5) };
+    var fields = salesCollectionRecordFields(keys);
     query(fields);
+    var qr = getQR();
+    var total = qr.total;
+    if (total == 0) {
+        test170275Prepare();
 
-    tapFirstText();
-    runAndAlert("test170275Getmoney", OK);
-    if (isIn(alertMsg, "本日不允许重新记账")) {
-        return;
+        tapMenu("销售开单", "按批次查");
+        var keys = { "日期到" : getDay(1), "作废挂单" : "正常" };
+        var fields = salesQueryBatchFields(keys);
+        query(fields);
+
+        tapFirstText();
+        runAndAlert("test170275Getmoney", OK);
+        delay(2);
+        if (isIn(alertMsg, "本日不允许重新记账")) {
+            tapPrompt();
+        }
+        var bt = app.mainWindow().buttons()[RETURN];
+        if (!isUIAElementNil(bt) || bt.isVisible()) {
+            tapReturn();
+        }
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -2);
+        var ret1 = isIn(alertMsg1, "收款成功") || isIn(alertMsg, "本日不允许重新记账");
+        delay();
     }
-    tapReturn();
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret1 = isIn(alertMsg1, "收款成功") || isIn(alertMsg, "本日不允许重新记账");
-    delay();
 
     tapMenu("销售开单", MORE, "收款单");
     var keys = { "日期从" : getDay(-30), "到" : getDay(5) };
     var fields = salesCollectionRecordFields(keys);
     query(fields);
+    qr = getQR();
+    var total1 = qr.total;
     tapButton(getScrollView(-1), 0);
 
     tapMenu("销售开单", "getMenu_More", RECIEVE);
-    delay();
-    var cond = "isIn(alertMsg, '撤销成功')";
-    waitUntil(cond, 30);
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret2 = isIn(alertMsg1, "撤销成功");
+    delay(3);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var total2 = qr.total;
+    var ret2 = isEqual(1, sub(total1, total2));
 
-    logDebug(" ret=" + ret + ", ret2=" + ret2);
-    return ret && ret2;
+    logDebug(", ret2=" + ret2);
+    return ret2;
 }
 function test170278_170285_170284() {
     tapMenu("销售开单", "开  单+");
@@ -3279,6 +3281,9 @@ function test170303() {
     editSalesBillDetNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -5295,6 +5300,9 @@ function test170366() {
     tapButtonAndAlert("挂 单", OK);
     delay();
     tapReturn();
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -7704,7 +7712,7 @@ function test170577() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    delay(2);
+    delay(5);
 
     keys = { "日期" : getDay(1) };
     fields = editlogisticsVerifyDetFields(keys);
@@ -7715,8 +7723,8 @@ function test170577() {
     tapNaviLeftButton();
 
     tapButton(window, "核销");
-    delay(2);
-    keys = { "日期" : getDay(-20), "到" : getToday() };
+    delay(5);
+    keys = { "日期" : getDay(-30), "到" : getToday() };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
@@ -7724,6 +7732,19 @@ function test170577() {
     var ret1 = isAnd(!isEqual(0, qr.data.length), isEqual("天天物流",
             qr.data[0]["物流商"]));
 
+    delay(2);
+    var r = 111 + randomWord(false, 10);
+    keys = { "客户" : r };
+    fields = editlogisticsVerifyDetFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = isIn(alertMsg1, "客户或厂商错误") || isIn(alertMsg2, "客户或厂商错误");
+
+    delay(2);
     keys = { "客户" : "ls" };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
@@ -7732,6 +7753,7 @@ function test170577() {
     var ret2 = isAnd(!isEqual(0, qr.data.length), isEqual("李四",
             qr.data[0]["客户"]));
 
+    delay(2);
     keys = { "客户" : "lx" };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
@@ -7739,18 +7761,8 @@ function test170577() {
     var qr = getQRtable1(window, 8, -2);
     ret2 = isAnd(ret2, !isEqual(0, qr.data.length), isEqual("李响",
             qr.data[0]["客户"]));
-
-    var r = randomWord(false, 8);
-    keys = { "客户" : r };
-    fields = editlogisticsVerifyDetFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
     tapNaviLeftButton();
     tapReturn();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret3 = isIn(alertMsg1, "客户或厂商错误") || isIn(alertMsg2, "客户或厂商错误");
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -8365,6 +8377,7 @@ function test170638() {
     alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isAnd(isEqual("否", a), isEqual("是", a1), isEqual(batch, batch1),
             isIn(alertMsg1, "不允许重复设置已配货"));
+    tapReturn();
 
     logDebug("alertMsg1=" + alertMsg1 + " ret" + ret + " ret1" + ret1);
     return ret && ret1;
@@ -8511,7 +8524,7 @@ function test170643() {
 }
 function test170644() {
     tapMenu("销售开单", "按汇总", "按退货汇总");
-    var keys = { "日期从" : getDay(-10), "门店" : "常青店", "类型" : "退货" };
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店", "类型" : "退货" };
     var fields = salesReturnFields(keys);
     query(fields);
     var qr = getQR();

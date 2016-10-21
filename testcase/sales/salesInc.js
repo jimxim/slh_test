@@ -756,7 +756,8 @@ function editChangeSalesBillOrderPrice(o, ret) {
     var titles = getSalesBillDetTfObject();
     var title_num = "单价";
     var tfNum = titles["明细输入框个数"];
-    var num = o["单价"];
+    var d = o[0];
+    var num = d["单价"];
     var fields, f;
     if (num && num.length > 0) {
         fields = [];

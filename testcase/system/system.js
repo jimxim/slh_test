@@ -66,14 +66,14 @@ function testSystem002prepare() {
     var keys = { "日期从" : getDay(-1), "日期到" : getDay(1), "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-
     var qr = getQR();
     var total1 = qr.total;
     for (var i = 0; i < total1; i++) {
         tapButton(getScrollView(-1), 0);
         tapButton(window, "盘点撤销");
-        delay(5);
-
+        var bt = window.buttons()[QUERY];
+        var cond = !isUIAElementNil(bt) || bt.isVisible();
+        waitUntil(cond, 10);
         tapButton(window, QUERY);
     }
 
@@ -88,7 +88,7 @@ function testSystem002prepare() {
 }
 function test210001() {
     tapMenu("系统设置", "打印机");
-    tapFirstText(getScrollView(), TITLE_SEQ, 4);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var r = getRandomInt(10000);
     var ip = getRandomInt(100) + ".0.0.1";
     var f = new TField("数值", TF, 2, r);
@@ -124,7 +124,7 @@ function test210001() {
     delay();
 
     tapMenu("系统设置", "打印机");
-    tapFirstText(getScrollView(), TITLE_SEQ, 4);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(-1), 2));
     tapReturn();
 
@@ -135,7 +135,7 @@ function test210002() {
     var qr = getQR();
     var jo1 = qr.data[0];
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 4);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     tapButton(window, RETURN);
     qr = getQR();
     var jo2 = qr.data[0];
@@ -194,7 +194,7 @@ function test210004_210005_210006() {
     o = { "新值" : "3", "数值" : [ "3", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 4);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var ret1 = isEqual(3, getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
@@ -279,7 +279,9 @@ function test210012_210013_210014() {
 }
 function test210015_210016() {
     tapMenu("系统设置", "全局设置");
-    delay();
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
     query();
     var ret = goPageCheck();
 
@@ -295,14 +297,14 @@ function test210017() {
 }
 function test210018_1() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "电话" : "111111111111" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 1);
     var ret = isEqual("027123456789", a);
 
@@ -310,7 +312,7 @@ function test210018_1() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 1);
     var ret1 = isEqual("111111111111", b);
 
@@ -324,7 +326,7 @@ function test210018_1() {
 }
 function test210018_2() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "小票抬头" : "Sunshine" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
@@ -332,7 +334,7 @@ function test210018_2() {
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 0);
     var ret = isEqual("Singlesnew", a);
 
@@ -340,7 +342,7 @@ function test210018_2() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 0);
     var ret1 = isEqual("Sunshine", b);
 
@@ -354,14 +356,14 @@ function test210018_2() {
 }
 function test210018_3() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "手机" : "222222" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 2);
     var ret = isEqual("123456789012-1-3", a);
 
@@ -369,7 +371,7 @@ function test210018_3() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 2);
     var ret1 = isEqual("222222", b);
 
@@ -382,14 +384,14 @@ function test210018_3() {
 }
 function test210018_4() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "地址" : "香榭12f" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 3);
     var ret = isEqual("杭州 出门 m", a);
 
@@ -397,7 +399,7 @@ function test210018_4() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 3);
     var ret1 = isEqual("香榭12f", b);
 
@@ -410,14 +412,14 @@ function test210018_4() {
 }
 function test210018_5() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "户名" : "习近平12p" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 4);
     var ret = isEqual("李开复-1-3-4", a);
 
@@ -425,7 +427,7 @@ function test210018_5() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 4);
     var ret1 = isEqual("习近平12p", b);
 
@@ -438,14 +440,14 @@ function test210018_5() {
 }
 function test210018_6() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "账号" : "建行6227000943230037636" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextFieldValue(getScrollView(), 5);
     var ret = isEqual("农行 14233232443-1-3", a);
 
@@ -453,7 +455,7 @@ function test210018_6() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextFieldValue(getScrollView(), 5);
     var ret1 = isEqual("建行6227000943230037636", b);
 
@@ -466,14 +468,14 @@ function test210018_6() {
 }
 function test210018_7() {
     tapMenu("系统设置", "小票信息");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var keys = { "备注" : "香榭12f" };
     var fields = systemrReceiptFields(keys);
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, CANCEL);
     tapReturn();
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var a = getTextViewValue(getScrollView(), 0);
     var ret = isEqual("备注打印成明细了，验证中31", a);
 
@@ -481,7 +483,7 @@ function test210018_7() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var b = getTextViewValue(getScrollView(), 0);
     var ret1 = isEqual("香榭12f", b);
 
@@ -494,13 +496,11 @@ function test210018_7() {
 }
 function test210022() {
     tapMenu("系统设置", "刷新图像");
-
     var ret1 = false;
     var bt = app.mainWindow().buttons()["刷新缩略图"];
     if (bt = isUIAButton) {
         ret1 = true;
     }
-
     tapNaviLeftButton();
 
     return ret1;
@@ -1054,7 +1054,9 @@ function test210039_210068() {
                     qr.data[3]["货品"]), isEqual("黄色", qr.data[3]["颜色"]),
             isEqual("XL", qr.data[3]["尺码"]), isEqual(2, qr.data[3]["数量"]));
     tapReturn();
-    delay(2);
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
 
     tapMenu("系统设置", "全局设置");
     var f1 = new TField("备注", TF, 1, "是否显示颜色尺码字样");
@@ -1072,43 +1074,10 @@ function test210039_210068() {
     tapPrompt();
     var ret2 = isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式");
     tapReturn();
-
-    // qo = { "备注" : "是否显示颜色尺码字样" };
-    // o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    //
-    // tapMenu("销售开单", "按批次查");
-    // query();
-    //
-    // var qr = getQR();
-    // var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(14,
-    // qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]),
-    // 0.5);
-    //
-    // tapFirstText();
-    // var ret1 = isAnd(
-    // isEqual("X001,特步夹克", getTextFieldValue(getScrollView(-1), 0)),
-    // isEqual("", getTextFieldValue(getScrollView(-1), 1)), isEqual("",
-    // getTextFieldValue(getScrollView(-1), 2)), isEqual(5,
-    // getTextFieldValue(getScrollView(-1), 3)), isEqual(
-    // "X001,特步夹克", getTextFieldValue(getScrollView(-1), 7)),
-    // isEqual("", getTextFieldValue(getScrollView(-1), 8)), isEqual("",
-    // getTextFieldValue(getScrollView(-1), 9)), isEqual(6,
-    // getTextFieldValue(getScrollView(-1), 10)), isEqual(
-    // "X003,特步登山服", getTextFieldValue(getScrollView(-1), 14)),
-    // isEqual("", getTextFieldValue(getScrollView(-1), 15)), isEqual("",
-    // getTextFieldValue(getScrollView(-1), 16)), isEqual(1,
-    // getTextFieldValue(getScrollView(-1), 17)), isEqual(
-    // "X003,特步登山服", getTextFieldValue(getScrollView(-1), 21)),
-    // isEqual("", getTextFieldValue(getScrollView(-1), 22)), isEqual("",
-    // getTextFieldValue(getScrollView(-1), 23)), isEqual(2,
-    // getTextFieldValue(getScrollView(-1), 24)));
-    //
-    // tapReturn();
-    //
-    // qo = { "备注" : "是否需要颜色尺码" };
-    // o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -1411,7 +1380,7 @@ function test210050() {
     query(fields);
 
     tapFirstText();
-    var f9 = new TField("日期", TF_DT, 9, getToday());
+    var f9 = new TField("日期", TF_DT, dateTFindex, getToday());
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
 
@@ -1420,7 +1389,6 @@ function test210050() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     var ret1 = isIn(alertMsg, "操作成功");
     tapReturn();
 
@@ -1436,7 +1404,6 @@ function test210050() {
 
     saveAndAlertOk();
     tapPrompt();
-    delay();
     var ret2 = isIn(alertMsg, "保存成功");
     tapReturn();
 
@@ -1460,9 +1427,9 @@ function test210050() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-
     tapFirstText();
-    var f10 = new TField("日期", TF_DT, 10, getDay(1));
+    dateTFindex = getEditSalesTFindex2("客户", "日期");
+    var f10 = new TField("日期", TF_DT, dateTFindex, getDay(1));
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
 
@@ -1475,7 +1442,6 @@ function test210050() {
 
     tapMenu("采购订货", "新增订货+");
     var shopTFindex = getEditSalesTFindex2("厂商", "订货门店");
-
     var f9 = new TField("日期", TF_DT, shopTFindex - 1, getDay(1));
     var fields = [ f9 ];
     setTFieldsValue(window, fields);
@@ -1581,8 +1547,8 @@ function test210050() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-
-    var f8 = new TField("日期", TF_DT, 8, getDay(1));
+    dateTFindex = getEditSalesTFindex2("厂商", "日期");
+    var f8 = new TField("日期", TF_DT, dateTFindex, getDay(1));
     var fields = [ f8 ];
     setTFieldsValue(window, fields);
 
