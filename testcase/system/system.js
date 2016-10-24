@@ -44,7 +44,7 @@ function testSystem001() {
     run("【系统设置-更多】门店停用规则", "test210067");
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
-    run("【系统设置-全局设置】异地发货开单模式必须先开启异地仓库", "test210072");
+    run("【系统设置-全局设置】异地发货开单模式必须先开启异地仓库", "test210073");
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -57,9 +57,9 @@ function testSystem002() {
     run("【系统设置-全局参数】是否允许修改单据日期--限制修改销售单日期", "test210051_1");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052");
     run("【系统设置-全局设置】是否允许修改单据日期--限制修改所有单据日期", "test210052_1");
-    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
-    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
-    // run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
+    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053");
+    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_1");
+    run("【系统设置－全局设置】“颜色尺码下，开单是否显示上次单价”与“是否启动上次成交价作为本次开单单价”", "test210053_2");
 }
 function testSystem002prepare() {
     tapMenu("盘点管理", "处理记录");
@@ -565,12 +565,13 @@ function test210024_210025() {
             isEqual("总经理", a3));
 
     tapButton(window, CLEAR);
+    tapButton(window, QUERY);
     var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
             getTextFieldValue(window, 0)), isEqual("", getTextFieldValue(
             window, 0)), isEqual("", getTextFieldValue(window, 0)));
     var ret = goPageCheck();
 
-    ret = ret && sortByTitle("工号", IS_NUM);
+    ret = ret && sortByTitle("工号");
     ret = ret && sortByTitle("姓名");
     ret = ret && sortByTitle("门店");
     ret = ret && sortByTitle("岗位");
@@ -1074,7 +1075,7 @@ function test210039_210068() {
     tapPrompt();
     var ret2 = isIn(alertMsg, "关闭显示颜色尺码字样必须开启均色均码模式");
     tapReturn();
-    
+
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1238,6 +1239,11 @@ function test210043() {
     tapButton(window, "保存");
     tapPrompt();
     var ret1 = isIn(alertMsg, "操作成功");
+
+    tapNaviRightButton();
+    tapButton(window, "保存");
+    tapPrompt();
+    ret1 = isAnd(ret1, isIn(alertMsg, "操作成功"));
     tapNaviLeftButton();
 
     logDebug(", ret1=" + ret1);
@@ -1933,6 +1939,10 @@ function test210053() {
     var ret1 = isIn(alertMsg, "操作失败，[开启启用上次成交价作为本次开单单价时，必须先开启颜色尺码下，开单显示上次单价] ");
     tapReturn();
 
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     return ret && ret1;
 }
 function test210053_1() {
@@ -1964,42 +1974,20 @@ function test210053_1() {
 }
 function test210053_2() {
     var qo, o, ret = true;
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapFirstText();
-    var setObj = {};
-    setObj["数值"] = [ "1,启用" ];
-    setObj["授权码"] = [];
-    var fields = editSystemGlobalFields(setObj);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    var ret1 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
-    tapReturn();
-
-    qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
-    var fields = querySystemGlobalFields(qo);
-    query(fields);
-
-    tapFirstText();
-    var setObj = {};
-    setObj["数值"] = [ "默认不启用", "in" ];
-    setObj["授权码"] = [];
-    var fields = editSystemGlobalFields(setObj);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    var ret2 = isIn(alertMsg, "操作失败，[关闭启用上次成交价作为本次开单单价时，必须先关闭颜色尺码下，开单显示上次单价] ");
-    tapReturn();
-
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug("ret=" + ret);
+    return ret;
 }
 function test210055() {
     tapMenu("系统设置", "打印机");
@@ -2166,7 +2154,7 @@ function test210065() {
     tapMenu("系统设置", "打印机");
     tapTextByFirstWithName("2");
     var r = ";/";
-    var ip = getRandomInt(100) + ".0.0.1";
+    var r1 = getRandomInt(100000);
     var f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
@@ -2175,31 +2163,19 @@ function test210065() {
     tapReturn();
 
     tapFirstText(getScrollView(), "1", 4);
-    var f = new TField("数值", TF, 2, ip);
+    var f = new TField("数值", TF, 2, r1);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
     delay();
     var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-    var ret1 = isEqual(ip, qr.data[1]["数值"]);
-
-    tapMenu("系统设置", "打印机");
-    tapFirstText(getScrollView(), "1", 4);
-    ret1 = isAnd(ret1, isEqual(ip, getTextFieldValue(getScrollView(), 2)));
-
-    tapButton(getScrollView(), "本 机");
-    var ret2 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
-    tapButtonAndAlert(SAVE, OK);
-    delay();
-    qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
-    ret2 = isAnd(ret2, isEqual("127.0.0.1", qr.data[1]["数值"]));
+    var ret1 = isEqual(r1, qr.data[1]["数值"]);
 
     tapFirstText(getScrollView(), "1", 4);
-    var ret3 = isEqual("127.0.0.1", getTextFieldValue(getScrollView(), 2));
+    var ret2 = isEqual(r1, getTextFieldValue(getScrollView(), 2));
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210067() {
     tapMenu1("系统设置");
@@ -2217,13 +2193,18 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增门店＋");
+
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "店名不能为空");
+
     var m = "test" + randomWord(false, 8);
     var keys = { "店名" : m };
     var fields = editSystemShopAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    var ret = isAnd(isIn(alertMsg, "门店类型不能为空"), isEqual(m, getTextFieldValue(
+    ret = isAnd(ret, isIn(alertMsg, "门店类型不能为空"), isEqual(m, getTextFieldValue(
             getScrollView(), 0)));
 
     keys = { "类型" : "门店", "门店类型" : "加盟店", "地址" : "江城路889号", "联系电话" : "3003008" };
@@ -2233,13 +2214,7 @@ function test210069_210070() {
     tapReturn();
 
     runAndAlert("test210020Clear", OK);
-    tapPrompt();
-    if (ipadVer >= "7.21") {
-        var cond = "isIn(alertMsg, '清理刷新结束')";
-    } else {
-        var cond = "isIn(alertMsg, '清理和刷新成功')";
-    }
-    waitUntil(cond, 300);
+    delay(5);
 
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
@@ -2286,13 +2261,13 @@ function test210069_210070() {
             getTextFieldValue(getScrollView(), 0)), !isEqual("",
             getTextFieldValue(getScrollView(), 1)));
 
-    var r2 = randomWord(false, 2);
-    keys1 = { "门店" : "test210069", "账户简称" : r2 };
-    fields = editSystemAccountAddFields(keys1);
-    setTFieldsValue(getScrollView(), fields);
-    saveAndAlertOk();
-    tapPrompt();
-    var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+    // var r2 = randomWord(false, 2);
+    // keys1 = { "门店" : "test210069", "账户简称" : r2 };
+    // fields = editSystemAccountAddFields(keys1);
+    // setTFieldsValue(getScrollView(), fields);
+    // saveAndAlertOk();
+    // tapPrompt();
+    // var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
 
     // keys1 = { "门店" : "m" };
     // fields = editSystemAccountAddFields(keys1);
@@ -2306,10 +2281,10 @@ function test210069_210070() {
     fields = editSystemAccountFields(keys1);
     query(fields);
     var qr = getQR();
-    // var ret3 = isAnd(isEqual(1, qr.data.length),
-    // isEqual(r, qr.data[0]["账户名称"]), isEqual(r2, qr.data[0]["简称"]),
-    // isEqual(m, qr.data[0]["门店"]));
-    var ret3 = isEqual(0, qr.data.length);
+    var ret3 = isAnd(isEqual(1, qr.data.length),
+            isEqual(r, qr.data[0]["账户名称"]), isEqual(r2, qr.data[0]["简称"]),
+            isEqual(m, qr.data[0]["门店"]));
+    // var ret3 = isEqual(0, qr.data.length);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2 + " ret3="
             + ret3);
@@ -2342,7 +2317,7 @@ function test210071() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test210072() {
+function test210073() {
     var qo, o, ret = true;
     qo = { "备注" : "支持异地仓库" };
     o = { "新值" : "0", "数值" : [ "默认不启用" ] };
@@ -2377,18 +2352,22 @@ function test210072() {
     o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
     ret2 = isAnd(ret2, setGlobalParam(qo, o));
 
+    // qo = { "备注" : "支持异地仓库" };
+    // o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));SLH-9697
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    runAndAlert("test210020Clear", OK);
-    tapPrompt();
-    if (ipadVer >= "7.21") {
-        var cond = "isIn(alertMsg, '清理刷新结束')";
-    } else {
-        var cond = "isIn(alertMsg, '清理和刷新成功')";
-    }
-    waitUntil(cond, 300);
+    // runAndAlert("test210020Clear", OK);
+    // tapPrompt();
+    // if (ipadVer >= "7.21") {
+    // var cond = "isIn(alertMsg, '清理刷新结束')";
+    // } else {
+    // var cond = "isIn(alertMsg, '清理和刷新成功')";
+    // }
+    // waitUntil(cond, 300);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;

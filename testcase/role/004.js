@@ -43,8 +43,8 @@ function test210043_4() {
     if (isUIAElementNil(bt) || !bt.isVisible()) {
         ret = true;
     }
-
     window.popover().dismiss();
+
     return ret;
 }
 function test210038() {
@@ -53,15 +53,28 @@ function test210038() {
     var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员", "门店" : "常青店" };
     var fields = querySystemStaffFields(keys);
     query(fields);
-
     var qr = getQR();
     var a = qr.data[0]["工号"];
     var a1 = qr.data[0]["姓名"];
     var a2 = qr.data[0]["门店"];
     var a3 = qr.data[0]["岗位"];
-
     var ret = isAnd(isEqual("001", a), isEqual("财务员", a1), isEqual("常青店", a2),
             isEqual("财务员", a3));
+
+    var ret1 = true, md;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            dy = qr.data[i]["门店"];
+            if (isEqual("常青店", dy)) {
+                ret1 = false;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
 
     return ret;
 }
@@ -69,20 +82,17 @@ function test180047() {
     // 中洲店准备盘点单（不处理,仓库店准备盘点单（不处理）
     // 常青店店长登录004
     tapMenu("盘点管理", "按批次查");
-    var keys = { "门店" : "仓库店", "日期从" : "2015-1-1", "日期到" : getToday() };
+    var keys = { "门店" : "仓库店", "日期从" : "2015-01-01", "日期到" : getToday() };
     var fields = queryCheckBatchFields(keys);
     query(fields);
     var qr = getQR();
-
     var ret = isEqual(0, qr.data.length);
 
     var f = new TField("门店", TF_SC, 6, "中洲店");
     var fields = [ f ];
     setTextFieldSCValue(window, f);
-
     tapButton(window, QUERY);
     qr = getQR();
-
     var ret1 = isEqual(0, qr.data.length);
 
     return ret && ret1;
@@ -187,7 +197,6 @@ function test170177() {
 
     var a = getTextFieldValue(getScrollView(), 0);
     var b = getTextFieldValue(getScrollView(), 7);
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();

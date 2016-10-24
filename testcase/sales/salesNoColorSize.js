@@ -78,10 +78,10 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
     run("【销售开单-开单】明细备注特殊字符检查", "test170536");
     run("【销售开单-开单】更多-预览（可排序）", "test170098");
-    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// ///
+    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// //
     run("【销售开单－开单】积分兑换", "test170186");
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");// //
+    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【开单  】积分兑换时输入负数", "test170545");
     run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单-开单】特价商品不计算积分", "test170695");// //／
@@ -101,10 +101,10 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】款号停用后，再去打印销售单", "test170668");
     run("【开单  】同款不同价提醒", "test170539");
     run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");// //
-    run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");// 不用返回，直接修改免单金额，用例已转化
+    run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");
     run("【 开单】快速新增客户时自动刷新检查", "test170538");
-    // run("【销售开单－开单】汇款需填写客户", "test170582");//
-    // run("【销售开单－开单】汇款无需填写客户", "test170583");//
+    run("【销售开单－开单】汇款需填写客户", "test170582");// //汇款值输入
+    run("【销售开单－开单】汇款无需填写客户", "test170583");
     // run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
     // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从A切换到B", "test170619");
     // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从无切换到有", "test170620");
@@ -9358,7 +9358,7 @@ function test170533() {
     alertMsg1 = getArray1(alertMsgs, -1);
     var ret4 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
 
-    o = [ { "单价" : [ 20 ] } ];
+    o = [ { "单价" : [ 200, 20 ] } ];
     editChangeSalesBillOrderPrice(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -9379,7 +9379,7 @@ function test170533() {
     alertMsg1 = getArray1(alertMsgs, -1);
     var ret6 = isIn(alertMsg1, "特殊货品[00002,免单]金额超出最高比例");
 
-    o = [ { "单价" : [ 20 ] } ];
+    o = [ { "单价" : [ 200, 20 ] } ];
     editChangeSalesBillOrderPrice(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -9582,6 +9582,11 @@ function test170541() {
     tapPrompt();
     tapReturn();
 
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -3);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret2 = isAnd(isIn(alertMsg1, "同款不同价提醒"), isIn(alertMsg2, "继续开单保存"));
+
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
@@ -9590,7 +9595,7 @@ function test170541() {
             isEqual(r1, qr.data[1]["单价"]));
     tapReturn();
 
-    return ret && ret1;
+    return ret && ret1 && ret2;
 }
 function test170542() {
     // 客户折扣
@@ -9757,8 +9762,8 @@ function test170548() {
     query(fields);
 
     tapFirstText();
-    var r1 = getTimestamp(2);
-    var json = { "明细" : [ { "货品" : "4562", "数量" : r1 } ] };
+    var r1 = getRandomInt(200);
+    var json = { "明细" : [ { "货品" : "4562", "数量" : r1 } ], "onlytest" : "yes" };
     editSalesBillDetNoColorSize(json);
 
     saveAndAlertOk();
@@ -10355,8 +10360,8 @@ function test170582() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "汇款" : [ 200, "交" ],
-        "onlytest" : "yes" };
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 0,
+        "汇款" : [ 200, "交" ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     saveAndAlertOk();
@@ -10369,23 +10374,8 @@ function test170582() {
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = (isIn(alertMsg1, "必须输入客户名称"));
 
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
-    editSalesBillNoColorSize(json);
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    tapButton(window, CLEAR);
-    tapStaticText(window, "汇款");
-
-    saveAndAlertOk();
-    tapPrompt();
-    var ret2 = isIn(alertMsg, "必须输入客户名称");
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170583() {
     var qo, o, ret = true;
