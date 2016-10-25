@@ -414,7 +414,8 @@ function queryGoodsField(key, show) {
         f = new TField("季节", TF_SC, 10 + i, "春季");
         break;
     default:
-        logWarn("未知key＝" + key);
+        logDebug("未知key＝" + key);
+        break;
     }
     return f;
 }

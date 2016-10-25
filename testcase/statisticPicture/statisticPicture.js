@@ -1,4 +1,3 @@
-//Zhangy <2397655091 at qq.com> 20151217
 
 function testStatisticPictureAll() {
     run("【统计图表—按门店】清除", "test200001_200003_200004_200005");
@@ -189,28 +188,7 @@ function test200024_1() {
 }
 function test200026() {
     tapMenu("统计图表", "按图像");
-    debugElementTree(window);
-    var keys = { "day1" : "2015-1-11", "day2" : getToday, "code" : "3035",
-        "provider" : "vell", "brand" : "Adidas" };
-    var view1;
-    var fields = pictureCodePictureFields(keys);
-    try {
-        view1 = getTableViews()[2].groups()["日期"];
-        setTFieldsValue(view1, fields);
-    } catch (e) {
-        view1 = getTableViews()[1].groups()["日期"];
-        setTFieldsValue(view1, fields);
-    }
-
-    debugElementTree(window);
-
-    var ret = true;
-    if (isIn(alertMsg, "服务端错误")) {
-        ret = false;
-    }
-    tapNaviLeftButton();
-
-    return ret;
+    
 }
 function test200039_200040_200041_200042() {
     tapMenu("统计图表", "按店员");

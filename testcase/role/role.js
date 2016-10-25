@@ -13,6 +13,7 @@ function loginWarehouse001() {
 // 仓库店，总经理100
 // 绑定的仓库为文一店，文一店店长404
 function testWarehouseAll() {
+    run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189");
     run("【往来管理-客户活跃度】后台绑定仓库，查看客户门店帐下未拿货天数", "test110058_1");
     run("作废仓库店的销售单,防止对综合汇总的用例造成影响", "repealWarehouseSalesBill");
     run("【门店调出-批量调出】开启参数支持异地仓库+后台绑定仓库时做门店调出", "ts150034");
@@ -346,6 +347,15 @@ function checkRightsCustomer() {
     arr = [ "手机" ];
     f = queryCustomerShopAccountFields([ "是否欠款报警" ]);
     ret = ret && checkRightsField(hasRights, getScrollView(), arr, window, f);
+    ret = ret && ts110060(hasRights);
+
+    tapMenu("往来管理", "客户账款", "按上级单位");
+    query();
+    ret = ret && ts110060(hasRights);
+
+    tapMenu("往来管理", "客户账款", "客户总账");
+    query();
+    ret = ret && ts110060(hasRights);
 
     tapMenu2("客户活跃度");
     tapButton(window, QUERY);

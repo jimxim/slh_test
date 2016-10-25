@@ -342,7 +342,7 @@ function queryCustomerShopAccountField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "仓库店");// TF_SC
+        f = new TField("门店", TF, 2, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "staff":
     case "店员":
@@ -398,7 +398,7 @@ function queryCustomerSuperField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店");// TF_SC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -433,7 +433,8 @@ function queryCustomerAccountField(key, show) {
         }
         break;
     default:
-        logWarn("未知key＝" + key);
+        logDebug("未知key＝" + key);
+        break;
     }
     return f;
 }

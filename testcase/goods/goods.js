@@ -282,7 +282,6 @@ function testGoods002() {
     run("【货品管理】均色均码下修改一有颜色尺码的款号", "ts100196");
 
     run("【货品管理-新增货品】新增货品界面可以录入期初库存--库存归属地", "ts100173");
-    run("【货品管理-新增货品】新增货品时录入库存,为止应该入到仓库,而不是门店", "ts100189");
 
     run("【货品管理-批量调价】单选", "ts100047_48_49_50_51_52");
     run("【货品管理-批量调价】多选", "ts100047_48_49_50_51_52All");
@@ -2272,31 +2271,32 @@ function ts100095_96() {
 }
 
 function ts100124() {
-    // 检查货品管理-当前库存、款号库存、库存分布、货品查询界面的查询条件 “是否停用”
+    // 检查货品管理相关界面查询条件 “是否停用”默认值
     // 点到相应界面，查询条件 “是否停用”的内容就会刷新变成默认值“否”
     // 7.21只有点击清除后才会变回默认，不再验证页面切换后变回默认值
     tapMenu("货品管理", "当前库存");
     var keys = { "是否停用" : "是" };
-    var f = queryGoodsStockFields(keys);
-    setTFieldsValue(window, f);
+    conditionQuery(keys);
     tapButton(window, CLEAR);
     var ret = isEqual("否", getTextFieldValue(window, f["是否停用"].index));
 
     tapMenu2("款号库存");
-    f = queryGoodsCodeStockFields(keys);
-    setTFieldsValue(window, f);
+    conditionQuery(keys);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("库存分布");
-    f = queryGoodsDistributionFields(keys);
-    setTFieldsValue(window, f);
+    conditionQuery(keys);
+    tapButton(window, CLEAR);
+    ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
+
+    tapMenu2("货品进销存");
+    conditionQuery(keys);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("货品查询");
-    f = queryGoodsFields(keys);
-    setTFieldsValue(window, f);
+    conditionQuery(keys);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
     return ret;
@@ -4236,7 +4236,7 @@ function ts100160() {
 
     tapMenu2("货品查询");
     query();
-    tapFirstText();//不能取消含有库存的颜色尺码
+    tapFirstText();// 不能取消含有库存的颜色尺码
     addGoods(keys);
     ret = isAnd(ret, isInAlertMsgs("颜色尺码过多请选择合理的颜色尺码"));
     return ret;
@@ -4409,12 +4409,20 @@ function ts100167() {
 
 function ts100168() {
     tapMenu("货品管理", "当前库存");
-    var keys = { "门店" : "中洲店" };
+    var keys = { "门店" : "常青店" };
     conditionQuery(keys);
-     tapTitle(getScrollView(), "在途数");// 升序找在途数为0的做库存调整
+    tapTitle(getScrollView(), "在途数");// 升序找在途数为0的做库存调整
     var r = getRandomNum(1, 100);
     addGoodsStockAdjustment(r);
-    return isInAlertMsgs("非总经理角色只能调整本仓库/门店的库存");
+    var ret = !hasAlerts();// 正常保存
+
+    var keys = { "门店" : "中洲店" };
+    conditionQuery(keys);
+    tapTitle(getScrollView(), "在途数");// 升序找在途数为0的做库存调整
+    addGoodsStockAdjustment(r);
+    ret = isAnd(ret, isInAlertMsgs("非总经理角色只能调整本仓库/门店的库存"));
+
+    return ret;
 }
 
 function ts100169() {
@@ -4510,13 +4518,22 @@ function ts100171Field() {
 }
 function ts100172() {
     var r = getTimestamp(8);
-    var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100", "季节" : " " };
-    var keys2 = {};
+    var keys = { "款号" : "g" + r, "名称" : "货品" + r, "进货价" : "100", "季节" : " " };
     if (colorSize == "yes") {
-        keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "颜色" : "花色,黑色",
-            "尺码" : "S,M", "进货价" : "100", "季节" : " " };
+        keys = { "款号" : "g" + r, "名称" : "货品" + r, "颜色" : "花色,黑色", "尺码" : "S,M",
+            "进货价" : "100", "季节" : " " };
     }
-    return ts100033Field(keys1, keys2);
+    tapMenu("货品管理", "新增货品+");
+    addGoods(keys)
+
+    tapMenu2("货品查询");
+    var qKeys = { "款号名称" : keys["名称"], "季节" : " " };
+    conditionQuery(qKeys);
+    tapFirstText();
+    var fields = editGoodsFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+    return ret;
 }
 
 function ts100173() {
@@ -4677,11 +4694,17 @@ function ts100176() {
     return ret;
 }
 
-// 第三层详细页面总数和滑动验证
 function ts100178() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "kh000" };// 超长订单用，一般有16条数据
     conditionQuery(keys);
+    return ts100178Field();
+}
+/**
+ * 第三层详细页面总数和滑动验证
+ * @returns
+ */
+function ts100178Field() {
     tapLine();
     delay();// 等待界面载入
     tapLine(0, getScrollView(-1, 0), "批次");
@@ -4720,7 +4743,6 @@ function ts100178() {
     tapNaviClose();
     return isAnd(isEqual(total, num), isEqualObject(arr, arr2), y1 > y2);// 验证滑动前后数据不变，Y轴变小
 }
-
 function ts100179Pre() {
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : "plczcs1" };
