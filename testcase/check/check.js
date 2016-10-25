@@ -26,14 +26,14 @@ function testCheckAll() {
     run("【盘点管理—新增盘点】删除按钮", "test180024");
     run("【盘点管理—处理记录】处理记录界面门店检查", "test180030");
     run("【盘点管理—按批次查】处理人检查", "test180048");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_2");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_4");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_6");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_1");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_3");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_5");
-    run("【盘点管理-盘点处理】盘点处理的单据修改、修改", "test180042_7");
+    run("【盘点管理-盘点处理】盘点处理的单据修改", "test180042");
+    run("【盘点管理-盘点处理】盘点处理的单据作废", "test180042_2");
+    run("【盘点管理-盘点处理】盘点处理的单据修改", "test180042_4");
+    run("【盘点管理-盘点处理】盘点处理的单据作废\待作废", "test180042_2_170614");
+    run("【盘点管理-盘点处理】盘点处理的单据修改", "test180042_1");
+    run("【盘点管理-盘点处理】盘点处理的单据作废", "test180042_3");
+    run("【盘点管理-盘点处理】盘点处理的单据修改", "test180042_5");
+    run("【盘点管理-盘点处理】盘点处理的单据作废", "test180042_7");
     run("【盘点管理—按批次查】保存（已处理盘点单）", "test180008");
     run("【盘点管理—按批次查】删除（未处理盘点单）", "test180009");
     run("【盘点管理—按批次查】删除（已处理盘点单）", "test180010");
@@ -41,7 +41,7 @@ function testCheckAll() {
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_180036");
     run("【盘点管理—盈亏表】盈亏金额的正确性", "test180049_1");
     run("【盘点管理-处理记录】详细界面的翻页、排序、底部数据汇总", "test180092");
-    run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");// 用例不明确
+    // run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");//
     run("【盘点管理-新增盘点】盘点时是否允许允许输入负数", "test180091_1");
     run("【盘点管理—盘点处理】处理日期设置", "test180027");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
@@ -68,7 +68,7 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单", "test180095");
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180096");
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180097");
-    run("【盘点管理－新增盘点计划】停用", "test180098");
+    // run("【盘点管理－新增盘点计划】停用", "test180098");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function checkPrepare_Off() {
@@ -1432,7 +1432,7 @@ function test180042_1() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test180042_2() {
+function test180042_2_170614() {
     tapMenu("采购入库", "按批次查");
     query();
     tapFirstText();
@@ -1455,10 +1455,21 @@ function test180042_2() {
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
     var ret2 = isIn(alertMsg, "盘点之前的流水不允许修改");
+
+    var bt = app.mainWindow().buttons()["待作废"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapButtonAndAlert("待作废", OK);
+        tapPrompt();
+    } else {
+        runAndAlert("test170172Bad", OK);
+        tapPrompt();
+    }
+    var ret3 = isIn(alertMsg, "盘点之前的流水不允许修改");
     tapReturn();
 
-    logDebug("ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1 && ret2;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test180042_3() {
     tapMenu("采购入库", "按批次查");
@@ -2383,9 +2394,6 @@ function test180066() {
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    // keys = { "款号" : "3035", "门店" : "常青店" };
-    // fields = queryGoodsStockFields(keys);
-    // query(fields);
     tapButton(window, QUERY);
     var qr1 = getQR();
     var kc1 = add(qr1.counts["库存"], qr1.counts["在途数"]);

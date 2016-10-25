@@ -270,7 +270,7 @@ function test210012_210013_210014() {
     o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 4);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     var ret2 = isIn(getTextFieldValue(getScrollView(-1), 2), "货品单价精确到元");
     tapReturn();
 
@@ -281,7 +281,7 @@ function test210015_210016() {
     tapMenu("系统设置", "全局设置");
     var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
-    waitUntil(cond, 5);
+    waitUntil(cond, 10);
     query();
     var ret = goPageCheck();
 

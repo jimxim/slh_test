@@ -72,7 +72,7 @@ function testBasicSetUpAll() {
     run("agc003", "setAuto1Goods003");// 加工商品 均色均码
     run("agc004", "setAuto1GoodsColor004");// 加工商品 颜色尺码
     // 童装尺码模式开单带款号
-    // run("Tz", "setGoods0013");
+    // run("Tz", "setGoods013");
 
     // 加工款
     // run("GG55", "setGoods014");

@@ -42,7 +42,7 @@ js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001 "
 
 js_func="$js_func setSales002Params"
-js_func="$js_func test000SalesColorSize002"
+js_func="$js_func test000SalesColorSize002 test000SalesColorSize003"
 
 #均色均码 获取未保存
 js_func="$js_func setSales001Params"
@@ -102,7 +102,7 @@ js_func="$js_func testCheck180058"
 #js_func="$js_func testCheck180028_Prepare"
 #js_func="$js_func testCheck180028"
 #统计图表
-js_func="$js_func test000testStatisticPicture001"
+#js_func="$js_func test000testStatisticPicture001"
 #js_func="$js_func test000testStatisticPicture002"
 
 #系统设置
