@@ -5103,14 +5103,6 @@ function test170657() {
     var k1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ] };
-    editSalesBillColorSize(json);
-
-    qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ],
         "onlytest" : "yes" };
     editSalesBillColorSize(json);

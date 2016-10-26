@@ -202,7 +202,7 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-开单】均色均码模式，库存数检查", "test170723");
     run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170429");
     run("【销售开单-开单】各个开单界面快速新增货品 款号调用的苹果键盘", "test170593");
-//    run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
+    // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
     // run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");//
     // run("超期提醒+允许继续输入+均色均码", "test170213");
     // run("【销售开单】超期提醒+不允许继续输入+均色均码", "test170214");
@@ -2206,11 +2206,15 @@ function test170080_170084() {
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "newkh" + randomWord(false, 6);
+    var r = "newkhao" + randomWord(false, 7);
     var r1 = "0.7" + getRandomInt(200);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "进货价" : 9708, "产品折扣" : r1 };
     addGoods(keys);
+
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 5);
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 1 } ],
@@ -2226,6 +2230,7 @@ function test170080_170084() {
     var totalMoney = add(Math.round(price * num * zk), -9);
     var ret1 = isAnd(isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
             totalMoney, k2));
+    waitUntil(cond, 5);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -2235,10 +2240,10 @@ function test170080_170084() {
             getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ] };
+    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
-    var qr = json["明细值"];
+    qr = json["明细值"];
     var ret3 = isAqualNum(Number(r1), Number(qr.data[0]["折扣"]));
 
     tapMenu("销售开单", "按订货开单");
@@ -2248,7 +2253,7 @@ function test170080_170084() {
     var ret4 = isEqual(Number(r1), Number(qr.data[0]["折扣"]));
     saveAndAlertOk();
     tapPrompt();
-    delay();
+    waitUntil(cond, 5);
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -6538,7 +6543,7 @@ function test170251() {
     var d = getStaticTextValue(getPopOrView(), index + 5);
     var ret1 = isAnd(isEqual("总经理", a), isEqual(null, c), isEqual(null, d),
             isAqualOptime(getOpTime(), b, 2));
-    tapButton(getPop(), "关 闭");
+    tapButton(getPop(), CLOSE);
     tapReturn();
 
     logDebug(", ret=" + ret + ", ret1=" + ret1);
@@ -8905,7 +8910,7 @@ function test170505() {
 }
 function test170506() {
     tapMenu("销售开单", "开  单+");
-    var r = getTimestamp(8);
+    var r = randomWord(false, 8);
     var json1 = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 20 } ],
         "代收" : { "物流商" : "tt", "运单号" : r, "备注" : r }, "备注" : "zdbz" };
     editSalesBillNoColorSize(json1);
@@ -8935,7 +8940,6 @@ function test170506() {
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
-
     tapButton(getScrollView(-1), 0);
     var json = { "明细" : [ { "货品" : "k300", "数量" : 21 } ], "onlytest" : "yes" };
     editSalesBillDetNoColorSize(json);
