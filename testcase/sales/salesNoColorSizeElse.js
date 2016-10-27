@@ -590,7 +590,7 @@ function test170007() {
         var keys = { "日期从" : getDay(-10), "作废挂单" : "挂单" };
         var fields = salesQueryBatchFields(keys);
         query(fields);
-
+        delay();
         var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
         var qr = getQR();
         var totalPageNo = qr.totalPageNo;
@@ -3155,6 +3155,7 @@ function test170298() {
     var keys = { "日期从" : getDay(-20), "是否作废" : "否" };
     var fields = salesCollectionFields(keys);
     query(fields);
+    delay();
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0;
     var qr = getQR();
     var totalPageNo = qr.totalPageNo;
@@ -3479,6 +3480,7 @@ function test170306() {
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
     tapButton(window, QUERY);
+    delay();
     var qr1 = getQR();
     var b = Number(qr1.counts["现金"]);
     var b1 = Number(qr1.counts["刷卡"]);

@@ -42,7 +42,9 @@ js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSizeElse001 "
 
 js_func="$js_func setSales002Params"
-js_func="$js_func test000SalesColorSize002 test000SalesColorSize003"
+js_func="$js_func test000SalesColorSize002"
+js_func="$js_func setSales002Params"
+js_func="$js_func test000SalesColorSize003"
 
 #均色均码 获取未保存
 js_func="$js_func setSales001Params"

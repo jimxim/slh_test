@@ -901,8 +901,6 @@ function editLogisticsVerifyDet(o) {
     var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);
-    tapButton(window, QUERY);
-
     var qr = getQRtable1(window, 8, -2), batch;
     if (isDefined(o["核销"])) {
         var a1 = o["核销"];

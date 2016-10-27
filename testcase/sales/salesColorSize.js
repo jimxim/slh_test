@@ -114,7 +114,7 @@ function testSalesColorSize003() {
     run("【销售开单-按批次查】童装模式+代收进入修改界面查看代收单", "test170442_170425");// 童装只能颜色尺码下
     run("【销售开单-开单】颜色尺码下款号的颜色为3个汉字时,通过获取未保存添加款号", "test170626");
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-参数准备", "test170703Prepare");
-    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");
+    run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
     run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715");
     run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_1");
     run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_2");
@@ -5480,62 +5480,50 @@ function test170703() {
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var ret1 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 0)),
-            isEqual(1, getTextFieldValue(getScrollView(-1), 3)));
+    var qr = getQRDet();
+    var ret1 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual(1,
+            qr.data[0]["数量"]));
 
     json = { "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
-
-    var ret2 = isAnd(isEqual("x003", getTextFieldValue(getScrollView(-1), 7)),
-            isEqual(1, getTextFieldValue(getScrollView(-1), 10)));
+    qr = getQRDet();
+    var ret2 = isAnd(isIn(qr.data[1]["货品"], "X003"), isEqual(1,
+            qr.data[1]["数量"]));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
-
     tapPrompt();
-
-    var ret3 = isAnd(isIn(alertMsg, "相同款号已经存在"));
-
-    tapNaviButton("关 闭");
+    var ret3 = isAnd(isIn(alertMsg, "X001,特步夹克"));
+    tapNaviButton(CLOSE);
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
-
-    var ret4 = isAnd(isEqual("x001", getTextFieldValue(getScrollView(-1), 14)),
-            isEqual(0, getTextFieldValue(getScrollView(-1), 17)), isEqual(-1,
-                    getTextFieldValue(getScrollView(-1), 21)));
+    qr = getQRDet();
+    // var ret4 = isAnd(isIn(qr.data[2]["货品"], "X001"), isEqual(0,
+    // qr.data[2]["数量"]), isEqual(-1, qr.data[3]["数量"]));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 2 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
-
     tapPrompt();
-    var ret5 = isAnd(isIn(alertMsg, "相同款号已经存在"));
+    var ret5 = isAnd(isIn(alertMsg, "X001,特步夹克"));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, -1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
-
-    var ret6 = isAnd(isIn(alertMsg, "相同款号已经存在"));
-
+    var ret6 = isAnd(isIn(alertMsg, "X001,特步夹克"));
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
 
-    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
-            + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
-    return ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
+    logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret5="
+            + ret5 + ", ret6=" + ret6);
+    return ret1 && ret2 && ret3 && ret5 && ret6;
 }
 function test170715() {
     tapMenu("销售开单", "开  单+");
-    var r = "anewkhao1" + getTimestamp(6);
-    var r1 = "1" + getTimestamp(3);
-    tapButton(window, "新增货品");
-    var o = { "款号" : r, "名称" : r, "颜色" : "花色,黑色", "尺码" : "S,M", "进货价" : r1,
-        "零批价" : r1, "打包价" : r1 };
-    var fields = editQuickAddGoodsFields(o);
-    setTFieldsValue(getPopView(), fields);
-    delay();
-    tapButton(getPop(), OK);
-    tapButton(getPop(), CLOSE);
+    var r = "anewkhao1" + randomWord(false, 6);
+    var r1 = "1" + getRandomInt(100);
+    var o = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
+    editQuickAddGoods(o, 3);
 
     var qr = getQRDet();
     var ret = isEqual(0, qr.data.length);

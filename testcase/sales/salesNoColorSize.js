@@ -101,7 +101,7 @@ function testSalesNoColorSizeAll_2() {
     run("【 开单 】同款不同价提醒与补货退货共存时检查提醒", "test170541");
     run("【销售开单-开单】特殊货品金额不能超出最高比例", "test170533");
     run("【 开单】快速新增客户时自动刷新检查", "test170538");
-    run("【销售开单－开单】汇款需填写客户", "test170582");// //汇款值输入
+    run("【销售开单－开单】汇款需填写客户", "test170582");// //SLH-11804
     run("【销售开单－开单】汇款无需填写客户", "test170583");
     // run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
     // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从A切换到B", "test170619");
@@ -10069,6 +10069,9 @@ function test170556_170610() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret3 = isIn(alertMsg1, "保存成功");
 
+    var bt = window.buttons()[QUERY];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     tapMenu("往来管理", "客户查询");
     keys = { "客户" : r2 };
     qFields = queryCustomerFields(keys);
@@ -10375,13 +10378,19 @@ function test170582() {
 
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "必须输入客户名称");
+    var ret = isIn(alertMsg, "汇款必须填写客户信息");
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
 
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret1 = (isIn(alertMsg1, "必须输入客户名称"));
+    // 挂单保存时验证提示信息
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText();
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = (isIn(alertMsg, "汇款必须填写客户信息"));
+    tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

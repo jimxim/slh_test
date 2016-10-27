@@ -2154,7 +2154,7 @@ function test210065() {
     tapMenu("系统设置", "打印机");
     tapTextByFirstWithName("2");
     var r = ";/";
-    var r1 = getRandomInt(100000);
+    var r1 = getRandomInt(65535);
     var f = new TField("数值", TF, 2, r);
     setTFieldsValue(getScrollView(), [ f ]);
     tapButtonAndAlert(SAVE, OK);
