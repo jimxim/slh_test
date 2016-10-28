@@ -998,12 +998,12 @@ function test120014() {
 }
 
 function test120019() {
-    var i, r = "g" + getTimestamp(5), jo1, jo2;
+    var i, r = "g" + getTimestamp(5), jo1 = {}, jo2 = {};
     tapMenu("货品管理", "库存分布");
     query();
     var qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[0]["名称"] == "") {
+        if (qr.data[i]["名称"] == "") {
             jo1 = qr.data[i];
             break;
         }
@@ -1034,7 +1034,7 @@ function test120019() {
     qr = getQR();
     var ret = isEqualObject2(expected, qr.data[0]);
 
-    tapMenu("货品管理", "款号库存");
+    tapMenu2("款号库存");
     fields = queryGoodsCodeStockFields(keys);
     query(fields);
     qr = getQR();
@@ -1044,7 +1044,7 @@ function test120019() {
     tapButton(window, QUERY);
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[0]["名称"] == "") {
+        if (qr.data[i]["名称"] == "") {
             jo2 = qr.data[i];
             break;
         }
@@ -1061,7 +1061,7 @@ function test120019() {
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
     var ret1 = isEqualObject2(expected, data);
     delay();//
-    tapFirstText(getScrollView(-1, 0), "名称", 8);
+    tapLine(0, getScrollView(-1, 0), "名称");
     qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
     expected = { "名称" : r + "," + r, "颜色" : "均色", "尺码" : "均码", "库存" : 20,
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
@@ -2688,6 +2688,8 @@ function test120050Field(price) {
 
     tapMenu2("按批次查");
     query();
+    var qr = getQR();
+    ret = isAnd(ret, isEqual(mul(qr.data[0]["总数"], 100), qr.data[0]["金额"]))
     tapFirstText();
     var data = getQRDet().data;
     tapReturn();
@@ -2706,7 +2708,7 @@ function test120050Field(price) {
     tapReturn();
     ret = isAnd(ret, isEqual(qr.data[0]["单价"], price));
 
-    tapTextByFirstWithName("2");// 序号2
+    tapLine(1);// 点击第二行
     qr = getQRDet();
     tapReturn();
     ret = isAnd(ret, isEqual(qr.data[0]["单价"], 100));
@@ -3036,7 +3038,7 @@ function ts120087() {
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapReturn();
 
-    tapMenu("销售开单", AddBILL);
+    tapMenu("销售开单", ADDBILL);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapReturn();
 
@@ -3088,7 +3090,23 @@ function ts120088() {
     ok = isAnd(ok, setGlobalParam(qo, o));
     return ret;
 }
+function ts120090() {
+    var qo = { "备注" : "采购入库模式" };
+    var o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
+    setGlobalParam(qo, o);
 
+    qo = { "备注" : "采购员是否总是使用采购价做选款aclist的价格显示" };
+    o = { "新值" : "1", "数值" : [ "开启" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("采购入库", "批量入库+");
+    var keys = { "明细" : [ { "货品" : "agc003" } ], "onlytest" : "yes" };// 加工价为120
+    editSalesBill(keys, colorSize);
+    var ret = dropDownListCheck("agc003,auto003,100", getScrollView());
+    tapReturn();
+
+    return ret;
+}
 function ts120091() {
     tapMenu("门店调入", "按批次查");
     var keys = { "日期从" : getDay(-30) };
@@ -3825,4 +3843,12 @@ function ts120123() {
     setGlobalParam(qo, o);
     logDebug("s2=" + s2 + " S2=" + S2);
     return isAnd(s1 == S1, Number(s2) + 30 == S2);
+}
+//SLH-7620
+function ts120124() {
+    var qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限 这个设置为0是不是就是不验证" };
+    var o = { "数值" : 2 };
+    setGlobalParam(qo, o);
+
+    return true;
 }

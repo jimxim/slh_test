@@ -1,4 +1,3 @@
-
 function testStatisticPictureAll() {
     run("【统计图表—按门店】清除", "test200001_200003_200004_200005");
     run("【统计图表—按门店汇总】查询", "test200017");
@@ -16,24 +15,17 @@ function testStatisticPictureAll() {
 }
 function test200001_200003_200004_200005() {
     tapMenu("统计图表", "按门店");
-    var keys = { "日期从" : getDay(-30), "到" : getToday() };
+    var keys = { "日期从" : getDay(-30), "到" : getDay(-1) };
     var fields = pictureShopFields(keys);
     query(fields);
-
     tapButton(window, "本 周");
     tapButton(window, "本 月");
-
-    var ret1 = true;
-    if (isIn(alertMsg, "服务端错误")) {
-        ret1 = false;
-    }
+    var ret = isInAlertMsgs("服务端错误");
 
     tapButton(window, CLEAR);
-
-    var ret = isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
-            getToday(), getTextFieldValue(window, 1)));
-
-    return ret && ret1;
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 0)),
+            isEqual(getToday(), getTextFieldValue(window, 1)));
+    return ret;
 }
 function test200017() {
     tapMenu("统计图表", "按门店汇总");
@@ -138,6 +130,10 @@ function test200019() {
 
     return ret;
 }
+function ts200020() {
+    tapMenu("统计图表", "按图像");
+    
+}
 function test200021() {
     tapMenu("统计图表", "按客户");
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "门店" : "常青店",
@@ -188,7 +184,7 @@ function test200024_1() {
 }
 function test200026() {
     tapMenu("统计图表", "按图像");
-    
+
 }
 function test200039_200040_200041_200042() {
     tapMenu("统计图表", "按店员");

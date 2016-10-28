@@ -730,7 +730,7 @@ function test160011_1() {
  * @returns
  */
 function test160011Field(staff, menu1, keys) {
-    var line = 0;
+    var line = 0, v1, v2, ret = true;
     tapMenu(menu1, "按批次查");
     conditionQuery(keys);
 
@@ -748,12 +748,10 @@ function test160011Field(staff, menu1, keys) {
     var jo1 = test160011Field_1();
     tapButton(getPop(), OK);
 
-    // 保存修改
-    saveAndAlertOk();
-    var opTime = getOpTime();//
-    tapPrompt();
-    delay();
-    tapReturn();
+    // 保存修改并打印，打印----采购为确定，销售为打印(客户用)
+    var json = { "入库明细" : [ { "数量" : 2 } ], "打印" : OK };
+    editSalesBill(json, colorSize)
+    var opTime = json["操作日期"];//
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
@@ -765,7 +763,19 @@ function test160011Field(staff, menu1, keys) {
 
     jo1["最后修改人"] = staff;
     jo1["最后修改时间"] = opTime;
-    return isEqualObject(jo1, jo2);
+    jo1["最后打印时间"] = opTime;
+    for ( var i in jo1) {
+        v1 = jo1[i];
+        v2 = jo2[i];
+        if (i.indexOf("时间") != -1 && v2 != null) {
+            ret = ret && isAqualOptimeX(v1, v2, 1);
+        } else {
+            ret = ret && (v1 == v2);
+        }
+    }
+    debugObject(jo1, "期望值");
+    debugObject(jo2, "实际值");
+    return ret;
 }
 /**
  * 获取查看修改日志整个界面的内容

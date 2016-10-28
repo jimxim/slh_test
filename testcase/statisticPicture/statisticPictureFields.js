@@ -162,7 +162,7 @@ function pictureCodeField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 10, "1010pp",-1,0);
+        f = new TField("品牌", TF_AC, 10, "1010pp", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -170,20 +170,20 @@ function pictureCodeField(key, show) {
     return f;
 }
 
-// 按款号图像
-function testPictureCodePictureFields() {
+// 按图像
+function testPicturePictureFields() {
     var view1 = getTableViews()[2].groups()["日期"];
     var keys = [ "day1", "day2", "code", "provider", "brand" ];
-    var fields = pictureCodePictureFields(keys);
+    var fields = picturePictureFields(keys);
     setTFieldsValue(view1, fields);
-    var showFields = pictureCodePictureFields(keys, true);
+    var showFields = picturePictureFields(keys, true);
     return checkShowFields(view1, showFields);
 }
 
-function pictureCodePictureFields(keys, show) {
-    return getTFields("pictureCodePictureField", keys, show);
+function picturePictureFields(keys, show) {
+    return getTFields("picturePictureField", keys, show);
 }
-function pictureCodePictureField(key, show) {
+function picturePictureField(key, show) {
     var f;
     switch (key) {
     case "day1":
@@ -191,36 +191,56 @@ function pictureCodePictureField(key, show) {
         f = new TField("日期", TF_DT, 0, "2015-7-11");
         break;
     case "day2":
-    case "到":
+    case "日期到":
         f = new TField("到", TF_DT, 1, getToday());
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别", BTN_SC, 0, "登山服");
+        break;
+    case "season":
+    case "季节":
+        f = new TField("季节", BTN_SC, 1, "春季");
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 2, "a", 1, 0);
+        f = new TField("款号", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 3, "z", 1, 0);
+        f = new TField("厂商", TF_AC, 3, "z", -1, 0);
         if (show) {
             f.value = "杭州";
         }
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 4, "1", 1, 0);
-        if (show) {
-            f.value = "1010pp";
-        }
+        f = new TField("品牌", TF_AC, 4, "1010pp", -1, 0);
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 5, "常青店", -1, 0);// 实际为TF_AC
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 6, "jkk");
         break;
     default:
         logWarn("未知key＝" + key);
     }
     return f;
 }
-
+/**
+ * 统计图表-按图像-上架日期（独立验证 含查询按钮）
+ * @param keys
+ * @param show
+ */
+function queryPictureRemarketDate(keys, show) {
+    tapButton()
+}
 // 按店员
 function testPictureStaffFields() {
     var keys = [ "staff", "day1", "day2" ];

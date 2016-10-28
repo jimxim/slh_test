@@ -94,6 +94,9 @@ function editSystemGlobalField(key, show) {
     case "数值":
         f = new TField("数值", BTN_SC, 0, -1);
         break;
+    case "数值2":
+        f = new TField("数值", TF, 2, "0");//直接输入，退货天数等设置
+        break;
     case "authcode":
     case "授权码":
         f = new TField("授权码", TF, 4, "slh000");

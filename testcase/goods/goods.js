@@ -2276,27 +2276,32 @@ function ts100124() {
     // 7.21只有点击清除后才会变回默认，不再验证页面切换后变回默认值
     tapMenu("货品管理", "当前库存");
     var keys = { "是否停用" : "是" };
-    conditionQuery(keys);
+    var f = getQueryTFields(keys);
+    setTFieldsValue(window, f);
     tapButton(window, CLEAR);
     var ret = isEqual("否", getTextFieldValue(window, f["是否停用"].index));
 
     tapMenu2("款号库存");
-    conditionQuery(keys);
+    f = getQueryTFields(keys);
+    setTFieldsValue(window, f);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("库存分布");
-    conditionQuery(keys);
+    f = getQueryTFields(keys);
+    setTFieldsValue(window, f);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("货品进销存");
-    conditionQuery(keys);
+    f = getQueryTFields(keys);
+    setTFieldsValue(window, f);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
 
     tapMenu2("货品查询");
-    conditionQuery(keys);
+    f = getQueryTFields(keys);
+    setTFieldsValue(window, f);
     tapButton(window, CLEAR);
     ret = isAnd(ret, isEqual("否", getTextFieldValue(window, f["是否停用"].index)));
     return ret;
@@ -2321,15 +2326,13 @@ function ts100129() {
 function ts100132() {
     tapMenu("货品管理", "库存分布");
     var keys = { "类别" : "登山服" };
-    var fields = queryGoodsDistributionFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapFirstText();
     var arr1 = get130004QR2("名称", "中洲店", "名称");
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("货品管理", "当前库存");
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var arr2 = [];
     for (var j = 1; j <= qr.totalPageNo; j++) {
@@ -4667,10 +4670,15 @@ function ts100177() {
     tapReturn();
     return ret;
 }
+// 默认价格模式
 function ts100176() {
-    var qo = { "备注" : "价格模式" };
+    // var qo1 = { "备注" : "货品建款的价格模式" };
+    // var o = { "新值" : "1", "数值" : [ "不同门店不同的价格体系", "in" ] };
+    // setGlobalParam(qo, o);
+
+    var qo2 = { "备注" : "价格模式" };
     var o = { "新值" : "1", "数值" : [ "不同门店不同的价格体系", "in" ] };
-    setGlobalParam(qo, o);
+    setGlobalParam(qo2, o);
 
     tapMenu("货品管理", "货品查询");
     var price = 100;
@@ -4690,7 +4698,9 @@ function ts100176() {
     tapReturn();
 
     o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
-    setGlobalParam(qo, o);
+    setGlobalParam(qo2, o);
+    // o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    // setGlobalParam(qo1, o);
     return ret;
 }
 
@@ -4792,7 +4802,14 @@ function ts100180() {
         tapPrompt();// 点去弹窗后，会自动返回新增货品界面
         ret = isAnd(ret, isIn(alertMsg, "必须先设置颜色尺码"));
 
-        keys = { "颜色" : "红色", "尺码" : "S", "进货价" : 200 };
+        keys = { "颜色" : "红色", "尺码" : "S" };
+        addGoods(keys, jo);// 取消颜色 输入尺码
+        editStockEntry(jo);
+        tapPrompt();// 点去弹窗后，会自动返回新增货品界面
+        ret = isAnd(ret, isIn(alertMsg, "必须先设置颜色尺码"));
+
+        keys = { "颜色" : "红色", "进货价" : 200 };// 取消后选择直接为勾选状态bug
+        addGoods(keys, jo);
         jo2 = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
     } else {
         keys = { "进货价" : 200 };
@@ -4944,7 +4961,7 @@ function ts100187() {
     var fields = editGoodsFields(keys, true);
     ret = isAnd(ret, checkShowFields(getScrollView(-1), fields));// 显示启用上次价，且默认为是
     tapReturn();
-
+    // 开单验证 采购在ts120088，销售zy那有覆盖
     return ret;
 }
 

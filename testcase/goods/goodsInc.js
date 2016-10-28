@@ -748,7 +748,7 @@ function tapLine(n, view, firstTitle) {
         n = 0;
     }
     if (isUndefined(view)) {
-        view = getScrollView(0);//网格模式
+        view = getScrollView(0);// 网格模式
     }
     if (isUndefined(firstTitle)) {
         firstTitle = TITLE_SEQ;
@@ -1001,19 +1001,21 @@ function checkQResultField(title, expected, type, expected2) {
 }
 /**
  * 验证其他角色门店查询结果
- * @param fn
  * @returns {Boolean}
  */
-function checkShopQueryRights(fn) {
-    var keys = { "日期从" : getDay(-365), "门店" : "常青店" };
-    var fields = getTFields(fn, keys);
-    query(fields);
+function checkShopQueryRights() {
+    var keys = { "日期从" : getDay(-365), "门店" : "常青店" }, ret;
+    conditionQuery(keys);
     var qr = getQR();
-    var ret = qr.data.length > 0;
+    var t = qr.titles;
+    if (t.indexOf("门店") != -1) {
+        ret = checkQResult("门店", "常青店");// 含有门店需要验证门店是否正确
+    } else {
+        ret = qr.data.length > 0
+    }
 
     keys = { "门店" : "中洲店" };
-    fields = getTFields(fn, keys);
-    query(fields, false);
+    conditionQuery(keys, false);
     qr = getQR();
     ret = isAnd(ret, qr.data.length == 0);
     return ret;
@@ -2013,19 +2015,11 @@ function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
     return ret;
 }
 /**
- * 条件查询 根据菜单直接找相应的fields
+ * 获取查询界面fields对象集
  * @param keys
- * @param tapClear false 不点击清除
- * @param view 默认window
  */
-function conditionQuery(keys, tapClear, view) {
+function getQueryTFields(keys) {
     var msg = gMenu1 + "-" + gMenu2;
-    if (isUndefined(view)) {
-        view = window;
-    }
-    if (isUndefined(tapClear) || tapClear) {
-        tapButton(view, CLEAR);
-    }
     var qFields;
     switch (gMenu1) {
     case "货品管理":
@@ -2292,6 +2286,13 @@ function conditionQuery(keys, tapClear, view) {
         case "按明细查":
             qFields = salesQueryParticularFields(keys);
             break;
+        case "按汇总":
+            switch (gMenu3) {
+            case "按款号汇总":
+                qFields = salesCodeFields(keys);
+                break;
+            }
+            break;
         }
         break;
     case "统计分析":
@@ -2348,6 +2349,22 @@ function conditionQuery(keys, tapClear, view) {
         logDebug("未知模块 " + msg);
         break;
     }
+    return qFields;
+}
+/**
+ * 条件查询 根据菜单直接找相应的fields
+ * @param keys
+ * @param tapClear false 不点击清除
+ * @param view 默认window
+ */
+function conditionQuery(keys, tapClear, view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    if (isUndefined(tapClear) || tapClear) {
+        tapButton(view, CLEAR);
+    }
+    var qFields = getQueryTFields(keys);
     setTFieldsValue(view, qFields);
     tapButton(view, QUERY);
 }

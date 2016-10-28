@@ -400,7 +400,7 @@ function ts150006() {
     tf.setValue("123456");
     tapButton(window, index);
     delay();
-    tapNaviClose();//防止异常
+    tapNaviClose();// 防止异常
     tapReturn();
 
     ret = isAnd(ret, changeSecure("123456", "000000"));
@@ -799,11 +799,11 @@ function ts150035() {
     editShopOutDecruitIn(json, colorSize);
 
     tapMenu2("按批次查");
-    query();
-    tapTitle(getScrollView(), "操作日期");
-    tapTitle(getScrollView(), "操作日期");// 找刚才开的单子
+    var keys = { "调出门店" : "仓库店" };
+    conditionQuery(keys);
     var qr = getQR();
-    var ret = isEqual("仓库店", qr.data[0]["调出门店"]);
+    var batch = qr.data[0]["批次"];
+    var ret = isEqual("常青店", qr.data[0]["调入门店"]);
 
     tapLine();
     json = { "接收店" : "中洲店" };
@@ -811,10 +811,9 @@ function ts150035() {
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
-    tapTitle(getScrollView(), "操作日期");
-    tapTitle(getScrollView(), "操作日期");// 找刚才开的单子
     qr = getQR();
-    ret = isAnd(ret, isEqual("仓库店", qr.data[0]["调出门店"]));
+    ret = isAnd(ret, isEqual(batch, qr.data[0]["批次"]), isEqual("中洲店",
+            qr.data[0]["调入门店"]));
     return ret;
 }
 function ts150036() {

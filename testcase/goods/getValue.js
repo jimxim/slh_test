@@ -43,8 +43,28 @@ function getDetTS100006(code, close) {
 
     return data;
 }
-//网格滑动取值  getQR scrollViews length>1
+// 网格滑动取值 getQR scrollViews length>1
 function getQRfixed() {
     var scrollViews = window.scrollViews();// 0为标题,1为数据,3为汇总值
+
+}
+/**
+ * 获取最后一个不为空的tableView
+ * @param view
+ * @returns
+ */
+function getLastTableView(view) {
+    if (isUndefined(view)) {
+        view = window;
+    }
+    var views = window.tableViews();
+    for (var i = view1.length - 1; i > 1; i--) {// 0是菜单栏，需要排除
+        if (views[i].name != "空列表") {
+            break;
+        }
+    }
+    return views[i];
+}
+function getQRPicture() {
 
 }
