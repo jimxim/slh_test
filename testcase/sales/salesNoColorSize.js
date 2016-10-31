@@ -5789,19 +5789,8 @@ function test170229() {
     tapPrompt();
     var ret1 = isIn(alertMsg, "销售价不能为零，请核对款号[k200]价格是否维护");
 
-    var idx, idx1;
-    if (ipadVer >= "7.21") {
-        idx = 5;
-        idx1 = 13;
-    } else {
-        idx = 4;
-        idx1 = 11;
-    }
-    var f5 = new TField("单价", TF, idx, 170);
-    var f13 = new TField("单价", TF, idx1, 0);
-    var fields = [ f5, f13 ];
-    setTFieldsValue(getScrollView(-1), fields);
-
+    var o = [ { "单价" : [ 170, 0 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
     saveAndAlertOk();
     var o1 = { "继续开单保存" : "仍然保存" };
     setValueToCache(ALERT_MSG_KEYS, o1);
