@@ -444,23 +444,23 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "day1":
     case "订货日期从":
-        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        f = new TField("订货日期从", TF_DT, 2, "2015-9-11");
         break;
     case "day2":
     case "订货日期到":
         f = new TField("到", TF_DT, 3, getToday());
         break;
-    case "company":
-    case "厂商":
-        f = new TField("厂商", TF_AC, 4, "Vell", -1, 0);
-        break;
     case "day3":
     case "上架从":
-        f = new TField("日期从", TF_DT, 5, "2015-9-11");
+        f = new TField("日期从", TF_DT, 4, getToday());
         break;
     case "day4":
     case "上架到":
-        f = new TField("到", TF_DT, 6, getToday());
+        f = new TField("到", TF_DT, 5, getToday());
+        break;
+    case "company":
+    case "厂商":
+        f = new TField("厂商", TF_AC, 6, "Vell", -1, 0);
         break;
     case "shop":
     case "门店":
@@ -468,11 +468,11 @@ function salesOrderQueryByStockoutField(key, show) {
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 8, -1, 0);
+        f = new TField("品牌", TF_AC, 8, "1010pp", -1, 0);
         break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 9, "夏季");
+        f = new TField("季节", TF_SC, 9, "夏季", -1);
         break;
     default:
         logWarn("未知key＝" + key);

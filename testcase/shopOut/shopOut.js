@@ -867,6 +867,9 @@ function shopInPrepare() {
     return true;
 }
 
+/**
+ * 门店调出-批量调出+
+ */
 function editShopOutDecruitIn(o, colorSize) {
     editShopOutDecruitField1(o, "调出人");
     editShopOutDecruitField1(o, "接收店");

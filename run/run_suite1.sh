@@ -8,6 +8,8 @@ js_func="loginGoodsParams001"
 #js_func="$js_func setBasicSetUpAll"
 #新综合汇总接口
 js_func="$js_func loginSASynthesisAll"
+#基本功能验证涉及所有模块
+js_func="$js_func testCollect"
 #统计分析
 js_func="$js_func login200StatisticAnalysisPrepare login000StatisticAnalysis001"
 #货品管理，省代

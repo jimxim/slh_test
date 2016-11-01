@@ -189,7 +189,7 @@ function addLogisticsVerify(o) {
     logisticsVerifySetField(o, "物流");
     logisticsVerifySetField(o, "店员");
     logisticsVerifySetField(o, "日期");
-    logisticsVerifySetField(o, "备");
+    logisticsVerifySetField(o, "备注");
 
     editLogisticsVerify(o);
 
@@ -1001,9 +1001,13 @@ function checkQResultField(title, expected, type, expected2) {
 }
 /**
  * 验证其他角色门店查询结果
+ * @param onlymyshop 是否只显示本门店数据 默认本门店
  * @returns {Boolean}
  */
-function checkShopQueryRights() {
+function checkShopQueryRights(onlymyshop) {
+    if (isUndefined(onlymyshop)) {
+        onlymyshop = true;
+    }
     var keys = { "日期从" : getDay(-365), "门店" : "常青店" }, ret;
     conditionQuery(keys);
     var qr = getQR();
@@ -1017,7 +1021,15 @@ function checkShopQueryRights() {
     keys = { "门店" : "中洲店" };
     conditionQuery(keys, false);
     qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0);
+    if (!onlymyshop) {
+        if (t.indexOf("门店") != -1) {
+            ret = isAnd(ret, checkQResult("门店", "中洲店"));// 含有门店需要验证门店是否正确
+        } else {
+            ret = isAnd(ret, qr.data.length > 0);
+        }
+    } else {
+        ret = isAnd(ret, qr.data.length == 0);
+    }
     return ret;
 }
 /**

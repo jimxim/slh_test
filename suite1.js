@@ -17,17 +17,15 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "onlyTest");
- run("测试用例", "ts190110");//
+ run("测试用例", "test160126");//
 
 }
 
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-tapButton(window,QUERY);
-var qr=getQR();
-debugObject(qr.titles);
+
 // window.staticTexts().firstWithPredicate(cond).tap();
  // debugObject(gCache,"gCache");parent
  return true;
@@ -81,6 +79,16 @@ function setBasicSetUpAll(){
         testBasicSetUpAll();
        logout();
     }
+}
+
+// 一些基本功能的验证 涉及所有模块
+function testCollect(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+       run("一级界面,查询条件日期从，日期到验证", "testDeadlineCheck");
+       logout();
+    }  
 }
 
 // 新综合汇总接口
