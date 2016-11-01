@@ -827,7 +827,8 @@ function editChangeSalesBillOrderRemarks(o, ret) {
     var titles = getSalesBillDetTfObject();
     var title_num = "备注";
     var tfNum = titles["明细输入框个数"];
-    var num = o["备注"];
+    var d = o[0];
+    var num = d["备注"];
     var fields, f;
     if (num && num.length > 0) {
         fields = [];

@@ -2628,24 +2628,28 @@ function test170097() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : 2, "备注" : "mxbz" },
-                { "货品" : "3035", "数量" : -1 } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : -1 },
+                { "货品" : "3035", "数量" : 2, "备注" : "mxbz" } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    var idx;
-    if (ipadVer >= "7.21") {
-        idx = 12;
-    } else {
-        idx = 10;
-    }
-    tap(getTextField(getScrollView(-1), idx + 3));
+
+    var titles = getSalesBillDetTfObject();
+    var title_num = "备注";
+    tap(getTextField(getScrollView(-1), titles[title_num]));
     var arr = [ "退货", "赠品", "代卖", "次品", "代保管", "换色", "换码" ];
     var view = window.popover().scrollViews()[0];
     var ret = isEqualDropDownList(arr, view);
 
-    var f10 = new TField("数量", TF, idx, "-1");
-    var f13 = new TField("备注", TF_SC, idx + 3, "换码");
-    var fields = [ f10, f13 ];
-    setTFieldsValue(getScrollView(-1), fields);
+    // var f10 = new TField("数量", TF, idx, "-1");
+    // var f13 = new TField("备注", TF_SC, idx + 3, "换码");
+    // var fields = [ f10, f13 ];
+    // setTFieldsValue(getScrollView(-1), fields);
+
+    var o = [ { "数量" : [ "-1" ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+
+    var f = new TField("备注", TF, titles[title_num], "换码");
+    setTFieldsValue(getScrollView(-1), f);
 
     saveAndAlertOk();
     var o1 = { "继续开单保存" : "仍然保存" };
@@ -9093,7 +9097,7 @@ function test170509() {
     var json = { "客户" : "ls", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var r = "anewKH" + getTimestamp(4);
+    var r = "anewKH" + randomWord(false, 4);
     var r1 = "1" + getTimestamp(3);
     tapMenu("销售开单", "开  单+");
     tapButton(window, GOODS);
