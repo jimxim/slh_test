@@ -27,12 +27,12 @@ function editCheckAdd(o, colorSize) {
  */
 function editCheckAddDetNoColorSize(o) {
     delay();
+    var title = getSalesBillDetTfObject();
+    var tfNum = title["明细输入框个数"];
     var details = o["明细"], mergeLine = 0, detLine = 0, byOrder = 0;
     // 输入超出当前页面显示条数时，比如8条时，tfNum会将前面10行内容都当做标题，因此只在最开始取一次标题数
-    var tfNum = getSalesBillDetTfNum(o);
-
     for ( var i in details) {
-        var start = tfNum * (i - mergeLine + detLine);
+        var start = getBillDetInputIndex(tfNum);
         var d = details[i];
         var f0 = new TField("货品", TF_AC, start + 0, d["货品"], -1, 0);
         var view1 = getScrollView(-1);

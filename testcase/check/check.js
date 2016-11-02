@@ -17,6 +17,7 @@ function testCheck001() {
 function testCheckAll() {
     run("处理掉待作废", "checkPrepare");
     run("处理掉盘点计划", "checkPrepare1");
+    run("【盘点管理-更多-未盘点款号】检查数据正确性", "test180088");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
     run("【盘点管理—按批次查】输入起始批次和结束批次后查询", "test180002");
@@ -51,13 +52,14 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
     run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
     run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
-    run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");
+    run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");// //
     run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
     run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074_180082_180083");
     run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单", "test180076");
-    run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180077");// 修改
-    run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180078");// 修改
-    run("【盘点管理-盘点计划】按品牌/按类别/按厂商三个不能同时新增", "test180079");
+    run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180077");// /// 修改
+    run("【盘点管理-盘点计划】新增厂商盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180078");// ///
+    // 修改
+    run("【盘点管理-盘点计划】按品牌/按类别/按厂商三个不能同时新增", "test180079");// //
     run("【盘点管理-盘点计划】盘点计划组合类型", "test180084");
     run("【盘点管理-盘点计划表】查询清除排序", "test180082_180083");//    
     run("【盘点管理-新增盘点】款号提示", "test180085");
@@ -2587,7 +2589,7 @@ function test180070() {
     setTFieldsValue(getScrollView(), fields);
     delay();
     tapButtonAndAlert("部分处理");
-    tapPrompt();
+    delay(2);
     tapReturn();
 
     tapMenu("盘点管理", "盘点计划+", "按类别+");
@@ -2595,7 +2597,6 @@ function test180070() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     testAddPlanCheck("按类别");
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
@@ -2606,14 +2607,13 @@ function test180070() {
     var total1 = qr.total;
 
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "4562", "数量" : 10 },
-            { "货品" : "3035", "数量" : 20 } ] };
+    var josn = {
+        "明细" : [ { "货品" : "4562", "数量" : 10 }, { "货品" : "3035", "数量" : 20 } ],
+        "onlytest" : "yes" };
     editCheckAddDetNoColorSize(josn);
-
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "不属于本次盘点计划");
-
     tapButton(getScrollView(-1), 0);
     saveAndAlertOk();
     tapReturn();
@@ -2623,8 +2623,11 @@ function test180070() {
     qr = getQR();
     var total2 = qr.total;
     var ret1 = isEqual(1, sub(total2, total1));
-
     tapFirstText();
+    qr = getQRDet();
+    ret1 = isAnd(ret1, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(1,
+            qr.data.length));
+
     var josn = { "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
     editCheckAddDetNoColorSize(josn);
 
@@ -2633,10 +2636,22 @@ function test180070() {
     var ret2 = isIn(alertMsg, "不属于本次盘点计划");
     tapReturn();
 
+    tapMenu("盘点管理", "按批次查");
+    query();
+    qr = getQR();
+    var total3 = qr.total;
+    var ret3 = isEqual(total2, total3);
+    tapFirstText();
+    qr = getQRDet();
+    ret3 = isAnd(ret3, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(1,
+            qr.data.length));
+    tapReturn();
+
     checkPrepare1();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test180073() {
     tapMenu("盘点管理", "盘点处理");
@@ -2935,13 +2950,26 @@ function test180078() {
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    keys = { "款号" : "adidas" };
+    keys = { "款号" : "3035", "门店" : "常青店", "厂商" : "vell" };
+    fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var kcun = add(qr.counts["库存"], qr.counts["在途数"]);
+
+    keys = { "款号" : "adidas", "门店" : "常青店", "厂商" : "Adida" };
     fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var kc = add(qr.counts["库存"], qr.counts["在途数"]);
 
-    // 加上厂商库存检查，计划内的款号有库存，盘点计划外的一个有库存的款号库存检查-不变
+    // 厂商库存检查，计划内的款号有库存，盘点计划外的一个有库存的款号库存检查-不变
+    var key = [ "款号" ];
+    var qFields = queryGoodsStockFields(key);
+    changeTFieldValue(qFields["款号"], "adidas_bag");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var kcu = add(qr.counts["库存"], qr.counts["在途数"]);
 
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
     keys = { "门店" : "常青店" };
@@ -2952,7 +2980,7 @@ function test180078() {
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
 
-    var r = 1 + getTimestamp(2);
+    var r = 1 + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "adidas", "数量" : r } ] };
     editCheckAddNoColorSize(josn);
@@ -2967,13 +2995,22 @@ function test180078() {
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
-    keys = { "款号" : "adidas", "门店" : "常青店" };
+    tapButton(window, QUERY);
+    qr = getQR();
+    var kcu1 = add(qr.counts["库存"], qr.counts["在途数"]);
+
+    // 厂商库存检查
+    changeTFieldValue(qFields["款号"], "adidas");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var kc1 = add(qr.counts["库存"], qr.counts["在途数"]);
+
+    keys = { "款号" : "3035", "门店" : "常青店", "厂商" : "vell" };
     fields = queryGoodsStockFields(keys);
     query(fields);
-    var qr1 = getQR();
-    var kc1 = add(qr1.counts["库存"], qr1.counts["在途数"]);
-
-    // 加上厂商库存检查
+    qr = getQR();
+    var kcun1 = add(qr.counts["库存"], qr.counts["在途数"]);
 
     tapMenu("盘点管理", "盘点计划+", "按厂商+");
     keys = { "门店" : "常青店" };
@@ -3022,12 +3059,30 @@ function test180078() {
     var ret1 = isEqual(1, sub(total1, total2));
 
     tapMenu("货品管理", "当前库存");
-    tapButton(window, QUERY);
+    keys = { "款号" : "adidas", "门店" : "常青店", "厂商" : "Adida" };
+    fields = queryGoodsStockFields(keys);
+    query(fields);
     var qr1 = getQR();
     var kc2 = add(qr1.counts["库存"], qr1.counts["在途数"]);
-    var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2));
 
-    // 加上厂商库存检查
+    // 厂商库存检查
+    key = [ "款号" ];
+    qFields = queryGoodsStockFields(key);
+    changeTFieldValue(qFields["款号"], "adidas_bag");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var kcu2 = add(qr.counts["库存"], qr.counts["在途数"]);
+
+    keys = { "款号" : "3035", "门店" : "常青店", "厂商" : "vell" };
+    fields = queryGoodsStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var kcun2 = add(qr.counts["库存"], qr.counts["在途数"]);
+
+    var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2),
+            isEqual(kcu, kcu1), isEqual(kcu2, kcu1), isEqual(kcun1, kcun),
+            isEqual(kcun2, kcun1));
 
     if (ipadVer >= "7.21") {
         tapMenu("盘点管理", "getMenu_More", "盘点计划表");
@@ -3059,7 +3114,6 @@ function test180079() {
     fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     testAddPlanCheck("按品牌");
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3070,7 +3124,6 @@ function test180079() {
     fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     testAddPlanCheck("按类别");
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
@@ -3082,15 +3135,25 @@ function test180079() {
     fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     testAddPlanCheck("按厂商");
     tapButtonAndAlert(SAVE, OK);
     tapPrompt();
     var ret1 = isIn(alertMsg, "请等盘点处理完毕后新增计划");
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("盘点管理", "盘点计划+", "按组合+");
+    var keys = { "门店" : "常青店" };
+    var fields = checkPlanAddFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    testAddPlanGroupCheck();
+    tapButtonAndAlert(SAVE, OK);
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "请等盘点处理完毕后新增计划");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test180081() {
     // 总经理门店下拉列表显示全部门店
@@ -3279,7 +3342,7 @@ function test180085() {
 function test180086() {
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     var keys = { "款号" : "k300", "款号名称" : "铅笔裤", "品牌" : "Adidas", "类别" : "登山服",
-        "厂商" : "rt", "门店" : "常青店", "日期从" : getDay(-7), "日期到" : getToday() };
+        "厂商" : "rt", "门店" : "常青店", "日期从" : getDay(1), "日期到" : getToday() };
     var fields = checkUnCheckCodeFields(keys);
     query(fields);
     var qr = getQR();
@@ -3295,15 +3358,79 @@ function test180086() {
         }
     }
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    tapMenu("盘点管理", "getMenu_More", "未盘点款号");
+    var keys = { "日期从" : getDay(1), "日期到" : getToday() };
+    var fields = checkUnCheckCodeFields(keys);
+    query(fields);
+    qr = getQR();
+    var total = qr.total;
+    var ventory = qr.counts["库存"];
+
+    tapMenu("货品管理", "款号库存");
+    keys = { "门店" : "常青店" };
+    fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var total1 = qr.total;
+    var ventory1 = qr.counts["库存"];
+    var ret3 = isAnd(isEqual(ventory, ventory1), isEqual(total1, total));
+
+    tapMenu("盘点管理", "按明细查");
+    query();
+    qr = getQR();
+    var batch = qr.data[0]["批次"];
+    var v, arr = [];
+    arr.push(qr.data[0]["款号"]);
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal - 1; i++) {
+            var code = qr.data[i]["款号"];
+            v = qr.data[Number(i + 1)]["款号"];
+            if (v != code) {
+                arr.push(v);
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+        if (j == totalPageNo) {
+            qr = getQR();
+            var len = qr.data.length;
+            var batch1 = qr.data[Number(len) - 1]["批次"];
+        }
+    }
+
+    tapMenu("盘点管理", "getMenu_More", "未盘点款号");
+    var keys = { "批次从" : batch1, "批次到" : batch };
+    var fields = checkUnCheckCodeFields(keys);
+    query(fields);
+    var qr1 = getQR();
+    var ret4 = isEqual(Number(total1) - arr.length, qr1.total);
+
+    var ret5 = true;
+    var key = [ "款号" ];
+    var qFields = checkUnCheckCodeFields(key);
+    for (var k = 0; k < arr.length; k++) {
+        changeTFieldValue(qFields["款号"], arr[k]);
+        setTFieldsValue(window, qFields);
+        tapButton(window, QUERY);
+        qr1 = getQR();
+        if (qr1.data.length != 0) {
+            ret5 = false;
+            break;
+        }
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180087() {
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     query();
 
     var ret = goPageCheck();
-
     ret = ret && sortByTitle("款号");
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("门店");
@@ -3331,6 +3458,51 @@ function test180087() {
             + sum2);
     return ret && ret1;
 }
+function test180088() {
+    tapMenu("盘点管理", "getMenu_More", "未盘点款号");
+    query();
+    var qr = getQR();
+    var total = qr.total;
+    var ventory = qr.counts["库存"];
+
+    tapMenu("货品管理", "款号库存");
+    var keys = { "门店" : "常青店" };
+    var fields = queryGoodsCodeStockFields(keys);
+    query(fields);
+    qr = getQR();
+    var total1 = qr.total;
+    var ventory1 = qr.counts["库存"];
+    var ret = isAnd(isEqual(ventory, ventory1), isEqual(total1, total));
+
+    var key = [ "款号" ];
+    var qFields = queryGoodsCodeStockFields(key);
+    changeTFieldValue(qFields["款号"], "4562");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    qr = getQR();
+    var kc = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
+
+    tapMenu("盘点管理", "新增盘点+");
+    var r = "1" + getRandomInt(100);
+    var josn = { "明细" : [ { "货品" : "4562", "数量" : r } ] };
+    editCheckAddNoColorSize(josn);
+
+    tapMenu("盘点管理", "getMenu_More", "未盘点款号");
+    var keys = { "款号" : "4562" };
+    var fields = checkUnCheckCodeFields(keys);
+    query(fields);
+    var qr1 = getQR();
+    var ret1 = isEqual(0, qr.data.length);
+
+    query();
+    qr1 = getQR();
+    var total2 = qr1.total;
+    var ventory2 = qr1.counts["库存"];
+    var ret2 = isEqual(Number(kc) + Number(ventory2), ventory1);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
 function test180089() {
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     query();
@@ -3341,7 +3513,6 @@ function test180089() {
     var keys = { "款号名称" : code };
     var fields = queryGoodsFields(keys);
     query(fields);
-
     tapFirstText();
     tapButtonAndAlert(STOP, OK);
     tapPrompt();
