@@ -78,13 +78,13 @@ function testSalesNoColorSizeAll_2() {
     run("【销售开单-开单】代收模式下修改支付方式后金额检查", "test170506");
     run("【销售开单-开单】明细备注特殊字符检查", "test170536");
     run("【销售开单-开单】更多-预览（可排序）", "test170098");
-    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");// //
+    run("【销售订货-开单】更多-预览（可排序）", "test170098_1");
     run("【销售开单－开单】积分兑换", "test170186");
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
     run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
     run("【开单  】积分兑换时输入负数", "test170545");
     run("【销售开单－开单】兑换记录", "test170189");
-    run("【销售开单-开单】特价商品不计算积分", "test170695");// //／
+    run("【销售开单-开单】特价商品不计算积分", "test170695");
     run("【销售开单】开单提示和标记行的更新 6.58", "test170195");
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认打包价", "test170424_3");
     run("【销售开单】开单是否根据客户变化时对已有记录进行价格刷新-销售开单/默认零批价", "test170424");
@@ -162,8 +162,8 @@ function testSalesNoColorSize001_1() {
     run("【销售开单－开单】异地发货－－后台不绑定仓库，开单时选择发货仓库/按款号汇总", "test170121_170523");
     run("【销售开单】销售开单错开款号导致不能退货情况", "test170226");
     run("【销售开单】单据修改状态下退货验证问题", "test170227");
-    run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");// //加上按订货开单检查
-    run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");// //加上按订货开单检查
+    run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
+    run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");
     run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
     run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值大于0", "test170384");
     run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值等于0", "test170385");
@@ -2282,7 +2282,7 @@ function test170080_170084() {
     price = qr.data[0]["单价"];
     zk = qr.data[0]["折扣"];
     totalMoney = add(Math.round(price * zk * num));
-    remitindex = getEditSalesTFindex2("客户", "汇款");
+    var remitindex = getEditSalesTFindex2("客户", "汇款");
     k3 = getTextFieldValue(window, remitindex - 1);
     var ret4 = isAnd(isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
             totalMoney, k3));
@@ -9456,25 +9456,25 @@ function test170536() {
     // tapPrompt();
     // var ret = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    var o = { "备注" : [ "<>" ] };
+    var o = [ { "备注" : [ "<>" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    o = { "备注" : [ "'" ] };
+    o = [ { "备注" : [ "'" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret2 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    o = { "备注" : [ "\"" ] };
+    o = [ { "备注" : [ "\"" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
     var ret3 = isIn(alertMsg, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    o = { "备注" : [ "?" ] };
+    o = [ { "备注" : [ "?" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -9482,7 +9482,7 @@ function test170536() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret4 = isIn(alertMsg1, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    o = { "备注" : [ "&" ] };
+    o = [ { "备注" : [ "&" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -9490,7 +9490,7 @@ function test170536() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret5 = isIn(alertMsg1, "[第1行] 明细备注 不能有非法符号 如 & 单引号");
 
-    o = { "备注" : [ "$" ] };
+    o = [ { "备注" : [ "$" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -10268,7 +10268,7 @@ function test170559_170697() {
     tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
     tapFirstText();
-    var o = { "备注" : [ "bz" ] };
+    var o = [ { "备注" : [ "bz" ] } ];
     editChangeSalesBillOrderRemarks(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -10672,6 +10672,8 @@ function test170595() {
     var ret4 = isIn(alertMsg1, "必须从下拉列表选择");
     tapReturn();
 
+    checkPrepare();
+    checkPrepare1();
     tapMenu("盘点管理", "新增盘点+");
     var json = { "明细" : [ { "货品" : r, "数量" : 3 } ] };
     editCheckAddDetNoColorSize(json);
@@ -11710,13 +11712,12 @@ function test170693() {
     editSalesBillSpecial(json);
     saveAndAlertOk();
     tapPrompt();
-    tapReturn();
 
-    tapMenu("销售开单", "开  单+");
     json = { "客户" : "lt" };
     editSalesBillCustomer(json);
 
     tapButton(window, "核销");
+    delay();
     tapButton(getScrollView(-1, 0), "兑换记录");
     var texts = getStaticTexts(getScrollView(-1));
     var titleTexts = getStaticTexts(window);
@@ -11742,6 +11743,7 @@ function test170693() {
     json = { "客户" : "lt" };
     editSalesBillCustomer(json);
     tapButton(window, "核销");
+    delay();
     tapButton(getScrollView(-1, 0), "兑换记录");
     titleTexts = getStaticTexts(window);
     index = getArrayIndexIn(titleTexts, "条");
@@ -11752,7 +11754,8 @@ function test170693() {
     tapReturn();
     var ret1 = isEqual(1, sub(len, len1));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", len=" + len + ", len1="
+            + len1);
     return ret && ret1;
 }
 function test170694() {

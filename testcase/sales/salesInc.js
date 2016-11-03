@@ -902,7 +902,13 @@ function editLogisticsVerifyDet(o) {
     var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);
-    var qr = getQRtable1(window, 8, -2), batch;
+    var qr = getQRtable1(window, 8, -2);
+    if (qr.data.length == 0) {
+        for (var j = 0; j < 3; j++) {
+            qr = getQRtable1(window, 8, -2);
+        }
+    }
+    var batch;
     if (isDefined(o["核销"])) {
         var a1 = o["核销"];
         for (var i = 0; i < a1.length; i++) {
