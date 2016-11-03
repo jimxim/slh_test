@@ -16,8 +16,8 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run("测试用例", "onlyTest");
- run("测试用例", "test160126");//
+// run("测试用例", "test160153");
+ run("测试用例", "test160044");//
 
 }
 
@@ -25,11 +25,25 @@ function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
+    var view = getLastTableView();
+    var cell = view.cells()[0];
+    var texts=getStaticTexts(cell);
+  for(var i=0;i<texts.length;i++){
+       var v=texts[i].value();
+// logDebug("v="+v);
+       //
+       if(v.match(/^((?:19|20)\d\d)-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/)){
+           logDebug("i="+i);
+           break;
+       }
+    
+  }
+ 
 // window.staticTexts().firstWithPredicate(cond).tap();
  // debugObject(gCache,"gCache");parent
  return true;
 }
+
 // 检验开单时间
 function testBillTimes(){
     var arr=[],msg;

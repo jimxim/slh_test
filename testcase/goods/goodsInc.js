@@ -2265,6 +2265,9 @@ function getQueryTFields(keys) {
             break;
         case "按汇总":
             switch (gMenu3) {
+            case "按款号图像":
+                qFields = salesOrderPictureFields(keys);
+                break;
             case "按款号":
                 qFields = salesOrderCodeFields(keys);
                 break;

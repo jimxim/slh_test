@@ -493,23 +493,13 @@ function ts130004_05_06For000() {
  */
 function ts130004_05_06Staff() {
     tapMenu("采购订货", "按汇总", "按款号");
-    var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
-    var fields = purchaseOrderCodeFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret = qr.data.length == 0;
+    var ret = checkShopQueryRights();
 
     tapMenu("采购订货", "按汇总", "按厂商");
-    fields = purchaseOrderProviderFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0);
+    ret = isAnd(ret, checkShopQueryRights());
 
     tapMenu("采购订货", "按汇总", "门店");
-    fields = purchaseOrderShopFields(keys);
-    query(fields);
-    qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0);
+    ret = isAnd(ret, checkShopQueryRights());
     return ret;
 }
 /**

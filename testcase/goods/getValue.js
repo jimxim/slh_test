@@ -57,14 +57,43 @@ function getLastTableView(view) {
     if (isUndefined(view)) {
         view = window;
     }
-    var views = window.tableViews();
-    for (var i = view1.length - 1; i > 1; i--) {// 0是菜单栏，需要排除
-        if (views[i].name != "空列表") {
+    var tableViews = getTableViews(view), view1;
+    var tableViewIndex = tableViews.length - 1;
+    for (; tableViewIndex > 0; tableViewIndex--) {// 0是菜单，要排除掉
+        view1 = tableViews[tableViewIndex];
+        if (view1.name() != "空列表") {//
             break;
         }
     }
-    return views[i];
+    logDebug("tableViews length=" + tableViews.length + "  ,tableViewIndex="
+            + tableViewIndex);
+    return view1;
 }
-function getQRPicture() {
 
+function Good(gCode, gName, gDet, gDays, gAddIdx, gSubIdx) {
+    this.gCode = gCode;
+    this.gName = gName;
+    this.gDet = gDet;
+    this.gDays = gDays;
+    this.gAddIdx = gAddIdx;
+    this.gSubIdx = gSubIdx;
+}
+function getPictureQRField(cell) {
+    var field = [],f;
+    var texts = getStaticTexts(cell);
+    var t1 = texts[0];
+    var y1 = getY(t1);// 款号的Y轴相同
+    var v = t1.value().split(" ");
+
+
+
+}
+
+function getPictureQR(view) {
+    var cells = view.cells();
+    var curLineTotal = 7;
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+
+    }
 }

@@ -182,8 +182,8 @@ function salesOrderPictureField(key, show) {
     var f;
     switch (key) {
     case "day1":
-    case "日期":
-        f = new TField("日期", TF_DT, 0, "2015-7-11");
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, getToday());
         break;
     case "day2":
     case "到":
@@ -192,10 +192,7 @@ function salesOrderPictureField(key, show) {
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 2, "a", -1, "741,Abc,44元", -1, 0);
-        if (show) {
-            f.value = "741,Abc";
-        }
+        f = new TField("款号", TF_AC, 2, "3035", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -383,11 +380,41 @@ function salesOrderCompanyField(key, show) {
         break;
     case "company":
     case "厂商":
-        f = new TField("厂商", TF_AC, 2, "常青店", -1, 0);
+        f = new TField("厂商", TF_AC, 2, "rt", -1, 0);
         break;
     case "staff":
     case "店员":
         f = new TField("店员", TF_AC, 3, "000", -1, 0);
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+// 按厂商报单明细界面
+function salesOrderCompanyDetFields(keys, show) {
+    return getTFields("salesOrderCompanyDetField", keys, show);
+}
+function salesOrderCompanyDetField(key, show) {
+    var f;
+    switch (key) {
+    case "厂商":
+        f = new TField("厂商", TF, 0, "vell");// 灰化
+        break;
+    case "店员":
+        f = new TField("店员", TF, 1, "000,总经理");// 灰化
+        break;
+    case "日期":
+        f = new TField("日期", TF_DT, 2, getToday());// 灰化
+        break;
+    case "门店":
+        f = new TField("门店", TF, 3, "常青店");// 灰化
+        break;
+    case "总数":
+        f = new TField("总数", TF, 4, "0");// 灰化
+        break;
+    case "备注":
+        f = new TField("备注", TF, 6, "");
         break;
     default:
         logWarn("未知key＝" + key);
