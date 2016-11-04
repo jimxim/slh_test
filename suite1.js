@@ -17,7 +17,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 // run("测试用例", "test160153");
- run("测试用例", "test160044");//
+ run("测试用例", "test160064");//
 
 }
 

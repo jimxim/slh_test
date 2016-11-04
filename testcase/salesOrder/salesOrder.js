@@ -115,6 +115,12 @@ function ts160060() {
     // var det = editOverLengthBillDet();
     // var json = mixObject(jo, det);
     // editSalesBill(json, colorSize);
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapLine();
+    var json = { "入库明细" : [ { "备注" : "abc123" }, { "备注" : "123abc" } ] };
+    editSalesBill(json, colorSize);// 添加备注，超长订单本身没有加备注
+
     tapMenu1("销售订货");
     return checkCopyAndPaste("新增订货+");
 }
@@ -324,42 +330,49 @@ function test160108() {
 
 function test160062() {
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "现金" : 2000 };
-    editSalesBillNoColorSize(json);
+    var json = { "客户" : "xw", "现金" : 1000, "刷卡" : [ 2000, "交" ],
+        "汇款" : [ 3000, "交" ] };
+    editSalesBill(json, colorSize);
 
-    tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    json = { "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
-    editSalesBillNoColorSize(json);
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    json = { "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editSalesBill(json, colorSize);
+    var v1 = json["输入框值"], det1 = json["明细值"];
 
-    // tapMenu("销售订货", "按批次查");
-    tapFirstText();
-    var ret = isEqual("1000", getTextFieldValue(window, 2))
-            && isIn(getTextFieldValue(getScrollView(), 0), "3035")
-            && isEqual(5, getTextFieldValue(getScrollView(), 3));
-    // tapButton(window, RETURN);
-    // delay(10);
-    // tapButtonAndAlert(RETURN); //不会点返回
-    editSalesBillSave({});
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);
+    tapLine();
+    var v2 = editSalesBillGetValue(json);
+    var det2 = getQRDet(getScrollView(-1), json);
+    tapReturn();
 
-    return ret;
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    var det3 = getQRDet();
+    tapReturn();
+
+    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2),
+            isEqualDyadicArray(det1, det3));
 }
 
 function test160064() {
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "日期" : getDay(-1),
-        "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
-    editSalesBillNoColorSize(json);
+        "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("销售开单", "按订货开单");
-    var keys = { "日期从" : getDay(-1) };
-    var fields = salesBillOrderFields(keys);
-    query(fields);
-    tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
+    conditionQuery(keys);
+    tapLine();
+    editSalesBill({});
 
-    tapFirstText();
+    tapMenu("销售订货", "按批次查");
+    query();
+    tapLine();
     var ret = isEqual(getToday(), getTextFieldValue(window, 9));// 日期
     tapReturn();
 
@@ -1309,7 +1322,7 @@ function test160037() {
 }
 
 function test160038() {
-    var i,j, sum = 0;
+    var i, j, sum = 0;
     tapMenu("销售订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-30), "款号" : "3035" };
     var fields = salesOrderCodeFields(keys);
@@ -1347,7 +1360,7 @@ function test160038() {
         ret = isAnd(ret, isEqual(qr.counts["数量"], data[i]["数量"]), isEqual(
                 qr.counts[title_Shipped], data[i][title_Shipped]), isEqual(
                 qr.counts["差异数"], data[i]["差异数"]));
-         if (!ret) {
+        if (!ret) {
             break;
         }
     }
@@ -2015,8 +2028,7 @@ function addBill160073(all) {
     }
     editSalesBillSave({});
 }
-
-// 均色均码
+// 兼容160088
 function test160087() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许修改已发货的订单" };
@@ -2029,53 +2041,36 @@ function test160087() {
         "明细" : [ { "货品" : "3035", "数量" : [ 20 ] },
                 { "货品" : "4562", "数量" : [ 20 ] } ], "现金" : 8000 };
     editSalesBill(json, colorSize);
-    // var ret = test160087Field("k300", "操作成功");
-    var ret = true;
+    var ret = test160087Field("操作成功");
+
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
     json = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
-    editSalesBillNoColorSize(json);
-    ret = isAnd(ret, test160087Field("3035", "不许修改部分发货"));
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, test160087Field("不许修改部分发货"));
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    ret = isAnd(ret, test160087Field("3035", "订单已全部发货"));
+    editSalesBillSave({});// 全部发货
+    ret = isAnd(ret, test160087Field("订单已全部发货"));
 
     return ret;
 }
 
-function test160087Field(code, msg) {
+function test160087Field(msg) {
     delay();
     tapMenu("销售订货", "按批次查");
     query();
-    tapFirstText();
-
-    var f1 = new TField("货品", TF_AC, 16, code, -1, 0);
-    var f2 = new TField("数量", TF, 19, "20");
-    setTFieldsValue(getScrollView(), [ f1, f2 ]);
-    tapButton(getScrollView(-1), 0);
+    tapLine();
+    var json = { "入库明细" : [ { "数量" : 20 } ],
+        "明细" : [ { "货品" : "k300", "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, msg);
-
     tapReturn();
-    return ret;
-}
-
-// 颜色尺码
-function test160088() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否允许修改已发货的订单" };
-    o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     return ret;
 }
 
@@ -2859,7 +2854,27 @@ function test16_Stockout_1() {
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
+function test160180() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+    setGlobalParam(qo, o);
 
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editSalesBill(json, colorSize);
+    var v1 = json["输入框值"], det1 = json["明细值"];
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var v2 = editSalesBillGetValue(json);
+    var det2 = getQRDet(getScrollView(-1), json);
+    tapReturn();
+
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
+    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2));
+}
 // 条件查询/数据验证/清除
 // 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
 function test160084() {
