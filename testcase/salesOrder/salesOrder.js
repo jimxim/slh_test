@@ -363,17 +363,23 @@ function test160064() {
     var json = { "客户" : "xw", "日期" : getDay(-1),
         "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ] };
     editSalesBill(json, colorSize);
+    tapMenu2("按批次查");
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
 
     tapMenu("销售开单", "按订货开单");
-    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
     conditionQuery(keys);
     tapLine();
     editSalesBill({});
 
     tapMenu("销售订货", "按批次查");
-    query();
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret = isEqual(batch, qr.data[0]["批次"]);
     tapLine();
-    var ret = isEqual(getToday(), getTextFieldValue(window, 9));// 日期
+    ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, 9)));// 日期
     tapReturn();
 
     return ret;
@@ -1654,20 +1660,17 @@ function test160066() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     var a = getTextFieldValue(getScrollView(), 4);// 单价
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    editSalesBillSave({});
 
     tapMenu("销售订货", "按批次查");
     tapFirstText();
     ret = isAnd(ret, isEqual(a, getTextFieldValue(getScrollView(), 4)));
-    tapButton(window, RETURN);
+    tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     tapFirstText();
     ret = isAnd(ret, isEqual(a, getTextFieldValue(getScrollView(), 6)));// 单价
-    tapButtonAndAlert(RETURN);
+    tapReturn();
     delay();
 
     tapMenu("销售订货", "新增订货+");
@@ -1675,15 +1678,12 @@ function test160066() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     ret = ret && isEqual(a, getTextFieldValue(getScrollView(), 4));
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按订货开单");
     tapFirstText();
     ret = ret && isEqual(a, getTextFieldValue(getScrollView(), 6));
-    tapButtonAndAlert(RETURN);
+    tapReturn();
     delay();
 
     tapMenu("销售订货", "新增订货+");
@@ -1691,15 +1691,12 @@ function test160066() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     ret = ret && isEqual(a, getTextFieldValue(getScrollView(), 4));
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
-    tapButton(window, RETURN);
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按订货开单");
     tapFirstText();
     ret = ret && isEqual(a, getTextFieldValue(getScrollView(), 6));
-    tapButtonAndAlert(RETURN);
+    tapReturn();
 
     qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
     o = { "新值" : "0", "数值" : [ "默认不启用" ] };
@@ -2028,6 +2025,7 @@ function addBill160073(all) {
     }
     editSalesBillSave({});
 }
+
 // 兼容160088
 function test160087() {
     var qo, o, ret = true;
@@ -2045,14 +2043,14 @@ function test160087() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText();
+    tapLine();
     json = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
     ret = isAnd(ret, test160087Field("不许修改部分发货"));
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText();
+    tapLine();
     editSalesBillSave({});// 全部发货
     ret = isAnd(ret, test160087Field("订单已全部发货"));
 
@@ -2093,6 +2091,36 @@ function test160089() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
+}
+function test160109() {
+    tapMenu("销售订货", "按批次查");
+    var keys = { "日期从" : getDay(-30), "门店" : "中洲店", "发货状态" : "未发货" };
+    conditionQuery(keys);
+    tapLine();
+    var json = { "入库明细" : [ { "数量" : 1 } ] };
+    editSalesBill(json, colorSize);
+    return isInAlertMsgs("不允许修改其它门店的销售订单");
+}
+// 颜色尺码
+function test160113() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "zbs",
+        "明细" : [ { "货品" : "agc001", "数量" : [ 1, 2, 3 ] },
+                { "货品" : "agc002", "数量" : [ 4, 5, 6 ] } ], "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    tapMenu("销售订货", "getMenu_More", "预览(可排序)");
+    delay()//
+    var ret = sortByTitle4(dataView, "序号", "备注", "名称");
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "颜色");
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "尺码");
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "数量", IS_NUM);
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "单价", IS_NUM);
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "小计", IS_NUM);
+    ret = ret && sortByTitle4(dataView, "序号", "备注", "备注");
+    tapNaviClose();
+    tapReturn();
     return ret;
 }
 /**
@@ -2303,6 +2331,39 @@ function test160126() {
     tapReturn();
     return ret;
 }
+function test160129() {
+    tapMenu("销售订货", "按挂单");
+    var keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var data = qr.data[0];
+    tapLine();
+    tapButtonAndAlert(INVALID, OK);
+    tapReturn();
+
+    tapMenu2("按挂单");
+    tapButton(window, QUERY);
+    qr = getQR();
+    return !isEqualQRData1Object(qr, data);
+}
+function test160131() {
+    tapMenu("销售订货", "按挂单");
+    var keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    tapLine();
+    runAndAlert("test130015EndBill", OK);// 终结订单
+    tapReturn();
+    return isInAlertMsgs("不能终结挂起的订单");
+}
+function test160132() {
+    tapMenu("销售订货", "按批次查");
+    var keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    tapLine();
+    var obj = window.buttons().firstWithPredicate("isEnabled == 0");// 第一个灰化按钮
+    tapReturn();
+    return obj.name() == "挂 单";
+}
 function test160149() {
     tapMenu("销售订货", "按厂商报单");
     var keys = { "厂商" : "vell" };
@@ -2414,8 +2475,14 @@ function test160153() {
     // 这个地方输入日期，自动化有个bug,直接设值后，查询结果还是为当天的
     var keys = { "款号" : "3035" };// "日期从" : getDay(-30),
     conditionQuery(keys, false, group);// 没有清楚按钮
+    var qr = getPictureQR(view1);
+    var num = qr.gDet.slice(1);
+    tapNaviClose();
 
-    return true;
+    tapMenu2("按明细查");
+    conditionQuery(keys);
+    qr = getQR();
+    return isEqual(qr.counts["数量"], num);
 }
 function test160155() {
     tapMenu("销售订货", "按汇总", "按款号");

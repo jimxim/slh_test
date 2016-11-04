@@ -70,6 +70,15 @@ function getLastTableView(view) {
     return view1;
 }
 
+/**
+ * 图片选款界面 货品查询结果
+ * @param gCode 款号 点击会显示大图
+ * @param gName 名称 同款号占同一个文本
+ * @param gDet 单价/库存/订货数等 不同模块显示不同
+ * @param gDays 上架天数 eg 14天，99+
+ * @param gAddIdx 上架天数下标 点击会增加数量配合购物车使用 颜色尺码模式会弹表
+ * @param gSubIdx gDet下标 点击会减去数量
+ */
 function Good(gCode, gName, gDet, gDays, gAddIdx, gSubIdx) {
     this.gCode = gCode;
     this.gName = gName;
@@ -78,22 +87,29 @@ function Good(gCode, gName, gDet, gDays, gAddIdx, gSubIdx) {
     this.gAddIdx = gAddIdx;
     this.gSubIdx = gSubIdx;
 }
-function getPictureQRField(cell) {
-    var field = [],f;
-    var texts = getStaticTexts(cell);
-    var t1 = texts[0];
-    var y1 = getY(t1);// 款号的Y轴相同
-    var v = t1.value().split(" ");
 
-
-
-}
-
+/**
+ * 获取图片选择界面查询结果
+ * @param view
+ * @returns {Array}
+ */
 function getPictureQR(view) {
-    var cells = view.cells();
-    var curLineTotal = 7;
+    var cells = view.cells(), arr = [], f;
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-
+        var texts = getStaticTexts(cell);
+        var length = texts.length;
+        // 每个货品都含3条数据，对应款号名称，数据，上架天数
+        // 每行右端可能显示行数，有1~2个显示上架天数范围
+        var curLineTotal = Math.floor((length - 1) / 3);
+        for (var j = 0; j < curLineTotal; j++) {
+            var t1 = texts[j * 2];
+            var v = t1.value().split(" ");
+            var gAddIdx = length - j;
+            var gSubIdx = j * 2 + 1;
+            f = new Good(v[0], v[1], texts[gSubIdx].value, gAddIdx, gSubIdx);
+            arr.push(f);
+        }
     }
+    return arr;
 }
