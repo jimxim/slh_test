@@ -3147,7 +3147,7 @@ function test170294_170609() {
     editLogisticsVerifyDet(json);
     var ret = isAnd(!isEqual(0, len), !isEqual(0, len1), !isEqual(0, len2));
 
-    logDebug("ret=" + ret);
+    logDebug(" ret=" + ret);
     return ret;
 }
 function test170295_170296_170297() {
