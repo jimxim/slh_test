@@ -950,3 +950,105 @@ function editAddVipCustomer(r) {
 
     return r;
 }
+
+/**
+ * 客户
+ */
+function editVerifyBillCustomer(o) {
+    var oc = o["物流"];
+    if (isDefined(oc)) {
+        var f = new TField("物流", TF_AC, 0, oc, -1, 0);
+        setTFieldsValue(window, [ f ]);
+    }
+}
+/**
+ * 核销
+ */
+function editLogisticsVerifyDet1(o) {
+    if (isDefined(o["核销"])) {
+        tapButton(window, "核销");
+        var a1 = o["核销"];
+        var bt = window.buttons()[QUERY];
+        var cond = !isUIAElementNil(bt) || bt.isVisible();
+        waitUntil(cond, 10);
+        var qr = getQRtable1(window, 8, -2);
+        if (qr.data.length == 0) {
+            for (var j = 0; j < 3; j++) {
+                qr = getQRtable1(window, 8, -2);
+            }
+        }
+        var batch;
+        for (var i = 0; i < a1.length; i++) {
+            batch = qr.data[i]["批次"];
+            getTableView(window, -2).cells().firstWithName(batch).tap();
+        }
+        tapNaviButton("完成");
+    }
+}
+/**
+ * 现金
+ */
+function editVerifyBillCash(o) {
+    if (isDefined(o["现金"])) {
+        var f = logisticsVerifyFields("现金");
+        changeTFieldValue(f, o["现金"]);
+        setTFieldsValue(window, [ f ]);
+    }
+}
+/**
+ * 刷卡
+ * @param o eg:{"刷卡":[100]} 或 {"刷卡":[100,"交"]}
+ */
+function editVerifyBillCard(o) {
+    editVerifyBillBank(o, "刷卡", 0);
+}
+/**
+ * 汇款
+ * @param o eg:{"汇款":[100]} 或 {"汇款":[100,"交"]}
+ */
+function editVerifyBillRemit(o) {
+    editVerifyBillBank(o, "汇款", 1);
+}
+function editVerifyBillBank(o, key, scIndex) {
+    if (isDefined(o[key])) {
+        // tap(getStaticText(window, key)); 点击 刷卡 标题时，会把现金金额切换到刷卡
+        // tapButton(window, key);
+        var a1 = o[key];
+        var n = getArray1(a1, 0);
+        logDebug(" n=" + n);
+        if (isDefined(n)) {
+            // var keys = {key: n };
+            var keys = [ key ];
+            var fields = logisticsVerifyFields(keys);
+            changeTFieldValue(fields[key], n);
+            setTFieldsValue(window, fields);
+        }
+        n = getArray1(a1, 1);
+        logDebug("scIndex=" + scIndex + " n=" + n);
+        if (isDefined(n)) {
+            tap(window.segmentedControls()[scIndex].buttons()[n]);
+        }
+    }
+}
+
+/**
+ * 具体实现
+ * @param o
+ * @param colorSize
+ * @returns
+ */
+function editVerifyBill(o) {
+    delay();
+    debugObject(o);
+
+    editVerifyBillCustomer(o);
+    editSalesBillSpecial(o);
+    editLogisticsVerifyDet1(o);
+    editVerifyBillCash(o);
+    editVerifyBillCard(o);
+    editVerifyBillRemit(o);
+    editSalesBillUnpay(o);
+
+    editSalesBillSave(o);
+    return o;
+}

@@ -45,7 +45,7 @@ function testSalesNoColorSizeElse001() {
     run("【销售开单-按订货配货-按配货开单】查询、清除、排序、翻页", "test170727");
 }
 function testSalesNoColorSizeElse002() {
-    run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306_1");
+    run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306_1");// //修改，加上微信
     run("【销售开单－按订货开单】按订货开单按当前库存数自动填写发货数", "test170268");
     run("【销售开单－按订货开单】按订货开单不按当前库存数自动填写发货数", "test170269");
     run("【销售开单-按订货开单】开单允许折扣大于1+产品折扣+大于1的折扣", "test170273");
@@ -111,8 +111,8 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】订货额、已付、未付检查--部分发货/全部发货后作废", "test170435");// //
     run("【销售开单-按订货开单】订货额、已付、未付检查--核销预付款", "test170453");// //
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
-    run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");
-    run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
+    run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");// //修改，加上微信
+    run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");// //修改，加上微信
     run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170308");
     run("【销售开单－销售汇总-按款号汇总】增加门店查询条件", "test170437");
     run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170503");
@@ -130,11 +130,11 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按客户未结】按客户未结", "test170332_170337");
     run("【销售开单-销售汇总－按客户未结】在上下级模式下看客户未结数据", "test170502");
     run("【销售开单－销售汇总-按客户上货】按客户上货", "test170338_170344");
-    run("【销售开单－销售汇总-按客户上货】拿货次数检查", "test170345");
+    run("【销售开单－销售汇总-按客户上货】拿货次数检查", "test170345");// /
     run("【按汇总-按款号上货】按款号上货", "test170455_170456_170457_170458");
     run("【销售开单－销售汇总-按款号上货】详细-检查一个客户对某款号是否上货", "test170459");
     run("【销售开单－销售汇总】按类别汇总", "test170356");
-    run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1_170648");
+    run("【销售开单－销售汇总-按厂商汇总】按厂商汇总", "test170361_1_170648");// //
     run("【销售开单－销售汇总-按厂商汇总】键盘输入检查", "test170362");
     run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
@@ -149,6 +149,7 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按订货开单】当日上架的款号昨天订货", "test170479");
     run("【销售开单-按批次查】代收之后新增款号", "test170520");
     run("【销售开单－代收收款】清除功能", "test170286");
+    run("【销售开单-核销】特殊货品", "test170576");// //检查代收的现金账户，可以与170288合并
     run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// ///
     run("【销售开单－代收收款】核销代收收款功能", "test170287");// ///
     run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
@@ -156,7 +157,7 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单－代收收款】核销代收单", "test170290");
     run("【销售开单－物流单】代收单作废", "test170292");
     run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");
-    run("【销售开单－代收收款】连续核销", "test170294_170609");/////
+    run("【销售开单－代收收款】连续核销", "test170294_170609");// ///
     run("【销售开单－更多-代收收款查询】进入代收收款内容明细/检查代收收款金额", "test170300_170410");// //
     run("【销售开单】按挂单--正常功能检查", "test170303");
     run("【销售开单】按挂单--挂单作废", "test170304");
@@ -169,7 +170,6 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-核销】物流单核销-按门店区分客户功能对物流间输入的影响", "test170572");// ///
     run("【销售开单-核销】物流单核销-修改支付方式", "test170573");
     run("【销售开单-核销】核销时可以输入全部的物流商", "test170575");
-    run("【销售开单-核销】特殊货品", "test170576");// //检查代收的现金账户，可以与170288合并
     run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
     run("【销售开单-核销】物流核销时待核销物流单选择界面---排序", "test170578");
     run("【销售开单-核销】检查特殊货品金额", "test170579");
@@ -177,21 +177,21 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-开单】物流单修改", "test170612");
     run("【销售开单-按批次查】重复配货", "test170638");
     run("【销售开单-按批次查】销售订货生成的预付款对应的订货号检查", "test170639_170640");
-    run("【销售开单-按挂单】挂单不允许设置为已配货", "test170642");/////修改
+    run("【销售开单-按挂单】挂单不允许设置为已配货", "test170642");
     run("【销售开单-按明细查】开启进货入库自动更新款号厂商，按名称查特殊货品不应该显示厂商", "test170643");
-    run("销售开单-按挂单和开单-更多-所有挂单", "test170645");////店长待检查
+    run("销售开单-按挂单和开单-更多-所有挂单", "test170645");// //店长待检查
     run("【销售开单-按订货开单】异地+代收", "test170682");
     run("【销售开单-按订货开单】异地+代收，检查物流单", "test170683");
-    run("【销售开单-按明细查】增加厂商查询条件", "test170699");////店长待检查
+    run("【销售开单-按明细查】增加厂商查询条件", "test170699");// //店长待检查
     run("【销售开单-按批次查】增加款号或减少款号检查代收金额", "test170701");
     run("【销售开单-按批次查】修改界面显示当前结余", "test170712");
-    run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170713");
+    run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170713");// //
     run("【销售开单-按批次查】检查作废时间和作废人", "test170720");
-    run("【销售开单-按批次查】检查作废时间和作废人", "test170721");
-    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724");
-    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724_1");
-    run("【销售开单-按汇总-按退货汇总】变动款号季节", "test170725");
-    run("【销售开单-按汇总-按金额汇总】增加门店查询条件", "test170726");
+    run("【销售开单-按批次查】检查作废时间和作废人", "test170721");// //需要登进登出检查作废人
+    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724");// //
+    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724_1");// //////修改
+    run("【销售开单-按汇总-按退货汇总】变动款号季节", "test170725");// //修改，为春季有数据点击查看详细界面款号/
+    run("【销售开单-按汇总-按金额汇总】增加门店查询条件", "test170726");// //加上2
     // run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");
 
 }
@@ -2817,7 +2817,8 @@ function test170288() {
     var s2 = test190037_1Field(qr, "收入", "代收收款");
     var actual1 = subObject(s2, s1);
     var expected = { "金额" : 100 };
-    var ret2 = isAnd(isEqualObject(expected, actual1));
+    var ret2 = isAnd(isEqualObject(expected, actual1), isEqual(91,
+            qr.data[1]["金额"]));
     tapNaviLeftButton();
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
@@ -4929,7 +4930,18 @@ function test170345() {
     var ret = isAnd(isEqual(oNum, total1), isEqual(date, opTime), isEqual(
             salesSum, sum1));
 
-    return ret;
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : -1 } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按汇总", "按客户上货");
+    tapButton(window, QUERY);
+    var qr2 = getQR();
+    var oNum1 = qr2.data[0]["拿货次数"];
+    var ret1 = isEqual(oNum1, Number(oNum) + 1);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170350() {
     // 检查苹果键盘，可输入中文即可
@@ -5135,6 +5147,7 @@ function test170361_1_170648() {
             sub(xs1, xs)), isEqual(8, sub(ts1, ts)),
             isEqual(12, sub(sxs1, sxs)), isAqualNum(totalMoney, sub(sxe1, sxe)));
 
+    // 新用例合并进来
     tapFirstText();
     var qr1 = getQR2(getScrollView(-1, 0), "图", "操作日期");
     var ret = goPageCheckQR2(getScrollView(-1, 0), "图", "操作日期");
@@ -7701,6 +7714,10 @@ function test170576() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
 
+    // var o = { "现金" : money1, "刷卡" : [ money1, "交" ],
+    // "汇款" : [ Number(money) - Number(2 * money1), "建" ] };
+    // editVerifyBill(o);
+
     var idx;
     if (ipadVer >= "7.25") {
         idx = 2;
@@ -7999,6 +8016,7 @@ function test170596() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 
+    // 已全部发货的款号不显示
     // tapMenu("销售订货", "新增订货+");
     // var json = { "客户" : "ls",
     // "明细" : [ { "货品" : "3035", "数量" : 9 }, { "货品" : "k200", "数量" : 5 } ] };
@@ -8018,7 +8036,7 @@ function test170596() {
     //
     // saveAndAlertOk();
     // tapPrompt();
-    // var ret2 = isIn(alertMsg, "订单已全部发货，不允许修改");1
+    // var ret2 = isIn(alertMsg, "订单已全部发货，不允许修改");
     //
     // o = [ { "数量" : [ 7 ] } ];
     // editChangeSalesBillOrderNum(o, "no");
@@ -9487,8 +9505,97 @@ function test170713() {
     tapPrompt();
     var ret2 = isIn(alertMsg, "保存成功");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var batch = qr.data[0]["批次"];
+    tapFirstText();
+    tapButtonAndAlert("作 废", OK);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var ret7 = isEqual(batch, qr.data[0]["批次"]);
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "发货状态" : "部分发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+    var qr1 = getQR();
+    var b1 = qr1.data[0]["发货状态"];
+    tapFirstText();
+    o = [ { "数量" : [ 7 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    delay();
+    var ret3 = isAnd(isEqual("部分发货", b1), isIn(alertMsg, "保存成功"));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+
+    // 已全部发货的款号不显示
+    // tapMenu("销售订货", "新增订货+");
+    // var json = { "客户" : "ls",
+    // "明细" : [ { "货品" : "3035", "数量" : 10 }, { "货品" : "4562", "数量" : 20 } ] };
+    // editSalesBillNoColorSize(json);
+    //
+    // tapMenu("销售开单", "按订货开单");
+    // query();
+    // tapFirstText();
+    // o = [ { "数量" : [ 3 ] } ];
+    // editChangeSalesBillOrderNum(o);
+    //
+    // tapMenu("销售开单", "按订货开单");
+    // query();
+    // tapFirstText();
+    // o = [ { "数量" : [ 7 ] } ];
+    // editChangeSalesBillOrderNum(o, "no");
+    // saveAndAlertOk();
+    // tapPrompt();
+    // var ret4 = isIn(alertMsg, "保存成功");
+    // delay();
+    //
+    // tapMenu("销售开单", "按订货开单");
+    // query();
+    // tapFirstText();
+    // o = [ { "数量" : [ 5 ] } ];
+    // editChangeSalesBillOrderNum(o, "no");
+    // saveAndAlertOk();
+    // tapPrompt();
+    // var ret5 = isIn(alertMsg, "订单已全部入库或已终结,不允许再入库");
+    //
+    // tapMenu("销售开单", "按批次查");
+    // query();
+    // qr = getQR();
+    // var batch = qr.data[0]["批次"];
+    // tapFirstText();
+    // tapButtonAndAlert("作 废", OK);
+    // tapMenu("销售开单", "按批次查");
+    // query();
+    // qr = getQR();
+    // var ret7 = isEqual(batch, qr.data[0]["批次"]);
+    //
+    // tapMenu("销售开单", "按订货开单");
+    // query();
+    // tapFirstText();
+    // o = [ { "数量" : [ 20 ] } ];
+    // editChangeSalesBillOrderNum(o);
+    //
+    // tapMenu("销售开单", "按订货开单");
+    // query();
+    // tapFirstText();
+    // o = [ { "数量" : [ 5 ] } ];
+    // editChangeSalesBillOrderNum(o, "no");
+    // saveAndAlertOk();
+    // tapPrompt();
+    // var ret6 = isIn(alertMsg, "订单已全部入库或已终结,不允许再入库");
+
+    // logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+    // + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+    // + ", ret7=" + ret7);
+    // return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
 function test170718() {
     tapMenu("销售开单", "按汇总", "按客户销售");
@@ -9881,6 +9988,23 @@ function test170725() {
     query(fields);
     var qr1 = getQR();
     // var ret = isEqual(0, qr.total);" ret=" + ret +ret &&
+    var ret = true;
+    var len = qr1.data.length;
+    if (len > 0) {
+        tapFirstText();
+        qr1 = getQR2(getScrollView(-1, 0), "店员", "日期");
+        var totalPageNo = qr1.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr1.curPageTotal; i++) {
+                var code = qr1.data[0]["款号"];
+                ret = !isEqual("k200", code);
+            }
+            if (j < totalPageNo) {
+                scrollNextPage();
+                var qr1 = getQR2(getScrollView(-1, 0), "批次", "操作日期");
+            }
+        }
+    }
 
     keys = [ "季节" ];
     fields = salesReturnFields(keys);
@@ -9897,8 +10021,8 @@ function test170725() {
             qr.data[0]["数量"]));
     tapNaviLeftButton();
 
-    logDebug(", ret1=" + ret1);
-    return ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170726() {
     tapMenu("销售开单", "按汇总", "按金额汇总");

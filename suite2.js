@@ -6,7 +6,7 @@
 
 // #import "/Users/huxiaoyu/Documents/slh_test/suite2.js"
 // #import "/Users/hzdlmac/Documents/slh_test/suite2.js"
-// #import “/Users/sunway/Documents/slh_test/suite2.js”
+// #import "/Users/sunway/Documents/slh_test/suite2.js"
 // 总经理
 function test000All() {
     colorSize = "no";// yes
@@ -15,7 +15,9 @@ function test000All() {
 // run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");//
 // run("【销售开单－按批次查】退货并退款情况下实付金额检查", "test170019");
 // run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");// 退出重新登录使参数生效
- run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");//bug周版本62标签
+// run("【销售开单－代收收款】核销代收收款界面多种支付方式", "test170288");// ///
+// run("【销售开单－代收收款】核销代收收款功能", "test170287");// ///
+ run("【销售开单-核销】特殊货品", "test170576");// //检查代收的现金账户，可以与170288合并
 // run("", "test0");
 }
 function test0(){

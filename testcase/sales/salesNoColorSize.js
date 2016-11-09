@@ -4121,7 +4121,7 @@ function test170163() {
     var ret = (isIn(alertMsg1, "收款不能在新增模式下操作，只能在修改模式中操作"));
     tapReturn();
 
-    logDebug("alertMsg1=" + alertMsg1 + " ret" + ret);
+    logDebug("alertMsg1=" + alertMsg1 + ", ret" + ret);
     return ret;
 }
 function test170164() {
