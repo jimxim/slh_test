@@ -2803,9 +2803,10 @@ function ts190141() {
     var ok = setGlobalParam(qo, o);
     var ret = ts190141Field(true);
 
-    o = { "新值" : "10", "数值" : [ "按组开单模式", "in" ] };
-    ok = setGlobalParam(qo, o);
-    ret = isAnd(ret, ts190141Field(true));
+    // 童装 暂时摘除
+    // o = { "新值" : "10", "数值" : [ "按组开单模式", "in" ] };
+    // ok = setGlobalParam(qo, o);
+    // ret = isAnd(ret, ts190141Field(true));
 
     o = { "新值" : "18", "数值" : [ "整单折扣", "in" ] };
     ok = setGlobalParam(qo, o);

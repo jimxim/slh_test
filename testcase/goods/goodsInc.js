@@ -754,7 +754,7 @@ function tapLine(n, view, firstTitle) {
         firstTitle = TITLE_SEQ;
     }
     var y = 0, preY = 0, line = -1, i = 0;
-    var e = getElements(view);
+    var e = getStaticTexts(view);// getElements 图片有偏移量
     for (; i < e.length; i++) {
         if (e[i].value() == firstTitle) {
             preY = getY(e[i]);
@@ -1232,6 +1232,7 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
             ret = false;
         }
     }
+    tapButton(window, QUERY);// 刷新界面，防止后续操作失败 eg:tapTitle无故scroll
     logDebug("goPageCheck ret=" + ret);
     return ret;
 }
@@ -1979,7 +1980,16 @@ function sortByTitle2(dataView, firstTitle, lastTitle, title, isNum) {
     logDebug(getTakeTimeMsg(t1));
     return isAnd(ret1, ret2);
 }
-
+/**
+ * 
+ * @param title
+ * @param type
+ * @param order
+ * @param dataView
+ * @param firstTitle
+ * @param lastTitle
+ * @returns {Boolean}
+ */
 function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
     var t1 = getTimestamp();
     if (isUndefined(order)) {
@@ -2300,6 +2310,9 @@ function getQueryTFields(keys) {
             break;
         case "按明细查":
             qFields = salesQueryParticularFields(keys);
+            break;
+        case "按订货开单":
+            qFields = salesBillOrderFields(keys);
             break;
         case "按汇总":
             switch (gMenu3) {

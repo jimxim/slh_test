@@ -3651,7 +3651,8 @@ function ts100090() {
     keys = "-50";
     setValue100090(keys);
     runAndAlert("test100090Field", OK);// 保存确定后会自动回到二级页面
-    delay();
+    var cond = "app.navigationBar().buttons()['库存调整']".isVisible();
+    waitUntil(cond, 5);
     var qr = getQR2(getScrollView(-1, 0), "批次", "备注");
     ret = isAnd(ret, isEqual("调整入库", qr.data[0]["名称"]), isEqual("-100",
             qr.data[0]["数量"]));
@@ -3891,18 +3892,24 @@ function ts100117() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号名称" : "g" };
     conditionQuery(keys);
-    addGoodsStockAdjustment(15.5);
+    var qr = getQR(), i = 0;
+    for (; i < qr.data.length; i++) {
+        if (qr.data[i]["在途数"] == 0) {
+            break;
+        }
+    }
+    addGoodsStockAdjustment(15.5, i);
 
-    tapLine();
+    tapLine(i);
     tapNaviButton("库存调整");
     var stockIndex = getIndex100090();
     var stock = getTextFieldValue(window, stockIndex - 3);// 当前库存
 
     setValue100090(50);
     runAndAlert("test100090Field", OK);
-    tapNaviLeftButton();
     var ret = isAnd(stock == 15.5, !isInAlertMsgs("库存数已被其他人修改"))
-
+    tapNaviClose();
+    tapNaviClose();// 延迟可能造成第一次关闭跳过
     return ret;
 }
 
@@ -5249,7 +5256,7 @@ function ts100196() {
     conditionQuery(keys);
     tapLine(i);
     editGoodsSave({});
-    return isInAlertMsgs("该颜色存在库存不能取消");
+    return isInAlertMsgs("存在库存不能取消");
 }
 function ts100197() {
     tapMenu("货品管理", "getMenu_More", "款号管理");

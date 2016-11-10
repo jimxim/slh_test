@@ -127,11 +127,14 @@ function setSupplierPrice(details) {
     }
 }
 /**
- * 做库存调整单
+ * 做库存调整单 不能有在途数
  * @param r 调整后库存
  */
-function addGoodsStockAdjustment(r) {
-    tapLine();
+function addGoodsStockAdjustment(r, i) {
+    if (isUndefined(i)) {
+        i = 0;
+    }
+    tapLine(i);
     tapNaviButton("库存调整");
     setValue100090(r);
     runAndAlert("test100090Field", OK);
@@ -267,7 +270,7 @@ function editStatisticAnalysisInDet(o) {
         setTFieldsValue(getScrollView(-1), [ f0 ]);
 
         var f1 = new TField("金额", TF_KB, tfNum * i + 1, d["金额"]);// 直接设置可能变成浮点数
-                                                                   // TF_KB 逐字输入
+        // TF_KB 逐字输入
         setTFieldsValue(getScrollView(-1), [ f1 ]);
 
         var fields = [];

@@ -877,8 +877,8 @@ function getPaidTFindex() {
 function getStaffTFindex() {
     return getEditSalesTFindex2("客户,厂商", "店员");
 }
-function getStoreTFindex() {
-    return getEditSalesTFindex2("客户,厂商", "订货门店");
+function getShippingTFindex() {
+    return getEditSalesTFindex2("客户,厂商", "发货");
 }
 function getCardTFindex() {
     return getEditSalesTFindex2("客户,厂商", "刷卡");

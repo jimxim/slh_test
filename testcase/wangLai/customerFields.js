@@ -636,6 +636,7 @@ function queryProviderShopAccountField(key, show) {
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }
@@ -696,6 +697,7 @@ function queryCustomerProviderAccountField(key, show) {
         break;
     default:
         logWarn("未知key＝" + key);
+        break;
     }
     return f;
 }

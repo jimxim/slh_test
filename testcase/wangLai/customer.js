@@ -640,7 +640,7 @@ function test110014() {
  * @param msg
  * @returns
  */
-function test110014Field(keys, msg) {
+function test110014Field(keys, msg, msg2) {
     var fields;
     switch (gMenu1) {
     case "往来管理":
@@ -659,7 +659,11 @@ function test110014Field(keys, msg) {
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapPrompt();
-    return isIn(alertMsg, msg);
+    var ret = isIn(alertMsg, msg);
+    if (!ret && isDefined(msg2)) {
+        ret = isIn(alertMsg, msg2);//
+    }
+    return ret;
 }
 
 // 翻页，排序，查询，清除
@@ -870,15 +874,12 @@ function test110018() {
 function ts110019() {
     tapMenu("往来管理", "客户账款", "按上级单位");
     var keys = { "客户名称" : "下级客户1" };
-    var fields = queryCustomerSuperFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var ret = isEqual(0, qr.data.length);
 
     keys = { "客户名称" : "下级不开单客户" };
-    fields = queryCustomerSuperFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
@@ -886,32 +887,29 @@ function ts110019() {
     ret = isAnd(ret, !dropDownListCheck(1, "客户", "下级客户1", o),
             !dropDownListCheck(1, "客户", "下级不开单客户", o));
 
-    var ret1 = true;
     keys = { "客户名称" : "上级客户1" };
-    fields = queryCustomerSuperFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     if (qr.data.length > 0) {
-        ret1 = isEqual("上级客户1", qr.data[0]["名称"]);
+        ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
     } else {
         logDebug("往来管理-客户账款-按上级单位中未找到 上级客户1 的数据");
-        ret1 = false;
+        ret = false;
     }
 
     keys = { "客户名称" : "上级不开单客户" };// 不开单客户，无欠余款
-    fields = queryCustomerSuperFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, qr.data.length == 0);
 
     keys = { "客户名称" : "小王" };
-    fields = queryCustomerSuperFields(keys);
-    query(fields);
+    conditionQuery(keys);
+    tapPrompt();
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
+    query();// 清除，防止对后续用例影响
 
-    return isAnd(ret, ret1);
+    return ret;
 }
 
 function test110020() {
@@ -1511,35 +1509,29 @@ function test110022Verify4() {
 function test110023() {
     tapMenu("往来管理", "客户账款", "客户门店账");
     var key1 = { "客户" : "xjkh1" };
-    var fields = queryCustomerShopAccountFields(key1);
-    query(fields);
+    conditionQuery(key1);
     var qr = getQR();
     var n1 = qr.counts["余额"];
     var ret = isEqual("下级客户1", qr.data[0]["名称"]);
 
     var key2 = { "客户" : "sjkh1" };
-    fields = queryCustomerShopAccountFields(key2);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(key2);
     qr = getQR();
     var n2 = qr.counts["余额"];
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]));
 
     tapMenu("往来管理", "客户账款", "按上级单位");
-    fields = queryCustomerSuperFields(key1);
-    query(fields);
+    conditionQuery(key1);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
-    fields = queryCustomerSuperFields(key2);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(key2);
     qr = getQR();
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]),
             isEqual(qr.counts["余额"]), add(n1, n2));
 
-    tapFirstText();
-    qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
+    tapLine();
+    qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret1 = false;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -1550,21 +1542,19 @@ function test110023() {
         }
         if (!ret1 && j < qr.totalPageNo) {
             scrollNextPage();
-            qr = getQResult2(getScrollView(-1, 0), "批次", "未结");
+            qr = getQR2(getScrollView(-1, 0), "批次", "未结");
         }
 
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("往来管理", "客户账款", "客户总账");
-    fields = queryCustomerAccountFields(key1);
-    query(fields);
+    conditionQuery(key1);
     qr = getQR();
     ret = isAnd(ret, isEqual("下级客户1", qr.data[0]["名称"]), isEqual(
             qr.counts["余额"], n1));
 
-    fields = queryCustomerAccountFields(key2);
-    query(fields);
+    conditionQuery(key2);
     qr = getQR();
     ret = isAnd(ret, isEqual("上级客户1", qr.data[0]["名称"]), isEqual(
             qr.counts["余额"], n2));
@@ -2097,14 +2087,15 @@ function ts110038() {
     var ret = isEqualDropDownList(arr, view1);
 
     var keys = { "名称" : "东灵公司" };
-    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
+    ret = isAnd(ret, test110014Field(keys, "相同名称已存在", "已存在[东灵公司]名称的[厂商]]"));
 
     keys = { "名称" : "小王" };
-    ret = isAnd(ret, test110014Field(keys, "相同名称已存在"));
+    ret = isAnd(ret, test110014Field(keys, "相同名称已存在", "已存在[小王]名称的[客户]"));
 
     var r = getTimestamp(8);
     keys = { "名称" : "cs" + r, "手机" : "13122221112" };// 厂商的手机号码
-    ret = isAnd(ret, test110014Field(keys, "相同手机号已存在"));
+    ret = isAnd(ret, test110014Field(keys, "相同手机号已存在",
+            "已存在[13122221112]号码的[厂商]"));
     delay();
 
     // 现在可以与客户的手机号一样
@@ -2306,7 +2297,7 @@ function test110041TitleCheck() {
             break;
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     query();
@@ -2320,7 +2311,7 @@ function test110041TitleCheck() {
             break;
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     return isAnd(ret1, ret2);
 }
@@ -3003,14 +2994,15 @@ function test110045_110046() {
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     tapPrompt();// 点掉警告框后再判断 否则不稳定
-    var ret = isInAlertMsgs("相同名称已存在");
+    var ret = isIn(alertMsg, "相同名称已存在") || isIn(alertMsg, "已存在[天天物流]名称的[物流商]");//
 
     keys = { "名称" : r, "手机" : "13833331112" };
     fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, SAVE);
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在"));
+    ret = isAnd(ret, isIn(alertMsg, "相同手机号已存在")
+            || isIn(alertMsg, "已存在[13833331112]号码的[物流商]"));
 
     keys = { "手机" : r };
     fields = editCustomerLogisticsFields(keys);
@@ -3054,7 +3046,7 @@ function test110045_110046() {
     var josn = { "代收" : { "物流商" : r + "a", "代收金额" : 90 } };
     editSalesBillAgency(josn);
     tapPrompt();
-    tapNaviLeftButton();
+    tapNaviClose();
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("必须选择物流商"));
     alertMsgs = [];
@@ -3062,11 +3054,10 @@ function test110045_110046() {
     // 启用
     tapMenu("往来管理", "getMenu_More", "物流商查询");
     tapButton(window, QUERY);
-    tapFirstText();// getScrollView(), TITLE_SEQ, 9
+    tapLine();
     tapButtonAndAlert(START, OK);
     keys = { "是否停用" : "否" };
-    fields = queryCustomerLogisticsFields(keys);
-    setTFieldsValue(window, fields);
+    conditionQuery(keys);
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(qr.data[0]["名称"], r + "a"));
@@ -3152,21 +3143,20 @@ function test110049() {
     var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
         "反馈及建议" : msg };
     var fields = editCustomerBackFields(keys);
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(-1), fields);
     saveAndAlertOk();
-    delay();
-    // tapButton(window, RETURN);
+    tapReturn();
 
     // tapMenu("往来管理", "getMenu_More", "客户回访");
-    query();
+    query();// 验证返回回到客户回访界面
     var qr = getQR();
     tapLine();
     keys = { "客户" : "zbs", "经办人" : "004", "回访类型" : "定期回访", "主题" : r + "a",
         "反馈及建议" : msg + "a" };
     fields = editCustomerBackFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert(EDIT_SAVE, OK);
-    delay();
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButtonAndAlert("保存修改", OK);
+    tapReturn();
 
     // tapMenu("往来管理", "getMenu_More", "客户回访");
     tapButton(window, QUERY);
@@ -3178,9 +3168,10 @@ function test110049() {
     // 删除
     tapLine();
     fields = editCustomerBackFields(keys, true);
+    fields["客户"].value = "赵本山", fields["经办人"].value = "004店长";
     ret = isAnd(ret, checkShowFields(getScrollView(), fields));
     tapButtonAndAlert("删 除", OK);
-    delay();
+    tapReturn();// 会自动返回
 
     tapButton(window, QUERY);
     qr = getQR();
@@ -4439,7 +4430,7 @@ function ts110108() {
 function ts110109() {
     tapMenu("往来管理", "getMenu_More", "客户标签");
     var f = new TField("名称", TF, 0, "重");
-    var ret = checkFuzzyQuery(f, "名称");
+    var ret = checkFuzzyQuery(f, "名称");// 数据准备 重大、重要
 
     f = new TField("名称", TF, 0, "z");
     return isAnd(ret, checkFuzzyQuery(f, "名称"));
@@ -4511,6 +4502,33 @@ function ts110112() {
     tapMenu("往来管理", "客户账款", "客户总账");
     conditionQuery(keys);
     ret = isAnd(ret, ts100178Field());
+    return ret;
+}
+function ts110113() {
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    var exp = {};
+    var ret = ts110113Field(json, exp);
+    return ret;
+}
+function ts110113Field(json, exp) {
+    tapMenu("采购入库", "新增入库+");
+    editSalesBill(json, colorSize);
+
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    var keys = { "厂商" : "vell", "门店" : "常青店" };
+    conditionQuery(keys);
+    tapLine();
+    var qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
+    var ret = isEqualObject2(exp, qr.data[0]);
+    tapNaviClose();
+
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    conditionQuery(keys);
+    tapLine();
+    qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
+    tapNaviClose();
     return ret;
 }
 function testCheckCustomerDropDownList() {

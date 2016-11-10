@@ -2689,7 +2689,7 @@ function test120050Field(price) {
     tapMenu2("按批次查");
     query();
     var qr = getQR();
-    ret = isAnd(ret, isEqual(mul(qr.data[0]["总数"], 100), qr.data[0]["金额"]))
+    ret = isAnd(ret, isEqual(json["输入框值"]["总计"], qr.data[0]["金额"]))
     tapFirstText();
     var data = getQRDet().data;
     tapReturn();
@@ -3844,7 +3844,7 @@ function ts120123() {
     logDebug("s2=" + s2 + " S2=" + S2);
     return isAnd(s1 == S1, Number(s2) + 30 == S2);
 }
-//SLH-7620
+// SLH-7620
 function ts120124() {
     var qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限 这个设置为0是不是就是不验证" };
     var o = { "数值" : 2 };
