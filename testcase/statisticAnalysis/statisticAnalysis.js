@@ -1057,8 +1057,8 @@ function test190104() {
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称");
-    var s1 = test190037_1Field(qr, "支出", "销售退款");
-    var p1 = test190037_1Field(qr, "收入", "采购退款");
+    var s1 = test190037_1Field(qr, "银", "支出", "销售退款");
+    var p1 = test190037_1Field(qr, "银", "收入", "采购退款");
     tapNaviClose();
 
     tapMenu("销售开单", ADDBILL);
@@ -1098,8 +1098,8 @@ function test190104() {
     tapLine();
     texts = getStaticTexts(getScrollView(-1, 0));
     qr = getQRverify(texts, "名称");
-    var s2 = test190037_1Field(qr, "支出", "销售退款");
-    var p2 = test190037_1Field(qr, "收入", "采购退款");
+    var s2 = test190037_1Field(qr, "银", "支出", "销售退款");
+    var p2 = test190037_1Field(qr, "银", "收入", "采购退款");
     tapNaviClose();
 
     var actual1 = subObject(s2, s1);
@@ -1463,7 +1463,7 @@ function test190037() {
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称");
-    var s1 = test190037_1Field(qr, "收入", "销售单");
+    var s1 = test190037_1Field(qr, "银", "收入", "销售单");
     tapNaviClose();
 
     tapMenu("销售开单", ADDBILL);
@@ -1476,7 +1476,7 @@ function test190037() {
     tapLine();
     var texts = getStaticTexts(getScrollView(-1, 0));
     var qr = getQRverify(texts, "名称");
-    var s2 = test190037_1Field(qr, "收入", "销售单");
+    var s2 = test190037_1Field(qr, "银", "收入", "销售单");
     var a = getStaticTextValue(getScrollView(-1, 0), -3);// 收入合计
     var b = getStaticTextValue(getScrollView(-1, 0), -2);// 支出合计
     var c = getStaticTextValue(getScrollView(-1, 0), -1);// 总合计
@@ -1497,11 +1497,12 @@ function test190037() {
 }
 /**
  * 获取综合收支表指定类型的金额 {"刷":0,"汇":0,"金额":0}
- * @param qr
- * @param type
- * @param value
+ * @param qr 
+ * @param bank 银行 eg 银
+ * @param type 收入or支出
+ * @param value eg 销售单
  */
-function test190037_1Field(qr, type, value) {
+function test190037_1Field(qr, bank, type, value) {
     var name = "现", total;
     var arr = { "刷" : 0, "汇" : 0, "金额" : 0 };
     if (type == "收入") {
@@ -1514,7 +1515,7 @@ function test190037_1Field(qr, type, value) {
         if (isDefined(qr.data[i]["名称"])) {
             name = qr.data[i]["名称"];
         }
-        if (name == "银") {
+        if (name == bank) {
             if (isIn(qr.data[i][type], value)) {
                 var a = qr.data[i][type].split(" ");
                 debugObject(a, "a");

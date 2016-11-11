@@ -627,9 +627,13 @@ function test110014() {
     keys = { "名称" : r, "手机" : "13922211121" };// 客户手机
     ret = isAnd(ret, test110014Field(keys, "已存在[13922211121]号码的[客户]"));// 
 
-    keys = { "手机" : "13122221112" };// 厂商手机
-    ret = isAnd(ret, test110014Field(keys, "已存在[13122221112]号码的[客户]"));
-
+    if (ipadVer >= 7) {//7.0商圈版本后，客户手机
+        keys = { "手机" : "13122221112" };// 厂商手机
+        ret = isAnd(ret, !test110014Field(keys, "已存在[13122221112]号码的[客户]"));
+    } else {
+        keys = { "手机" : "13122221112" };// 厂商手机
+        ret = isAnd(ret, test110014Field(keys, "已存在[13122221112]号码的[客户]"));
+    }
     delay();
     tapReturn();
     return ret;
@@ -2085,6 +2089,9 @@ function ts110038() {
     tapButton(getScrollView(), 0);// 适用价格的选择按钮
     var view1 = window.popover().scrollViews()[0];
     var ret = isEqualDropDownList(arr, view1);
+
+    var keys = { "名称" : " " };// 输入空格
+    ret = isAnd(ret, test110014Field(keys, "名称不能为空"));
 
     var keys = { "名称" : "东灵公司" };
     ret = isAnd(ret, test110014Field(keys, "相同名称已存在", "已存在[东灵公司]名称的[厂商]]"));
@@ -4507,28 +4514,78 @@ function ts110112() {
 function ts110113() {
     var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
         "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
-    var exp = {};
-    var ret = ts110113Field(json, exp);
+    var ret = ts110113Field(json, true);
+
+    json["未付"] = "yes";
+    ret = isAnd(ret, ts110113Field(json));
+
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 4000 };
+    ret = isAnd(ret, ts110113Field(json));
+
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ -5 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "现金" : 200 };
+    ret = isAnd(ret, ts110113Field(json));
+
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ -10 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 }, "未付" : "yes" };
+    ret = isAnd(ret, ts110113Field(json));
+
+    json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
+        "特殊货品" : { "抹零" : 9, "打包费" : 10 } };
+    ret = isAnd(ret, ts110113Field(json, "order"));
     return ret;
 }
-function ts110113Field(json, exp) {
-    tapMenu("采购入库", "新增入库+");
+function ts110113Field(json, type) {
+    if (type == "order") {
+        tapMenu("采购订货", "新增订货+");
+    } else {
+        tapMenu("采购入库", "新增入库+");
+    }
     editSalesBill(json, colorSize);
+    tapMenu("采购入库", "按批次查");//
+    query();
+    var qr = getQR();
+    var exp = { "门店" : "常青店", "批次" : qr.data[0]["批次"], "日期" : getToday("yy"),
+        "类型" : "进货单", "金额" : qr.data[0]["金额"], "付款" : qr.data[0]["现金"] };// 只用了现金一种支付方式
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     var keys = { "厂商" : "vell", "门店" : "常青店" };
-    conditionQuery(keys);
+    if (type) {
+        conditionQuery(keys);
+    } else {
+        tapButton(window, QUERY);
+    }
     tapLine();
     var qr = getQR2(getScrollView(-1, 0), "批次", "异地核销");
     var ret = isEqualObject2(exp, qr.data[0]);
     tapNaviClose();
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
-    conditionQuery(keys);
+    keys = { "厂商" : "vell" };
+    if (type) {
+        conditionQuery(keys);
+    } else {
+        tapButton(window, QUERY);
+    }
     tapLine();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
     ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
     tapNaviClose();
+    return ret;
+}
+function ts110114() {
+    qo = { "备注" : "新增界面格式" };
+    o = { "新值" : "1", "数值" : [ "默认一行多列", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("往来管理", "新增客户+");
+    var obj = getStaticText(getScrollView(-1), "欠款报警");
+    var ret = obj.isVisible();
+    tapReturn();
+
+    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
+    setGlobalParam(qo, o);
     return ret;
 }
 function testCheckCustomerDropDownList() {

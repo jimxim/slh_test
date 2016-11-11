@@ -851,13 +851,13 @@ function ts130009() {
 
     tapMenu("采购入库", "按订货入库");
     query();
-    tapFirstText();
+    tapLine();
     json = { "入库明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
     query();
-    tapFirstText();
+    tapLine();
     tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
 
