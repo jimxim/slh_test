@@ -598,8 +598,7 @@ function ts110013() {
     tapMenu2("客户查询");
     var qKeys = { "客户" : name, "客户名称" : name, "手机" : phone, "是否停用" : "否",
         "客户类别" : fields["客户类别"].value, "店员" : "000" };
-    fields = queryCustomerFields(qKeys);
-    query(fields);
+    conditionQuery(qKeys);
     var qr = getQR();
     var ret = qr.data.length > 0;
 
@@ -610,7 +609,7 @@ function ts110013() {
         changeTFieldValue(fields["手机"], phone);
         changeTFieldValue(fields["客户代码"], code);
         ret = checkShowFields(getScrollView(), fields);
-        tapButton(window, RETURN);
+        tapReturn();
     }
     return ret;
 }
@@ -627,7 +626,7 @@ function test110014() {
     keys = { "名称" : r, "手机" : "13922211121" };// 客户手机
     ret = isAnd(ret, test110014Field(keys, "已存在[13922211121]号码的[客户]"));// 
 
-    if (ipadVer >= 7) {//7.0商圈版本后，客户手机
+    if (ipadVer >= 7) {// 7.0商圈版本后，客户手机
         keys = { "手机" : "13122221112" };// 厂商手机
         ret = isAnd(ret, !test110014Field(keys, "已存在[13122221112]号码的[客户]"));
     } else {
@@ -4096,7 +4095,7 @@ function ts110098() {
     addCustomer(keys);// 新增界面有手机
 
     tapMenu2("客户查询");
-    tapButton(window, QUERY);
+    query();
     var arr = [ "手机" ];
     var f = queryCustomerFields([ "手机" ]);
     var ret = checkRightsField(hasRights, getScrollView(), arr, window, f);
@@ -4575,8 +4574,8 @@ function ts110113Field(json, type) {
     return ret;
 }
 function ts110114() {
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "1", "数值" : [ "默认一行多列", "in" ] };
+    var qo = { "备注" : "新增界面格式" };
+    var o = { "新值" : "1", "数值" : [ "默认一行多列", "in" ] };
     setGlobalParam(qo, o);
 
     tapMenu("往来管理", "新增客户+");
@@ -4587,6 +4586,39 @@ function ts110114() {
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     setGlobalParam(qo, o);
     return ret;
+}
+function ts110115() {
+    var qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
+    var o = { "新值" : "0", "数值" : [ "默认显示所有门店", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "店长查看统计图表的权限" };
+    o = { "新值" : "0", "数值" : [ "查看其他门店", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = { "门店" : "中洲店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = qr.data.length == 0;// 店长只能看自己门店
+
+    // 客户总账还是能看所有门店的数据，因为只要给店员开放了这个菜单权限，他就能看所有的门店数据
+    tapMenu("往来管理", "客户账款", "客户总账");
+    keys = { "客户" : "xw" };
+    conditionQuery(keys);
+    tapLine();
+    delay(0.5);// 加载延迟
+    var qr = getQR2(getScrollView(-1, 0), "批次", "未结");
+    var ok = !isEqualQRData1ByTitle2(qr, "门店", "常青店");// 找除本店以外门店
+    if (!ok) {
+        tapTitle(getScrollView(-1, 0), "门店", "批次");
+        tapTitle(getScrollView(-1, 0), "门店", "批次");
+        delay(0.5);// 加载延迟
+        ok = !isEqualQRData1ByTitle2(qr, "门店", "常青店");
+    }
+    tapNaviClose();
+
+    return isAnd(ret, ok);
 }
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");

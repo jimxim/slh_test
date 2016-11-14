@@ -4192,17 +4192,22 @@ function test100152() {
 
     return ret;
 }
+// 营业员006登陆 后台权限设置为仅本人创建 及当前库存
+// 含100165
 function ts100158() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    tapFirstText();
+    conditionQuery(keys);
+    tapLine();
+    delay(0.5);// 加载延迟
     // 明细显示显示全部店员的数据，而不是当前店员的数据
     var qr = getQR2(getScrollView(-1, 0), "批次", "备注");
-    var ret = !isEqualQRData1ByTitle2(qr, "操作人", "店长");
+    var ret = !isEqualQRData1ByTitle2(qr, "操作人", "营业员");
+    tapTextByFirstWithName("总经理", getScrollView(-1, 0));
+    delay(0.5);// 加载延迟
+    var text = getStaticTexts(getScrollView(-1));
+    ret = isAnd(ret, text.length != 0);// 单据正确显示，不能为空
     tapNaviClose();
-
     return ret;
 }
 
@@ -4338,18 +4343,6 @@ function ts100164() {
     tapButton(window, CLEAR);
     ret = isAnd(ret, getTextFieldValue(window, 0) == "");
 
-    return ret;
-}
-// 后台记录权限店长仅本人创建
-function ts100165() {
-    tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "3035" };
-    conditionQuery(keys);
-    tapFirstText();
-    tapTextByFirstWithName("总经理", getScrollView(-1, 0));
-    var text = getStaticTexts(getScrollView(-1));
-    var ret = text.length != 0;
-    tapNaviClose();
     return ret;
 }
 
