@@ -2901,7 +2901,6 @@ function test180077() {
     var fields = checkPlanAddFields(keys);
     setTFieldsValue(getScrollView(), fields);
     delay();
-
     testAddPlanCheck("按厂商");
     tapButtonAndAlert(SAVE, OK);
     tapReturn();
@@ -3078,7 +3077,6 @@ function test180078() {
     query(fields);
     qr = getQR();
     var kcun2 = add(qr.counts["库存"], qr.counts["在途数"]);
-
     var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2),
             isEqual(kcu, kcu1), isEqual(kcu2, kcu1), isEqual(kcun1, kcun),
             isEqual(kcun2, kcun1));

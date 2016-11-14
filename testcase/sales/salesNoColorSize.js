@@ -10615,7 +10615,7 @@ function test170593() {
 }
 function test170595() {
     tapMenu("销售开单", "开  单+");
-    var r = randomWord(false, 6);
+    var r = randomWord(false, 12);
     var json = { "明细" : [ { "货品" : r, "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     saveAndAlertOk();
@@ -11661,22 +11661,27 @@ function test170692() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("往来管理", "客户查询");
-    var key = [ "customer" ];
-    var qFields = queryCustomerFields(key);
-    changeTFieldValue(qFields["customer"], "lt");
-    query(qFields);
+    var keys = { "customer" : "lt" };
+    var fields = queryCustomerFields(keys);
+    query(fields);
     var qr = getQR();
     var a = qr.data[0]["当前积分"];
 
     tapMenu("往来管理", "积分查询");
-    key = [ "customer", "shop" ];
-    qFields = queryCustomerScoreFields(key);
-    changeTFieldValue(qFields["customer"], "lt");
-    changeTFieldValue(qFields["shop"], "常青店");
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    keys = { "customer" : "lt", "shop" : "常青店" };
+    fields = queryCustomerScoreFields(keys);
+    query(fields);
     qr = getQR();
     var s = qr.data[0]["当前积分"];
+
+    var key = [ "shop" ];
+    var qFields = queryCustomerScoreFields(key);
+    changeTFieldValue(qFields["shop"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    delay();
+    qr = getQR();
+    var j = qr.data[0]["当前积分"];
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "特殊货品" : { "积分抵现" : 2 }, "发货" : "仓库店" };
@@ -11684,18 +11689,32 @@ function test170692() {
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
+    delay();
     qr = getQR();
     var a1 = qr.data[0]["当前积分"];
 
     tapMenu("往来管理", "积分查询");
     tapButton(window, QUERY);
+    delay();
+    qr = getQR();
+    var j1 = qr.data[0]["当前积分"];
+
+    key = [ "shop" ];
+    qFields = queryCustomerScoreFields(key);
+    changeTFieldValue(qFields["shop"], "常青店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    delay();
     qr = getQR();
     var s1 = qr.data[0]["当前积分"];
-    var ret1 = isAnd(isEqual(200, sub(a, a1)), isEqual(200, sub(s, s1)));
+    var ret1 = isAnd(isEqual(100 * 2, sub(a, a1)),
+            isEqual(100 * 2, sub(s, s1)), isEqual(j1, j));
 
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
+    json = { "客户" : "lt", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "发货" : "仓库店" };
     editSalesBillNoColorSize(json);
+    var qr2 = json["输入框值"];
+    var totalMoney = qr2["总计"];
 
     tapMenu("销售开单", "按订货开单");
     query();
@@ -11706,16 +11725,26 @@ function test170692() {
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
+    delay();
     var a2 = qr.data[0]["当前积分"];
 
     tapMenu("往来管理", "积分查询");
     tapButton(window, QUERY);
+    delay();
     var s2 = qr.data[0]["当前积分"];
-    var ret2 = isAnd(isEqual(1900, sub(a2, a1)), isEqual(1900, sub(s2, s1)));
 
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    changeTFieldValue(qFields["shop"], "仓库店");
+    setTFieldsValue(window, qFields);
+    tapButton(window, QUERY);
+    delay();
+    qr = getQR();
+    var j2 = qr.data[0]["当前积分"];
+    var ret2 = isAnd(isEqual(sub(totalMoney, 100 * 1), sub(a2, a1)), isEqual(
+            sub(totalMoney, 100 * 1), sub(s2, s1)), isEqual(j1, j2));
+
+//    qo = { "备注" : "开单模式" };
+//    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+//    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;

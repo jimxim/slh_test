@@ -507,7 +507,6 @@ function test170006() {
     var keys1 = { "客户" : "ls", "作废挂单" : "正常" };
     var fields1 = salesQueryBatchFields(keys1);
     query(fields1);
-
     var qr = getQR();
     var a1 = qr.data[0]["日期"];
     var a2 = qr.data[0]["门店"];
@@ -733,7 +732,6 @@ function test170014() {
     var tf = window.textFields()[1].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
     var ret1 = isEqual("仓库", getTextFieldValue(window, 1));
-
     tapButton(window, CLEAR);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
