@@ -1052,35 +1052,3 @@ function editVerifyBill(o) {
     editSalesBillSave(o);
     return o;
 }
-
-/**
- * 获取综合收支表指定类型的金额
- * @param qr
- * @param name
- * @param type
- * @param value
- */
-function test170576InAndOut(qr, name, type, value) {
-    if (isUndefined(name)) {
-        name = "现";
-    }
-    var total;
-    if (type == "收入") {
-        total = "金额";
-    }
-    if (type == "支出") {
-        total = "金额2";
-    }
-    for (var i = 0; i < qr.data.length - 1; i++) {
-        if (name == qr.data[i]["名称"]) {
-            for (var j = i; j < Number(Number(i) + 5); j++) {
-                if (isIn(qr.data[j][type], value)) {
-                    var a = qr.data[j][total];
-                    logDebug(" j=" + j + " a=" + a);
-                    break;
-                }
-            }
-        }
-    }
-    return a;
-}

@@ -2695,10 +2695,10 @@ function test170287() {
     var ds = qr.data[0]["代收收款"];
 
     // 综合收支表界面
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称");
-    var x1 = test170576InAndOut(qr, "现", "收入", "代收收款");
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称");
+    var x1 = getSACountsQR("现", "收入", "代收收款");
     tapNaviLeftButton();
 
     var r = randomWord(false, 8);
@@ -2753,10 +2753,10 @@ function test170287() {
     var ret2 = isAnd(isEqual(totalDs, qr.data[0]["代收收款"]));
 
     // 综合收支表界面
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称");
-    var x2 = test170576InAndOut(qr, "现", "收入", "代收收款");
+    // tapFirstText();
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    // var qr = getQRverify(texts, "名称");
+    var x2 = getSACountsQR("现", "收入", "代收收款");
     tapNaviLeftButton();
     var ret3 = isEqual(totalMoney, sub(x2, x1));
 
@@ -6363,9 +6363,16 @@ function test170433_170434() {
     o = { "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "tt" } };
     editSalesBillAgency(o);
 
-    var keys = { "现金" : 25, "刷卡" : 311, "汇款" : 300 };
+    var keys = { "现金" : 25 };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+
+    var o = { "刷卡" : [ 311, "交" ] };
+    editSalesBillCard(o);
+
+    o = { "汇款" : [ 300, "建" ] };
+    editSalesBillRemit(o);
+
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -6428,13 +6435,19 @@ function test170435() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var r = getTimestamp(8);
+    var r = randomWord(false, 8);
     var json = { "物流商" : "tt", "运单号" : r, "备注" : r, "代收金额" : 2000 };
     editSalesBillAgency2(json);
 
-    var keys = { "现金" : 25, "刷卡" : 311, "汇款" : 300 };
+    var keys = { "现金" : 25 };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+
+    var o = { "刷卡" : [ 311, "交" ] };
+    editSalesBillCard(o);
+
+    o = { "汇款" : [ 300, "建" ] };
+    editSalesBillRemit(o);
 
     var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
@@ -6690,10 +6703,20 @@ function test170453() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
+    tapButton(window, "核销");
+    tapButton(getScrollView(-1, 0), 5);
+    tapSalesBillVerify_OK();
 
-    var keys = { "现金" : 25, "刷卡" : 311, "汇款" : 300 };
+    var keys = { "现金" : 25 };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
+
+    var o = { "刷卡" : [ 311, "交" ] };
+    editSalesBillCard(o);
+
+    o = { "汇款" : [ 300, "建" ] };
+    editSalesBillRemit(o);
+
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -6702,9 +6725,6 @@ function test170453() {
     var hk = Number(getTextFieldValue(window, remitTFindex));
     var ds = Number(getTextFieldValue(window, cardTFindex + 1));
     var totalmoney1 = Number(xj) + Number(sk) + Number(hk) + Number(ds);
-    tapButton(window, "核销");
-    tapButton(getScrollView(-1, 0), 5);
-    tapSalesBillVerify_OK();
     var money1 = getTextFieldValue(window, cardTFindex - 1);
     saveAndAlertOk();
     tapPrompt();
@@ -6713,8 +6733,8 @@ function test170453() {
     query();
     var qr = getQR();
     var ret = isAnd(isEqual(qr.data[0]["订货额"], totalmoney), isEqual(
-            Number(money1), qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(
-            totalmoney, qr.data[0]["已付"])));
+            Number(money1) + 25 + 311 + 300, qr.data[0]["已付"]), isEqual(
+            qr.data[0]["未付"], sub(totalmoney, qr.data[0]["已付"])));
 
     return ret;
 }
@@ -7704,12 +7724,9 @@ function test170576_170288() {
     var hk = qr.data[0]["汇款"];
     var lo = qr.data[0]["代收"];
     // 综合收支表
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    var qr = getQRverify(texts, "名称");
-    var x1 = test170576InAndOut(qr, "现", "收入", "代收收款");
-    var s1 = test170576InAndOut(qr, "交", "收入", "代收收款");
-    var t1 = test170576InAndOut(qr, "建", "收入", "代收收款");
+    var x1 = getSACountsQR("现", "收入", "代收收款");
+    var s1 = getSACountsQR("交", "收入", "代收收款");
+    var t1 = getSACountsQR("建", "收入", "代收收款");
     tapNaviLeftButton();
 
     var r = randomWord(false, 6);
@@ -7797,12 +7814,9 @@ function test170576_170288() {
             wx, wx1), isEqual(sk, sk1), isEqual(hk, hk1), isEqual(totalMoney,
             sub(lo1, lo)));
     // 综合收支表
-    tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
-    qr = getQRverify(texts, "名称");
-    var x2 = test170576InAndOut(qr, "现", "收入", "代收收款");
-    var s2 = test170576InAndOut(qr, "交", "收入", "代收收款");
-    var t2 = test170576InAndOut(qr, "建", "收入", "代收收款");
+    var x2 = getSACountsQR("现", "收入", "代收收款");
+    var s2 = getSACountsQR("交", "收入", "代收收款");
+    var t2 = getSACountsQR("建", "收入", "代收收款");
     tapNaviLeftButton();
     var ret4 = isAnd(isEqual(money1, sub(x2, x1)),
             isEqual(money1, sub(s2, s1)), isEqual(Number(money)

@@ -2227,7 +2227,7 @@ function test170080_170084() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "newkhao" + randomWord(false, 7);
-    var r1 = "0.7" + getTimestamp(2);
+    var r1 = "0.7" + getRandomInt(100);
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : r, "进货价" : 9708, "产品折扣" : r1 };
     addGoods(keys);
@@ -2260,43 +2260,46 @@ function test170080_170084() {
             getOpTime(), qr.data[0]["操作日期"], 2));
 
     tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ] };
+    json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : 10 } ],
+        "特殊货品" : { "打包费" : 19 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-    // 以下程序有bug，待查
-    // qr = json["明细值"];
-    // qr1 = json["输入框值"];
-    // num = qr.data[0]["数量"];
-    // price = qr.data[0]["单价"];
-    // zk = qr.data[0]["折扣"];
-    // var k3 = qr1["总计"];
-    // totalMoney = add(Math.round(price * zk * num));
-    // var ret3 = isAnd(isAqualNum(Number(r1), Number(qr.data[0]["折扣"])),
-    // isEqual(
-    // totalMoney, k3)); + ", ret3="&& ret3
-    //
-    // waitUntil(cond, 10);
-    // tapMenu("销售开单", "按订货开单");
-    // query();
-    // tapFirstText();
-    // qr = getQRDet();
-    // num = qr.data[0]["数量"];
-    // price = qr.data[0]["单价"];
-    // zk = qr.data[0]["折扣"];
-    // totalMoney = add(Math.round(price * zk * num));
-    // var remitindex = getEditSalesTFindex2("客户", "汇款");
-    // k3 = getTextFieldValue(window, remitindex - 1);
-    // var ret4 = isAnd(isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
-    // totalMoney, k3));
-    // saveAndAlertOk();
-    // tapPrompt();
-    // waitUntil(cond, 5);&& ret4+ ", ret4="+ ret4
+    var qr = getQRDet();
+    var num = qr.data[0]["数量"];
+    var price = qr.data[0]["单价"];
+    var zk = qr.data[0]["折扣"];
+    var remitindex = getEditSalesTFindex2("客户", "汇款");
+    var k3 = getTextFieldValue(window, remitindex - 1);
+    var totalMoney = add(Math.round(price * zk * num), 19);
+    var ret3 = isAnd(isAqualNum(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
+            totalMoney, k3));
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    waitUntil(cond, 10);
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    qr = getQRDet();
+    num = qr.data[0]["数量"];
+    price = qr.data[0]["单价"];
+    zk = qr.data[0]["折扣"];
+    totalMoney = add(Math.round(price * zk * num), 19);
+    var remitindex = getEditSalesTFindex2("客户", "汇款");
+    k3 = getTextFieldValue(window, remitindex - 1);
+    var ret4 = isAnd(isEqual(Number(r1), Number(qr.data[0]["折扣"])), isEqual(
+            totalMoney, k3));
+    saveAndAlertOk();
+    tapPrompt();
+    waitUntil(cond, 5);
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170085() {
     // 设置开单模式为整单折扣模式
@@ -11725,26 +11728,25 @@ function test170692() {
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
-    delay();
+    qr = getQR();
     var a2 = qr.data[0]["当前积分"];
 
     tapMenu("往来管理", "积分查询");
     tapButton(window, QUERY);
-    delay();
+    qr = getQR();
     var s2 = qr.data[0]["当前积分"];
 
     changeTFieldValue(qFields["shop"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
-    delay();
     qr = getQR();
     var j2 = qr.data[0]["当前积分"];
     var ret2 = isAnd(isEqual(sub(totalMoney, 100 * 1), sub(a2, a1)), isEqual(
             sub(totalMoney, 100 * 1), sub(s2, s1)), isEqual(j1, j2));
 
-//    qo = { "备注" : "开单模式" };
-//    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
