@@ -312,9 +312,9 @@ function test170001_1_170010_170011_170012() {
             isAqualNum(qr.counts["实收"], sum6),
             isAqualNum(qr.counts["代收"], sum7));
 
-    logDebug("sum1=" + sum1 + ", sum2=" + sum2 + ", sum3=" + sum3 + ", sum4="
-            + sum4 + ", sum5=" + sum5 + ", sum6=" + sum6 + ", sum7=" + sum7
-            + ", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", sum1="
+            + sum1 + ", sum2=" + sum2 + ", sum3=" + sum3 + ", sum4=" + sum4
+            + ", sum5=" + sum5 + ", sum6=" + sum6 + ", sum7=" + sum7);
     return ret && ret1 && ret2;
 }
 function test170001_2_170002_170003_170004_170020_170485() {
@@ -4833,9 +4833,14 @@ function test170338_170344() {
 }
 function test170340_170339_170705() {
     tapMenu("销售开单", "按汇总", "按客户上货");
-    var i;
+    var i, idx;
+    if (ipadVer >= "7.27") {
+        idx = 1;
+    } else {
+        idx = 0;
+    }
     var ret = false;
-    var f = new TField("款号", TF_AC, 3, "456", -1);
+    var f = new TField("款号", TF_AC, 3 + idx, "456", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -4883,14 +4888,14 @@ function test170340_170339_170705() {
 
     tapButton(window, CLEAR);
     var a = getTextFieldValue(window, 0);
-    var a1 = getTextFieldValue(window, 1);
-    var a2 = getTextFieldValue(window, 2);
-    var a3 = getTextFieldValue(window, 3);
-    var a4 = getTextFieldValue(window, 4);
-    var a5 = getTextFieldValue(window, 5);
-    var a6 = getTextFieldValue(window, 6);
-    var a7 = getTextFieldValue(window, 7);
-    var a8 = getTextFieldValue(window, 8);
+    var a1 = getTextFieldValue(window, 1 + idx);
+    var a2 = getTextFieldValue(window, 2 + idx);
+    var a3 = getTextFieldValue(window, 3 + idx);
+    var a4 = getTextFieldValue(window, 4 + idx);
+    var a5 = getTextFieldValue(window, 5 + idx);
+    var a6 = getTextFieldValue(window, 6 + idx);
+    var a7 = getTextFieldValue(window, 7 + idx);
+    var a8 = getTextFieldValue(window, 8 + idx);
     var ret2 = isAnd(isEqual("", a), isEqual("", a1), isEqual("", a2), isEqual(
             "", a3), isEqual("", a4), isEqual(getToday(), a5), isEqual(
             getToday(), a6), isEqual("", a7), isEqual("", a8));

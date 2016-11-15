@@ -495,8 +495,17 @@ function salesCustomerSupplyFields(keys, show) {
     return getTFields("salesCustomerSupplyField", keys, show);
 }
 function salesCustomerSupplyField(key, show) {
-    var f;
+    var f, idx;
+    if (ipadVer >= "7.27") {
+        idx = 1;
+    } else {
+        idx = 0;
+    }
     switch (key) {
+    case "name":
+    case "客户名称":
+        f = new TField("客户", TF, idx, "l", -1, 0);
+        break;
     case "customer":
     case "客户":
         f = new TField("客户", TF_AC, 0, "z", -1, 0);
@@ -506,38 +515,38 @@ function salesCustomerSupplyField(key, show) {
         break;
     case "market1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 1, "2014-9-11");
+        f = new TField("上架从", TF_DT, 1 + idx, "2014-9-11");
         break;
     case "market2":
     case "上架到":
-        f = new TField("上架到", TF_DT, 2, "2014-9-17");
+        f = new TField("上架到", TF_DT, 2 + idx, "2014-9-17");
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 3, "a", -1, 0);
+        f = new TField("款号", TF_AC, 3 + idx, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 4, "1010pp");
+        f = new TField("品牌", TF_AC, 4 + idx, "1010pp");
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 5, "2015-9-11");
+        f = new TField("日期从", TF_DT, 5 + idx, "2015-9-11");
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 6, getToday());
+        f = new TField("到", TF_DT, 6 + idx, getToday());
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 7, "登山服");
+        f = new TField("类别", TF_SC, 7 + idx, "登山服");
         break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 8, "春季");
+        f = new TField("季节", TF_SC, 8 + idx, "春季");
         break;
     default:
         logWarn("未知key＝" + key);
