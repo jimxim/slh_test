@@ -527,7 +527,7 @@ function test210020_210021() {
     return ret;
 }
 function test210020Clear() {
-    tapMenu("系统设置", "清理本地");
+    tapMenu("系统设置", LOCALCLEAN);
 }
 function test210023() {
     tapMenu("系统设置", "刷新图像");
