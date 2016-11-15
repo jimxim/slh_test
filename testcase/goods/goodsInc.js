@@ -1744,8 +1744,15 @@ function isEqualDropDownList(expected, view1) {
  * 清理本地 现在为自定义弹窗
  */
 function localClean() {
-    runAndAlert("test210020Clear", OK);
+    runAndAlert("localCleanField", OK);
     waitForLoad();
+}
+function localCleanField() {
+    var menu = "清理本地";
+    if (ipadVer >= 7.27) {
+        menu = "清理缓存";
+    }
+    tapMenu("系统设置", menu);
 }
 function logisticsVerifySetField(o, key) {
     var v = o[key];

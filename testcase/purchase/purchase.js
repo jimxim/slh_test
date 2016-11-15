@@ -3630,14 +3630,20 @@ function ts120116() {
 }
 function ts120117() {
     tapMenu("采购入库", "按汇总", "厂商对账单");
+    var ret = ts120117Field("小王", "请选择正确的厂商");
+    tapMenu("销售开单", "按汇总", "客户对账单");
+    ret = isAnd(ret, ts120117Field("vell", "选择客户"));
+    return ret
+}
+function ts120117Field(value, msg) {
     tapButton(window, CLEAR);
-    var f = new TField("厂商", TF, 0, "小王");// 强制输入客户
+    var f = new TField("厂商", TF, 0, "小王");// 强制输入
     setTFieldsValue(window, [ f ]);
     tapButton(window, EXPORT);
     tapButton(window, "对账单(按批次)");
     tapPrompt();
     tapNaviClose();
-    return isInAlertMsgs("请选择正确的厂商");
+    return isInAlertMsgs(msg);
 }
 function ts120118() {
     tapMenu("采购入库", "新增入库+");

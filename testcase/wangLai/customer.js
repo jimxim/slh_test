@@ -629,6 +629,13 @@ function test110014() {
     if (ipadVer >= 7) {// 7.0商圈版本后，客户手机
         keys = { "手机" : "13122221112" };// 厂商手机
         ret = isAnd(ret, !test110014Field(keys, "已存在[13122221112]号码的[客户]"));
+        tapReturn();
+        tapMenu2("客户查询");
+        query();
+        tapLine();
+        var fields = editCustomerFields(keys);
+        clearTFieldsByIndex(getScrollView(), fields["手机"].index);// 还原
+        saveAndAlertOk();
     } else {
         keys = { "手机" : "13122221112" };// 厂商手机
         ret = isAnd(ret, test110014Field(keys, "已存在[13122221112]号码的[客户]"));
@@ -1595,39 +1602,34 @@ function test110028() {
 
     // 开欠款单，不触发欠款报警
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "5" } ], "现金" : 0 };
-    editSalesBillNoColorSize(json);
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ],
+        "未付" : "yes" };
+    editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     var qKeys = { "客户" : r, "是否欠款报警" : "否" };
-    var qFields = queryCustomerShopAccountFields(qKeys);
-    query(qFields);
+    conditionQuery(qKeys);
     var qr = getQR();
     var ret = isEqual(r, qr.data[0]["名称"]);
 
     qKeys = { "是否欠款报警" : "是" };
-    qFields = queryCustomerShopAccountFields(qKeys);
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    conditionQuery(qKeys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
     // 开欠款单，触发欠款报警
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ], "现金" : 0 };
-    editSalesBillNoColorSize(json);
+    var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ],
+        "未付" : "yes" };
+    editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
-    qKeys = { "客户" : r, "是否欠款报警" : "是" };
-    qFields = queryCustomerShopAccountFields(qKeys);
-    query(qFields);
+    tapButton(window, QUERY);
     qr = getQR();
-    ret = ret && isEqual(r, qr.data[0]["名称"]);
+    ret = isAnd(ret, isEqual(r, qr.data[0]["名称"]));
 
     qKeys = { "是否欠款报警" : "否" };
-    qFields = queryCustomerShopAccountFields(qKeys);
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    conditionQuery(qKeys, false);
     qr = getQR();
     ret = isAnd(ret, isEqual(0, qr.data.length));
 
@@ -4620,6 +4622,104 @@ function ts110115() {
 
     return isAnd(ret, ok);
 }
+function ts110116() {
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    query();
+    tapLine();
+    var view = getScrollView(-1, 0);
+    var ret = sortByTitle2(view, "批次", "异地核销", "批次", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "日期", IS_DATE2);
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "类型");
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "金额", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "付款", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "累计未结", IS_NUM);
+    ret = ret && sortByTitle2(view, "批次", "异地核销", "异地核销", IS_NUM);
+    tapNaviClose();
+
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    query();
+    tapLine();
+    view = getScrollView(-1, 0);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "门店");
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "批次", IS_NUM);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "日期", IS_DATE2);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "类型");
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "金额", IS_NUM);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "付款", IS_NUM);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "累计未结", IS_NUM);
+    ret = ret && sortByTitle2(view, "门店", "异地核销", "异地核销", IS_NUM);
+    tapNaviClose();
+    return ret;
+}
+function ts110117() {
+    var name = "c" + getRandomStr(5);
+    tapMenu("往来管理", "新增客户+");
+    var fields = editCustomerFields({ "是否欠款" : "否" }, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    var keys = { "名称" : name };
+    var o = { "不返回" : "yes" }
+    addCustomer(keys, o);
+    keys = { "名称" : name + "a" };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    query();
+    tapLine();
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+    tapLine(1);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+    return ret;
+}
+function ts110118() {
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : name, "是否欠款" : "是" };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    query();
+    tapLine();
+    var fields = editCustomerFields(keys, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "名称" : name, "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+        "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    
+
+    return ret;
+}
+function ts110118Field() {
+    
+}
+function ts110119() {
+    var name = "c" + getTimestamp(6);
+    tapMenu("销售开单", ADDBILL);
+    var keys = { "名称" : name };
+    editSalesBillAddCustomer(keys);
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    keys = { "名称" : name + "a" };
+    editSalesBillAddCustomer(keys);
+    tapReturn();
+
+    tapMenu("往来管理", "客户查询");
+    query();
+    tapLine();
+    var fields = editCustomerFields({ "是否欠款" : "否" }, true);
+    var ret = checkShowFields(getScrollView(), fields);
+    tapReturn();
+
+    tapLine(1);
+    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+    tapReturn();
+    return ret;
+}
+
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
     var f = new TField("客户", TF_AC, 0, "yun", -1, 0);
