@@ -16,7 +16,8 @@ function test000All() {
 // var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run("测试用例", "ts110117");
+    hasRights = true;
+ run("测试用例", "onlyTest");
 // run("测试用例", "test120050");//
 
 }
@@ -25,7 +26,11 @@ function onlyTest(){
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
-
+  var view=getLastTableView();
+  var qr=getPictureQR(view);
+  debugObject(qr[0]);
+  logDebug("name="+qr[0].code);
+ 
 // window.staticTexts().firstWithPredicate(cond).tap();
  // debugObject(gCache,"gCache");parent
  return true;

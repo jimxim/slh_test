@@ -38,20 +38,18 @@ js_func="$js_func loginBillClerk005_1 "
 #货品管理默认价格模式
 js_func="$js_func loginGoodsParams002 login000Goods003 "
 js_func="$js_func loginGoodsParams003 loginStoreKeeper002_2 loginBillClerk005_2 "
+#成本核算
+js_func="$js_func login000SAProfit"
+#敏感字段测试autotest1
+js_func="$js_func login008Rights login009Rights"
+#帐套autotest1异地仓库 
+#仓库店总经理
+#js_func="$js_func loginWarehouse001 "
 
 #slh5062 在sales/sales.js中 3个一组
 js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2"
 js_func="$js_func ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4"
 js_func="$js_func ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"                 
-#成本核算
-js_func="$js_func login000SAProfit"
-
-#敏感字段测试autotest1
-js_func="$js_func login008Rights login009Rights"
-
-#帐套autotest1异地仓库 
-#仓库店总经理
-#js_func="$js_func loginWarehouse001 "
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air 2 (9.2)"
 

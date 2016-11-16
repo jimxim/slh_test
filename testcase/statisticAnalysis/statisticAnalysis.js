@@ -91,6 +91,9 @@ function testStatisticAnalysis001() {
     run("【统计分析—综合汇总】进入详细-还款", "test190040");
     run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
     run("【统计分析-综合汇总】开单模式影响", "ts190141");
+    if (ipadVer >= 7.25) {
+        run("【统计分析-综合汇总】公式增加微信", "ts190143");
+    }
 }
 
 // 中洲店店长数据准备
@@ -1497,7 +1500,7 @@ function test190037() {
 }
 /**
  * 获取综合收支表指定类型的金额 {"刷":0,"汇":0,"金额":0}
- * @param qr 
+ * @param qr
  * @param bank 银行 eg 银
  * @param type 收入or支出
  * @param value eg 销售单
@@ -2874,5 +2877,40 @@ function ts190142() {
     idx = getEditSalesTFindex2("日期", "总额");
     ret = isAnd(ret, t2 == getTextFieldValue(window, idx));
     tapReturn();
+    return ret;
+}
+function ts190143() {
+    tapMenu("统计分析", "综合汇总");
+    var msg = "实销=销额-退额+特殊货品=现金+微信+刷卡+汇款+代收+欠款-还款-余款+抵扣";
+    var obj = getStaticText(window, msg);
+    return obj.isVisible();
+}
+// 后台功能参数 是否显示合计栏--允许
+function ts190144() {
+    tapMenu("统计分析", "收支表");
+    var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var num = qr.counts["金额"];
+
+    tapMenu2("收支汇总");
+    keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    qr = getQR();
+    var ret = isEqual(num, qr.counts["金额"]);
+    tapLine();
+    var sum = 0;
+    var qr2 = getQR2(getScrollView(-1, 0), "日期", "操作人");
+    for (var j = 1; j <= qr2.totalPageNo; j++) {
+        for (var i = 0; i < qr2.curPageTotal; i++) {
+            sum += Number(qr.data[i]["金额"]);
+        }
+        if (j < qr2.totalPageNo) {
+            scrollNextPage();
+            qr2 = getQR2(getScrollView(-1, 0), "日期", "操作人");
+        }
+    }
+    tapNaviClose();
+    ret = isAnd(ret, isEqual(qr.data[0]["金额"], sum));
     return ret;
 }

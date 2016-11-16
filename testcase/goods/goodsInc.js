@@ -560,7 +560,7 @@ function getQRVerify_x(view, firstTitle) {
     return qResult;
 }
 /**
- * 获取类似往来管理-客户账款-所有未结window界面的值
+ * 获取类似往来管理-客户账款-所有统计window界面的值
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -575,10 +575,10 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     var texts = getStaticTexts(dataView);
     for (var i = 0; i < texts.length; i++) {
         var v = texts[i].value();
-        if (firstIndex == 0 && isIn(v, firstTitle)) {
+        if (firstIndex == 0 && v.indexOf(firstTitle) != -1) {
             firstIndex = i;
         }
-        if (lastIndex == 0 && isIn(v, lastTitle)) {
+        if (lastIndex == 0 && v.indexOf(lastTitle) != -1) {
             lastIndex = i;
         }
     }
@@ -586,7 +586,7 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     var data = new Array();
     for (var i = firstIndex; i <= lastIndex; i++) {
         var v = texts[i].value();
-        var v1 = v.split("\s");
+        var v1 = v.split(/\s+/);
         var t = v1[0];
         data[t] = v1[1];
     }
@@ -1976,11 +1976,11 @@ function setTextFieldValueByKb(view1, f) {
 function sortByTitle2(dataView, firstTitle, lastTitle, title, isNum) {
 
     var t1 = getTimestamp();
-    tapTitle(dataView, title); // 点击一下后是升序
+    tapTitle(dataView, title, firstTitle); // 点击一下后是升序
     delay();
     var ret1 = compareQR2(title, isNum, "asc", dataView, firstTitle, lastTitle);
 
-    tapTitle(dataView, title); // 再点击一下后是降序
+    tapTitle(dataView, title, firstTitle); // 再点击一下后是降序
     delay();
     var ret2 = compareQR2(title, isNum, "desc", dataView, firstTitle, lastTitle);
 

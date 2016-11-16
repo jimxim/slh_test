@@ -635,7 +635,7 @@ function test110014() {
         tapLine();
         var fields = editCustomerFields(keys);
         clearTFieldsByIndex(getScrollView(), fields["手机"].index);// 还原
-        saveAndAlertOk();
+        editCustomerSave();
     } else {
         keys = { "手机" : "13122221112" };// 厂商手机
         ret = isAnd(ret, test110014Field(keys, "已存在[13122221112]号码的[客户]"));
@@ -3477,8 +3477,7 @@ function test110060() {
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret1 = isAnd(isEqualObject(qr.data[0], jo1), isEqualObject(qr.data[1],
             jo2), isEqualObject(qr.data[2], jo3));
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     keys = { "客户" : "sjkh1" };
@@ -3489,8 +3488,7 @@ function test110060() {
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret2 = isAnd(isEqualObject(qr.data[0], jo1), isEqualObject(qr.data[1],
             jo2), isEqualObject(qr.data[2], jo3));
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu("往来管理", "客户账款", "客户总账");
     fields = queryCustomerAccountFields(keys);
@@ -3500,8 +3498,7 @@ function test110060() {
     qr = getQR2(getScrollView(-1, 0), "批次", "未结");
     var ret3 = isAnd(isEqualObject(qr.data[0], jo1), isEqualObject(qr.data[1],
             jo2), isEqualObject(qr.data[2], jo3));
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     return isAnd(ret1, ret2, ret3);
 }
@@ -3526,25 +3523,22 @@ function test110060_1() {
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     var keys = { "客户" : "sjkh1", "门店" : "常青店" };
-    var fields = queryCustomerShopAccountFields(keys);
-    var ret1 = test110060_1Field(fields, exp1, exp2, exp3);
+    var ret1 = test110060_1Field(keys, exp1, exp2, exp3);
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     keys = { "客户" : "sjkh1" };
-    fields = queryCustomerSuperFields(keys);
-    var ret2 = test110060_1Field(fields, exp1, exp2, exp3);
+    var ret2 = test110060_1Field(keys, exp1, exp2, exp3);
 
     tapMenu("往来管理", "客户账款", "客户总账");
-    fields = queryCustomerAccountFields(keys);
-    var ret3 = test110060_1Field(fields, exp1, exp2, exp3);
+    var ret3 = test110060_1Field(keys, exp1, exp2, exp3);
     return isAnd(ret1, ret2, ret3);
 }
 
-function test110060_1Field(fields, exp1, exp2, exp3) {
-    query(fields);
-    tapFirstText();
+function test110060_1Field(keys, exp1, exp2, exp3) {
+    conditionQuery(keys);
+    tapLine();
     tapNaviButton("所有统计");
-    tapFirstText(getScrollView(-1, 0), "批次", "未结", 9);
+    tapLine(0, getScrollView(-1, 0), "批次");
     var qr1 = getQR3(getScrollView(-1), "序号", "小计");
     var data = getQRStaticTexts(window, "批次", "操作人");
     tapNaviClose();
@@ -4672,7 +4666,9 @@ function ts110117() {
     tapReturn();
     return ret;
 }
+
 function ts110118() {
+    var name = "c" + getRandomStr(5);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : name, "是否欠款" : "是" };
     addCustomer(keys);
@@ -4685,15 +4681,46 @@ function ts110118() {
     tapReturn();
 
     tapMenu("销售开单", ADDBILL);
-    var json = { "名称" : name, "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+    var json = { "客户" : name, "明细" : [ { "货品" : "3035", "数量" : "30" } ],
         "onlytest" : "yes" };
     editSalesBill(json, colorSize);
-    
+    var arr = [ "现金", "刷卡", "汇款", "手机付" ];
+    ret = isAnd(ret, ts110118Field(arr));
+    var jo = { "代收" : { "物流商" : "sf" } };
+    editSalesBillAgency(jo);
+    saveAndAlertOk();
+    tapButtonAndAlert("none", CANCEL, true);
+    ret = isAnd(ret, isIn(alertMsg, "欠款客户"));
+    tapReturn();
 
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    arr = [ "手机付" ];
+    ret = isAnd(ret, ts110118Field(arr));
+    tapReturn();
     return ret;
 }
-function ts110118Field() {
-    
+function ts110118Field(arr) {
+    var ret = true;
+    for (var i = 0; i < arr.length; i++) {
+        var p = arr[i];
+        var obj = getStaticText(window, p);
+        tap(obj);// 切换支付方式
+        if (p == "手机付") {
+            delay(0.5);
+            tapButton(window, "wechat action");// 微信
+            delay();// alert处理
+            ret = isAnd(ret, isIn(alertMsg, "欠款客户"));
+            tapNaviRightButton();// 取消
+        } else {
+            saveAndAlertOk();// 欠款客户的弹窗默认按取消
+            // delay();// alert处理
+            tapButtonAndAlert("none", CANCEL, true);
+            ret = isAnd(ret, isIn(alertMsg, "欠款客户"));
+            delay();// alert处理
+        }
+    }
+    return ret;
 }
 function ts110119() {
     var name = "c" + getTimestamp(6);
@@ -4719,7 +4746,34 @@ function ts110119() {
     tapReturn();
     return ret;
 }
+function ts110120() {
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    var keys = { "厂商" : "vell", "门店" : "常青店" };
+    var ret = ts110120Field(keys, "批次");
 
+    tapMenu("往来管理", "厂商账款", "厂商总账");
+    keys = { "厂商" : "vell" };
+    ret = isAnd(ret, ts110120Field(keys, "门店"));
+    return ret;
+}
+function ts110120Field(keys, firstTitle) {
+    conditionQuery(keys);
+    tapLine();
+    delay(0.5);// 等待加载
+    var view = getScrollView(-1, 0);
+    tapTitle(view, "类型", firstTitle);
+    tapTitle(view, "类型", firstTitle);
+    var qr = getQR2(view, firstTitle, "异地核销");
+    var exp = { "类型" : "应付调整单", "金额" : "100", "付款" : 0, "总数" : 0, "总额" : 100 };
+    var ret = isEqualObject2(exp, qr.data[0]);
+    tapLine(0, view, firstTitle);
+    var qr1 = getQR3(getScrollView(-1), "序号", "小计");
+    var data = getQRStaticTexts(window, "批次", "操作人");
+    ret = isAnd(ret, isEqualObject2(exp, data), qr1.data.length == 0)
+    tapNaviClose();
+
+    return ret;
+}
 function testCheckCustomerDropDownList() {
     tapMenu("往来管理", "客户查询");
     var f = new TField("客户", TF_AC, 0, "yun", -1, 0);

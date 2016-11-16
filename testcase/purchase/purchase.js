@@ -1848,7 +1848,7 @@ function test120030() {
     // editSalesBillNoColorSize(json);
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
-    var keys = { "厂商" : "vell", "门店" : "常青店" }
+    var keys = { "厂商" : "vell", "厂商名称" : "vell", "门店" : "常青店" }
     var fields = purchaseShopAccountFields(keys);
     query(fields);
     var qr = getQR();
@@ -3637,7 +3637,7 @@ function ts120117() {
 }
 function ts120117Field(value, msg) {
     tapButton(window, CLEAR);
-    var f = new TField("厂商", TF, 0, "小王");// 强制输入
+    var f = new TField("厂商", TF, 0, "小王", -1, 0);// 强制输入
     setTFieldsValue(window, [ f ]);
     tapButton(window, EXPORT);
     tapButton(window, "对账单(按批次)");

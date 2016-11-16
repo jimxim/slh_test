@@ -2029,6 +2029,20 @@ function test160076() {
     var o = { "新值" : "0", "数值" : [ "默认不作处理", "in" ] };
     setGlobalParam(qo, o);
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "5", "数值" : [ "现金+刷卡+汇款+产品折扣", "in" ] };
+    setGlobalParam(qo, o);
+    test160076Field();
+
+    o = { "新值" : "6", "数值" : [ "现金+刷卡+汇款+客户折扣", "in" ] };
+    setGlobalParam(qo, o);
+    test160076Field();
+
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
+    return !isInAlertMsgs("整单金额和明细金额不一致");
+}
+function test160076Field() {
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30000 ] } ] };
     editSalesBill(json, colorSize);
@@ -2038,9 +2052,146 @@ function test160076() {
     tapLine();
     tapButtonAndAlert(INVALID, OK);// 订货数太大，作废
     tapReturn();
-
-    return isInAlertMsgs("整单金额和明细金额不一致");
 }
+function test160080() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
+    editSalesBill(json, colorSize);
+    var v1 = json["输入框值"], det1 = json["明细值"];
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var v2 = editSalesBillGetValue(json);
+    var det2 = getQRDet(getScrollView(-1), json);
+    tapReturn();
+
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
+    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2));
+}
+// 条件查询/数据验证/清除
+// 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
+function test160084() {
+    tapMenu("货品管理", "新增货品+");
+    var r = "g" + getTimestamp(8);
+    var keys = { "款号" : r, "名称" : "a" + r, "品牌" : "1010pp", "吊牌价" : "200",
+        "季节" : "春季", "厂商" : "vell" };
+    addGoods(keys);
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : [ 50 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售订货", "按缺货查");
+    keys = { "款号" : r, "款号名称" : "a" + r, "订货日期从" : getToday(),
+        "订货日期到" : getToday(), "厂商" : "Vell", "上架从" : getToday(),
+        "上架到" : getToday(), "门店" : "常青店", "品牌" : "1010pp", "季节" : "春季" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var expected = { "款号" : r, "名称" : "a" + r, "订货未发" : "50", "库存(含在途)" : "10",
+        "采购未到" : "20", "缺货数" : "20" };
+    var ret = isEqualObject2(qr.data[0], expected);// 当缺货数>0
+
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+    tapMenu("销售订货", "按缺货查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected["库存(含在途)"] = 30, expected["缺货数"] = 0;
+    ret = isAnd(ret, isEqualObject2(qr.data[0], expected));// 当缺货数=0
+
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+    tapMenu("销售订货", "按缺货查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    expected["库存(含在途)"] = 50;
+    ret = isAnd(ret, isEqualObject2(qr.data[0], expected));// 当缺货数<0
+
+    tapButton(window, CLEAR);
+    for (var i = 0; i < 10; i++) {
+        if (i == 2 || i == 3) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
+    }
+    return ret;
+}
+// 含160099
+function test160085() {
+    tapMenu("销售订货", "按缺货查");
+    var keys = { "款号" : "3035", "订货日期从" : getDay(-30) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var count = qr.counts;
+
+    keys = { "门店" : "常青店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var count1 = qr.counts;
+
+    keys = { "门店" : "中洲店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var count2 = qr.counts;
+
+    keys = { "门店" : "仓库店" };// 仓库店无缺货，不显示160099
+    conditionQuery(keys, false);
+    qr = getQR();
+    var ret = isAnd(isEqual(count, add(count1, count2)), qr.data.length == 0);
+    return ret;
+}
+function test160086() {
+    var count1 = {};
+    tapMenu("销售订货", "按缺货查");
+    var keys = { "款号" : "3035" };
+    conditionQuery(keys);
+    var qr = getQR();
+    // if (qr.data.length == 0) {
+    count1 = qr.counts;
+    // }
+
+    keys = { "订货日期从" : getDay(-2) };
+    conditionQuery(keys, false);
+    qr = getQR();
+    var count2 = qr.counts;
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "日期" : getDay(-2),
+        "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售订货", "按缺货查");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var count3 = qr.counts;
+
+    keys = { "款号" : "3035" };
+    conditionQuery(keys);
+    qr = getQR();
+    var ret = isEqualObject(count1, qr.count);// 当天的不变
+
+    debugObject(count2, "count2");
+    debugObject(count3, "count3");
+    return ret;
+}
+
 // 兼容160088
 function test160087() {
     var qo, o, ret = true;
@@ -2086,26 +2237,45 @@ function test160087Field(msg) {
     tapReturn();
     return ret;
 }
-
+// 兼容160080
 function test160089() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+    setGlobalParam(qo, o);
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "zbs", "现金" : 200 };
     editSalesBill(json, colorSize);
 
+    tapMenu2("按批次查");
     query();
-    tapFirstText();
-    var index = getValueFromCacheF1("getDiscountTFindex");
-    ret = isAnd(ret, isEqual("0.678", getTextFieldValue(window, index)));// 折扣
+    tapLine();
+    var arr = editSalesBillGetValue();
+    var ret = isAnd(isEqualObject2(json["输入框值"], arr),
+            isEqual(arr["折扣"], 0.678));// 折扣
     tapReturn();
 
-    qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
+    return ret;
+}
+function test160100() {
+    tapMenu("销售订货", "按缺货查");
+    var keys = { "款号" : "lackgood", "订货日期从" : getDay(-365) };
+    conditionQuery(keys);
+    var qr = getQR();
+    var ret = qr.data[0]["缺货数"] == 0;
+
+    keys = { "门店" : "常青店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length == 0);
+
+    keys = { "门店" : "中洲店" };
+    conditionQuery(keys, false);
+    qr = getQR();
+    ret = isAnd(ret, qr.data.length > 0);
+
     return ret;
 }
 function test160109() {
@@ -3048,6 +3218,21 @@ function test160177() {
 
     return checkCopyAndPaste("新增订货+");
 }
+function test160179() {
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ],
+        "未付" : "yes", "挂单" : "yes" };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按挂单");
+    query();
+    tapLine();
+    var arr = editSalesBillGetValue({});
+    var det = getQRDet();
+    tapReturn();
+    return isAnd(isEqualObject(json["输入框值"], arr), isEqualDyadicArray(
+            json["明细值"], det));
+}
 // 翻页/排序/汇总
 function test16_Stockout_1() {
     tapMenu("销售订货", "按缺货查");
@@ -3070,164 +3255,7 @@ function test16_Stockout_1() {
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
 }
-function test160180() {
-    var qo = { "备注" : "开单模式" };
-    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
-    setGlobalParam(qo, o);
 
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
-    editSalesBill(json, colorSize);
-    var v1 = json["输入框值"], det1 = json["明细值"];
-
-    tapMenu2("按批次查");
-    query();
-    tapLine();
-    var v2 = editSalesBillGetValue(json);
-    var det2 = getQRDet(getScrollView(-1), json);
-    tapReturn();
-
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    setGlobalParam(qo, o);
-    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2));
-}
-// 条件查询/数据验证/清除
-// 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
-function test160084() {
-    tapMenu("货品管理", "新增货品+");
-    var r = "g" + getTimestamp(8);
-    var keys = { "款号" : r, "名称" : "a" + r, "品牌" : "1010pp", "吊牌价" : "200",
-        "季节" : "春季", "厂商" : "vell" };
-    addGoods(keys);
-
-    tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 10 ] } ] };
-    editSalesBill(json, colorSize);
-
-    tapMenu("采购订货", "新增订货+");
-    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
-    editSalesBill(json, colorSize);
-
-    tapMenu("销售订货", "新增订货+");
-    json = { "客户" : "xw", "明细" : [ { "货品" : r, "数量" : [ 50 ] } ] };
-    editSalesBill(json, colorSize);
-
-    tapMenu("销售订货", "按缺货查");
-    keys = { "款号" : r, "款号名称" : "a" + r, "订货日期从" : getToday(),
-        "订货日期到" : getToday(), "厂商" : "Vell", "上架从" : getToday(),
-        "上架到" : getToday(), "门店" : "常青店", "品牌" : "1010pp", "季节" : "春季" };
-    conditionQuery(keys);
-    var qr = getQR();
-    var expected = { "款号" : r, "名称" : "a" + r, "订货未发" : "50", "库存(含在途)" : "10",
-        "采购未到" : "20", "缺货数" : "20" };
-    var ret = isEqualObject2(qr.data[0], expected);// 当缺货数>0
-
-    tapMenu("采购入库", "新增入库+");
-    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
-    editSalesBill(json, colorSize);
-    tapMenu("销售订货", "按缺货查");
-    tapButton(window, QUERY);
-    qr = getQR();
-    expected["库存(含在途)"] = 30, expected["缺货数"] = 0;
-    ret = isAnd(ret, isEqualObject2(qr.data[0], expected));// 当缺货数=0
-
-    tapMenu("采购入库", "新增入库+");
-    json = { "客户" : "vell", "明细" : [ { "货品" : r, "数量" : [ 20 ] } ] };
-    editSalesBill(json, colorSize);
-    tapMenu("销售订货", "按缺货查");
-    tapButton(window, QUERY);
-    qr = getQR();
-    expected["库存(含在途)"] = 50;
-    ret = isAnd(ret, isEqualObject2(qr.data[0], expected));// 当缺货数<0
-
-    tapButton(window, CLEAR);
-    for (var i = 0; i < 10; i++) {
-        if (i == 2 || i == 3) {
-            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
-        } else {
-            ret = ret && isEqual("", getTextFieldValue(window, i));
-        }
-    }
-    return ret;
-}
-// 含160099
-function test160085() {
-    tapMenu("销售订货", "按缺货查");
-    var keys = { "款号" : "3035", "订货日期从" : getDay(-30) };
-    conditionQuery(keys);
-    var qr = getQR();
-    var count = qr.counts;
-
-    keys = { "门店" : "常青店" };
-    conditionQuery(keys, false);
-    qr = getQR();
-    var count1 = qr.counts;
-
-    keys = { "门店" : "中洲店" };
-    conditionQuery(keys, false);
-    qr = getQR();
-    var count2 = qr.counts;
-
-    keys = { "门店" : "仓库店" };// 仓库店无缺货，不显示160099
-    conditionQuery(keys, false);
-    qr = getQR();
-    var ret = isAnd(isEqual(count, add(count1, count2)), qr.data.length == 0);
-    return ret;
-}
-function test160086() {
-    var count1 = {};
-    tapMenu("销售订货", "按缺货查");
-    var keys = { "款号" : "3035" };
-    conditionQuery(keys);
-    var qr = getQR();
-    // if (qr.data.length == 0) {
-    count1 = qr.counts;
-    // }
-
-    keys = { "订货日期从" : getDay(-2) };
-    conditionQuery(keys, false);
-    qr = getQR();
-    var count2 = qr.counts;
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "xw", "日期" : getDay(-2),
-        "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
-    editSalesBill(json, colorSize);
-
-    tapMenu("销售订货", "按缺货查");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var count3 = qr.counts;
-
-    keys = { "款号" : "3035" };
-    conditionQuery(keys);
-    qr = getQR();
-    var ret = isEqualObject(count1, qr.count);// 当天的不变
-
-    debugObject(count2, "count2");
-    debugObject(count3, "count3");
-    return ret;
-}
-
-function test160100() {
-    tapMenu("销售订货", "按缺货查");
-    var keys = { "款号" : "lackgood", "订货日期从" : getDay(-365) };
-    conditionQuery(keys);
-    var qr = getQR();
-    var ret = qr.data[0]["缺货数"] == 0;
-
-    keys = { "门店" : "常青店" };
-    conditionQuery(keys, false);
-    qr = getQR();
-    ret = isAnd(ret, qr.data.length == 0);
-
-    keys = { "门店" : "中洲店" };
-    conditionQuery(keys, false);
-    qr = getQR();
-    ret = isAnd(ret, qr.data.length > 0);
-
-    return ret;
-}
 /**
  * 销售订单发货模式--按订货开单
  * @returns

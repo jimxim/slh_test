@@ -71,24 +71,6 @@ function getLastTableView(view) {
 }
 
 /**
- * 图片选款界面 货品查询结果
- * @param gCode 款号 点击会显示大图
- * @param gName 名称 同款号占同一个文本
- * @param gDet 单价/库存/订货数等 不同模块显示不同
- * @param gDays 上架天数 eg 14天，99+
- * @param gAddIdx 上架天数下标 点击会增加数量配合购物车使用 颜色尺码模式会弹表
- * @param gSubIdx gDet下标 点击会减去数量
- */
-function Good(gCode, gName, gDet, gDays, gAddIdx, gSubIdx) {
-    this.gCode = gCode;
-    this.gName = gName;
-    this.gDet = gDet;
-    this.gDays = gDays;
-    this.gAddIdx = gAddIdx;
-    this.gSubIdx = gSubIdx;
-}
-
-/**
  * 获取图片选择界面查询结果
  * @param view
  * @returns {Array}
@@ -104,10 +86,13 @@ function getPictureQR(view) {
         var curLineTotal = Math.floor((length - 1) / 3);
         for (var j = 0; j < curLineTotal; j++) {
             var t1 = texts[j * 2];
-            var v = t1.value().split(" ");
-            var gAddIdx = length - j;
-            var gSubIdx = j * 2 + 1;
-            f = new Good(v[0], v[1], texts[gSubIdx].value, gAddIdx, gSubIdx);
+            var v = t1.value().split(/\s+/);
+            var code = v[0], name = v[1];
+            var addIdx = length - curLineTotal + j;
+            var subIdx = j * 2 + 1;
+            var det = texts[subIdx].value();// 不同模块显示不同
+            var days = texts[addIdx].value();
+            f = new PResult(code, name, det, days, addIdx, subIdx);
             arr.push(f);
         }
     }
