@@ -682,17 +682,38 @@ function test170044() {
     tapReturn();
 
     tapMenu("往来管理", "客户查询");
-    query();
-    tapFirstText();
-    var r1 = randomWord(false, 6);
-    var keys = { "客户代码" : r1 };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, EDIT_SAVE);
-    tapPrompt();
+    var keys = { "客户" : "ls" };
+    var qFields = queryCustomerFields(keys);
+    query(qFields);
+    var qr = getQR();
+    var r1 = qr.data[0]["客户代码"];
 
-    logDebug(" ret1=" + ret1);
-    return ret1;
+    tapMenu("销售开单", "按订货开单");
+    var ret2 = false;
+    var f = new TField("客户", TF_AC, 3, r1, -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        var ret = false;
+        if (isIn(v, "李四")) {
+            ret2 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "客户" : r1 };
+    var fields = salesBillOrderFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var ret3 = isEqual("李四", qr.data[0]["客户"]);
+
+    logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
+    return ret1 && ret2 && ret3;
 }
 function test170045() {
     tapMenu("销售开单", "开  单+");
@@ -973,9 +994,42 @@ function test170050() {
             isEqual(totalMoney4, qr.data[0]["汇款"]),
             isEqual(0, qr.data[0]["代收"]));
 
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "k300", "数量" : 5 } ] };
+    editSalesBillNoColorSize(json);
+    var qr = json["输入框值"];
+    money = qr["现金"];
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret9 = isAnd(isEqual(money, qr.data[0]["现金"]), isEqual("0",
+            qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]), isEqual(0,
+            qr.data[0]["代收"]));
+
+    query();
+    tapFirstText();
+    var json1 = { "明细" : [ { "货品" : "3035", "数量" : 5 } ] };
+    editSalesBillNoColorSize(json1);
+
+    var qr1 = json1["明细值"];
+    var qr2 = json1["输入框值"];
+    var totalMoney1 = qr2["现金"];
+    var ret10 = isEqual(qr1.data[1]["小计"], sub(totalMoney1, money));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var ret11 = isAnd(isEqual(totalMoney1, qr.data[0]["现金"]), isEqual(0,
+            qr.data[0]["刷卡"]), isEqual(0, qr.data[0]["汇款"]), isEqual(0,
+            qr.data[0]["代收"]));
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9
+            + ", ret10=" + ret10 + ", ret11=" + ret11);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
+            && ret9 && ret10 && ret11;
 }
 function test170051() {
     tapMenu("销售开单", "开  单+");
@@ -2892,16 +2946,18 @@ function test170103() {
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 30 }, { "货品" : "k200", "数量" : 10 } ],
-        "不返回" : "yes" };
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : -5 }, { "货品" : "k200", "数量" : -2 } ] };
+    json = { "明细" : [ { "货品" : "3035", "数量" : -5 },
+            { "货品" : "k200", "数量" : -2 } ] };
     editSalesBillNoColorSize(json);
     qr1 = json["明细值"];
-    var ret3 = isAnd(isEqual("3035,jkk", qr1.data[0]["货品"]), isEqual(-5,
+    var ret3 = isAnd(isEqual("3035,jkk", qr1.data[0]["货品"]), isEqual(30,
             qr1.data[0]["数量"]), isEqual("k200,范范", qr1.data[1]["货品"]), isEqual(
-            -2, qr1.data[1]["数量"]));
+            10, qr1.data[1]["数量"]), isEqual("3035,jkk", qr1.data[2]["货品"]),
+            isEqual(-5, qr1.data[2]["数量"]), isEqual("k200,范范",
+                    qr1.data[3]["货品"]), isEqual(-2, qr1.data[3]["数量"]));
 
     qo = { "备注" : "销售开单是否合并重复的款号" };
     o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
