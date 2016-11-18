@@ -17,6 +17,7 @@ function testCheck001() {
 function testCheckAll() {
     run("处理掉待作废", "checkPrepare");
     run("处理掉盘点计划", "checkPrepare1");
+    run("处理掉盘点计划", "checkPrepare2");
     run("【盘点管理-更多-未盘点款号】检查数据正确性", "test180088");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
@@ -62,7 +63,7 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】盘点计划组合类型", "test180084");
     run("【盘点管理-盘点计划表】查询清除排序", "test180082_180083");//    
     run("【盘点管理-新增盘点】款号提示", "test180085");
-    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");
+    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");// ///
     run("【盘点管理-更多-未盘点款号】排序、底部数据汇总、翻页", "test180087");
     run("【盘点管理-更多-未盘点款号】已停用的款号不显示", "test180089");
     run("【盘点管理-盘点计划】新增盘点计划-按组合（门店不存在未处理的盘点单和盘点计划）", "test180093");
@@ -125,6 +126,34 @@ function checkPrepare1() {
     }
 
     return ret;
+}
+function checkPrepare2() {
+    tapMenu("盘点管理", "按批次查");
+    query();
+    var qr = getQR();
+    var arr = [], batch;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal - 1; i++) {
+            batch = qr.data[i]["处理时间"];
+            if (batch == "") {
+                arr.push(1);
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    var t1 = arr.length;
+    for (var j = 0; i < t1; i++) {
+        tapButton(window, QUERY);
+        tapFirstText();
+        tapButtonAndAlert("删除", OK);
+        delay();
+    }
+    return true;
 }
 function test180001_180003_180005() {
     tapMenu("盘点管理", "新增盘点+");
@@ -3373,18 +3402,24 @@ function test180086() {
     var ret3 = isAnd(isEqual(ventory, ventory1), isEqual(total1, total));
 
     tapMenu("盘点管理", "按明细查");
-    query();
+    var keys = { "日期从" : getDay(-1), "日期到" : getToday() };
+    var fields = queryCheckParticularFields(keys);
+    query(fields);
     qr = getQR();
     var batch = qr.data[0]["批次"];
-    var v, arr = [];
+    var v, v1, arr = [];
     arr.push(qr.data[0]["款号"]);
+    if (qr.data[0]["款号"] != qr.data[1]["款号"]) {
+        arr.push(qr.data[1]["款号"]);
+    }
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal - 1; i++) {
+        for (var i = 2; i < qr.curPageTotal - 1; i++) {
             var code = qr.data[i]["款号"];
-            v = qr.data[Number(i + 1)]["款号"];
-            if (v != code) {
-                arr.push(v);
+            v = qr.data[Number(i) - 1]["款号"];
+            v1 = qr.data[Number(i) - 2]["款号"];
+            if (isAnd(!isEqual(code, v), !isEqual(code, v1))) {
+                arr.push(code);
             }
         }
         if (j < totalPageNo) {
@@ -3398,8 +3433,15 @@ function test180086() {
         }
     }
 
+    var a = qr.data[Number(qr.curPageTotal) - 1]["款号"];
+    var a1 = qr.data[Number(qr.curPageTotal) - 2]["款号"];
+    var a2 = qr.data[Number(qr.curPageTotal) - 3]["款号"];
+    if (isAnd(!isEqual(a1, a), !isEqual(a2, a))) {
+        arr.push(a);
+    }
+
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
-    var keys = { "批次从" : batch1, "批次到" : batch };
+    var keys = { "批次从" : batch1, "批次到" : batch, "日期从" : getDay(-1) };
     var fields = checkUnCheckCodeFields(keys);
     query(fields);
     var qr1 = getQR();
@@ -3419,8 +3461,8 @@ function test180086() {
         }
     }
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    logDebug(" a=" + a + " ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2
+            + ", ret3=" + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test180087() {
@@ -3456,6 +3498,7 @@ function test180087() {
     return ret && ret1;
 }
 function test180088() {
+
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     query();
     var qr = getQR();
@@ -3489,7 +3532,7 @@ function test180088() {
     var fields = checkUnCheckCodeFields(keys);
     query(fields);
     var qr1 = getQR();
-    var ret1 = isEqual(0, qr.data.length);
+    var ret1 = isEqual(0, qr1.data.length);
 
     query();
     qr1 = getQR();
