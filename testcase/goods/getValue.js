@@ -61,7 +61,7 @@ function getLastTableView(view) {
     var tableViewIndex = tableViews.length - 1;
     for (; tableViewIndex > 0; tableViewIndex--) {// 0是菜单，要排除掉
         view1 = tableViews[tableViewIndex];
-        if (view1.name() != "空列表") {//
+        if (view1.cells().length != 0) {
             break;
         }
     }

@@ -1233,6 +1233,7 @@ function test100015Field() {
     tapReturn();
     return ret;
 }
+
 // 004店长登陆验证 默认店长权限
 function test100019() {
     var qo, o, ret = true;
@@ -5255,7 +5256,7 @@ function ts100197() {
     tapMenu("货品管理", "getMenu_More", "款号管理");
     var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
     waitUntil(cond, 5);// collectionView载入时间不稳定
-    var keys = { "款号" : "3035", "厂商" : "vell", "品牌" : "adidas", "类别" : "登山服" };
+    var keys = { "款号" : "3035", "厂商" : "Vell", "品牌" : "adidas", "类别" : "登山服" };
     conditionQuery(keys);// 查询条件在window上
     var view = getCollectionView(getPop(window, -1), -1);
     var c = view.cells();

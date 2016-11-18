@@ -3094,17 +3094,50 @@ function ts120090() {
     var qo = { "备注" : "采购入库模式" };
     var o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
     setGlobalParam(qo, o);
-
     qo = { "备注" : "采购员是否总是使用采购价做选款aclist的价格显示" };
     o = { "新值" : "1", "数值" : [ "开启" ] };
     setGlobalParam(qo, o);
+    qo = { "备注" : "调拨核算价格" };
+    o = { "新值" : "0", "数值" : [ "按进货价核算", "in" ] };
+    setGlobalParam(qo, o);
 
-    tapMenu("采购入库", "批量入库+");
-    var keys = { "明细" : [ { "货品" : "agc003" } ], "onlytest" : "yes" };// 加工价为120
-    editSalesBill(keys, colorSize);
-    var ret = dropDownListCheck("agc003,auto003,100", getScrollView());
+    tapMenu("门店调出", "批量调出+");
+    var ret = ts120090Field();
+    tapMenu("采购订货", "新增订货+");
+    ret = isAnd(ret, ts120090Field());
+    tapMenu("采购入库", "新增入库+");
+    ret = isAnd(ret, ts120090Field());
+    tapMenu("采购入库", "按订货入库");
+    var keys = { "日期从" : getDay(-30) };
+    conditionQuery(keys);
+    tapLine();
+    ret = isAnd(ret, ts120090Field());
+
+    o = { "新值" : "3", "数值" : [ "按销价3核算", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
+}
+function ts120090Field() {
+    var ret = false, expected = "3035,jkk,100";
+    var f = new TField("货品", TF_AC, 0, "3035", -1);
+    var cells = getTableViewCells(getScrollView(-1), f);
+    if (cells.length > 0) {
+        for (var i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var v = cell.name().toString();
+            v = v.replace(/[\ |\;|\；|\,|\，]/g, "");
+            expected = "3035jkk100";
+            if (isIn(v, expected)) {
+                ret = true;
+                break;
+            }
+        }
+        delay(0.5);
+        tapKeyboardHide();
+    } else {
+        ret = isIn(getTextFieldValue(getScrollView(-1), 0), expected);
+    }
     tapReturn();
-
     return ret;
 }
 function ts120091() {
@@ -3850,11 +3883,47 @@ function ts120123() {
     logDebug("s2=" + s2 + " S2=" + S2);
     return isAnd(s1 == S1, Number(s2) + 30 == S2);
 }
-// SLH-7620
 function ts120124() {
-    var qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限 这个设置为0是不是就是不验证" };
-    var o = { "数值" : 2 };
-    setGlobalParam(qo, o);
+    // var qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
+    // var o = { "新值" : "1", "数值" : [ "交互好", "in" ] };
+    // setGlobalParam(qo, o);
+    // qo = { "备注" : "销售开单逐条进行退货数大于拿货数验证时，是否允许继续输入" };
+    // o = { "新值" : "1", "数值" : [ "默认仅提醒" ] };
+    // setGlobalParam(qo, o);
 
+    // var keys = addGoodsSimple();
+    // tapMenu("采购入库", "新增入库+");
+    // var json = { "客户" : "vell", "明细" : [ { "货品" : keys["款号"], "数量" : [ -5 ] }
+    // ] };
+    // editSalesBill(json, colorSize);
+    // var ret = isInAlertMsgs("该款累计拿货数量");//自定义弹窗 无法捕捉
+
+    // qo = { "备注" : "销售开单逐条进行退货数大于拿货数验证时，是否允许继续输入" };
+    // o = { "新值" : "0", "数值" : [ "不允许输入" ] };
+    // setGlobalParam(qo, o);
+    // qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
+    // o = { "新值" : "0", "数值" : [ "不提醒" ] };
+    // setGlobalParam(qo, o);
+
+    return ret;
+}
+function ts120125() {
+    var qo1 = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
+    var o = { "数值" : 10 };
+    setGlobalParam2(qo1);
+
+    // tapMenu("统计分析", "汇总表", "滞销表");
+    // var keys = { "上架从" : getDay(-90), "门店" : "常青店" };
+    // conditionQuery(keys);
+    // var qr = getQR();// 默认降序排序
+    // var code = qr.data[0]["款号"];// 找一个很久前拿过货的款号
+    var code = "cc017821";
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "vell", "明细" : [ { "货品" : code, "数量" : [ -5 ] } ],
+        "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+
+    // o = { "数值" : 0 };
+    // setGlobalParam2(qo1, o);
     return true;
 }
