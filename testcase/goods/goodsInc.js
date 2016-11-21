@@ -283,6 +283,18 @@ function addRedeemPointsFields(points, money) {
     tapNaviLeftButton();
 }
 /**
+ * 获取颜色尺码模式开单界面明细中货品的textField下标
+ * @returns {Number}
+ */
+function getBillDetCSGoodsFieldIndex() {
+    var goodsFieldIndex = -2;
+    // 销售开单-3 门店调出-1 其他都是-2
+    if (gMenu1 == "销售开单") {
+        goodsFieldIndex = -3;// 开单模式2
+    }
+    return goodsFieldIndex;
+}
+/**
  * 获取开单界面明细界面第一个内容为空的货品textField下标
  * @param idx
  * @param tfNum 明细输入框个数
@@ -556,6 +568,7 @@ function getQRVerify_x(view, firstTitle) {
         yPre = y;
     }
     var total = data.length;
+    debugObject(titles, "titles");
     var qResult = new QResult(titles, data, total);
     return qResult;
 }
@@ -1637,7 +1650,7 @@ function isEqualDropDownListByExp(exp, view) {
     for (var i = 0; i < texts.length; i++) {
         var v = texts[i].name();
         if (v) {
-            ret = isAnd(ret, isIn(exp, v));
+                ret = isAnd(ret, isIn(exp, v));
         }
     }
     delay();

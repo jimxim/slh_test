@@ -140,6 +140,10 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
+    o = { "数值" : 0 };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     localClean();// 清理本地，刷新数据
     return ret;
 }

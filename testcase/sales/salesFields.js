@@ -18,16 +18,16 @@ function salesQueryBatchField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "a", -1, 0);
+        f = new TField("客户", TF_AC, 0, "xw", -1, 0);
         if (show) {
-            f.value = "Qaq";
+            f.value = "小王";
         }
         break;
     case "branch":
     case "客户分店":
-        f = new TField("客户分店", TF_AC, 1, "Z", 1, 0);
+        f = new TField("客户分店", TF_AC, 1, "xwc", -1, 0);
         if (show) {
-            f.value = "张晨";
+            f.value = "小王常";
         }
         break;
     case "day1":
