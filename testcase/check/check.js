@@ -63,7 +63,7 @@ function testCheckAll() {
     run("【盘点管理-盘点计划】盘点计划组合类型", "test180084");
     run("【盘点管理-盘点计划表】查询清除排序", "test180082_180083");//    
     run("【盘点管理-新增盘点】款号提示", "test180085");
-    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");// ///
+    run("【盘点管理-更多-未盘点款号】查询、清除", "test180086");
     run("【盘点管理-更多-未盘点款号】排序、底部数据汇总、翻页", "test180087");
     run("【盘点管理-更多-未盘点款号】已停用的款号不显示", "test180089");
     run("【盘点管理-盘点计划】新增盘点计划-按组合（门店不存在未处理的盘点单和盘点计划）", "test180093");
@@ -131,13 +131,15 @@ function checkPrepare2() {
     tapMenu("盘点管理", "按批次查");
     query();
     var qr = getQR();
-    var arr = [], batch;
+    var arr = [], date, ret = true;
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal - 1; i++) {
-            batch = qr.data[i]["处理时间"];
-            if (batch == "") {
-                arr.push(1);
+            date = qr.data[i]["处理时间"];
+            if (date == "") {
+                tapFirstText();
+                tapButtonAndAlert("删 除", OK);
+                delay();
             }
         }
         if (j < totalPageNo) {
@@ -146,14 +148,32 @@ function checkPrepare2() {
         }
     }
 
-    var t1 = arr.length;
-    for (var j = 0; i < t1; i++) {
-        tapButton(window, QUERY);
+    tapMenu("盘点管理", "按批次查");
+    tapButton(window, QUERY);
+    var qr = getQR();
+    if (qr.data[0]["处理时间"] == "") {
         tapFirstText();
-        tapButtonAndAlert("删除", OK);
+        tapButtonAndAlert("删 除", OK);
         delay();
     }
-    return true;
+
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var arr = [], date;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal - 1; i++) {
+            date = qr.data[i]["处理时间"];
+            if (date == "") {
+                ret = false;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return ret;
 }
 function test180001_180003_180005() {
     tapMenu("盘点管理", "新增盘点+");
@@ -882,7 +902,6 @@ function test180026() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    delay();
     var json = { "客户" : "Rt",
         "明细" : [ { "货品" : s, "数量" : "20", "单价" : "100" } ] };
     editSalesBillNoColorSize(json);
@@ -3366,6 +3385,8 @@ function test180085() {
     return ret;
 }
 function test180086() {
+    checkPrepare2();
+
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     var keys = { "款号" : "k300", "款号名称" : "铅笔裤", "品牌" : "Adidas", "类别" : "登山服",
         "厂商" : "rt", "门店" : "常青店", "日期从" : getDay(1), "日期到" : getToday() };

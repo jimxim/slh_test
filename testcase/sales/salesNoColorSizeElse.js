@@ -182,14 +182,14 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按批次查】检查作废时间和作废人", "test170720");
     run("【销售开单-按批次查】检查作废时间和作废人", "test170721");// //需要登进登出检查作废人
     run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724");// //
-    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724_1");// //////修改
+    run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724_1");// //
     run("【销售开单-按汇总-按退货汇总】变动款号季节", "test170725");
     run("【销售开单-按汇总-按金额汇总】增加门店查询条件", "test170726");// //加上2
     run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");// ///
     // 以下为新增用例
     run("[销售开单-按批次查]各界面按发生日期+批次的倒序  排列", "test170729");
-    run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730");// ///
-    run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730_1");// ///
+    run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730");// //
+    run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730_1");// //
     // run("【销售开单】挂单界面打印时提示检查", "test170400");//打印按钮灰化，无法点击
     // run("【销售开单】挂单界面打印时提示检查", "test170400_2");//打印按钮灰化，无法点击
     // run("【销售开单－物流单】代收收款记录作废后内容检查", "test170293");//加到170288
@@ -9977,6 +9977,7 @@ function test170721() {
     return ret && ret1 && ret2;
 }
 function test170724() {
+    // 挂单+保存
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 2 } ],
@@ -9992,26 +9993,27 @@ function test170724() {
     query(fields1);
     var qr = getQR();
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(3,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]));
+            qr.data[0]["数量"]));
 
     tapFirstText();
     // 日期默认为当天
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 3 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var index = getEditSalesTFindex2("客户", "日期");
     var ret1 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     tapMenu("销售订货", "按批次查");
     query();
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual("李四", qr.data[0]["客户"]), isEqual(6,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]),
-            isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
+    var ret2 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(6,
+            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
+
+    tapFirstText();
+    var index = getEditSalesTFindex2("客户", "日期");
+    ret2 = isAnd(ret2, isEqual(getToday(), getTextFieldValue(window, index)));
+    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 2 } ],
@@ -10023,7 +10025,7 @@ function test170724() {
 
     tapMenu("销售开单", "按挂单");
     var keys1 = { "日期从" : getDay(-3), "日期到" : getDay(-3) };
-    var fields1 = salesOrderHangFields(keys1);
+    var fields1 = salesQueryGuaDanFields(keys1);
     query(fields1);
     var qr = getQR();
     var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
@@ -10031,15 +10033,12 @@ function test170724() {
 
     tapFirstText();
     // 日期默认为当天
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 3 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var index = getEditSalesTFindex2("客户", "日期");
     var ret4 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -10051,8 +10050,6 @@ function test170724() {
     tapFirstText();
     var index = getEditSalesTFindex2("客户", "日期");
     var ret6 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
@@ -10072,7 +10069,7 @@ function test170724_2() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt",
         "明细" : [ { "货品" : "3035", "数量" : 6 }, { "货品" : "8989", "数量" : 2 } ],
-        "日期" : getDay(-3), "onlytest" : "yes" };
+        "日期" : getDay(-3), "备注" : "rq检查", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     runAndAlert("test170730Hang", OK);
@@ -10085,33 +10082,28 @@ function test170724_2() {
     var fields1 = purchaseHangFields(keys1);
     query(fields1);
     var qr = getQR();
-    var ret = isAnd(isEqual("李四", qr.data[0]["厂商"]), isEqual(8,
-            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
+    var ret = isAnd(isEqual("Rt", qr.data[0]["厂商"]), isEqual(8,
+            qr.data[0]["数量"]), isEqual("rq检查", qr.data[0]["备注"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 5 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var index = getEditSalesTFindex2("客户", "日期");
+    var index = getEditSalesTFindex2("厂商", "日期");
     var ret1 = isEqual(getToday(), getTextFieldValue(window, index));
-
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     tapMenu("采购入库", "按批次查");
     query();
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual("李四", qr.data[0]["客户"]), isEqual(3,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]),
+    ret1 = isAnd(ret1, isEqual("Rt", qr.data[0]["厂商"]), isEqual(13,
+            qr.data[0]["总数"]), isEqual("rq检查", qr.data[0]["备注"]),
             isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
-    var index = getEditSalesTFindex2("客户", "日期");
+    var index = getEditSalesTFindex2("厂商", "日期");
     var ret2 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -10405,6 +10397,7 @@ function test170729() {
     // 12.往来管理-客户查询-销售明细
 }
 function test170730() {
+    // 挂单+二次挂单
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 2 } ],
@@ -10420,12 +10413,11 @@ function test170730() {
     query(fields1);
     var qr = getQR();
     var ret = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(3,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]));
+            qr.data[0]["数量"]));
 
     tapFirstText();
     // 日期默认为当天
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 3 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var index = getEditSalesTFindex2("客户", "日期");
@@ -10437,15 +10429,12 @@ function test170730() {
     query();
     qr = getQR();
     ret1 = isAnd(ret1, isEqual("李四", qr.data[0]["客户"]), isEqual(6,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]),
-            isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
+            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
     var index = getEditSalesTFindex2("客户", "日期");
     var ret2 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 2 } ],
@@ -10457,7 +10446,7 @@ function test170730() {
 
     tapMenu("销售开单", "按挂单");
     var keys1 = { "日期从" : getDay(-3), "日期到" : getDay(-3) };
-    var fields1 = salesOrderHangFields(keys1);
+    var fields1 = salesQueryGuaDanFields(keys1);
     query(fields1);
     var qr = getQR();
     var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
@@ -10465,8 +10454,7 @@ function test170730() {
 
     tapFirstText();
     // 日期默认为当天
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 3 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 3 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var index = getEditSalesTFindex2("客户", "日期");
@@ -10484,9 +10472,7 @@ function test170730() {
     tapFirstText();
     var index = getEditSalesTFindex2("客户", "日期");
     var ret6 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
@@ -10508,7 +10494,7 @@ function test170730_2() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "rt",
         "明细" : [ { "货品" : "3035", "数量" : 6 }, { "货品" : "8989", "数量" : 2 } ],
-        "日期" : getDay(-3), "onlytest" : "yes" };
+        "日期" : getDay(-3), "备注" : "rq检查", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     runAndAlert("test170730Hang", OK);
@@ -10521,34 +10507,32 @@ function test170730_2() {
     var fields1 = purchaseHangFields(keys1);
     query(fields1);
     var qr = getQR();
-    var ret = isAnd(isEqual("李四", qr.data[0]["厂商"]), isEqual(8,
-            qr.data[0]["数量"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
+    var ret = isAnd(isEqual("Rt", qr.data[0]["厂商"]), isEqual(8,
+            qr.data[0]["数量"]), isEqual("rq检查", qr.data[0]["备注"]),
+            isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
-    json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
-        "onlytest" : "yes" };
+    json = { "明细" : [ { "货品" : "3035", "数量" : 4 } ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var index = getEditSalesTFindex2("客户", "日期");
+    var index = getEditSalesTFindex2("厂商", "日期");
     var ret1 = isEqual(getToday(), getTextFieldValue(window, index));
 
-    runAndAlert("test170724Hang", OK);
+    runAndAlert("test170730Hang", OK);
     delay();
     tapReturn();
 
     tapMenu("采购入库", "按挂单");
     query();
     qr = getQR();
-    ret1 = isAnd(ret1, isEqual("李四", qr.data[0]["客户"]), isEqual(3,
-            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]),
+    ret1 = isAnd(ret1, isEqual("Rt", qr.data[0]["厂商"]), isEqual(12,
+            qr.data[0]["数量"]), isEqual("rq检查", qr.data[0]["备注"]),
             isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapFirstText();
-    var index = getEditSalesTFindex2("客户", "日期");
+    var index = getEditSalesTFindex2("厂商", "日期");
     var ret2 = isEqual(getToday(), getTextFieldValue(window, index));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    editSalesBillSave({});
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
