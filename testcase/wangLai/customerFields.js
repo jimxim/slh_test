@@ -258,29 +258,33 @@ function editCustomerBranchField(key, show) {
             f.label = "分店名称";
         }
         break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF_SC, 1, "常青店",-1);
+        break;
     case "mobile":
     case "电话":
-        f = new TField("电话", TF, 1, "13311112");
+        f = new TField("电话", TF, 2, "13311112");
         break;
     case "weixin":
     case "微信":
-        f = new TField("微信", TF, 2, "wx");
+        f = new TField("微信", TF, 3, "wx");
         break;
     case "address":
     case "地址":
-        f = new TField("地址", TF, 3, "地址");
+        f = new TField("地址", TF, 4, "地址");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 4, "备注");
+        f = new TField("备注", TF, 5, "备注");
         break;
     default:
         logWarn("未知key＝" + key);
     }
     return f;
 }
+// 客户分店 scrollView -1,0
 function queryCustomerBranchFields(keys, show) {
-    tapMenu2("客户分店");
     return getTFields("queryCustomerBranchField", keys, show);
 }
 function queryCustomerBranchField(key, show) {
@@ -302,15 +306,6 @@ function queryCustomerBranchField(key, show) {
         logWarn("未知key＝" + key);
     }
     return f;
-}
-
-// 客户分店
-function testCustomerBranchFields() {
-    var keys = [ "name", "mobile", "stop" ];
-    var fields = customerBranchFields(keys);
-    setTFieldsValue(getScrollView(1), fields);
-    var showFields = customerBranchFields(keys, true);
-    return checkShowFields(getScrollView(1), showFields);
 }
 
 // 客户门店账

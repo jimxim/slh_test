@@ -554,6 +554,7 @@ function getQRVerify_x(view, firstTitle) {
     }
     yPre = y;
     // debugObject(titles, "titles");
+    // size.height间隔线 待改
     var data = [], data1 = {};
     for (; i < texts.length; i++) {
         y = getY(texts[i]);
@@ -1650,7 +1651,7 @@ function isEqualDropDownListByExp(exp, view) {
     for (var i = 0; i < texts.length; i++) {
         var v = texts[i].name();
         if (v) {
-                ret = isAnd(ret, isIn(exp, v));
+            ret = isAnd(ret, isIn(exp, v));
         }
     }
     delay();
