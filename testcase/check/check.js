@@ -131,46 +131,51 @@ function checkPrepare2() {
     tapMenu("盘点管理", "按批次查");
     query();
     var qr = getQR();
-    var arr = [], date, ret = true;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal - 1; i++) {
-            date = qr.data[i]["处理时间"];
-            if (date == "") {
-                tapFirstText();
-                tapButtonAndAlert("删 除", OK);
-                delay();
+    var ret = true;
+    if (qr.data.length == 0) {
+        ret = true;
+    } else {
+        var arr = [], date;
+        var totalPageNo = qr.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal - 1; i++) {
+                date = qr.data[i]["处理时间"];
+                if (date == "") {
+                    tapFirstText();
+                    tapButtonAndAlert("删 除", OK);
+                    delay();
+                }
+            }
+            if (j < totalPageNo) {
+                scrollNextPage();
+                qr = getQR();
             }
         }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
+
+        tapMenu("盘点管理", "按批次查");
+        tapButton(window, QUERY);
+        var qr = getQR();
+        if (qr.data[0]["处理时间"] == "") {
+            tapFirstText();
+            tapButtonAndAlert("删 除", OK);
+            delay();
         }
-    }
 
-    tapMenu("盘点管理", "按批次查");
-    tapButton(window, QUERY);
-    var qr = getQR();
-    if (qr.data[0]["处理时间"] == "") {
-        tapFirstText();
-        tapButtonAndAlert("删 除", OK);
-        delay();
-    }
-
-    tapButton(window, QUERY);
-    var qr = getQR();
-    var arr = [], date;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal - 1; i++) {
-            date = qr.data[i]["处理时间"];
-            if (date == "") {
-                ret = false;
+        tapButton(window, QUERY);
+        var qr = getQR();
+        var arr = [], date;
+        var totalPageNo = qr.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal - 1; i++) {
+                date = qr.data[i]["处理时间"];
+                if (date == "") {
+                    ret = false;
+                }
             }
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
+            if (j < totalPageNo) {
+                scrollNextPage();
+                qr = getQR();
+            }
         }
     }
     return ret;
@@ -1272,10 +1277,11 @@ function test180037() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(sum1, qr.counts["盘前"]), isEqual(sum2,
-            qr.counts["盘后"]), isEqual(sum3, qr.counts["盈亏"]), isAqualNum(sum4,
-            qr.counts["盈亏金额"]));
+    var ret1 = isAnd(isAqualNum(sum1, qr.counts["盘前"]), isAqualNum(sum2,
+            qr.counts["盘后"]), isAqualNum(sum3, qr.counts["盈亏"]), isAqualNum(
+            sum4, qr.counts["盈亏金额"]));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test180037_180034_180035() {
@@ -3428,19 +3434,15 @@ function test180086() {
     query(fields);
     qr = getQR();
     var batch = qr.data[0]["批次"];
-    var v, v1, arr = [];
+    var v, arr = [];
     arr.push(qr.data[0]["款号"]);
-    if (qr.data[0]["款号"] != qr.data[1]["款号"]) {
-        arr.push(qr.data[1]["款号"]);
-    }
     var totalPageNo = qr.totalPageNo;
     for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 2; i < qr.curPageTotal - 1; i++) {
+        for (var i = 0; i < qr.curPageTotal - 2; i++) {
             var code = qr.data[i]["款号"];
-            v = qr.data[Number(i) - 1]["款号"];
-            v1 = qr.data[Number(i) - 2]["款号"];
-            if (isAnd(!isEqual(code, v), !isEqual(code, v1))) {
-                arr.push(code);
+            v = qr.data[Number(i) + 1]["款号"];
+            if (isAnd(!isEqual(code, v))) {
+                arr.push(v);
             }
         }
         if (j < totalPageNo) {
@@ -3454,11 +3456,15 @@ function test180086() {
         }
     }
 
-    var a = qr.data[Number(qr.curPageTotal) - 1]["款号"];
-    var a1 = qr.data[Number(qr.curPageTotal) - 2]["款号"];
-    var a2 = qr.data[Number(qr.curPageTotal) - 3]["款号"];
-    if (isAnd(!isEqual(a1, a), !isEqual(a2, a))) {
-        arr.push(a);
+    var len = arr.length;
+    var v1, arr1 = [];
+    arr1.push(arr[0]);
+    for (var s = 0; s <= len - 1; s++) {
+        var code1 = arr[s]["款号"];
+        v1 = arr[Number(s) + 1]["款号"];
+        if (isAnd(!isEqual(code, v1))) {
+            arr1.push(v1);
+        }
     }
 
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
@@ -3466,7 +3472,7 @@ function test180086() {
     var fields = checkUnCheckCodeFields(keys);
     query(fields);
     var qr1 = getQR();
-    var ret4 = isEqual(Number(total1) - arr.length, qr1.total);
+    var ret4 = isEqual(Number(total1) - arr1.length, qr1.total);
 
     var ret5 = true;
     var key = [ "款号" ];
@@ -3604,6 +3610,10 @@ function test180091_1() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret1 = isAnd(isIn(alertMsg1, "盘点不允许有负数[-2]"));
+
+    qo = { "备注" : "盘点时是否允许输入负数" };
+    o = { "新值" : "1", "数值" : [ "开启" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret && ret1;
 }

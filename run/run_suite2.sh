@@ -96,6 +96,8 @@ js_func="$js_func testSalesNoColorSizeOutAndIn"
 #盘点管理
 js_func="$js_func setSales001Params"
 js_func="$js_func test000Check002"
+
+js_func="$js_func setSales001Params"
 js_func="$js_func test000Check001 testCheckts100157For000_2"
 
 js_func="$js_func testCheck180058_Prepare"

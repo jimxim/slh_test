@@ -4289,30 +4289,28 @@ function test170652() {
     var k1 = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ] };
     editSalesBillColorSize(json);
 
-    saveAndAlertOk();
-    tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1), alertMsg2 = getArray1(alertMsgs,
             -2), alertMsg3 = getArray1(alertMsgs, -3);
     var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")
             || isIn(alertMsg3, "保存成功");
-    tapReturn();
 
+    tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var f3 = new TField("数量", TF, 3, add(add(k, k1), 1));
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    var ret2 = isAnd(isIn(alertMsg, "[常青店]中[" + r + "," + "货品" + r), isIn(
-            alertMsg, "库存不足"), isIn(alertMsg, "1件"));
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret2 = isAnd(isIn(alertMsg1, "[常青店]中[" + r + "," + "货品" + r), isIn(
+            alertMsg1, "库存不足"), isIn(alertMsg1, "1件"))
+            || isAnd(isIn(alertMsg2, "[常青店]中[" + r + "," + "货品" + r), isIn(
+                    alertMsg2, "库存不足"), isIn(alertMsg2, "1件"));
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -4324,7 +4322,6 @@ function test170652() {
     tapButton(window, QUERY);
     qr = getQR();
     var k2 = qr.data[0]["库存"];
-
     var ret3 = isAnd(isEqual("-11", k2), isEqual(20, k3));
 
     // 采购退货/门店调出/紧急模式上传 都要测一遍
@@ -4332,14 +4329,11 @@ function test170652() {
     var json = { "客户" : "Rt", "明细" : [ { "货品" : r, "数量" : [ -1 ] } ],
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
+    editSalesBillSave({});
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret4 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
-    tapReturn();
 
     tapMenu("采购入库", "按批次查");
     query();
@@ -4347,11 +4341,10 @@ function test170652() {
     var f3 = new TField("数量", TF, 3, -add(add(k2, k3), 1));
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    ret4 = isAnd(ret4, isIn(alertMsg, "差1件"));
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    ret4 = isAnd(ret4, isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件"));
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -4363,7 +4356,6 @@ function test170652() {
     tapButton(window, QUERY);
     qr = getQR();
     var k5 = qr.data[0]["库存"];
-
     ret4 = isAnd(ret4, isEqual("-12", k4), isEqual(20, k5));
 
     tapMenu("门店调出", "批量调出+");
@@ -4374,11 +4366,10 @@ function test170652() {
     var f1 = new TField("接收店", TF_SC, 1, "中洲店");
     var fields = [ f1 ];
     setTFieldsValue(window, fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    var ret5 = isIn(alertMsg, "保存成功");
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret5 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
     tapMenu("门店调出", "按批次查");
     var keys = { "日期到" : getToday() };
@@ -4389,11 +4380,10 @@ function test170652() {
     var f3 = new TField("数量", TF, 3, add(add(k4, k5), 1));
     var fields = [ f3 ];
     setTFieldsValue(getScrollView(-1), fields);
-
-    saveAndAlertOk();
-    tapPrompt();
-    ret5 = isAnd(ret5, isIn(alertMsg, "差1件"));
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    ret5 = isAnd(ret5, isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件"));
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -4496,15 +4486,13 @@ function test170653() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : r, "数量" : [ add(add(k, k1), 1) ] } ],
-        "onlytest" : "yes" };
+        "明细" : [ { "货品" : r, "数量" : [ add(add(k, k1), 1) ] } ] };
     editSalesBillColorSize(json);
 
-    saveAndAlertOk();
-    tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "差1件");
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
@@ -4529,13 +4517,15 @@ function test170653() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
+    editSalesBillSave({});
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret3 = isAnd(isIn(alertMsg, "[常青店]中[" + r + "," + "货品" + r), isIn(
-            alertMsg, "库存不足"), isIn(alertMsg, "1件"));
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = isAnd(isIn(alertMsg1, "[常青店]中[" + r + "," + "货品" + r), isIn(
+            alertMsg1, "库存不足"), isIn(alertMsg1, "1件"))
+            || isAnd(isIn(alertMsg2, "[常青店]中[" + r + "," + "货品" + r), isIn(
+                    alertMsg2, "库存不足"), isIn(alertMsg2, "1件"));
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -4555,10 +4545,10 @@ function test170653() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    saveAndAlertOk();
-    tapPrompt();
-    var ret4 = isAnd(isIn(alertMsg, "差1件"));
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret4 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -4582,10 +4572,10 @@ function test170653() {
     var fields = [ f1 ];
     setTFieldsValue(window, fields);
 
-    saveAndAlertOk();
-    tapPrompt();
-    var ret5 = isIn(alertMsg, "差1件");
-    tapReturn();
+    editSalesBillSave({});
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret5 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -5243,15 +5233,12 @@ function test170658() {
     k = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "Aaa002", "数量" : [ 1 ] } ],
-        "onlytest" : "yes" };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "Aaa002", "数量" : [ 1 ] } ] };
     editSalesBillColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "差1件");
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
@@ -5276,14 +5263,12 @@ function test170658() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
+    editSalesBillSave({});
 
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret3 = isIn(alertMsg1, "差1件");
-
-    tapReturn();
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -5302,10 +5287,11 @@ function test170658() {
         "goodsFieldIndex" : -2, "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    saveAndAlertOk();
-    tapPrompt();
-    var ret4 = isAnd(isIn(alertMsg, "差1件"));
-    tapReturn();
+    editSalesBillSave({});
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret4 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
@@ -5328,10 +5314,11 @@ function test170658() {
     var fields = [ f1 ];
     setTFieldsValue(window, fields);
 
-    saveAndAlertOk();
-    tapPrompt();
-    var ret5 = isIn(alertMsg, "差1件");
-    tapReturn();
+    editSalesBillSave({});
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret5 = isIn(alertMsg1, "差1件") || isIn(alertMsg2, "差1件");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);

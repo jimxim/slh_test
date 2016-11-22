@@ -731,9 +731,7 @@ function editChangeSalesBillOrderNumSave(ret) {
     if (ret == "no") {
         return;
     } else {
-        saveAndAlertOk();
-        tapPrompt();
-        delay();
+        editSalesBillSave({});
         var bt = app.mainWindow().buttons()[RETURN];
         if (!isUIAElementNil(bt) || bt.isVisible()) {
             tapReturn();
