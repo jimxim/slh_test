@@ -12271,7 +12271,7 @@ function test240002_240004() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "anewCus" + getTimestamp(6);
+    var r = "anewCus" + randomWord(false, 6);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r, "拿货折扣" : "1.56" };
     var fields = editCustomerFields(keys);
@@ -12310,7 +12310,7 @@ function test240002_240004() {
     tapButton(window, "图片选款");
     tapNaviButton("当天到货");
 
-    var dataView = window.tableViews()[5];
+    var dataView = window.tableViews()[4];
     dataView.tapWithOptions({ tapOffset : { x : 0.03, y : 0.35 } });
     dataView.tapWithOptions({ tapOffset : { x : 0.15, y : 0.35 } });
     dataView.tapWithOptions({ tapOffset : { x : 0.28, y : 0.35 } });
@@ -12374,11 +12374,12 @@ function test240003_240007_240006() {
     tapPrompt();
     tapReturn();
 
+    tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
     qr = getQRDet();
     ret1 = isAnd(ret1, isIn(qr.data[0]["货品"], "k300"), isEqual(10,
-            qr.data[1]["数量"]), isIn(qr.data[0]["折扣"], "1."), isIn(
+            qr.data[0]["数量"]), isIn(qr.data[0]["折扣"], "1."), isIn(
             qr.data[1]["货品"], "抹零"), isEqual("-1", qr.data[1]["数量"]), isEqual(
             1, qr.data[1]["折扣"]), isIn(qr.data[2]["货品"], "打包费"), isEqual(1,
             qr.data[2]["数量"]), isEqual(1, qr.data[2]["折扣"]));
@@ -12393,7 +12394,7 @@ function test240003_240007_240006() {
             qr.data[1]["货品"], "抹零"), isEqual("-1", qr.data[1]["数量"]), isIn(
             qr.data[2]["货品"], "打包费"), isEqual(1, qr.data[2]["数量"]));
 
-    var o = { "数量" : [ 3 ] };
+    var o = [ { "数量" : [ 3 ] } ];
     editChangeSalesBillOrderNum(o);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
@@ -12429,7 +12430,7 @@ function test240005() {
 
     tapButton(window, "图片选款");
     tapNaviButton("当天到货");
-    var dataView = window.tableViews()[5];
+    var dataView = window.tableViews()[4];
     dataView.tapWithOptions({ tapOffset : { x : 0.03, y : 0.35 } });
     dataView.tapWithOptions({ tapOffset : { x : 0.15, y : 0.35 } });
     dataView.tapWithOptions({ tapOffset : { x : 0.28, y : 0.35 } });
@@ -12479,7 +12480,7 @@ function test240008() {
 
     var qr = getQRDet();
     var tip = qr.data[0]["折扣"];
-    var o = { "折扣" : [ sub(tip, 0.01) ] };
+    var o = [ { "折扣" : [ sub(tip, 0.01) ] } ];
     editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -12495,7 +12496,7 @@ function test240008() {
 
     qr = getQRDet();
     var tip1 = qr.data[0]["折扣"];
-    o = { "折扣" : [ sub(tip1, 0.01) ] };
+    o = [ { "折扣" : [ sub(tip1, 0.01) ] } ];
     editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -12522,17 +12523,15 @@ function test240009() {
     var json = { "客户" : "anewCus" };
     editSalesBillCustomer(json);
 
-    var r = "anewKhao" + getTimestamp(6);
+    var r = "anewKhao" + randomWord(false, 6);
     var r1 = "1" + getTimestamp(3);
     json = { "款号" : r, "名称" : r, "进货价" : r1, "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(json, 1);
 
     var qr = getQRDet();
-    var ret1 = isAnd(isIn(qr.data[1]["货品"], r), isIn(getTextFieldValue(window,
-            0), "anewCus"), isIn(qr.data[1]["折扣"], "1."));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var ret1 = isAnd(isIn(qr.data[0]["货品"], r), isIn(getTextFieldValue(window,
+            0), "anewCus"), isIn(qr.data[0]["折扣"], "1."));
+    editSalesBillSave({});
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
@@ -12543,8 +12542,8 @@ function test240010() {
     o = { "新值" : "允许折扣大于1", "数值" : [ "允许折扣大于1", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "anewCus" + getTimestamp(7);
-    var r1 = "1." + getTimestamp(2);
+    var r = "anewCus" + randomWord(false, 7);
+    var r1 = "1." + getRandomInt(100);
     tapMenu("往来管理", "新增客户+");
     var keys = { "名称" : r };
     var fields = editCustomerFields(keys);
@@ -12561,7 +12560,7 @@ function test240010() {
     tapFirstText();
     keys = [ "拿货折扣" ];
     fields = editCustomerFields(keys);
-    changeTFieldValue(fields["拿货折扣"], r1);
+    changeTFieldValue(fields["拿货折扣"], Number(r1));
     setTFieldsValue(getScrollView(), fields);
     tapButton(window, EDIT_SAVE);
 
@@ -12571,6 +12570,7 @@ function test240010() {
     var ret1 = checkShowFields(getScrollView(-1), fields);
     tapReturn();
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test240011() {
@@ -12599,10 +12599,12 @@ function test240011() {
     query();
     tapFirstText();
     var qr = getQRDet();
+    var index = getEditSalesTFindex2("客户", "汇款");
     ret1 = isAnd(ret1, isIn(qr.data[0]["货品"], "3035"), isEqual(10,
             qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "抹零"), isEqual(-1,
             qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "打包费"), isEqual(1,
-            qr.data[2]["数量"]), isIn(getTextFieldValue(window, 10), "1."));
+            qr.data[2]["数量"]), isIn(
+            getTextFieldValue(window, Number(index) - 3), "1."));
     tapReturn();
 
     tapMenu("销售订货", "新增订货+");
@@ -12615,32 +12617,31 @@ function test240011() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
-    // var ret2 = isIn(alertMsg1, "保存成功");
-
-    var ret2 = false;
-    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
     tapReturn();
 
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
     qr = getQRDet();
+    index = getEditSalesTFindex2("客户", "汇款");
     ret2 = isAnd(ret2, isIn(qr.data[0]["货品"], "3035"), isEqual(10,
             qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "抹零"), isEqual(-1,
             qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "打包费"), isEqual(1,
-            qr.data[2]["数量"]), isIn(getTextFieldValue(window, 10), "1."));
+            qr.data[2]["数量"]), isIn(
+            getTextFieldValue(window, Number(index) - 3), "1."));
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
     qr = getQRDet();
+    index = getEditSalesTFindex2("客户", "汇款");
     ret2 = isAnd(ret2, isIn(qr.data[0]["货品"], "3035"), isEqual(10,
             qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "抹零"), isEqual(-1,
             qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "打包费"), isEqual(1,
-            qr.data[2]["数量"]), isIn(getTextFieldValue(window, 11), "1."));
+            qr.data[2]["数量"]), isIn(
+            getTextFieldValue(window, Number(index) - 3), "1."));
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -12665,8 +12666,9 @@ function test240013() {
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var tip = getTextFieldValue(window, 10);
-    var f10 = new TField("折扣", TF, 10, sub(tip, 0.01));
+    var index = getEditSalesTFindex2("客户", "汇款");
+    var tip = getTextFieldValue(window, Number(index) - 3);
+    var f10 = new TField("折扣", TF, Number(index) - 3, sub(tip, 0.01));
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
     saveAndAlertOk();
@@ -12681,8 +12683,9 @@ function test240013() {
         "特殊货品" : { "抹零" : 19, "打包费" : 30 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var tip1 = getTextFieldValue(window, 10);
-    var f10 = new TField("折扣", TF, 10, sub(tip1, 0.01));
+    index = getEditSalesTFindex2("客户", "汇款");
+    var tip1 = getTextFieldValue(window, Number(index) - 3);
+    var f10 = new TField("折扣", TF, Number(index) - 3, sub(tip1, 0.01));
     var fields = [ f10 ];
     setTFieldsValue(window, fields);
     saveAndAlertOk();
@@ -12690,11 +12693,7 @@ function test240013() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
-    // var ret2 = isIn(alertMsg1, "保存成功");
-    var ret2 = false;
-    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -12735,7 +12734,7 @@ function test240014() {
 
     var qr = getQRDet();
     var tip = qr.data[0]["折扣"];
-    var o = { "折扣" : [ sub(tip, 0.01) ] };
+    var o = [ { "折扣" : [ sub(tip, 0.01) ] } ];
     editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
@@ -12751,17 +12750,14 @@ function test240014() {
 
     qr = getQRDet();
     var tip1 = qr.data[0]["折扣"];
-    o = { "折扣" : [ sub(tip1, 0.01) ] };
+    o = [ { "折扣" : [ sub(tip1, 0.01) ] } ];
     editChangeSalesBillOrderDiscount(o, "no");
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret2 = false;
-    if (isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功")) {
-        ret2 = true;
-    }
+    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);

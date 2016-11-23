@@ -544,6 +544,7 @@ function editQuickAddGoods(o, o1, ret) {
     if (ret == "no") {
         editQuickAddGoodsNo(o1);
     }
+
     return ret;
 }
 function editQuickAddGoodsYes(o1) {
@@ -551,6 +552,9 @@ function editQuickAddGoodsYes(o1) {
     delay();
 }
 function editQuickAddGoodsNo(o1) {
+    if (colorSize == "yes") {
+        return;
+    }
     var idx, x = 4;
     if (isUndefined(idx)) {
         idx = -1;
@@ -790,7 +794,8 @@ function editChangeSalesBillOrderDiscount(o, ret) {
     var titles = getSalesBillDetTfObject();
     var title_num = "折扣";
     var tfNum = titles["明细输入框个数"];
-    var num = o["折扣"];
+    var d = o[0];
+    var num = d["折扣"];
     var fields, f;
     if (num && num.length > 0) {
         fields = [];
