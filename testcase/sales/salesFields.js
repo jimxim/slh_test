@@ -9,9 +9,80 @@ function testSalesQueryBatchFields() {
     var showFields = salesQueryBatchFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
 function salesQueryBatchFields(keys, show) {
+    if (ipadVer >= "7.27") {
+        return getTFields("salesQueryBatchField1", keys, show);
+    }
     return getTFields("salesQueryBatchField", keys, show);
+}
+function salesQueryBatchField1(key, show) {
+    var f;
+    switch (key) {
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        break;
+    case "day2":
+    case "日期到":
+        f = new TField("日期到", TF_DT, 1, getToday());
+        break;
+    case "batch1":
+    case "批次从":
+        f = new TField("批次从", TF, 2, "1");
+        break;
+    case "batch2":
+    case "批次到":
+        f = new TField("到", TF, 3, "20");
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 4, "常青店", -1, 0);// TF_SC
+        break;
+    case "remarks":
+    case "备注":
+        f = new TField("备注", TF, 5, "备注");
+        break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 6, "000", -1, 0);
+        if (show) {
+            f.value = "000,管理员";
+        }
+        break;
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 7, "xw", -1, 0);
+        if (show) {
+            f.value = "小王";
+        }
+        break;
+    case "branch":
+    case "客户分店":
+        f = new TField("客户分店", TF_AC, 8, "xwc", -1, 0);
+        if (show) {
+            f.value = "小王常";
+        }
+        break;
+    case "outstanding":
+    case "是否未结":
+        f = new TField("是否未结", TF_SC, 9, "否");
+        break;
+    case "invalid":
+    case "作废挂单":
+        f = new TField("作废挂单", TF_SC, 10, "正常");
+        break;
+    case "supply":
+    case "配货":
+        f = new TField("配货", TF_SC, 11, "否");
+        break;
+    case "customerType":
+    case "客户类别":
+        f = new TField("客户类别", TF_SC, 12, "零批客户");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
 }
 function salesQueryBatchField(key, show) {
     var f;
