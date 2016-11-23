@@ -165,7 +165,75 @@ function testSalesQueryParticularFields() {
 }
 
 function salesQueryParticularFields(keys, show) {
+    if (ipadVer >= "7.27") {
+        return getTFields("salesQueryParticularField1", keys, show);
+    }
     return getTFields("salesQueryParticularField", keys, show);
+}
+function salesQueryParticularField1(key, show) {
+    var f;
+    switch (key) {
+    case "code":
+    case "款号":
+        f = new TField("款号", TF_AC, 0, "a", -1, 0);
+        if (show) {
+            f.value = "5880,kha,210元";
+        }
+        break;
+    case "name":
+    case "款号名称":
+        f = new TField("款号名称", TF, 1, "aaa");
+        break;
+    case "day1":
+    case "日期从":
+        f = new TField("日期从", TF_DT, 2, "2015-9-11");
+        break;
+    case "day2":
+    case "到":
+        f = new TField("到", TF_DT, 3, getToday());
+        break;
+    case "customer":
+    case "客户":
+        f = new TField("客户", TF_AC, 4, "a", -1, 0);
+        if (show) {
+            f.value = "Qaq";
+        }
+        break;
+    case "staff":
+    case "店员":
+        f = new TField("店员", TF_AC, 5, "000", -1, 0);
+        if (show) {
+            f.value = "000,总经理";
+        }
+        break;
+    case "shop":
+    case "门店":
+        f = new TField("门店", TF, 6, "常青店", -1, 0);// TF_SC
+        break;
+    case "type":
+    case "类型":
+        f = new TField("类型", TF_SC, 7, "退货");
+        break;
+    case "pricetype":
+    case "价格类型":
+        f = new TField("价格类型", TF_SC, 8, "打包价");
+        break;
+    case "remarks":
+    case "备注":
+        f = new TField("备注", TF, 9, "备注");
+        break;
+    case "type":
+    case "类别":
+        f = new TField("备注", TF_SC, 10, "备注");
+        break;
+    case "provider":
+    case "厂商":
+        f = new TField("适用价格", TF_AC, 11, "打包价");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
 }
 function salesQueryParticularField(key, show) {
     var f;
