@@ -107,6 +107,14 @@ function addCustomer(keys, o) {
     editCustomerSave(o);
     return keys;
 }
+/**
+ * 新增/修改客户分店
+ */
+function editCustomerBranch(keys) {
+    var fields = editCustomerBranchFields(keys);
+    setTFieldsValue(window, fields);// changeTFieldsValue
+    tapNaviButton("保存");
+}
 function editCustomerSave(o) {
     if (isDefined(o["onlytest"])) {
         return;
@@ -888,7 +896,20 @@ function changeSecure(oldSecure, newSecure) {
     tapRefresh();
     return ret;
 }
-
+/**
+ * 修改TField值
+ * @param view
+ * @param fields
+ */
+function changeTFieldsValue(view, fields) {
+    for ( var i in fields) {
+        var f = fields[i];
+        var ok = checkShowField(view, f);
+        if (!ok) {
+            setTFieldsValue(view, [ f ]);
+        }
+    }
+}
 function checkABC(str) {
     var reg = new RegExp("^[A-Za-z]+$");
     return reg.test(str);

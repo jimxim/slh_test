@@ -3,6 +3,7 @@
 // sc_clientshopmode 客户分店模式
 // 客户 小王 分店 小王常(手机15811111 地址小王家 备注 小王常青店分店) 小王中 小王停用
 // 客户 小李 分店 小李常 小李中  客户折扣 0.8
+// 客户 中洲店客户 分店 中洲店客户中 检查新增客户分店时默认门店
 
 function testCustBranch001() {
     run("【销售订货】可以使用客户分店进行订货，客户输入界面可以输入客户分店", "test230001");
@@ -23,8 +24,18 @@ function testCustBranch001() {
     run("【往来管理】客户分店启用和停用后标志检查（客户分店详细页面 是否停用列）", "test230033");
     run("【往来管理】客户停用后，客户分店应被自动停用，不能再使用客户分店进行开单操作", "test230035");
     run("【往来管理】客户修改界面通过新增分店来增加客户分店", "test230036");
+    run("【客户门店帐】客户门店帐界面使用客户查询，能查到结果，使用客户分店查询，结果应该显示为空，因帐都记在客户名下", "test230042");
+    run("【销售开单－开单】客户退货数量限制", "test230045");
+    run("【往来管理-客户查询】客户分店按门店区分+总经理", "test230046");
+    run("【往来管理-客户查询】客户分店按门店区分", "test230048");
+    run("【往来管理-客户查询】客户分店显示与按门店区分客户无关", "test230049");
+    run("【往来管理-客户查询】检查手机号是否重复", "test230050");
+    run("【往来管理-客户查询】客户分店界面，排序", "test230051"); 
 }
-
+// 店长004登陆验证非总经理部分
+function testCustBranch004() {
+    run("【往来管理-客户查询】客户分店按门店区分+非总经理", "test230047");
+}
 // 含230002 230020 230022 230023
 function test230001() {
     tapMenu("销售订货", "新增订货+");
@@ -316,7 +327,7 @@ function test230028() {
         "总额" : 0, "未结金额" : 2000, "备注" : "预付款" };
     var ret = isEqualObject2(exp, qr.data[0]);// 230026
     tapButton(getScrollView(-1, 0), 4);
-    app.navigationBar().buttons()[OK].tap();
+    tapNaviButton(OK);
     var value = editSalesBillGetValue({});
     exp = { "客户" : "小王", "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0,
         "还款\/抵扣" : -2000, "分店" : "小王常" };
@@ -442,20 +453,165 @@ function test230036() {
     tapLine();
     tapButton(window, "新增分店+");
     var str = getRandomStr(5);
-    var keys = { "名称" : name + getToday("yy"), "门店" : "常青店", "电话" : "p" + str,
+    var keys = { "名称" : name + str, "门店" : "中洲店", "电话" : "p" + str,
         "微信" : "w" + str, "地址" : "地址" + str, "备注" : "备注" + str };
-    var fields = editCustomerBranchFields(keys);
-    setTFieldsValue(window, fields);
-    tapNaviButton("保存");
+    editCustomerBranch(keys);
 
     tapButton(window, "客户分店");
-    var qKeys = { "名称" : name + getToday("yy") };
+    var qKeys = { "名称" : name + str };
     var fields = queryCustomerBranchFields(qKeys);
     query(fields, false, getScrollView(-1, 0));
     qr = getQR2(getScrollView(-1, 0), "分店名称", "备注");
-    keys["分店名称"] = name + getToday("yy");
+    keys["分店名称"] = name + str;
     var ret = isEqualObject2(keys, qr.data[0]);
 
+    tapLine(0, getScrollView(-1, 0), "分店名称");
+    keys = { "名称" : name + str + "a", "门店" : "常青店", "电话" : "p" + str + "a",
+        "微信" : "w" + str + "a", "地址" : "地址" + str + "a",
+        "备注" : "备注" + str + "a" };
+    editCustomerBranch(keys);
+    tapButton(getScrollView(-1, 0), QUERY);
+    qr = getQR2(getScrollView(-1, 0), "分店名称", "备注");
+    keys["分店名称"] = name + str + "a";
+    ret = isAnd(ret, isEqualObject2(keys, qr.data[0]));// 230038
+    tapNaviClose();
+    tapReturn();
+    return ret;
+}
+
+function test230042() {
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = { "客户" : "xwc" };
+    conditionQuery(keys);
+    var qr = getQR();
+    return qr.data.length == 0;
+}
+function test230045() {
+    var qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
+    var o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("往来管理", "新增客户+");
+    var name = "c" + getRandomStr(5);
+    var keys = { "名称" : name };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    query();
+    tapLine();
+    tapButton(window, "新增分店+");
+    keys = { "名称" : name + "branch" };
+    editCustomerBranch(keys);
+    tapReturn();
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : name, "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : name + "branch",
+        "明细" : [ { "货品" : "3035", "数量" : [ -20 ] } ] };
+    editSalesBill(json, colorSize);
+
+    o = { "新值" : "0", "数值" : [ "默认不开启" ] };
+    setGlobalParam(qo, o);
+    return isInAlertMsgs("退货数量高于拿货总数量");
+}
+function test230046() {
+    return test230046Field("中洲店", true);
+}
+function test230047() {
+    return isAnd(test230046Field("常青店", false), test230046Field("常青店", false));
+}
+function test230046Field(shop, hasRights) {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "门店" : shop };
+    conditionQuery(keys);
+    tapLine();
+    tapButton(window, "新增分店+")
+    var fields = editCustomerBranchFields(keys);
+    var ret = checkShowFields(window, fields);
+    if (hasRights) {
+        var tf = getTextField(window, fields["门店"].index);
+        tap(tf);
+        var exp = "仓库店 常青店 文一店 中洲店";
+        ret = isAnd(ret, isEqualDropDownListByExp(exp, window));
+    } else {
+        ret = isAnd(ret, isDisabledTField(fields["门店"].index));
+    }
+    tapNaviClose();
+    tapReturn();
+    return ret;
+}
+function test230048() {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户名称" : "c", "门店" : "常青店" };
+    conditionQuery(keys);
+    var qr = getQR();
+    var name = qr.data[0]["名称"];
+    tapLine();
+    tapButton(window, "新增分店+");
+    keys = { "名称" : name + getRandomStr(4), "门店" : "仓库店" };
+    editCustomerBranch(keys);
+
+    tapButton(window, "客户分店");
+    qr = getQR2(getScrollView(-1, 0), "客户分店", "备注");
+    var ret = isEqual(qr.data[0]["门店"], "仓库店");
+    tapNaviClose();
+    keys = { "门店" : "中洲店" };
+    addCustomer(keys);
+
+    tapMenu2("客户查询");
+    keys = { "门店" : "仓库店" };
+    conditionQuery(keys, false);
+    tapLine();
+    tapButton(window, "客户分店");
+    qr = getQR2(getScrollView(-1, 0), "客户分店", "备注");
+    ret = isAnd(ret, isEqual(qr.data[0]["门店"], "仓库店"));
+    tapNaviClose();
+    tapReturn();
+    return ret;
+}
+function test230049() {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "xw", "门店" : "常青店" };
+    conditionQuery(keys);
+    tapLine();
+    tapButton(window, "客户分店");
+    var qr = getQR2(getScrollView(-1, 0), "客户分店", "备注");
+    var ret = isEqualQRData1ByTitle(qr, "门店", "中洲店");
+    tapNaviClose();
+    tapReturn();
+    return ret;
+}
+function test230050() {
+    tapMenu("往来管理", "客户查询");
+    query();
+    tapLine();
+    tapButton(window, "新增分店+");
+    var keys = { "名称" : "c" + getRandomStr(5), "电话" : "15811111" };
+    editCustomerBranch(keys);
+    tapPrompt();
+    tapNaviClose();
+    tapReturn();
+    return isInAlertMsgs("已存在[15811111]号码的[客户分店]");
+}
+function test230051() {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "xw", "门店" : "常青店" };
+    conditionQuery(keys);
+    tapLine();
+    tapButton(window, "客户分店");
+    var view = getScrollView(-1, 0);
+    var firstTitle = "客户分店", lastTitle = "备注";
+    var ret = sortByTitle2(view, firstTitle, lastTitle, "客户分店");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "客户");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "门店");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "电话", IS_NUM);
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "微信");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "是否停用");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "地址");
+    ret = ret && sortByTitle2(view, firstTitle, lastTitle, "备注");
     tapNaviClose();
     tapReturn();
     return ret;
