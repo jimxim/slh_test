@@ -120,7 +120,7 @@ function testSalesColorSize003() {
     run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_2");
     run("【销售开单-开单】颜色尺码下，快速新增货品，必填项为空检查", "test170716");
     run("【销售开单-开单】颜色尺码下，快速新增货品，价格输入字母", "test170717");
-    run("【销售开单-开单】童装模式手数需要四位数", "test170719");
+    // run("【销售开单-开单】童装模式手数需要四位数", "test170719");//童装开单模式生效需重新登录
 }
 function testSalesColorSize004() {
     run("【销售开单-开单】积分跨门店共享", "testCs170183");
@@ -5738,11 +5738,10 @@ function test170719() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "tz002", "数量" : [ 0, 0, 0, 0, 0, 0, 1000 ] } ],
-        "onlytest" : "yes" };
+        "明细" : [ { "货品" : "tz002", "数量" : [ 0, 0, 0, 0, 0, 0, 1000 ] } ] };
     editSalesBillColorSize(json);
 
-    var qr = getQRDet();
+    var qr = json["明细值"];
     var ret = isAnd(isEqual(1000, qr.data[6]["手数"]), isEqual(6000,
             qr.data[6]["数量"]));
 

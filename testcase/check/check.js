@@ -132,52 +132,43 @@ function checkPrepare2() {
     query();
     var qr = getQR();
     var ret = true;
-    if (qr.data.length == 0) {
-        ret = true;
-    } else {
-        var arr = [], date;
-        var totalPageNo = qr.totalPageNo;
-        for (var j = 1; j <= totalPageNo; j++) {
-            for (var i = 0; i < qr.curPageTotal - 1; i++) {
-                date = qr.data[i]["处理时间"];
-                if (date == "") {
-                    tapFirstText();
-                    tapButtonAndAlert("删 除", OK);
-                    delay();
-                }
-            }
-            if (j < totalPageNo) {
-                scrollNextPage();
-                qr = getQR();
-            }
-        }
-
-        tapMenu("盘点管理", "按批次查");
-        tapButton(window, QUERY);
-        var qr = getQR();
-        if (qr.data[0]["处理时间"] == "") {
+    for (var i = 0; i < qr.total - 1; i++) {
+        query();
+        var qr1 = getQR();
+        var date = qr1.data[0]["处理时间"];
+        if (date == "") {
             tapFirstText();
             tapButtonAndAlert("删 除", OK);
             delay();
         }
+    }
 
-        tapButton(window, QUERY);
-        var qr = getQR();
-        var arr = [], date;
-        var totalPageNo = qr.totalPageNo;
-        for (var j = 1; j <= totalPageNo; j++) {
-            for (var i = 0; i < qr.curPageTotal - 1; i++) {
-                date = qr.data[i]["处理时间"];
-                if (date == "") {
-                    ret = false;
-                }
-            }
-            if (j < totalPageNo) {
-                scrollNextPage();
-                qr = getQR();
+    tapMenu("盘点管理", "按批次查");
+    tapButton(window, QUERY);
+    var qr = getQR();
+    if (qr.data[0]["处理时间"] == "") {
+        tapFirstText();
+        tapButtonAndAlert("删 除", OK);
+        delay();
+    }
+
+    tapButton(window, QUERY);
+    var qr = getQR();
+    var arr = [], date;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal - 1; i++) {
+            date = qr.data[i]["处理时间"];
+            if (date == "") {
+                ret = false;
             }
         }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
     }
+
     return ret;
 }
 function test180001_180003_180005() {

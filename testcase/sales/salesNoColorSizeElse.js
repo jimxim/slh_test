@@ -76,7 +76,7 @@ function testSalesNoColorSizeElse002() {
 }
 function testSalesNoColorSizeElseAll() {
     run("【销售开单－按订货开单】特殊货品金额计算", "test170264");
-    run("【销售开单－按批次查】是否未结", "test170005");// ///
+    run("【销售开单－按批次查】是否未结", "test170005");// //
     run("【销售开单－按批次查】作废挂单 输入条件检查", "test170006");
     run("【【销售开单－按批次查】作废挂单 选择除“正常”以外其它三个条件时，查看IPAD端屏幕底部的汇总数据", "test170007");
     run("【销售开单－按批次查】是否配货", "test170008");
@@ -119,7 +119,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单】销售汇总-按退货汇总，点击进入明细，内容检查", "test170394");
     run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");
     run("【销售开单－销售汇总-按店员汇总】按店员汇总", "test170319_1");
-    run("【销售开单-按汇总-按店员汇总】每日业绩", "test170708");// ///
+    run("【销售开单-按汇总-按店员汇总】每日业绩", "test170708");// //
     run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709");
     run("【销售开单－销售汇总-按客户销售】按客户销售", "test170325_1");
     run("【销售开单-按汇总-按客户销售】上下级模式下查看客户销售数据", "test170554");
@@ -325,10 +325,14 @@ function test170001_2_170002_170003_170004_170020_170485() {
     editSalesBillNoColorSize(json);
     var opt = json["操作日期"];
 
+    var idx1 = 0;
+    if (ipadVer >= "7.27") {
+        idx1 = 7;
+    }
     tapMenu("销售开单", "按批次查");
     var i;
     var ret = false;
-    var f = new TField("客户", TF_AC, 0, "lx", -1);
+    var f = new TField("客户", TF_AC, idx1, "lx", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -383,8 +387,12 @@ function test170001_2_170002_170003_170004_170020_170485() {
             isEqual(batch, a11));
 
     tapButton(window, CLEAR);
+    var idx;
+    if (ipadVer <= "7.27") {
+        idx = 2;
+    }
     for (var i = 0; i < 13; i++) {
-        if (i == 2 || i == 3) {
+        if (i == Number(0 + Number(idx)) || i == Number(1 + Number(idx))) {
             var ret3 = isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret3 = isEqual("", getTextFieldValue(window, i));
@@ -721,11 +729,15 @@ function test170013() {
 }
 function test170014() {
     // 检查苹果键盘，可输入中文即可
+    var idx = 0;
+    if (ipadVer >= "7.27") {
+        idx = 7;
+    }
     tapMenu("销售开单", "按批次查");
     var o = { "键盘" : "简体拼音", "拼音" : [ "lixiang" ], "汉字" : [ "李响" ] };
-    var tf = window.textFields()[0].textFields()[0];
+    var tf = window.textFields()[idx].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-    var ret = isEqual("李响", getTextFieldValue(window, 0));
+    var ret = isEqual("李响", getTextFieldValue(window, idx));
     delay();
     tapButton(window, QUERY);
     var qr = getQR();
@@ -733,9 +745,9 @@ function test170014() {
 
     tapButton(window, CLEAR);
     var o = { "键盘" : "简体拼音", "拼音" : [ "cangku" ], "汉字" : [ "仓库" ] };
-    var tf = window.textFields()[1].textFields()[0];
+    var tf = window.textFields()[Number(idx) + 1].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-    var ret1 = isEqual("仓库", getTextFieldValue(window, 1));
+    var ret1 = isEqual("仓库", getTextFieldValue(window, Number(idx) + 1));
     tapButton(window, CLEAR);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
@@ -1149,13 +1161,19 @@ function test170028_2_1_170524() {
     }
     delay();
     tapKeyboardHide();
+    query();
 
-    tap(getTextField(window, 6));
+    var idx = 6, idx1 = 7;
+    if (ipadVer >= "7.27") {
+        idx = 8;
+        idx1 = 7;
+    }
+    tap(getTextField(window, idx));
     var arr = [ "零批价", "打包价", "大客户价", "Vip价格" ];
     var view = window.popover().scrollViews()[0];
     var ret = isEqualDropDownList(arr, view);
 
-    tap(getTextField(window, 5));
+    tap(getTextField(window, idx1));
     var arr1 = [ "退货", "赠品", "代卖", "次品", "代保管", "换色", "换码" ];
     var view1 = window.popover().scrollViews()[0];
     var ret1 = isEqualDropDownList(arr1, view1);
@@ -1293,15 +1311,17 @@ function test170028_170036_170487() {
             isEqual("总经理", qr2.data[0]["店员"]));
 
     tapButton(window, CLEAR);
-    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
-            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
-            window, 2)), isEqual("", getTextFieldValue(window, 3)), isEqual("",
-            getTextFieldValue(window, 4)), isEqual("", getTextFieldValue(
-            window, 5)), isEqual("", getTextFieldValue(window, 6)), isEqual("",
-            getTextFieldValue(window, 7)), isEqual(getToday(),
-            getTextFieldValue(window, 8)), isEqual(getToday(),
-            getTextFieldValue(window, 9)), isEqual("", getTextFieldValue(
-            window, 10)), isEqual("", getTextFieldValue(window, 11)));
+    var idx = 8;
+    if (ipadVer <= "7.27") {
+        idx = 2;
+    }
+    for (var i = 0; i < 11; i++) {
+        if (i == Number(Number(idx)) || i == Number(1 + Number(idx))) {
+            var ret2 = isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret2 = isEqual("", getTextFieldValue(window, i));
+        }
+    }
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -1347,10 +1367,14 @@ function test170034() {
     var fields = salesQueryParticularFields(keys);
     query(fields);
 
+    var idx = 2;
+    if (ipadVer >= "7.27") {
+        idx = 4;
+    }
     var o = { "键盘" : "简体拼音", "拼音" : [ "hanhong" ], "汉字" : [ "韩红" ] };
-    var tf = window.textFields()[2].textFields()[0];
+    var tf = window.textFields()[Number(idx)].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-    var ret = isEqual("韩红", getTextFieldValue(window, 2));
+    var ret = isEqual("韩红", getTextFieldValue(window, idx));
     tapButton(window, QUERY);
     var qr = getQR();
     ret = isAnd(ret, isEqual("韩红", qr.data[0]["客户"]));
@@ -3111,6 +3135,7 @@ function test170294_170609() {
     fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    delay();
     waitUntil(cond, 10);
     var qr1 = getQRtable1(window, 8, -2);
     var len1 = qr1.data.length;
@@ -3137,6 +3162,7 @@ function test170294_170609() {
     fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
+    delay();
     waitUntil(cond, 10);
     var qr2 = getQRtable1(window, 8, -2);
     ret3 = isAnd(ret3, isEqual("汇通快递", qr2.data[0]["物流商"]));
@@ -8763,7 +8789,10 @@ function test170646() {
         "现金" : 1000, "刷卡" : [ 100, "交" ], "汇款" : [ 200, "建" ] };
     editSalesBillNoColorSize(json);
 
+    tapMenu("销售开单", "按批次查");
     query();
+    var qr = getQR();
+    var d = qr.data[0]["打印"];
     tapFirstText();
     var money = getTextFieldValue(window, 3);
 
@@ -8775,9 +8804,11 @@ function test170646() {
     tapButtonAndAlert(PRINT, "打印(客户用)");
     tapPrompt();
 
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "操作成功"));
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var d1 = qr.data[0]["打印"];
+    var ret = isAnd(isEqual("否", d), isEqual("是", d1));
 
     tapMenu("销售开单", "物流单");
     var keys = { "运单号" : r };
@@ -8787,6 +8818,7 @@ function test170646() {
     var ret1 = isAnd(isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("天天物流",
             qr.data[0]["物流商"]), isEqual(r, qr.data[0]["运单号"]));
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test170682() {
@@ -9126,9 +9158,12 @@ function test170699() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    var i;
+    var i, idx = 0;
+    if (ipadVer >= "7.27") {
+        idx = 7;
+    }
     var ret2 = false;
-    var f = new TField("客户", TF_AC, 0, "lx", -1);
+    var f = new TField("客户", TF_AC, idx, "lx", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
