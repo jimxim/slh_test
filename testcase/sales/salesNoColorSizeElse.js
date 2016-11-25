@@ -1799,15 +1799,13 @@ function test170262() {
     tapPrompt();
 
     tapMenu("销售订货", "按批次查");
-    var keys2 = { "客户" : "lt" };
-    var fields2 = salesOrderQueryBatchFields(keys2);
-    query(fields2);
+    query();
     var qr = getQR();
     var a = qr.data[0]["发货状态"];
     var ret = isEqual("结束", a);
 
     tapMenu("销售开单", "按订货开单");
-    var keys = { "日期从" : "2015-01-01", "发货状态" : "结束" };
+    var keys = { "发货状态" : "结束" };
     var fields = salesBillOrderFields(keys);
     query(fields);
     var qr3 = getQR();
