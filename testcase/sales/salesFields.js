@@ -10,79 +10,7 @@ function testSalesQueryBatchFields() {
     return checkShowFields(window, showFields);
 }
 function salesQueryBatchFields(keys, show) {
-    if (ipadVer >= "7.27") {
-        return getTFields("salesQueryBatchField1", keys, show);
-    }
-    return getTFields("salesQueryBatchField", keys, show);
-}
-function salesQueryBatchField1(key, show) {
-    var f;
-    switch (key) {
-    case "day1":
-    case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
-        break;
-    case "day2":
-    case "日期到":
-        f = new TField("日期到", TF_DT, 1, getToday());
-        break;
-    case "batch1":
-    case "批次从":
-        f = new TField("批次从", TF, 2, "1");
-        break;
-    case "batch2":
-    case "批次到":
-        f = new TField("到", TF, 3, "20");
-        break;
-    case "shop":
-    case "门店":
-        f = new TField("门店", TF, 4, "常青店", -1, 0);// TF_SC
-        break;
-    case "remarks":
-    case "备注":
-        f = new TField("备注", TF, 5, "备注");
-        break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, 6, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
-        break;
-    case "customer":
-    case "客户":
-        f = new TField("客户", TF_AC, 7, "xw", -1, 0);
-        if (show) {
-            f.value = "小王";
-        }
-        break;
-    case "branch":
-    case "客户分店":
-        f = new TField("客户分店", TF_AC, 8, "xwc", -1, 0);
-        if (show) {
-            f.value = "小王常";
-        }
-        break;
-    case "outstanding":
-    case "是否未结":
-        f = new TField("是否未结", TF_SC, 9, "否");
-        break;
-    case "invalid":
-    case "作废挂单":
-        f = new TField("作废挂单", TF_SC, 10, "正常");
-        break;
-    case "supply":
-    case "配货":
-        f = new TField("配货", TF_SC, 11, "否");
-        break;
-    case "customerType":
-    case "客户类别":
-        f = new TField("客户类别", TF_SC, 12, "零批客户");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
+    return getTFields("salesQueryBatchField", window, keys, show);
 }
 function salesQueryBatchField(key, show) {
     var f;
@@ -163,77 +91,8 @@ function testSalesQueryParticularFields() {
     var showFields = salesQueryParticularFields(keys, true);
     return checkShowFields(window, showFields);
 }
-
 function salesQueryParticularFields(keys, show) {
-    if (ipadVer >= "7.27") {
-        return getTFields("salesQueryParticularField1", keys, show);
-    }
-    return getTFields("salesQueryParticularField", keys, show);
-}
-function salesQueryParticularField1(key, show) {
-    var f;
-    switch (key) {
-    case "code":
-    case "款号":
-        f = new TField("款号", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "5880,kha,210元";
-        }
-        break;
-    case "name":
-    case "款号名称":
-        f = new TField("款号名称", TF, 1, "aaa");
-        break;
-    case "day1":
-    case "日期从":
-        f = new TField("日期从", TF_DT, 2, "2015-9-11");
-        break;
-    case "day2":
-    case "到":
-        f = new TField("到", TF_DT, 3, getToday());
-        break;
-    case "customer":
-    case "客户":
-        f = new TField("客户", TF_AC, 4, "a", -1, 0);
-        if (show) {
-            f.value = "Qaq";
-        }
-        break;
-    case "staff":
-    case "店员":
-        f = new TField("店员", TF_AC, 5, "000", -1, 0);
-        if (show) {
-            f.value = "000,总经理";
-        }
-        break;
-    case "shop":
-    case "门店":
-        f = new TField("门店", TF, 6, "常青店", -1, 0);// TF_SC
-        break;
-    case "type":
-    case "类型":
-        f = new TField("类型", TF_SC, 7, "退货");
-        break;
-    case "pricetype":
-    case "价格类型":
-        f = new TField("价格类型", TF_SC, 8, "打包价");
-        break;
-    case "remarks":
-    case "备注":
-        f = new TField("备注", TF, 9, "备注");
-        break;
-    case "type":
-    case "类别":
-        f = new TField("备注", TF_SC, 10, "备注");
-        break;
-    case "provider":
-    case "厂商":
-        f = new TField("适用价格", TF_AC, 11, "打包价");
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
+    return getTFields("salesQueryParticularField", window, keys, show);
 }
 function salesQueryParticularField(key, show) {
     var f;
@@ -302,7 +161,7 @@ function salesQueryParticularField(key, show) {
 }
 // 按挂单
 function salesQueryGuaDanFields(keys, show) {
-    return getTFields("salesQueryGuaDanField", keys, show);
+    return getTFields("salesQueryGuaDanField", window, keys, show);
 }
 function salesQueryGuaDanField(key, show) {
     var f;
@@ -340,7 +199,7 @@ function testSalesPriceFields() {
 }
 
 function salesPriceFields(keys, show) {
-    return getTFields("salesPriceField", keys, show);
+    return getTFields("salesPriceField", window, keys, show);
 }
 function salesPriceField(key, show) {
     var f;
@@ -377,7 +236,7 @@ function salesCodeFields(keys, show) {
         show = false;
     }
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
-    return getTFields("salesCodeField", keys, show, idx);
+    return getTFields("salesCodeField", window, keys, show, idx);
 }
 function salesCodeField(key, show, idx) {
     var f;
@@ -459,7 +318,7 @@ function testSalesReturnFields() {
 }
 
 function salesReturnFields(keys, show) {
-    return getTFields("salesReturnField", keys, show);
+    return getTFields("salesReturnField", window, keys, show);
 }
 function salesReturnField(key, show) {
     var f;
@@ -507,7 +366,7 @@ function testSalesStaffFields() {
 }
 
 function salesStaffFields(keys, show) {
-    return getTFields("salesStaffField", keys, show);
+    return getTFields("salesStaffField", window, keys, show);
 }
 function salesStaffField(key, show) {
     var f;
@@ -547,7 +406,7 @@ function testSalesCustomerConsumeFields() {
 }
 
 function salesCustomerConsumeFields(keys, show) {
-    return getTFields("salesCustomerConsumeField", keys, show);
+    return getTFields("salesCustomerConsumeField", window, keys, show);
 }
 function salesCustomerConsumeField(key, show) {
     var f;
@@ -857,7 +716,7 @@ function testSalesProviderFields() {
 }
 
 function salesProviderFields(keys, show) {
-    return getTFields("salesProviderField", keys, show);
+    return getTFields("salesProviderField", window, keys, show);
 }
 function salesProviderField(key, show) {
     var f;

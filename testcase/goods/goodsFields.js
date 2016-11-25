@@ -21,7 +21,7 @@ function queryGoodsStockFields(keys, show) {
         show = false;
     }
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个...按钮下标
-    return getTFields("queryGoodsStockField", keys, show, idx);
+    return getTFields("queryGoodsStockField", window, keys, show, idx);
 }
 
 function queryGoodsStockField(key, show, idx) {
@@ -123,7 +123,7 @@ function testQueryGoodsCodeStockFields() {
 }
 
 function queryGoodsCodeStockFields(keys, show) {
-    return getTFields("queryGoodsCodeStockField", keys, show);
+    return getTFields("queryGoodsCodeStockField", window, keys, show);
 }
 
 function queryGoodsCodeStockField(key, show) {
@@ -142,7 +142,7 @@ function queryGoodsCodeStockField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "仓库店", -1, 0);// TF_SC
+        f = new TField("门店", TF, 2, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "provider":
     case "厂商":
@@ -183,7 +183,7 @@ function testQueryGoodsDistributionFields() {
 }
 
 function queryGoodsDistributionFields(keys, show) {
-    return getTFields("queryGoodsDistributionField", keys, show);
+    return getTFields("queryGoodsDistributionField", window, keys, show);
 }
 
 function queryGoodsDistributionField(key, show) {
@@ -222,9 +222,10 @@ function testQueryGoodsDistributionDetFields() {
     var showFields = queryGoodsDistributionDetFields(keys, true);
     return checkShowFields(getScrollView(-1, 0), showFields);
 }
-
+//
 function queryGoodsDistributionDetFields(keys, show) {
-    return getTFields("queryGoodsDistributionDetField", keys, show);
+    return getTFields("queryGoodsDistributionDetField", getScrollView(-1, 0),
+            keys, show);
 }
 
 function queryGoodsDistributionDetField(key, show) {
@@ -263,9 +264,8 @@ function testQueryGoodsInOutFields() {
  * @returns
  */
 function queryGoodsInOutFields(keys, show) {
-    return getTFields("queryGoodsInOutField", keys, show);
+    return getTFields("queryGoodsInOutField", window, keys, show);
 }
-
 function queryGoodsInOutField(key, show) {
     var idx = 0;
     if (ipadVer < 7.21) {
@@ -275,7 +275,7 @@ function queryGoodsInOutField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "仓库店", -1, 0);// TF_SC
+        f = new TField("门店", TF, 0, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "code":
     case "款号":
@@ -352,7 +352,7 @@ function testQueryGoodsFields() {
  * @returns
  */
 function queryGoodsFields(keys, show) {
-    return getTFields("queryGoodsField", keys, show);
+    return getTFields("queryGoodsField", window, keys, show);
 }
 
 function queryGoodsField(key, show) {
@@ -439,6 +439,9 @@ function testEditGoodsFields() {
 function editGoodsFields(keys, show) {
     if (isUndefined(show)) {
         show = false;
+    }
+    if (ipadVer >= 7.27) {
+        return getTFields("editGoodsField", getScrollView(-1), keys, show);
     }
     var tests = getEditGoodsElements();
     return getGoodsTFields(keys, show, tests);// getTFields
@@ -809,7 +812,7 @@ function testGoodsPricingFields() {
     return checkShowFields(getScrollView(1), showFields);
 }
 function goodsPricingFields(keys, show) {
-    return getTFields("goodsPricingField", keys, show);
+    return getTFields("goodsPricingField", getScrollView(-1, 0), keys, show);
 }
 function goodsPricingField(key, show) {
     var f;
@@ -854,7 +857,7 @@ function testGoodsPriceNameFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 function goodsPriceNameFields(keys, show) {
-    return getTFields("goodsPriceNameField", keys, show);
+    return getTFields("goodsPriceNameField", getScrollView(-1), keys, show);
 }
 function goodsPriceNameField(key, show) {
     var f;
@@ -891,7 +894,7 @@ function testGoodsTypeFields() {
 }
 
 function goodsTypeFields(keys, show) {
-    return getTFields("goodsTypeField", keys, show);
+    return getTFields("goodsTypeField", window, keys, show);
 }
 function goodsTypeField(key, show) {
     var f;
@@ -911,14 +914,8 @@ function goodsTypeField(key, show) {
 }
 
 // 新增类别
-function testEditGoodsTypeFields() {
-    var fields = editGoodsTypeFields("name");
-    setTFieldsValue(getScrollView(), fields);
-    return true;
-}
-
 function editGoodsTypeFields(keys, show) {
-    return getTFields("editGoodsTypeField", keys, show);
+    return getTFields("editGoodsTypeField", getScrollView(-1), keys, show);
 }
 function editGoodsTypeField(key, show) {
     var f;
@@ -941,7 +938,7 @@ function testGoodsColorFields() {
 }
 
 function goodsColorFields(keys, show) {
-    return getTFields("goodsColorField", keys, show);
+    return getTFields("goodsColorField", window, keys, show);
 }
 function goodsColorField(key, show) {
     var f;
@@ -967,7 +964,7 @@ function testEditGoodsColorFields() {
 }
 
 function editGoodsColorFields(keys, show) {
-    return getTFields("editGoodsColorField", keys, show);
+    return getTFields("editGoodsColorField", getScrollView(-1), keys, show);
 }
 function editGoodsColorField(key, show) {
     var f;
@@ -1003,7 +1000,7 @@ function testGoodsSizeFields() {
 }
 
 function goodsSizeFields(keys, show) {
-    return getTFields("goodsSizeField", keys, show);
+    return getTFields("goodsSizeField", window, keys, show);
 }
 function goodsSizeField(key, show) {
     var f;
@@ -1046,7 +1043,7 @@ function testEditGoodsSizeFields() {
 }
 
 function editGoodsSizeFields(keys, show) {
-    return getTFields("editGoodsSizeField", keys, show);
+    return getTFields("editGoodsSizeField", getScrollView(-1), keys, show);
 }
 function editGoodsSizeField(key, show) {
     var f;
@@ -1091,7 +1088,7 @@ function testGoodsBrandFields() {
 }
 
 function goodsBrandFields(keys, show) {
-    return getTFields("goodsBrandField", keys, show);
+    return getTFields("goodsBrandField", window, keys, show);
 }
 function goodsBrandField(key, show) {
     var f;
@@ -1116,11 +1113,11 @@ function testEditGoodsBrandFields() {
     var fields = editGoodsBrandFields(keys);
     setTFieldsValue(getScrollView(), fields);
     var showFields = editGoodsBrandFields(keys, true);
-    return checkShowFields(window, showFields);
+    return checkShowFields(getScrollView(), showFields);
 }
 
 function editGoodsBrandFields(keys, show) {
-    return getTFields("editGoodsBrandField", keys, show);
+    return getTFields("editGoodsBrandField", getScrollView(-1), keys, show);
 }
 function editGoodsBrandField(key, show) {
     var f;
@@ -1150,7 +1147,7 @@ function testGoodsSizeidsFields() {
 }
 
 function goodsSizeidsFields(keys, show) {
-    return getTFields("goodsSizeidsField", keys, show);
+    return getTFields("goodsSizeidsField", window, keys, show);
 }
 function goodsSizeidsField(key, show) {
     var f;
@@ -1175,7 +1172,7 @@ function testEditGoodsSizeidsFields() {
 }
 
 function editGoodsSizeidsFields(keys, show) {
-    return getTFields("editGoodsSizeidsField", keys, show);
+    return getTFields("editGoodsSizeidsField", getScrollView(-1), keys, show);
 }
 function editGoodsSizeidsField(key, show) {
     var f;
@@ -1200,7 +1197,7 @@ function testGoodsBrandDiscountFields() {
 }
 
 function goodsBrandDiscountFields(keys, show) {
-    return getTFields("goodsBrandDiscountField", keys, show);
+    return getTFields("goodsBrandDiscountField", window, keys, show);
 }
 function goodsBrandDiscountField(key, show) {
     var f;
@@ -1228,7 +1225,8 @@ function testEditGoodsBrandDiscountFields() {
 }
 
 function editGoodsBrandDiscountFields(keys, show) {
-    return getTFields("editGoodsBrandDiscountField", keys, show);
+    return getTFields("editGoodsBrandDiscountField", getScrollView(-1), keys,
+            show);
 }
 function editGoodsBrandDiscountField(key, show) {
     var f;
@@ -1277,7 +1275,7 @@ function testGoodsCustomerFields() {
 }
 
 function goodsCustomerFields(keys, show) {
-    return getTFields("goodsCustomerField", keys, show);
+    return getTFields("goodsCustomerField", window, keys, show);
 }
 function goodsCustomerField(key, show) {
     var f;
@@ -1296,7 +1294,7 @@ function goodsCustomerField(key, show) {
 }
 // 款号管理
 function goodsStyleManagerFields(keys, show) {
-    return getTFields("goodsStyleManagerField", keys, show);
+    return getTFields("goodsStyleManagerField", window, keys, show);
 }
 function goodsStyleManagerField(key, show) {
     var f;
@@ -1323,7 +1321,7 @@ function goodsStyleManagerField(key, show) {
 }
 // 库存调整单
 function goodsStockAdjustmentFields(keys, show) {
-    return getTFields("goodsStockAdjustmentField", keys, show);
+    return getTFields("goodsStockAdjustmentField",window, keys, show);
 }
 function goodsStockAdjustmentField(key, show) {
     var f;
@@ -1356,7 +1354,7 @@ function goodsStockAdjustmentField(key, show) {
 
 // 超储统计，缺货统计
 function goodsStatisticFields(keys, show) {
-    return getTFields("goodsStatisticField", keys, show);
+    return getTFields("goodsStatisticField",window, keys, show);
 }
 function goodsStatisticField(key, show) {
     var f;

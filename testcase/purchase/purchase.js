@@ -1096,15 +1096,13 @@ function test120023() {
 
     tapMenu("采购入库", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
-    var fields = purchaseProviderAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var y1 = qr.data[0]["余额"];
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
     keys = { "厂商" : "vell" };
-    fields = purchaseShopAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var z1 = 0, z2 = 0;
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
@@ -1339,15 +1337,13 @@ function test120021() {
 
     tapMenu("采购入库", "厂商账款", "厂商总账");
     keys = { "厂商" : "vell" };
-    fields = purchaseProviderAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var y1 = qr.data[0]["余额"];
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
     keys = { "厂商" : "vell" };
-    fields = purchaseShopAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["门店"] == "常青店") {
@@ -1806,8 +1802,7 @@ function test120029_2() {
 
     tapMenu("采购入库", "厂商账款", "厂商总账");
     var keys = { "厂商" : "Rt" }
-    var fields = purchaseProviderAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a1 = qr.data[0]["名称"];
     var a2 = qr.data[0]["余额"];
@@ -1849,8 +1844,7 @@ function test120030() {
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
     var keys = { "厂商" : "vell", "厂商名称" : "vell", "门店" : "常青店" }
-    var fields = purchaseShopAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a1 = qr.data[0]["名称"];
     var a2 = qr.data[0]["余额"];
@@ -1881,11 +1875,8 @@ function test120030_1() {
     tapMenu2("厂商账款");
     tapMenu3("厂商门店账");
     var keys = { "门店" : "常青店" };
-    var feilds = purchaseShopAccountFields(keys);
-    query(feilds);
-
-    // 翻页
-    var ret = goPageCheck();
+    conditionQuery(keys);
+    var ret = goPageCheck();// 翻页
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
@@ -1925,8 +1916,7 @@ function test120030_2() {
 
     tapMenu("采购入库", "厂商账款", "厂商门店账");
     var keys = { "厂商" : "Rt", "门店" : "常青店" }
-    var fields = purchaseShopAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a1 = qr.data[0]["名称"];
     var a2 = qr.data[0]["余额"];
@@ -1999,8 +1989,8 @@ function test120037() {
     addProvider(keys);
 
     tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
-    var f = editCustomerProviderField("适用价格", true);
-    var ret = isEqual("进货价", getTextFieldValue(getScrollView(-1), f.index));
+    var idx = editCustomerProviderFields([ "适用价格" ], true)["适用价格"].index;
+    var ret = isEqual("进货价", getTextFieldValue(getScrollView(-1), idx));
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -2482,12 +2472,11 @@ function test120047_1() {
 
 function test120047_2() {
     tapMenu("采购入库", "按明细查");
-    var f = purchaseQueryParticularField("款号");
-    var ret = dropDownListCheck(f.inedx, "303", "3035jkk");
-
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
         "日期从" : getDay(-15), "到" : getToday(), "门店" : "常青店" };
     var fields = purchaseQueryParticularFields(keys);
+    var ret = dropDownListCheck(fields["款号"].inedx, "303", "3035jkk");
+
     query(fields);
     var qr = getQR();
     ret = isAnd(ret, isEqual("3035", qr.data[0]["款号"]));

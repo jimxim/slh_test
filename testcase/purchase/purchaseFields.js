@@ -11,7 +11,7 @@ function testPurchaseQueryBatchFields() {
 }
 
 function purchaseQueryBatchFields(keys, show) {
-    return getTFields("purchaseQueryBatchField", keys, show);
+    return getTFields("purchaseQueryBatchField", window, keys, show);
 }
 function purchaseQueryBatchField(key, show) {
     var f;
@@ -57,7 +57,7 @@ function purchaseQueryBatchField(key, show) {
     case "invalid":
     case "作废挂单":
     case "作废状态":// 7.21后去除了挂单
-        f = new TField("作废状态", TF_SC, 8, "正常",-1);
+        f = new TField("作废状态", TF_SC, 8, "正常", -1);
         break;
 
     default:
@@ -76,7 +76,7 @@ function testPurchaseQueryParticularFields() {
 }
 
 function purchaseQueryParticularFields(keys, show) {
-    return getTFields("purchaseQueryParticularField", keys, show);
+    return getTFields("purchaseQueryParticularField", window, keys, show);
 }
 function purchaseQueryParticularField(key, show) {
     var f;
@@ -119,7 +119,7 @@ function purchaseQueryParticularField(key, show) {
 }
 // 按挂单
 function purchaseHangFields(keys, show) {
-    return getTFields("purchaseHangField", keys, show);
+    return getTFields("purchaseHangField", window, keys, show);
 }
 function purchaseHangField(key, show) {
     var f;
@@ -150,7 +150,7 @@ function testPurchasePriceFields() {
 }
 
 function purchasePriceFields(keys, show) {
-    return getTFields("purchasePriceField", keys, show);
+    return getTFields("purchasePriceField", window, keys, show);
 }
 function purchasePriceField(key, show) {
     var f;
@@ -185,7 +185,7 @@ function testPurchaseCodeFields() {
  * @returns
  */
 function purchaseCodeFields(keys, show) {
-    return getTFields("purchaseCodeField", keys, show);
+    return getTFields("purchaseCodeField", window, keys, show);
 }
 function purchaseCodeField(key, show) {
     var f;
@@ -257,7 +257,7 @@ function testPurchaseProviderReturnFields() {
 }
 
 function purchaseProviderReturnFields(keys, show) {
-    return getTFields("purchaseProviderReturnField", keys, show);
+    return getTFields("purchaseProviderReturnField", window, keys, show);
 }
 function purchaseProviderReturnField(key, show) {
     var f;
@@ -301,7 +301,7 @@ function testPurchaseProviderFields() {
 }
 
 function purchaseProviderFields(keys, show) {
-    return getTFields("purchaseProviderField", keys, show);
+    return getTFields("purchaseProviderField", window, keys, show);
 }
 function purchaseProviderField(key, show) {
     var f;
@@ -336,7 +336,7 @@ function testPurchaseInOutFields() {
 }
 
 function purchaseInOutFields(keys, show) {
-    return getTFields("purchaseInOutField", keys, show);
+    return getTFields("purchaseInOutField", window, keys, show);
 }
 function purchaseInOutField(key, show) {
     var f;
@@ -362,7 +362,7 @@ function purchaseInOutField(key, show) {
  * @returns
  */
 function purchaseStatementBillFields(keys, show) {
-    return getTFields("purchaseStatementBillField", keys, show);
+    return getTFields("purchaseStatementBillField", window, keys, show);
 }
 function purchaseStatementBillField(key, show) {
     var f;
@@ -397,7 +397,7 @@ function testPurchaseQueryProviderFields() {
 }
 
 function purchaseQueryProviderFields(keys, show) {
-    return getTFields("purchaseQueryProviderField", keys, show);
+    return getTFields("purchaseQueryProviderField", window, keys, show);
 }
 function purchaseQueryProviderField(key, show) {
     var l = getTextFields().length;
@@ -435,7 +435,7 @@ function testPurchaseTypeFields() {
 }
 
 function purchaseTypeFields(keys, show) {
-    return getTFields("purchaseTypeField", keys, show);
+    return getTFields("purchaseTypeField", window, keys, show);
 }
 function purchaseTypeField(key) {
     var f;
@@ -464,7 +464,7 @@ function purchaseTypeField(key) {
  * @returns
  */
 function purchaseBrandFields(keys, show) {
-    return getTFields("purchaseBrandField", keys, show);
+    return getTFields("purchaseBrandField", window, keys, show);
 }
 function purchaseBrandField(key) {
     var f;
@@ -506,7 +506,7 @@ function testPurchaseEditFields() {
  * @returns
  */
 function purchaseEditFields(keys, show) {
-    return getTFields("purchaseEditField", keys, show);
+    return getTFields("purchaseEditField", window, keys, show);
 }
 function purchaseEditField(key, show) {
     var f;
@@ -550,7 +550,7 @@ function testPurchaseOrderFields() {
 }
 
 function purchaseOrderFields(keys, show) {
-    return getTFields("purchaseOrderField", keys, show);
+    return getTFields("purchaseOrderField", window, keys, show);
 }
 function purchaseOrderField(key, show) {
     var f;
@@ -598,7 +598,7 @@ function testPurchaseBatchEditFields() {
 }
 
 function purchaseBatchEditFields(keys, show) {
-    return getTFields("purchaseBatchEditField", keys, show);
+    return getTFields("purchaseBatchEditField", window, keys, show);
 }
 function purchaseBatchEditField(key, show) {
     var f;
@@ -609,70 +609,6 @@ function purchaseBatchEditField(key, show) {
         if (show) {
             f.value = "000,总经理";
         }
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
-}
-
-// 厂商总账
-function testPurchaseProviderAccountFields() {
-    var keys = [ "provider" ];
-    var fields = purchaseProviderAccountFields(keys);
-    setTFieldsValue(window, fields);
-    var showFields = purchaseProviderAccountFields(keys, true);
-    return checkShowFields(window, showFields);
-}
-
-function purchaseProviderAccountFields(keys, show) {
-    return getTFields("purchaseProviderAccountField", keys, show);
-}
-function purchaseProviderAccountField(key, show) {
-    var f;
-    switch (key) {
-    case "provider":
-    case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "aa";
-        }
-        break;
-    default:
-        logWarn("未知key＝" + key);
-    }
-    return f;
-}
-
-// 厂商门店账
-function testPurchaseShopAccountFields() {
-    var keys = [ "provider", "shop" ];
-    var fields = purchaseShopAccountFields(keys);
-    setTFieldsValue(window, fields);
-    var showFields = purchaseShopAccountFields(keys, true);
-    return checkShowFields(window, showFields);
-}
-
-function purchaseShopAccountFields(keys, show) {
-    return getTFields("purchaseShopAccountField", keys, show);
-}
-function purchaseShopAccountField(key, show) {
-    var f;
-    switch (key) {
-    case "provider":
-    case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "aa";
-        }
-        break;
-    case "name":
-    case "厂商名称":
-        f = new TField("厂商名称", TF, 1, "vell");
-        break;
-    case "shop":
-    case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

@@ -11,7 +11,7 @@ function testSalesOrderQueryBatchFields() {
 }
 
 function salesOrderQueryBatchFields(keys, show) {
-    return getTFields("salesOrderQueryBatchField", keys, show);
+    return getTFields("salesOrderQueryBatchField", window, keys, show);
 }
 function salesOrderQueryBatchField(key, show) {
     var f;
@@ -70,7 +70,7 @@ function testSalesOrderQueryParticularFields() {
 }
 
 function salesOrderQueryParticularFields(keys, show) {
-    return getTFields("salesOrderQueryParticularField", keys, show);
+    return getTFields("salesOrderQueryParticularField", window, keys, show);
 }
 function salesOrderQueryParticularField(key, show) {
     var f;
@@ -125,7 +125,7 @@ function testSalesOrderHangFields() {
 }
 
 function salesOrderHangFields(keys, show) {
-    return getTFields("salesOrderHangField", keys, show);
+    return getTFields("salesOrderHangField", window, keys, show);
 }
 function salesOrderHangField(key, show) {
     var f;
@@ -176,7 +176,9 @@ function testSalesOrderPictureFields() {
 }
 
 function salesOrderPictureFields(keys, show) {
-    return getTFields("salesOrderPictureField", keys, show);
+    var view=getLastTableView();
+    var group = view.groups()["日期"];
+    return getTFields("salesOrderPictureField", group, keys, show);
 }
 function salesOrderPictureField(key, show) {
     var f;
@@ -210,7 +212,7 @@ function testSalesOrderCodeFields() {
 }
 
 function salesOrderCodeFields(keys, show) {
-    return getTFields("salesOrderCodeField", keys, show);
+    return getTFields("salesOrderCodeField",window, keys, show);
 }
 function salesOrderCodeField(key, show) {
     var f;
@@ -266,7 +268,7 @@ function testSalesOrderStaffFields() {
 }
 
 function salesOrderStaffFields(keys, show) {
-    return getTFields("salesOrderStaffField", keys, show);
+    return getTFields("salesOrderStaffField",window, keys, show);
 }
 function salesOrderStaffField(key, show) {
     var f;
@@ -303,7 +305,7 @@ function testSalesOrderCustomerFields() {
 }
 
 function salesOrderCustomerFields(keys, show) {
-    return getTFields("salesOrderCustomerField", keys, show);
+    return getTFields("salesOrderCustomerField",window, keys, show);
 }
 function salesOrderCustomerField(key, show) {
     var f;
@@ -339,7 +341,7 @@ function testSalesOrderShopFields() {
 }
 
 function salesOrderShopFields(keys, show) {
-    return getTFields("salesOrderShopField", keys, show);
+    return getTFields("salesOrderShopField",window, keys, show);
 }
 function salesOrderShopField(key, show) {
     var f;
@@ -365,7 +367,7 @@ function salesOrderShopField(key, show) {
 
 // 按厂商报单
 function salesOrderCompanyFields(keys, show) {
-    return getTFields("salesOrderCompanyField", keys, show);
+    return getTFields("salesOrderCompanyField",window, keys, show);
 }
 function salesOrderCompanyField(key, show) {
     var f;
@@ -396,7 +398,7 @@ function salesOrderCompanyField(key, show) {
 }
 // 按厂商报单明细界面
 function salesOrderCompanyDetFields(keys, show) {
-    return getTFields("salesOrderCompanyDetField", keys, show);
+    return getTFields("salesOrderCompanyDetField",window, keys, show);
 }
 function salesOrderCompanyDetField(key, show) {
     var f;
@@ -426,7 +428,7 @@ function salesOrderCompanyDetField(key, show) {
 }
 // 订货对账单
 function salesOrderBillFields(keys, show) {
-    return getTFields("salesOrderBillField", keys, show);
+    return getTFields("salesOrderBillField",window, keys, show);
 }
 function salesOrderBillField(key, show) {
     var f;
@@ -459,7 +461,7 @@ function salesOrderBillField(key, show) {
 
 // 按缺货查
 function salesOrderQueryByStockoutFields(keys, show) {
-    return getTFields("salesOrderQueryByStockoutField", keys, show);
+    return getTFields("salesOrderQueryByStockoutField",window, keys, show);
 }
 function salesOrderQueryByStockoutField(key, show) {
     var f;

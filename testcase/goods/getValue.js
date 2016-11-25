@@ -1,23 +1,3 @@
-/**
- * 获取查询界面第一个...按钮的下标
- * @returns
- */
-function getQueryBtnIndex() {
-    return getButtonIndex(window, "...");
-}
-
-/**
- * 统一通知数，保存后由NULL变成0
- * @param data
- * @returns
- */
-function unityNotice(data) {
-    for (var i = 0; i < data.length; i++) {
-        data[i]["通知数"] = 0;
-    }
-    return data;
-}
-
 // goods
 /**
  * 获取库存分布二级界面 款号的数据
@@ -38,16 +18,12 @@ function getDetTS100006(code, close) {
     var data = qr.data[0];
 
     if (isUndefined(close)) {
-        tapNaviLeftButton();
+        tapNaviClose();
     }
 
     return data;
 }
-// 网格滑动取值 getQR scrollViews length>1
-function getQRfixed() {
-    var scrollViews = window.scrollViews();// 0为标题,1为数据,3为汇总值
 
-}
 /**
  * 获取最后一个不为空的tableView
  * @param view
@@ -69,7 +45,6 @@ function getLastTableView(view) {
             + tableViewIndex);
     return view1;
 }
-
 /**
  * 获取图片选择界面查询结果
  * @param view
@@ -97,4 +72,44 @@ function getPictureQR(view) {
         }
     }
     return arr;
+}
+/**
+ * 获取查询界面第一个...按钮的下标
+ * @returns
+ */
+function getQueryBtnIndex() {
+    return getButtonIndex(window, "...");
+}
+/**
+ * 根据textField的name属性获取其在一级界面的下标
+ * @returns
+ */
+function getTFieldsWindow() {
+    return getTFieldsIndex(window);
+}
+/**
+ * 获取指定界面textFields数组的下标
+ * @param view
+ * @returns
+ */
+function getTFieldsIndex(view) {
+    var ret = {};
+    var texts = getTextFields(view);
+    for (var i = 0; i < texts.length; i++) {
+        var v = {};
+        var name = texts[i].name();
+        ret[name] = i;
+    }
+    return ret;
+}
+/**
+ * 统一通知数，保存后由NULL变成0
+ * @param data
+ * @returns
+ */
+function unityNotice(data) {
+    for (var i = 0; i < data.length; i++) {
+        data[i]["通知数"] = 0;
+    }
+    return data;
 }

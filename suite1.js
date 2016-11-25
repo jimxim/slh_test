@@ -22,18 +22,26 @@ function test000All() {
 }
 
 function onlyTest(){
-    delay();
+// delay();
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-// var tf= window.textFields()["款号"];
-// debugObject(tf,"tf");
+//  try{
+//      
+//  }catch(e){
+//      logWarn(e);
+//  }
+//  finally{
+//      
+//  }
 
  // debugObject(gCache,"gCache");
  return true;
 }
-
+function test(){
+   this.x = 0;
+}
 // 检验开单时间
 function testBillTimes(){
     var arr=[],msg;

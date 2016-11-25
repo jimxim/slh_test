@@ -616,3 +616,9 @@ function test230051() {
     tapReturn();
     return ret;
 }
+function test110010(){
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xwc", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ]};
+    editSalesBill(json, colorSize);
+    
+}

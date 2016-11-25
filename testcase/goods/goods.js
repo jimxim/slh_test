@@ -963,14 +963,13 @@ function ts100008() {
     var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "厂商" : "Vell",
         "是否停用" : "否", "上架从" : "2015-10-13", "到" : "2015-10-13", "季节" : "春季",
         "品牌" : "Adidas", "类别" : "登山服", "经办人" : "000" };
-    var fields = queryGoodsInOutFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var exp = { "厂商" : "Vell", "款号" : "3035", "名称" : "jkk", "上架日期" : "15-10-13" };
     var ret = isEqualObject(exp, qr.data[0]);
 
     tapButton(window, CLEAR);
-    var f = queryGoodsInOutField("是否停用");
+    var f = queryGoodsInOutFields("是否停用")["是否停用"];
     var text = getTextFields();
     for (var i = 0; i < text.length; i++) {
         if (i == f.index) {
@@ -1958,7 +1957,7 @@ function test100111Field(label, keys, msg) {
     if (!ret) {
         logDebug("-------新增" + label + "  未出现msg" + msg);
     }
-    return ret;
+    return ret; 
 }
 
 function editGoodsSettings(label, keys) {
@@ -2022,15 +2021,15 @@ function ts100058() {
     var fields = queryCustomerProviderFields(keys);
     query(fields);
     tapFirstText();
-    var f = editCustomerProviderField("厂商编码");
-    f.value = "vell001";// 更改为另外一个厂商编码
-    if (getTextFieldValue(getScrollView(), f.index) == f.value) {
-        f.value = "vell002";
+    var f = editCustomerProviderFields([ "厂商编码" ]);
+    f["厂商编码"].value = "vell001";// 更改为另外一个厂商编码
+    if (getTextFieldValue(getScrollView(), f["厂商编码"].index) == f["厂商编码"].value) {
+        f["厂商编码"].value = "vell002";
     }
-    setTFieldsValue(getScrollView(), [ f ]);
+    setTFieldsValue(getScrollView(), f);
     tapButtonAndAlert(EDIT_SAVE, OK);
     tapReturn();
-    expected = getBarCode(expected, f.value);// 生成条码
+    expected = getBarCode(expected, f["厂商编码"].value);// 生成条码
 
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : code };
@@ -2058,7 +2057,7 @@ function ts100058() {
     }
     tapMenu("货品管理", "新增货品+");
     addGoods(keys);
-    expected = getBarCode([ keys ], f.value);
+    expected = getBarCode([ keys ], f["厂商编码"].value);
 
     tapMenu2("货品查询");
     query();
@@ -2134,21 +2133,29 @@ function getSizeCode(size) {
     }
     return f;
 }
-function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
-    tapMenu("货品管理", "基本设置", menu3);
-    var fields = getTFields(fn1, keys);
+/**
+ * 
+ * @param menu31 新增界面
+ * @param menu32 查询界面
+ * @param keys
+ * @param qkeys
+ * @returns
+ */
+function ts100059Field(menu31, menu32, keys, qkeys) {
+    tapMenu("货品管理", "基本设置", menu31);
+    var fields = getQueryTFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
 
     var cond = "window.buttons()['当前库存'].isVisible";// 防返回不彻底
     waitUntil(cond, 10);
-    tapMenu1("货品管理");// 刷新界面用
+    tapMenu1("货品管理");// 刷新界面用,验证是否返回到相应的界面
+    gMenu3 = menu32;
     if (isDefined(qkeys)) {
         keys = qkeys;
     }
-    fields = getTFields(fn2, keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var ret = isEqual(keys["名称"], qr.data[0]["名称"]);
 
@@ -2161,33 +2168,29 @@ function ts100059Field(fn1, fn2, keys, menu3, qkeys) {
 function ts100059Type() {
     var r = "type" + getTimestamp(5);
     var keys = { "名称" : r };
-    return ts100059Field("editGoodsTypeField", "goodsTypeField", keys, "新增类别+");
+    return ts100059Field("新增类别+", "货品类别", keys);
 }
 function ts100059Color() {
     var r = "color" + getTimestamp(5);
     var keys = { "颜色类别" : "紫", "名称" : r };
     var qkeys = { "名称" : r };
-    return ts100059Field("editGoodsColorField", "goodsColorField", keys,
-            "新增颜色+", qkeys);
+    return ts100059Field("新增颜色+", "所有颜色", keys, qkeys);
 }
 function ts100059Size() {
     var r = "size" + getTimestamp(5);
     var keys = { "尺码类别" : "球类", "名称" : r };
     var qkeys = { "名称" : r };
-    return ts100059Field("editGoodsSizeField", "goodsSizeField", keys, "新增尺码+",
-            qkeys);
+    return ts100059Field("新增尺码+", "所有尺码", keys, qkeys);
 }
 function ts100059Brand() {
     var r = "brand" + getTimestamp(5);
     var keys = { "名称" : r };
-    return ts100059Field("editGoodsBrandField", "goodsBrandField", keys,
-            "新增品牌+");
+    return ts100059Field("新增品牌+", "所有品牌", keys);
 }
 function ts100059SizeID() {
     var r = "size" + getTimestamp(5);
     var keys = { "名称" : r };
-    return ts100059Field("editGoodsSizeidsField", "goodsSizeidsField", keys,
-            "新增尺码组+");
+    return ts100059Field("新增尺码组+", "所有尺码组", keys);
 }
 function ts100059Msg() {
     tapMenu("货品管理", "基本设置", "新增类别+");
@@ -4358,7 +4361,7 @@ function ts100166() {
 
     tapMenu("货品管理", "当前库存");
     query();
-    var idx = queryGoodsStockField("门店").index;
+    var idx = queryGoodsStockFields("门店")["门店"].index;
     var ret = isAnd(isDisabledTField(idx), checkQResult("仓库/门店", "常青店"));
 
     var keys = { "门店2" : "中洲店" };

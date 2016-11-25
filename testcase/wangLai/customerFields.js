@@ -1,6 +1,6 @@
 //客户查询
 function queryCustomerFields(keys, show) {
-    return getTFields("queryCustomerField", keys, show);
+    return getTFields("queryCustomerField", window, keys, show);
 }
 function queryCustomerField(key, show) {
     var f;
@@ -61,9 +61,11 @@ function testEditCustomerFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 function editCustomerFields(keys, show) {
+    if (ipadVer >= 7.27) {
+        return getTFields("editCustomerField", getScrollView(-1), keys, show);
+    }
     var texts = getEditGoodsElements();
     return getCustomerTFields(keys, show, texts);
-    // return getTFields("editCustomerField", keys, show);
 }
 function getCustomerTFields(keys, show, texts) {
     if (isUndefined(keys)) {
@@ -246,7 +248,7 @@ function testEditCustomerBranchFields() {
     return checkShowFields(window, showFields);
 }
 function editCustomerBranchFields(keys, show) {
-    return getTFields("editCustomerBranchField", keys, show);
+    return getTFields("editCustomerBranchField", window, keys, show);
 }
 function editCustomerBranchField(key, show) {
     var f;
@@ -260,7 +262,7 @@ function editCustomerBranchField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF_SC, 1, "常青店",-1);
+        f = new TField("门店", TF_SC, 1, "常青店", -1);
         break;
     case "mobile":
     case "电话":
@@ -285,7 +287,8 @@ function editCustomerBranchField(key, show) {
 }
 // 客户分店 scrollView -1,0
 function queryCustomerBranchFields(keys, show) {
-    return getTFields("queryCustomerBranchField", keys, show);
+    return getTFields("queryCustomerBranchField", getScrollView(-1, 0), keys,
+            show);
 }
 function queryCustomerBranchField(key, show) {
     var f;
@@ -319,7 +322,7 @@ function testQueryCustomerShopAccountFields() {
 }
 
 function queryCustomerShopAccountFields(keys, show) {
-    return getTFields("queryCustomerShopAccountField", keys, show);
+    return getTFields("queryCustomerShopAccountField", window, keys, show);
 }
 function queryCustomerShopAccountField(key, show) {
     var f;
@@ -375,7 +378,7 @@ function testQueryCustomerSuperFields() {
 }
 
 function queryCustomerSuperFields(keys, show) {
-    return getTFields("queryCustomerSuperField", keys, show);
+    return getTFields("queryCustomerSuperField", window, keys, show);
 }
 function queryCustomerSuperField(key, show) {
     var f;
@@ -411,7 +414,7 @@ function testQueryCustomerAccountFields() {
 }
 
 function queryCustomerAccountFields(keys, show) {
-    return getTFields("queryCustomerAccountField", keys, show);
+    return getTFields("queryCustomerAccountField", window, keys, show);
 }
 function queryCustomerAccountField(key, show) {
     var f;
@@ -444,7 +447,7 @@ function testQueryCustomerActiveFields() {
 }
 
 function queryCustomerActiveFields(keys, show) {
-    return getTFields("queryCustomerActiveField", keys, show);
+    return getTFields("queryCustomerActiveField", window, keys, show);
 }
 function queryCustomerActiveField(key, show) {
     var f;
@@ -485,7 +488,7 @@ function testQueryCustomerScoreFields() {
 }
 
 function queryCustomerScoreFields(keys, show) {
-    return getTFields("queryCustomerScoreField", keys, show);
+    return getTFields("queryCustomerScoreField", window, keys, show);
 }
 function queryCustomerScoreField(key, show) {
     var f;
@@ -521,7 +524,7 @@ function testQueryCustomerProviderFields() {
 }
 
 function queryCustomerProviderFields(keys, show) {
-    return getTFields("queryCustomerProviderField", keys, show);
+    return getTFields("queryCustomerProviderField", window, keys, show);
 }
 function queryCustomerProviderField(key, show) {
     var f;
@@ -557,7 +560,8 @@ function testEditCustomerProviderFields() {
 }
 
 function editCustomerProviderFields(keys, show) {
-    return getTFields("editCustomerProviderField", keys, show);
+    return getTFields("editCustomerProviderField", getScrollView(-1), keys,
+            show);
 }
 function editCustomerProviderField(key, show) {
     var f;
@@ -609,7 +613,7 @@ function testQueryProviderShopAccountFields() {
 }
 
 function queryProviderShopAccountFields(keys, show) {
-    return getTFields("queryProviderShopAccountField", keys, show);
+    return getTFields("queryProviderShopAccountField", window, keys, show);
 }
 function queryProviderShopAccountField(key, show) {
     var f;
@@ -643,10 +647,10 @@ function testCustomerExportFields() {
     return true;
 }
 
-function customerExportFields() {
-    return getTFields("customerExportField", arguments);
+function customerExportFields(keys, show) {
+    return getTFields("customerExportField", window, keys, show);
 }
-function customerExportField(key) {
+function customerExportField(key, show) {
     var f;
     switch (key) {
     case "day1":
@@ -674,7 +678,7 @@ function testQueryCustomerProviderAccountFields() {
 }
 
 function queryCustomerProviderAccountFields(keys, show) {
-    return getTFields("queryCustomerProviderAccountField", keys, show);
+    return getTFields("queryCustomerProviderAccountField", window, keys, show);
 }
 function queryCustomerProviderAccountField(key, show) {
     var f;
@@ -701,7 +705,7 @@ function queryCustomerProviderAccountField(key, show) {
  * @returns
  */
 function testCustomerLogisticsAccountsFields(keys, show) {
-    return getTFields("testCustomerLogisticsAccountsField", keys, show);
+    return getTFields("testCustomerLogisticsAccountsField", window, keys, show);
 }
 function testCustomerLogisticsAccountsField(key, show) {
     var f;
@@ -727,8 +731,15 @@ function testCustomerLogisticsAccountsField(key, show) {
     }
     return f;
 }
+/**
+ * 物流商账款次级界面
+ * @param keys
+ * @param show
+ * @returns
+ */
 function testCustomerLogisticsAccountsDetFields(keys, show) {
-    return getTFields("testCustomerLogisticsAccountsDetField", keys, show);
+    return getTFields("testCustomerLogisticsAccountsDetField", getScrollView(
+            -1, 0), keys, show);
 }
 function testCustomerLogisticsAccountsDetField(key, show) {
     var f;
@@ -758,7 +769,7 @@ function testQueryCustomerLogisticsFields() {
 }
 
 function queryCustomerLogisticsFields(keys, show) {
-    return getTFields("queryCustomerLogisticsField", keys, show);
+    return getTFields("queryCustomerLogisticsField", window, keys, show);
 }
 function queryCustomerLogisticsField(key, show) {
     var f;
@@ -803,7 +814,8 @@ function testEditCustomerLogisticsFields() {
 }
 
 function editCustomerLogisticsFields(keys, show) {
-    return getTFields("editCustomerLogisticsField", keys, show);
+    return getTFields("editCustomerLogisticsField", getScrollView(-1), keys,
+            show);
 }
 function editCustomerLogisticsField(key, show) {
     var l = getTableViews().length;
@@ -872,7 +884,7 @@ function testQueryCustomerBackFields() {
 }
 
 function queryCustomerBackFields(keys, show) {
-    return getTFields("queryCustomerBackField", keys, show);
+    return getTFields("queryCustomerBackField", window, keys, show);
 }
 function queryCustomerBackField(key, show) {
     var f;
@@ -924,7 +936,7 @@ function testEditCustomerBackFields() {
 }
 
 function editCustomerBackFields(keys, show) {
-    return getTFields("editCustomerBackField", keys, show);
+    return getTFields("editCustomerBackField", getScrollView(-1), keys, show);
 }
 function editCustomerBackField(key, show) {
     var f;
@@ -976,7 +988,7 @@ function editCustomerBackField(key, show) {
  * @returns
  */
 function editCustomerAreaFields(keys, show) {
-    return getTFields("editCustomerAreaField", keys, show);
+    return getTFields("editCustomerAreaField", getScrollView(-1), keys, show);
 }
 function editCustomerAreaField(key, show) {
     var f;
@@ -1001,7 +1013,7 @@ function editCustomerAreaField(key, show) {
 }
 // 积分调整
 function queryCustomerPointAdjFields(keys, show) {
-    return getTFields("queryCustomerPointAdjField", keys, show);
+    return getTFields("queryCustomerPointAdjField", window, keys, show);
 }
 function queryCustomerPointAdjField(key, show) {
     var f;
@@ -1027,7 +1039,7 @@ function queryCustomerPointAdjField(key, show) {
 }
 // 新增积分调整
 function editCustomerPointAdjFields(keys, show) {
-    return getTFields("editCustomerPointAdjField", keys, show);
+    return getTFields("editCustomerPointAdjField",getScrollView(-1), keys, show);
 }
 function editCustomerPointAdjField(key, show) {
     var f;
@@ -1044,8 +1056,8 @@ function editCustomerPointAdjField(key, show) {
     case "当前积分":
         f = new TField("当前积分", TF, 2, "");// 灰化，不可输入
         break;
-    case "调整":
-        f = new TField("调整", TF, 3, "100");
+    case "调整(±)":
+        f = new TField("调整(±)", TF, 3, "100");
         break;
     case "店员":
         f = new TField("店员", TF_AC, 4, "000", -1, 0);

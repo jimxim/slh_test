@@ -10,7 +10,7 @@ function testPurchaseOrderQueryBatchFields() {
 }
 
 function purchaseOrderQueryBatchFields(keys, show) {
-    return getTFields("purchaseOrderQueryBatchField", keys, show);
+    return getTFields("purchaseOrderQueryBatchField", window, keys, show);
 }
 function purchaseOrderQueryBatchField(key, show) {
     var f;
@@ -73,14 +73,14 @@ function testPurchaseOrderQueryParticularFields() {
 }
 
 function purchaseOrderQueryParticularFields(keys, show) {
-    return getTFields("purchaseOrderQueryParticularField", keys, show);
+    return getTFields("purchaseOrderQueryParticularField", window, keys, show);
 }
 function purchaseOrderQueryParticularField(key, show) {
     var f;
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店",-1,0);// TF_SC
+        f = new TField("门店", TF, 0, "常青店", -1, 0);// TF_SC
         break;
     case "code":
     case "款号":
@@ -125,7 +125,7 @@ function testPurchaseOrderCodeFields() {
 }
 
 function purchaseOrderCodeFields(keys, show) {
-    return getTFields("purchaseOrderCodeField", keys, show);
+    return getTFields("purchaseOrderCodeField", window, keys, show);
 }
 function purchaseOrderCodeField(key, show) {
     var f;
@@ -148,7 +148,7 @@ function purchaseOrderCodeField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店",-1,0);// TF_AC
+        f = new TField("门店", TF, 3, "常青店", -1, 0);// TF_AC
         break;
     case "type":
     case "类别":
@@ -170,7 +170,7 @@ function testPurchaseOrderProviderFields() {
 }
 
 function purchaseOrderProviderFields(keys, show) {
-    return getTFields("purchaseOrderProviderField", keys, show);
+    return getTFields("purchaseOrderProviderField", window, keys, show);
 }
 function purchaseOrderProviderField(key, show) {
     var f;
@@ -211,7 +211,7 @@ function testPurchaseOrderShopFields() {
 }
 
 function purchaseOrderShopFields(keys, show) {
-    return getTFields("purchaseOrderShopField", keys, show);
+    return getTFields("purchaseOrderShopField", window, keys, show);
 }
 function purchaseOrderShopField(key, show) {
     var f;
@@ -227,7 +227,7 @@ function purchaseOrderShopField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店",-1,0);// TF_AC
+        f = new TField("门店", TF, 2, "常青店", -1, 0);// TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -243,10 +243,11 @@ function testPurchaseOrderProviderAddFields() {
     return true;
 }
 
-function purchaseOrderProviderAddFields() {
-    return getTFields("purchaseOrderProviderAddField", arguments);
+function purchaseOrderProviderAddFields(keys, show) {
+    return getTFields("purchaseOrderProviderAddField", getScrollView(-1), keys,
+            show);
 }
-function purchaseOrderProviderAddField(key) {
+function purchaseOrderProviderAddField(key, show) {
     var f;
     switch (key) {
     case "provider-code":

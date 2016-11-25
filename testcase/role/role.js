@@ -507,14 +507,14 @@ function checkRightsPurchase() {
     tapMenu3("厂商门店账");
     tapButton(window, QUERY);
     arr = [];// "名称"
-    f = purchaseProviderAccountFields([ "厂商" ]);
+    f = queryProviderShopAccountFields([ "厂商" ]);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
             f));
 
     tapMenu2("厂商账款");
     tapMenu3("厂商总账");
     tapButton(window, QUERY);
-    f = purchaseShopAccountFields([ "厂商", "厂商名称" ]);
+    f = queryCustomerProviderAccountFields([ "厂商", "厂商名称" ]);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
             f));
 

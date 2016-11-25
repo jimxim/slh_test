@@ -9,7 +9,7 @@ function testStatisticAnalysisInOutFields() {
 }
 
 function statisticAnalysisInOutFields(keys, show) {
-    return getTFields("statisticAnalysisInOutField", keys, show);
+    return getTFields("statisticAnalysisInOutField", window, keys, show);
 }
 function statisticAnalysisInOutField(key, show) {
     var f;
@@ -48,7 +48,7 @@ function testStatisticAnalysisProfitFields() {
 }
 
 function statisticAnalysisProfitFields(keys, show) {
-    return getTFields("statisticAnalysisProfitField", keys, show);
+    return getTFields("statisticAnalysisProfitField", window, keys, show);
 }
 function statisticAnalysisProfitField(key, show) {
     var idx = 0;
@@ -132,7 +132,7 @@ function testStatisticAnalysisSynthesisFields() {
  * @returns
  */
 function statisticAnalysisSynthesisFields(keys, show) {
-    return getTFields("statisticAnalysisSynthesisField", keys, show);
+    return getTFields("statisticAnalysisSynthesisField", window, keys, show);
 }
 function statisticAnalysisSynthesisField(key, show) {
     var f;
@@ -190,7 +190,7 @@ function getSACountsQR(name, type, value) {
 }
 // 款号利润表
 function statisticAnalysisCodeProfitFields(keys, show) {
-    return getTFields("statisticAnalysisCodeProfitField", keys, show);
+    return getTFields("statisticAnalysisCodeProfitField", window, keys, show);
 }
 function statisticAnalysisCodeProfitField(key, show) {
     var f;
@@ -263,7 +263,7 @@ function testStatisticAnalysisReturnFields() {
 }
 
 function statisticAnalysisReturnFields(keys, show) {
-    return getTFields("statisticAnalysisReturnField", keys, show);
+    return getTFields("statisticAnalysisReturnField", window, keys, show);
 }
 function statisticAnalysisReturnField(key, show) {
     var f;
@@ -308,7 +308,7 @@ function testStatisticAnalysisGoodMarketFields() {
 }
 
 function statisticAnalysisGoodMarketFields(keys, show) {
-    return getTFields("statisticAnalysisGoodMarketField", keys, show);
+    return getTFields("statisticAnalysisGoodMarketField", window, keys, show);
 }
 function statisticAnalysisGoodMarketField(key, show) {
     var f;
@@ -353,7 +353,7 @@ function testStatisticAnalysisUnsalableFields() {
 }
 
 function statisticAnalysisUnsalableFields(keys, show) {
-    return getTFields("statisticAnalysisUnsalableField", keys, show);
+    return getTFields("statisticAnalysisUnsalableField", window, keys, show);
 }
 function statisticAnalysisUnsalableField(key, show) {
     var f;
@@ -389,7 +389,7 @@ function statisticAnalysColorFields(keys, show) {
         show = false;
     }
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个为门店
-    return getTFields("statisticAnalysColorField", keys, show, idx);
+    return getTFields("statisticAnalysColorField", window, keys, show, idx);
 }
 function statisticAnalysColorField(key, show, idx) {
     var f;
@@ -470,7 +470,7 @@ function statisticAnalysColorField(key, show, idx) {
 
 // 尺码销售表
 function statisticAnalysSizeFields(keys, show) {
-    return getTFields("statisticAnalysSizeField", keys, show);
+    return getTFields("statisticAnalysSizeField",window, keys, show);
 }
 function statisticAnalysSizeField(key, show) {
     var f;
@@ -537,7 +537,7 @@ function statisticAnalysSizeField(key, show) {
 
 // 品牌销售表
 function statisticAnalysBrandFields(keys, show) {
-    return getTFields("statisticAnalysBrandField", keys, show);
+    return getTFields("statisticAnalysBrandField",window, keys, show);
 }
 function statisticAnalysBrandField(key, show) {
     var f;
@@ -570,7 +570,7 @@ function statisticAnalysBrandField(key, show) {
 
 // 类别销售表
 function statisticAnalysTypeFields(keys, show) {
-    return getTFields("statisticAnalysTypeField", keys, show);
+    return getTFields("statisticAnalysTypeField",window, keys, show);
 }
 function statisticAnalysTypeField(key, show) {
     var f;
@@ -602,7 +602,7 @@ function statisticAnalysTypeField(key, show) {
 }
 // 厂商销售表
 function statisticAnalysProviderFields(keys, show) {
-    return getTFields("statisticAnalysProviderField", keys, show);
+    return getTFields("statisticAnalysProviderField",window, keys, show);
 }
 function statisticAnalysProviderField(key, show) {
     var f;
@@ -642,7 +642,7 @@ function testStatisticAnalysisInOutSummaryFields() {
 }
 
 function statisticAnalysisInOutSummaryFields(keys, show) {
-    return getTFields("statisticAnalysisInOutSummaryField", keys, show);
+    return getTFields("statisticAnalysisInOutSummaryField",window, keys, show);
 }
 function statisticAnalysisInOutSummaryField(key, show) {
     var f;
@@ -676,7 +676,7 @@ function testEditStatisticAnalysisInFields() {
 }
 
 function editStatisticAnalysisInFields(keys, show) {
-    return getTFields("editStatisticAnalysisInField", keys, show);
+    return getTFields("editStatisticAnalysisInField",window, keys, show);
 }
 function editStatisticAnalysisInField(key, show) {
     var f;
@@ -709,7 +709,7 @@ function testEditStatisticAnalysisOutFields() {
 }
 
 function editStatisticAnalysisOutFields(keys, show) {
-    return getTFields("editStatisticAnalysisOutField", keys, show);
+    return getTFields("editStatisticAnalysisOutField",window, keys, show);
 }
 function editStatisticAnalysisOutField(key, show) {
     var f;
@@ -742,7 +742,7 @@ function testStatisticAnalysisInOutAccountFields() {
 }
 
 function statisticAnalysisInOutAccountFields(keys, show) {
-    return getTFields("statisticAnalysisInOutAccountField", keys, show);
+    return getTFields("statisticAnalysisInOutAccountField",window, keys, show);
 }
 function statisticAnalysisInOutAccountField(key, show) {
     var f;

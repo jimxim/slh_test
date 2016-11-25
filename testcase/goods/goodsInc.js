@@ -2108,17 +2108,32 @@ function getQueryTFields(keys) {
             case "货品类别":
                 qFields = goodsTypeFields(keys);
                 break;
+            case "新增类别+":
+                qFields = editGoodsTypeFields(keys);
+                break;
             case "所有颜色":
                 qFields = goodsColorFields(keys);
+                break;
+            case "新增颜色+":
+                qFields = editGoodsColorFields(keys);
                 break;
             case "所有尺码":
                 qFields = goodsSizeFields(keys);
                 break;
+            case "新增尺码+":
+                qFields = editGoodsSizeFields(keys);
+                break;
             case "所有品牌":
                 qFields = goodsBrandFields(keys);
                 break;
+            case "新增品牌+":
+                qFields = editGoodsBrandFields(keys);
+                break;
             case "所有尺码组":
                 qFields = goodsSizeidsFields(keys);
+                break;
+            case "新增尺码组+":
+                qFields = editGoodsSizeidsFields(keys);
                 break;
             case "所有品牌折扣":
                 qFields = goodsBrandDiscountFields(keys);
@@ -2142,6 +2157,9 @@ function getQueryTFields(keys) {
                 break;
             case "所有颜色组":
                 qFields = goodsSizeidsFields(keys);
+                break;
+            case "新增颜色组+":
+                qFields = editGoodsSizeidsFields(keys);
                 break;
             }
             break;
@@ -2244,10 +2262,10 @@ function getQueryTFields(keys) {
         case "厂商账款":
             switch (gMenu3) {
             case "厂商总账":
-                qFields = purchaseProviderAccountFields(keys);
+                qFields = queryCustomerProviderAccountFields(keys);
                 break;
             case "厂商门店账":
-                qFields = purchaseShopAccountFields(keys);
+                qFields = queryProviderShopAccountFields(keys);
                 break;
             }
             break;

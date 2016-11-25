@@ -159,14 +159,14 @@ function test110001() {
     qr = getQR();
     ret = isAnd(ret, isEqual("0309", qr.data[0]["名称"]));
 
-    var f = new TField("名称", TF, 1, "xiao");
+    var fields = queryCustomerFields([ "名称", "手机", "地址" ]);
+    var f = new TField("名称", TF, fields["名称"].index, "xiao");
     ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
     f.value = "小";
     ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
-    var f = new TField("手机", TF, 2, "139");
+    var f = new TField("手机", TF, fields["手机"].index, "139");
     ret = isAnd(ret, checkFuzzyQuery(f, "手机"));// 手机模糊查询
-    var f = queryCustomerField("地址");
-    f.value = "杭州";
+    f = new TField("地址", TF, fields["地址"].index, "杭州");
     ret = isAnd(ret, checkFuzzyQuery(f, "地址"));// 地址模糊查询
     f.value = "abc";
     ret = isAnd(ret, checkFuzzyQuery(f, "地址"));// 地址模糊查询
@@ -3664,7 +3664,7 @@ function ts110067() {
     editSalesBill(json, colorSize);
 
     tapMenu("往来管理", "客户查询");
-    var f = queryCustomerField("是否停用");
+    var f = queryCustomerFields("是否停用")["是否停用"];
     clearTField(window, f);
     tapButton(window, QUERY);
     tapFirstText();
@@ -4167,15 +4167,15 @@ function ts110100() {
     ret = isAnd(ret, ts110100Field(keys, "客户不能为空"));
 
     keys = { "客户" : "xw" };
-    var index = editCustomerBackField("经办人").index;
+    var index = editCustomerBackFields([ "经办人" ])["经办人"].index;
     ret = isAnd(ret, ts110100Field(keys, "经办人不能为空", index));
 
     keys = { "经办人" : "000" };
-    index = editCustomerBackField("回访类型", true).index;
+    index = editCustomerBackFields([ "回访类型" ], true)["回访类型"].index;
     ret = isAnd(ret, ts110100Field(keys, "必填项不能为空", index));
 
     keys = { "回访类型" : "售后回访" };
-    index = editCustomerBackField("主题").index;
+    index = editCustomerBackFields([ "主题" ])["主题"].index;
     ret = isAnd(ret, ts110100Field(keys, "必填项不能为空", index));
     tapReturn();
     return ret;
@@ -4222,11 +4222,11 @@ function ts110101Field(share) {
 
     var view = getScrollView(-1), num1 = getRandomNum(100, 1000);
     tapMenu("往来管理", "getMenu_More", "新增积分调整+");
-    var keys = { "门店" : "常青店", "客户" : "xw", "调整" : num1, "备注" : "备注" + num1 };
+    var keys = { "门店" : "常青店", "客户" : "xw", "调整(±)" : num1, "备注" : "备注" + num1 };
     var fields = editCustomerPointAdjFields(keys);
     setTFieldsValue(view, fields);
-    var idx = editCustomerPointAdjField("当前积分").index;
-    var staffIdx = editCustomerPointAdjField("店员").index;
+    var idx = editCustomerPointAdjFields([ "当前积分" ])["当前积分"].index;
+    var staffIdx = editCustomerPointAdjFields([ "店员" ])["店员"].index;
     var ret = isIn(getTextFieldValue(view, staffIdx), "总经理");// 关联店员总经理
     if (share) {
         ret = isAnd(ret, isEqual(p, getTextFieldValue(view, idx)));
@@ -4926,73 +4926,6 @@ function testCheckCustomerDropDownListField(f, view) {
     tapTableViewCell(f);// 随便选一个,去掉下拉框，防止无法点击后续内容
     // tapKeyboardHide();//清除时会自动去键盘
     // tapButton(window, CLEAR);//
-    return ret;
-}
-
-function testQueryCustomerByStaff() {
-    tapMenu("往来管理", "客户查询");
-    var key = "staff";
-    var keys = [ key ];
-    var qFields = queryCustomerFields(keys);
-    query(qFields);
-    var qr = getQR(window, getScrollView());
-
-    var showField = queryCustomerField(key, true);
-    var title = showField.label;
-    var expected = "总经理";
-
-    return isInQRDataAllByTitle(qr, title, expected);
-}
-
-function testQueryCustomerClear() {
-    tapMenu("往来管理", "客户查询");
-    var keys = [ "customer", "name", "mobile", "stop", "type", "staff" ];
-    var qFields = queryCustomerFields(keys);
-    query(qFields);
-
-    var ret = true;
-    for (var i = 0; i < 5; i++) {
-        var v = getTextFieldValue(window, i);
-        ret = ret && (v.length > 0);
-    }
-
-    delay();
-    tapButton(window, CLEAR);
-    for (var i = 0; i < 5; i++) {
-        var v = getTextFieldValue(window, i);
-        ret = ret && (v.length == 0);
-    }
-
-    return ret;
-}
-
-function testQueryCustomerProvider() {
-    tapMenu("往来管理", "厂商查询");
-    var key = [ "provider" ];
-    var fields = queryCustomerProviderFields(key);
-    changeTFieldValue(fields["provider"], "dlg");
-    query(fields);
-    var qr1 = getQR();
-    var ret = isEqualQRData1ByTitle(qr1, "名称", "东灵公司");
-    tapFirstText(getScrollView(), TITLE_SEQ, 6);
-    tapButton(window, RETURN);
-    delay();
-
-    var key2 = [ "mobile" ];
-    var fields2 = queryCustomerProviderFields(key2);
-    changeTFieldValue(fields2["mobile"], "123456789");
-    query(fields2);
-    var qr2 = getQR();
-    debugQResult(qr2);
-    ret = ret && isEqualQRData1ByTitle(qr2, "手机", "123456789");
-    delay();
-
-    var key3 = [ "stop" ];
-    var fields3 = queryCustomerProviderFields(key3);
-    changeTFieldValue(fields3["stop"], "是");
-    query(fields3);
-    var qr3 = getQR();
-    ret = ret && isEqualQRData1ByTitle(qr3, "名称", "停用厂商1");
     return ret;
 }
 

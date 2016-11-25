@@ -10,7 +10,7 @@ function testShopOutQueryBatchFields() {
 }
 
 function shopOutQueryBatchFields(keys, show) {
-    return getTFields("shopOutQueryBatchField", keys, show);
+    return getTFields("shopOutQueryBatchField",window, keys, show);
 }
 function shopOutQueryBatchField(key, show) {
     var f;
@@ -55,7 +55,7 @@ function testShopOutQueryParticularFields() {
 }
 
 function shopOutQueryParticularFields(keys, show) {
-    return getTFields("shopOutQueryParticularField", keys, show);
+    return getTFields("shopOutQueryParticularField",window, keys, show);
 }
 function shopOutQueryParticularField(key, show) {
     var f;
@@ -107,7 +107,7 @@ function testShopOutDecruitFields() {
 }
 
 function shopOutDecruitFields(keys, show) {
-    return getTFields("shopOutDecruitField", keys, show);
+    return getTFields("shopOutDecruitField",window, keys, show);
 }
 function shopOutDecruitField(key, show) {
     var f;
@@ -152,7 +152,7 @@ function testShopOutCodeFields() {
 }
 
 function shopOutCodeFields(keys, show) {
-    return getTFields("shopOutCodeField", keys, show);
+    return getTFields("shopOutCodeField",window, keys, show);
 }
 function shopOutCodeField(key, show) {
     var f;
