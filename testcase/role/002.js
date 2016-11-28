@@ -2,7 +2,7 @@
 
 //仓管员
 function test002() {
-    run("【系统设置】数据清理授权", "test210043_2"); 
+    run("【系统设置】数据清理授权", "test210043_2");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_2");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_2");
 }
@@ -28,17 +28,15 @@ function test170240_2() {
 
     runAndAlert("test210020Clear", OK);
     tapPrompt();
+    delay(8);
 
-    var cond = "isIn(alertMsg, '清理和刷新成功')";
-    waitUntil(cond, 300);
-    
     tapMenu("销售开单", "开  单+");
     var ret = true;
-    var f = new TField("店员", TF_AC, 5, "1", -1);
+    var index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("101,财务员", v)) {
             ret = false;
@@ -49,11 +47,10 @@ function test170240_2() {
 
     tapButton(window, CLEAR);
     var ret1 = true;
-    var f = new TField("店员", TF_AC, 5, "2", -1);
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("201,财务员", v)) {
             ret1 = false;
@@ -65,11 +62,11 @@ function test170240_2() {
 
     tapMenu("采购入库", "新增入库+");
     var ret2 = true;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("103,采购员", v)) {
             ret2 = false;
@@ -81,7 +78,8 @@ function test170240_2() {
 
     tapMenu("采购订货", "新增订货+");
     var ret3 = true;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -93,8 +91,10 @@ function test170240_2() {
     }
     delay();
     tapButton(window, CLEAR);
+    tapReturn();
 
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
+    tapMenu("采购订货", "新增订货+");
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
     tapReturn();
 
@@ -104,13 +104,12 @@ function test170240_2() {
     query(fields);
 
     tapFirstText();
-
     var ret4 = true;
-    var f = new TField("店员", TF_AC, 4, "2", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("204,店长", v)) {
             ret4 = false;
@@ -126,7 +125,6 @@ function test170240_2() {
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("204,店长", v)) {
             ret5 = false;
@@ -138,11 +136,11 @@ function test170240_2() {
 
     tapMenu("销售订货", "新增订货+");
     var ret6 = true;
-    var f = new TField("店员", TF_AC, 5, "2", -1);
+    index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("205,开单员", v)) {
             ret6 = false;
@@ -162,13 +160,12 @@ function test170240_2() {
     query(fields);
 
     tapFirstText();
-
     var ret7 = true;
-    var f = new TField("店员", TF_AC, 6, "2", -1);
+    index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("201,财务员", v)) {
             ret7 = false;
@@ -183,18 +180,6 @@ function test170240_2() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
-//function test170241_2Prepare() {
-//    var qo, o, ret = true;
-//    qo = { "备注" : "开单是否门店过滤人员" };
-//    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-//    ret = isAnd(ret, setGlobalParam(qo, o));
-//
-//    runAndAlert("test210020Clear", OK);
-//    tapPrompt();
-//
-//    var cond = "isIn(alertMsg, '清理和刷新成功')";
-//    waitUntil(cond, 300);
-//}
 function test170241_2() {
     var qo, o, ret = true;
     qo = { "备注" : "开单是否门店过滤人员" };
@@ -203,13 +188,12 @@ function test170241_2() {
 
     runAndAlert("test210020Clear", OK);
     tapPrompt();
+    delay(8);
 
-    var cond = "isIn(alertMsg, '清理和刷新成功')";
-    waitUntil(cond, 300);
-    
     tapMenu("销售开单", "开  单+");
     var ret = false;
-    var f = new TField("店员", TF_AC, 5, "1", -1);
+    var index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -224,11 +208,11 @@ function test170241_2() {
 
     tapButton(window, CLEAR);
     var ret1 = false;
-    var f = new TField("店员", TF_AC, 5, "2", -1);
+    index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("201,财务员", v)) {
             ret1 = true;
@@ -240,11 +224,11 @@ function test170241_2() {
 
     tapMenu("采购入库", "新增入库+");
     var ret2 = false;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("103,采购员", v)) {
             ret2 = true;
@@ -256,7 +240,8 @@ function test170241_2() {
 
     tapMenu("采购订货", "新增订货+");
     var ret3 = false;
-    var f = new TField("店员", TF_AC, 4, "1", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "1", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -268,7 +253,9 @@ function test170241_2() {
     }
     delay();
     tapButton(window, CLEAR);
+    tapReturn();
 
+    tapMenu("采购订货", "新增订货+");
     var json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : "20" } ] };
     editSalesBillNoColorSize(json);
     tapReturn();
@@ -279,13 +266,12 @@ function test170241_2() {
     query(fields);
 
     tapFirstText();
-
     var ret4 = false;
-    var f = new TField("店员", TF_AC, 4, "2", -1);
+    index = getEditSalesTFindex2("厂商", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("204,店长", v)) {
             ret4 = true;
@@ -301,7 +287,6 @@ function test170241_2() {
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("204,店长", v)) {
             ret5 = true;
@@ -313,13 +298,13 @@ function test170241_2() {
 
     tapMenu("销售订货", "新增订货+");
     var ret6 = false;
-    var f = new TField("店员", TF_AC, 5, "2", -1);
+    index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual("205,开单员", v)) {
+        if (isEqual("201,财务员", v)) {
             ret6 = true;
             break;
         }
@@ -337,13 +322,12 @@ function test170241_2() {
     query(fields);
 
     tapFirstText();
-
     var ret7 = false;
-    var f = new TField("店员", TF_AC, 6, "2", -1);
+    index = getEditSalesTFindex2("客户", "店员");
+    var f = new TField("店员", TF_AC, index, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
-        // debugElementTree(cell);
         var v = cell.name();
         if (isEqual("201,财务员", v)) {
             ret7 = true;
@@ -358,4 +342,3 @@ function test170241_2() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
-

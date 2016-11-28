@@ -29,6 +29,39 @@ function test004() {
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For004_2");
 
 }
+function test210038() {
+    // 店长工号登录,常青店长004
+    tapMenu("系统设置", "人员列表");
+    var keys = { "工号" : "004", "是否停用" : "否", "姓名" : "店长004", "门店" : "常青店" };
+    var fields = querySystemStaffFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["工号"];
+    var a1 = qr.data[0]["姓名"];
+    var a2 = qr.data[0]["门店"];
+    var a3 = qr.data[0]["岗位"];
+    var ret = isAnd(isEqual("004", a), isEqual("店长004", a1),
+            isEqual("常青店", a2), isEqual("店长", a3));
+
+    query();
+    var ret1 = true, md;
+    var totalPageNo = qr.totalPageNo;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            dy = qr.data[i]["门店"];
+            if (!isEqual("常青店", dy)) {
+                ret1 = false;
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
 function test210043_4() {
     // 店长004登录
     tapMenu1("系统设置");
@@ -40,37 +73,6 @@ function test210043_4() {
         ret = true;
     }
     window.popover().dismiss();
-
-    return ret;
-}
-function test210038() {
-    // 店长工号登录,常青店长004
-    tapMenu("系统设置", "人员列表");
-    var keys = { "工号" : "001", "是否停用" : "否", "姓名" : "财务员", "门店" : "常青店" };
-    var fields = querySystemStaffFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["工号"];
-    var a1 = qr.data[0]["姓名"];
-    var a2 = qr.data[0]["门店"];
-    var a3 = qr.data[0]["岗位"];
-    var ret = isAnd(isEqual("001", a), isEqual("财务员", a1), isEqual("常青店", a2),
-            isEqual("财务员", a3));
-
-    var ret1 = true, md;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            dy = qr.data[i]["门店"];
-            if (isEqual("常青店", dy)) {
-                ret1 = false;
-            }
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
 
     return ret;
 }
@@ -131,7 +133,7 @@ function test170134_170670() {
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "不能修改") || isIn(alertMsg2, "不能修改");
-    
+
     qo = { "备注" : "打印后不允许修改" };
     o = { "新值" : "0", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -569,7 +571,7 @@ function test170450_4() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "允许改高" };
     o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -693,8 +695,8 @@ function test170450_4() {
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     alertMsg2 = getArray1(alertMsgs, -2);
-    var ret8 = isIn(alertMsg1, "款号[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账")
-            || isIn(alertMsg2, "款号[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账");
+    var ret8 = isIn(alertMsg1, "保存成功")
+            || isIn(alertMsg2, "保存成功");
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 200 } ],
@@ -1004,34 +1006,55 @@ function test170650() {
     o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    var r = randomWord(false, 6);
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+        "发货" : "仓库店", "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "tt," },
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapReturn();
+
     tapMenu("销售订货", "按挂单");
     query();
     var qr = getQR();
     var total1 = qr.total;
     var batch = qr.data[0]["批次"];
 
+    r = randomWord(false, 6);
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "7" }, { "货品" : "k300", "数量" : "8" } ],
-        "发货" : "仓库店" };
+        "发货" : "仓库店", "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "tt," },
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapReturn();
 
     tapMenu("销售订货", "按挂单");
     query();
     qr = getQR();
     var total2 = qr.total;
-    var ret = isAnd(isEqual(1, sub(total2, total1)), isEqual(1, sub(
+    var ret1 = isAnd(isEqual(1, sub(total2, total1)), isEqual(1, sub(
             qr.data[0]["批次"], batch)),
             isEqual(getToday("yy"), qr.data[0]["日期"]), isEqual("常青店",
                     qr.data[0]["门店"]), isEqual("李四", qr.data[0]["客户"]),
             isEqual(15, qr.data[0]["数量"]));
 
+    tapFirstText();
+    var index = getEditSalesTFindex2("客户", "发货");
+    ret1 = isAnd(ret1, isEqual("中洲店", getTextFieldValue(window, index)));
+    tapReturn();
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    return ret;
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test170679_170680() {
     var qo, o, ret = true;
@@ -1059,13 +1082,15 @@ function test170679_170680() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var ret = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
+    var ret1 = isAnd(!isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("中洲店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(money, qr.data[0]["代收"]));
 
     tapFirstText();
-    ret = isAnd(ret, isEqual("中洲店", getTextFieldValue(window, 6)), isEqual(
-            money, getTextFieldValue(window, 9)));
+    var index = getEditSalesTFindex2("客户", "发货");
+    var index1 = getEditSalesTFindex2("客户", "代收");
+    ret1 = isAnd(ret1, isEqual("中洲店", getTextFieldValue(window, index)),
+            isEqual(money, getTextFieldValue(window, index1)));
     tapReturn();
 
     var r1 = getTimestamp(8);
@@ -1084,16 +1109,21 @@ function test170679_170680() {
     tapMenu("销售开单", "按挂单");
     query();
     var qr = getQR();
-    var ret1 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
+    var ret2 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("常青店",
             qr.data[0]["开单门店"]), isEqual("仓库店", qr.data[0]["发货门店"]), isEqual(0,
             qr.data[0]["实收"]), isEqual(3500, qr.data[0]["代收"]));
 
     tapFirstText();
-    ret1 = isAnd(ret1, isEqual("仓库店", getTextFieldValue(window, 6)));
+    index = getEditSalesTFindex2("客户", "发货");
+    ret2 = isAnd(ret2, isEqual("仓库店", getTextFieldValue(window, index)));
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170684() {
     // 店员权限只能看本门店数据
@@ -1123,14 +1153,16 @@ function test170685() {
     query(fields);
     var qr = getQR();
 
-    var keys = { "日期从" : "2015-01-01", "门店" : "中洲店" };
-    var fields = salesMatcherFields(keys);
-    query(fields);
+    var keys1 = [ "门店" ];
+    var fields1 = salesMatcherFields(keys1);
+    changeTFieldValue(fields1["门店"], "中洲店");
+    setTFieldsValue(window, fields1);
+    tapButton(window, QUERY);
     var qr1 = getQR();
 
-    var keys = { "日期从" : "2015-01-01", "门店" : "仓库店" };
-    var fields = salesMatcherFields(keys);
-    query(fields);
+    changeTFieldValue(fields1["门店"], "仓库店");
+    setTFieldsValue(window, fields1);
+    tapButton(window, QUERY);
     var qr2 = getQR();
     var ret = isAnd(!isEqual(0, qr.data.length), isEqual(0, qr1.data.length),
             isEqual(0, qr2.data.length));
@@ -1151,7 +1183,6 @@ function test170699_4() {
         for (var i = 0; i < qr.curPageTotal; i++) {
             qr = getQR();
             var code = qr.data[i]["款号"];
-
             if (code = "3035") {
                 ret1 = true;
                 break;

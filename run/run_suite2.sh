@@ -62,23 +62,13 @@ js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"
 js_func="$js_func testSalesNoColorSize170649_Prepare"
 js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
-#均色均码 开单是否过滤人员
-#js_func="$js_func testSalesNoColorSize170240_1 testSalesNoColorSize170241_1 testSalesNoColorSize170240_2 
-#testSalesNoColorSize170241_2 testSalesNoColorSize170240_3 testSalesNoColorSize170241_3 testSalesNoColorSize170240_4 
-#testSalesNoColorSize170241_4 testSalesNoColorSize170240_5 testSalesNoColorSize170241_5 testSalesNoColorSize170240_6 
-#testSalesNoColorSize170241_6 testSalesNoColorSize170240_7 testSalesNoColorSize170241_7"
-
 #店长权限
 js_func="$js_func setSales001Params"
 js_func="$js_func test004SalesNoColorSize004"
 
-#js_func="$js_func testSalesNoColorSize170240_Prepare"
-#js_func="$js_func testSalesNoColorSize170240  testSalesNoColorSize170586_4  testSalesNoColorSize170641_4
-#testSalesNoColorSize170641_4 testSalesNoColorSize170649_Prepare testSalesNoColorSize170649 testSalesNoColorSize170650 
-#testSalesNoColorSize170709_4 testSalesNoColorSize170684 testSalesNoColorSize170685 testSalesNoColorSize170670  
-#testSalesNoColorSize170679_170680  testSalesNoColorSize170699_4"
-
 #开单员权限
+js_func="$js_func setSales001Params"
+js_func="$js_func test005SalesNoColorSize005"
 #js_func="$js_func testSalesNoColorSize170586_5"
 
 #配货员权限
