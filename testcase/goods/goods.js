@@ -142,7 +142,7 @@ function setGoodsParams001() {
 
     qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
     o = { "数值" : 0 };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam2(qo);
 
     localClean();// 清理本地，刷新数据
     return ret;
@@ -1957,7 +1957,7 @@ function test100111Field(label, keys, msg) {
     if (!ret) {
         logDebug("-------新增" + label + "  未出现msg" + msg);
     }
-    return ret; 
+    return ret;
 }
 
 function editGoodsSettings(label, keys) {
@@ -3037,7 +3037,8 @@ function test100073_100074() {
     saveAndAlertOk();
     tapReturn();
 
-    query(fields);
+    var keys = { "名称" : r };
+    conditionQuery(keys);
     var qr = getQR();
     var data1 = qr.data[0];
     ret = isAnd(ret, isEqual(r, data1["名称"]));
@@ -4327,8 +4328,7 @@ function ts100164() {
     ret = ret && sortByTitle("操作日期");// 这个是帐套历史数据，不做清理，光月日不好判断
 
     var keys = { "名称" : "杂色" };
-    var fields = goodsSizeidsFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapLine();
     keys = { "名称" : "蓝" };
     ret = isAnd(ret, test100111Field("颜色组", keys, "相同记录已存在"));
@@ -4338,8 +4338,7 @@ function ts100164() {
 
     // 返回后自动返回所有颜色组，若是返回错误页面，剩下的操作会报错
     tapMenu1("货品管理");// 刷新界面与防止未返回
-    fields = goodsSizeidsFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, qr.data[0]["组名称"] == "杂色a");
 

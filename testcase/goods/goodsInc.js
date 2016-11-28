@@ -2149,17 +2149,20 @@ function getQueryTFields(keys) {
                 qFields = goodsStockAdjustmentFields(keys);
                 break;
             case "仓位列表":
-                qFields = goodsColorFields(keys);// 同所有颜色
+                qFields = goodsStoreListFields(keys);
                 break;
             case "超储统计":
             case "缺货统计":
                 qFields = goodsStatisticFields(keys);
                 break;
             case "所有颜色组":
-                qFields = goodsSizeidsFields(keys);
+                qFields = goodsColoridsFields(keys);
                 break;
             case "新增颜色组+":
                 qFields = editGoodsSizeidsFields(keys);
+                break;
+            case "挂版查询":
+                qFields = goodsHangQueryFields(keys);
                 break;
             }
             break;
@@ -2376,8 +2379,14 @@ function getQueryTFields(keys) {
             break;
         case "按汇总":
             switch (gMenu3) {
+            case "按金额汇总":
+                qFields = salesPriceFields(keys);
+                break;
             case "按款号汇总":
                 qFields = salesCodeFields(keys);
+                break;
+            case "按退货汇总":
+                qFields = salesReturnFields(keys);
                 break;
             }
             break;

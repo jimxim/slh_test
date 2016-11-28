@@ -13,11 +13,11 @@ function test000All() {
 // colorSize = "yes";
     debug = true;
 // ipadVer = "7.21";//
-// var caseName="测试用例";
+ var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run("测试用例", "test230030");
- run("测试用例", "onlyTest");//
+// run(caseName, "test230030");
+ run(caseName, "onlyTest");//
 
 }
 
@@ -27,20 +27,19 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-//  try{
+// try{
+//    tapMenu("销售开单", ADDBILL);
+//    var json = { "客户" : "xw", 
+//        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ] };
+//    editSalesBill(json, colorSize);
+// }catch(e){
+// logWarn(e);
+// }
+// finally{
 //      
-//  }catch(e){
-//      logWarn(e);
-//  }
-//  finally{
-//      
-//  }
-
+// }
  // debugObject(gCache,"gCache");
  return true;
-}
-function test(){
-   this.x = 0;
 }
 // 检验开单时间
 function testBillTimes(){

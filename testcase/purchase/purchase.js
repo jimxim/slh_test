@@ -2603,7 +2603,7 @@ function test120017() {
     expected["批次"] = batch + 1;
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
 
-    return true;
+    return ret;
 }
 function test120017_1() {
     tapMenu("采购入库", "按批次查");
@@ -3899,7 +3899,7 @@ function ts120124() {
 function ts120125() {
     var qo1 = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
     var o = { "数值" : 10 };
-    setGlobalParam2(qo1);
+    setGlobalParam2(qo1, o);
 
     // tapMenu("统计分析", "汇总表", "滞销表");
     // var keys = { "上架从" : getDay(-90), "门店" : "常青店" };

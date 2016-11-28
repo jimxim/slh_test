@@ -890,8 +890,7 @@ function test190022_190023() {
 
     tapMenu("统计分析", "收支流水");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店", "账户" : "现" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var expected1 = { "类型" : "收入单", "账户" : "东灵测试-现金账户", "金额" : rm,
         "操作人" : "总经理" };
@@ -915,8 +914,7 @@ function test190022_190023() {
 function test190024() {
     tapMenu("统计分析", "收支流水");
     var keys = { "日期从" : getDay(-30) };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("批次", IS_NUM);
@@ -1211,8 +1209,7 @@ function ts190110() {
 function test190090() {
     tapMenu("统计分析", "收支流水");
     var keys = { "账户" : "现", "门店" : "常青店" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var sum = Number(qr.data[0]["余额"]);
 
@@ -1241,8 +1238,7 @@ function test190090() {
 function test190026() {
     tapMenu("统计分析", "收支流水");
     var keys = { "日期从" : getDay(-5) };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var sum = 0
     var qr = getQR();
     for (var j = 1; j <= qr.totalPageNo; j++) {

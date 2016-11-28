@@ -7,42 +7,36 @@ function queryCustomerField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "Qaq";
-        }
+        f = new TField("客户_115", TF_AC, 0, "a", -1, 0);
         break;
     case "name":
     case "客户名称":
-        f = new TField("客户名称", TF, 1, "a");
+        f = new TField("客户名称_170", TF, 1, "a");
         break;
     case "mobile":
     case "手机":
-        f = new TField("手机", TF, 2, "13312344321");
+        f = new TField("手机_165", TF, 2, "13312344321");
         break;
     case "stop":
     case "是否停用":
-        f = new TField("是否停用", TF_SC, 3, "是");
+        f = new TField("是否停用_150", TF_SC, 3, "是");
         break;
     case "type":
     case "客户类别":
-        f = new TField("客户类别", TF_SC, 4, "零批客户");
+        f = new TField("客户类别_175", TF_SC, 4, "零批客户");
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 5, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
+        f = new TField("店员_160", TF_AC, 5, "000", -1, 0);
         break;
     case "上级客户":
-        f = new TField("上级客户", TF_AC, 6, "a", -1, 0);
+        f = new TField("上级客户_190", TF_AC, 6, "a", -1, 0);
         break;
     case "地址":
-        f = new TField("地址", TF, 7, "a");
+        f = new TField("地址_195", TF, 7, "a");
         break;
     case "门店":
-        f = new TField("门店", TF, 8, "常青店");// TF_SC
+        f = new TField("门店_180", TF, 8, "常青店", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -61,9 +55,9 @@ function testEditCustomerFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 function editCustomerFields(keys, show) {
-    if (ipadVer >= 7.27) {
-        return getTFields("editCustomerField", getScrollView(-1), keys, show);
-    }
+//    if (ipadVer >= 7.27) {
+//        return getTFields("editCustomerField", getScrollView(-1), keys, show);
+//    }
     var texts = getEditGoodsElements();
     return getCustomerTFields(keys, show, texts);
 }
@@ -316,7 +310,6 @@ function testQueryCustomerShopAccountFields() {
     var keys = [ "name", "customer", "shop", "staff", "type", "debt", "alarm" ];
     var fields = queryCustomerShopAccountFields(keys);
     setTFieldsValue(window, fields);
-    // debugElements(window);
     var showFields = queryCustomerShopAccountFields(keys, true);
     return checkShowFields(window, showFields);
 }
@@ -329,37 +322,31 @@ function queryCustomerShopAccountField(key, show) {
     switch (key) {
     case "name":
     case "客户名称":
-        f = new TField("客户名称", TF, 0, "a");
+        f = new TField("客户名称_101", TF, 0, "a");
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "a", -1, 0);
-        if (show) {
-            f.value = "Qaq";
-        }
+        f = new TField("客户_105", TF_AC, 1, "a", -1, 0);
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "仓库店", -1, 0);// 实际为TF_AC
+        f = new TField("门店_110", TF, 2, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 3, "000", -1, 0);
-        if (show) {
-            f.value = "000,管理员";
-        }
+        f = new TField("店员_115", TF_AC, 3, "000", -1, 0);
         break;
     case "type":
     case "客户类别":
-        f = new TField("客户类别", TF_SC, 4, "零批客户");
+        f = new TField("客户类别_120", TF_SC, 4, "零批客户");
         break;
     case "debt":
     case "是否欠款":
-        f = new TField("是否欠款", TF_SC, 5, "否");
+        f = new TField("是否欠款_125", TF_SC, 5, "否");
         break;
     case "alarm":
     case "是否欠款报警":
-        f = new TField("是否欠款报警", TF_SC, 6, "否");
+        f = new TField("是否欠款报警_130", TF_SC, 6, "否");
         break;
 
     default:
@@ -385,18 +372,18 @@ function queryCustomerSuperField(key, show) {
     switch (key) {
     case "name":
     case "客户名称":
-        f = new TField("客户名称", TF, 0, "a");
+        f = new TField("客户名称_101", TF, 0, "a");
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "a", -1, 0);
+        f = new TField("客户_105", TF_AC, 1, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        f = new TField("门店_110", TF, 2, "常青店", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -421,11 +408,11 @@ function queryCustomerAccountField(key, show) {
     switch (key) {
     case "name":
     case "客户名称":
-        f = new TField("客户名称", TF, 0, "a");
+        f = new TField("客户名称_51", TF, 0, "a");
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "a", -1, 0);
+        f = new TField("客户_170", TF_AC, 1, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
@@ -454,18 +441,18 @@ function queryCustomerActiveField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "a", -1, 0);
+        f = new TField("客户_115", TF_AC, 0, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 1, "仓库店", -1, 0);// 实际为TF_AC
+        f = new TField("门店_180", TF, 1, "仓库店", -1, 0);// 实际为TF_AC
         break;
     case "staff":
     case "所属店员":
-        f = new TField("店员", TF_AC, 2, "000", -1, 0);
+        f = new TField("店员_161", TF_AC, 2, "000", -1, 0);
         if (show) {
             f.value = "000,总经理";
         }
@@ -495,18 +482,15 @@ function queryCustomerScoreField(key, show) {
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店_110", TF, 0, "常青店");// TF_SC
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 1, "jfcs1", -1, 0);
-        if (show) {
-            f.value = "积分测试1";
-        }
+        f = new TField("客户_115", TF_AC, 1, "jfcs1", -1, 0);
         break;
     case "mobile":
     case "手机":
-        f = new TField("手机", TF, 2, "123456789");
+        f = new TField("手机_120", TF, 2, "123456789");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -531,18 +515,15 @@ function queryCustomerProviderField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "a", -1, 0);
-        if (show) {
-            f.value = "aa";
-        }
+        f = new TField("厂商_65", TF_AC, 0, "a", -1, 0);
         break;
     case "mobile":
     case "手机":
-        f = new TField("手机", TF, 1, "123456789");
+        f = new TField("手机_2", TF, 1, "123456789");
         break;
     case "stop":
     case "是否停用":
-        f = new TField("是否停用", TF_SC, 2, "否");
+        f = new TField("是否停用_4", TF_SC, 2, "否");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -620,18 +601,18 @@ function queryProviderShopAccountField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "Vell", -1, 0);
+        f = new TField("厂商_140", TF_AC, 0, "Vell", -1, 0);
         if (show) {
             f.value = "Vell";
         }
         break;
     case "providerName":
     case "厂商名称":
-        f = new TField("厂商名称", TF, 1, "Vell");
+        f = new TField("厂商名称_5", TF, 1, "Vell");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        f = new TField("门店_150", TF, 2, "常青店", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);
@@ -685,14 +666,14 @@ function queryCustomerProviderAccountField(key, show) {
     switch (key) {
     case "provider":
     case "厂商":
-        f = new TField("厂商", TF_AC, 0, "vell", -1, 0);
+        f = new TField("厂商_165", TF_AC, 0, "vell", -1, 0);
         if (show) {
             f.value = "Vell";
         }
         break;
     case "providerName":
     case "厂商名称":
-        f = new TField("厂商名称", TF, 1, "vell");
+        f = new TField("厂商名称_5", TF, 1, "vell");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -712,18 +693,18 @@ function testCustomerLogisticsAccountsField(key, show) {
     switch (key) {
     case "name":
     case "名称":
-        f = new TField("名称", TF, 0, "a");
+        f = new TField("名称_71", TF, 0, "a");
         break;
     case "logistics":
     case "物流商":
-        f = new TField("物流商", TF_AC, 1, "sfkd", -1, 0);
+        f = new TField("物流商_72", TF_AC, 1, "sfkd", -1, 0);
         if (show) {
             f.value = "顺丰快递";
         }
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC，
+        f = new TField("门店_180", TF, 2, "常青店", -1, 0);// 实际为TF_AC，
         break;
     default:
         logWarn("未知key＝" + key);
@@ -776,26 +757,26 @@ function queryCustomerLogisticsField(key, show) {
     switch (key) {
     case "name":
     case "名称":
-        f = new TField("名称", TF, 0, "a");
+        f = new TField("名称_71", TF, 0, "a");
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 1, "000", -1, 0);
+        f = new TField("店员_160", TF_AC, 1, "000", -1, 0);
         if (show) {
             f.value = "000，管理员";
         }
         break;
     case "mobile":
     case "手机":
-        f = new TField("手机", TF, 2, "123456789");
+        f = new TField("手机_155", TF, 2, "123456789");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店_110", TF, 3, "常青店");// TF_SC
         break;
     case "stop":
     case "是否停用":
-        f = new TField("是否停用", TF_SC, 4, "否");
+        f = new TField("是否停用_150", TF_SC, 4, "否");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -891,31 +872,31 @@ function queryCustomerBackField(key, show) {
     switch (key) {
     case "day1":
     case "回访日期从":
-        f = new TField("回访日期从", TF_DT, 0, "2015-09-10");
+        f = new TField("回访日期从_125", TF_DT, 0, "2015-09-10");
         break;
     case "day2":
     case "到":
     case "回访日期到":
-        f = new TField("到", TF_DT, 1, "2015-09-10");
+        f = new TField("到_130", TF_DT, 1, "2015-09-10");
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 2, "a", -1, 0);
+        f = new TField("客户_115", TF_AC, 2, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "theme":
     case "主题":
-        f = new TField("主题", TF, 3, "主题");
+        f = new TField("主题_135", TF, 3, "主题");
         break;
     case "feedback":
     case "反馈及建议":
-        f = new TField("反馈及建议", TF, 4, "反馈及建议");
+        f = new TField("反馈及建议_140", TF, 4, "反馈及建议");
         break;
     case "staff":
     case "经办人":
-        f = new TField("经办人", TF_AC, 5, "000", -1, 0);
+        f = new TField("经办人_145", TF_AC, 5, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
@@ -1019,18 +1000,18 @@ function queryCustomerPointAdjField(key, show) {
     var f;
     switch (key) {
     case "发生日期从":
-        f = new TField("发生日期从", TF_DT, 0, getToday());
+        f = new TField("发生日期从_101", TF_DT, 0, getToday());
         break;
     case "发生日期到":
-        f = new TField("发生日期到", TF_DT, 1, getToday());
+        f = new TField("到_105", TF_DT, 1, getToday());
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 2, "常青店", -1, 0);// 实际为TF_AC
+        f = new TField("门店_170", TF, 2, "常青店", -1, 0);// 实际为TF_AC
         break;
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 3, "小王", -1, 0);
+        f = new TField("客户_171", TF_AC, 3, "小王", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -1039,7 +1020,8 @@ function queryCustomerPointAdjField(key, show) {
 }
 // 新增积分调整
 function editCustomerPointAdjFields(keys, show) {
-    return getTFields("editCustomerPointAdjField",getScrollView(-1), keys, show);
+    return getTFields("editCustomerPointAdjField", getScrollView(-1), keys,
+            show);
 }
 function editCustomerPointAdjField(key, show) {
     var f;

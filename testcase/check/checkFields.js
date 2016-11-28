@@ -246,43 +246,37 @@ function testCheckProfitAndLossFields() {
 }
 
 function checkProfitAndLossFields(keys, show) {
-    return getTFields("checkProfitAndLossField", keys, show);
+    return getTFields("checkProfitAndLossField", window, keys, show);
 }
 function checkProfitAndLossField(key, show) {
-    var i;
-    if (ipadVer >= "7.21") {
-        i = 2;
-    } else {
-        i = 0;
-    }
     var f;
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店_27", TF, 0, "常青店", -1, 0);// TF_AC
         break;
     case "batch1":
     case "批次从":
-        f = new TField("批次从", TF, 1, "1");
+        f = new TField("批次从_544", TF, 1, "1");
         break;
     case "batch2":
     case "批次到":
-        f = new TField("批次到", TF, 2, "1");
+        f = new TField("到_545", TF, 2, "1");
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 1 + i, "a", -1, 0);
+        f = new TField("款号_5", TF_AC, 3, "a", -1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 2 + i, getToday());
+        f = new TField("日期从_7", TF_DT, 4, getToday());
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 3 + i, getToday());
+        f = new TField("到_8", TF_DT, 5, getToday());
         break;
     default:
         logWarn("未知key＝" + key);

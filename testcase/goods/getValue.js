@@ -81,10 +81,10 @@ function getQueryBtnIndex() {
     return getButtonIndex(window, "...");
 }
 /**
- * 根据textField的name属性获取其在一级界面的下标
+ * 获取一级界面查询textfield对象数组
  * @returns
  */
-function getTFieldsWindow() {
+function getQueryTFieldsIndex() {
     return getTFieldsIndex(window);
 }
 /**

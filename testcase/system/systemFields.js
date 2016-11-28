@@ -8,7 +8,7 @@ function testSystemPrinterFields() {
 }
 
 function systemPrinterFields(keys, show) {
-    return getTFields("systemPrinterField", keys, show);
+    return getTFields("systemPrinterField", getScrollView(), keys, show);
 }
 function systemPrinterField(key, show) {
     var f;
@@ -31,7 +31,7 @@ function testSystemLocalFields() {
 }
 
 function systemLocalFields(keys, show) {
-    return getTFields("systemLocalField", keys, show);
+    return getTFields("systemLocalField", getScrollView(), keys, show);
 }
 function systemLocalField(key, show) {
     var f;
@@ -54,22 +54,22 @@ function testQuerySystemGlobalFields() {
 }
 
 function querySystemGlobalFields(keys, show) {
-    return getTFields("querySystemGlobalField", keys, show);
+    return getTFields("querySystemGlobalField", window, keys, show);
 }
 function querySystemGlobalField(key, show) {
     var f;
     switch (key) {
     case "name":
     case "名称":
-        f = new TField("名称", TF, 0, "a");
+        f = new TField("名称_1", TF, 0, "a");
         break;
     case "remarks":
     case "备注":
-        f = new TField("备注", TF, 1, "备注");
+        f = new TField("备注_2", TF, 1, "备注");
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 2, "综合");
+        f = new TField("类别_3", TF_SC, 2, "综合");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -85,7 +85,7 @@ function testEditSystemGlobalFields() {
 }
 
 function editSystemGlobalFields(keys, show) {
-    return getTFields("editSystemGlobalField", keys, show);
+    return getTFields("editSystemGlobalField", getScrollView(), keys, show);
 }
 function editSystemGlobalField(key, show) {
     var f;
@@ -95,7 +95,7 @@ function editSystemGlobalField(key, show) {
         f = new TField("数值", BTN_SC, 0, -1);
         break;
     case "数值2":
-        f = new TField("数值", TF, 2, "0");//直接输入，退货天数等设置
+        f = new TField("数值", TF, 2, "0");// 直接输入，退货天数等设置
         break;
     case "authcode":
     case "授权码":
@@ -118,7 +118,7 @@ function testSystemrReceiptFields() {
 }
 
 function systemrReceiptFields(keys, show) {
-    return getTFields("systemrReceiptField", keys, show);
+    return getTFields("systemrReceiptField",getScrollView(),  keys, show);
 }
 function systemrReceiptField(key, show) {
     var f;
@@ -205,7 +205,7 @@ function testQuerySystemStaffFields() {
 }
 
 function querySystemStaffFields(keys, show) {
-    return getTFields("querySystemStaffField", keys, show);
+    return getTFields("querySystemStaffField",window, keys, show);
 }
 function querySystemStaffField(key, show) {
     var f;
@@ -242,7 +242,7 @@ function testEditSystemStaffFields() {
 }
 
 function EditSystemStaffFields(keys, show) {
-    return getTFields("EditSystemStaffField", keys, show);
+    return getTFields("EditSystemStaffField",getScrollView(), keys, show);
 }
 function EditSystemStaffField(key, show) {
     var f;
@@ -286,7 +286,7 @@ function testEditSystemPasswordFields() {
 }
 
 function editSystemPasswordFields(keys, show) {
-    return getTFields("editSystemPasswordField", keys, show);
+    return getTFields("editSystemPasswordField", window, keys, show);
 }
 function editSystemPasswordField(key, show) {
     var f;
@@ -316,7 +316,7 @@ function testSystemShopFields() {
 }
 
 function editSystemShopFields(keys, show) {
-    return getTFields("editSystemShopField", keys, show);
+    return getTFields("editSystemShopField",window, keys, show);
 }
 function editSystemShopField(key, show) {
     var f;
@@ -342,7 +342,7 @@ function testSystemShopAddFields() {
 }
 
 function editSystemShopAddFields(keys, show) {
-    return getTFields("editSystemShopAddField", keys, show);
+    return getTFields("editSystemShopAddField",window, keys, show);
 }
 function editSystemShopAddField(key, show) {
     var f;
@@ -404,7 +404,7 @@ function testSystemAccountFields() {
 }
 
 function editSystemAccountFields(keys, show) {
-    return getTFields("editSystemAccountField", keys, show);
+    return getTFields("editSystemAccountField",window, keys, show);
 }
 function editSystemAccountField(key, show) {
     var f;
@@ -428,7 +428,7 @@ function editSystemAccountField(key, show) {
 }
 // 新增账户
 function editSystemAccountAddFields(keys, show) {
-    return getTFields("editSystemAccountAddField", keys, show);
+    return getTFields("editSystemAccountAddField",window, keys, show);
 }
 function editSystemAccountAddField(key, show) {
     var f;
