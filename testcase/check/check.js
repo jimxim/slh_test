@@ -482,11 +482,10 @@ function test180013_2_180014() {
     }
     delay();
     tapKeyboardHide();
-    tapButton(window, CLEAR);
 
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "3035", "数量" : 150 },
-            { "货品" : "k200", "数量" : -10 } ] };
+            { "货品" : "4562", "数量" : 150 } ] };
     editCheckAddNoColorSize(josn);
 
     tapMenu("盘点管理", "按批次查");
@@ -495,15 +494,12 @@ function test180013_2_180014() {
     var batch = qr.data[0]["批次"];
 
     tapMenu("盘点管理", "按明细查");
-    delay();
+    tapButton(window, CLEAR);
     query();
     qr = getQR();
     var batch1 = qr.data[0]["批次"];
     var batch2 = qr.data[1]["批次"];
-    var a1 = qr.data[0]["盘点数量"];
-    var a2 = qr.data[1]["盘点数量"];
-    var ret = isAnd(isEqual(batch, batch1), isEqual(batch, batch2), isEqual(
-            "-10", a1), isEqual("150", a2));
+    var ret = isAnd(isEqual(batch, batch1), isEqual(batch, batch2));
 
     tapMenu("盘点管理", "按明细查");
     var keys = { "日期从" : getDay(-3), "日期到" : getToday(), "款号" : "3035",
@@ -1303,11 +1299,17 @@ function test180037_180034_180035() {
             a4, getDay(0, "")));
 
     tapButton(window, CLEAR);
-    var ret2 = isAnd(isEqual("", getTextFieldValue(window, 0)), isEqual("",
-            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
-            window, 2)), isEqual("", getTextFieldValue(window, 3)), isEqual(
-            getToday(), getTextFieldValue(window, 4)), isEqual(getToday(),
-            getTextFieldValue(window, 5)));
+    var idx = 3;
+    if (ipadVer >= "7.27") {
+        idx = 0;
+    }
+    for (var i = 0; i < 5; i++) {
+        if (i == Number(1 + Number(idx)) || i == Number(2 + Number(idx))) {
+            var ret2 = isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret2 = isEqual("", getTextFieldValue(window, i));
+        }
+    }
 
     logDebug(", ret1=" + ret1 + ", ret2=" + ret2);
     return ret1 && ret2;

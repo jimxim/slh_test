@@ -59,7 +59,7 @@ function testQueryCheckParticularFields() {
 }
 
 function queryCheckParticularFields(keys, show) {
-    return getTFields("queryCheckParticularField", keys, show);
+    return getTFields("queryCheckParticularField", window, keys, show);
 }
 function queryCheckParticularField(key, show) {
     var f;
@@ -111,7 +111,7 @@ function testCheckProcessFields() {
 }
 
 function checkProcessFields(keys, show) {
-    return getTFields("checkProcessField", keys, show);
+    return getTFields("checkProcessField", getScrollView(), keys, show);
 }
 function checkProcessField(key, show) {
     var f;
