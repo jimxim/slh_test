@@ -180,8 +180,7 @@ function ts120001_1() {
 function ts120001_2() {
     tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday(), "门店" : "常青店" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
+    var fields = conditionQuery(keys);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
@@ -196,9 +195,7 @@ function ts120001_2() {
     tapMenu2("按批次查");
     keys = { "厂商" : "Rt", "批次从" : batch, "批次到" : batch + 1, "订货号" : 0,
         "店员" : "000", "作废挂单" : "正常" };// 采购入库的订货号为0
-    fields = purchaseQueryBatchFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys, false);
     qr = getQR();
     // 6.59日期列格式为MM-DD
     var expected = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday("yy"),
@@ -209,13 +206,12 @@ function ts120001_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 9; i++) {
-        if (i != 1 && i != 2) {
+        if (i != fields["日期从"].index && i != fields["日期到"].index) {
             ret = isAnd(ret, isEqual("", getTextFieldValue(window, i)));
         } else {
             ret = isAnd(ret, isEqual(getToday(), getTextFieldValue(window, i)));
         }
     }
-
     return ret;
 }
 function ts120003() {
@@ -428,8 +424,7 @@ function ts120007() {
 function test120008() {
     tapMenu("采购入库", "按汇总", "按款号汇总");
     var keys = { "日期从" : getDay(-30) };// , "日期到" : getToday()
-    var fields = purchaseCodeFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("款号");
@@ -444,12 +439,10 @@ function test120008() {
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("拿货数", IS_NUM);
     ret = ret && sortByTitle("退货数", IS_NUM);
+    ret = ret && sortByTitle("拿货次数", IS_NUM);
 
     var keys = { "款号" : "3035" };
-    // "day1" : getToday(), "day2" : getToday(),
-    var fields = purchaseCodeFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys, false);
     var qr = getQR();
     var a = qr.data[0];
 
@@ -463,7 +456,6 @@ function test120008() {
     tapButton(window, QUERY);
     qr = getQR();
     var b = qr.data[0];
-
     var exp = { "数量" : "4", "拿货数" : "5", "退货数" : "1" };
     ret = isAnd(ret, isEqualObject(exp, subObject(b, a)));
 
@@ -471,7 +463,6 @@ function test120008() {
     qr = getQR();
     var arr = [ "数量", "拿货数", "退货数" ];
     ret = isAnd(ret, isEqualCounts(arr));
-
     return ret;
 }
 function ts120008_1() {
@@ -998,16 +989,11 @@ function test120014() {
 }
 
 function test120019() {
-    var i, r = "g" + getTimestamp(5), jo1 = {}, jo2 = {};
+    var r = "g" + getTimestamp(5);
     tapMenu("货品管理", "库存分布");
     query();
     var qr = getQR();
-    for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["名称"] == "") {
-            jo1 = qr.data[i];
-            break;
-        }
-    }
+    var jo1 = qr.data[0];// 无类别默认第一行
 
     tapMenu("采购入库", "新增入库+");
     var joG = { "款号" : r, "名称" : r, "进货价" : 150, "零批价" : 300, "数量" : 20 };
@@ -1027,28 +1013,20 @@ function test120019() {
         "上架日期" : getToday("yy"), "累计进" : "20" };
 
     tapMenu("货品管理", "当前库存");
-    delay();
     var keys = { "款号" : r, "门店" : "常青店" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var ret = isEqualObject2(expected, qr.data[0]);
 
     tapMenu2("款号库存");
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqualObject2(expected, qr.data[0]));
 
     tapMenu("货品管理", "库存分布");
     tapButton(window, QUERY);
     qr = getQR();
-    for (i = 0; i < qr.curPageTotal; i++) {
-        if (qr.data[i]["名称"] == "") {
-            jo2 = qr.data[i];
-            break;
-        }
-    }
+    var jo2 = qr.data[0];
     var jo = subObject(jo2, jo1);
     expected = { "名称" : 0, "库存" : 20, "价值" : 6000, "仓库店" : 0, "常青店" : 20,
         "文一店" : 0, "中洲店" : 0 };
@@ -1140,14 +1118,12 @@ function test120023() {
     tapMenu("货品管理", "当前库存");
     delay();
     keys = { "款号" : r, "门店" : "常青店" };
-    fields = queryGoodsStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var ret = isEqualObject2(expected, qr.data[0]);
 
     tapMenu("货品管理", "款号库存");
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqualObject2(expected, qr.data[0]));
 
@@ -1988,7 +1964,8 @@ function test120037() {
     var keys = { "名称" : r };
     addProvider(keys);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 7);// 不指定标题总数，有时会点击第二条数据
+    tapMenu("往来管理", "厂商查询");
+    tapLine();
     var idx = editCustomerProviderFields([ "适用价格" ], true)["适用价格"].index;
     var ret = isEqual("进货价", getTextFieldValue(getScrollView(-1), idx));
     tapReturn();
@@ -2474,20 +2451,20 @@ function test120047_2() {
     tapMenu("采购入库", "按明细查");
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
         "日期从" : getDay(-15), "到" : getToday(), "门店" : "常青店" };
-    var fields = purchaseQueryParticularFields(keys);
+    var fields = getQueryTFields(keys);
     var ret = dropDownListCheck(fields["款号"].inedx, "303", "3035jkk");
-
     query(fields);
     var qr = getQR();
     ret = isAnd(ret, isEqual("3035", qr.data[0]["款号"]));
 
     tapButton(window, CLEAR);
-    ret = isAnd(ret, isEqual("", getTextFieldValue(window, 0)), isEqual("",
-            getTextFieldValue(window, 1)), isEqual("", getTextFieldValue(
-            window, 2)), isEqual(getToday(), getTextFieldValue(window, 3)),
-            isEqual(getToday(), getTextFieldValue(window, 4)), isEqual("",
-                    getTextFieldValue(window, 5)));
-
+    for (var i = 0; i < 6; i++) {
+        if (i == fields["日期从"].index || i == fields["到"].index) {
+            ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
+        } else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
+    }
     return ret;
 }
 
@@ -3659,7 +3636,7 @@ function ts120117() {
 }
 function ts120117Field(value, msg) {
     tapButton(window, CLEAR);
-    var f = new TField("厂商", TF, 0, "小王", -1, 0);// 强制输入
+    var f = new TField("厂商", TF, 0, value, -1, 0);// 强制输入
     setTFieldsValue(window, [ f ]);
     tapButton(window, EXPORT);
     tapButton(window, "对账单(按批次)");

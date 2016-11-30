@@ -33,9 +33,13 @@ function getLastTableView(view) {
     if (isUndefined(view)) {
         view = window;
     }
+    var exclude = 0;// 主界面0是菜单，要排除掉
+    if (view != window) {
+        exclude = -1;
+    }
     var tableViews = getTableViews(view), view1;
     var tableViewIndex = tableViews.length - 1;
-    for (; tableViewIndex > 0; tableViewIndex--) {// 0是菜单，要排除掉
+    for (; tableViewIndex > exclude; tableViewIndex--) {
         view1 = tableViews[tableViewIndex];
         if (view1.cells().length != 0) {
             break;
@@ -98,7 +102,9 @@ function getTFieldsIndex(view) {
     for (var i = 0; i < texts.length; i++) {
         var v = {};
         var name = texts[i].name();
-        ret[name] = i;
+        if (isUndefined(ret[name])) {// 排除无效的同名TF
+            ret[name] = i;
+        }
     }
     return ret;
 }

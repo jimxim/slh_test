@@ -273,7 +273,7 @@ function queryGoodsInOutField(key, show) {
         break;
     case "name":
     case "款号名称":
-        f = new TField("款号名称_203 ", TF, 2, "a");
+        f = new TField("款号名称_203", TF, 2, "a");
         break;
     case "season":
     case "季节":

@@ -16,9 +16,8 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "test230030");
+// run(caseName, "test120037");
  run(caseName, "onlyTest");//
-
 }
 
 function onlyTest(){
@@ -27,14 +26,14 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-// try{
-//    tapMenu("销售开单", ADDBILL);
-//    var json = { "客户" : "xw", 
-//        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ] };
-//    editSalesBill(json, colorSize);
-// }catch(e){
-// logWarn(e);
-// }
+ try{
+    var tf = getTFieldsIndex(getScrollView(-1));
+    for(var i in tf){
+        logDebug("i="+i+"  "+tf[i]);
+    }
+ }catch(e){
+    logWarn(e);
+ }
 // finally{
 //      
 // }
@@ -74,7 +73,7 @@ function testSave() {
 }
 //
 function loginGoodsParams001(){
-    var p1 = {"角色":"总经理"};
+    var p1 = {"角色":"总经理","帐套":"autotest1"};
     var ok = login("000","000000",p1);
     if( ok ) {
         run("均色均码/省代价格模式/价格模式2", "setGoodsParams001");

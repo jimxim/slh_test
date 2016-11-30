@@ -189,7 +189,7 @@ function editGoodsSave(o) {
 }
 /**
  * 新增物流核销单
- * @param o
+ * @param o eg{ "物流" : "sf", "核销" : 0 }或{ "物流" : "sf", "核销" : [100] }批次号
  * @returns
  */
 function addLogisticsVerify(o) {
@@ -1855,28 +1855,33 @@ function retry(fn1, maxTries, i) {
     }
 
 }
-
-function editLogisticsVerify(o, idx) {
+/**
+ * 修改物流核销界面
+ * @param o
+ */
+function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
-        if (isUndefined(i)) {
-            idx = -2;
-        }
         tapButton(window, "核销");
         delay();//
         tapButton(window, QUERY);// 刷新界面
+        var tableView = getLastTableView(window);
         var a1 = o["核销"];
-        // debugElementTree(window);
-        // 坐标偏移8 ,8
-        // tableView是倒数第二个
-        var qr = getQRtable1(window, 8, idx);
-        // debugQResult(qr);
-        // debugObject(qr.data[0], "qr.data[0]=");
-        var batch;
-        for (var i = 0; i < a1.length; i++) {
-            batch = qr.data[i]["批次"];
-            getTableView(window, -2).cells().firstWithName(batch).tap();
+        if (isArray(a1)) {
+            var qr = getQRtable1(window, 8); // 坐标偏移8
+            for (var i = 0; i < a1.length; i++) {
+                var batch = a1[i];
+                for (var j = 0; j < qr.data.length; j++) {
+                    if (batch == qr.data[j]["批次"]) {
+                        tableView.cells().firstWithName(batch).tap();
+                        break;
+                    }
+                }
+            }
+        } else {
+            for (var i = 0; i <= a1; i++) {
+                tableView.cells()[i].tap();
+            }
         }
-        // tapNaviRightButton();
         tapNaviButton("完成");
     }
 }
@@ -2453,6 +2458,7 @@ function getQueryTFields(keys) {
  * @param keys
  * @param tapClear false 不点击清除
  * @param view 默认window
+ * @returns qFields
  */
 function conditionQuery(keys, tapClear, view) {
     if (isUndefined(view)) {
@@ -2464,6 +2470,7 @@ function conditionQuery(keys, tapClear, view) {
     var qFields = getQueryTFields(keys);
     setTFieldsValue(view, qFields);
     tapButton(view, QUERY);
+    return qFields;
 }
 /**
  * 去除字符串中的标点符号

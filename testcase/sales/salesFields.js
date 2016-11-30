@@ -1308,7 +1308,7 @@ function salesQueryLogisticsField(key, show) {
 }
 // 销售开单——核销核销
 function logisticsVerifyFields(keys, show) {
-    return getTFields("logisticsVerifyField", keys, show);
+    return getTFields("logisticsVerifyField",window, keys, show);
 }
 function logisticsVerifyField(key, show) {
     var f, index;

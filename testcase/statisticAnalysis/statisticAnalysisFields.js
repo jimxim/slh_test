@@ -63,7 +63,7 @@ function statisticAnalysisProfitField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("日期到_505", TF_DT, 1, getToday());
+        f = new TField("到_505", TF_DT, 1, getToday());
         break;
     case "shop":
     case "门店":
@@ -126,7 +126,7 @@ function testStatisticAnalysisSynthesisFields() {
     return checkShowFields(window, showFields);
 }
 /**
- * 统计分析-综合汇总
+ * 统计分析-综合汇总(新)
  * @param keys
  * @param show
  * @returns
@@ -148,7 +148,7 @@ function statisticAnalysisSynthesisField(key, show) {
         break;
     case "shop":
     case "门店":
-        f = new TField("门店_145", TF, 2, "常青店", -1, 0);// TF_SC
+        f = new TField("门店_146", TF, 2, "常青店", -1, 0);// 实际为TF_AC 旧的综合汇总1为145
         break;
     default:
         logWarn("未知key＝" + key);
@@ -170,8 +170,8 @@ function getSACountsQR(name, type, value) {
 
     var arr = qr.data;
     var length = arr.length - 1// 最后一行为合计
-    var i, j, bank = "现", ret = 0;
-    for (i = 0; i < length; i++) {
+    var bank = "现", ret = 0;
+    for (var i = 0; i < length; i++) {
         if (isDefined(arr[i]["名称"])) {
             bank = arr[i]["名称"];
         }
@@ -181,11 +181,12 @@ function getSACountsQR(name, type, value) {
                 ret = Number(arr[i]["金额"]);
             }
             if (type == "支出") {
-                ret = Number(arr[i]["金额2"]);// 600,
+                ret = Number(arr[i]["金额2"]);
             }
             break;
         }
     }
+    logDebug("综合收支表 " + name + "-" + type + "-" + value + "=" + ret);
     return ret;
 }
 // 款号利润表
@@ -201,7 +202,7 @@ function statisticAnalysisCodeProfitField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("日期到_505", TF_DT, 1, getToday());
+        f = new TField("到_505", TF_DT, 1, getToday());
         break;
     case "shop":
     case "门店":
@@ -394,7 +395,7 @@ function statisticAnalysColorField(key, show, idx) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("日期到_105", TF_DT, 1, getToday());
+        f = new TField("到_105", TF_DT, 1, getToday());
         break;
     case "market1":
     case "上架从":
@@ -475,7 +476,7 @@ function statisticAnalysSizeField(key, show) {
         break;
     case "day2":
     case "日期到":
-        f = new TField("日期到_105", TF_DT, 1, getToday());
+        f = new TField("到_105", TF_DT, 1, getToday());
         break;
     case "market1":
     case "上架从":
