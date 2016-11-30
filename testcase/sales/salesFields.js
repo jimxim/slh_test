@@ -445,7 +445,7 @@ function testSalesCustomerOutstandingFields() {
 }
 
 function salesCustomerOutstandingFields(keys, show) {
-    return getTFields("salesCustomerOutstandingField",window, keys, show);
+    return getTFields("salesCustomerOutstandingField", window, keys, show);
 }
 function salesCustomerOutstandingField(key, show) {
     var f;
@@ -489,7 +489,7 @@ function testSalesCustomerSupplyFields() {
 }
 
 function salesCustomerSupplyFields(keys, show) {
-    return getTFields("salesCustomerSupplyField",window, keys, show);
+    return getTFields("salesCustomerSupplyField", window, keys, show);
 }
 function salesCustomerSupplyField(key, show) {
     var f, idx;
@@ -561,7 +561,7 @@ function testSalesCodeSupplyFields() {
 }
 
 function salesCodeSupplyFields(keys, show) {
-    return getTFields("salesCodeSupplyField", keys, show);
+    return getTFields("salesCodeSupplyField", window, keys, show);
 }
 function salesCodeSupplyField(key, show) {
     var f;
@@ -613,7 +613,7 @@ function testSalesQueryCustomerFields() {
 }
 
 function salesQueryCustomerFields(keys, show) {
-    return getTFields("salesQueryCustomerField",window, keys, show);
+    return getTFields("salesQueryCustomerField", window, keys, show);
 }
 function salesQueryCustomerField(key, show) {
     var f;
@@ -727,7 +727,7 @@ function testSalesProviderFields() {
 }
 
 function salesMatcherFields(keys, show) {
-    return getTFields("salesMatcherField", keys, show);
+    return getTFields("salesMatcherField", window, keys, show);
 }
 function salesMatcherField(key, show) {
     var f;
@@ -969,7 +969,7 @@ function getEditSalesTFindex2(title1, title2, type) {
 
 // 快速新增客户
 function editQuickAddCustomerFields(keys, show) {
-    return getTFields("editQuickAddCustomerField",window, keys, show);
+    return getTFields("editQuickAddCustomerField", keys, show);
 }
 function editQuickAddCustomerField(key, show) {
     var f;
@@ -1223,7 +1223,7 @@ function testSalesCollectionRecordFields() {
 }
 
 function salesCollectionRecordFields(keys, show) {
-    return getTFields("salesCollectionRecordField", window,keys, show);
+    return getTFields("salesCollectionRecordField", window, keys, show);
 }
 function salesCollectionRecordField(key, show) {
     var f;
@@ -1308,7 +1308,7 @@ function salesQueryLogisticsField(key, show) {
 }
 // 销售开单——核销核销
 function logisticsVerifyFields(keys, show) {
-    return getTFields("logisticsVerifyField",window, keys, show);
+    return getTFields("logisticsVerifyField", window, keys, show);
 }
 function logisticsVerifyField(key, show) {
     var f, index;

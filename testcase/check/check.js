@@ -17,7 +17,7 @@ function testCheck001() {
 function testCheckAll() {
     run("处理掉待作废", "checkPrepare");
     run("处理掉盘点计划", "checkPrepare1");
-    run("处理掉盘点计划", "checkPrepare2");
+    run("处理掉盘点单", "checkPrepare2");
     run("【盘点管理-更多-未盘点款号】检查数据正确性", "test180088");
     run("【盘点管理—盘点处理】部分处理", "test180026");
     run("【盘点管理—盘点处理】全盘处理", "test180025");
@@ -2104,9 +2104,8 @@ function test180053() {
 }
 function test180054() {
     tapMenu("盘点管理", "库存表");
-    var keys = { "shop" : "常青店", "code" : "3035", "name" : "jkk",
-        "brand" : "Adidas", "season" : "春季", "day1" : "2015-01-01",
-        "day2" : getToday() };
+    var keys = { "门店" : "常青店", "款号" : "3035", "款号名称" : "jkk", "品牌" : "Adidas",
+        "季节" : "春季", "上架从" : "2015-01-01", "到" : getToday(), "厂商" : "vell" };
     var fields = checkMaterialFields(keys);
     setTFieldsValue(window, fields);
 
@@ -3518,6 +3517,7 @@ function test180087() {
     return ret && ret1;
 }
 function test180088() {
+    checkPrepare2();
 
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     query();

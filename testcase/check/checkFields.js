@@ -189,45 +189,45 @@ function testCheckMaterialFields() {
 }
 
 function checkMaterialFields(keys, show) {
-    return getTFields("checkMaterialField", keys, show);
+    return getTFields("checkMaterialField", window, keys, show);
 }
 function checkMaterialField(key, show) {
     var f;
     switch (key) {
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 0, "常青店");// TF_SC
+        f = new TField("门店_231", TF, 0, "常青店");// TF_SC
         break;
     case "code":
     case "款号":
-        f = new TField("款号", TF_AC, 1, "a", 1, 0);
+        f = new TField("款号_2", TF_AC, 1, "a", 1, 0);
         if (show) {
             f.value = "5880,kha,210元";
         }
         break;
     case "name":
     case "款号名称":
-        f = new TField("款号名称", TF, 2, "aaa");
+        f = new TField("款号名称_222", TF, 2, "aaa");
         break;
     case "brand":
     case "品牌":
-        f = new TField("品牌", TF_AC, 3, "1010pp");
+        f = new TField("品牌_210", TF_AC, 3, "1010pp");
         break;
     case "season":
     case "季节":
-        f = new TField("季节", TF_SC, 4, "夏季");
+        f = new TField("季节_221", TF_SC, 4, "夏季");
         break;
     case "day1":
     case "上架从":
-        f = new TField("上架从", TF_DT, 5, getToday());
+        f = new TField("上架从_205", TF_DT, 5, getToday());
         break;
     case "day2":
     case "到":
     case "上架到":
-        f = new TField("到", TF_DT, 6, getToday());
+        f = new TField("到_206", TF_DT, 6, getToday());
         break;
     case "厂商":
-        f = new TField("厂商", TF_AC, 7, "vell", -1, 0);
+        f = new TField("厂商_6", TF_AC, 7, "vell", -1, 0);
         break;
     default:
         logWarn("未知key＝" + key);
@@ -294,7 +294,7 @@ function testCheckPlanFields() {
 }
 
 function checkPlanFields(keys, show) {
-    return getTFields("checkPlanField", keys, show);
+    return getTFields("checkPlanField", window, keys, show);
 }
 function checkPlanField(key, show) {
     var f;
@@ -347,7 +347,7 @@ function checkPlanAddField(key, show) {
 }
 // 盘点管理-未盘点款号
 function checkUnCheckCodeFields(keys, show) {
-    return getTFields("checkUnCheckCodeField", keys, show);
+    return getTFields("checkUnCheckCodeField", window, keys, show);
 }
 function checkUnCheckCodeField(key, show) {
     var f;
