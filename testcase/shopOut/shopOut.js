@@ -184,7 +184,7 @@ function ts150010_2() {
 
     tapButton(window, CLEAR);
     for (var i = 0; i < 6; i++) {
-        if (i == 3 || i == 4) {
+        if (i == fields["日期从"].index || i == fields["日期到"].index) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));

@@ -55,9 +55,9 @@ function testEditCustomerFields() {
     return checkShowFields(getScrollView(), showFields);
 }
 function editCustomerFields(keys, show) {
-//    if (ipadVer >= 7.27) {
-//        return getTFields("editCustomerField", getScrollView(-1), keys, show);
-//    }
+    // if (ipadVer >= 7.27) {
+    // return getTFields("editCustomerField", getScrollView(-1), keys, show);
+    // }
     var texts = getEditGoodsElements();
     return getCustomerTFields(keys, show, texts);
 }
@@ -550,9 +550,6 @@ function editCustomerProviderField(key, show) {
     case "name":
     case "名称":
         f = new TField("名称", TF, 0, "a");
-        if (show) {
-
-        }
         break;
     case "mobile":
     case "手机":

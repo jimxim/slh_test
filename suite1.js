@@ -16,24 +16,20 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "test120037");
+// run(caseName, "ts130025_1");
  run(caseName, "onlyTest");//
 }
-
 function onlyTest(){
 // delay();
  UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
- try{
-    var tf = getTFieldsIndex(getScrollView(-1));
-    for(var i in tf){
-        logDebug("i="+i+"  "+tf[i]);
-    }
- }catch(e){
-    logWarn(e);
- }
+//   try{
+//       tapTextByFirstWithName("备", window);
+//   }catch(e){
+//       logWarn(e);
+//   }
 // finally{
 //      
 // }
@@ -486,11 +482,5 @@ function loginBillClerk005_2() {
       testBillClerk005_2();
      logout();
     }
-   }
-
-
-
-
-
-
+}
 

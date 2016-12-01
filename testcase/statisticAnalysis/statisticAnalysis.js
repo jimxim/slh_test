@@ -1420,17 +1420,15 @@ function getDataFor190037() {
 }
 
 function test190037() {
-    var i, sum1 = 0, sum2 = 0;
-    // debugElementTree(window);
+    var sum1 = 0, sum2 = 0;
     tapMenu("统计分析", "综合汇总");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
     conditionQuery(keys);
-    var s1 = getSACountsQR("银", "收入", "销售单");
-    // tapLine();
-    // var texts = getStaticTexts(getScrollView(-1, 0));
-    // var qr = getQRverify(texts, "名称");
-    // var s1 = test190037_1Field(qr, "银", "收入", "销售单");
-    // tapNaviClose();
+    tapLine();
+    var texts = getStaticTexts(getScrollView(-1, 0));
+    var qr = getQRverify(texts, "名称");
+    var s1 = test190037_1Field(qr, "银", "收入", "销售单");
+    tapNaviClose();
 
     tapMenu("销售开单", ADDBILL);
     var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
@@ -1447,7 +1445,7 @@ function test190037() {
     var b = getStaticTextValue(getScrollView(-1, 0), -2);// 支出合计
     var c = getStaticTextValue(getScrollView(-1, 0), -1);// 总合计
     // 最后一行为合计,qr的合计取值有问题，便重新取
-    for (i = 0; i < qr.data.length - 1; i++) {
+    for (var i = 0; i < qr.data.length - 1; i++) {
         if (isDefined(qr.data[i]["金额"])) {
             sum1 = add(sum1, Number(qr.data[i]["金额"]));// 取值可能为浮点数，加起来有0.01左右误差，忽略
         }
@@ -2292,7 +2290,7 @@ function test190088() {
     ret = ret && sortByTitle("数量", IS_NUM);
     ret = ret && sortByTitle("金额", IS_NUM);
     ret = ret && sortByTitle("成本额", IS_NUM);
-    ret = ret && sortByTitle("利润额");// , IS_NUM
+    ret = ret && sortByTitle("利润额", IS_NUM);// 7.27起支持排序
 
     return ret;
 }

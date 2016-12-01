@@ -860,8 +860,7 @@ function ts130009() {
     tapLine();
     tapButtonAndAlert(INVALID, OK);
     tapReturn();// 防止未自动返回
-
-    return isIn(alertMsg, "订单已入库，不允许作废");
+    return isInAlertMsgs("订单已入库不允许作废");
 }
 
 function ts130010() {
@@ -903,7 +902,7 @@ function ts130011() {
     }
     var json = { "客户" : p1, "不返回" : "yes" };
     editSalesBill(json, colorSize);
-    var ret = isInAlertMsgs("客户或供应商信息不允许修改");
+    var ret = isInAlertMsgs("客户或供应商信息不允许修改") || isInAlertMsgs("不许修改部分入库");
     delay();
 
     tapButton(window, CLEAR);
@@ -912,7 +911,6 @@ function ts130011() {
     tapPrompt();
     ret = isAnd(ret, isIn(alertMsg, "需要输入订货厂商"));
     tapReturn();
-
     return ret;
 }
 // 采购入库模式--默认复杂模式

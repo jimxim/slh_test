@@ -3053,7 +3053,6 @@ function test100068_100069() {
     tapMenu("货品管理", "getMenu_More", "仓位列表");
     query();
     var ret = goPageCheck();
-
     ret = ret && sortByTitle("名称");
 
     query(fields);
@@ -3062,7 +3061,6 @@ function test100068_100069() {
 
     query();
     ret = ret && isEqual("", getTextFieldValue(window, 0));
-
     return ret;
 }
 
