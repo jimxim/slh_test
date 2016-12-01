@@ -214,7 +214,7 @@ function testSalesNoColorSize002() {
     run("【销售订货-新增订货】/【销售开单-开单】开单不允许折扣大于1+客户折扣+大于1的折扣", "test240002_240004");
     run("【销售订货-新增订货】/【销售开单-开单】开单允许折扣大于1+客户折扣+大于1的折扣",
             "test240003_240007_240006");
-    run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
+    // run("【销售开单-新增开单-图片选款】开单允许折扣大于1+客户折扣+大于1的折扣", "test240005");
     run("【销售开单-新增开单】开单允许折扣大于1，客户折扣模式+销售开单界面输入客户后快速新增货品", "test240009");
     run("【往来管理-客户查询】开单允许折扣大于1，客户资料修改折扣大于1", "test240010");
     run("【销售开单】开单允许折扣大于1+整单折扣+整单折扣输入大于1的折扣", "test240011");
@@ -1655,7 +1655,7 @@ function test170064() {
 function test170065_1() {
     // 核销欠款，不输入款号
     tapMenu("销售开单", "开  单+");
-    var r = "anewkh" + getTimestamp(8);
+    var r = "anewkh" + randomWord(false, 8);
     var json = { "名称" : r };
     editQuickAddCustomer(json);
 
@@ -2631,7 +2631,7 @@ function test170095() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "8989", "数量" : 1, "备注" : "mxbz" },
-                { "货品" : "3035", "数量" : 1, "备注" : "mxbz1" } ], "备注" : "zdbz" };
+                { "货品" : "4562", "数量" : 1, "备注" : "mxbz1" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");
@@ -2653,7 +2653,7 @@ function test170095() {
     var ret1 = isAnd(isIn(qr.data[0]["备注"], "mxbz"), isIn(qr.data[1]["备注"],
             "mxbz"));
 
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", 整单备注=" + b1 + ", 明细备注=" + b6
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", 整单备注=" + b1 + ", 明细备注=" + b6
             + ", 明细备注1=" + b13);
     return ret && ret1;
 }
@@ -2686,8 +2686,8 @@ function test170097() {
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : -1 },
-                { "货品" : "3035", "数量" : 2, "备注" : "mxbz" } ],
+        "明细" : [ { "货品" : "8989", "数量" : -1 },
+                { "货品" : "8989", "数量" : 2, "备注" : "mxbz" } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -2710,12 +2710,12 @@ function test170097() {
     tapReturn();
 
     tapMenu("销售开单", "按明细查");
-    var keys = { "款号" : "3035", "客户" : "ls", "门店" : "常青店", "类型" : "换码",
+    var keys = { "款号" : "8989", "客户" : "ls", "门店" : "常青店", "类型" : "换码",
         "备注" : "换码" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
     var qr = getQR();
-    var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("3035",
+    var ret1 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual("8989",
             qr.data[0]["款号"]), isEqual("-1", qr.data[0]["数量"]), isAqualOptime(
             getOpTime(), qr.data[0]["操作日期"]));
 
@@ -7999,7 +7999,7 @@ function test170461() {
     qo = { "备注" : "上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "成交价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -10306,8 +10306,9 @@ function test170559_170697() {
     var json = { "明细" : [ { "货品" : "8989", "数量" : 12 } ] };
     editSalesBillNoColorSize(json);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
-    var ret4 = isIn(alertMsg, "只能修改支付方式");
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret4 = isIn(alertMsg1, "只能修改支付方式") || isIn(alertMsg2, "只能修改支付方式");
 
     tapMenu("销售开单", "按批次查");
     tapButton(window, QUERY);
@@ -11400,14 +11401,8 @@ function test170673() {
     var bz = json["代收"]["备注"];
 
     tapMenu("销售开单", LogisticsVerify);
-    json = { "客户" : "tt", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    json = { "核销" : [ 0 ] };
-    editLogisticsVerify(json);
-
-    tapButtonAndAlert(SAVE, OK);
-    tapReturn();
+    var o = { "物流" : "tt", "核销" : [ 0 ] };
+    editVerifyBill(o);
 
     tapMenu("销售开单", "物流单");
     var keys = { "物流商" : "天天物流", "运单号" : r };
@@ -12327,35 +12322,34 @@ function test240002_240004() {
     tapPrompt();
     tapReturn();
 
-    tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "anewCus" };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
+    // tapMenu("销售开单", "开 单+");
+    // var keys = { "客户" : "anewCus" };
+    // var fields = editSalesBillFields(keys);
+    // setTFieldsValue(window, fields);
+    //
+    // tapButton(window, "图片选款");
+    // tapNaviButton("当天到货");
+    //
+    // var dataView = window.tableViews()[4];
+    // dataView.tapWithOptions({ tapOffset : { x : 0.03, y : 0.35 } });
+    // dataView.tapWithOptions({ tapOffset : { x : 0.15, y : 0.35 } });
+    // dataView.tapWithOptions({ tapOffset : { x : 0.28, y : 0.35 } });
+    //
+    // tapNaviRightButton();
+    // tapNaviRightButton();
+    // saveAndAlertOk();
+    // var o1 = { "继续开单保存" : "仍然保存" };
+    // setValueToCache(ALERT_MSG_KEYS, o1);
+    // delay(5);
+    // tapPrompt();
+    //
+    // debugArray(alertMsgs);
+    // var alertMsg1 = getArray1(alertMsgs, -1);
+    // var ret3 = isIn(alertMsg1, "折扣必须小于等于1");
+    // tapReturn(); && ret3
 
-    tapButton(window, "图片选款");
-    tapNaviButton("当天到货");
-
-    var dataView = window.tableViews()[4];
-    dataView.tapWithOptions({ tapOffset : { x : 0.03, y : 0.35 } });
-    dataView.tapWithOptions({ tapOffset : { x : 0.15, y : 0.35 } });
-    dataView.tapWithOptions({ tapOffset : { x : 0.28, y : 0.35 } });
-
-    tapNaviRightButton();
-    tapNaviRightButton();
-    saveAndAlertOk();
-    var o1 = { "继续开单保存" : "仍然保存" };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    delay(5);
-    tapPrompt();
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret3 = isIn(alertMsg1, "折扣必须小于等于1");
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test240003_240007_240006() {
     var qo, o, ret = true;

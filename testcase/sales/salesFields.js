@@ -148,11 +148,11 @@ function salesQueryParticularField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("备注_135", TF_SC, 10, "备注");
+        f = new TField("类别_135", TF_SC, 10, "备注");
         break;
     case "provider":
     case "厂商":
-        f = new TField("适用价格_29", TF_AC, 11, "打包价");
+        f = new TField("厂商_29", TF_AC, 11, "打包价");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -581,7 +581,7 @@ function salesCodeSupplyField(key, show) {
 
 // 按款号上货 明细界面
 function salesCodeDetailSupplyFields(keys, show) {
-    return getTFields("salesCodeDetailSupplyField", keys, show);
+    return getTFields("salesCodeDetailSupplyField", window, keys, show);
 }
 function salesCodeDetailSupplyField(key, show) {
     var f;
@@ -969,7 +969,7 @@ function getEditSalesTFindex2(title1, title2, type) {
 
 // 快速新增客户
 function editQuickAddCustomerFields(keys, show) {
-    return getTFields("editQuickAddCustomerField", keys, show);
+    return getTFields("editQuickAddCustomerField", window, keys, show);
 }
 function editQuickAddCustomerField(key, show) {
     var f;
@@ -1009,7 +1009,7 @@ function editQuickAddCustomerField(key, show) {
 }
 // 快速新增货品
 function editQuickAddGoodsFields(keys, show) {
-    return getTFields("editQuickAddGoodsField", keys, show);
+    return getTFields("editQuickAddGoodsField", window, keys, show);
 }
 function editQuickAddGoodsField(key, show) {
     var f, idx = 0;
@@ -1260,46 +1260,46 @@ function salesQueryLogisticsField(key, show) {
     switch (key) {
     case "customer":
     case "客户":
-        f = new TField("客户", TF_AC, 0, "a", -1, 0);
+        f = new TField("客户_15", TF_AC, 0, "a", -1, 0);
         if (show) {
             f.value = "Qaq";
         }
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 1, "2015-9-11");
+        f = new TField("日期从_1", TF_DT, 1, "2015-9-11");
         break;
     case "day2":
     case "日期到":
-        f = new TField("到", TF_DT, 2, getToday());
+        f = new TField("到_2", TF_DT, 2, getToday());
         break;
     case "batch1":
     case "批次从":
-        f = new TField("批次从", TF, 3, "1");
+        f = new TField("批次从_100", TF, 3, "1");
         break;
     case "batch2":
     case "批次到":
-        f = new TField("到", TF, 4, "20");
+        f = new TField("到_105", TF, 4, "20");
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 5, "常青店");// TF_SC
+        f = new TField("门店_110", TF, 5, "常青店");// TF_SC
         break;
     case "logistics":
     case "物流商":
-        f = new TField("物流商", TF_SC, 6, "顺丰快递");
+        f = new TField("物流商_3", TF_SC, 6, "顺丰快递");
         break;
     case "shipno":
     case "运单号":
-        f = new TField("运单号", TF, 7, "12345678");
+        f = new TField("运单号_7", TF, 7, "12345678");
         break;
     case "receive":
     case "是否收款":
-        f = new TField("是否收款", TF_SC, 8, "否");
+        f = new TField("货款收讫_10", TF_SC, 8, "否");
         break;
     case "invalid":
     case "是否作废":
-        f = new TField("是否作废", TF_SC, 9, "正常");
+        f = new TField("是否作废_23", TF_SC, 9, "正常");
         break;
     default:
         logWarn("未知key＝" + key);
