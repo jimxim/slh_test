@@ -924,7 +924,23 @@ function checkDate(str) {
     var reg = new RegExp("^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$");
     return reg.test(str);
 }
-
+/**
+ * 验证单据界面值
+ * @param json
+ * @returns {Boolean}
+ */
+function checkBillValue(json) {
+    var v = editSalesBillGetValue2();
+    var det = getQRDet();
+    for ( var i in json["输入框值"]) {
+        if (json["输入框值"][i] == "") {
+            json["输入框值"][i] = 0;
+        }
+    }
+    delete v["结余"];// 总的结余会变动，有用例验证准确性,这里就跳过
+    return isAnd(isEqualObject2(json["输入框值"], v), isEqualDyadicArray(
+            json["明细值"], det));
+}
 /**
  * 模糊查询验证
  * @param f

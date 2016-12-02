@@ -88,7 +88,7 @@ function getQueryBtnIndex() {
  * 获取一级界面查询textfield对象数组
  * @returns
  */
-function getQueryTFieldsIndex() {
+function getWindowTFieldsIndex() {
     return getTFieldsIndex(window);
 }
 /**
