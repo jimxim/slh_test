@@ -100,9 +100,12 @@ function getTFieldsIndex(view) {
     var ret = {};
     var texts = getTextFields(view);
     for (var i = 0; i < texts.length; i++) {
-        var v = {};
-        var name = texts[i].name();
-        if (isUndefined(ret[name])) {// 排除无效的同名TF
+        var tf = texts[i].textFields();
+        if (tf.length > 0) {// 排除无效的TF !isUIAElementNil(tf)
+            var name = texts[i].name();
+            if (isDefined(ret[name])) {
+                name += "2";// 重名
+            }
             ret[name] = i;
         }
     }
