@@ -730,8 +730,9 @@ function test180025() {
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
     tapButtonAndAlert("部分处理", OK);
-    delay(2);
-    tapPrompt();
+    var bt = window.buttons()[RETURN];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
@@ -867,7 +868,7 @@ function test180025() {
     delay(2);
 
     tapMenu("盘点管理", "处理记录");
-    tapButton(window, QUERY);
+    query();
     qr = getQR();
     var total2 = qr.total;
     var ret7 = isEqual(1, sub(total1, total2));
@@ -884,6 +885,16 @@ function test180025() {
     return ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test180026() {
+    tapMenu("盘点管理", "盘点处理");
+    var keys = { "盘点门店" : "常青店" };
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButtonAndAlert("部分处理", OK);
+    var bt = window.buttons()[RETURN];
+    var cond = !isUIAElementNil(bt) || bt.isVisible();
+    waitUntil(cond, 10);
+    tapReturn();
+
     tapMenu("货品管理", "新增货品+");
     var s = "anewC" + randomWord(false, 4);
     var keys = { "款号" : s, "名称" : s };// , "进货价" : "100"
@@ -3517,8 +3528,6 @@ function test180087() {
     return ret && ret1;
 }
 function test180088() {
-    checkPrepare2();
-
     tapMenu("盘点管理", "getMenu_More", "未盘点款号");
     query();
     var qr = getQR();
@@ -3534,11 +3543,9 @@ function test180088() {
     var ventory1 = qr.counts["库存"];
     var ret = isAnd(isEqual(ventory, ventory1), isEqual(total1, total));
 
-    var key = [ "款号" ];
-    var qFields = queryGoodsCodeStockFields(key);
-    changeTFieldValue(qFields["款号"], "4562");
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    keys = { "门店" : "常青店", "款号" : "4562" };
+    fields = queryGoodsCodeStockFields(keys);
+    query(fields);
     qr = getQR();
     var kc = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
 

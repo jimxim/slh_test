@@ -734,22 +734,22 @@ function salesMatcherField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从_125", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
     case "到":
-        f = new TField("到", TF_DT, 1, "常青店");
+        f = new TField("到_130", TF_DT, 1, "常青店");
         break;
     case "matcher":
     case "配货员":
-        f = new TField("配货员", TF_AC, 2, "000", -1, 0);
+        f = new TField("配货员_166", TF_AC, 2, "000", -1, 0);
         if (show) {
             f.value = "000,管理员";
         }
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店");// TF_SC
+        f = new TField("门店_141", TF, 3, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

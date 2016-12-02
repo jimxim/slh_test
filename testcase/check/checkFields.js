@@ -144,7 +144,7 @@ function testCheckProcessRecordFields() {
 }
 
 function checkProcessRecordFields(keys, show) {
-    return getTFields("checkProcessRecordField", keys, show);
+    return getTFields("checkProcessRecordField", window, keys, show);
 }
 function checkProcessRecordField(key, show) {
     var f;

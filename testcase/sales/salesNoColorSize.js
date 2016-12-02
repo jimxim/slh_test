@@ -464,6 +464,10 @@ function setNoColorSize_1Params() {
     o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否启用财务结账收款功能" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "名称" : "sales_show_printdialog" };// 开单界面，保存后显示是否打印确认窗口
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
@@ -2993,7 +2997,8 @@ function test170104_170105() {
     var date = getStaticTextValue(window, index - 2);
     var a1 = date.split(": ");
 
-    tapButton(window, 14);
+    var index = getButtonIndex(window, "更多", 2);
+    tapButton(window, index);
     var qr = getQResult2(getScrollView(-1, 0), "门店", "备注");
     var a = qr.data[0]["日期"];
     var b = qr.data[0]["数量"];
@@ -3031,7 +3036,7 @@ function test170105_1() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var r = "1" + getRandomInt(1000);
-    var r1 = "0." + getTimestamp(3);
+    var r1 = "0.8" + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "ls",
@@ -3051,7 +3056,8 @@ function test170105_1() {
     var a1 = date.split(": ");
 
     // 点击“更多”按钮查看
-    tapButton(window, 14);
+    var index = getButtonIndex(window, "更多", 2);
+    tapButton(window, index);
     var qr = getQResult2(getScrollView(-1, 0), "门店", "备注");
     var a = qr.data[0]["日期"];
     var b = qr.data[0]["数量"];
@@ -3104,7 +3110,8 @@ function test170107() {
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
 
-    tapButton(window, 14);
+    var index = getButtonIndex(window, "更多", 2);
+    tapButton(window, index);
     var qr = getQResult2(getScrollView(-1, 0), "门店", "备注");
     var c = qr.data[0]["单价"];
     ret = isAnd(ret, isEqual(r, c));
@@ -5883,12 +5890,12 @@ function test170239() {
 
     var ret = false;
     var staffTFindex = getEditSalesTFindex2("客户", "店员");
-    var f = new TField("店员", TF_AC, staffTFindex, "1", -1);
+    var f = new TField("店员", TF_AC, staffTFindex, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("101,财务员", v)) {
+        if (isEqual("204,店长", v)) {
             ret = true;
             break;
         }
@@ -5902,7 +5909,7 @@ function test170239() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("201,财务员", v)) {
+        if (isEqual("204,店长", v)) {
             ret1 = true;
             break;
         }
@@ -5913,13 +5920,13 @@ function test170239() {
     tapMenu("采购入库", "新增入库+");
     var ret2 = false;
     staffTFindex = getEditSalesTFindex2("厂商", "店员");
-    var f = new TField("店员", TF_AC, staffTFindex, "1", -1);
+    var f = new TField("店员", TF_AC, staffTFindex, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual("103,采购员", v)) {
+        if (isEqual("205,开单员", v)) {
             ret2 = true;
             break;
         }
@@ -5931,12 +5938,12 @@ function test170239() {
     delay();
     var ret3 = false;
     staffTFindex = getEditSalesTFindex2("厂商", "店员");
-    var f = new TField("店员", TF_AC, staffTFindex, "1", -1);
+    var f = new TField("店员", TF_AC, staffTFindex, "2", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("103,采购员", v)) {
+        if (isEqual("205,开单员", v)) {
             ret3 = true;
             break;
         }
@@ -5958,7 +5965,7 @@ function test170239() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("201,财务员", v)) {
+        if (isEqual("204,店长", v)) {
             ret4 = true;
             break;
         }
@@ -5974,7 +5981,7 @@ function test170239() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("201,财务员", v)) {
+        if (isEqual("204,店长", v)) {
             ret5 = true;
             break;
         }
@@ -5990,7 +5997,7 @@ function test170239() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("201,财务员", v)) {
+        if (isEqual("205,开单员", v)) {
             ret6 = true;
             break;
         }
@@ -6015,7 +6022,7 @@ function test170239() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isEqual("201,财务员", v)) {
+        if (isEqual("204,店长", v)) {
             ret7 = true;
             break;
         }
@@ -9183,18 +9190,19 @@ function test170522() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    //
+
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "店员" : "002",
+    var json = { "客户" : "ls",
         "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
 
-    tapButton(window, 14);
+    var index = getButtonIndex(window, "更多", 2);
+    tapButton(window, index);
     var qr = getQR2(getScrollView(-1, 0), "门店", "备注");
     var md = qr.data[0]["门店"];
     var pc = qr.data[0]["批次"];
@@ -9212,6 +9220,7 @@ function test170522() {
     var bz = qr.data[0]["备注"];
 
     var ret1 = false;
+    qr = getQR2(getScrollView(-1, 0), "门店", "备注");
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             if (qr.data[i]["门店"] != "常青店") {
@@ -9230,7 +9239,7 @@ function test170522() {
 
     tapMenu("销售开单", "按批次查");
     query();
-    var qr = getQR();
+    qr = getQR();
     var batch = qr.data[0]["批次"];
     var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isIn(rq,
             getToday("")), isEqual(dy, "仓管员"), isEqual(kh, "4562"), isEqual(ys,
