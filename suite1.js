@@ -1,5 +1,8 @@
 //JinXinhua <79202792 at qq.com> 20150904
 //测试套具，集合测试用例
+//货品只要不使用两个尺码组，则颜色尺码和尺码头部模式通用  eg:agc001、002、004（都为衣服尺码）
+//帐套autotest1(上下级)  autotest1Branch(分店) 
+//7.27起添加accessibilityLabel
 
 #import "all.js"
 #import "testcase/goods/editBill.js"
@@ -21,25 +24,25 @@ function test000All() {
 }
 function onlyTest(){
 // delay();
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-   try{
-       tapMenu("销售订货", "新增订货+");
-       var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
-       editSalesBill(json, colorSize);
-       
-       tapMenu2("按批次查");
-       query();
-       tapLine();
-       var ret=checkBillValue(json);
-       tapReturn();
-       return ret;
-   }catch(e){
-       logWarn(e);
-       
-   }
+//   try{
+//       tapMenu("销售订货", "新增订货+");
+//       var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+//       editSalesBill(json, colorSize);
+//       
+//       tapMenu2("按批次查");
+//       query();
+//       tapLine();
+//       var ret=checkBillValue(json);
+//       tapReturn();
+//       return ret;
+//   }catch(e){
+//       logWarn(e);
+//       
+//   }
 // finally{
 //      
 // }
@@ -493,4 +496,12 @@ function loginBillClerk005_2() {
      logout();
     }
 }
-
+// 客户分店
+function loginCustBranch001(){
+    var p1 = {"角色":"总经理","帐套":"autotest1Branch"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testCustBranch001();
+      logout();
+     }   
+}

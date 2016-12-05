@@ -24,13 +24,14 @@ function testCustBranch001() {
     run("【往来管理】客户分店启用和停用后标志检查（客户分店详细页面 是否停用列）", "test230033");
     run("【往来管理】客户停用后，客户分店应被自动停用，不能再使用客户分店进行开单操作", "test230035");
     run("【往来管理】客户修改界面通过新增分店来增加客户分店", "test230036");
-    run("【客户门店帐】客户门店帐界面使用客户查询，能查到结果，使用客户分店查询，结果应该显示为空，因帐都记在客户名下", "test230042");
+    run("【客户门店账】客户门店账界面使用客户查询，能查到结果，使用客户分店查询，结果应该显示为空，因帐都记在客户名下", "test230042");
     run("【销售开单－开单】客户退货数量限制", "test230045");
     run("【往来管理-客户查询】客户分店按门店区分+总经理", "test230046");
     run("【往来管理-客户查询】客户分店按门店区分", "test230048");
     run("【往来管理-客户查询】客户分店显示与按门店区分客户无关", "test230049");
     run("【往来管理-客户查询】检查手机号是否重复", "test230050");
-    run("【往来管理-客户查询】客户分店界面，排序", "test230051"); 
+    run("【往来管理-客户查询】客户分店界面，排序", "test230051");
+    run("【往来管理-客户查询】客户查询-消费明细-检查客户分店", "test110010");
 }
 // 店长004登陆验证非总经理部分
 function testCustBranch004() {
@@ -616,9 +617,29 @@ function test230051() {
     tapReturn();
     return ret;
 }
-function test110010(){
+function test110010() {
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xwc", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ]};
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ] };
     editSalesBill(json, colorSize);
-    
+
+    tapMenu("销售开单", ADDBILL);
+    json = { "客户" : "xwc", "明细" : [ { "货品" : "3035", "数量" : [ 20 ] } ] };
+    editSalesBill(json, colorSize);
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var d1 = qr.data[0], b2 = qr.data[1];
+    d1["日期"] = getToday("yy"), d2["日期"] = getToday("yy");
+    d1["客户分店"] = d1["分店"], d2["客户分店"] = d2["分店"];
+
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "xw" };
+    conditionQuery(keys);
+    tapLine();
+    tapButton(window, "销售明细");
+    qr = getQR2(getScrollView(-1, 0), "批次", "备注");
+    var ret = isAnd(isEqualQRData1Object(qr, d1), isEqualQRData1Object(qr, d2));
+    tapNaviClose();
+    tapReturn();
+    return ret;
 }

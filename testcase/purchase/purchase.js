@@ -2294,29 +2294,26 @@ function test120080() {
     return ret;
 }
 
+// 含120086
 function test120081() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
-    editSalesBillNoColorSize(json);
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : [ 50 ] } ] };
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
     var josn = { "入库明细" : [ { "数量" : 10 } ] };
-    editSalesBillNoColorSize(josn);
+    editSalesBill(josn, colorSize);
 
+    tapMenu2("按订货入库");
     tapButton(window, QUERY);
     tapFirstText();
     var a = editSalesBillGetValue({});
-    tapReturn();
-
     var ret = a["现金"] == 4000;
-
-    tapFirstText();
     tapButton(window, "清 零");
     a = editSalesBillGetValue({});
     editSalesBillSave({});
-    ret = isAnd(ret);
 
     tapMenu2("按批次查");
     query();
@@ -2324,7 +2321,6 @@ function test120081() {
     var b = editSalesBillGetValue({});
     tapReturn();
     ret = isAnd(ret, isEqualObject(a, b));
-
     return ret;
 }
 
