@@ -22,6 +22,8 @@ function test004() {
     run("【销售开单-开单】异地+代收，店员权限/异地+代收，+挂单+ 店员权限", "test170679_170680");
     run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
+    run("【销售开单-物流单】非总经理登录", "test170736");
+    run("【销售开单-按订货开单】增加本单查询功能", "test170738");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
@@ -695,8 +697,7 @@ function test170450_4() {
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     alertMsg2 = getArray1(alertMsgs, -2);
-    var ret8 = isIn(alertMsg1, "保存成功")
-            || isIn(alertMsg2, "保存成功");
+    var ret8 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 200 } ],
@@ -1211,6 +1212,52 @@ function test170709_4() {
     query(fields);
     var qr1 = getQR();
     var ret = isAnd(isEqual(0, qr.data.length), isEqual(0, qr1.data.length));
+
+    return ret;
+}
+function test170736() {
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    var keys = { "日期从" : getDay(-2), "门店" : "常青店", "店员" : "000" };
+    var fields = salesStaffFields(keys);
+    query(fields);
+    tapFirstText();
+    var ret = false;
+    var bt = navigationBar.rightButton();
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret = true;
+    }
+    tapNaviLeftButton();
+
+    tapMenu("销售开单", "按汇总", "按客户未结");
+    keys = { "客户" : "hh" };
+    fields = salesCustomerOutstandingFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret1 = isEqual(0, qr.data.length);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test170738() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu1("销售开单");
+    tapMenu2("getMenu_More");
+    var ret = false;
+    var bt = app.mainWindow().popover().buttons()[SELFQUERY];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret = true;
+    }
+    tapMenu3(SELFQUERY);
+    var g0 = new TField("款号名称＊", TF, 0, "3035");
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapReturn();
 
     return ret;
 }

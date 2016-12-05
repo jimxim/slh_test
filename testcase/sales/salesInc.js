@@ -56,7 +56,7 @@ function testSalesPrepare003() {
     // 仓库店、中洲店// 要有物流单
     tapMenu("销售开单", "开  单+");
     var json = {
-        "客户" : "ls",
+        "客户" : "hh",
         "明细" : [ { "货品" : "3035", "数量" : "4" }, { "货品" : "4562", "数量" : "5" } ],
         "代收" : { "物流商" : "sf" }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
