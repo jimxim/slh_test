@@ -28,26 +28,25 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-//   try{
-//       tapMenu("销售订货", "新增订货+");
-//       var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
-//       editSalesBill(json, colorSize);
-//       
-//       tapMenu2("按批次查");
-//       query();
-//       tapLine();
-//       var ret=checkBillValue(json);
-//       tapReturn();
-//       return ret;
-//   }catch(e){
-//       logWarn(e);
-//       
-//   }
+ try{
+ tapMenu("销售订货", "新增订货+");
+ var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+ editSalesBill(json, colorSize);
+ tapMenu2("按批次查");
+ query();
+ tapLine();
+ var ret=checkBillValue(json);
+ tapReturn();
+ return ret;
+ }catch(e){
+ logWarn(e);
+       
+ }
 // finally{
 //      
 // }
  // debugObject(gCache,"gCache");
-   return false;
+   return true;
 }
 // 检验开单时间
 function testBillTimes(){

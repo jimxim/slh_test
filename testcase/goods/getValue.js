@@ -100,8 +100,8 @@ function getTFieldsIndex(view) {
     var ret = {};
     var texts = getTextFields(view);
     for (var i = 0; i < texts.length; i++) {
-        var tf = texts[i].textFields();
-        if (tf.length > 0) {// 排除无效的TF !isUIAElementNil(tf)
+        var tf = texts[i];// .textFields()[0]
+        if (tf.isVisible()) {// 排除无效的TF !isUIAElementNil(tf)
             var name = texts[i].name();
             if (isDefined(ret[name])) {
                 name += "2";// 重名
@@ -110,6 +110,25 @@ function getTFieldsIndex(view) {
         }
     }
     return ret;
+}
+/**
+ * 获取整个界面所有textfield的值 需要添加accessibilityLabel
+ * @params view 默认window
+ * @returns
+ */
+function getTFieldsValue(view) {
+    if (isUndefined) {
+        view = window;
+    }
+    var tf = getTFieldsIndex(view);
+    var arr = {};
+    for ( var i in tf) {
+        var index = tf[i];
+        var v = getTextFieldValue(view, index);
+        arr[i] = v;
+    }
+    debugObject(arr, "值为");
+    return arr;
 }
 /**
  * 统一通知数，保存后由NULL变成0

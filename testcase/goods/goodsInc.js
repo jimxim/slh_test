@@ -930,7 +930,7 @@ function checkDate(str) {
  * @returns {Boolean}
  */
 function checkBillValue(json) {
-    var v = editSalesBillGetValue2();
+    var v = getTFieldsValue();
     var det = getQRDet();
     for ( var i in json["输入框值"]) {
         if (json["输入框值"][i] == "") {

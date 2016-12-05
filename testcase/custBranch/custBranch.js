@@ -15,6 +15,7 @@ function testCustBranch001() {
     run("【销售开单】客户折扣下客户分店使用的折扣值应与该客户的折扣一样", "test230012");
     run("【销售开单】客户分店进行退货操作", "test230015");
     run("【销售开单】使用客户分店做二次挂单后保存转销售单", "test230019");
+    run("【销售开单】以客户分店做的销售开单在按批次查界面再次点击进去，客户框中显示客户分店名称，而不是客户名称", "test230020");
     run("【销售开单】产品折扣模式下，客户分店使用的折扣值应与该产品设定的折扣值一样", "test230021");
     run("【按订货开单】预付款界面显示客户分店付款明细", "test230025");
     run("【按订货开单】可以使用客户分店进行核销并将销售订单正常转换成销售单", "test230028");
@@ -37,38 +38,44 @@ function testCustBranch001() {
 function testCustBranch004() {
     run("【往来管理-客户查询】客户分店按门店区分+非总经理", "test230047");
 }
-// 含230002 230020 230022 230023
+// 含230002
 function test230001() {
     tapMenu("销售订货", "新增订货+");
+    return test230001Field();
+}
+// 含230022 230023
+function test230020() {
+    tapMenu("销售开单", ADDBILL);
+    return test230001Field();
+}
+function test230001Field() {
     var json = { "客户" : "xwc", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
     editSalesBill(json, colorSize);
 
     tapMenu2("按批次查");
-    var keys = { "客户" : "xw", "客户分店" : "xwc" };
+    var keys = { "客户" : "xw" };
     conditionQuery(keys);
     var qr = getQR();
     var exp = { "门店" : "常青店", "日期" : getDay(""), "客户" : "小王", "店员" : "总经理",
         "数量" : 30, "已发" : 0, "差异数" : 30, "发货状态" : "未发货", "总额" : 6000,
         "现金" : 6000, "微信" : 0, "刷卡" : 0, "汇款" : 0, "客户分店" : "小王常",
-        "操作日期" : json["操作日期"] };
+        "分店" : "小王常", "操作日期" : json["操作日期"] };// 订货为客户分店 开单为分店
     tapLine();
-    var v = editSalesBillGetValue();
-    var det = getQRDet();
-    tapReturn();
     json["输入框值"]["店员"] = "000,总经理";
-    var ret = isAnd(isEqualObject2(exp, qr.data[0]), isEqualObject(
-            json["输入框值"], v), isEqualDyadicArray(json["明细值"], det));
+    var ret = checkBillValue(json);
+    tapReturn();
 
     tapMenu2("按明细查");
     keys = { "客户" : "xw" };
     conditionQuery(keys);// 输入客户分店查询结果为空
-    var exp = { "客户" : "小王", "批次" : qr.data[0]["批次"], "日期" : getDay("yy"),
+    var exp = { "客户" : "小王", "批次" : qr.data[0]["批次"], "日期" : getToday("yy"),
         "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : 30,
         "店员" : "总经理", "客户分店" : "小王常", "操作日期" : json["操作日期"] };
     qr = getQR();
     ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
     return ret;
 }
+
 // 含230003 230011 230014
 function test230004() {
     tapMenu("往来管理", "客户账款", "客户门店账");
