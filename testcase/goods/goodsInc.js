@@ -925,21 +925,28 @@ function checkDate(str) {
     return reg.test(str);
 }
 /**
- * 验证单据界面值
+ * 验证单据值
  * @param json
  * @returns {Boolean}
  */
 function checkBillValue(json) {
-    var v = getTFieldsValue();
+    var v = getSalesBillValueByLabel();
     var det = getQRDet();
     for ( var i in json["输入框值"]) {
         if (json["输入框值"][i] == "") {
             json["输入框值"][i] = 0;
         }
     }
+    var exp = unityNotice(json["明细值"].data);
     delete v["结余"];// 总的结余会变动，有用例验证准确性,这里就跳过
-    return isAnd(isEqualObject2(json["输入框值"], v), isEqualDyadicArray(
-            json["明细值"], det));
+    return isAnd(isEqualObject2(json["输入框值"], v), isEqualDyadicArray(exp,
+            det.data));
+}
+function checkBillWinValue(exp) {
+    var v = getSalesBillValueByLabel();
+    delete v["结余"];
+    delete v["核销"];// 保存后再进入结余核销不显示
+    return isEqualObject2(exp, v);
 }
 /**
  * 模糊查询验证

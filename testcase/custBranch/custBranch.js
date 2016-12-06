@@ -336,7 +336,7 @@ function test230028() {
     var ret = isEqualObject2(exp, qr.data[0]);// 230026
     tapButton(getScrollView(-1, 0), 4);
     tapNaviButton(OK);
-    var value = editSalesBillGetValue({});
+    var value = getSalesBillValueByLabel();
     exp = { "客户" : "小王", "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0,
         "还款\/抵扣" : -2000, "分店" : "小王常" };
     ret = isAnd(ret, isEqualObject2(exp, value));

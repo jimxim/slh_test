@@ -136,8 +136,10 @@ function getTFieldsValue(view) {
  * @returns
  */
 function unityNotice(data) {
-    for (var i = 0; i < data.length; i++) {
-        data[i]["通知数"] = 0;
+    if (data.hasOwnProperty("通知数")) {
+        for (var i = 0; i < data.length; i++) {
+            data[i]["通知数"] = 0;
+        }
     }
     return data;
 }

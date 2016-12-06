@@ -795,9 +795,8 @@ function ts130007_08() {
         qr = getQRDet();
         var det11 = qr.data[0], det21 = qr.data[1];
         ret = isAnd(ret, isEqualObject(det1, det11),
-                isEqualObject(det2, det21), isEqualObject(vWin["输入框值"],
-                        editSalesBillGetValue({})));
-        tapButton(window, RETURN);
+                isEqualObject(det2, det21), checkBillWinValue(vWin["输入框值"]));
+        tapReturn();
     }
 
     tapMenu("往来管理", "厂商查询");
@@ -1141,15 +1140,15 @@ function ts130017() {
     var det = addPOrderBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
+    json["输入框值"]["店员"] = "000,总经理";
+    json["输入框值"]["订货门店"] = "常青店";
 
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    var act = editSalesBillGetValue(jo);
+    var ret = checkBillWinValue(json["输入框值"]);
     tapReturn();
-    json["输入框值"]["店员"] = "000,总经理";
-    json["输入框值"]["订货门店"] = "常青店";
-    return isEqualObject(json["输入框值"], act);
+    return ret;
 }
 
 function ts130024() {
@@ -1307,9 +1306,9 @@ function ts130040() {
     tapMenu2("按批次查");
     tapButton(window, QUERY);// 刷新，防止元素无效
     tapLine();
-    json = editSalesBillGetValue({});
+    var v = getSalesBillValueByLabel();
     tapReturn();
-    return isAnd(ret, isIn(json["店员"], "总经理"));
+    return isAnd(ret, isIn(v["店员"], "总经理"));
 }
 function ts130041() {
     var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : [ -5 ] } ] };
@@ -1513,7 +1512,7 @@ function checkCopyAndPaste(menu2) {
     query();
     tapLine();
     // delay();
-    var v1 = editSalesBillGetValue({});
+    var v = getSalesBillValueByLabel();
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
 
@@ -1537,11 +1536,11 @@ function checkCopyAndPaste(menu2) {
     var cond = "window.buttons()['整单复制'].isVisible()";
     waitUntil(cond, 5);// 数据多的单据，进入有延迟
     delay();// 进入后再等待数据加载
-    var v2 = editSalesBillGetValue({});
+    var ret = checkBillWinValue(v);
     var data2 = getQRDet().data;
     tapReturn();
-    debugObject(v2, "v2");
-    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(data1, data2));
+    // debugObject(v2, "v2");
+    return isAnd(ret, isEqualDyadicArray(data1, data2));
 }
 /**
  * 超长订单明细

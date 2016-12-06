@@ -19,8 +19,8 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "ts130025_1");
- run(caseName, "onlyTest");//
+ run(caseName, "ts120100");// test160062
+// run(caseName, "onlyTest");//
 }
 function onlyTest(){
 // delay();
@@ -28,20 +28,19 @@ function onlyTest(){
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
- try{
- tapMenu("销售订货", "新增订货+");
- var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
- editSalesBill(json, colorSize);
- tapMenu2("按批次查");
- query();
- tapLine();
- var ret=checkBillValue(json);
- tapReturn();
- return ret;
- }catch(e){
- logWarn(e);
-       
- }
+// try{
+// tapMenu("销售订货", "新增订货+");
+// var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 30 ] } ] };
+// editSalesBill(json, colorSize);
+// tapMenu2("按批次查");
+// query();
+// tapLine();
+// var ret=checkBillValue(json);
+// tapReturn();
+// return ret;
+// }catch(e){
+// logWarn(e);   
+// }
 // finally{
 //      
 // }

@@ -143,8 +143,6 @@ function ts160049() {
     var det = addPOrderBillDet(30, "bbb");
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
-    var jo1 = json["输入框值"];
-    var det1 = json["明细值"].data;
 
     tapMenu("销售订货", "按批次查");
     keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
@@ -160,11 +158,8 @@ function ts160049() {
     var ret = isEqualObject(expected, qr.data[0], 1);
 
     tapLine();
-    var jo2 = editSalesBillGetValue({});
-    var det2 = getQRDet().data;
-    ret = isAnd(ret, isEqualObject(jo1, jo2), isEqualDyadicArray(det1, det2));
+    ret = isAnd(ret, checkBillValue(json));
     tapReturn();
-
     return ret;
 }
 
@@ -287,7 +282,7 @@ function test160055_160056_160057_160058() {
 
     json = { "未付" : "yes" };
     editSalesBillUnpay(json);//
-    var actual = editSalesBillGetValue({});
+    var actual = getSalesBillValueByLabel();
     var exp = { "现金" : 0, "刷卡" : 0, "汇款" : 0, "实" : 0 };
     ret = isAnd(ret, isEqualObject2(exp, actual));
 
@@ -340,23 +335,21 @@ function test160062() {
     tapLine();
     json = { "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
     editSalesBill(json, colorSize);
-    var v1 = json["输入框值"], det1 = json["明细值"];
+    var det1 = json["明细值"].data;
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
     tapLine();
-    var v2 = editSalesBillGetValue(json);
-    var det2 = getQRDet(getScrollView(-1), json);
+    var ret = checkBillValue(json);
     tapReturn();
 
     tapMenu("销售开单", "按订货开单");
     query();
     tapLine();
-    var det3 = getQRDet();
+    var det2 = getQRDet().data;
     tapReturn();
 
-    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2),
-            isEqualDyadicArray(det1, det3));
+    return isAnd(ret, isEqualDyadicArray(det1, det2));
 }
 
 function test160064() {
@@ -1486,7 +1479,7 @@ function test160042QR() {
     var qr = getQR2(getScrollView(-1, 0), "款号", "差异数");
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
-            var code=qr.data[i]["款号"];
+            var code = qr.data[i]["款号"];
             if (code == "3035") {
                 jo = qr.data[i];
                 break;
@@ -2057,18 +2050,16 @@ function test160080() {
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "zbs", "明细" : [ { "货品" : "3035", "数量" : [ 5 ] } ] };
     editSalesBill(json, colorSize);
-    var v1 = json["输入框值"], det1 = json["明细值"];
 
     tapMenu2("按批次查");
     query();
     tapLine();
-    var v2 = editSalesBillGetValue(json);
-    var det2 = getQRDet(getScrollView(-1), json);
+    var ret = checkBillValue(json);
     tapReturn();
 
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     setGlobalParam(qo, o);
-    return isAnd(isEqualObject(v1, v2), isEqualDyadicArray(det1, det2));
+    return ret;
 }
 // 条件查询/数据验证/清除
 // 采购入库 建一条数据10，采购订货建一条20，销售订货建一条50
@@ -2246,9 +2237,7 @@ function test160089() {
     tapMenu2("按批次查");
     query();
     tapLine();
-    var arr = editSalesBillGetValue();
-    var ret = isAnd(isEqualObject2(json["输入框值"], arr),
-            isEqual(arr["折扣"], 0.678));// 折扣
+    var ret = isAnd(checkBillWinValue(json["输入框值"]), isEqual(arr["折扣"], 0.678));// 折扣
     tapReturn();
 
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -2760,7 +2749,7 @@ function test160160Field() {
     tapMenu2("按批次查");
     query();// getQR
     tapLine();
-    var d = editSalesBillGetValue(json);
+    var d = getSalesBillValueByLabel();
     tapReturn();
     return d["发货"] == "中洲店";
 }
@@ -2796,7 +2785,7 @@ function test160163() {
     tapMenu2("按挂单");
     query();
     tapLine();
-    var d = editSalesBillGetValue(json);
+    var d = getSalesBillValueByLabel();
     tapReturn();
 
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -3223,11 +3212,9 @@ function test160179() {
     tapMenu2("按挂单");
     query();
     tapLine();
-    var arr = editSalesBillGetValue({});
-    var det = getQRDet();
+    var ret = checkBillValue(json);
     tapReturn();
-    return isAnd(isEqualObject(json["输入框值"], arr), isEqualDyadicArray(
-            json["明细值"], det));
+    return ret;
 }
 // 翻页/排序/汇总
 function test16_Stockout_1() {

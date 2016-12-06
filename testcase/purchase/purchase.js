@@ -1110,10 +1110,9 @@ function test120023() {
         "上架日期" : getToday("yy"), "累计进" : "10" };
 
     tapFirstText();
-    var exp = editSalesBillGetValue({});
-    tapReturn();
     json["输入框值"]["店员"] = "000,总经理";
-    var ret1 = isEqualObject2(exp, json["输入框值"]);
+    var ret1 = checkBillWinValue(json["输入框值"]);
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     delay();
@@ -1211,9 +1210,8 @@ function test120020() {
     qr = getQR();
     var batch = qr.data[0]["批次"];
 
-    tapFirstText();
-    var exp = editSalesBillGetValue({});
-    var ret1 = isEqualObject(exp, json["输入框值"]);
+    tapLine();
+    var ret1 = checkBillWinValue(json["输入框值"]);
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
@@ -1271,7 +1269,6 @@ function test120020() {
             qr, expect2), isEqualQRData1Object(qr, expect3));
 
     return isAnd(ret, ret1);
-
 }
 
 function test120021() {
@@ -1341,8 +1338,7 @@ function test120021() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    var exp = editSalesBillGetValue({});
-    var ret1 = isEqualObject(exp, json["输入框值"]);
+    var ret1 = checkBillWinValue(json["输入框值"]);
     tapReturn();
 
     tapMenu("货品管理", "当前库存");
@@ -2309,16 +2305,16 @@ function test120081() {
     tapMenu2("按订货入库");
     tapButton(window, QUERY);
     tapFirstText();
-    var a = editSalesBillGetValue({});
+    var a = getSalesBillValueByLabel();
     var ret = a["现金"] == 4000;
     tapButton(window, "清 零");
-    a = editSalesBillGetValue({});
+    a = getSalesBillValueByLabel();
     editSalesBillSave({});
 
     tapMenu2("按批次查");
     query();
     tapFirstText();
-    var b = editSalesBillGetValue({});
+    var b = getSalesBillValueByLabel();
     tapReturn();
     ret = isAnd(ret, isEqualObject(a, b));
     return ret;
@@ -2345,9 +2341,9 @@ function test120064() {
     tapMenu2("按订货入库");
     tapButton(window, QUERY);
     tapFirstText();
-    var qr = editSalesBillGetValue({});
+    var v = getSalesBillValueByLabel();
     tapReturn();
-    var ret = isEqual(qr["现金"], 4000);
+    var ret = isEqual(v["现金"], 4000);
 
     tapMenu("采购入库", "新增入库+");
     editSalesBillCustomer(json);
@@ -2818,7 +2814,6 @@ function test120018() {
         "明细" : [ { "货品" : "4562", "数量" : "30" } ], "现金" : 500,
         "刷卡" : [ 1000, "银" ], "汇款" : [ 2000, "银" ], "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-    var exp = json["输入框值"];
 
     tapMenu("采购入库", "按批次查");
     keys = { "作废挂单" : "挂单" };
@@ -2826,8 +2821,7 @@ function test120018() {
     query(fields);
 
     tapFirstText();
-    var actual = editSalesBillGetValue({});
-    var ret = isEqualObject(exp, actual);
+    var ret = checkBillWinValue(json["输入框值"]);
 
     tapButton(getScrollView(-1), 0);
     json = {
@@ -2837,8 +2831,6 @@ function test120018() {
                 { "货品" : "3035", "数量" : "-20" } ], "现金" : 400,
         "刷卡" : [ 800, "交" ], "汇款" : [ 1200, "建" ] };
     editSalesBillNoColorSize(json);
-    var data1 = json["明细值"].data;
-    data1 = unityNotice(data1);
 
     tapMenu2("按批次查");
     query();
@@ -2849,10 +2841,7 @@ function test120018() {
     ret = isEqual(ret, isEqualObject(exp1, qr.data[0]));
 
     tapFirstText();
-    exp = editSalesBillGetValue({});
-    var data2 = getQRDet().data;
-    ret = isAnd(ret, isEqualObject(exp, json["输入框值"]), isEqualDyadicArray(
-            data1, data2));
+    ret = isAnd(ret, checkBillValue(json));
     tapReturn();
 
     return ret;
@@ -2932,10 +2921,9 @@ function test120048() {
     var ret = isEqual("总经理", qr.data[0]["店员"]);
 
     tapFirstText();
-    var v = editSalesBillGetValue({});
+    var v = getSalesBillValueByLabel();
     tapReturn();
     ret = isAnd(ret, isEqual("000,总经理", v["店员"]))
-
     return ret;
 }
 function test120051() {
@@ -2976,11 +2964,11 @@ function ts120061() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var oldObj = editSalesBillGetValue({});
+    var oldObj = getSalesBillValueByLabel();
 
     json = { "核销" : [ 4 ] };
     editSalesBillVerify(json);
-    var actual = editSalesBillGetValue({});
+    var actual = getSalesBillValueByLabel();
     tapReturn();
 
     var newObj = { "现金" : 0, "应" : 0, "核销" : 3000, "实" : 0 };
@@ -3324,7 +3312,7 @@ function ts120096_97() {
 }
 
 function ts120100() {
-    tapMenu("采购订货", "新增订货+");
+    tapMenu("采购入库", "新增入库+");
     var jo = { "客户" : "rt" };
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
@@ -3582,7 +3570,7 @@ function ts120114() {
     var ret = isEqual("仓库店", qr.data[0]["门店"]);
 
     tapLine();
-    var value = editSalesBillGetValue({});
+    var value = getSalesBillValueByLabel();
     ret = isAnd(ret, "仓库店" == value["入库门店"]);
     tapReturn();
     return ret;
