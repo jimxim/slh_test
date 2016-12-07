@@ -2647,7 +2647,7 @@ function test120050Field(price) {
     tapMenu2("按批次查");
     query();
     var qr = getQR();
-    ret = isAnd(ret, isEqual(json["输入框值"]["总计"], qr.data[0]["金额"]))
+    ret = isAnd(ret, isEqual(json["输入框值"]["totalmoney"], qr.data[0]["金额"]))
     tapFirstText();
     var data = getQRDet().data;
     tapReturn();

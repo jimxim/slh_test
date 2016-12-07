@@ -860,7 +860,7 @@ function ts100006() {
 
     return ret;
 }
-
+// 不使用新版左右滑动，值与对应标题偏移太多，取值错误
 function test100006_1() {
     tapMenu("货品管理", "库存分布");
     query();
@@ -963,7 +963,7 @@ function ts100008() {
     var ret = isEqualObject(exp, qr.data[0]);
 
     tapButton(window, CLEAR);
-    var f = queryGoodsInOutFields("是否停用")["是否停用"];
+    var f = queryGoodsInOutFields(["是否停用"])["是否停用"];
     var text = getTextFields();
     for (var i = 0; i < text.length; i++) {
         if (i == f.index) {
