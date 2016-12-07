@@ -138,7 +138,6 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
     run("【销售开单-按汇总】按配货员汇总--在既退货又拿货的情况下检查配货员业绩", "test170634_170635_170637");
-    run("【销售开单-按汇总】按配货员汇总--在预付款里检查配货员显示", "test170635");
     run("【销售开单-按汇总】按配货员汇总", "test170633");
 }
 function testSalesNoColorSizeElseAll_2() {
@@ -6355,60 +6354,43 @@ function test170433_170434() {
     o = { "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "tt" } };
     editSalesBillAgency(o);
 
-    var keys = { "现金" : 25 };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
-
-    var o = { "刷卡" : [ 311, "交" ] };
-    editSalesBillCard(o);
-
-    o = { "汇款" : [ 300, "建" ] };
-    editSalesBillRemit(o);
-
-    var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
-    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
-    var xj1 = Number(getTextFieldValue(window, cashTFindex));
-    var sk1 = Number(getTextFieldValue(window, cardTFindex));
-    var hk1 = Number(getTextFieldValue(window, remitTFindex));
-    var ds1 = Number(getTextFieldValue(window, cardTFindex + 1));
-    saveAndAlertOk();
-    tapPrompt();
+    o = { "现金" : 25, "刷卡" : [ 311, "交" ], "汇款" : [ 300, "建" ] };
+    editSalesBillNoColorSize(o);
+    var qr1 = o["输入框值"];
+    var xj1 = qr1["现金"];
+    var sk1 = qr1["刷卡"];
+    var hk1 = qr1["汇款"];
+    var ds1 = qr1["代收"];
 
     tapMenu("销售开单", "按订货开单");
     query();
     qr = getQR();
     var prePay1 = qr.data[0]["已付"];
-    var ret1 = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(Number(xj1
-            + sk1 + hk1 + ds1 + prePay), qr.data[0]["已付"]), isEqual(
-            qr.data[0]["未付"], sub(qr.data[0]["订货额"], qr.data[0]["已付"])));
+    var ret1 = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(Number(xj1)
+            + Number(sk1) + Number(hk1) + Number(ds1) + Number(prePay),
+            qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(qr.data[0]["订货额"],
+            qr.data[0]["已付"])));
 
     tapFirstText();
     var r1 = randomWord(false, 8);
-    var json = { "物流商" : "tt", "运单号" : r1, "备注" : r1, "代收金额" : 2000 };
-    editSalesBillAgency2(json);
+    o = { "物流商" : "tt", "运单号" : r1, "备注" : r1, "代收金额" : 2000 };
+    editSalesBillAgency2(o);
 
-    var keys = { "现金" : 325, "刷卡" : 250, "汇款" : 200 };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
-    var cashTFindex = getEditSalesTFindex2("客户", "现金");
-    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
-    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
-    var xj1 = Number(getTextFieldValue(window, cashTFindex));
-    var sk1 = Number(getTextFieldValue(window, cardTFindex));
-    var hk1 = Number(getTextFieldValue(window, remitTFindex));
-    var ds1 = Number(getTextFieldValue(window, cardTFindex + 1));
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
+    o = { "现金" : 325, "刷卡" : [ 250, "交" ], "汇款" : [ 200, "建" ] };
+    editSalesBillNoColorSize(o);
+    qr1 = o["输入框值"];
+    xj1 = qr1["现金"];
+    sk1 = qr1["刷卡"];
+    hk1 = qr1["汇款"];
+    ds1 = qr1["代收"];
 
     tapMenu("销售开单", "按订货开单");
     query();
     qr = getQR();
-    var ret2 = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(Number(xj1
-            + sk1 + hk1 + ds1)
-            + Number(prePay1), qr.data[0]["已付"]), isEqual(qr.data[0]["未付"],
-            sub(qr.data[0]["订货额"], qr.data[0]["已付"])));
+    var ret2 = isAnd(isEqual(qr.data[0]["订货额"], money1), isEqual(Number(xj1)
+            + Number(sk1) + Number(hk1) + Number(ds1) + Number(prePay1),
+            qr.data[0]["已付"]), isEqual(qr.data[0]["未付"], sub(qr.data[0]["订货额"],
+            qr.data[0]["已付"])));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", xj=" + xj
             + ", sk=" + sk + ", hk=" + hk + ", ds=" + ds + ", xj1=" + xj1
@@ -6431,15 +6413,9 @@ function test170435() {
     var json = { "物流商" : "tt", "运单号" : r, "备注" : r, "代收金额" : 2000 };
     editSalesBillAgency2(json);
 
-    var keys = { "现金" : 25 };
-    var fields = editSalesBillFields(keys);
-    setTFieldsValue(window, fields);
-
-    var o = { "刷卡" : [ 311, "交" ] };
-    editSalesBillCard(o);
-
-    o = { "汇款" : [ 300, "建" ] };
-    editSalesBillRemit(o);
+    json = { "现金" : 25, "刷卡" : [ 311, "交" ], "汇款" : [ 300, "建" ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
 
     var o = [ { "数量" : [ 0 ] } ];
     editChangeSalesBillOrderNum(o);
@@ -6457,9 +6433,7 @@ function test170435() {
             qr.data[0]["已付"])));
     // 全部发货
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
-    delay();
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按批次查");
     query();

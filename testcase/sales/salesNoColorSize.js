@@ -1819,25 +1819,25 @@ function test170067() {
 function test170070() {
     // 设置开单模式为9-快速标记标记代收的开单模式
     var qo, o, ret = true;
-    // qo = { "备注" : "开单模式" };
-    // o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "9", "数值" : [ "快速标记代收的开单模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 5 } ],
         "特殊货品" : { "抹零" : 100 }, "未付" : "yes", "代收" : "是" };
     editSalesBillNoColorSize(json);
     var qr = json["输入框值"];
-    var totalMoney = qr["totalmoney"];
+    var totalMoney = qr["总计"];
 
-    // tapMenu("销售开单", "按批次查");
-    // query();
-    // qr = getQR();
-    // ret = isAnd(ret, isEqual(totalMoney, qr.data[0]["金额"]), isEqual(
-    // -totalMoney, qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收标记"]));
-    //
-     logDebug(" totalMoney=" + totalMoney);
-//    return ret;
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    ret = isAnd(ret, isEqual(totalMoney, qr.data[0]["金额"]), isEqual(
+            -totalMoney, qr.data[0]["未结"]), isEqual("是", qr.data[0]["代收标记"]));
+
+    logDebug(" totalMoney=" + totalMoney);
+    return ret;
 }
 function test170071() {
     var qo, o, ret = true;
@@ -2058,7 +2058,6 @@ function test170076_3() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isIn(alertMsg1, "[第1行] 单价小数位超出了限制");
-
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
@@ -2343,7 +2342,7 @@ function test170080_170084() {
             totalMoney, k3));
     saveAndAlertOk();
     tapPrompt();
-    waitUntil(cond, 5);
+    delay(5);
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -9241,7 +9240,7 @@ function test170522() {
     qr = getQR();
     var batch = qr.data[0]["批次"];
     var ret2 = isAnd(isEqual(md, "常青店"), isEqual(pc, batch), isIn(rq,
-            getToday("")), isEqual(dy, "仓管员"), isEqual(kh, "4562"), isEqual(ys,
+            getToday("")), isEqual(dy, "总经理"), isEqual(kh, "4562"), isEqual(ys,
             "均色"), isEqual(cm, "均码"), isEqual(mc, "Story"), isEqual(sl, "2"),
             isEqual(bz, "mxbz"));
 
@@ -12697,8 +12696,7 @@ function test240003_240007_240006() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    saveAndAlertOk();
-    tapPrompt();
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret3 = (isIn(alertMsg1, "保存成功"));
