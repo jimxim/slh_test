@@ -29,6 +29,7 @@ function setGoodsParams001() {
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    // 货品管理新增界面格式无法单页显示，方便处理，默认用老模式
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -963,7 +964,7 @@ function ts100008() {
     var ret = isEqualObject(exp, qr.data[0]);
 
     tapButton(window, CLEAR);
-    var f = queryGoodsInOutFields(["是否停用"])["是否停用"];
+    var f = queryGoodsInOutFields([ "是否停用" ])["是否停用"];
     var text = getTextFields();
     for (var i = 0; i < text.length; i++) {
         if (i == f.index) {

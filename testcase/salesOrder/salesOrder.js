@@ -768,14 +768,16 @@ function test160011Field(staff, menu1, keys) {
 
     jo1["最后修改人"] = staff;
     jo1["最后修改时间"] = opTime;
-    jo1["最后打印时间"] = opTime;
+    jo1["最后打印时间"] = opTime;// 采购订货没有这个
     for ( var i in jo1) {
-        v1 = jo1[i];
-        v2 = jo2[i];
-        if (i.indexOf("时间") != -1 && v2 != null) {
-            ret = ret && isAqualOptimeX(v1, v2, 1);
-        } else {
-            ret = ret && (v1 == v2);
+        if (jo2.hasOwnProperty(i)) {
+            v1 = jo1[i];
+            v2 = jo2[i];
+            if (i.indexOf("时间") != -1 && v2 != null) {
+                ret = ret && isAqualOptimeX(v1, v2, 1);
+            } else {
+                ret = ret && (v1 == v2);
+            }
         }
     }
     debugObject(jo1, "期望值");

@@ -2801,36 +2801,34 @@ function test120058() {
     return ret;
 }
 
+// 7.25版本前适用
 function test120018() {
     tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-30), "门店" : "常青店" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]);
 
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "店员" : "000",
-        "明细" : [ { "货品" : "4562", "数量" : "30" } ], "现金" : 500,
+        "明细" : [ { "货品" : "4562", "数量" : [ 30 ] } ], "现金" : 500,
         "刷卡" : [ 1000, "银" ], "汇款" : [ 2000, "银" ], "挂单" : "yes" };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按批次查");
-    keys = { "作废挂单" : "挂单" };
-    fields = purchaseQueryBatchFields(keys);
-    query(fields);
-
-    tapFirstText();
+    keys = { "作废挂单" : "挂单" };// 7.25后改为作废状态 去除挂单
+    conditionQuery(keys);
+    tapLine();
     var ret = checkBillWinValue(json["输入框值"]);
 
     tapButton(getScrollView(-1), 0);
     json = {
         "客户" : "rt",
         "店员" : "004",
-        "明细" : [ { "货品" : "k300", "数量" : "30" },
-                { "货品" : "3035", "数量" : "-20" } ], "现金" : 400,
+        "明细" : [ { "货品" : "k300", "数量" : [ 30 ] },
+                { "货品" : "3035", "数量" : [ -20 ] } ], "现金" : 400,
         "刷卡" : [ 800, "交" ], "汇款" : [ 1200, "建" ] };
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu2("按批次查");
     query();
@@ -2843,7 +2841,6 @@ function test120018() {
     tapFirstText();
     ret = isAnd(ret, checkBillValue(json));
     tapReturn();
-
     return ret;
 }
 

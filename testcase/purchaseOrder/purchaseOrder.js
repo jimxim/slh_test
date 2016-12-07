@@ -1096,7 +1096,6 @@ function ts130016_1() {
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, !isEqualQRData1ByTitle(qr, "批次", batch));
-
     return ret;
 }
 

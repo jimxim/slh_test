@@ -101,7 +101,7 @@ function getTFieldsIndex(view) {
     var texts = getTextFields(view);
     for (var i = 0; i < texts.length; i++) {
         var tf = texts[i];// .textFields()[0]
-        if (tf.isVisible()) {// 排除无效的TF !isUIAElementNil(tf)
+        if (tf.isVisible()) {// 排除无效的TF !isUIAElementNil(tf) isHidden
             var name = texts[i].name();
             if (isDefined(ret[name])) {
                 name += "2";// 重名
@@ -109,6 +109,7 @@ function getTFieldsIndex(view) {
             ret[name] = i;
         }
     }
+    // debugObject(ret, "下标数组为");
     return ret;
 }
 /**
@@ -117,7 +118,7 @@ function getTFieldsIndex(view) {
  * @returns
  */
 function getTFieldsValue(view) {
-    if (isUndefined) {
+    if (isUndefined(view)) {
         view = window;
     }
     var tf = getTFieldsIndex(view);

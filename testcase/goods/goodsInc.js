@@ -930,22 +930,25 @@ function checkDate(str) {
  * @returns {Boolean}
  */
 function checkBillValue(json) {
-    var v = getSalesBillValueByLabel();
     var det = getQRDet();
-    for ( var i in json["输入框值"]) {
-        if (json["输入框值"][i] == "") {
-            json["输入框值"][i] = 0;
-        }
-    }
     var exp = unityNotice(json["明细值"].data);
     delete v["结余"];// 总的结余会变动，有用例验证准确性,这里就跳过
-    return isAnd(isEqualObject2(json["输入框值"], v), isEqualDyadicArray(exp,
+    return isAnd(checkBillWinValue(json["输入框值"]), isEqualDyadicArray(exp,
             det.data));
 }
+/**
+ * 开单简单的界面值对比
+ * @param exp
+ * @returns {Boolean}
+ */
 function checkBillWinValue(exp) {
     var v = getSalesBillValueByLabel();
-    delete v["结余"];
-    delete v["核销"];// 保存后再进入结余核销不显示
+    delete v["结余"];// 保存后再进入单据 结余显示为0
+    for ( var i in exp) {
+        if (exp[i] == "") {
+            exp[i] = 0;// 数据类的保存前为空，再次进入变成0
+        }
+    }
     return isEqualObject2(exp, v);
 }
 /**
@@ -1117,29 +1120,6 @@ function toDate(day) {
     return new Date(day1[0], day1[1], day1[2]);
 }
 
-/**
- * 总数据条数和总页码数的验证
- * @param qr
- * @returns
- */
-function totalAndPageCheck() {
-    var qr = getQR();
-    var total = qr.total;
-    var totalPageNo = qr.totalPageNo;
-    var expected = Math.ceil(total / 15);
-    var ret = isEqual(expected, totalPageNo);
-
-    goPage(totalPageNo, qr);
-    delay();
-    qr = getQR();
-    var i = qr.curPageTotal - 1;
-    expected = qr.data[i]["序号"];
-    ret = isAnd(ret, isEqual(expected, total));
-
-    goPage(1, qr);
-    delay();
-    return ret;
-}
 /**
  * 先等1S，等到没有弹窗为止
  * @param maxSeconds
@@ -1909,17 +1889,14 @@ function editLogisticsVerify(o) {
     }
 }
 /**
- * 新增修改按订货入库的明细,均色均码和颜色尺码是一样的
+ * 修改单据已经存在货品的数量等信息,均色均码和颜色尺码是一样的
  * @param o
  */
 function editPurInByOrderDet(o) {
     var details = o["入库明细"];
     if (isDefined(details)) {
         var tfNum = getSalesBillDetTfObject();
-        var title_num = "入库数";// 采购为入库数，销售为数量
-        if (!tfNum.hasOwnProperty("入库数")) {
-            title_num = "数量";
-        }
+        var title_num = getBillTitle_Num(tfNum);// 获取数量相关的标题名
         var fields = [];
         for ( var i in details) {
             var d = details[i];
@@ -1941,7 +1918,21 @@ function editPurInByOrderDet(o) {
         setTFieldsValue(getScrollView(-1), fields);
     }
 }
-
+/**
+ * 获取开单界面各种数量的标题名
+ * @param title
+ * @returns {String}
+ */
+function getBillTitle_Num(title) {
+    var title_num = "数量";// 采购为入库数，销售为数量
+    if (!title.hasOwnProperty("数量")) {
+        title_num = "入库数";
+        if (!title.hasOwnProperty("入库数")) {
+            title_num = "订货数";// 采购订货为订货数
+        }
+    }
+    return title_num;
+}
 /**
  * 获取数组中第一个与期望值相同的下标，没有返回-1
  * @param arr

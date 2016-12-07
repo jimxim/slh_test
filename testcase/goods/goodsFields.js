@@ -422,9 +422,6 @@ function editGoodsFields(keys, show) {
     if (isUndefined(show)) {
         show = false;
     }
-    // if (ipadVer >= 7.27) {
-    // return getTFields("editGoodsField", getScrollView(-1), keys, show);
-    //    }
     var tests = getEditGoodsElements();
     return getGoodsTFields(keys, show, tests);// getTFields
 }
