@@ -127,6 +127,9 @@ function getTFieldsValue(view) {
         var v = getTextFieldValue(view, index);
         arr[i] = v;
     }
+    if (isDefined(arr["totalmoney"])) {
+        arr["总计"] = arr["totalmoney"];
+    }
     debugObject(arr, "值为");
     return arr;
 }
