@@ -136,14 +136,29 @@ function getTFieldsValue(view) {
 }
 /**
  * 统一通知数，保存后由NULL变成0
- * @param data
+ * @param qResult
  * @returns
  */
-function unityNotice(data) {
-    if (data.hasOwnProperty("通知数")) {
-        for (var i = 0; i < data.length; i++) {
-            data[i]["通知数"] = 0;
+function unityNotice(qResult) {
+    if (qResult.titles.hasOwnProperty("通知数")) {
+        for (var i = 0; i < qResult.data.length; i++) {
+            qResult.data[i]["通知数"] = 0;// 通知数没有用到，直接统一处理
         }
     }
-    return data;
+    return qResult;
+}
+/**
+ * 统一已发，销售订货新增订货保存后由NULL变成0
+ * @param qResult
+ * @returns
+ */
+function unityShipped(qResult) {
+    if (qResult.titles.hasOwnProperty("已发")) {
+        for (var i = 0; i < qResult.data.length; i++) {
+            if (qResult.data[i]["已发"] == "") {
+                qResult.data[i]["已发"] = 0;
+            }
+        }
+    }
+    return qResult;
 }

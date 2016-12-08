@@ -2649,10 +2649,10 @@ function test120050Field(price) {
     var qr = getQR();
     ret = isAnd(ret, isEqual(json["输入框值"]["totalmoney"], qr.data[0]["金额"]))
     tapFirstText();
-    var data = getQRDet().data;
+    var det = getQRDet();
     tapReturn();
-    data = unityNotice(data);
-    ret = isAnd(ret, isEqualDyadicArray(qr1.data, data));
+    det = unityNotice(det);
+    ret = isAnd(ret, isEqualDyadicArray(qr1.data, det.data));
 
     tapMenu2("批量入库+");
     editPurchaseBatch(det, colorSize);
@@ -2770,7 +2770,7 @@ function test120056() {
 
     return ret;
 }
-
+// 7.25前适用
 function test120058() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "4562", "数量" : "12" } ],
@@ -2789,14 +2789,14 @@ function test120058() {
     tapFirstText();
     var det = { "明细" : [ { "货品" : "3035", "数量" : [ 58 ] } ] }
     editSalesBill(det, colorSize);
-    var data1 = det["明细值"].data;
+    var data1 = det["明细值"];
     data1 = unityNotice(data1);
 
     tapMenu2("按批次查");
     query();
     tapFirstText();
     var data2 = getQRDet().data;
-    var ret = isEqualDyadicArray(data1, data2);
+    var ret = isEqualDyadicArray(data1.data, data2);
     tapReturn();
     return ret;
 }

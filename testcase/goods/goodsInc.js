@@ -930,14 +930,15 @@ function checkDate(str) {
  * @returns {Boolean}
  */
 function checkBillValue(json) {
-    var det = getQRDet();
-    var exp = unityNotice(json["明细值"].data);
-    delete v["结余"];// 总的结余会变动，有用例验证准确性,这里就跳过
-    return isAnd(checkBillWinValue(json["输入框值"]), isEqualDyadicArray(exp,
-            det.data));
+    var act = getQRDet().data;
+    var exp = json["明细值"];
+    var exp = unityNotice(exp);// 采购入库
+    exp = unityShipped(exp);// 销售订货
+    return isAnd(checkBillWinValue(json["输入框值"]), isEqualDyadicArray(exp.data,
+            act));
 }
 /**
- * 开单简单的界面值对比
+ * 开单简单的界面值对比 TV的备注有用例覆盖，这里跳过
  * @param exp
  * @returns {Boolean}
  */
