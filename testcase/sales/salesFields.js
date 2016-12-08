@@ -969,7 +969,8 @@ function getEditSalesTFindex2(title1, title2, type) {
 
 // 快速新增客户
 function editQuickAddCustomerFields(keys, show) {
-    return getTFields("editQuickAddCustomerField", window, keys, show);
+    return getTFields("editQuickAddCustomerField", getPopView(), keys,
+            show);
 }
 function editQuickAddCustomerField(key, show) {
     var f;
@@ -1061,7 +1062,7 @@ function editQuickAddGoodsField(key, show) {
 }
 // 快速新增物流商
 function editQuickAddExpressFields(keys, show) {
-    return getTFields("editQuickAddExpressField", getPop(window), keys, show);
+    return getTFields("editQuickAddExpressField", getPop(), keys, show);
 }
 function editQuickAddExpressField(key, show) {
     var f;
