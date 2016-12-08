@@ -1061,7 +1061,7 @@ function editQuickAddGoodsField(key, show) {
 }
 // 快速新增物流商
 function editQuickAddExpressFields(keys, show) {
-    return getTFields("editQuickAddExpressField", keys, show);
+    return getTFields("editQuickAddExpressField", getPop(window), keys, show);
 }
 function editQuickAddExpressField(key, show) {
     var f;

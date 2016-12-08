@@ -5106,13 +5106,9 @@ function test170188() {
     // tapNaviLeftButton();
 
     tapMenu("统计分析", "收支流水");
-    var keys = [ "day1", "day2", "shop", "account" ];
+    var keys = { "日期从" : getToday(), "日期到" : getToday(), "门店" : "常青店",
+        "账户" : "现" };
     var fields = statisticAnalysisInOutAccountFields(keys);
-    changeTFieldValue(fields["day1"], getToday());
-    changeTFieldValue(fields["day2"], getToday());
-    changeTFieldValue(fields["shop"], "常青店");
-    changeTFieldValue(fields["account"], "现");
-    setTFieldsValue(window, fields);
     query(fields);
     var qr = getQR();
     var ret1 = isAnd(isEqual("积分兑换", qr.data[0]["类型"]), isEqual(-r,
@@ -8013,11 +8009,10 @@ function test170461() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = getTimestamp(2);
-    var R = "0." + r;
+    var r = "0." + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "8989", "数量" : "1", "折扣" : R } ], "不返回" : "yes" };
+        "明细" : [ { "货品" : "8989", "数量" : "1", "折扣" : r } ], "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : "1" } ],
@@ -8025,7 +8020,7 @@ function test170461() {
     editSalesBillNoColorSize(json);
 
     var qr = getQRDet();
-    var ret1 = isEqual(Number(R), Number(qr.data[0]["折扣"]));
+    var ret1 = isEqual(Number(r), Number(qr.data[0]["折扣"]));
     var price = qr.data[0]["单价"];
     saveAndAlertOk();
     tapPrompt();
@@ -8034,8 +8029,8 @@ function test170461() {
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var ret2 = isAnd(isEqual(add(Math.round(price * R), 1), qr.data[0]["金额"]),
-            isEqual(add(Math.round(price * R), 1), qr.data[0]["现金"]), isEqual(
+    var ret2 = isAnd(isEqual(add(Math.round(price * r), 1), qr.data[0]["金额"]),
+            isEqual(add(Math.round(price * r), 1), qr.data[0]["现金"]), isEqual(
                     "0", qr.data[0]["未结"]));
 
     qo = { "备注" : "开单模式" };
@@ -8450,7 +8445,6 @@ function test170491_2() {
     qr = getQRDet();
     ret3 = isAnd(ret3, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(j2,
             qr.data[0]["单价"]), isEqual(Number(z2), Number(qr.data[0]["折扣"])));
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -8627,15 +8621,8 @@ function test170492_1() {
     o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var r = "anewkhVip2" + getTimestamp(4);
-    tapMenu("往来管理", "新增客户+");
-    delay();
-    var keys = { "名称" : r, "客户类别" : "VIP客户", "适用价格" : "Vip价格", "允许退货" : "是" };
-    var fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    delay();
-    tapReturn();
+    var r = "anewkhVip2" + randomWord(false, 4);
+    editAddVipCustomer(r);
 
     var r1 = "1" + getTimestamp(2);
     var r2 = "0." + getTimestamp(2);
@@ -9830,7 +9817,7 @@ function test170545() {
             a8[1], a7[1]));
 
     tapMenu("统计分析", "收支流水");
-    var keys = { "shop" : "常青店", "account" : "现" };
+    var keys = { "门店" : "常青店", "账户" : "现" };
     var fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
     var qr = getQR();
@@ -11701,22 +11688,22 @@ function test170692() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("往来管理", "客户查询");
-    var keys = { "customer" : "lt" };
+    var keys = { "客户" : "lt" };
     var fields = queryCustomerFields(keys);
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["当前积分"];
 
     tapMenu("往来管理", "积分查询");
-    keys = { "customer" : "lt", "shop" : "常青店" };
+    keys = { "客户" : "lt", "门店" : "常青店" };
     fields = queryCustomerScoreFields(keys);
     query(fields);
     qr = getQR();
     var s = qr.data[0]["当前积分"];
 
-    var key = [ "shop" ];
+    var key = [ "门店" ];
     var qFields = queryCustomerScoreFields(key);
-    changeTFieldValue(qFields["shop"], "仓库店");
+    changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     delay();
@@ -11739,9 +11726,9 @@ function test170692() {
     qr = getQR();
     var j1 = qr.data[0]["当前积分"];
 
-    key = [ "shop" ];
+    key = [ "门店" ];
     qFields = queryCustomerScoreFields(key);
-    changeTFieldValue(qFields["shop"], "常青店");
+    changeTFieldValue(qFields["门店"], "常青店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     delay();
@@ -11760,8 +11747,7 @@ function test170692() {
     query();
     tapFirstText();
     json = { "特殊货品" : { "积分抵现" : 1 } };
-    editSalesBillSpecial(json);
-    editSalesBillSave({});
+    editSalesBillNoColorSize(json);
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
@@ -11773,7 +11759,7 @@ function test170692() {
     qr = getQR();
     var s2 = qr.data[0]["当前积分"];
 
-    changeTFieldValue(qFields["shop"], "仓库店");
+    changeTFieldValue(qFields["门店"], "仓库店");
     setTFieldsValue(window, qFields);
     tapButton(window, QUERY);
     qr = getQR();
