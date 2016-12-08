@@ -692,12 +692,27 @@ function test170044() {
     }
     tapReturn();
 
+    r = randomWord(false, 6);
     tapMenu("往来管理", "客户查询");
     var keys = { "客户" : "ls" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
     var qr = getQR();
     var r1 = qr.data[0]["客户代码"];
+    if (r1 == "") {
+        tapFirstText();
+        var keys = { "客户代码" : r };
+        var fields = editCustomerFields(keys);
+        setTFieldsValue(getScrollView(-1), fields);
+        tapButton(window, "修改保存");
+        delay();
+        tapReturn();
+    }
+
+    tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
+    qr = getQR();
+    r1 = qr.data[0]["客户代码"];
 
     tapMenu("销售开单", "按订货开单");
     var ret2 = false;
@@ -714,6 +729,7 @@ function test170044() {
     }
     delay();
     tapKeyboardHide();
+    var ret4 = ret2 || isEqual("李四", getTextFieldValue(window, 3));
 
     tapMenu("销售开单", "按订货开单");
     var keys = { "客户" : r1 };
@@ -723,8 +739,8 @@ function test170044() {
     var qr = getQR();
     var ret3 = isEqual("李四", qr.data[0]["客户"]);
 
-    logDebug(" ret1=" + ret1 + " ret2=" + ret2 + " ret3=" + ret3);
-    return ret1 && ret2 && ret3;
+    logDebug(" ret1=" + ret1 + " ret4=" + ret4 + " ret3=" + ret3);
+    return ret1 && ret4 && ret3;
 }
 function test170045() {
     tapMenu("销售开单", "开  单+");

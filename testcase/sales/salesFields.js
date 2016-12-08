@@ -969,8 +969,7 @@ function getEditSalesTFindex2(title1, title2, type) {
 
 // 快速新增客户
 function editQuickAddCustomerFields(keys, show) {
-    return getTFields("editQuickAddCustomerField", getPopView(), keys,
-            show);
+    return getTFields("editQuickAddCustomerField", getPopView(), keys, show);
 }
 function editQuickAddCustomerField(key, show) {
     var f;
@@ -1112,7 +1111,7 @@ function editLogisticsBillDetField(key, show) {
 }
 // 物流核销-核销明细界面
 function editlogisticsVerifyDetFields(keys, show) {
-    return getTFields("editlogisticsVerifyDetField", keys, show);
+    return getTFields("editlogisticsVerifyDetField", window, keys, show);
 }
 function editlogisticsVerifyDetField(key, show) {
     var f;

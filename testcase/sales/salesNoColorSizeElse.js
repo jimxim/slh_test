@@ -6891,12 +6891,10 @@ function test170472() {
     editQuickAddExpress(json);
     var ret = isEqual(r, getTextFieldValue(window, -4));
     tapNaviRightButton();
-
-    var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
-    var ds = getTextFieldValue(window, cardTFindex + 1);
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    json = {};
+    editSalesBillSave(json);
+    var qr1 = json["输入框值"];
+    var ds = qr1["代收"];
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls",
@@ -6904,33 +6902,32 @@ function test170472() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
-    var k3 = getTextFieldValue(window, 3);
+    k3 = getTextFieldValue(window, 3);
     var s = "kd1" + getTimestamp(6);
     var s1 = getTimestamp(6);
     json = { "名称" : s, "电话" : s1, "地址" : s, "账户" : s1 };
     editQuickAddExpress(json);
     var ret = isEqual(s, getTextFieldValue(window, -4));
-
     tapNaviRightButton();
-    cardTFindex = getEditSalesTFindex2("客户", "刷卡");
-    var ds1 = getTextFieldValue(window, cardTFindex + 1);
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    json = {};
+    editSalesBillSave(json);
+    qr1 = json["输入框值"];
+    var ds1 = qr1["代收"];
 
     tapMenu("销售开单", LogisticsVerify);
     var keys = { "物流" : r };
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
-    ret = isAnd(ret, isEqual(ds, getTextFieldValue(window, 1)));
+    var ret1 = isEqual(ds, getTextFieldValue(window, 1));
 
     keys = { "物流" : s };
     fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
-    ret = isAnd(ret, isEqual(ds1, getTextFieldValue(window, 1)));
+    var ret2 = isEqual(ds1, getTextFieldValue(window, 1));
     tapReturn();
 
-    return ret;
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170479() {
     test170482_prepare();
@@ -7845,44 +7842,46 @@ function test170577() {
     var fields = logisticsVerifyFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
-    delay(5);
+    delay(8);
 
     keys = { "日期" : getDay(1) };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQRtable1(window, 8, -2);
+    var qr = getQRtable1(window, -2);
     var ret = isEqual(0, qr.data.length);
     tapNaviLeftButton();
 
     tapButton(window, "核销");
-    delay(5);
+    delay(8);
     keys = { "日期" : getDay(-30), "到" : getToday() };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQRtable1(window, 8, -2);
+    delay(2);
+    var qr = getQRtable1(window, -2);
     var ret1 = isAnd(!isEqual(0, qr.data.length), isEqual("天天物流",
             qr.data[0]["物流商"]));
 
-    delay(2);
+    delay();
     var r = 111 + randomWord(false, 10);
     keys = { "客户" : r };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
+    delay(2);
     tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret3 = isIn(alertMsg1, "客户或厂商错误") || isIn(alertMsg2, "客户或厂商错误");
 
-    delay(2);
     keys = { "客户" : "ls" };
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQRtable1(window, 8, -2);
+    delay(2);
+    var qr = getQRtable1(window, -2);
     var ret2 = isAnd(!isEqual(0, qr.data.length), isEqual("李四",
             qr.data[0]["客户"]));
 
@@ -7891,7 +7890,7 @@ function test170577() {
     fields = editlogisticsVerifyDetFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
-    var qr = getQRtable1(window, 8, -2);
+    var qr = getQRtable1(window, -2);
     ret2 = isAnd(ret2, !isEqual(0, qr.data.length), isEqual("李响",
             qr.data[0]["客户"]));
     tapNaviLeftButton();
