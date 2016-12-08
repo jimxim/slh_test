@@ -2179,10 +2179,10 @@ function test160087() {
     tapMenu("销售订货", "新增订货+");
     var json = {
         "客户" : "xw",
-        "明细" : [ { "货品" : "3035", "数量" : [ 20 ] },
+        "明细" : [ { "货品" : "3035", "数量" : [ 30 ] },
                 { "货品" : "4562", "数量" : [ 20 ] } ], "现金" : 8000 };
     editSalesBill(json, colorSize);
-    var ret = test160087Field("操作成功");
+    var ret = test160087Field("保存成功");
 
     tapMenu("销售开单", "按订货开单");
     query();
@@ -2212,6 +2212,7 @@ function test160087Field(msg) {
     tapPrompt();
     var ret = isIn(alertMsg, msg);
     tapReturn();
+    delay();// 等待返回
     return ret;
 }
 // 兼容160080
@@ -2918,12 +2919,12 @@ function test160170ShopIn() {
     tapReturn();
 
     tapMenu("门店调入", "在途调拨");
-    query();
-    tapLine();
+    tapButton(window, QUERY);
+    tapLine(i);
     tapButtonAndAlert("调 入", OK);
     tapMenu("门店调入", "按批次查");
     query();
-    tapLine(i);
+    tapLine();
     ret = isAnd(ret, test160170Field(rmk));
     tapReturn();
 

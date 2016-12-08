@@ -130,8 +130,7 @@ function ts150013() {
 function ts140001() {
     tapMenu("门店调出", "按批次查");
     var keys = { "调出门店" : "中洲店" };
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var outExp = qr.data[0];
     tapFirstText();
@@ -145,8 +144,7 @@ function ts140001() {
 
     tapMenu("门店调入", "在途调拨");
     keys = { "调出门店" : "中洲店", "批次从" : outExp["批次"], "批次到" : outExp["批次"] };
-    fields = shopInFlitFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var ret = false;
     if (qr.data.length > 0) {
@@ -155,42 +153,37 @@ function ts140001() {
         ret = isEqualObject2(qr.data[0], outExp);
         tapLine();
         var sIndata = getQRDet().data;
-        tapButton(window, RETURN);
+        tapReturn();
         ret = isAnd(ret, isEqualDyadicArray(expData, sIndata));
 
         // 验证未调入单的批次应该不显示
         tapMenu2("按批次查");
         keys = { "调出门店" : "中洲店", "调出批次从" : outExp["批次"], "调出批次到" : outExp["批次"] };
-        fields = shopInQueryBatchFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         ret = isAnd(ret, isEqual(0, qr.data.length));
 
         // 取调入批次
         keys = { "日期从" : getDay(-15), "调入门店" : "常青店" };
-        fields = shopInQueryBatchFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         var inBatch = Number(qr.data[0]["批次"]) + 1;
 
         // 按明细查应该不显示未调入批次
         tapMenu2("按明细查");
-        fields = shopInQueryParticularFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         ret = isAnd(ret, isEqual(1, sub(inBatch, qr.data[0]["批次"])))
 
         tapMenu("货品管理", "当前库存");
         keys = { "款号" : code, "颜色" : expData[0]["颜色"], "尺码" : expData[0]["尺码"] };
-        var fields = queryGoodsStockFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         var stData = ts140001Field(qr);
 
         tapMenu2("库存分布")
         keys = { "类别" : "登山服" };
-        fields = queryGoodsDistributionFields(keys);
-        query(fields);
+        conditionQuery(keys);
         var date = getDetTS100006(code);
 
         tapMenu("门店调入", "在途调拨");
@@ -215,15 +208,14 @@ function ts140001() {
         tapMenu2("按批次查");
         keys = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次从" : inBatch,
             "批次到" : inBatch, "调出批次从" : outExp["批次"], "调出批次到" : outExp["批次"] };
-        fields = shopInQueryBatchFields(keys);
-        query(fields);
+        conditionQuery(keys);
         qr = getQR();
         var exp = { "批次" : inBatch, "调出批次" : outExp["批次"], "调出门店" : "中洲店",
             "调入门店" : "常青店", "送货人" : "总经理200", "数量" : 40, "金额" : 6400,
             "操作人" : "总经理", "备注" : "InPre" };
         tapFirstText();
         sIndata = getQRDet().data;
-        tapButton(window, RETURN);
+        tapReturn();
         ret = isAnd(ret, isEqualObject2(exp, qr.data[0]), isEqualDyadicArray(
                 sIndata, expData));
         // 清除
@@ -237,9 +229,9 @@ function ts140001() {
         }
 
         tapMenu2("按明细查");
-        keys = { "款号" : code, "款号名称" : name, "调出门店" : "中洲店", "调入门店" : "常青店" };
-        fields = shopInQueryParticularFields(keys);
-        query(fields);
+        keys = { "日期从" : getToday(), "日期到" : getToday(), "款号" : code,
+            "款号名称" : name, "调出门店" : "中洲店", "调入门店" : "常青店" };
+        var fields = conditionQuery(keys);
         qr = getQR();
         var jo1 = { "调出门店" : "中洲店", "调入门店" : "常青店", "批次" : inBatch,
             "款号" : code, "名称" : name, "颜色" : "均色", "尺码" : "均码", "数量" : 15,
@@ -269,7 +261,7 @@ function ts140001() {
         // 清除
         tapButton(window, CLEAR);
         for (var i = 0; i < 6; i++) {
-            if (i == 3 || i == 4) {
+            if (i == fields["日期从"].index || i == fields["日期到"].index) {
                 ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
             } else {
                 ret = ret && isEqual("", getTextFieldValue(window, i));

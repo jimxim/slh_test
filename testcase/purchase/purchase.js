@@ -2444,7 +2444,7 @@ function test120047_2() {
     var keys = { "款号" : "3035", "厂商" : "Vell", "款号名称" : "jkk",
         "日期从" : getDay(-15), "到" : getToday(), "门店" : "常青店" };
     var fields = getQueryTFields(keys);
-    var ret = dropDownListCheck(fields["款号"].inedx, "303", "3035jkk");
+    var ret = dropDownListCheck(fields["款号"].index, "303", "3035jkk");
     query(fields);
     var qr = getQR();
     ret = isAnd(ret, isEqual("3035", qr.data[0]["款号"]));

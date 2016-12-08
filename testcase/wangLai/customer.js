@@ -140,8 +140,7 @@ function test110001() {
     var total = qr.total;
 
     var keys = { "客户" : "zbs" };
-    var qFields = queryCustomerFields(keys);
-    query(qFields);
+    conditionQuery(keys);
     qr = getQR();
     var ret = isEqual("赵本山", qr.data[0]["名称"]);
 
@@ -154,13 +153,12 @@ function test110001() {
     ret = isAnd(ret, isEqual(actual, qr.data[0]["名称"]));
 
     keys = { "客户" : "0309" };
-    qFields = queryCustomerFields(keys);
-    query(qFields);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqual("0309", qr.data[0]["名称"]));
 
-    var fields = queryCustomerFields([ "名称", "手机", "地址" ]);
-    var f = new TField("名称", TF, fields["名称"].index, "xiao");
+    var fields = queryCustomerFields([ "客户名称", "手机", "地址" ]);
+    var f = new TField("客户名称", TF, fields["客户名称"].index, "xiao");
     ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
     f.value = "小";
     ret = isAnd(ret, checkFuzzyQuery(f, "名称"));// 客户名称模糊查询
@@ -178,8 +176,7 @@ function test110001() {
     if (ipadVer >= 7.21) {
         keys["门店"] = "常青店";
     }
-    qFields = queryCustomerFields(keys);
-    query(qFields);
+    conditionQuery(keys);
     qr = getQR();
     // 返回结果确定只有一条
     var exp = { "名称" : "赵本山", "生日" : "15-03-06", "店员" : "总经理",
@@ -188,13 +185,12 @@ function test110001() {
             isEqual(1, qr.totalPageNo));
 
     query();
-    for (var i = 0; i < 6; i++) {
+    for (var i = 0; i < 8; i++) {
         ret = ret && isEqual("", getTextFieldValue(window, i));
     }
     // 清除后显示所有客户
     qr = getQR();
     ret = isAnd(ret, isEqual(total, qr.total));
-
     return ret;
 }
 
@@ -4440,7 +4436,7 @@ function ts110111() {
 }
 function ts110112() {
     tapMenu("销售开单", ADDBILL);
-    var jo = { "客户" : "sjkh1" };
+    var jo = { "客户" : "sjkh1", "未付" : "yes" };// 生成欠款单，使之在客户账款的2级界面显示
     var det = editOverLengthBillDet();
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);// 超长订单，方便数据验证

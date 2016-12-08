@@ -19,8 +19,8 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "test160087");//
- run(caseName, "test160020_160022");//
+// run(caseName, "test110001");//
+ run(caseName, "onlyTest");//
 }
 function onlyTest(){
 // delay();
@@ -29,8 +29,9 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{      
-         
-//      tapMenu("销售订货", "新增订货+");
+
+
+// tapMenu("销售订货", "新增订货+");
 // var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
 // "现金" : 1000, "刷卡" : [ 400 ], "汇款" : [ 600 ] };
 // editSalesBill(json, colorSize);

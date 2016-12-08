@@ -346,11 +346,10 @@ function ts130002_2() {
     var key1 = { "门店" : "常青店", "厂商" : "Vell", "日期从" : getToday(),
         "到" : getToday(), "备注" : "123" }// 这个是明细备注
     var keys = mixObject(key1, kCode);
-    var fields = purchaseOrderQueryParticularFields(keys);
-    query(fields);
-    var qr = getQR();
+    var fields = conditionQuery(keys);
+    var qr = getQR(), ret;
     if (qr.data.length > 0) {
-        var ret = isEqualObject(qr.data[0], exp);
+        ret = isEqualObject(qr.data[0], exp);
     } else {
         ret = false;
     }
@@ -358,7 +357,7 @@ function ts130002_2() {
     tapButton(window, CLEAR);
     var text = getTextFields(window);
     for (var i = 0; i < text.length; i++) {
-        if (i == 3 || i == 4) {
+        if (i == fields["日期从"].index || i == fields["到"].index) {
             ret = ret && isEqual(getToday(), getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("", getTextFieldValue(window, i));
