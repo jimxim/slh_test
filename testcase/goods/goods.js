@@ -5,6 +5,10 @@
  */
 function setGoodsParams001() {
     var qo, o, ret = true;
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -32,10 +36,6 @@ function setGoodsParams001() {
     // 货品管理新增界面格式无法单页显示，方便处理，默认用老模式
     qo = { "备注" : "新增界面格式" };
     o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单是否显示尺码头部的界面" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "调拨是否启用密码验证" };
@@ -1537,7 +1537,7 @@ function ts100033Field(key1, key2, key3) {
     }
     delay();// 防止无法触发返回按钮
     tapReturn();
-
+   
     tapMenu2("货品查询");
     var qKeys = { "款号名称" : key1["名称"] };// 110026是自动生成款号
     var qFields = queryGoodsFields(qKeys);

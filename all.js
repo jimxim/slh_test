@@ -59,6 +59,8 @@
 #import "testcase/shopOut/shopOut.js"
 #import "testcase/shopOut/shopOutFields.js"
 
+#import "testcase/sizeHead/sizeHead.js"
+
 #import "testcase/statisticAnalysis/saProfit.js"
 #import "testcase/statisticAnalysis/saSynthesis.js"
 #import "testcase/statisticAnalysis/statisticAnalysis.js"

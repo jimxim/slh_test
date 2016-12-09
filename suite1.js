@@ -19,8 +19,8 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "test110001");//
- run(caseName, "onlyTest");//
+ run(caseName, "testEditBillSizeHead");//
+// run(caseName, "onlyTest");//
 }
 function onlyTest(){
 // delay();

@@ -500,7 +500,7 @@ function getEditGoodsIndex2(idx) {
     }
     return idx;
 }
-function editGoodsField(key, show,texts) {
+function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
     }
@@ -1484,17 +1484,20 @@ function getSizeSort(type) {
     case "M":
         f = "02";
         break;
-    case "均码":
+    case "L":
         f = "03";
         break;
-    case "L":
+    case "XL":
         f = "04";
         break;
-    case "XL":
+    case "2XL":
         f = "05";
         break;
-    case "2XL":
+    case "3XL":
         f = "06";
+        break;
+    case "4XL":
+        f = "07";
         break;
     default:
         logWarn("未知尺码＝" + type);
