@@ -10,6 +10,8 @@ function test004() {
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
+    run("【销售开单－开单】按门店区分客户--区分", "test170249_4");
+    run("【销售开单－开单】按门店区分客户--不区分", "test170250_4");
     // run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170430_4");//
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170550_4");
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170551_4");
@@ -521,6 +523,231 @@ function test170241_4() {
             + ", ret7=" + ret7);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
+function test170249_4() {
+    // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店开单员005登陆，尝试输入客户韩红（中州店）
+    // 分别在客户查询,客户门店帐,销售订货,销售开单四个界面检查
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时是否按门店区分客户" };
+    o = { "新值" : "1", "数值" : [ "只显示本门店的客户", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("往来管理", "客户查询");
+    var arr = getTFieldsIndex();
+    var index = arr["客户"];
+    var ret1 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret1 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    arr = getTFieldsIndex();
+    index = arr["客户"];
+    var ret2 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret2 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    tapMenu("销售订货", "新增订货+");
+    arr = getTFieldsIndex();
+    index = arr["客户"];
+    var ret3 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret3 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    tapMenu("销售订货", "按批次查");
+    arr = getTFieldsIndex();
+    index = arr["客户_100"];
+    var ret4 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret4 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    tapMenu("销售开单", "按订货开单");
+    arr = getTFieldsIndex();
+    index = arr["客户"];
+    var ret5 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret5 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    tapMenu("销售开单", "开  单+");
+    arr = getTFieldsIndex();
+    index = arr["客户"];
+    var ret6 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret6 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    arr = getTFieldsIndex();
+    index = arr["客户_8"];
+    var ret7 = true;
+    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret7 = false;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
+}
+function test170250_4() {
+    // 设置全局参数 销售开单是否按门店区分客户为默认不区分
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时是否按门店区分客户" };
+    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "hh" };
+    var fields = queryCustomerFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret = isAnd(isEqual("韩红", qr.data[0]["名称"]));
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    keys = { "客户" : "hh" };
+    fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret1 = isAnd(isEqual("韩红", qr.data[0]["名称"]));
+
+    tapMenu("销售订货", "新增订货+");
+    var ret2 = false;
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret2 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "2" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售订货", "按批次查");
+    var keys = { "客户" : "hh" };
+    var fields = salesOrderQueryBatchFields(keys);
+    query(fields);
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("韩红", qr.data[0]["客户"]));
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "客户" : "hh" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+    qr = getQR();
+    ret3 = isAnd(ret3, isEqual("韩红", qr.data[0]["客户"]));
+
+    tapMenu("销售开单", "开  单+");
+    var ret4 = false;
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "韩红")) {
+            ret4 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    var json = { "客户" : "hh", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    var keys = { "客户" : "hh" };
+    var fields = salesQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+    var ret5 = isAnd(isEqual("韩红", qr.data[0]["客户"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+}
 function test170430_4() {
     tapMenu("货品管理", "货品查询");
     var keys = { "款号名称" : "4562" };
@@ -820,15 +1047,14 @@ function test170550_4() {
     delay(8);
 
     tapMenu("销售开单", "开  单+");
-    var i;
-    var ret3 = true;
+    var ret1 = true;
     var f = new TField("货品", TF_AC, 0, "a", -1);
     var cells = getTableViewCells(getScrollView(-1), f);
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
         if (isIn(v, "Aaa002")) {
-            ret3 = false;
+            ret1 = false;
             break;
         }
     }
@@ -838,12 +1064,33 @@ function test170550_4() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "特殊货品" : { "抹零" : 9, "打包费" : 20 } };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
+    var ret2 = isIn(alertMsg1, "保存成功，是否打印");
 
-    return ret && ret1;
+    tapMenu("货品管理", "当前库存");
+    var arr = getTFieldsIndex();
+    var index = arr["款号_60"];
+    var ret3 = true;
+    var f = new TField("款号", TF_AC, index, "aaa0", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "Aaa002")) {
+            ret3 = false;
+            break;
+        }
+    }
+    tapButton(window, CLEAR);
+
+    var keys = { "款号" : "3035" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170551_4() {
     var qo, o, ret = true;
@@ -854,14 +1101,6 @@ function test170551_4() {
     runAndAlert("test210020Clear", OK);
     tapPrompt();
     delay(8);
-
-    // tapMenu("货品管理", "货品查询");
-    // var keys = { "款号名称" : "aaa002" };
-    // var fields = queryGoodsFields(keys);
-    // query(fields);
-    // tapFirstText();
-    // var md = getTextFieldValue(getScrollView(), 22);
-    // tapReturn();isEqual("中洲店", md),
 
     tapMenu("销售开单", "开  单+");
     var i;
@@ -888,8 +1127,10 @@ function test170551_4() {
     var ret2 = isAnd(isIn(alertMsg1, "保存成功，是否打印"));
 
     tapMenu("货品管理", "当前库存");
+    var arr = getTFieldsIndex();
+    var index = arr["款号_60"];
     var ret3 = false;
-    var f = new TField("款号", TF_AC, 0, "aaa0", -1);
+    var f = new TField("款号", TF_AC, index, "aaa0", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -900,6 +1141,9 @@ function test170551_4() {
         }
     }
     tapButton(window, CLEAR);
+    var keys = { "款号" : "3035" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);

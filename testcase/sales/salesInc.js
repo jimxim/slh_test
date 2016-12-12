@@ -993,9 +993,9 @@ function editLogisticsVerifyDet1(o) {
  */
 function editVerifyBillCash(o) {
     if (isDefined(o["现金"])) {
-        var f = logisticsVerifyFields("现金");
-        changeTFieldValue(f, o["现金"]);
-        setTFieldsValue(window, [ f ]);
+        var keys = { "现金" : o["现金"] };
+        var fields = logisticsVerifyFields(keys);
+        setTFieldsValue(window, fields);
     }
 }
 /**

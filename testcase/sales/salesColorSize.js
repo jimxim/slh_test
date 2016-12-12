@@ -117,6 +117,7 @@ function testSalesColorSize003() {
     run("【销售开单-开单】颜色尺码下，快速新增货品，必填项为空检查", "test170716");
     run("【销售开单-开单】颜色尺码下，快速新增货品，价格输入字母", "test170717");
     run("【销售开单-开单】颜色尺码模式，折扣模式下不允许修改折扣", "test170733");
+    run("【销售开单-开单】款号对应的颜色被停用后，开单明细录入界面检查提示", "test170408");
     run("【销售开单－开单】开单时显示当前库存", "test170112");
     run("【销售开单－开单】开单时不显示当前库存", "test170113");
     run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
@@ -1976,146 +1977,7 @@ function testCs170107() {
     logDebug("c=" + c + "c1=" + c1);
     return ret && ret1;
 }
-function testCs170112() {
-    // 颜色尺码模式下，开启参数 开单时是否显示当前库存
-    var qo, o, ret = true;
-    qo = { "备注" : "所有门店" };
-    o = { "新值" : "1", "数值" : [ "显示库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示所有门店库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("货品管理", "当前库存");
-    query();
-    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["库存"];
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
-    editSalesBillDetColorSize(json);
-    var oStockNum = getColorSizeStockNum();
-    tapNaviLeftButton();
-    var n = oStockNum["黄色-L-常青店"];
-    var ret = isEqual(a, n);
-
-    tapReturn();
-
-    return ret;
-}
-function testCs170113() {
-    // 关闭参数 开单时是否显示当前库存
-    var qo, o, ret = true;
-    qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "0", "数值" : [ "不显示库存", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("货品管理", "当前库存");
-    query();
-    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["库存"];
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
-    editSalesBillDetColorSize(json);
-    var oStockNum = getColorSizeStockNum();
-    tapNaviLeftButton();
-    var n = oStockNum["黄色-L-常青店"];
-    var ret = isUndefined(n);
-    var ret1 = false;
-    if (a != 0) {
-        ret1 = true;
-    }
-    tapReturn();
-
-    logDebug("a=" + a + "n=" + n + "ret=" + ret + "ret1=" + ret1);
-    return ret && ret1;
-}
-function testCs170114() {
-    // 设置开单时显示当前库存，开启参数 开单时是否显示当前库存
-    // 颜色尺码模式下，开启参数 开单时是否显示当前库存
-    var qo, o, ret = true;
-    qo = { "备注" : "所有门店" };
-    o = { "新值" : "1", "数值" : [ "显示库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示所有门店库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    tapMenu("货品管理", "当前库存");
-    query();
-    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["库存"];
-
-    var keys = { "款号" : "x003", "门店" : "仓库店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr1 = getQR();
-    var a1 = qr1.data[0]["库存"];
-
-    var keys = { "款号" : "x003", "门店" : "中洲店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr2 = getQR();
-    var a2 = qr2.data[0]["库存"];
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
-    editSalesBillDetColorSize(json);
-    var oStockNum = getColorSizeStockNum();
-    tapNaviLeftButton();
-    var n = oStockNum["黄色-L-常青店"];
-    var n1 = oStockNum["黄色-L-仓库店"];
-    var n2 = oStockNum["黄色-L-中洲店"];
-
-    tapReturn();
-
-    var ret = isAnd(isEqual(a, n), isEqual(a1, n1), isEqual(a2, n2));
-
-    return ret;
-}
-function testCs170115() {
-    // 设置开单时显示当前库存，设置参数 销售开单-是否显示所有门店的当前库存 为默认显示本门店的库存
-    var qo, o, ret = true;
-    qo = { "备注" : "开单时是否显示当前库存" };
-    o = { "新值" : "1", "数值" : [ "显示库存" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "所有门店" };
-    o = { "新值" : "0", "数值" : [ "默认显示本门店的库存", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("货品管理", "当前库存");
-    query();
-    var keys = { "款号" : "nb001", "门店" : "常青店", "颜色" : "桃红", "尺码" : "X3" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["库存"];
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "nb001" } ], "关闭明细" : "no" };
-    editSalesBillDetColorSize(json);
-    var oStockNum = getColorSizeStockNum();
-    tapNaviLeftButton();
-    var n = oStockNum["桃红-X3"];
-    var ret = isEqual(a, n);
-
-    delay();
-    tapButtonAndAlert(RETURN, OK);
-
-    return ret;
-}
 function testCs170116() {
     // 设置是否允许负库存为 “检查，必须先入库再出库”
     var qo, o, ret = true;
@@ -3942,6 +3804,145 @@ function testCs170251() {
     logDebug(" ret" + ret);
     return ret;
 }
+function test170112() {
+    // 颜色尺码模式下，开启参数 开单时是否显示当前库存
+    var qo, o, ret = true;
+    qo = { "备注" : "所有门店" };
+    o = { "新值" : "1", "数值" : [ "显示库存" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单时是否显示当前库存" };
+    o = { "新值" : "1", "数值" : [ "显示所有门店库存" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "当前库存");
+    query();
+    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["库存"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["黄色-L-常青店"];
+    var ret = isEqual(a, n);
+    tapReturn();
+
+    return ret;
+}
+function test170113() {
+    // 关闭参数 开单时是否显示当前库存
+    var qo, o, ret = true;
+    qo = { "备注" : "开单时是否显示当前库存" };
+    o = { "新值" : "0", "数值" : [ "不显示库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "当前库存");
+    query();
+    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["库存"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["黄色-L-常青店"];
+    var ret = isUndefined(n);
+    var ret1 = false;
+    if (a != 0) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    logDebug("a=" + a + "n=" + n + "ret=" + ret + "ret1=" + ret1);
+    return ret && ret1;
+}
+function test170114() {
+    // 设置开单时显示当前库存，开启参数 开单时是否显示当前库存
+    // 颜色尺码模式下，开启参数 开单时是否显示当前库存
+    var qo, o, ret = true;
+    qo = { "备注" : "所有门店" };
+    o = { "新值" : "1", "数值" : [ "显示库存" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单时是否显示当前库存" };
+    o = { "新值" : "1", "数值" : [ "显示所有门店库存" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    tapMenu("货品管理", "当前库存");
+    query();
+    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["库存"];
+
+    var keys = { "款号" : "x003", "门店" : "仓库店", "颜色" : "黄色", "尺码" : "L" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr1 = getQR();
+    var a1 = qr1.data[0]["库存"];
+
+    var keys = { "款号" : "x003", "门店" : "中洲店", "颜色" : "黄色", "尺码" : "L" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr2 = getQR();
+    var a2 = qr2.data[0]["库存"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["黄色-L-常青店"];
+    var n1 = oStockNum["黄色-L-仓库店"];
+    var n2 = oStockNum["黄色-L-中洲店"];
+
+    tapReturn();
+
+    var ret = isAnd(isEqual(a, n), isEqual(a1, n1), isEqual(a2, n2));
+
+    return ret;
+}
+function test170115() {
+    // 设置开单时显示当前库存，设置参数 销售开单-是否显示所有门店的当前库存 为默认显示本门店的库存
+    var qo, o, ret = true;
+    qo = { "备注" : "开单时是否显示当前库存" };
+    o = { "新值" : "1", "数值" : [ "显示库存" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "所有门店" };
+    o = { "新值" : "0", "数值" : [ "默认显示本门店的库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "当前库存");
+    query();
+    var keys = { "款号" : "nb001", "门店" : "常青店", "颜色" : "桃红", "尺码" : "X3" };
+    var fields = queryGoodsStockFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["库存"];
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "nb001" } ], "关闭明细" : "no" };
+    editSalesBillDetColorSize(json);
+    var oStockNum = getColorSizeStockNum();
+    tapNaviLeftButton();
+    var n = oStockNum["桃红-X3"];
+    var ret = isEqual(a, n);
+
+    delay();
+    tapButtonAndAlert(RETURN, OK);
+
+    return ret;
+}
 function test170442_170425() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
@@ -3985,6 +3986,50 @@ function test170442_170425() {
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test170408() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    var keys = { "名称" : "黄色" };
+    conditionQuery(keys);
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    var keys = { "名称" : "淡黄" };
+    conditionQuery(keys);
+    tapFirstText();
+    tapButtonAndAlert(STOP, OK);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x003", "数量" : [] } ] };
+    editSalesBillDetColorSize(json);
+
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "颜色为空或停用") || isIn(alertMsg2, "颜色为空或停用");
+    tapNaviLeftButton();
+    tapReturn();
+
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    tapButton(window, QUERY);
+    tapFirstText();
+    tapButtonAndAlert(START, OK);
+
+    tapMenu("货品管理", "基本设置", "所有颜色");
+    var keys = { "名称" : "黄色" };
+    conditionQuery(keys);
+    tapFirstText();
+    tapButtonAndAlert(START, OK);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

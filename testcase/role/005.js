@@ -7,8 +7,6 @@ function test005() {
     run("【销售开单-开单】开单员销售价允许改高，不允许改低 【使用开单员角色】", "test170192");
     run("【销售开单】单据打印后不允许修改--不限制", "test170236");
     run("【销售开单】单据打印后不允许修改--明细不允许修改", "test170237");
-    run("【销售开单－开单】按门店区分客户--区分", "test170249_5");
-    run("【销售开单－开单】按门店区分客户--不区分", "test170250_5");
     run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_4");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4");
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
@@ -159,57 +157,6 @@ function test170237() {
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4);
     return ret && ret1 && ret2 && ret3 && ret4;
-}
-function test170249_5() {
-    // 设置全局参数 销售开单是否按门店区分客户为区分,只显示本门店的客户；常青店开单员005登陆，尝试输入客户韩红（中州店）
-    var qo, o, ret = true;
-    qo = { "备注" : "销售开单时是否按门店区分客户" };
-    o = { "新值" : "1", "数值" : [ "只显示本门店客户", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var ret = true;
-    var f = new TField("客户", TF_AC, 0, "hh", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        debugElementTree(cell);
-        var v = cell.name();
-        if (isEqual("韩红", v)) {
-            ret = false;
-            break;
-        }
-    }
-    delay();
-    tapReturn();
-
-    logDebug(" ret=" + ret);
-    return ret;
-}
-function test170250_5() {
-    // 设置全局参数 销售开单是否按门店区分客户为默认不区分
-    var qo, o, ret = true;
-    qo = { "备注" : "销售开单时是否按门店区分客户" };
-    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var ret = false;
-    var f = new TField("客户", TF_AC, 0, "hh", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "韩红")) {
-            ret = true;
-            break;
-        }
-    }
-    delay();
-    tapReturn();
-
-    logDebug(" ret=" + ret);
-    return ret;
 }
 function test170422() {
     var qo, o, ret = true;

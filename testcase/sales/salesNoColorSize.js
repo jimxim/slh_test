@@ -200,11 +200,15 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-开单】均色均码模式+异地发货模式/异地+代收，库存检查", "test170722");
     run("【销售开单-开单】均色均码模式+异地发货模式/异地+代收，库存检查", "test170722_1");
     run("【销售开单-开单】均色均码模式，库存数检查", "test170723");
+
     run("[销售开单-开单]各界面开单输入小数", "test170731");
     run("【销售开单-开单-加工货品】没有权限看价格的店员采购加工货品", "test170429");
     run("【销售开单-开单】各个开单界面快速新增货品 款号调用的苹果键盘", "test170593");
     run("【销售开单-开单】均色均码模式，折扣模式下不允许修改折扣", "test170732");
     run("【销售开单-开单】均色均码模式，折扣模式下不允许修改折扣", "test170734");
+    run("【销售开单-开单】开单是否显示大的缩略图-0/开单是否显示大的缩略图-1", "test170412_170413");
+    run("【销售开单-开单】均色均码模式下款号明细中如果出现某行有单价和小计但没有款号时，程序会提示", "test170396");
+ // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】收款操作时如果存在待作废单子,需要提醒", "test170246");//
     // run("【销售开单-开单】客户为空时进行开单同时订货操作", "test170607");//
     // run("超期提醒+允许继续输入+均色均码", "test170213");
@@ -4200,7 +4204,7 @@ function test170164() {
 
     qo = { "备注" : "支持异地仓库" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ret = isAnd(ret, setGlobalParam(qo, o));   
 
     test170482_prepare();
     checkPrepare();
@@ -6848,6 +6852,87 @@ function test170395_2() {
 
     logDebug("ret=" + ret + " s=" + s);
     return ret;
+}
+function test170396() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f0 = new TField("货品", TF_AC, 0, "");
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(-1), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret = isIn(alertMsg1, "错误") || isIn(alertMsg2, "错误");
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "rt", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    var f0 = new TField("货品", TF_AC, 0, "");
+    var fields = [ f0 ];
+    setTFieldsValue(getScrollView(-1), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isIn(alertMsg1, "错误") || isIn(alertMsg2, "错误");
+    tapReturn();
+
+    logDebug(" ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
+}
+function test170404() {
+    tapMenu("销售开单", "按批次查");
+    var texts = getTextFields();
+    var idx1 = getArrayIndexIn(texts, "日期从");
+    var idx2 = getArrayIndexIn(texts, "到");
+    var text1 = texts[idx1].value();
+    var text2 = texts[idx2].value();
+    var text1Y = text1.rect().origin.y;
+    var text2Y = text1.rect().origin.y;
+    logDebug(" text1Y=" + text1Y + ", text2Y=" + text2Y);
+    var a = getY(text1);
+    var b = getY(text2);
+    var ret = isEqual(text1Y, text2Y);
+
+    logDebug(" ret=" + ret + ", a=" + a + ", b=" + b);
+    return ret && ret1;
+}
+function test170412_170413() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否显示大的缩略图" };
+    o = { "新值" : "0", "数值" : [ "默认正常尺寸的缩略图" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var view = getScrollView(-1);
+    var f = new TField("货品", TF_AC, 0, "anew", -1);
+    var cells = getTableViewCells(view, f);
+    var len = cells.length;
+    tapReturn();
+    var ret1 = isEqual("20", len);
+
+    qo = { "备注" : "开单是否显示大的缩略图" };
+    o = { "新值" : "1", "数值" : [ "大缩略图", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var f = new TField("货品", TF_AC, 0, "anew", -1);
+    var cells = getTableViewCells(view, f);
+    var len = cells.length;
+    tapReturn();
+    var ret2 = isEqual("10", len);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170423() {
     tapMenu("采购入库", "按明细查");

@@ -757,7 +757,6 @@ function test170018() {
     var keys = { "作废挂单" : "正常" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
-
     var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0;
     var qr = getQR();
     var totalPageNo = qr.totalPageNo;
@@ -5899,35 +5898,24 @@ function test170380_170379() {
 
     tapMenu("销售开单", LogisticsVerify);
     var o = { "物流" : "ht", "特殊货品" : { "抹零" : 19, "打包费" : 27 }, "核销" : [ 0 ],
-        "onlytest" : "yes" };
+        "现金" : 12, "刷卡" : [ 50, "交" ], "汇款" : [ Number(money) - 54, "建" ] };
     editVerifyBill(o);
 
-    keys = { "现金" : 12, "刷卡" : 50, "汇款" : Number(money) - 54 };
-    fields = logisticsVerifyFields(keys);
-    setTFieldsValue(window, fields);
-    tapButtonAndAlert(SAVE, OK);
-    delay();
-    tapReturn();
-
     tapMenu("统计分析", "收支流水");
-    keys = { "门店" : "常青店", "账户" : "银" };
+    keys = { "门店" : "常青店" };
     fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
     var qr1 = getQR();
-
-    var keys1 = [ "账户" ];
-    var qfields = statisticAnalysisInOutAccountFields(keys1);
-    changeTFieldValue(qfields["账户"], "现");
-    setTFieldsValue(window, qfields);
-    tapButton(window, QUERY);
-    var qr2 = getQR();
-    var expected1 = { "类型" : "代收收款", "账户" : "东灵测试-银行账户",
-        "金额" : Number(money) - 4, "操作人" : "总经理", "备注" : "单位[汇通快递]" };
-    var expected2 = { "类型" : "代收收款", "账户" : "东灵测试-现金账户", "金额" : 12,
+    var exp = { "类型" : "代收收款", "账户" : "建行", "金额" : Number(money) - 54,
         "操作人" : "总经理", "备注" : "单位[汇通快递]" };
-    var ret1 = isAnd(isEqualQRData1Object(qr1, expected1), isAqualOptime(
-            getOpTime(), qr1.data[0]["操作日期"], 2), isEqualQRData1Object(qr2,
-            expected2), isEqual(qr1.data[0]["批次"], qr2.data[0]["批次"]));
+    var exp1 = { "类型" : "代收收款", "账户" : "交行", "金额" : 50, "操作人" : "总经理",
+        "备注" : "单位[汇通快递]" };
+    var exp2 = { "类型" : "代收收款", "账户" : "东灵测试-现金账户", "金额" : 12, "操作人" : "总经理",
+        "备注" : "单位[汇通快递]" };
+    var ret1 = isAnd(isEqualObject(exp, qr1.data[0]), isAqualOptime(
+            getOpTime(), qr1.data[0]["操作日期"], 2), isEqualObject(exp1,
+            qr1.data[1]), isEqualObject(exp2, qr1.data[2]), isEqual(
+            qr1.data[0]["批次"], qr1.data[1]["批次"]));
 
     tapMenu("销售开单", "按汇总", "按店员汇总");
     tapButton(window, QUERY);
