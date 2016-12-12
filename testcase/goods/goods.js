@@ -2549,7 +2549,7 @@ function ts100147Field(title, type) {
     tapMenu(menu2, menu3);
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("货品管理", "当前库存");
@@ -2598,7 +2598,7 @@ function ts100147Field(title, type) {
     tapMenu(menu2, menu3);
     tapButton(window, QUERY);
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);//
 
     tapMenu(menu1, "按批次查");
@@ -4450,7 +4450,7 @@ function test100170() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
-    json = { "入库明细" : [ {}, { "数量" : r2 } ] };// 默认负数的入库数为0
+    json = { "修改明细" : [ {}, { "数量" : r2 } ] };// 默认负数的入库数为0
     editSalesBill(json, colorSize);
     ret = isAnd(ret, test100170Field(add(num, 3 * dif)));
     return ret;

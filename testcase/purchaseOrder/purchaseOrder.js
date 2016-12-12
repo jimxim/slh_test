@@ -84,7 +84,7 @@ function ts130020Count() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
@@ -150,7 +150,7 @@ function ts130001() {
         tapMenu("采购入库", "按订货入库");
         query();
         tapFirstText();
-        json = { "入库明细" : [ { "数量" : 10 } ] };
+        json = { "修改明细" : [ { "数量" : 10 } ] };
         editSalesBill(json, colorSize);
 
         tapMenu("采购订货", "按批次查");
@@ -184,7 +184,7 @@ function ts130001() {
         tapMenu("采购入库", "按订货入库");
         tapButton(window, QUERY);
         tapFirstText();
-        json = { "入库明细" : [ { "数量" : 14 } ] };
+        json = { "修改明细" : [ { "数量" : 14 } ] };
         editSalesBill(json, colorSize);
 
         tapMenu("采购订货", "按批次查");
@@ -210,7 +210,7 @@ function ts130001() {
         tapMenu("采购入库", "按订货入库");
         tapButton(window, QUERY);
         tapFirstText();
-        json = { "入库明细" : [ { "数量" : 50 } ] };
+        json = { "修改明细" : [ { "数量" : 50 } ] };
         editSalesBill(json, colorSize);
 
         tapMenu("采购订货", "按批次查");
@@ -332,7 +332,7 @@ function ts130002_2() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     // 按明细查的批次与操作日期直接取按批次的，按批次的已经验证过其批次与操作日期的准确性
@@ -666,7 +666,7 @@ function ts130004_05_06() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     var exp = { "数量" : 30, "差异数" : 20 };
@@ -850,7 +850,7 @@ function ts130009() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
@@ -1078,7 +1078,7 @@ function ts130016_1() {
     var total = qr.total;
 
     tapLine();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");
@@ -1363,7 +1363,7 @@ function ts130043() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : -7 } ] };// 全部入库，
+    json = { "修改明细" : [ { "数量" : -7 } ] };// 全部入库，
     editSalesBill(json, colorSize);
 
     tapMenu("采购订货", "按批次查");

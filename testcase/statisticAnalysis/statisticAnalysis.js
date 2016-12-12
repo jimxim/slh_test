@@ -932,7 +932,7 @@ function test190025_1() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "现金" : "2000" };// "入库明细" : { "数量" : 10 },
+    json = { "现金" : "2000" };// "修改明细" : { "数量" : 10 },
     editSalesBillNoColorSize(json);
     var jo2 = getStatisticAnalysisSynthesis();
     n1 = getSACountsQR("现", "收入", "销售单");

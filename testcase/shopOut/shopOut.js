@@ -886,8 +886,8 @@ function editShopOutDecruitIn(o, colorSize) {
     if (colorSize == "head") {
         editSalesBillDetSizehead(o);
     }
-
-    editShopOutSave(o);
+    editBillDet(o);
+    editSalesBillSave(o);// editShopOutSave
 }
 
 function editShopOutDecruitField1(o, key) {

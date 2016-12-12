@@ -119,7 +119,7 @@ function ts160060() {
     tapMenu("销售订货", "按批次查");
     query();
     tapLine();
-    var json = { "入库明细" : [ { "备注" : "abc123" }, { "备注" : "123abc" } ] };
+    var json = { "修改明细" : [ { "备注" : "abc123" }, { "备注" : "123abc" } ] };
     editSalesBill(json, colorSize);// 添加备注，超长订单本身没有加备注
 
     tapMenu1("销售订货");
@@ -478,7 +478,7 @@ function test160001() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 15 } ] };
+    json = { "修改明细" : [ { "数量" : 15 } ] };
     editSalesBill(json, colorSize);
     delay();// 不加延时会卡到销售开单按批次查界面
 
@@ -627,7 +627,7 @@ function test160008() {
     // 部分发货
     tapMenu("销售开单", "按订货开单");
     tapFirstText();
-    var json = { "入库明细" : [ { "数量" : 10 } ] }
+    var json = { "修改明细" : [ { "数量" : 10 } ] }
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
@@ -751,7 +751,7 @@ function test160011Field(staff, menu1, keys) {
     tapButton(getPop(), OK);
 
     // 保存修改并打印，打印----采购为确定，销售为打印(客户用)
-    var json = { "入库明细" : [ { "数量" : 2 } ], "打印" : OK };
+    var json = { "修改明细" : [ { "数量" : 2 } ], "打印" : OK };
     editSalesBill(json, colorSize)
     var opTime = json["操作日期"];//
 
@@ -1110,7 +1110,7 @@ function test160035() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
 
     delay();
@@ -1172,7 +1172,7 @@ function test160036() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : 50 } ] };
+    json = { "修改明细" : [ { "数量" : 50 } ] };
     editSalesBillNoColorSize(json);
 
     delay();
@@ -1422,7 +1422,7 @@ function test160042() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : "10" } ] };
+    json = { "修改明细" : [ { "数量" : "10" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");// 有时还是停留在销售开单
@@ -1434,7 +1434,7 @@ function test160042() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : "15" } ] };
+    json = { "修改明细" : [ { "数量" : "15" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
@@ -1521,7 +1521,7 @@ function test160044() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
+    json = { "修改明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
@@ -1534,7 +1534,7 @@ function test160044() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : "15" }, { "数量" : "10" } ] };
+    json = { "修改明细" : [ { "数量" : "15" }, { "数量" : "10" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
@@ -1599,7 +1599,7 @@ function test160046() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    json = { "入库明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
+    json = { "修改明细" : [ { "数量" : "10" }, { "数量" : "10" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu1("销售订货");
@@ -1778,8 +1778,8 @@ function test160072() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    var json = { "入库明细" : [ { "数量" : 1 } ] };
-    editPurInByOrderDet(json);
+    var json = { "修改明细" : [ { "数量" : 1 } ] };
+    editBillDet(json);
     saveAndAlertOk();
     tapButtonAndAlert("none", "打印\(客户用\)");// 开启了参数打印自动返回
     var cond = "window.buttons()['按批次查'].isVisible()";
@@ -1803,7 +1803,7 @@ function ts160073_74() {
         logWarn("未知colorSize＝" + colorSize);
         break;
     }
-    var inDet = { "入库明细" : [ { "数量" : 10 } ] };
+    var inDet = { "修改明细" : [ { "数量" : 10 } ] };
 
     var qo, o, ret = true;
     qo = { "备注" : "是否允许修改已发货的订单" };
@@ -1840,7 +1840,7 @@ function ts160073_74() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    var json = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 5 ] };
+    var json = { "修改明细" : [ { "数量" : 10 } ], "核销" : [ 5 ] };
     editSalesBill(json, colorSize);
     var cond = "getButton(window, ADDBILL).isVisible()";
     waitUntil(cond, 5);
@@ -1850,7 +1850,7 @@ function ts160073_74() {
     query();
     alertMsgs = [];// 清空
     tapFirstText();
-    editPurInByOrderDet(inDet);
+    editBillDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("订单预付款被核销");
     logDebug("------选择一条部分发货，但预付款被核销了的订单 修改款号订货数量后保存 ok=" + ok);
@@ -1882,7 +1882,7 @@ function ts160073_74() {
     alertMsgs = [];// 清空
     tapButton(window, QUERY);
     tapFirstText();
-    editPurInByOrderDet(inDet);
+    editBillDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("保存成功");
     logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成和已发数一样，点保存 ok=" + ok);
@@ -1894,8 +1894,8 @@ function ts160073_74() {
     tapMenu("销售订货", "按批次查");
     query();
     tapFirstText();
-    var inDet1 = { "入库明细" : [ { "数量" : 50 }, { "数量" : 50 } ] };
-    editPurInByOrderDet(inDet1);
+    var inDet1 = { "修改明细" : [ { "数量" : 50 }, { "数量" : 50 } ] };
+    editBillDet(inDet1);
     editSalesBillSave({});
     ok = isInAlertMsgs("保存成功");
     logDebug("------选择一条部分发货的订单，将所有款号的订货数修改成比已发数大，点保存 ok=" + ok);
@@ -1926,8 +1926,8 @@ function ts160073_74() {
     alertMsgs = [];// 清空
     tapButton(window, QUERY);
     tapFirstText();
-    var inDet1 = { "入库明细" : [ { "数量" : 5 }, { "数量" : 5 } ] };
-    editPurInByOrderDet(inDet1);
+    var inDet1 = { "修改明细" : [ { "数量" : 5 }, { "数量" : 5 } ] };
+    editBillDet(inDet1);
     editSalesBillSave({});
     ok = isInAlertMsgs("订单已全部发货");
     logDebug("------选择一条全部发货的款号，订货数修改成比已发数小，点保存 ok=" + ok);
@@ -1961,7 +1961,7 @@ function ts160073_74() {
     alertMsgs = [];// 清空
     tapButton(window, QUERY);
     tapFirstText();
-    editPurInByOrderDet(inDet);
+    editBillDet(inDet);
     editSalesBillSave({});
     ok = isInAlertMsgs("已结束的订单不允许修改");
     logDebug("------选择一条已结束的订单，增加款号，点保存 ok=" + ok);
@@ -1998,8 +1998,8 @@ function addBill160073(all) {
     tapFirstText();
 
     if (isUndefined(all)) {
-        var o = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
-        editPurInByOrderDet(o);
+        var o = { "修改明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+        editBillDet(o);
     }
     editSalesBillSave({});
 }
@@ -2187,7 +2187,7 @@ function test160087() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
     ret = isAnd(ret, test160087Field("不许修改部分发货"));
 
@@ -2205,7 +2205,7 @@ function test160087Field(msg) {
     tapMenu("销售订货", "按批次查");
     query();
     tapLine();
-    var json = { "入库明细" : [ { "数量" : 20 } ],
+    var json = { "修改明细" : [ { "数量" : 20 } ],
         "明细" : [ { "货品" : "k300", "数量" : [ 20 ] } ] };
     editSalesBill(json, colorSize);
     saveAndAlertOk();
@@ -2260,7 +2260,7 @@ function test160109() {
     var keys = { "日期从" : getDay(-30), "门店" : "中洲店", "发货状态" : "未发货" };
     conditionQuery(keys);
     tapLine();
-    var json = { "入库明细" : [ { "数量" : 1 } ] };
+    var json = { "修改明细" : [ { "数量" : 1 } ] };
     editSalesBill(json, colorSize);
     return isInAlertMsgs("不允许修改其它门店的销售订单");
 }
@@ -2303,7 +2303,7 @@ function test160114() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 15 }, { "数量" : 0 } ] };// 第二个未入库
+    json = { "修改明细" : [ { "数量" : 15 }, { "数量" : 0 } ] };// 第二个未入库
     editSalesBill(json, colorSize);
 
     alertMsgs = [];// 清空
@@ -2505,7 +2505,7 @@ function test160126() {
     var det2 = getQRDet().data;
     var ret = isAnd(obj.name() == PRINT, isEqualDyadicArray(det1, det2));// 打印按钮灰化
     json = { "客户" : "zbs", "明细" : [ { "货品" : "4562", "数量" : [ 10 ] } ],
-        "入库明细" : [ { "数量" : 30 } ], "特殊货品" : { "抹零" : 9 }, "挂单" : "yes" };
+        "修改明细" : [ { "数量" : 30 } ], "特殊货品" : { "抹零" : 9 }, "挂单" : "yes" };
     editSalesBill(json, colorSize);// 二次挂单保存
 
     tapMenu2("按挂单");
@@ -2611,7 +2611,7 @@ function test160150() {
     var keys = { "店员" : "000" };
     conditionQuery(keys);
     tapLine();
-    json = { "入库明细" : [ { "数量" : "20" } ], "onlytest" : "yes" };
+    json = { "修改明细" : [ { "数量" : "20" } ], "onlytest" : "yes" };
     editSalesBill(json, colorSize);
     saveAndAlertOk();
     tapPrompt();
@@ -3098,13 +3098,13 @@ function ts160172() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 15 } ] };
+    json = { "修改明细" : [ { "数量" : 15 } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("销售订货", "按批次查");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 10 } ] };
+    json = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(json, colorSize);
     var ret = isInAlertMsgs("订货数不允许修改成比已发数小");
 
@@ -3153,7 +3153,7 @@ function test160175() {
     tapMenu2("按批次查");
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : 20 } ] };
+    json = { "修改明细" : [ { "数量" : 20 } ] };
     editSalesBill(json, colorSize);
     ret = isAnd(ret, isEqual(stock, json["明细值"].data[0]["库存"]));
 

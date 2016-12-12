@@ -19,29 +19,18 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "testEditBillSizeHead");//
+ run(caseName, "test220007");//
 // run(caseName, "onlyTest");//
 }
 function onlyTest(){
 // delay();
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{      
-
-
-// tapMenu("销售订货", "新增订货+");
-// var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
-// "现金" : 1000, "刷卡" : [ 400 ], "汇款" : [ 600 ] };
-// editSalesBill(json, colorSize);
-//       
-// tapMenu2("按批次查");
-// query();
-// tapLine();
-// var ret=checkBillValue(json);
-// tapReturn();
-// return ret;
+     var qr=getQRDet();
+     debugObject(qr.data[0]);
    }catch(e){
       logWarn(e);
    }

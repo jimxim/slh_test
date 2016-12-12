@@ -2299,7 +2299,7 @@ function test120081() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var josn = { "入库明细" : [ { "数量" : 10 } ] };
+    var josn = { "修改明细" : [ { "数量" : 10 } ] };
     editSalesBill(josn, colorSize);
 
     tapMenu2("按订货入库");
@@ -2333,9 +2333,9 @@ function test120064() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var jo = { "入库明细" : [ { "数量" : 10 } ], "核销" : [ 4 ] };
+    var jo = { "修改明细" : [ { "数量" : 10 } ], "核销" : [ 4 ] };
     editSalesBillVerify(jo);
-    editPurInByOrderDet(jo);
+    editBillDet(jo);
     editSalesBillSave({});
 
     tapMenu2("按订货入库");
@@ -3112,27 +3112,27 @@ function ts120091() {
 function ts120092() {
     alertMsgExKeys = [ "确定返回", "确定操作", "保存成功", "确定入库", "确定作废" ];
     // 1.选择部分发货的单子，输入超过订货数 /与订货数相同保存
-    var jo1 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
-    var jo2 = { "入库明细" : [ { "数量" : 40 } ] };
+    var jo1 = { "修改明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    var jo2 = { "修改明细" : [ { "数量" : 40 } ] };
     ts120092Field(jo1, jo2);
     var ret = !hasAlerts();// 正常保存
 
     // 2.选择部分发货的单子，一个款全部发货，另外一个款部分发货， 再输入发货数保存
-    jo1 = { "入库明细" : [ { "数量" : 10 } ] };
-    jo2 = { "入库明细" : [ { "数量" : 10 } ] };
+    jo1 = { "修改明细" : [ { "数量" : 10 } ] };
+    jo2 = { "修改明细" : [ { "数量" : 10 } ] };
     ts120092Field(jo1, jo2);
     ret = isAnd(ret, !hasAlerts());// 正常保存
 
     // 3.选择全部发货的单子（已发数与订货数相等），输入数量点保存
     jo1 = {};
-    jo2 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    jo2 = { "修改明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
     ts120092Field(jo1, jo2);
     ret = isAnd(ret, isInAlertMsgs("订单已全部入库或已终结"));
     alertMsgs = [];
 
     // 4.选择全部发货的单子（已发数大于订货数），输入数量点保存
-    jo1 = { "入库明细" : [ { "数量" : 40 }, { "数量" : 40 } ] };
-    jo2 = { "入库明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
+    jo1 = { "修改明细" : [ { "数量" : 40 }, { "数量" : 40 } ] };
+    jo2 = { "修改明细" : [ { "数量" : 10 }, { "数量" : 10 } ] };
     ts120092Field(jo1, jo2);
     ret = isAnd(ret, isInAlertMsgs("订单已全部入库或已终结"));
     alertMsgs = [];
@@ -3180,14 +3180,14 @@ function ts120092Field(jo1, jo2) {
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
-    editPurInByOrderDet(jo1);// 数据准备
+    editBillDet(jo1);// 数据准备
     editSalesBillSave({});
 
     if (isDefined(jo2)) {
         tapMenu2("按订货入库");
         tapButton(window, QUERY);// 刷新界面
         tapLine();
-        editPurInByOrderDet(jo2);
+        editBillDet(jo2);
         editSalesBillSave({});
     }
     delay();
@@ -3359,8 +3359,8 @@ function ts120106() {
     tapMenu("采购入库", "按订货入库");
     query();
     tapFirstText();
-    var json = { "入库明细" : [ { "数量" : 10 } ] };
-    editPurInByOrderDet(json);
+    var json = { "修改明细" : [ { "数量" : 10 } ] };
+    editBillDet(json);
     editSalesBillSave({});
 
     tapButton(window, QUERY);
@@ -3384,8 +3384,8 @@ function ts120108() {
     for (var i = 0; i < 3; i++) {
         var r = getRandomNum(1, 100);
         tapFirstText();
-        var json = { "入库明细" : [ { "数量" : r } ], "不返回" : "yes" };
-        editPurInByOrderDet(json);
+        var json = { "修改明细" : [ { "数量" : r } ], "不返回" : "yes" };
+        editBillDet(json);
         editSalesBillSave(json);// 重复保存
         delay();//
     }
@@ -3524,12 +3524,12 @@ function test120112() {
 
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : "8" } ], "汇款" : [ 1000, "交" ] };
+    json = { "修改明细" : [ { "数量" : "8" } ], "汇款" : [ 1000, "交" ] };
     editSalesBill(json, colorSize);
 
     query();
     tapLine();
-    json = { "入库明细" : [ { "数量" : "11" } ], "刷卡" : [ 500, "交" ],
+    json = { "修改明细" : [ { "数量" : "11" } ], "刷卡" : [ 500, "交" ],
         "汇款" : [ 500, "交" ] };
     editSalesBill(json, colorSize);
 

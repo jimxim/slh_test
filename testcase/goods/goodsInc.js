@@ -304,8 +304,8 @@ function getBillDetCSGoodsFieldIndex() {
 }
 /**
  * 获取开单界面明细界面第一个内容为空的货品textField下标
- * @param idx
  * @param tfNum 明细输入框个数
+ * @param idx scrollView下标 默认-1
  * @returns {Number}
  */
 function getBillDetInputIndex(tfNum, idx) {
@@ -439,6 +439,7 @@ function getQRDet(view, o) {
     if (isDefined(o) && o.hasOwnProperty("标题")) {
         titles = o["标题"];
     } else {
+        // 尺码表头模式，取值验证默认使用第一个尺码组来定标题
         titles = getSalesBillDetTfObject();
     }
 
@@ -1893,30 +1894,63 @@ function editLogisticsVerify(o) {
  * 修改单据已经存在货品的数量等信息,均色均码和颜色尺码是一样的
  * @param o
  */
-function editPurInByOrderDet(o) {
-    var details = o["入库明细"];
+function editBillDet(o) {
+    var details = o["修改明细"], i;
     if (isDefined(details)) {
-        var tfNum = getSalesBillDetTfObject();
-        var title_num = getBillTitle_Num(tfNum);// 获取数量相关的标题名
-        var fields = [];
-        for ( var i in details) {
-            var d = details[i];
-            if (isDefined(d["数量"])) {
-                fields.push(new TField("入库数", TF, tfNum["明细输入框个数"] * i
-                        + tfNum[title_num], d["数量"]));
-            }
+        var view1 = getScrollView(-1);
+        if (colorSize != "head") {
+            var tfNum = getSalesBillDetTfObject();
+            var title_num = getBillTitle_Num(tfNum);// 获取数量相关的标题名
+            var fields = [];
+            for (i in details) {
+                var d = details[i];
+                if (isDefined(d["数量"])) {
+                    fields.push(new TField("入库数", TF, tfNum["明细输入框个数"] * i
+                            + tfNum[title_num], d["数量"]));
+                }
 
-            if (isDefined(d["单价"])) {
-                fields.push(new TField("单价", TF, tfNum["明细输入框个数"] * i
-                        + tfNum["单价"], d["单价"]));
-            }
+                if (isDefined(d["单价"])) {
+                    fields.push(new TField("单价", TF, tfNum["明细输入框个数"] * i
+                            + tfNum["单价"], d["单价"]));
+                }
 
-            if (isDefined(d["备注"])) {
-                fields.push(new TField("备注", TF, tfNum["明细输入框个数"] * i
-                        + tfNum["备注"], d["备注"]));
+                if (isDefined(d["备注"])) {
+                    fields.push(new TField("备注", TF, tfNum["明细输入框个数"] * i
+                            + tfNum["备注"], d["备注"]));
+                }
+            }
+            setTFieldsValue(view1, fields);
+        } else {
+            var o1 = getDetSizheadTitle();
+            var tfNum = getSalesBillDetTfNum({});
+            for (i = 0; i < details.length; i++) {
+                var start = tfNum * i;
+                var d = details[i];
+                if (isDefined(d["货品"])) {
+                    var f = new TField("货品", TF_AC, start + 0, d["货品"], -1, 0);
+                    setTFieldsValue(view1, [ f ]);
+                }
+                if (isDefined(d["颜色"])) {
+                    var tf = getTextField(view1, start + o1["颜色"]);
+                    tf.doubleTap();// 双击出颜色选择页面
+                    var popView = getPopView(window, -1);
+                    tapButton(popView, d["颜色"]);// 单选
+                }
+
+                var fields = [];
+                var sizeObj = d["尺码"];
+                for ( var j in sizeObj) {
+                    var cm = sizeObj[j];
+                    var colIndex = o1[j];
+                    f = new TField(j, TF, start + colIndex, cm);
+                    fields.push(f);
+                }
+                if (fields.length > 0) {
+                    setTFieldsValue(view1, fields);
+                }
+
             }
         }
-        setTFieldsValue(getScrollView(-1), fields);
     }
 }
 /**
