@@ -2391,8 +2391,7 @@ function test160120() {
     editSalesBill(json, colorSize);
     tapButton(window, CLEAR);
     editSalesBillUnpay({ "未付" : "yes" });// 清除客户后再点未付
-    var obj = window.buttons().firstWithPredicate("isEnabled == 0");// 第一个灰化按钮
-    var ret = obj.name() == "核销";// 核销按钮灰化
+    var ret = !window.buttons()["核销"].isEnabled();// 核销按钮灰化
     editSalesBillSave({});
     return isAnd(ret, isInAlertMsgs("客户不能为空"));
 }
@@ -2501,9 +2500,9 @@ function test160126() {
     tapMenu2("按挂单");
     query();
     tapLine();
-    var obj = window.buttons().firstWithPredicate("isEnabled == 0");// 第一个灰化按钮
+    var obj = window.buttons()[PRINT];// 打印
     var det2 = getQRDet().data;
-    var ret = isAnd(obj.name() == PRINT, isEqualDyadicArray(det1, det2));// 打印按钮灰化
+    var ret = isAnd(!obj.isEnabled(), isEqualDyadicArray(det1, det2));// 打印按钮灰化
     json = { "客户" : "zbs", "明细" : [ { "货品" : "4562", "数量" : [ 10 ] } ],
         "修改明细" : [ { "数量" : 30 } ], "特殊货品" : { "抹零" : 9 }, "挂单" : "yes" };
     editSalesBill(json, colorSize);// 二次挂单保存
@@ -2554,9 +2553,9 @@ function test160132() {
     var keys = { "日期从" : getDay(-30) };
     conditionQuery(keys);
     tapLine();
-    var obj = window.buttons().firstWithPredicate("isEnabled == 0");// 第一个灰化按钮
+    var ret = !window.buttons()["挂 单"].isEnabled();
     tapReturn();
-    return obj.name() == "挂 单";
+    return ret;
 }
 function test160149() {
     tapMenu("销售订货", "按厂商报单");

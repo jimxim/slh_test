@@ -361,6 +361,7 @@ function setGoodsParams002() {
  * 默认价格模式
  */
 function testGoods003() {
+    var colorSize = "no";
     run("【货品管理-新增货品】款号修改界面吊牌价显示检查", "ts100057");
     run("【货品管理-货品查询】不同门店不同价格在货品查询界面的数值验证", "ts100176");
     // 均色均码
@@ -376,7 +377,6 @@ function testGoods003() {
         run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
     }
     run(" 均色均码模式", "setGoodsNoColorParams");
-    colorSize = "no";
 }
 function test200Goods003() {
     run("【货品管理-货品查询】不同门店不同价格在货品查询界面的数值验证", "ts100176");

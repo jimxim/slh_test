@@ -933,8 +933,10 @@ function checkDate(str) {
 function checkBillValue(json) {
     var act = getQRDet().data;
     var exp = json["明细值"];
-    var exp = unityNotice(exp);// 采购入库
-    exp = unityShipped(exp);// 销售订货
+    if (colorSize != "head") {// 尺码表头不需要特殊处理，标题取值方式不同
+        exp = unityNotice(exp);// 采购入库 通知数
+        exp = unityShipped(exp);// 销售订货 已发
+    }
     return isAnd(checkBillWinValue(json["输入框值"]), isEqualDyadicArray(exp.data,
             act));
 }
@@ -1438,9 +1440,7 @@ function isDisabledTField(idx, view) {
     if (isUndefined(view)) {
         view = window;
     }
-    var obj = view.textFields()[idx].textFields().firstWithPredicate(
-            "isEnabled == 1");// isEnabled =0为灰化
-    return isUIAElementNil(obj);
+    return !view.textFields()[idx].isEnabled();
 }
 
 /**

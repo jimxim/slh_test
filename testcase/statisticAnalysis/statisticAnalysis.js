@@ -2115,7 +2115,8 @@ function test190084() {
 
 function test190085() {
     tapMenu("统计分析", Menu_Profit);
-    query();
+    // query();
+    tapButton(window, QUERY);
     var qr = getQR();
     var a = qr.data[0]["利润额"];
 
@@ -2124,7 +2125,7 @@ function test190085() {
     var sum1 = getCounts(cond);
 
     tapNaviRightButton();// tapNaviButton("按单利润表")
-    cond = " getQR2(getScrollView(-1, 0), '批次', '利润额')";
+    cond = "getQR2(getScrollView(-1, 0), '批次', '利润额')";
     var sum2 = getCounts(cond);
     tapNaviClose();
     return isAnd(isEqual(sum1["利润额"], sum2["利润额"]), isEqual(a, sum2["利润额"]));
@@ -2402,10 +2403,7 @@ function test190102() {
     // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "成本额",
     // IS_NUM);
     // ret = ret && sortByTitle2(getScrollView(-1, 0), "款号", "利润额", "利润额");
-
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-
+    tapNaviClose();
     return ret;
 }
 

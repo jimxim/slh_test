@@ -1526,7 +1526,8 @@ function checkCopyAndPaste(menu2) {
 
     tapMenu2(menu2);
     tapButton(window, "整单粘贴");
-    editSalesBillSave({});
+    var json = {};
+    editSalesBillSave(json);
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);// 刷新界面
@@ -1534,11 +1535,9 @@ function checkCopyAndPaste(menu2) {
     var cond = "window.buttons()['整单复制'].isVisible()";
     waitUntil(cond, 5);// 数据多的单据，进入有延迟
     delay();// 进入后再等待数据加载
-    var ret = checkBillWinValue(v);
-    var data2 = getQRDet().data;
+    var ret = checkBillValue(json);
     tapReturn();
-    // debugObject(v2, "v2");
-    return isAnd(ret, isEqualDyadicArray(data1, data2));
+    return ret;
 }
 /**
  * 超长订单明细
