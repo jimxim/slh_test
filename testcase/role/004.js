@@ -4,7 +4,8 @@
 function test004() {
     run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134_170670");
     // run("【销售开单－开单】销售开单允许修改和作废的天数 [*不能用总经理帐号测]", "test170136");
-    run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");//
+    run("【销售开单－开单】更多-所有挂单 功能检查", "test170177");//   
+    run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170449");
     run("【销售开单-开单】销售价格允许改高不允许改低--价格改低", "test170450_4");
     run("【销售开单-开单】允许店长改低价格", "test170586_4");
     run("【销售开单－开单】按门店区分客户--店长权限", "test170464");
@@ -22,6 +23,7 @@ function test004() {
     run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");
     run("【销售开单-按汇总-按配货员汇总】查看权限", "test170685");
     run("【销售开单-开单】异地+代收，店员权限/异地+代收，+挂单+ 店员权限", "test170679_170680");
+    run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");
     run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
     run("【销售开单-物流单】非总经理登录", "test170736");
@@ -765,9 +767,7 @@ function test170430_4() {
     var fields = queryGoodsFields(keys);
     query(fields);
     tapFirstText();
-
     var jprice = getTextFieldValue(getScrollView(), 8);
-
     tapReturn();
 
     tapMenu("货品管理", "货品查询");
@@ -775,9 +775,7 @@ function test170430_4() {
     var fields = queryGoodsFields(keys);
     query(fields);
     tapFirstText();
-
     var gprice = getTextFieldValue(getScrollView(), 23);
-
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
@@ -805,6 +803,55 @@ function test170430_4() {
     var hk1 = qr.data[0]["汇款"];
 
     return ret;
+}
+function test170449() {
+    var qo, o, ret = true;
+    qo = { "备注" : "积分是否跨门店共享" };
+    o = { "新值" : "1", "数值" : [ "共享" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单时是否按门店区分客户" };
+    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "hh" };
+    var fields = queryCustomerFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["当前积分"];
+
+    tapMenu("往来管理", "积分查询");
+    keys = { "客户" : "hh" };
+    fields = queryCustomerScoreFields(keys);
+    query(fields);
+    qr = getQR();
+    var len = qr.data.length;
+
+    keys = { "客户" : "hh", "门店" : "仓库店" };
+    fields = queryCustomerScoreFields(keys);
+    query(fields);
+    var qr1 = getQR();
+
+    keys = { "客户" : "hh", "门店" : "中洲店" };
+    fields = queryCustomerScoreFields(keys);
+    query(fields);
+    var qr2 = getQR();
+    var ret1 = isAnd(!isEqual(a, qr.counts["当前积分"]), isEqual(1, len), isEqual(
+            0, qr1.data.length), isEqual(0, qr2.data.length));
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : "hh" };
+    editSalesBillCustomer(json);
+    tapButton(window, "核销");
+    var b = getStaticTextValue(getScrollView(-1, 0), 1);
+    var c = b.split(": ");
+    tapNaviLeftButton();
+    tapReturn();
+    var ret2 = isEqual(c[1], a);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170450_4() {
     var qo, o, ret = true;

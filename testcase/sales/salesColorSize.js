@@ -122,6 +122,7 @@ function testSalesColorSize003() {
     run("【销售开单－开单】开单时不显示当前库存", "test170113");
     run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
     run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
+    run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+颜色尺码", "test170203");
     // run("【销售开单-开单】童装模式手数需要四位数", "test170719");//童装开单模式生效需重新登录
 }
 function testSalesColorSize004() {
@@ -3942,6 +3943,31 @@ function test170115() {
     tapButtonAndAlert(RETURN, OK);
 
     return ret;
+}
+function test170203() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单时逐条进行退货数大于拿货数验证" };
+    o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ] };
+    editSalesBillDetColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "往来单位为空不允许有欠款或余额");
+
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 1 ] } ] };
+    editSalesBillColorSize(json);
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret2 = isIn(alertMsg1, "保存成功");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170442_170425() {
     var qo, o, ret = true;
