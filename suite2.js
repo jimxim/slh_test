@@ -14,13 +14,9 @@ function test000All() {
     ipadVer ="7.27"; // 7.21// 7.23//"7.25"
 // run("【销售订货】异地+代收，挂单+店长权限", "test170650");//
 // run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");//
- run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
-// run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
-// run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
-    // run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");
 // run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
-// run("【销售开单－按订货开单】清除数量/根据选择内容进行发货", "test170267");//bug
+ // run("【销售开单-开单】均色均码模式下款号明细中如果出现某行有单价和小计但没有款号时，程序会提示", "test170396");// bug
        
 // run("", "test0");
 }
@@ -31,6 +27,7 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
+// debugObject();
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
@@ -111,6 +108,7 @@ function test000SalesNoColorSize005() {
         logout();
     }
 }
+// 销售开单同时订货
 function testSalesNoColorSize170125_Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -138,6 +136,7 @@ function testSalesNoColorSize170607() {
         logout();
     }
 }
+// 获取未保存
 function testSalesNoColorSize170140_Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -156,6 +155,7 @@ function testSalesNoColorSize170140() {
         logout();
     }
 }
+// 加工货品
 function testSalesNoColorSize170429_Params() {
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
@@ -240,150 +240,6 @@ function test100SalesNoColorSizeElsePrepare005() {
     var ok = login("100","000000",p1);
     if( ok ) {
     	run("仓库店准备配货员单据", "test170637Prepare");
-        logout();
-    }
-}
-function testSalesNoColorSize170240_1() {
-    var p1 = {"角色":"财务员001"};
-    var ok = login("001","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_1");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_1() {
-    var p1 = {"角色":"财务员001"};
-    var ok = login("001","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_1");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_2() {
-    var p1 = {"角色":"仓管员002"};
-    var ok = login("002","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_2");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_2() {
-    var p1 = {"角色":"仓管员002"};
-    var ok = login("002","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_2");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_3() {
-    var p1 = {"角色":"采购员003"};
-    var ok = login("003","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_3");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_3() {
-    var p1 = {"角色":"采购员003"};
-    var ok = login("003","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_3");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_4");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_5() {
-    var p1 = {"角色":"开单员005"};
-    var ok = login("005","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_5");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_5() {
-    var p1 = {"角色":"开单员005"};
-    var ok = login("005","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_5");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_6() {
-    var p1 = {"角色":"营业员006"};
-    var ok = login("006","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_6");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_6() {
-    var p1 = {"角色":"营业员006"};
-    var ok = login("006","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_6");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170240_7() {
-    var p1 = {"角色":"配货员007"};
-    var ok = login("007","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170240_7");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170241_7() {
-    var p1 = {"角色":"配货员007"};
-    var ok = login("007","000000",p1);
-    if( ok ) {
-        run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_7");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170134_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170134");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170586_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-开单】允许店长改低价格", "test170586_4");
-        
         logout();
     }
 }

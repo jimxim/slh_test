@@ -101,11 +101,27 @@ function testSalesPrepare005() {
     editSalesBillColorSize(json);
 }
 // k300中洲店和仓库店做采购入库
-function testSalesPrepare005() {
+function testSalesPrepare006() {
     tapMenu("采购入库", "新增入库+");
     var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : [ 50 ] } ] };
     editSalesBillColorSize(json);
 }
+// 检查款号3035为启用
+function testSalesPrepare007() {
+    tapMenu("货品管理", "货品查询");
+    var Keys = { "厂商" : "vell", "款号名称" : "3035" };
+    var Fields = queryGoodsFields(Keys);
+    query(Fields);
+    var qr = getQR();
+    if (qr.data.length == 0) {
+        tapButton(window, QUERY);
+        tapFirstText();
+        tapButtonAndAlert(START, OK);
+        tapPrompt();
+        tapRefresh();
+    }
+}
+
 function test170637Prepare() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };

@@ -532,8 +532,11 @@ function test170249_4() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("往来管理", "客户查询");
-    var arr = getTFieldsIndex();
-    var index = arr["客户"];
+    var index = 0;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["客户"];
+    }
     var ret1 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -550,8 +553,11 @@ function test170249_4() {
     tapButton(window, CLEAR);
 
     tapMenu("往来管理", "客户账款", "客户门店账");
-    arr = getTFieldsIndex();
-    index = arr["客户"];
+    var index = 1;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["客户"];
+    }
     var ret2 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -568,10 +574,8 @@ function test170249_4() {
     tapButton(window, CLEAR);
 
     tapMenu("销售订货", "新增订货+");
-    arr = getTFieldsIndex();
-    index = arr["客户"];
     var ret3 = true;
-    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -587,8 +591,11 @@ function test170249_4() {
     tapReturn();
 
     tapMenu("销售订货", "按批次查");
-    arr = getTFieldsIndex();
-    index = arr["客户_100"];
+    index = 0;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["客户"];
+    }
     var ret4 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -605,8 +612,11 @@ function test170249_4() {
     tapButton(window, CLEAR);
 
     tapMenu("销售开单", "按订货开单");
-    arr = getTFieldsIndex();
-    index = arr["客户"];
+    index = 3;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["客户"];
+    }
     var ret5 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -623,10 +633,8 @@ function test170249_4() {
     tapButton(window, CLEAR);
 
     tapMenu("销售开单", "开  单+");
-    arr = getTFieldsIndex();
-    index = arr["客户"];
     var ret6 = true;
-    var f = new TField("客户", TF_AC, index, "hh", -1);
+    var f = new TField("客户", TF_AC, 0, "hh", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -642,8 +650,11 @@ function test170249_4() {
     tapReturn();
 
     tapMenu("销售开单", "按批次查");
-    arr = getTFieldsIndex();
-    index = arr["客户_8"];
+    var index = 0;
+    if (ipadVer >= "7.27") {
+        arr = getTFieldsIndex();
+        index = arr["客户_8"];
+    }
     var ret7 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -1069,8 +1080,11 @@ function test170550_4() {
     var ret2 = isIn(alertMsg1, "保存成功，是否打印");
 
     tapMenu("货品管理", "当前库存");
-    var arr = getTFieldsIndex();
-    var index = arr["款号_60"];
+    var index = 0;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["款号_60"];
+    }
     var ret3 = true;
     var f = new TField("款号", TF_AC, index, "aaa0", -1);
     var cells = getTableViewCells(window, f);
@@ -1127,8 +1141,11 @@ function test170551_4() {
     var ret2 = isAnd(isIn(alertMsg1, "保存成功，是否打印"));
 
     tapMenu("货品管理", "当前库存");
-    var arr = getTFieldsIndex();
-    var index = arr["款号_60"];
+    var index = 0;
+    if (ipadVer >= "7.27") {
+        var arr = getTFieldsIndex();
+        var index = arr["款号_60"];
+    }
     var ret3 = false;
     var f = new TField("款号", TF_AC, index, "aaa0", -1);
     var cells = getTableViewCells(window, f);
