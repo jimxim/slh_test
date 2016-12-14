@@ -85,11 +85,30 @@ function getQueryBtnIndex() {
     return getButtonIndex(window, "...");
 }
 /**
- * 获取一级界面查询textfield对象数组
- * @returns
+ * 获取view中TF数组激活状态 0灰化 1正常
+ * @param view
+ * @param startIdx
+ * @param endIdx
+ * @returns {String}
  */
-function getWindowTFieldsIndex() {
-    return getTFieldsIndex(window);
+function getTFEnabledState(view, startIdx, endIdx) {
+    var str = "";
+    var tf = getTextFields(view);
+    if (isUndefined(startIdx)) {
+        startIdx = 0;
+    }
+    if (isUndefined(endIdx)) {
+        endIdx = tf.length - 1;
+    }
+    for (var i = startIdx; i <= endIdx; i++) {//
+        var ok = tf[i].isEnabled();
+        if (ok) {
+            str += 1;
+        } else {
+            str += 0;
+        }
+    }
+    return str;
 }
 /**
  * 获取指定界面textFields数组的下标
@@ -111,6 +130,13 @@ function getTFieldsIndex(view) {
     }
     // debugObject(ret, "下标数组为");
     return ret;
+}
+/**
+ * 获取一级界面查询textfield对象数组
+ * @returns
+ */
+function getWindowTFieldsIndex() {
+    return getTFieldsIndex(window);
 }
 /**
  * 获取整个界面所有textfield的值 需要添加accessibilityLabel

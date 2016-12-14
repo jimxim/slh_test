@@ -19,18 +19,20 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "onlyTest");//
- run(caseName, "test160132");//
+ run(caseName, "test220025");//
+// run(caseName, "test220021");//
 }
 function onlyTest(){
 // delay();
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-   try{      
-       var tf = getTextFields(getScrollView(-1));
-       return tf[4].isEnabled();
+   try{ 
+// tapStaticText(window, "代收");
+
+       
+// UIATarget.localTarget().tap({x:847, y:139});
    }catch(e){
       logWarn(e);
    }

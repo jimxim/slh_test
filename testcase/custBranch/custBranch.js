@@ -150,28 +150,32 @@ function test230006() {
 }
 // 230013
 function test230007() {
+    var json = { "客户" : "xwc",
+        "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "单价" : "220" } ] };
+    var jo = { "明细" : [ { "货品" : "303", "表格行包含" : "3035" } ] };
+    return test230007(json, jo);
+}
+function test230007Field(json, jo) {
     var qo = { "备注" : "开单是否显示上次单价" };
     var o = { "新值" : "1", "数值" : [ "显示" ] };
     setGlobalParam(qo, o);
 
     tapMenu("销售开单", ADDBILL);
-    var json = { "客户" : "xwc",
-        "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "单价" : "220" } ] };
     editSalesBill(json, colorSize);
 
     tapMenu("销售开单", ADDBILL);
-    json = { "客户" : "xwc",
-        "明细" : [ { "货品" : "3035", "数量" : [ 20 ], "单价" : "240" } ] };
+    json["明细"][0]["单价"] = "240";
     editSalesBill(json, colorSize);
 
     tapMenu("销售开单", ADDBILL);
     var cust = { "客户" : "xw" };
     editSalesBillCustomer(cust);
-    var json = { "明细" : [ { "货品" : "303", "表格行包含" : "3035" } ] };
-    editSalesBillDetTapCell(json, colorSize);
+    editSalesBillDetTapCell(jo, colorSize);
     var arr = getBillGoodsDet();
-    var ret = isInArray(arr, "价格:240");
-    tapButton(window, MORE);
+    var ret = isInArray(arr, "价格: 240");
+    // tapButton(window, MORE);
+    var index = getButtonIndex(window, MORE, 2);// 有重名 1为菜单栏
+    tapButton(window, index);
     var qr = getQR2(getScrollView(-1, 0), "门店", "备注");
     ret = isAnd(ret, isEqual(qr.data[0]["单价"], 240), isEqual(qr.data[1]["单价"],
             220));
@@ -182,8 +186,17 @@ function test230007() {
 function getBillGoodsDet() {
     var arr = [];
     var texts = getStaticTexts(window);
-    var index = getArrayIndexIn(texts, "上次成交记录");
-    for (index + 1; index < texts.length; i++) {
+    var index = -1;
+    for (var i = texts.length - 1; i > 0; i--) {
+        var t = texts[i];
+        var v = t.name();
+        if (isIn(v, "上次成交记录")) {
+            index = i;
+            break;
+        }
+    }
+    logDebug("index=" + index);
+    for (index + 1; index < texts.length; index++) {
         var value = texts[index].value();
         arr.push(value);
     }

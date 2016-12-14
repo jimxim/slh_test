@@ -2532,7 +2532,15 @@ function deletePunctuation(str) {
                     /[\ |\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?]/g,
                     "");
 }
-
+/**
+ * 点击TF左上角的标签位置 eg 开单新界面模式 代收
+ * @param view
+ * @param i
+ */
+function tapTFLabel(view, i) {
+    var tf = getTextField(view, i);
+    tf.tapWithOptions({ tapOffset : { x : 0.1, y : 0.1 } });
+}
 /**
  * 去除数组重复元素
  * @param arr

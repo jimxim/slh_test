@@ -51,6 +51,14 @@ function testSizeHead001_shop1() {
     run("【销售开单－开单】款号较多时打印", "test220013");
     run("【销售开单】款号有很多个颜色值", "test220014");
     run("【销售开单-开单】开单尺码表头+复制粘贴适用价格的检查", "test220015");
+    run("【销售开单】尺码表头开单，整单复制的时候，文本框的只读属性应同步增加", "test220016");
+    run("【销售开单】核销操作-还款", "test220017");
+    run("【销售开单】核销操作-抵扣", "test220018");
+    run("【销售开单】整单折扣保存打印后小票上需要打印出折扣值", "test220019");
+    run("【销售开单】故意输入颜色尺码表头无对应关系的款号并保存", "test220020");
+    run("【销售开单】开单界面查看上次价", "test220021");
+    run("【销售开单】开单界面尺码表头模式下作退货操作", "test220022");
+    run("【销售开单】尺码组混用的极端情况", "test220025");
 }
 function test220003() {
     tapMenu("门店调出", "批量调出+");
@@ -278,7 +286,7 @@ function test220013() {
         "客户" : "xw",
         "备注" : "head",
         "明细" : [
-                { "货品" : "kh000", "颜色" : "灰色", "尺码" : { "S" : 1, "XL" : 2 } },
+                { "货品" : "kh000", "颜色" : "花色", "尺码" : { "S" : 1, "XL" : 2 } },
                 { "货品" : "kh001", "颜色" : "花色", "尺码" : { "M" : 3, "L" : 4 } },
                 { "货品" : "kh002", "颜色" : "黑色", "尺码" : { "L" : 5, "XL" : 6 } },
                 { "货品" : "kh003", "颜色" : "黑色", "尺码" : { "S" : 7, "M" : 8 } },
@@ -339,25 +347,128 @@ function test220015() {
     return checkCopyAndPaste(ADDBILL);
 }
 function test220016() {
-    // tapMenu("销售开单", ADDBILL);
-    // var json = {
-    // "客户" : "xw",
-    // "备注" : "head",
-    // "明细" : [
-    // { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 6, "XL" : 7 } },
-    // { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 8, "M" : 9 } } ] };
-    // editSalesBill(json, colorSize);
-    var str = "";
-    var tf = getTextFields(getScrollView(-1));
-    for (var i = 0; i < tf.length; i++) {//
-        var ok = tf[i].isEnabled();
-        if (ok) {//
-            str += 1;
-        } else {
-            str += 0;
-        }
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapLine();
+    var str1 = getTFEnabledState(getScrollView(-1));
+    tapButton(window, "整单复制");
+    var o1 = { "确定复制吗" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay();
+    tapReturn();
+
+    tapMenu2(ADDBILL);
+    tapButton(window, "整单粘贴");
+    editSalesBillSave({});
+
+    tapMenu2("按批次查");
+    tapButton(window, QUERY);// 刷新界面
+    tapLine();
+    var cond = "window.buttons()[SAVE].isVisible()";
+    waitUntil(cond, 5);// 数据多的单据，进入有延迟
+    delay();// 进入后再等待数据加载
+    var str2 = getTFEnabledState(getScrollView(-1));
+    tapReturn();
+    return isEqual(str1, str2);
+}
+function test220017() {
+    return test220017Field("是");
+}
+function test220018() {
+    return test220017Field("否");
+}
+function test220017Field(debt) {
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    var keys = { "客户名称" : "a", "门店" : "常青店", "是否欠款" : debt };
+    conditionQuery(keys);
+    var qr = getQR();
+    var cust = qr.data[0]["名称"];// 取欠款或余款客户
+
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : cust,
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 6, "XL" : 7 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 8, "M" : 9 } } ],
+        "核销" : [ 3 ] };// 选择全部核销批次
+    editSalesBill(json, colorSize);
+    return isInAlertMsgs("保存成功");
+}
+function test220019() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "zbs",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 3, "XL" : 4 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 3, "M" : 4 } } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var ret = checkBillValue(json);
+    tapReturn();
+    for (var i = 0; i < json["明细值"].data.length; i++) {
+        var exp = mul(json["明细值"].data[i]["单价"], json["输入框值"]["折扣"])
+        ret = isAnd(ret, isEqual(mul(exp, 7), json["明细值"].data[i]["小计"]));
     }
-    return str;
+
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
+    return ret;
+}
+function test220020() {
+    tapMenu("销售开单", ADDBILL);
+    var json = { "明细" : [ { "货品" : "agc001" } ], "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    var texts = getStaticTexts(window);
+    var qrTitle1 = getQResultTitle(texts, "颜色", "#");
+    var qrTitle2 = getQResultTitle(texts, "单价", "#");// 颜色和单价之间为尺码表头
+    var act = getTFEnabledState(getScrollView(-1), qrTitle1.index + 1,
+            qrTitle2.index - 1);
+    tapReturn();
+    return !isIn(act, "1");
+}
+function test220021() {
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 1, "XL" : 2 },
+            "单价" : "220" } ] };
+    var jo = { "明细" : [ { "货品" : "agc00", "表格行包含" : "agc001" } ] };
+    return test230007Field(json, jo);
+}
+function test220022() {
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "zbs",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : -1, "XL" : -2 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : -3, "M" : 4 } } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var ret = checkBillValue(json);
+    tapReturn();
+    return ret;
+}
+function test220025() {
+    tapMenu("货品管理", "货品查询");
+    var keys = { "款号名称" : "g" };
+    conditionQuery(keys);
+    tapLine();
+    var keys = { "尺码" : "S,M,L,25,26,27" };
+    addGoods(keys);
+    return isInAlertMsgs("不允许选择不同尺码组的尺码");
 }
 function testEditBillSizeHead() {
     var colorSize = "head";

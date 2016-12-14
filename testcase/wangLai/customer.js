@@ -962,13 +962,12 @@ function test110020() {
 }
 
 function test110021() {
-    var i, j;
     tapMenu("往来管理", "客户账款", "客户总账");
     query();
     var qr = getQR();
     var sum = 0;
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
             sum += Number(qr.data[i]["余额"]);
         }
         if (j < qr.totalPageNo) {
@@ -979,9 +978,7 @@ function test110021() {
     var ret = isEqual(qr.counts["余额"], sum);
 
     var keys = { "客户" : "xw" };
-    var fields = queryCustomerAccountFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     qr = getQR();
     var a = qr.counts["余额"];
     ret = isEqual(qr.data[0]["余额"], a);
@@ -991,14 +988,10 @@ function test110021() {
     qr = getQR();
     ret = isAnd(ret, isEqual(qr.counts["余额"], sum));
 
-    fields = queryCustomerShopAccountFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqual(qr.counts["余额"], a));
-
     return ret;
-
 }
 
 // 上级客户1开单
@@ -4451,6 +4444,7 @@ function ts110112() {
     ret = isAnd(ret, ts100178Field());
 
     tapMenu("往来管理", "客户账款", "客户总账");
+    keys = { "客户" : "sjkh1" };
     conditionQuery(keys);
     ret = isAnd(ret, ts100178Field());
     return ret;

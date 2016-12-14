@@ -735,7 +735,7 @@ function test100005_2() {
     tapButton(window, CLEAR);
     // 是否停用清除不了
     for (var i = 0; i < 8; i++) {
-        if (i != 7) {
+        if (i != fields["是否停用"].index) {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         } else {
             ret = ret && isEqual("否", getTextFieldValue(window, i));
@@ -1537,7 +1537,7 @@ function ts100033Field(key1, key2, key3) {
     }
     delay();// 防止无法触发返回按钮
     tapReturn();
-   
+
     tapMenu2("货品查询");
     var qKeys = { "款号名称" : key1["名称"] };// 110026是自动生成款号
     var qFields = queryGoodsFields(qKeys);
@@ -3026,6 +3026,7 @@ function test100073_100074() {
     saveAndAlertOk();
     tapReturn();
 
+    gMenu3 = "仓位列表";// 自动返回仓位列表界面
     var keys = { "名称" : r };
     conditionQuery(keys);
     var qr = getQR();
@@ -3872,6 +3873,7 @@ function ts100116() {
 function ts100117() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号名称" : "g" };
+    tapButton(window, CLEAR);// 前面用例影响,一次清楚可能无效
     conditionQuery(keys);
     var qr = getQR(), i = 0;
     for (; i < qr.data.length; i++) {
@@ -3932,8 +3934,8 @@ function ts100121() {
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
 
-    var keys = { "进货价折扣" : 0.567, "零批价" : 0.987, "打包价" : 0.876, "大客户价" : 0.765,
-        "Vip价格" : 0.654 };
+    var keys = { "进货价折扣" : "0.567", "零批价" : "0.987", "打包价" : "0.876",
+        "大客户价" : "0.765", "Vip价格" : "0.654" };
     var fields = editGoodsBrandDiscountFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
