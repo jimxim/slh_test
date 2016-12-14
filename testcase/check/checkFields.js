@@ -10,38 +10,38 @@ function testQueryCheckBatchFields() {
 }
 
 function queryCheckBatchFields(keys, show) {
-    return getTFields("queryCheckBatchField", keys, show);
+    return getTFields("queryCheckBatchField", window, keys, show);
 }
 function queryCheckBatchField(key, show) {
     var f;
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从_515", TF_DT, 0, "2015-9-11");
         break;
     case "day2":
     case "日期到":
-        f = new TField("日期到", TF_DT, 1, getToday());
+        f = new TField("到_520", TF_DT, 1, getToday());
         break;
     case "batch1":
     case "批次从":
-        f = new TField("批次从", TF, 2, "1");
+        f = new TField("批次从_525", TF, 2, "1");
         break;
     case "batch2":
     case "批次到":
-        f = new TField("批次到", TF, 3, "20");
+        f = new TField("到_530", TF, 3, "20");
         break;
     case "optime1":
     case "处理时间从":
-        f = new TField("处理时间从", TF_DT, 4, "2015-9-11");
+        f = new TField("处理时间从_131", TF_DT, 4, "2015-9-11");
         break;
     case "optime2":
     case "处理时间到":
-        f = new TField("处理时间到", TF_DT, 5, getToday());
+        f = new TField("到_132", TF_DT, 5, getToday());
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 6, "常青店");// TF_SC
+        f = new TField("门店_536", TF, 6, "常青店");// TF_SC
         break;
     default:
         logWarn("未知key＝" + key);

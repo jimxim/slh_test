@@ -66,6 +66,7 @@ function testSalesPrepare003() {
     var qr = getQR();
     var ret = qr;
 
+    // 准备兑换单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt" };
     editSalesBillCustomer(json);
@@ -73,24 +74,10 @@ function testSalesPrepare003() {
     var r = "1" + getTimestamp(2);
     editExchangeScore(r);
 
-    return ret;
-}
-function testSalesPrepare004() {
-    testSalesPrepare003();
-
-    // 仓库店、中洲店,要有积分兑换单
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    tapButton(window, "核销");
-    var b = getStaticTextValue(getScrollView(-1, 0), 1);
-    var r = "9" + getTimestamp(6);
-    editExchangeScore(r);
-    query();
-    var qr = getQR();
-
-    var ret = qr;
+    // 准备盘点单
+    tapMenu("盘点管理", "新增盘点+");
+    var josn = { "明细" : [ { "货品" : "4562", "数量" : 5 } ] };
+    editCheckAddNoColorSize(josn);
 
     return ret;
 }
@@ -121,7 +108,6 @@ function testSalesPrepare007() {
         tapRefresh();
     }
 }
-
 function test170637Prepare() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };

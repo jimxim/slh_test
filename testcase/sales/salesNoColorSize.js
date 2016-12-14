@@ -233,7 +233,6 @@ function testSalesNoColorSize002() {
     run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+客户折扣+大于1的折扣", "test240008");
     run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+整单折扣+大于1的折扣", "test240013");
     run("【销售开单-新增开单】开单不允许折扣超出标准折扣+参数设置开单允许折扣大于1+产品折扣+大于1的折扣", "test240014");
-
 }
 function setNoColorSize_1Params() {
     var qo, o, ret = true;
@@ -622,7 +621,7 @@ function test170043() {
     tapButton(getPop(), OK);
     tapPrompt();
 
-    var r = randomWord(false, 7);
+    var r = "anew" + randomWord(false, 7);
     var r1 = getTimestamp(11);
     var g0 = new TField("名称", TF, 0, r);
     var fields = [ g0 ];
@@ -662,30 +661,25 @@ function test170043() {
     return ret && ret1;
 }
 function test170044() {
-    tapMenu("销售开单", "开  单+");
-    var r = "anewkh" + randomWord(false, 6);
-    var json = { "名称" : r };
-    editQuickAddCustomer(json);
-
     tapMenu("往来管理", "客户查询");
-    var keys = { "客户" : r };
+    var keys = { "客户名称" : "anew", "是否停用" : "否" };
     var qFields = queryCustomerFields(keys);
     query(qFields);
     var qr = getQR();
-
+    var customer = qr.data[0]["客户"];
     tapFirstText();
     tapButtonAndAlert("停 用");
     delay();
     tapRefresh();
 
     tapMenu("销售开单", "开  单+");
-    var f = new TField("客户", TF_AC, 0, "anewkh", -1);
+    var f = new TField("客户", TF_AC, 0, "anew", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
         var ret = false;
-        if (isEqual(r, v)) {
+        if (isEqual(customer, v)) {
             ret = true;
             break;
         }
@@ -697,7 +691,7 @@ function test170044() {
     }
     tapReturn();
 
-    r = randomWord(false, 6);
+    var r = randomWord(false, 6);
     tapMenu("往来管理", "客户查询");
     var keys = { "客户" : "ls" };
     var qFields = queryCustomerFields(keys);
@@ -737,7 +731,7 @@ function test170044() {
     var ret4 = ret2 || isEqual("李四", getTextFieldValue(window, 3));
 
     tapMenu("销售开单", "按订货开单");
-    var keys = { "客户" : r1 };
+    var keys = { "日期从" : getDay(-2), "客户" : r1 };
     var fields = salesBillOrderFields(keys);
     setTFieldsValue(window, fields);
     tapButton(window, QUERY);
@@ -1552,7 +1546,7 @@ function test170059() {
 }
 function test170061() {
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
+    var json = { "客户" : "hh", "特殊货品" : { "抹零" : 19 }, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     var money = getTextFieldValue(window, 1);
@@ -1571,7 +1565,7 @@ function test170061() {
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "onlytest" : "yes" };
+    var json = { "客户" : "hh", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapButton(window, "核销");
@@ -1579,10 +1573,10 @@ function test170061() {
     var len1 = qr.data.length;
     tapNaviLeftButton();
     tapReturn();
-    var ret1 = (sub(len, len1) == 2 || sub(len, len1) == 3);
+    var ret = (sub(len, len1) == 2 || sub(len, len1) == 3);
 
-    logDebug(", ret1=" + ret1 + ", len=" + len + ", len1=" + len1);
-    return ret1;
+    logDebug(", ret=" + ret + ", len=" + len + ", len1=" + len1);
+    return ret;
 }
 function test170062() {
     tapMenu("销售开单", "开  单+");
@@ -7409,6 +7403,8 @@ function test170429() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "gg55", "数量" : 1 } ] };
     editSalesBillNoColorSize(json);
+    var qr1 = json["明细值"];
+    var ret3 = isEqual(864, qr1.data[0]["单价"]);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -7418,7 +7414,9 @@ function test170429() {
     var ret1 = isAnd(!isEqual(je, sl * 250), isEqual(je, sl * 864));
 
     tapMenu("统计分析", "汇总表", "款号利润表");
-    query();
+    var keys = { "款号" : "gg55" };
+    var fields = statisticAnalysisCodeProfitFields(keys);
+    query(fields);
     qr = getQR();
     var sl1 = qr.data[0]["实销数"];
     var je1 = qr.data[0]["成本额"];
@@ -9276,10 +9274,10 @@ function test170522() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz" };
+        "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
+        "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
@@ -9310,6 +9308,9 @@ function test170522() {
                 ret1 = true;
                 break;
             }
+        }
+        if (ret1 == true) {
+            break;
         }
         if (j < qr.totalPageNo) {
             scrollNextPage();
@@ -9777,6 +9778,7 @@ function test170541() {
             isEqual(r1, qr.data[1]["单价"]));
     tapReturn();
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170542() {
@@ -10565,13 +10567,12 @@ function test170583() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 0,
-        "汇款" : [ 200, "交" ], "onlytest" : "yes" };
+        "汇款" : [ 200, "交" ] };
     editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    var ret = isIn(alertMsg, "保存成功");
-    tapReturn();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -10580,7 +10581,7 @@ function test170583() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 0,
-        "汇款" : [ 200, "交" ], "onlytest" : "yes" };
+        "汇款" : [ 200, "农" ], "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
@@ -11371,8 +11372,8 @@ function test170671() {
     // 货品进销存
     var ret2 = isAnd(isEqual(zventory2, sub(zventory, 7)), isEqual(zventory3,
             sub(zventory1, 8)), isEqual(ventory, ventory2), isEqual(ventory1,
-            ventory3), isEqual(xiao2, add(xiao, 7)), isEqual(xiao3, add(xiao1,
-            8)), isEqual(zxiao2, zxiao), isEqual(zxiao1, zxiao3));
+            ventory3), isEqual(add(xiao, 7), xiao2), isEqual(add(xiao1, 8),
+            xiao3), isEqual(zxiao2, zxiao), isEqual(zxiao1, zxiao3));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;

@@ -16,8 +16,6 @@ function test000All() {
 // run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");//
 // run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
- // run("【销售开单-开单】均色均码模式下款号明细中如果出现某行有单价和小计但没有款号时，程序会提示", "test170396");// bug
-       
 // run("", "test0");
 }
 function test0(){
@@ -28,6 +26,7 @@ function test0(){
 // debugElements(window);
 // debugArray(texts);
 // debugObject();
+    
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
@@ -227,14 +226,6 @@ function test100SalesNoColorSizeElsePrepare003() {
         logout();
     }
 }
-function test100SalesNoColorSizeElsePrepare004() {
-    var p1 = {"角色":"总经理"};
-    var ok = login("100","000000",p1);
-    if( ok ) {
-        run("仓库店准备代收单", "testSalesPrepare004");
-        logout();
-    }
-}
 function test100SalesNoColorSizeElsePrepare005() {
     var p1 = {"角色":"总经理"};
     var ok = login("100","000000",p1);
@@ -248,96 +239,6 @@ function testSalesNoColorSize170586_5() {
     var ok = login("005","000000",p1);
     if( ok ) {
         run("【销售开单-开单】允许店长改低价格", "test170586_5");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170641_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-物流单】非总经理登录", "test170641_4");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170649_Prepare() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售订货】异地+代收，店长权限", "test170649_Prepare");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170649() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售订货】异地+代收，店长权限", "test170649");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170650() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售订货】异地+代收，挂单+店长权限", "test170650");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170670() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单－开单】打印后不允许修改单据（不允许修改）", "test170670");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170679_170680() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-开单】异地+代收，店员权限/异地+代收，+挂单+ 店员权限", "test170679_170680");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170684() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170685() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-按汇总-按配货员汇总】查看权限", "test170685");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170699_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
-        
-        logout();
-    }
-}
-function testSalesNoColorSize170709_4() {
-    var p1 = {"角色":"店长004"};
-    var ok = login("004","000000",p1);
-    if( ok ) {
-        run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_4");
         
         logout();
     }
