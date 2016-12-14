@@ -67,7 +67,7 @@ function testSalesNoColorSizeElse002() {
     run("【销售开单-核销】开启-允许跨门店核销时，显示全部门店的余款", "test170686");
     run("【销售开单-核销】开启跨门店核销核销不同门店的物流单", "test170687");// ///
     run("【销售开单-核销】修改物流商不能弹出价格刷新框", "test170689");
-    // run("【销售开单-核销】开启-不允许跨门店核销时，不显示其他门店的物流代收单", "test170291");//
+    run("【销售开单-核销】开启-不允许跨门店核销时，不显示其他门店的物流代收单", "test170291");//
     // (帐套存在跨门店核销数据，关闭参数失败)
     // run("【销售开单-核销】不开启允许跨门店核销时，显示本门店的余款", "test170688");
     // run("【销售开单-核销】童装模式+代收 核销物流单", "test170441");//
@@ -7639,6 +7639,22 @@ function test170574() {
     return ret3;
 }
 function test170575() {
+    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    var r = "anewkd" + getTimestamp(6);
+    var keys = { "名称" : r, "门店" : "中洲店" };
+    var fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    tapReturn();
+
+    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    var r1 = "anewkd" + getTimestamp(6);
+    var keys = { "名称" : r1, "门店" : "仓库店" };
+    var fields = editCustomerLogisticsFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    tapReturn();
+
     tapMenu("销售开单", LogisticsVerify);
     var ret = false;
     var f = new TField("物流", TF_AC, 0, "s", -1);
@@ -7656,12 +7672,27 @@ function test170575() {
     tapButton(window, CLEAR);
 
     var ret1 = false;
-    var f = new TField("物流", TF_AC, 0, "s", -1);
+    var f = new TField("物流", TF_AC, 0, "anewkd", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, "顺丰快递")) {
+        if (isIn(v, r)) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    var ret1 = false;
+    var f = new TField("物流", TF_AC, 0, "anewkd", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, r1)) {
             ret1 = true;
             break;
         }

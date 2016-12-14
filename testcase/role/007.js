@@ -10,7 +10,8 @@ function test007() {
     run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
 }
-function test170119Prepare() {
+
+function test170119() {
     // 常青店 先开启异地仓库，再设置异地发货开单模式
     var qo, o, ret = true;
     qo = { "备注" : "支持异地仓库" };
@@ -25,8 +26,7 @@ function test170119Prepare() {
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
         "发货" : "仓库店" };
     editSalesBillNoColorSize(json);
-}
-function test170119() {
+
     // 仓库店配货员登陆
     tapMenu("销售开单", "按批次查");
     var keys = { "客户" : "ls" };
@@ -56,12 +56,23 @@ function test170119() {
     // ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug("ret=" + ret);
-    return ret;test170568Prepare
+    return ret;
+    test170568Prepare
 }
 function test170568Prepare() {
     // 仓库店要有订货单
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "10" } ],
+        "发货" : "常青店" };
     editSalesBillNoColorSize(json);
 }
 function test170568() {
@@ -71,7 +82,6 @@ function test170568() {
     var fields = salesBillOrderFields(keys);
     query(fields);
     var qr = getQR();
-
     var batch = qr.data[0]["批次"];
     var md = qr.data[0]["门店"];
 
@@ -84,7 +94,6 @@ function test170568() {
     fields = salesBillOrderFields(keys);
     query(fields);
     qr = getQR();
-
     var ret = isAnd(isEqual("仓库店", md), isEqual("仓库店", qr.data[0]["门店"]),
             isEqual(batch, qr.data[0]["批次"]));
 
@@ -94,7 +103,6 @@ function test170568() {
     fields = salesOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-
     var ret1 = isAnd(isEqual("仓库店", qr.data[0]["门店"]), isEqual(batch,
             qr.data[0]["批次"]));
 

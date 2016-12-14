@@ -77,6 +77,9 @@ function testCheckAll() {
 function checkPrepare_Off() {
     tapButton(window, "作 废");
 }
+function checkPrepare_IN() {
+    tapButton(window, "调 入");
+}
 function checkPrepare() {
     tapMenu("销售开单", "按批次查");
     var keys = { "日期从" : "2015-01-01", "作废挂单" : "待作废" };
@@ -100,8 +103,20 @@ function checkPrepare() {
         ret = true;
     }
 
-    logDebug(" t1=" + t1);
+    tapMenu("门店调入", "在途调拨");
+    var keys = { "日期从" : "2015-01-01" };
+    var fields = shopInFlitFields(keys);
+    query(fields);
+    qr = getQR();
+    var t2 = qr.total;
+    for (var i = 0; i < t2; i++) {
+        tapButton(window, QUERY);
+        tapFirstText();
+        runAndAlert("checkPrepare_IN", OK);
+        delay();
+    }
 
+    logDebug(" t1=" + t1);
     return ret;
 }
 function checkPrepare1() {
@@ -729,7 +744,7 @@ function test180025() {
     var keys = { "盘点门店" : "常青店" };
     var fields = checkProcessFields(keys);
     setTFieldsValue(getScrollView(), fields);
-    tapButtonAndAlert("部分处理", OK);
+    tapButtonAndAlert("全盘处理", OK);
     var bt = window.buttons()[RETURN];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);

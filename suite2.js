@@ -244,8 +244,8 @@ function testSalesNoColorSize170586_5() {
     }
 }
 function testSalesNoColorSize170568Prepare() {
-    var p1 = {"角色":"配货员"};
-    var ok = login("007","000000",p1);
+    var p1 = {"角色":"总经理"};
+    var ok = login("100","000000",p1);
     if( ok ) {
         run("【销售开单－开单】异地发货－－配货员可查看内容", "test170568Prepare");
         
