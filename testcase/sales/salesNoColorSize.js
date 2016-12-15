@@ -72,6 +72,7 @@ function testSalesNoColorSizeAll_1() {
     // // run("【销售开单－开单】刷新图像", "test170168");//刷新图像按钮已经去掉了
 }
 function testSalesNoColorSizeAll_2() {
+    run("【销售开单-按批次查】总经理修改其它门店单据", "test170714");
     run("【销售开单】底部汇总统一检查", "test170423");
     run("【销售开单-开单】代收模式2-先代收再新增货品", "test170443");
     run("【销售开单－开单】均色均码下连续开单,检查价格", "test170505");
@@ -377,7 +378,7 @@ function setNoColorSize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否显示待作废按钮功能" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单是否门店过滤人员" };
@@ -4830,16 +4831,6 @@ function test170179() {
     o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls",
-    // "明细" : [ { "货品" : "3035", "数量" : 2 }, { "货品" : "k300", "数量" : 3 } ],
-    // "onlytest" : "yes" };
-    // editSalesBillNoColorSize(json);
-    //
-    // tapButtonAndAlert("挂 单", OK);
-    // delay(2);
-    // tapReturn();
-
     tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "getMenu_More", "所有挂单");
     delay();
@@ -4854,16 +4845,6 @@ function test170179() {
     qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls",
-    // "明细" : [ { "货品" : "3035", "数量" : 2 }, { "货品" : "k300", "数量" : 3 } ],
-    // "onlytest" : "yes" };
-    // editSalesBillNoColorSize(json);
-    //
-    // tapButtonAndAlert("挂 单", OK);
-    // delay(2);
-    // tapReturn();
 
     tapMenu("销售开单", "开  单+");
     tapMenu("销售开单", "getMenu_More", "所有挂单");
@@ -12309,6 +12290,87 @@ function test170695() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170714() {
+    // 总经理跨门店修改其它门店的采购入库单/采购订货单/门店调出单/销售订货单/销售单/盘点单
+    tapMenu("采购入库", "按批次查");
+    var keys = { "门店" : "仓库店", "客户" : "vell", "作废挂单" : "正常" };
+    var fields = purchaseQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    tapMenu("采购订货", "按批次查");
+    keys = { "门店" : "仓库店" };
+    fields = purchaseOrderQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    var o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrder(o, "订货数", "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    tapMenu("门店调出", "按批次查");
+    keys = { "门店" : "仓库店" };
+    fields = shopOutQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    tapMenu("销售订货", "按批次查");
+    keys = { "门店" : "仓库店" };
+    fields = salesOrderQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret3 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    keys = { "门店" : "仓库店", "客户" : "zzy", "作废挂单" : "正常" };
+    fields = salesQueryBatchFields(keys);
+    query(fields);
+    tapFirstText();
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret4 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    tapMenu("盘点管理", "按批次查");
+    keys = { "门店" : "常青店" };
+    fields = queryCheckBatchFields(keys);
+    query(fields);
+    o = [ { "数量" : [ 50 ] } ];
+    editChangeSalesBillOrderNum(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret5 = isIn(alertMsg, "不允许修改其它门店的单据");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170722() {
     // 异地发货

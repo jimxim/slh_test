@@ -18,6 +18,7 @@ function test004() {
     run("【 开单 】开单时，款号是否按门店区分--非总经理权限", "test170551_4");
     run("【销售开单-核销】核销时可以输入全部的物流商", "test170575_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
+    run("销售开单-按挂单和开单-更多-所有挂单", "test170645");
     run("【销售订货】异地+代收，店长权限", "test170649");
     run("【销售订货】异地+代收，挂单+店长权限", "test170650");
     run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_4");
@@ -561,10 +562,6 @@ function test170249_4() {
 
     tapMenu("往来管理", "客户查询");
     var index = 0;
-    if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["客户"];
-    }
     var ret1 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -582,10 +579,6 @@ function test170249_4() {
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     var index = 1;
-    if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["客户"];
-    }
     var ret2 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -621,8 +614,7 @@ function test170249_4() {
     tapMenu("销售订货", "按批次查");
     index = 0;
     if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["客户"];
+        index = 5;
     }
     var ret4 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
@@ -641,10 +633,6 @@ function test170249_4() {
 
     tapMenu("销售开单", "按订货开单");
     index = 3;
-    if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["客户"];
-    }
     var ret5 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
     var cells = getTableViewCells(window, f);
@@ -680,8 +668,7 @@ function test170249_4() {
     tapMenu("销售开单", "按批次查");
     var index = 0;
     if (ipadVer >= "7.27") {
-        arr = getTFieldsIndex();
-        index = arr["客户_8"];
+        index = 7;
     }
     var ret7 = true;
     var f = new TField("客户", TF_AC, index, "hh", -1);
@@ -1155,8 +1142,7 @@ function test170550_4() {
     tapMenu("货品管理", "当前库存");
     var index = 0;
     if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["款号_60"];
+        index = 2;
     }
     var ret3 = true;
     var f = new TField("款号", TF_AC, index, "aaa0", -1);
@@ -1216,8 +1202,7 @@ function test170551_4() {
     tapMenu("货品管理", "当前库存");
     var index = 0;
     if (ipadVer >= "7.27") {
-        var arr = getTFieldsIndex();
-        var index = arr["款号_60"];
+        index = 2;
     }
     var ret3 = false;
     var f = new TField("款号", TF_AC, index, "aaa0", -1);
@@ -1336,9 +1321,9 @@ function test170641_4() {
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
     tapFirstText();
-    var r = getTimestamp(8);
+    var r = randomWord(false, 6);
     var f6 = new TField("运单号", TF, 6, r);
-    var f10 = new TField("备注", TF, 10, "zz");
+    var f10 = new TField("备注", TF, 10, r);
     var fields = [ f6, f10 ];
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
@@ -1347,7 +1332,7 @@ function test170641_4() {
     query();
     tapFirstText();
     var ret = isAnd(isEqual(r, getTextFieldValue(getScrollView(), 6)), isEqual(
-            "zz", getTextFieldValue(getScrollView(), 10)));
+            r, getTextFieldValue(getScrollView(), 10)));
     tapReturn();
 
     logDebug(" ret=" + ret);
@@ -1560,6 +1545,7 @@ function test170685_4() {
     return ret;
 }
 function test170699_4() {
+    // 单项查询
     tapMenu("销售开单", "按明细查");
     var keys = { "厂商" : "vell" };
     var fields = salesQueryParticularFields(keys);
@@ -1583,6 +1569,24 @@ function test170699_4() {
             qr = getQR();
         }
     }
+
+    // 组合查询
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 10, "备注" : "mxbz" } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按明细查");
+    var keys = { "款号" : "3035", "款号名称" : "jkk", "客户" : "ls", "店员" : "000",
+        "门店" : "常青店", "备注" : "mxbz", "价格类型" : "打包价", "厂商" : "vell" };
+    var fields = salesQueryParticularFields(keys);
+    query(fields);
+    var qr = getQR();
+    var a = qr.data[0]["客户"];
+    var a1 = qr.data[0]["款号"];
+    var a2 = qr.data[0]["数量"];
+    var ret2 = isAnd(isEqual("李响", a), isEqual("3035", a1), isEqual(10, a2),
+            isEqual("Vell", qr.data[0]["厂商"]));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

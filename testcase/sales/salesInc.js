@@ -54,6 +54,7 @@ function testSalesPrepare002() {
 }
 function testSalesPrepare003() {
     // 仓库店、中洲店// 要有物流单//"zzy"(章子怡为中洲店客户)只在常青店以外的门店开单
+    // 销售单
     tapMenu("销售开单", "开  单+");
     var json = {
         "客户" : "zzy",
@@ -68,16 +69,41 @@ function testSalesPrepare003() {
 
     // 准备兑换单
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lt" };
+    json = { "客户" : "lt" };
     editSalesBillCustomer(json);
     tapButton(window, "核销");
     var r = "1" + getTimestamp(2);
     editExchangeScore(r);
 
-    // 准备盘点单
+    // 盘点单
     tapMenu("盘点管理", "新增盘点+");
-    var josn = { "明细" : [ { "货品" : "4562", "数量" : 5 } ] };
+    josn = { "明细" : [ { "货品" : "4562", "数量" : 5 } ] };
     editCheckAddNoColorSize(josn);
+
+    // 采购入库单
+    tapMenu("采购入库", "新增入库+");
+    json = { "客户" : "vell", "明细" : [ { "货品" : "4562", "数量" : 20, "单价" : 100 } ] };
+    editSalesBillNoColorSize(json);
+
+    // 采购订货单
+    tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20, "单价" : 100 } ] };
+    editSalesBillNoColorSize(json);
+
+    // 门店调出单
+    tapMenu("门店调出", "批量调出+");
+    delay();
+    var f0 = new TField("调出人", TF_AC, 0, "000", -1, 0);
+    var f1 = new TField("接收店", TF_SC, 1, "中洲店");
+    var fields = [ f0, f1 ];
+    setTFieldsValue(window, fields);
+    var json = { "明细" : [ { "货品" : "k300", "数量" : 10 } ] };
+    editSalesBillNoColorSize(json);
+
+    // 销售订货单
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    editSalesBillNoColorSize(json);
 
     return ret;
 }
@@ -90,7 +116,7 @@ function testSalesPrepare005() {
 // k300中洲店和仓库店做采购入库
 function testSalesPrepare006() {
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : [ 50 ] } ] };
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : [ 20 ] } ] };
     editSalesBillColorSize(json);
 }
 // 检查款号3035为启用
@@ -856,50 +882,65 @@ function editChangeSalesBillOrderRemarks(o, ret) {
 }
 /**
  * 单据修改
- * @param o
+ * @param o *
+ * @param v
  * @param ret
  * @returns
  */
-function editChangeSalesBillOrder(o, ret) {
+function editChangeSalesBillOrder(o, v, ret) {
     delay();
-    if (isUndefined(ret)) {
-        ret = "no";
+    var title_num;
+    switch (v) {
+    case "数量":
+        title_num = "数量";
+        break;
+    case "单价":
+        title_num = "单价";
+        break;
+    case "折扣":
+        title_num = "折扣";
+        break;
+    case "备注":
+        title_num = "备注";
+        break;
+    case "订货数":
+        title_num = "订货数";
+        break;
+    default:
+        break;
+
     }
-    var d = o["明细"];
-    var d1 = d["数量"];
-    var d2 = d["单价"];
-    var d3 = d["折扣"];
-    var d4 = d["备注"];
-    editChangeSalesBillOrderNum(d1, ret);
-    editChangeSalesBillOrderPrice(d2, ret);
-    editChangeSalesBillOrderDiscount(d3, ret);
-    editChangeSalesBillOrderRemarks(d4, ret);
+    if (isUndefined(ret)) {
+        ret = "yes";
+    }
+    var titles = getSalesBillDetTfObject();
+    var title_num = o;
+    var tfNum = titles["明细输入框个数"];
+    var d = o[0];
+    var num = d[title_num];
+    var fields, f;
+    if (num && num.length > 0) {
+        fields = [];
+        for (var ni = 0; ni < num.length; ni++) {
+            f = new TField(title_num, TF, titles[title_num] + tfNum * ni,
+                    num[ni]);
+            fields.push(f);
+        }
+    }
+    setTFieldsValue(getScrollView(-1), fields);
 
-    // for (var i = 0, len = o.length; i < len; i++) {
-    // var d = o[i];
-    // var x = d[0];
-    // switch (x) {
-    // case "数量":
-    // editChangeSalesBillOrderNum(d1, ret);
-    // break;
-    // case "单价":
-    // editChangeSalesBillOrderPrice(d2, ret);
-    // break;
-    // case "折扣":
-    // editChangeSalesBillOrderDiscount(d3, ret);
-    // break;
-    // case "备注":
-    // editChangeSalesBillOrderRemarks(d4, ret);
-    // break;
-    // default:
-    // break;
-    // }
-    // }
+    if (ret == "yes") {
+        editChangeSalesBillOrderNumSave("yes");
+    }
+    if (ret == "no") {
+        editChangeSalesBillOrderNumSave("no");
+    }
 
+    logDebug(" tfNum=" + tfNum);
     return ret;
 }
 /**
- * 单据修改
+ * 物流核销单据修改
  * @param o
  * @returns
  */
@@ -1035,6 +1076,25 @@ function editVerifyBillBank(o, key, scIndex) {
         }
     }
 }
+/**
+ * 简单字段输入
+ * @param o
+ * @param key
+ */
+function editVerifyBillField1(o, key) {
+    var v = o[key];
+    var msg = "key=" + key + " v=" + v;
+    if (isDefined(v)) {
+        var keys = {};
+        keys[key] = v;
+        var fields = logisticsVerifyFields(keys);
+        setTFieldsValue(window, fields);
+        logDebug(msg);
+    } else {
+        // msg += " do nothing"
+    }
+    // logDebug(msg);
+}
 
 /**
  * 具体实现
@@ -1053,7 +1113,7 @@ function editVerifyBill(o) {
     editVerifyBillCard(o);
     editVerifyBillRemit(o);
     editSalesBillUnpay(o);
-
+    editVerifyBillField1(o, "备注");
     editSalesBillSave(o);
     return o;
 }
