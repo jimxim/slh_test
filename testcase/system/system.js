@@ -527,6 +527,10 @@ function test210020_210021() {
     return ret;
 }
 function test210020Clear() {
+    var LOCALCLEAN = "清理本地";
+    if (ipadVer >= "7.27") {
+        LOCALCLEAN = "清理缓存";
+    }
     tapMenu("系统设置", LOCALCLEAN);
 }
 function test210023() {

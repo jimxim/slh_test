@@ -11,7 +11,8 @@ function testBasicSetUpAll() {
     // run("李响", "setCustomer004");
     // run("李天", "setCustomer005");
     // run("李六", "setCustomer006");
-    // run("韩红", "setCustomer007");
+    // run("韩红", "setCustomer007");//中洲店客户
+    // run("章子怡", "setCustomer013");//中洲店客户
     run("综合汇总1", "setCustomer008");// 新综合汇总
     run("不开单客户", "setCustomer009");// 不做开单操作，无欠余款
     run("上级不开单客户", "setCustomer009_1");// 不做开单操作，无欠余款

@@ -53,12 +53,12 @@ function testSalesPrepare002() {
     tapReturn();
 }
 function testSalesPrepare003() {
-    // 仓库店、中洲店// 要有物流单
+    // 仓库店、中洲店// 要有物流单//"zzy"(章子怡为中洲店客户)只在常青店以外的门店开单
     tapMenu("销售开单", "开  单+");
     var json = {
-        "客户" : "hh",
+        "客户" : "zzy",
         "明细" : [ { "货品" : "3035", "数量" : "4" }, { "货品" : "4562", "数量" : "5" } ],
-        "代收" : { "物流商" : "sf" }, "备注" : "zy" };
+        "代收" : { "物流商" : "sf", "代收金额" : 250 }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按批次查");

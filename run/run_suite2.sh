@@ -49,18 +49,18 @@ js_func="$js_func setSales002Params"
 js_func="$js_func test000SalesColorSize003"
 
 #均色均码 获取未保存
-js_func="$js_func setSales001Params"
-js_func="$js_func testSalesNoColorSize170140_Params"
-js_func="$js_func testSalesNoColorSize170140"
+#js_func="$js_func setSales001Params"
+#js_func="$js_func testSalesNoColorSize170140_Params"
+#js_func="$js_func testSalesNoColorSize170140"
 #加工货品
-js_func="$js_func testSalesNoColorSize170429_Params"
-js_func="$js_func testSalesNoColorSize170429"
+#js_func="$js_func testSalesNoColorSize170429_Params"
+#js_func="$js_func testSalesNoColorSize170429"
 #均色均码 销售开单同时订货
-js_func="$js_func testSalesNoColorSize170125_Params"
-js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"
+#js_func="$js_func testSalesNoColorSize170125_Params"
+#js_func="$js_func testSalesNoColorSize170125 testSalesNoColorSize170607"
 #均色均码 店长权限——异地＋代收
-js_func="$js_func testSalesNoColorSize170649_Prepare"
-js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
+#js_func="$js_func testSalesNoColorSize170649_Prepare"
+#js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
 #店长权限
 js_func="$js_func setSales001Params"
@@ -75,10 +75,7 @@ js_func="$js_func test005SalesNoColorSize005"
 js_func="$js_func testSalesNoColorSize170568Prepare testSalesNoColorSize170568"
 
 #登进登出
-js_func="$js_func testSalesNoColorSizeOutAndIn"
-
-#颜色尺码 销售开单
-#js_func="$js_func test000SalesColorSize170703Prepare  test000SalesColorSize170703"
+#js_func="$js_func testSalesNoColorSizeOutAndIn"
 
 #销售开单-特殊模块（改高改低）
 #js_func="$js_func setSales001Params"
@@ -93,8 +90,8 @@ js_func="$js_func test000Check002"
 js_func="$js_func setSales001Params"
 js_func="$js_func test000Check001 testCheckts100157For000_2"
 
-js_func="$js_func testCheck180058_Prepare"
-js_func="$js_func testCheck180058"
+#js_func="$js_func testCheck180058_Prepare"
+#js_func="$js_func testCheck180058"
 
 #js_func="$js_func testCheck180022_Prepare"
 #js_func="$js_func testCheck180022"

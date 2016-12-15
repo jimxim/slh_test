@@ -110,6 +110,10 @@ function test170237() {
     qo = { "备注" : "单据打印后不允许修改" };
     o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
@@ -122,7 +126,7 @@ function test170237() {
     var o = [ { "数量" : [ 3 ] } ];
     editChangeSalesBillOrderNum(o);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = (isIn(alertMsg1, "不能修改"));
 
     tapMenu("销售开单", "按批次查");
@@ -131,7 +135,7 @@ function test170237() {
     o = { "现金" : 1000 };
     editSalesBill(o);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret2 = (isIn(alertMsg1, "不能修改"));
 
     tapMenu("销售开单", "按批次查");
@@ -140,7 +144,7 @@ function test170237() {
     o = { "店员" : "005" };
     editSalesBill(o);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -2);
+    var alertMsg1 = getArray1(alertMsgs, -1);
     var ret3 = (isIn(alertMsg1, "不能修改"));
 
     tapMenu("销售开单", "按批次查");
