@@ -170,7 +170,6 @@ function ts120001_1() {
     ret = ret && sortByTitle("备注");
     ret = ret && sortByTitle("操作人");
 
-    tapButton(window, QUERY);
     var arr = [ "总数", "金额", "现金", "刷卡", "汇款" ];
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;

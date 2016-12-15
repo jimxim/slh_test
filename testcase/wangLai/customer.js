@@ -4164,7 +4164,7 @@ function ts110101Field(share) {
 
     var view = getScrollView(-1), num1 = getRandomNum(100, 1000);
     tapMenu("往来管理", "getMenu_More", "新增积分调整+");
-    var keys = { "门店" : "常青店", "客户" : "xw", "调整(±)" : num1, "备注" : "备注" + num1 };
+    var keys = { "门店" : "常青店", "客户" : "xw", "调整" : num1, "备注" : "备注" + num1 };
     var fields = editCustomerPointAdjFields(keys);
     setTFieldsValue(view, fields);
     var idx = editCustomerPointAdjFields([ "当前积分" ])["当前积分"].index;

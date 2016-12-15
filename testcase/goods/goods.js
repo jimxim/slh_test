@@ -136,6 +136,10 @@ function setGoodsParams001() {
     o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要打印给客户和仓库", "in" ] };// 打印选项 客户用/仓库用
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
     o = { "数值" : 0 };
     setGlobalParam2(qo, o);
@@ -1579,6 +1583,7 @@ function ts100035() {
     saveAndAlertOk();
     tapReturn();
 
+    delay(0.5);// 返回较慢影响后面输入查询 不稳定
     tapMenu2("货品查询");
     var keys = { "厂商" : "p" + r, "款号名称" : "goods" + r, "品牌" : "b" + r,
         "类别" : "t" + r };
@@ -2645,6 +2650,7 @@ function ts100157Field(staff, check) {
         code = "3035";
         break;
     case "yes":
+    case "head":
         code = "auto001";
         break;
     default:
@@ -2884,33 +2890,33 @@ function test100053() {
     tapMenu("货品管理", "货品查询");
     // 批量操作测试1，2，3
     var qKeys = { "款号名称" : "plczcs", "是否停用" : "否" };
-    var qFields = queryGoodsFields(qKeys);
-    query(qFields);
-    // delay();
-    tapChoose(getScrollView(), [ 0, 1, 2 ]);
-    tapMenu("货品管理", "批量操作");
-    delay();
-    runAndAlert("test10_tapBatchStop", OK);
+    conditionQuery(qKeys);
+    var qr = getQR();
+    // 可能因为用例本身或者其他原因，已经批量停用了(3个都是启用或者停用就是做了批量操作引起)
+    if (qr.data.length != 0) {
+        tapChoose(getScrollView(), [ 0, 1, 2 ]);
+        tapMenu2("批量操作");
+        delay();
+        runAndAlert("test10_tapBatchStop", OK);
 
-    qKeys = { "款号名称" : "plczcs", "是否停用" : "是" };
-    qFields = queryGoodsFields(qKeys);
-    query(qFields);
+    }
+
+    qKeys = { "是否停用" : "是" };
+    conditionQuery(qKeys, false);
     var qr = getQR();
     var ret = isInQRDataAllByTitle(qr, "名称", "批量操作测试")
             && isEqual("3", qr.total);
 
     tapChoose(getScrollView(), [ 0, 1, 2 ]);
-    tapMenu("货品管理", "批量操作");
+    tapMenu2("批量操作");
     delay();
     runAndAlert("test10_tapBatchStart", OK);
 
-    qKeys = { "款号名称" : "plczcs", "是否停用" : "否" };
-    qFields = queryGoodsFields(qKeys);
-    query(qFields);
+    qKeys = { "是否停用" : "否" };
+    conditionQuery(qKeys, false);
     qr = getQR();
     ret = ret && isInQRDataAllByTitle(qr, "名称", "批量操作测试")
             && isEqual("3", qr.total);
-
     return ret;
 }
 

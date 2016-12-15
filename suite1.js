@@ -3,6 +3,8 @@
 //货品只要不使用两个尺码组，则颜色尺码和尺码头部模式通用  eg:agc001、002、004（都为衣服尺码）
 //帐套autotest1(上下级)  autotest1Branch(分店) 
 //7.27起添加accessibilityLabel
+//nocol000~015 均色均码超长订单用 均色均码价格随便设置 
+//kh000~015 颜色尺码/尺码表头超长订单用 kh000需要有16种以上颜色 尺码组全选择衣服尺码
 
 #import "all.js"
 #import "testcase/goods/editBill.js"
@@ -13,18 +15,18 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "head";
+// colorSize = "head";
     debug = true;
 // ipadVer = "7.21";//
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "test220025");//
+ run(caseName, "ts150032");//
 // run(caseName, "test220021");//
 }
 function onlyTest(){
 // delay();
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();

@@ -1036,6 +1036,7 @@ function editCustomerPointAdjField(key, show) {
         f = new TField("当前积分", TF, 2, "");// 灰化，不可输入
         break;
     case "调整(±)":
+    case "调整":   
         f = new TField("调整(±)", TF, 3, "100");
         break;
     case "店员":
