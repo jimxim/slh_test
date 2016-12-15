@@ -1931,10 +1931,17 @@ function editBillDet(o) {
                     setTFieldsValue(view1, [ f ]);
                 }
                 if (isDefined(d["颜色"])) {
-                    var tf = getTextField(view1, start + o1["颜色"]);
-                    tf.doubleTap();// 双击出颜色选择页面
                     var popView = getPopView(window, -1);
-                    tapButton(popView, d["颜色"]);// 单选
+                    if (!isUIAElementNil(popView)) {
+                        logDebug("自动弹窗");
+                        tapCheckBox(popView, d["颜色"]);// 自动弹窗
+                    } else {
+                        var tf = getTextField(view1, start + o1["颜色"]);
+                        tf.doubleTap();// 双击出颜色选择页面
+                        popView = getPopView(window, -1);
+                        tapButton(popView, d["颜色"]);// 单选
+                    }
+                    tapButton(getPop(window, -1), OK);
                 }
 
                 var fields = [];

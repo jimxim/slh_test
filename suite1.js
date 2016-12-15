@@ -15,15 +15,15 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "head";
+ colorSize = "head";
     debug = true;
-// ipadVer = "7.21";//
+// ipadVer = "7.27";//
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "ts150032");//
-// run(caseName, "test220021");//
-}
+// run(caseName, "test220037");//
+ run(caseName, "test220039");//
+}   
 function onlyTest(){
 // delay();
  UIATarget.localTarget().logElementTree();
@@ -32,8 +32,10 @@ function onlyTest(){
 // delay();
    try{ 
 // tapStaticText(window, "代收");
+       tapMenu("采购入库","按订货入库");
+      var qr=getQR();
+      debugObject(qr.data[0]);
 
-       
 // UIATarget.localTarget().tap({x:847, y:139});
    }catch(e){
       logWarn(e);
@@ -44,37 +46,7 @@ function onlyTest(){
  // debugObject(gCache,"gCache");
    return true;
 }
-// 检验开单时间
-function testBillTimes(){
-    var arr=[],msg;
-    var jo = { "客户" : "xw" , "明细" : [ { "货品" : "3035", "数量" : 30 } ],"onlytest":"yes"};
-    gCache = {};
-    var o1 = { "是否打印" : "打印(客户用)" };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    tapMenu1("销售开单");
-    for(var i=0;i<20;i++){
-        var t1 = getTimestamp();
-        tapMenu2(ADDBILL);   
-        editSalesBill(jo, colorSize); 
-        var t=testSave();
-        var t2=getTimestamp();
-        msg="保存耗时"+t+"  开单耗时"+(t2-t1);
-        arr.push(msg);
-    }
-    debugObject(arr);
-    return true;
-}
-function testSave() {
-    var t1 = getTimestamp();
-    saveAndAlertOk();
-    waitUntilAlertInvisible();
-    tapKeyboardHide();
-    tapReturn();
-    var cond = "window.buttons()['按批次查'].isVisible()";
-    waitUntil(cond);
-    var t2=getTimestamp();
-    return t2-t1;
-}
+
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};
@@ -499,4 +471,39 @@ function loginCustBranch001(){
         testCustBranch001();
       logout();
      }   
+}
+
+
+
+
+// 检验开单时间
+function testBillTimes(){
+    var arr=[],msg;
+    var jo = { "客户" : "xw" , "明细" : [ { "货品" : "3035", "数量" : 30 } ],"onlytest":"yes"};
+    gCache = {};
+    var o1 = { "是否打印" : "打印(客户用)" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    tapMenu1("销售开单");
+    for(var i=0;i<20;i++){
+        var t1 = getTimestamp();
+        tapMenu2(ADDBILL);   
+        editSalesBill(jo, colorSize); 
+        var t=testSave();
+        var t2=getTimestamp();
+        msg="保存耗时"+t+"  开单耗时"+(t2-t1);
+        arr.push(msg);
+    }
+    debugObject(arr);
+    return true;
+}
+function testSave() {
+    var t1 = getTimestamp();
+    saveAndAlertOk();
+    waitUntilAlertInvisible();
+    tapKeyboardHide();
+    tapReturn();
+    var cond = "window.buttons()['按批次查'].isVisible()";
+    waitUntil(cond);
+    var t2=getTimestamp();
+    return t2-t1;
 }

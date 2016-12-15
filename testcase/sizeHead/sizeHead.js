@@ -1,11 +1,13 @@
 //LuXingXin <52619481 at qq.com> 20161209
 //尺码头部 衣服尺码 S M L XL 2XL 3XL 4XL
 // agc001 花色 黑色 白色 S M L XL 2XL （红色 黄色 增减验证,不开单）
+// agc005 花色 黑色 白色 裤子尺码 25 26 27 30 31 32 （28 29用例验证灰化 不能选）
+// agc005 花色 黑色 白色 夹克 S1 S2 S3 S4 不在尺码表头中的尺码组
 //002 004 
 //kh000~kh015  黑色 花色 白色 均色  S M 均码 L XL
 
 /**
- * 尺码表头 省代 开单2
+ * 尺码表头 省代 开单2 需要重新登录
  */
 function setSizeHeadParams001() {
     var qo, o, ret = true;
@@ -59,6 +61,12 @@ function testSizeHead001_shop1() {
     run("【销售开单】开单界面查看上次价", "test220021");
     run("【销售开单】开单界面尺码表头模式下作退货操作", "test220022");
     run("【销售开单】尺码组混用的极端情况", "test220025");
+    run("【销售开单】二次挂单后修改开单数量后再输入款号，就输不进去了", "test220031");
+    run("【销售开单-按订货开单】货品颜色尺码不能修改", "test220032");
+    run("【销售开单-按订货开单】订货开单时包含特殊货品", "test220033");
+    run("【销售开单-按订货开单】订货开单时包含特殊货品", "test220035");
+    run("【采购订货】采购订货", "test220037");
+    run("【采购入库】采购入库（部分入库后再次入库）", "test220039");
 }
 function test220003() {
     tapMenu("门店调出", "批量调出+");
@@ -160,26 +168,38 @@ function test220004() {
     return ret;
 }
 function test220005() {
-    return test220005Field("销售订货", "新增订货+");
+    var jo = { "日期" : getToday(""), "客户" : "小王", "店员" : "总经理" };
+    return test220005Field("销售订货", "新增订货+", jo);
 }
-function test220005Field(menu1, menu2) {
+function test220005Field(menu1, menu2, jo) {
+    var cust = "xw", jo = {}, price = 200;
+    if (menu1.indexOf("采购") != -1) {
+        cust = "vell";
+        jo = { "店员" : "000,总经理", "订货门店" : "常青店" };
+        price = 100;
+    }
     tapMenu(menu1, "按批次查");
     query();
     var qr = getQR();
     var batch = Number(qr.data[0]["批次"]) + 1;
     tapMenu2(menu2);
     var json = {
-        "客户" : "xw",
+        "客户" : cust,
         "备注" : "head",
         "明细" : [
                 { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 6, "XL" : 7 } },
                 { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 8, "M" : 9 } } ] };
     editSalesBill(json, colorSize);
+    json["输入框值"] = mixObject(json["输入框值"], jo);
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
     qr = getQR();
-    var ret = isEqual(batch, qr.data[0]["批次"]);
+    var exp = { "批次" : batch, "门店" : "常青店", "总数" : "30", "金额" : 30 * price,
+        "现金" : 30 * price, "刷卡" : 0, "汇款" : 0, "操作日期" : json["操作日期"],
+        "操作人" : "总经理", "备注" : "head" };
+    exp = mixObject(exp, jo);
+    var ret = isEqualObject2(exp, qr.data[0]);
     tapLine();
     ret = isAnd(ret, checkBillValue(json));
     tapReturn();
@@ -261,7 +281,8 @@ function test220008Field(menu, msg) {
     return ret;
 }
 function test220010() {
-    return test220005Field("销售开单", ADDBILL);
+    var jo = { "日期" : getToday(""), "客户" : "小王", "店员" : "总经理" };
+    return test220005Field("销售开单", ADDBILL, jo);
 }
 function test220012() {
     tapMenu("销售开单", ADDBILL);
@@ -423,17 +444,24 @@ function test220019() {
     setGlobalParam(qo, o);
     return ret;
 }
+// 含220027
 function test220020() {
     tapMenu("销售开单", ADDBILL);
-    var json = { "明细" : [ { "货品" : "agc001" } ], "onlytest" : "yes" };
+    var json = {
+        "明细" : [ { "货品" : "agc001" }, { "货品" : "agc001" }, { "货品" : "agc001" } ],
+        "onlytest" : "yes" };
     editSalesBill(json, colorSize);
-    var texts = getStaticTexts(window);
-    var qrTitle1 = getQResultTitle(texts, "颜色", "#");
-    var qrTitle2 = getQResultTitle(texts, "单价", "#");// 颜色和单价之间为尺码表头
-    var act = getTFEnabledState(getScrollView(-1), qrTitle1.index + 1,
-            qrTitle2.index - 1);
+    var titles = getDetSizheadTitle();// 颜色和单价之间为尺码表头
+    var tfNum = getSalesBillDetTfNum({})
+    var str1 = getTFEnabledState(getScrollView(-1), titles["颜色"] + 1,
+            titles["单价"] - 1);
+    var str2 = getTFEnabledState(getScrollView(-1), titles["颜色"] + 1 + tfNum,
+            titles["单价"] - 1);
+    var str3 = getTFEnabledState(getScrollView(-1), titles["颜色"] + 1 + 2
+            * tfNum, titles["单价"] - 1);
     tapReturn();
-    return !isIn(act, "1");
+    return isAnd(isEqual("11011100000", str1), isEqual("11100111000", str2),
+            !isIn(str3, "1"));
 }
 function test220021() {
     var json = {
@@ -469,6 +497,182 @@ function test220025() {
     var keys = { "尺码" : "S,M,L,25,26,27" };
     addGoods(keys);
     return isInAlertMsgs("不允许选择不同尺码组的尺码");
+}
+function test220031() {
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 2, "XL" : 3 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 4, "M" : 5 } } ],
+        "挂单" : "yes" };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按挂单");
+    query();
+    tapLine();
+    json = { "修改明细" : [ { "尺码" : { "L" : 6, "XL" : 7 } }, {},
+            { "货品" : "kh000", "颜色" : "花色", "尺码" : { "S" : 6, "M" : 7 } } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var ret = checkBillValue(json);
+    tapReturn();
+    return ret;
+}
+function test220032() {
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    var qr = getQRDet(), str = "";
+    var titles = getDetSizheadTitle();// 颜色和单价之间为尺码表头
+    var tfNum = getSalesBillDetTfNum({});
+    for (var i = 0; i < qr.data.length; i++) {
+        var starIdx = titles["货品"] + tfNum * i;
+        var endIdx = titles["颜色"] + tfNum * i;
+        str += getTFEnabledState(getScrollView(-1), starIdx, endIdx)
+    }
+    tapReturn();
+    return !isIn(str, "1");
+}
+function test220033() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 30 } } ],
+        "特殊货品" : { "抹零" : 20, "打包费" : 10 } };
+    editSalesBill(json, colorSize);
+    var ret = isEqual(11190, json["输入框值"]["totalmoney"]);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    json = { "修改明细" : [ { "尺码" : { "L" : 4, "XL" : 5 } },
+            { "尺码" : { "S" : 6 } } ] };
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(2990, json["输入框值"]["totalmoney"]));// 特殊货品结算在第一次发货
+
+    tapMenu("销售开单", "按订货开单");
+    tapButton(window, QUERY);
+    tapLine();
+    json = {};
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual("6", json["明细值"]["L"]), isEqual("15",
+            json["明细值"]["XL"]), isEqual("24", json["明细值"]["S"]), isEqual(9000,
+            json["输入框值"]["totalmoney"]));
+    return true;
+}
+function test220035() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 3, "XL" : 4 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 5 } } ],
+        "现金" : 1000, "刷卡" : [ 600, "银" ], "汇款" : [ 800, "银" ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    editSalesBillSave({});
+
+    tapMenu2("按批次查");
+    query();
+    var qr = getQR();
+    var exp1 = { "门店" : "常青店", "日期" : getToday(""), "客户" : "小王", "店员" : "总经理",
+        "数量" : 0, "金额" : 0, "现金" : 1000, "微信" : 0, "刷卡" : 600, "汇款" : 800,
+        "实收" : 2400, "代收" : 0, "未结" : 2400, "还款/抵扣" : 2400, "备注" : "预付款",
+        "操作日期" : json["操作日期"], "操作人" : "总经理" };
+    var exp2 = { "门店" : "常青店", "日期" : getToday(""), "客户" : "小王", "店员" : "总经理",
+        "数量" : 12, "金额" : 2400, "现金" : 0, "微信" : 0, "刷卡" : 0, "汇款" : 0,
+        "实收" : 0, "代收" : 0, "未结" : -2400, "还款/抵扣" : -2400, "备注" : "head",
+        "操作日期" : json["操作日期"], "操作人" : "总经理" };
+    var ret = isAnd(isEqualObject2(exp1, qr.data[1]), isEqualObject2(exp2,
+            qr.data[0]));
+    tapLine(1);
+    var exp = { "客户" : "小王", "现金" : "1000", "手机付" : 0, "应" : 0, "结余2" : 2400,
+        "店员" : "000,总经理", "核销" : 0, "刷卡" : 600, "代收" : 0, "日期" : getToday(),
+        "总数" : 0, "totalmoney" : 0, "汇款" : 800, "总计" : 0 };
+    ret = isAnd(ret, checkBillWinValue(exp));// 预付款单
+    tapReturn();
+    tapLine();
+    var act = getQRDet().data;
+    ret = isAnd(ret, isEqualDyadicArray(json["明细值"].data, act));// 正式单
+    tapReturn();
+    return ret;
+}
+function test220037() {
+    var jo = { "日期" : getToday("yy"), "厂商" : "Vell", "入库数" : 0, "差异数" : 30,
+        "发货状态" : "未入库" };
+    return test220005Field("采购订货", "新增订货+", jo);
+}
+function test220039() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "agc001", "门店" : "常青店" };
+    conditionQuery(keys);
+    var stock1 = getGoodCurStock();
+
+    tapMenu("采购订货", "新增订货+");
+    var json = {
+        "客户" : "vell",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 15 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 20 } } ] };
+    editSalesBill(json, colorSize);
+
+    c("采购入库", "按订货入库");
+    query();
+    tapLine();
+    json = { "修改明细" : [ { "尺码" : { "L" : 4, "XL" : 5 } },
+            { "尺码" : { "S" : 6 } } ] };
+    editSalesBill(json, colorSize);
+    // tapMenu2("按订货入库");
+    // tapButton(window,QUERY);
+    
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var stock2 = getGoodCurStock();
+    var increase = { "白色-L" : 4, "白色-XL" : 5, "黑色-S" : 6 };
+    var exp = addObject(stock1, increase);
+    var ret = isEqualObject2(exp, stock2);
+
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapLine();
+    editSalesBillSave({});
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    stock2 = getGoodCurStock();
+    increase = { "白色-L" : 10, "白色-XL" : 15, "黑色-S" : 20 };
+    exp = addObject(stock1, increase);
+    ret = isAnd(ret, isEqualObject2(exp, stock2));
+    return ret;
+}
+function getGoodCurStock() {
+    var qr = getQR();
+    var stock = {};
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.data.length; i++) {
+            var t = qr.data[i]["颜色"] + "-" + qr.data[i]["尺码"];
+            stock[t] = qr.data[i]["库存"];
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return stock;
 }
 function testEditBillSizeHead() {
     var colorSize = "head";
