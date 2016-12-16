@@ -1683,19 +1683,17 @@ function test190046() {
 
     tapNaviButton("抵扣");
     ret = isAnd(ret, test190046Field());
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     return ret;
 }
 
 function test190046Field() {
-    var i, j;
     // debugElementTree(getScrollView(-1, 0));
     var qr = getQR2(getScrollView(-1, 0), "批次", "核销");
     var sum = {};
-    for (j = 1; j <= qr.totalPageNo; j++) {
-        for (i = 0; i < qr.curPageTotal; i++) {
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
             sum = addObject(qr.data[i], sum);
         }
         if (j < qr.totalPageNo) {

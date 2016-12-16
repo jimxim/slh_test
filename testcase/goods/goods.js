@@ -2166,8 +2166,10 @@ function ts100059Type() {
     var keys = { "名称" : r };
     return ts100059Field("新增类别+", "货品类别", keys);
 }
+// http://jira.hzdlsoft.com:7082/browse/SLH-12804
+// 名称内容超出了长度限制。 其实是控制了7位
 function ts100059Color() {
-    var r = "color" + getTimestamp(5);
+    var r = "col" + getTimestamp(4);// 7位
     var keys = { "颜色类别" : "紫", "名称" : r };
     var qkeys = { "名称" : r };
     return ts100059Field("新增颜色+", "所有颜色", keys, qkeys);
@@ -2184,7 +2186,7 @@ function ts100059Brand() {
     return ts100059Field("新增品牌+", "所有品牌", keys);
 }
 function ts100059SizeID() {
-    var r = "size" + getTimestamp(5);
+    var r = "cm" + getTimestamp(5);// 7位
     var keys = { "名称" : r };
     return ts100059Field("新增尺码组+", "所有尺码组", keys);
 }
@@ -4691,8 +4693,10 @@ function ts100176() {
 }
 
 function ts100178() {
+    // 超长订单用，一般有16条数据
+    // 若是还是找不到，则放到超长订单的用例之后去跑 161216
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : "kh000" };// 超长订单用，一般有16条数据
+    var keys = { "款号" : "nocol000" };
     conditionQuery(keys);
     return ts100178Field();
 }
