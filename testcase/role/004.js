@@ -30,6 +30,7 @@ function test004() {
     run("【销售开单-物流单】非总经理登录", "test170641_4");
     run("【销售开单-物流单】非总经理登录", "test170736");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
+    run("【销售开单-按订货开单】异地发货/异地+代收 按订货开单界面显示开单门店的数据", "test170741");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
@@ -1673,4 +1674,39 @@ function test170738() {
     tapReturn();
 
     return ret;
+}
+function test170741() {
+    var qo, o, ret = true;
+    qo = { "备注" : "支持异地仓库" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "15", "数值" : [ "异地发货开单模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 5 }, { "货品" : "k300", "数量" : 6 } ],
+        "发货" : "仓库店" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    var qr = getQR();
+    var md = qr.data[0]["门店"];
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "21", "数值" : [ "异地发货+代收", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    qr = getQR();
+    var md1 = qr.data[0]["门店"];
+
+    var ret1 = isAnd(isEqual("常青店", md), isEqual("常青店", md1));
+
+    logDebug(", ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }

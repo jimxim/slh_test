@@ -54,18 +54,16 @@ function testSalesPrepare002() {
 }
 function testSalesPrepare003() {
     // 仓库店、中洲店// 要有物流单//"zzy"(章子怡为中洲店客户)只在常青店以外的门店开单
-    // 销售单
     tapMenu("销售开单", "开  单+");
-    var json = {
-        "客户" : "zzy",
-        "明细" : [ { "货品" : "3035", "数量" : "4" }, { "货品" : "4562", "数量" : "5" } ],
-        "代收" : { "物流商" : "sf", "代收金额" : 250 }, "备注" : "zy" };
+    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : "4" } ],
+        "代收" : { "物流商" : "sf", "代收金额" : 50 }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
-    tapMenu("销售开单", "按批次查");
-    query();
-    var qr = getQR();
-    var ret = qr;
+    // 销售单// 客户“李四”需要用款号4562在常青店以外的门店开单
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
+        "备注" : "zy" };
+    editSalesBillNoColorSize(json);
 
     // 准备兑换单
     tapMenu("销售开单", "开  单+");
@@ -104,6 +102,20 @@ function testSalesPrepare003() {
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
+    
+    var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "20", "数值" : [ "现金+刷卡+汇款+配货员", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "lt", "明细" : [ { "货品" : "k300", "数量" : 1 } ],
+        "配货" : "004", "现金" : 100, "刷卡" : [ 1000 ] };
+    editSalesBillNoColorSize(json);
+    
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     return ret;
 }
@@ -122,11 +134,15 @@ function testSalesPrepare006() {
 // 检查款号3035为启用
 function testSalesPrepare007() {
     tapMenu("货品管理", "货品查询");
-    var Keys = { "厂商" : "vell", "款号名称" : "3035" };
+    var Keys = { "款号名称" : "3035" };
     var Fields = queryGoodsFields(Keys);
     query(Fields);
     var qr = getQR();
     if (qr.data.length == 0) {
+        var qKeys = [ "是否停用" ];
+        var qFields = queryGoodsFields(qKeys);
+        changeTFieldValue(qFields["是否停用"], "是");
+        setTFieldsValue(window, qFields);
         tapButton(window, QUERY);
         tapFirstText();
         tapButtonAndAlert(START, OK);
