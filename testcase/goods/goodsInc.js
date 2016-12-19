@@ -188,6 +188,19 @@ function editGoodsSave(o) {
     }
 }
 /**
+ * 新增盘点处理
+ * @param keys
+ * @param btn 全盘处理/部分处理
+ */
+function editStockProcess(keys, btn) {
+    var fields = checkProcessFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    delay();
+    tapButtonAndAlert(btn, OK);
+    // tapPrompt();
+    tapReturn();
+}
+/**
  * 新增物流核销单
  * @param o eg{ "物流" : "sf", "核销" : 0 }或{ "物流" : "sf", "核销" : [100] }批次号
  * @returns
@@ -931,14 +944,8 @@ function checkDate(str) {
  * @returns {Boolean}
  */
 function checkBillValue(json) {
-    var act = getQRDet().data;
     var exp = json["明细值"];
-    if (colorSize != "head") {// 尺码表头不需要特殊处理，标题取值方式不同
-        exp = unityNotice(exp);// 采购入库 通知数
-        exp = unityShipped(exp);// 销售订货 已发
-    }
-    return isAnd(checkBillWinValue(json["输入框值"]), isEqualDyadicArray(exp.data,
-            act));
+    return isAnd(checkBillWinValue(json["输入框值"]), checkBillDetValue(exp));
 }
 /**
  * 开单简单的界面值对比 TV的备注有用例覆盖，这里跳过
@@ -954,6 +961,19 @@ function checkBillWinValue(exp) {
         }
     }
     return isEqualObject2(exp, v);
+}
+/**
+ * 验证单据明细值
+ * @param exp json["明细值"]
+ * @returns {Boolean}
+ */
+function checkBillDetValue(exp) {
+    var act = getQRDet().data;
+    if (colorSize != "head") {// 尺码表头不需要特殊处理，标题取值方式不同
+        exp = unityNotice(exp);// 采购入库 通知数
+        exp = unityShipped(exp);// 销售订货 已发
+    }
+    return isEqualDyadicArray(exp.data, act);
 }
 /**
  * 模糊查询验证

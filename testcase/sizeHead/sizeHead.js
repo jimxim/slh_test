@@ -1,8 +1,8 @@
 //LuXingXin <52619481 at qq.com> 20161209
 //尺码头部 衣服尺码 S M L XL 2XL 3XL 4XL
 // agc001 花色 黑色 白色 S M L XL 2XL （红色 黄色 增减验证,不开单）
-// agc005 花色 黑色 白色 裤子尺码 25 26 27 30 31 32 （28 29用例验证灰化 不能选）
-// agc005 花色 黑色 白色 夹克 S1 S2 S3 S4 不在尺码表头中的尺码组
+// agc005 花色 黑色 白色 裤子尺码 25 26 27 30 31 32 33 34（28 29用例验证灰化 不能选，需要含有8个尺码）
+// agc006 花色 黑色 白色 夹克 S1 S2 S3 S4 不在尺码表头中的尺码组
 //002 004 
 //kh000~kh015  黑色 花色 白色 均色  S M 均码 L XL
 
@@ -36,6 +36,17 @@ function setSizeHeadParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));// 统一的价格体系才能切省代模式
     return ret;
 }
+function closeSizeHeadParams() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
+}
 // 中洲店登陆
 function testSizeHead001_shop2() {
     var colorSize = "head";
@@ -67,6 +78,12 @@ function testSizeHead001_shop1() {
     run("【销售开单-按订货开单】订货开单时包含特殊货品", "test220035");
     run("【采购订货】采购订货", "test220037");
     run("【采购入库】采购入库（部分入库后再次入库）", "test220039");
+    run("【采购入库】采购入库（一次性全部入库）", "test220040");
+    run("【系统设置】在均色均码下开启开单尺码表头参数", "test220044");
+}
+function testSizeHeadCheck() {
+    run("【盘点管理】盘点单", "test220045");
+    run("切换回均色均码模式", "closeSizeHeadParams");
 }
 function test220003() {
     tapMenu("门店调出", "批量调出+");
@@ -448,7 +465,7 @@ function test220019() {
 function test220020() {
     tapMenu("销售开单", ADDBILL);
     var json = {
-        "明细" : [ { "货品" : "agc001" }, { "货品" : "agc001" }, { "货品" : "agc001" } ],
+        "明细" : [ { "货品" : "agc001" }, { "货品" : "agc005" }, { "货品" : "agc006" } ],
         "onlytest" : "yes" };
     editSalesBill(json, colorSize);
     var titles = getDetSizheadTitle();// 颜色和单价之间为尺码表头
@@ -460,7 +477,7 @@ function test220020() {
     var str3 = getTFEnabledState(getScrollView(-1), titles["颜色"] + 1 + 2
             * tfNum, titles["单价"] - 1);
     tapReturn();
-    return isAnd(isEqual("11011100000", str1), isEqual("11100111000", str2),
+    return isAnd(isEqual("11011100000", str1), isEqual("11100111110", str2),
             !isIn(str3, "1"));
 }
 function test220021() {
@@ -629,51 +646,103 @@ function test220039() {
                 { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 20 } } ] };
     editSalesBill(json, colorSize);
 
-    c("采购入库", "按订货入库");
-    query();
-    tapLine();
     json = { "修改明细" : [ { "尺码" : { "L" : 4, "XL" : 5 } },
             { "尺码" : { "S" : 6 } } ] };
+    var exp = { "入库数" : "15", "差异数" : "30", "发货状态" : "部分发货" };
+    var increase = { "白色-L" : 4, "白色-XL" : 5, "黑色-S" : 6 };
+    var ret = test220039Field(json, exp, stock1, increase);
+
+    json = {};
+    exp = { "入库数" : "45", "差异数" : "0", "发货状态" : "全部入库" };
+    increase = { "白色-L" : 10, "白色-XL" : 15, "黑色-S" : 20 };
+    ret = isAnd(ret, test220039Field(json, exp, stock1, increase));
+    return ret;
+}
+function test220039Field(json, exp, stock1, increase) {
+    tapMenu("采购入库", "按订货入库");
+    query();
+    tapLine();
     editSalesBill(json, colorSize);
-    // tapMenu2("按订货入库");
-    // tapButton(window,QUERY);
-    
+
+    tapMenu("采购订货", "按批次查");
+    query();
+    var qr = getQR();
+    var ret = isEqualObject2(exp, qr.data[0]);
+    tapLine();
+    ret = isAnd(ret, checkBillDetValue(json["明细值"]));
+    tapReturn();
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
     var stock2 = getGoodCurStock();
-    var increase = { "白色-L" : 4, "白色-XL" : 5, "黑色-S" : 6 };
+
     var exp = addObject(stock1, increase);
-    var ret = isEqualObject2(exp, stock2);
-
-    tapMenu("采购入库", "按订货入库");
-    query();
-    tapLine();
-    editSalesBillSave({});
-
-    tapMenu("货品管理", "当前库存");
-    tapButton(window, QUERY);
-    stock2 = getGoodCurStock();
-    increase = { "白色-L" : 10, "白色-XL" : 15, "黑色-S" : 20 };
-    exp = addObject(stock1, increase);
     ret = isAnd(ret, isEqualObject2(exp, stock2));
     return ret;
 }
-function getGoodCurStock() {
-    var qr = getQR();
-    var stock = {};
-    for (var j = 1; j <= qr.totalPageNo; j++) {
-        for (var i = 0; i < qr.data.length; i++) {
-            var t = qr.data[i]["颜色"] + "-" + qr.data[i]["尺码"];
-            stock[t] = qr.data[i]["库存"];
-        }
-        if (j < qr.totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
-        }
-    }
-    return stock;
+function test220040() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "agc001", "门店" : "常青店" };
+    conditionQuery(keys);
+    var stock1 = getGoodCurStock();
+
+    tapMenu("采购订货", "新增订货+");
+    var json = {
+        "客户" : "vell",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 15 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 20 } } ] };
+    editSalesBill(json, colorSize);
+
+    var json = {};
+    var exp = { "入库数" : "45", "差异数" : "0", "发货状态" : "全部入库" };
+    var increase = { "白色-L" : 10, "白色-XL" : 15, "黑色-S" : 20 };
+    return test220039Field(json, exp, stock1, increase);
 }
+function test220044() {
+    var qo = { "备注" : "是否需要颜色尺码" };
+    var o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    setGlobalParam(qo, o);
+    var msg = "开启表头尺码模式的开单必须是颜色尺码模式下";
+    // 门店调入
+    var menu = { "采购入库" : { "新增入库+" : "" }, "采购订货" : { "新增订货+" : "" },
+        "门店调出" : { "批量调出+" : "" }, "门店调入" : { "按批次查" : "" },
+        "销售订货" : { "新增订货+" : "" }, "销售开单" : { ADDBILL : "", "按订货开单" : "" },
+        "盘点管理" : { "新增盘点+" : "" } };
+    var ret = test220008Field(menu, msg);
+
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表" ] };
+    setGlobalParam(qo, o);
+    return ret;
+}
+// 放到zy那跑 需要setSizeHeadParams001为前置条件
+function test220045() {
+    tapMenu("盘点管理", "新增盘点+");
+    var json = { "明细" : [
+            { "货品" : "x001", "颜色" : "红色", "尺码" : { "L" : 10, "2XL" : 20 } },
+            { "货品" : "x003", "颜色" : "黄色", "尺码" : { "L" : 30, "XL" : 40 } } ] };
+    editSalesBill(json, "head");
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var ret = checkBillDetValue(json["明细值"]);
+    tapReturn();
+
+    tapMenu2("盘点处理");
+    var keys = { "门店" : "常青店" };
+    editStockProcess(keys, "部分处理");
+
+    tapMenu2("处理记录");
+    query();
+    var qr = getQR();
+    var exp = { "盘点日期" : getToday("yy"), "盘后数量" : 100, "门店" : "常青店",
+        "处理人" : "总经理", "备注" : "部分盘点" };
+    ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
+    return ret;
+}
+
 function testEditBillSizeHead() {
     var colorSize = "head";
     // tapMenu("销售开单", ADDBILL);

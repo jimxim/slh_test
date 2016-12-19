@@ -122,7 +122,8 @@ function checkProcessField(key, show) {
         break;
     case "shop":
     case "盘点门店":
-        f = new TField("盘点门店", BTN_SC, 0, "常青店");
+    case "门店":
+        f = new TField("门店", BTN_SC, 0, "常青店");
         if (show) {
             f.type = TF;
             f.index = 1

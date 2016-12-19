@@ -23,7 +23,25 @@ function getDetTS100006(code, close) {
 
     return data;
 }
-
+/**
+ * 获取当前库存界面，货品的库存
+ * @returns 
+ */
+function getGoodCurStock() {
+    var qr = getQR();
+    var stock = {};
+    for (var j = 1; j <= qr.totalPageNo; j++) {
+        for (var i = 0; i < qr.data.length; i++) {
+            var t = qr.data[i]["颜色"] + "-" + qr.data[i]["尺码"];
+            stock[t] = qr.data[i]["库存"];
+        }
+        if (j < qr.totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+    return stock;
+}
 /**
  * 获取最后一个不为空的tableView
  * @param view
