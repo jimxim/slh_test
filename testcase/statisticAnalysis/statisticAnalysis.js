@@ -2811,7 +2811,7 @@ function ts190142() {
     tapButton(getScrollView(-1), 1);// 删除r2
     var idx = getEditSalesTFindex2("日期", "总额");
     var ret = t1 == getTextFieldValue(window, idx);
-    editStatisticAnalysisInSave({});
+    editSalesBillSave({});// editStatisticAnalysisInSave({});
 
     tapMenu("统计分析", "新增收支", "新增支出");
     json = {
@@ -2822,7 +2822,7 @@ function ts190142() {
     tapButton(getScrollView(-1), 2);// 删除r3
     idx = getEditSalesTFindex2("日期", "总额");
     ret = isAnd(ret, t2 == getTextFieldValue(window, idx));
-    editStatisticAnalysisInSave({});
+    editSalesBillSave({});// editStatisticAnalysisInSave({});
 
     tapMenu2("收支表");
     query();

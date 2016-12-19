@@ -7,9 +7,9 @@
 //kh000~kh015  黑色 花色 白色 均色  S M 均码 L XL
 
 /**
- * 尺码表头 省代 开单2 需要重新登录
+ * 尺码表头参数1 省代 开单2 需要重新登录
  */
-function setSizeHeadParams001() {
+function setSizeHeadParams_1() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表" ] };
@@ -36,17 +36,7 @@ function setSizeHeadParams001() {
     ret = isAnd(ret, setGlobalParam(qo, o));// 统一的价格体系才能切省代模式
     return ret;
 }
-function closeSizeHeadParams() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单是否显示尺码头部的界面" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    return ret;
-}
 // 中洲店登陆
 function testSizeHead001_shop2() {
     var colorSize = "head";
@@ -75,16 +65,73 @@ function testSizeHead001_shop1() {
     run("【销售开单】二次挂单后修改开单数量后再输入款号，就输不进去了", "test220031");
     run("【销售开单-按订货开单】货品颜色尺码不能修改", "test220032");
     run("【销售开单-按订货开单】订货开单时包含特殊货品", "test220033");
-    run("【销售开单-按订货开单】订货开单时包含特殊货品", "test220035");
+    run("【销售开单-按订货开单】按订货开单修改界面金额与订单转销售单打印时小票金额对比", "test220035");
     run("【采购订货】采购订货", "test220037");
     run("【采购入库】采购入库（部分入库后再次入库）", "test220039");
     run("【采购入库】采购入库（一次性全部入库）", "test220040");
     run("【系统设置】在均色均码下开启开单尺码表头参数", "test220044");
 }
+/**
+ * 尺码表头参数2 省代 开单2 需要重新登录
+ */
+function setSizeHeadParams_2() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
+    o = { "新值" : "2", "数值" : [ "添加了吊牌价显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));// 设置后必须重启SLH
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "价格模式" };
+    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "货品建款的价格模式" };
+    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));// 统一的价格体系才能切省代模式
+    return ret;
+}
+// 中洲店登陆 需要参数设置setSizeHeadParams_2
+function testSizeHead002_shop2() {
+    var colorSize = "head";
+    run("【门店调出】批量调出", "test220003");
+}
+// 常青店登陆
+function testSizeHead002_shop1() {
+    var colorSize = "head";
+    run("【门店调入】门店调入", "test220004");// 接220003
+    run("【销售开单+省代+参数2】销售开单-按订货开单，部分发货后检查发货数，差异数是否正常", "test220052");
+    run("【销售开单+省代+参数2】销售开单检查特殊货品", "test220053");
+    run("【统计分析+省代+参数2】开启表头尺码后新增收入和新增支出界面检查，", "test220054");
+    run("【销售开单+省代+参数2】多个款号进行退货又拿货", "test220055");
+    run("【销售开单+省代+参数2】省代模式建款，然后销售开单界面输入客户后，检查客户适用价格", "test220057");
+}
 function testSizeHeadCheck() {
     run("【盘点管理】盘点单", "test220045");
     run("切换回均色均码模式", "closeSizeHeadParams");
 }
+function closeSizeHeadParams() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
+    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    return ret;
+}
+
 function test220003() {
     tapMenu("门店调出", "批量调出+");
     var json = {
@@ -188,11 +235,11 @@ function test220005() {
     var jo = { "日期" : getToday(""), "客户" : "小王", "店员" : "总经理" };
     return test220005Field("销售订货", "新增订货+", jo);
 }
-function test220005Field(menu1, menu2, jo) {
-    var cust = "xw", jo = {}, price = 200;
+function test220005Field(menu1, menu2, jo, jo2) {
+    var cust = "xw", jo1 = {}, price = 200;
     if (menu1.indexOf("采购") != -1) {
         cust = "vell";
-        jo = { "店员" : "000,总经理", "订货门店" : "常青店" };
+        jo1 = { "店员" : "000,总经理", "订货门店" : "常青店" };
         price = 100;
     }
     tapMenu(menu1, "按批次查");
@@ -206,8 +253,11 @@ function test220005Field(menu1, menu2, jo) {
         "明细" : [
                 { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 6, "XL" : 7 } },
                 { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 8, "M" : 9 } } ] };
+    if (isDefined(jo2)) {
+        json = mixObject(json, jo2);
+    }
     editSalesBill(json, colorSize);
-    json["输入框值"] = mixObject(json["输入框值"], jo);
+    json["输入框值"] = mixObject(json["输入框值"], jo1);
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
@@ -492,7 +542,7 @@ function test220021() {
 function test220022() {
     tapMenu("销售开单", ADDBILL);
     var json = {
-        "客户" : "zbs",
+        "客户" : "xw",
         "备注" : "head",
         "明细" : [
                 { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : -1, "XL" : -2 } },
@@ -583,7 +633,7 @@ function test220033() {
     ret = isAnd(ret, isEqual("6", json["明细值"]["L"]), isEqual("15",
             json["明细值"]["XL"]), isEqual("24", json["明细值"]["S"]), isEqual(9000,
             json["输入框值"]["totalmoney"]));
-    return true;
+    return ret;
 }
 function test220035() {
     tapMenu("销售订货", "新增订货+");
@@ -716,7 +766,7 @@ function test220044() {
     setGlobalParam(qo, o);
     return ret;
 }
-// 放到zy那跑 需要setSizeHeadParams001为前置条件
+// 放到zy那跑 需要setSizeHeadParams_2为前置条件
 function test220045() {
     tapMenu("盘点管理", "新增盘点+");
     var json = { "明细" : [
@@ -742,7 +792,94 @@ function test220045() {
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
     return ret;
 }
+function test220052() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 25 } } ],
+        "特殊货品" : { "抹零" : 20, "打包费" : 10 } };
+    editSalesBill(json, colorSize);//
 
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    json = { "修改明细" : [ { "尺码" : { "L" : 4, "XL" : 5 } },
+            { "尺码" : { "S" : 6 } } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按订货开单");
+    tapButton(window, QUERY);
+    var qr = getQR();
+    debugObject(qr.data[0]);
+    var exp = { "门店" : "常青店", "客户" : "小王", "店员" : "000,总经理", "订货数" : 60,
+        "已发数" : 15, "差异数" : 45, "订货额" : 11990, "已付" : 11990, "未付" : 0,
+        "发货状态" : "部分发货", "客户分店" : "", "操作日期" : json["操作日期"] };
+    return isEqualObject2(exp, qr.data[0]);
+}
+function test220053() {
+    var jo = { "客户" : "小王", "金额" : 5990, "现金" : 5990 };
+    var jo2 = { "特殊货品" : { "抹零" : 20, "打包费" : 10 } };
+    return test220005Field("销售开单", ADDBILL, jo, jo2);
+}
+function test220054() {
+    var r = "备注" + "a" + getTimestamp(6);
+    tapMenu("统计分析", "新增收支", "新增收入");
+    var json1 = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "订金", "金额" : 217.45 } ] };
+    editStatisticAnalysisIn(json1);
+
+    tapMenu("统计分析", "新增收支", "新增支出");
+    var json2 = { "账户" : "现", "收支备注" : r,
+        "明细" : [ { "收入类别" : "物业", "金额" : 123.64 } ] };
+    editStatisticAnalysisIn(json2);
+
+    tapMenu2("收支表");
+    query();
+    tapLine(1);
+    var ret = checkBillValue(json1);
+    tapReturn();
+    tapLine();
+    ret = isAnd(ret, checkBillValue(json2));
+    tapReturn();
+    return ret;
+}
+function test220055() {
+    var jo = { "客户" : "小王", "数量" : 44, "金额" : 8800, "现金" : 8800 };
+    var jo2 = { "明细" : [
+            { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+            { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : -5, "XL" : -6 } },
+            { "货品" : "agc005", "颜色" : "黑色", "尺码" : { "S" : 10, "M" : 30 } },
+            { "货品" : "agc005", "颜色" : "黑色", "尺码" : { "S" : -4, "M" : -16 } } ] };
+    return test220005Field("销售开单", ADDBILL, jo, jo2);
+}
+function test220057() {
+    tapMenu("往来管理", "客户查询");
+    var keys = { "客户" : "zbs" };
+    conditionQuery(keys);
+    tapLine();
+    keys = { "适用价格" : "零批价" };
+    addCustomer(keys);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "zbs", "备注" : "head",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15 } } ] };
+    editSalesBill(json, colorSize);
+    var ret = isEqual(200, json["明细值"].data[0]["单价"]);
+
+    tapMenu("往来管理", "客户查询");
+    tapButton(window, QUERY);
+    tapLine();
+    keys = { "适用价格" : "大客户价" };
+    addCustomer(keys);
+
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isEqual(160, json["明细值"].data[0]["单价"]));
+    return ret;
+}
 function testEditBillSizeHead() {
     var colorSize = "head";
     // tapMenu("销售开单", ADDBILL);

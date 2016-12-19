@@ -246,8 +246,8 @@ function editStatisticAnalysisIn(o) {
     editStatisticAnalysisInField1(o, "收支备注");// 防止数据重复提交
 
     editStatisticAnalysisInDet(o);
-
-    editStatisticAnalysisInSave(o);
+    editSalesBillSave(o)
+    // editStatisticAnalyssisInSave(o);
 }
 
 function editStatisticAnalysisInField1(o, key) {

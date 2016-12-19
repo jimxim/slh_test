@@ -21,7 +21,7 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "test220045");//
+ run(caseName, "test220057");//
 // run(caseName, "onlyTest");//
 }   
 function onlyTest(){
@@ -31,7 +31,8 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{ 
-
+       var qr = getQR();
+       debugObject(qr.data[0]);
    }catch(e){
       logWarn(e);
    }
@@ -458,16 +459,16 @@ function loginBillClerk005_2() {
      logout();
     }
 }
-// 尺码表头 参数设置
+// 尺码表头 参数1+开单2+省代
 function loginSizeHeadParams001(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        setSizeHeadParams001();
+        setSizeHeadParams_1();
       logout();
      }   
 }
-//尺码表头 中洲店总经理登陆
+// 尺码表头 中洲店总经理登陆
 function loginSizeHead001_shop2(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};
     var ok = login("200","000000",p1);
@@ -476,7 +477,7 @@ function loginSizeHead001_shop2(){
       logout();
      }   
 }
-//尺码表头 常青店总经理登陆 得先跑中洲店的
+// 尺码表头 常青店总经理登陆 得先跑中洲店的
 function loginSizeHead001_shop1(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};
     var ok = login("000","000000",p1);
@@ -485,14 +486,15 @@ function loginSizeHead001_shop1(){
       logout();
      }   
 }
-function loginSizeHeadCheck(){
-    var p1 = {"角色":"总经理"};
-    var ok = login("000","000000",p1);
-    if( ok ) {
-        testSizeHeadCheck();
-      logout();
-     }   
-}
+// 尺码表头 盘点部分，放到suite2跑
+// function loginSizeHeadCheck(){
+// var p1 = {"角色":"总经理"};
+// var ok = login("000","000000",p1);
+// if( ok ) {
+// testSizeHeadCheck();
+// logout();
+// }
+// }
 // 客户分店
 function loginCustBranch001(){
     var p1 = {"角色":"总经理","帐套":"autotest1Branch"};
