@@ -12,7 +12,7 @@ function test005() {
     run("【销售开单】开单是否门店过滤人员(指过滤员工号,不是过滤别的门店的客户)", "test170241_4");
     run("【销售开单-开单】允许店长改低价格", "test170586_5");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
-//    run("【销售开单-开单】整单折扣模式下修改单价后总是报价格验证错误", "test170422");// 退出重新登录参数才生效
+    // run("【销售开单-开单】整单折扣模式下修改单价后总是报价格验证错误", "test170422");// 退出重新登录参数才生效
 }
 
 function test170124() {
@@ -110,7 +110,7 @@ function test170237() {
     qo = { "备注" : "单据打印后不允许修改" };
     o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
     o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -127,7 +127,8 @@ function test170237() {
     editChangeSalesBillOrderNum(o);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = (isIn(alertMsg1, "不能修改"));
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = (isIn(alertMsg1, "不能修改")) || isIn(alertMsg2, "不能修改");
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -135,8 +136,9 @@ function test170237() {
     o = { "现金" : 1000 };
     editSalesBill(o);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret2 = (isIn(alertMsg1, "不能修改"));
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret2 = (isIn(alertMsg1, "不能修改")) || isIn(alertMsg2, "不能修改");
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -144,8 +146,8 @@ function test170237() {
     o = { "店员" : "005" };
     editSalesBill(o);
     debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret3 = (isIn(alertMsg1, "不能修改"));
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = (isIn(alertMsg1, "不能修改")) || isIn(alertMsg2, "不能修改");
 
     tapMenu("销售开单", "按批次查");
     query();

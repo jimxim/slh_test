@@ -78,10 +78,10 @@ js_func="$js_func testSalesNoColorSize170568Prepare testSalesNoColorSize170568"
 #js_func="$js_func testSalesNoColorSizeOutAndIn"
 
 #销售开单-特殊模块（改高改低）
-#js_func="$js_func setSales001Params"
-#js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2"
-#js_func="$js_func ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4"
-#js_func="$js_func ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"
+js_func="$js_func setSales001Params"
+js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts170557_004_2 ts170557_005_2
+ ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4 
+ ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"
                   
 #盘点管理
 js_func="$js_func setSales001Params"
@@ -103,6 +103,9 @@ js_func="$js_func test000Check001 testCheckts100157For000_2"
 
 #系统设置
 js_func="$js_func test000System001  test000System002"
+
+#尺码表头-盘点
+js_func="$js_func loginSizeHeadParams001  loginSizeHeadCheck"
 
 
 SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air 2 (9.2)"

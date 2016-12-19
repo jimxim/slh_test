@@ -203,10 +203,10 @@ function test170177() {
     tapMenu3("所有挂单");
     delay();
     loadHangBill(0);
-    // debugArray(alertMsgs);
-    // var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isIn(alertMsg, "开单界面存在数据");
     tapNaviLeftButton();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isIn(alertMsg, "开单界面存在数据");
     tapButton(getScrollView(-1), 0);
 
     tapMenu1("销售开单");
@@ -236,7 +236,7 @@ function test170177() {
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
-    logDebug(" ret" + ret + ", ret1" + ret1 + ", ret2" + ret2);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170240_4() {
@@ -1704,8 +1704,34 @@ function test170741() {
     query();
     qr = getQR();
     var md1 = qr.data[0]["门店"];
-
     var ret1 = isAnd(isEqual("常青店", md), isEqual("常青店", md1));
+
+    logDebug(", ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
+}
+function test170742() {
+    // 全局参数：非总经理岗位是否只显示自己所在门店:1.所有查询列表只出现自己门店
+    var qo, o, ret = true;
+    qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
+    o = { "新值" : "1", "数值" : [ "所有查询列表只出现自己门店", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    // 检查整个系统门店的下拉列表
+    tapMenu("货品管理", "新增货品+");
+    var ret1 = false;
+    var f = new TField("客户", TF_AC, idx1, "lx", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "李响")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapReturn();
 
     logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

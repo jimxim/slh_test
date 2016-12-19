@@ -313,11 +313,10 @@ function test170001_2_170002_170003_170004_170020_170485() {
         idx1 = 7;
     }
     tapMenu("销售开单", "按批次查");
-    var i;
     var ret = false;
     var f = new TField("客户", TF_AC, idx1, "lx", -1);
     var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
         if (isIn(v, "李响")) {
@@ -1629,14 +1628,14 @@ function test170258() {
 function test170259() {
     tapMenu("销售开单", "按订货开单");
     var idx = 3;
-    var o = { "键盘" : "简体拼音", "拼音" : [ "lixiang" ], "汉字" : [ "李响" ] };
+    var o = { "键盘" : "简体拼音", "拼音" : [ "litian" ], "汉字" : [ "李天" ] };
     var tf = window.textFields()[idx].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-    var ret = isEqual("李响", getTextFieldValue(window, idx));
+    var ret = isEqual("李天", getTextFieldValue(window, idx));
     delay();
     tapButton(window, QUERY);
     var qr = getQR();
-    ret = isAnd(ret, isEqual("李响", qr.data[0]["客户"]));
+    ret = isAnd(ret, isEqual("李天", qr.data[0]["客户"]));
 
     return ret;
 }
@@ -1871,11 +1870,10 @@ function test170264() {
     query(fields);
     tapFirstText();
     qr = getQRDet();
-    var ret2 = isAnd(isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(0,
-            qr.data[0]["数量"]), isEqual("k200,范范", qr.data[1]["货品"]), isEqual(
-            10, qr.data[1]["数量"]), isEqual("00000,抹零", qr.data[2]["货品"]),
-            isEqual(-1, qr.data[2]["数量"]), isEqual("00001,打包费",
-                    qr.data[3]["货品"]), isEqual(1, qr.data[3]["数量"]));
+    var ret2 = isAnd(isEqual("k200,范范", qr.data[0]["货品"]), isEqual(10,
+            qr.data[0]["数量"]), isEqual("00000,抹零", qr.data[1]["货品"]), isEqual(
+            -1, qr.data[1]["数量"]), isEqual("00001,打包费", qr.data[2]["货品"]),
+            isEqual(1, qr.data[2]["数量"]));
     tapReturn();
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
@@ -3733,6 +3731,9 @@ function test170308() {
     tapButton(window, QUERY);
     qr = getQR();
     var xj4 = qr.counts["小计"];
+    if (qr.data.length == 0) {
+        xj4 = 0;
+    }
     var ret3 = isAqualNum(totalMoney, Number(sub(xj, xj2) - Number(xj1)
             - Number(xj3) - Number(xj4)));
 
@@ -5178,9 +5179,10 @@ function test170365() {
     delay();
     tapReturn();
 
+    var r1 = randomWord(false, 6);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : r, "明细" : [ { "货品" : "8989", "数量" : 1 } ],
-        "代收" : { "物流商" : "ht", "运单号" : "123", "备注" : "a" }, "折扣" : "0.85",
+        "代收" : { "物流商" : "ht", "运单号" : r1, "备注" : "a" }, "折扣" : "0.85",
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -5210,7 +5212,7 @@ function test170365() {
     tapReturn();
 
     tapMenu("销售开单", "物流单");
-    var k = { "运单号" : "123", "物流商" : "汇通快递" };
+    var k = { "运单号" : r1, "物流商" : "汇通快递" };
     var keys = k;
     var fields = salesQueryLogisticsFields(keys);
     query(fields);
@@ -5224,9 +5226,9 @@ function test170365() {
     var a5 = qr.data[0]["客户"];
     var a6 = qr.data[0]["门店"];
     var a7 = qr.data[0]["货款收讫"];
-    var ret2 = isAnd(isEqual(money, a), isEqual("汇通快递", a1),
-            isEqual("123", a2), isEqual("a", a3), isEqual("是", a4), isEqual(r,
-                    a5), isEqual("常青店", a6), isEqual("否", a7));
+    var ret2 = isAnd(isEqual(money, a), isEqual("汇通快递", a1), isEqual(r1, a2),
+            isEqual("a", a3), isEqual("是", a4), isEqual(r, a5), isEqual("常青店",
+                    a6), isEqual("否", a7));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -10483,10 +10485,17 @@ function test170739() {
     setTFieldsValue(window, fields);
     tapButton(window, "核销");
     delay(8);
-    var json = { "核销" : [ 0, Number(Number(len) - 1) ] };
-    editLogisticsVerifyDet(json);
+    var qr = getQRtable1(window, 8, -2);
+    if (qr.data.length == 0) {
+        for (var j = 0; j < 3; j++) {
+            qr = getQRtable1(window, 8, -2);
+        }
+    }
+    var batch = qr.data[0]["批次"];
+    getTableView(window, -2).cells().firstWithName(batch).tap();
 
     tapButton(window, QUERY);
+    delay(8);
     var texts = getStaticTexts(app.navigationBar());
     var index = getArrayIndexIn(texts, ".00");
     var money = getStaticTextValue(app.navigationBar(), index);
@@ -10494,6 +10503,7 @@ function test170739() {
     tapReturn();
     var ret = isEqual(0.00, money);
 
+    logDebug(" money=" + money);
     return ret;
 }
 function test170740() {
@@ -10505,7 +10515,7 @@ function test170740() {
     var total = qr.total;
 
     tapMenu("销售开单", "按批次查");
-    var keys = { "门店" : "仓库店" };
+    var keys = { "日期从" : getDay(-5), "门店" : "仓库店", "备注" : "zy" };
     var fields = salesQueryBatchFields(keys);
     query(fields);
     qr = getQR();
@@ -10516,13 +10526,16 @@ function test170740() {
     delay(2);
 
     tapMenu("销售开单", MORE, "收款单");
-    var keys = { "日期从" : getDay(-30), "到" : getDay(5) };
-    var fields = salesCollectionRecordFields(keys);
-    query(fields);
+    tapButton(window, QUERY);
     qr = getQR();
     var total1 = qr.total;
     var ret = isAnd(isEqual("仓库店", md), isEqual(Number(total) + 1, total1),
             isEqual("仓库店", qr.data[0]["门店"]));
 
     return ret;
+}
+function test170743() {
+    // 后台-系统管理-角色管理-店长-pad菜单权限-“销售开单-开单-特殊货品”勾选
+    // 按订货开单、销售订货、采购入库、物流核销、挂单也需要设置一遍勾选
+
 }

@@ -16,6 +16,9 @@ function test000All() {
 // run("【销售开单-按汇总-按客户上货】店员权限只能看本门店数据", "test170684");//
 // run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
+ // run("【销售开单-核销】物流单核销-按门店区分客户功能对物流间输入的影响", "test170572");
+// run("【销售开单－开单】代收模式2", "test170093");//bugSLH-13348
+// run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");//bug
     
 // run("", "test0");
 }
@@ -220,9 +223,9 @@ function test000SalesNoColorSizeElse005() {
 }
 function test100SalesNoColorSizeElsePrepare003() {
     var p1 = {"角色":"总经理"};
-    var ok = login("200","000000",p1);
+    var ok = login("100","000000",p1);
     if( ok ) {
-        run("仓库店准备代收单", "testSalesPrepare003");
+        run("仓库店准备数据", "testSalesPrepare003");
         logout();
     }
 }
@@ -455,4 +458,22 @@ function test005SalesNoColorSize005() {
       
      logout();
   }
+}
+// 尺码表头-盘点,参数设置
+function loginSizeHeadParams001(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        setSizeHeadParams001();
+      logout();
+     }   
+}
+// 尺码表头-盘点
+function loginSizeHeadCheck(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSizeHeadCheck();
+      logout();
+     }   
 }
