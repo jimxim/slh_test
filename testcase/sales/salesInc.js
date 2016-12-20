@@ -102,17 +102,17 @@ function testSalesPrepare003() {
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
-    
+
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "20", "数值" : [ "现金+刷卡+汇款+配货员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "k300", "数量" : 1 } ],
         "配货" : "004", "现金" : 100, "刷卡" : [ 1000 ] };
     editSalesBillNoColorSize(json);
-    
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));

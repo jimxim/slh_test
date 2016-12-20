@@ -123,6 +123,8 @@ function testSalesColorSize003() {
     run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
     run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
     run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+颜色尺码", "test170203");
+    run("【销售开单】补货退货验证+允许继续输入+颜色尺码", "test170207");
+    run("【销售开单】补货退货验证+不允许继续输入+颜色尺码", "test170208");
     // run("【销售开单-开单】童装模式手数需要四位数", "test170719");//童装开单模式生效需重新登录
 }
 function testSalesColorSize004() {
@@ -3950,6 +3952,10 @@ function test170203() {
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "x001", "数量" : [ 0, -1 ] } ] };
     editSalesBillDetColorSize(json);
@@ -3958,16 +3964,191 @@ function test170203() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var ret1 = isIn(alertMsg1, "往来单位为空不允许有欠款或余额");
+    tapButton(getScrollView(-1), 0);
+    tapButton(getScrollView(-1), 1);
 
-    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 1 ] } ] };
+    json = { "明细" : [ { "货品" : "x001", "数量" : [ 1, 1 ] } ], "不返回" : "yes" };
     editSalesBillColorSize(json);
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret2 = isIn(alertMsg1, "保存成功");
+    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    json = { "客户" : "ls", "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
+    editSalesBillColorSize(json);
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = !isIn(alertMsg1, "操作提醒") || !isIn(alertMsg2, "操作提醒");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
+}
+function test170207() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单是否逐条进行补货退货时验证" };
+    o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
+    o = { "新值" : "1", "数值" : [ "可以继续输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "允许退货" : "是" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "nb001", "数量" : [ 8 ] } ],
+        "不返回" : "yes" };
+    editSalesBillColorSize(json);
+
+    json = { "客户" : r, "明细" : [ { "货品" : "nb001", "数量" : [ 2 ] } ],
+        "不返回" : "yes" };
+    editSalesBillColorSize(json);
+
+    json = { "客户" : r };
+    editSalesBillCustomer(json);
+
+    json = { "特殊货品" : { "抹零" : 4, "打包费" : 200 } };
+    editSalesBillSpecial(json);
+
+    json = { "明细" : [ { "货品" : "nb001", "数量" : [ -2 ] } ] };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var kh = qr.data[0]["客户"];
+    var je = qr.data[0]["金额"];
+    var sl = qr.data[0]["数量"];
+    var opt = qr.data[0]["操作日期"];
+
+    tapFirstText();
+    var qr = getQRDet();
+    var ret2 = true;
+    for (var i = 0; i < 3; i++) {
+        var obj = qr.data[i]["货品"];
+        if (isIn(obj, "Nb001")) {
+            ret2 = isAnd(ret2, isEqual(-2, qr.data[i]["数量"]));
+        }
+        var obj1 = qr.data[i]["货品"];
+        if (isIn(obj1, "00000,抹零")) {
+            ret2 = isAnd(ret2, isEqual(-1, qr.data[i]["数量"]), isEqual(4,
+                    qr.data[i]["单价"]));
+        }
+        var obj2 = qr.data[i]["货品"];
+        if (isIn(obj2, "00001,打包费")) {
+            ret2 = isAnd(ret2, isEqual(1, qr.data[i]["数量"]), isEqual(200,
+                    qr.data[i]["单价"]));
+        }
+    }
+    tapReturn();
+
+    qo = { "备注" : "销售开单是否逐条进行补货退货时验证" };
+    o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug("ret=" + ret + ", ret2=" + ret2);
+    return ret && ret2;
+}
+function test170208() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单是否逐条进行补货退货时验证" };
+    o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
+    o = { "新值" : "0", "数值" : [ "不能输入", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = "anewkh" + getTimestamp(5);
+    tapMenu("往来管理", "新增客户+");
+    var keys = { "名称" : r, "允许退货" : "是" };
+    var fields = editCustomerFields(keys);
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButton(window, SAVE);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : r, "明细" : [ { "货品" : "nb001", "数量" : [ 8 ] } ],
+        "不返回" : "yes" };
+    editSalesBillColorSize(json);
+
+    json = { "客户" : r, "明细" : [ { "货品" : "nb001", "数量" : [ 2 ] } ],
+        "不返回" : "yes" };
+    editSalesBillColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    json = { "客户" : r };
+    editSalesBillCustomer(json);
+
+    json = { "特殊货品" : { "打包费" : 300, "免单" : 8 } };
+    editSalesBillSpecial(json);
+
+    json = { "明细" : [ { "货品" : "nb001", "数量" : [ -2 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret3 = isAnd(isIn(alertMsg1, "该款属于补货不能退货"), isIn(alertMsg1,
+            "Nb001,新百伦运动鞋"));
+
+    tapButton(getScrollView(-1), 2);
+    json = { "明细" : [ { "货品" : "nb001", "数量" : [ 3 ] } ], "onlytest" : "yes" };
+    editSalesBillDetColorSize(json);
+    var remitTFindex = getEditSalesTFindex2("客户", "汇款");
+    var money = getTextFieldValue(window, remitTFindex - 1);
+    saveAndAlertOk();
+    tapPrompt();
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var kh = qr.data[0]["客户"];
+    var je = qr.data[0]["金额"];
+    var sl = qr.data[0]["数量"];
+    var opt = qr.data[0]["操作日期"];
+
+    tapFirstText();
+    var qr = getQRDet();
+    var ret1 = true;
+    for (var i = 0; i < 3; i++) {
+        var obj = qr.data[i]["货品"];
+        if (isIn(obj, "Nb001")) {
+            ret1 = isAnd(ret1, isEqual(3, qr.data[i]["数量"]));
+        }
+        var obj1 = qr.data[i]["货品"];
+        if (isIn(obj1, "00002,免单")) {
+            ret1 = isAnd(ret1, isEqual(-1, qr.data[i]["数量"]), isEqual(8,
+                    qr.data[i]["单价"]));
+        }
+        var obj2 = qr.data[i]["货品"];
+        if (isIn(obj2, "00001,打包费")) {
+            ret1 = isAnd(ret1, isEqual(1, qr.data[i]["数量"]), isEqual(300,
+                    qr.data[i]["单价"]));
+        }
+    }
+    tapReturn();
+    var ret2 = isAnd(isEqual(je, money), isEqual(r, kh), isEqual(3, sl),
+            isAqualOptime(getOpTime(), opt));
+
+    qo = { "备注" : "销售开单是否逐条进行补货退货时验证" };
+    o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170442_170425() {
     var qo, o, ret = true;
@@ -4240,7 +4421,8 @@ function test170651() {
     tapPrompt();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -1);
-    var ret3 = isIn(alertMsg1, "保存成功");
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret3 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);

@@ -17,9 +17,7 @@ function test000All() {
 // run("【销售开单-核销】物流单核销-查询结果检查", "test170570_170577_170579");
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
  // run("【销售开单-核销】物流单核销-按门店区分客户功能对物流间输入的影响", "test170572");
-// run("【销售开单－开单】代收模式2", "test170093");//bugSLH-13348
-// run("【销售开单－核销】输入物流商自动显示当前物流商的代收应收款", "test170472");//bug
-    
+        
 // run("", "test0");
 }
 function test0(){
@@ -448,6 +446,15 @@ function test004SalesNoColorSize004() {
       
      logout();
   }
+}
+// 全局参数：非总经理岗位是否只显示自己所在门店:1.所有查询列表只出现自己门店
+function test000SalesNoColorSize170742Params(){
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        run("非总经理,所有查询列表只出现自己门店", "test170742Params");
+      logout();
+     }   
 }
 // 开单员权限
 function test005SalesNoColorSize005() {

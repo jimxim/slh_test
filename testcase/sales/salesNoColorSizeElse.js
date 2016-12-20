@@ -6771,8 +6771,7 @@ function test170472() {
     var ds = qr1["代收"];
 
     tapMenu("销售开单", "开  单+");
-    json = { "客户" : "ls",
-        "明细" : [ { "货品" : "8989", "数量" : 20 }, { "货品" : "k300", "数量" : 10 } ],
+    json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 20 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
 
@@ -7430,7 +7429,7 @@ function test170574() {
 function test170575() {
     // "anewz"为中洲店物流商前缀
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
-    var r = "anewz" + getTimestamp(6);
+    var r = "anewz" + randomWord(false, 6);
     var keys = { "名称" : r, "门店" : "中洲店" };
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -7438,7 +7437,7 @@ function test170575() {
     tapReturn();
 
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
-    var r1 = "anewz" + getTimestamp(6);
+    var r1 = "anewz" + randomWord(false, 6);
     var keys = { "名称" : r1, "门店" : "仓库店" };
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -7467,7 +7466,7 @@ function test170575() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, r)) {
+        if (isIn(v, "anewz")) {
             ret1 = true;
             break;
         }
@@ -7482,7 +7481,7 @@ function test170575() {
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, r1)) {
+        if (isIn(v, "anewz")) {
             ret1 = true;
             break;
         }
@@ -10533,9 +10532,4 @@ function test170740() {
             isEqual("仓库店", qr.data[0]["门店"]));
 
     return ret;
-}
-function test170743() {
-    // 后台-系统管理-角色管理-店长-pad菜单权限-“销售开单-开单-特殊货品”勾选
-    // 按订货开单、销售订货、采购入库、物流核销、挂单也需要设置一遍勾选
-
 }

@@ -31,6 +31,7 @@ function test004() {
     run("【销售开单-物流单】非总经理登录", "test170736");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
     run("【销售开单-按订货开单】异地发货/异地+代收 按订货开单界面显示开单门店的数据", "test170741");
+    run("【销售开单-按批次查】非总经理查询列表只能显示本门店", "test170742");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
@@ -1709,30 +1710,335 @@ function test170741() {
     logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test170742() {
+function test170742Params() {
     // 全局参数：非总经理岗位是否只显示自己所在门店:1.所有查询列表只出现自己门店
     var qo, o, ret = true;
     qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
     o = { "新值" : "1", "数值" : [ "所有查询列表只出现自己门店", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ret = isAnd(ret, setGlobalParam(qo, o));// 需重新登录使参数生效
 
+    return ret;
+}
+function test170742List() {
+    tapButton(window, "...");
+}
+function test170742() {
     // 检查整个系统门店的下拉列表
-    tapMenu("货品管理", "新增货品+");
-    var ret1 = false;
-    var f = new TField("客户", TF_AC, idx1, "lx", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "李响")) {
-            ret1 = true;
-            break;
+    tapMenu("往来管理", "客户查询");
+    test170742List();
+    var arr = [ "常青店" ], arr1 = [];
+    var view = window.popover().scrollViews()[0];
+    var ret1 = isEqualDropDownList(arr, view);
+    arr1.push(ret1);
+
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    test170742List();
+    var ret2 = isEqualDropDownList(arr, view);
+    arr1.push(ret2);
+
+    tapMenu("往来管理", "客户账款", "按上级单位");
+    test170742List();
+    var ret3 = isEqualDropDownList(arr, view);
+    arr1.push(ret3);
+
+    tapMenu("往来管理", "客户活跃度");
+    test170742List();
+    var ret4 = isEqualDropDownList(arr, view);
+    arr1.push(ret4);
+
+    tapMenu("往来管理", "积分查询");
+    test170742List();
+    var ret5 = isEqualDropDownList(arr, view);
+    arr1.push(ret5);
+
+    tapMenu("往来管理", "厂商账款", "厂商门店账");
+    test170742List();
+    var ret6 = isEqualDropDownList(arr, view);
+    arr1.push(ret6);
+
+    tapMenu("采购入库", "按批次查");
+    test170742List();
+    var ret7 = isEqualDropDownList(arr, view);
+    arr1.push(ret7);
+
+    tapMenu("采购入库", "按明细查");
+    test170742List();
+    var ret8 = isEqualDropDownList(arr, view);
+    arr1.push(ret8);
+
+    tapMenu("采购入库", "按汇总", "按款号汇总");
+    test170742List();
+    var ret9 = isEqualDropDownList(arr, view);
+    arr1.push(ret9);
+
+    tapMenu("采购入库", "按汇总", "厂商对账单");
+    test170742List();
+    var ret10 = isEqualDropDownList(arr, view);
+    arr1.push(ret10);
+
+    tapMenu("采购入库", "厂商账款", "厂商门店账");
+    test170742List();
+    var ret11 = isEqualDropDownList(arr, view);
+    arr1.push(ret11);
+
+    tapMenu("采购订货", "按批次查");
+    test170742List();
+    var ret12 = isEqualDropDownList(arr, view);
+    arr1.push(ret12);
+
+    tapMenu("采购订货", "按明细查");
+    test170742List();
+    var ret13 = isEqualDropDownList(arr, view);
+    arr1.push(ret13);
+
+    tapMenu("采购订货", "按汇总", "按款号");
+    test170742List();
+    var ret14 = isEqualDropDownList(arr, view);
+    arr1.push(ret14);
+
+    tapMenu("采购订货", "按汇总", "按厂商");
+    test170742List();
+    var ret15 = isEqualDropDownList(arr, view);
+    arr1.push(ret15);
+
+    tapMenu("采购订货", "按汇总", "按门店");
+    test170742List();
+    var ret16 = isEqualDropDownList(arr, view);
+    arr1.push(ret16);
+
+    tapMenu("门店调入", "在途调拨");
+    test170742List();
+    var ret17 = isEqualDropDownList(arr, view);
+    arr1.push(ret17);
+
+    tapMenu("门店调入", "按批次查");
+    test170742List();
+    var ret18 = isEqualDropDownList(arr, view);
+    arr1.push(ret18);
+
+    var idx = getButtonIndex(window, "...", 2);
+    tapButton(window, idx);
+    var ret19 = isEqualDropDownList(arr, view);
+    arr1.push(ret19);
+
+    tapMenu("门店调入", "按明细查");
+    test170742List();
+    var ret20 = isEqualDropDownList(arr, view);
+    arr1.push(ret20);
+
+    idx = getButtonIndex(window, "...", 2);
+    tapButton(window, idx);
+    var ret21 = isEqualDropDownList(arr, view);
+    arr1.push(ret21);
+
+    tapMenu("门店调出", "按批次查");
+    test170742List();
+    var ret22 = isEqualDropDownList(arr, view);
+    arr1.push(ret22);
+
+    idx = getButtonIndex(window, "...", 2);
+    tapButton(window, idx);
+    var ret23 = isEqualDropDownList(arr, view);
+    arr1.push(ret23);
+
+    tapMenu("门店调出", "按明细查");
+    test170742List();
+    var ret24 = isEqualDropDownList(arr, view);
+    arr1.push(ret24);
+
+    idx = getButtonIndex(window, "...", 2);
+    tapButton(window, idx);
+    var ret25 = isEqualDropDownList(arr, view);
+    arr1.push(ret25);
+
+    tapMenu("销售订货", "按批次查");
+    test170742List();
+    var ret26 = isEqualDropDownList(arr, view);
+    arr1.push(ret26);
+
+    tapMenu("销售订货", "按明细查");
+    test170742List();
+    var ret27 = isEqualDropDownList(arr, view);
+    arr1.push(ret27);
+
+    tapMenu("销售订货", "按挂单");
+    test170742List();
+    var ret28 = isEqualDropDownList(arr, view);
+    arr1.push(ret28);
+
+    tapMenu("销售订货", "按汇总", "按款号");
+    test170742List();
+    var ret29 = isEqualDropDownList(arr, view);
+    arr1.push(ret29);
+
+    tapMenu("销售订货", "按汇总", "按门店");
+    test170742List();
+    var ret30 = isEqualDropDownList(arr, view);
+    arr1.push(ret30);
+
+    tapMenu("销售订货", "订货对账单");
+    test170742List();
+    var ret31 = isEqualDropDownList(arr, view);
+    arr1.push(ret31);
+
+    tapMenu("销售订货", "按缺货查");
+    test170742List();
+    var ret32 = isEqualDropDownList(arr, view);
+    arr1.push(ret32);
+
+    tapMenu("销售开单", "按批次查");
+    test170742List();
+    var ret33 = isEqualDropDownList(arr, view);
+    arr1.push(ret33);
+
+    tapMenu("销售开单", "按明细查");
+    test170742List();
+    var ret34 = isEqualDropDownList(arr, view);
+    arr1.push(ret34);
+
+    tapMenu("销售开单", "按挂单");
+    test170742List();
+    var ret35 = isEqualDropDownList(arr, view);
+    arr1.push(ret35);
+
+    tapMenu("销售开单", "按汇总", "按金额汇总");
+    test170742List();
+    var ret36 = isEqualDropDownList(arr, view);
+    arr1.push(ret36);
+
+    tapMenu("销售开单", "按汇总", "按款号汇总");
+    test170742List();
+    var ret37 = isEqualDropDownList(arr, view);
+    arr1.push(ret37);
+
+    tapMenu("销售开单", "按汇总", "按退货汇总");
+    test170742List();
+    var ret38 = isEqualDropDownList(arr, view);
+    arr1.push(ret38);
+
+    tapMenu("销售开单", "按汇总", "按店员汇总");
+    test170742List();
+    var ret39 = isEqualDropDownList(arr, view);
+    arr1.push(ret39);
+
+    tapMenu("销售开单", "按汇总", "客户对账单");
+    test170742List();
+    var ret40 = isEqualDropDownList(arr, view);
+    arr1.push(ret40);
+
+    tapMenu("销售开单", "按汇总", "按厂商汇总");
+    test170742List();
+    var ret41 = isEqualDropDownList(arr, view);
+    arr1.push(ret41);
+
+    tapMenu("销售开单", "按汇总", "按配货员汇总");
+    test170742List();
+    var ret42 = isEqualDropDownList(arr, view);
+    arr1.push(ret42);
+
+    tapMenu("销售开单", "按订货开单");
+    test170742List();
+    var ret43 = isEqualDropDownList(arr, view);
+    arr1.push(ret43);
+
+    tapMenu("销售开单", "物流单");
+    test170742List();
+    var ret44 = isEqualDropDownList(arr, view);
+    arr1.push(ret44);
+
+    tapMenu("销售开单", "getMenu_More", "收款单");
+    test170742List();
+    var ret45 = isEqualDropDownList(arr, view);
+    arr1.push(ret45);
+
+    tapMenu("销售开单", "getMenu_More", "代收收款查询");
+    test170742List();
+    var ret46 = isEqualDropDownList(arr, view);
+    arr1.push(ret46);
+
+    tapMenu("盘点管理", "按批次查");
+    test170742List();
+    var ret47 = isEqualDropDownList(arr, view);
+    arr1.push(ret47);
+
+    tapMenu("盘点管理", "按明细查");
+    idx = getButtonIndex(window, "...", 2);
+    tapButton(window, idx);
+    var ret48 = isEqualDropDownList(arr, view);
+    arr1.push(ret48);
+
+    tapMenu("盘点管理", "盈亏表");
+    test170742List();
+    var ret49 = isEqualDropDownList(arr, view);
+    arr1.push(ret49);
+
+    tapMenu("盘点管理", "库存表");
+    test170742List();
+    var ret50 = isEqualDropDownList(arr, view);
+    arr1.push(ret50);
+
+    tapMenu("统计分析", "收支表");
+    test170742List();
+    var ret51 = isEqualDropDownList(arr, view);
+    arr1.push(ret51);
+
+    tapMenu("统计分析", "日营业表");
+    test170742List();
+    var ret52 = isEqualDropDownList(arr, view);
+    arr1.push(ret52);
+
+    tapMenu("统计分析", "日利润表");
+    test170742List();
+    var ret53 = isEqualDropDownList(arr, view);
+    arr1.push(ret53);
+
+    tapMenu("统计分析", "综合汇总");
+    test170742List();
+    var ret54 = isEqualDropDownList(arr, view);
+    arr1.push(ret54);
+
+    tapMenu("统计分析", "收支流水");
+    test170742List();
+    var ret55 = isEqualDropDownList(arr, view);
+    arr1.push(ret55);
+
+    tapMenu("统计图表", "按客户");
+    test170742List();
+    var ret56 = isEqualDropDownList(arr, view);
+    arr1.push(ret56);
+
+    tapMenu("统计图表", "按款号");
+    test170742List();
+    var ret57 = isEqualDropDownList(arr, view);
+    arr1.push(ret57);
+
+    tapMenu("统计图表", "按趋势");
+    test170742List();
+    var ret58 = isEqualDropDownList(arr, view);
+    arr1.push(ret58);
+
+    tapMenu("统计图表", "按欠款");
+    test170742List();
+    var ret59 = isEqualDropDownList(arr, view);
+    arr1.push(ret59);
+
+    tapMenu("统计图表", "按类别");
+    test170742List();
+    var ret60 = isEqualDropDownList(arr, view);
+    arr1.push(ret60);
+
+    var retX = true;
+    var arr2 = [];
+    var len = arr1.length;
+    for (var i = 0; i < len - 1; i++) {
+        if (arr1[i] == false) {
+            retX = false;
+            arr2.push(i);
         }
     }
-    delay();
-    tapKeyboardHide();
-    tapReturn();
+    var len1 = arr2.length;
+    debugArray(arr2);
 
-    logDebug(", ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" retX=" + retX + ", len=" + len + ", len1=" + len1);
+    return retX;
 }

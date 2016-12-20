@@ -147,7 +147,6 @@ function checkPrepare2() {
     var qr = getQR();
     var ret = true;
     for (var i = 0; i < qr.total - 1; i++) {
-        query();
         var qr1 = getQR();
         var date = qr1.data[0]["处理时间"];
         if (date == "") {
