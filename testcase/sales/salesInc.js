@@ -149,6 +149,17 @@ function testSalesPrepare007() {
         tapPrompt();
         tapRefresh();
     }
+
+    // tapMenu("货品管理", "基本设置", "所有颜色");
+    // var keys = { "名称" : "淡黄" };
+    // conditionQuery(keys);
+    // tapFirstText();
+    // tapButtonAndAlert(START, OK);
+    //
+    // keys = { "名称" : "黄色" };
+    // conditionQuery(keys);
+    // tapFirstText();
+    // tapButtonAndAlert(START, OK);
 }
 function test170637Prepare() {
     var qo, o, ret = true;

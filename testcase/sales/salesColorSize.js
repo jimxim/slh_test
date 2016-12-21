@@ -3809,11 +3809,11 @@ function testCs170251() {
 function test170112_170113() {
     // 颜色尺码模式下，开启参数 开单时是否显示当前库存
     var qo, o, ret = true;
-    qo = { "备注" : "所有门店" };
+    qo = { "备注" : "开单时是否显示当前库存" };
     o = { "新值" : "1", "数值" : [ "显示库存" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单时是否显示当前库存" };
+    qo = { "备注" : "所有门店" };
     o = { "新值" : "1", "数值" : [ "显示所有门店库存" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -3847,7 +3847,8 @@ function test170112_170113() {
     var ret2 = isUndefined(n);
     tapReturn();
 
-    logDebug("a=" + a + "ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    logDebug(" a=" + a + " n1=" + n1 + ", ret=" + ret + ", ret1=" + ret1
+            + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170114() {
@@ -6025,23 +6026,25 @@ function test170733() {
 
     var r = "0.9" + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
         "onlytest" : "yes" };
     editSalesBillColorSize(json);
 
-    var o = { "折扣" : "r" };
-    editChangeSalesBillOrderDiscount();
-
+    var o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 10 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -6051,13 +6054,9 @@ function test170733() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -6068,20 +6067,26 @@ function test170733() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 1 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
+    r = 0.9 + getTimestamp(2);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret4 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 1 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
+    r = 0.9 + getTimestamp(2);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -6091,11 +6096,8 @@ function test170733() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -6107,22 +6109,27 @@ function test170733() {
     o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    r = "0.9" + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 1, 0, 1 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1, 0, 1 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
+    r = "0.9" + getTimestamp(2);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret7 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 10 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
-
+    r = "0.9" + getTimestamp(2);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
+    editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -6132,17 +6139,18 @@ function test170733() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret9 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
@@ -6185,14 +6193,9 @@ function test170735() {
     tapMenu("销售开单", "按订货开单");
     query();
     tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
