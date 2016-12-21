@@ -115,6 +115,10 @@ function testSizeHead002_shop1() {
     run("【统计分析+省代+参数2】开启表头尺码后新增收入和新增支出界面检查，", "test220054");
     run("【销售开单+省代+参数2】多个款号进行退货又拿货", "test220055");
     run("【销售开单+省代+参数2】省代模式建款，然后销售开单界面输入客户后，检查客户适用价格", "test220057");
+    run("【采购订货+省代+参数2】采购订货，检查款号下拉表显示的价格", "test220058");
+    run("【销售开单+省代+参数2】销售开单-按订货开单，有吊牌这一列，且款号的吊牌价正确，正确开单", "test220060");
+    run("【销售开单+省代+参数2】检查销售开单有吊牌这一列，款号的吊牌价正确，正确开单打印", "test220062");
+
 }
 function testSizeHeadCheck() {
     run("【盘点管理】盘点单", "test220045");
@@ -878,6 +882,126 @@ function test220057() {
     tapMenu("销售开单", ADDBILL);
     editSalesBill(json, colorSize);
     ret = isAnd(ret, isEqual(160, json["明细值"].data[0]["单价"]));
+    return ret;
+}
+function test220058() {
+    tapMenu("采购订货", "新增订货+");
+    var ret = test220058Field("auto006100元");
+
+    tapMenu("采购入库", "新增入库+");
+    ret = isAnd(ret, test220058Field("auto006100元"));
+
+    tapMenu("销售订货", "新增订货+");
+    ret = isAnd(ret, test220058Field("auto006200元"));
+
+    tapMenu("销售开单", ADDBILL);
+    ret = isAnd(ret, test220058Field("auto006200元"));
+    return ret;
+}
+function test220058Field(exp) {
+    var view = getScrollView(-1), ret = false;
+    try {
+        var f = new TField("货品", TF_AC, 0, "agc00", -1);
+        var cells = getTableViewCells(view, f);
+        for (var i = 0; i < cells.length; i++) {
+            var cell = cells[i];
+            var v = deletePunctuation(cell.name());
+            if (isIn(v, exp)) {
+                ret = true;
+                break;
+            }
+        }
+        tapKeyboardHide();
+
+    } catch (e) {
+        logWarn(e);
+    } finally {
+        delay();
+        tapReturn();
+        return ret;
+    }
+}
+function test220060() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 25, "M" : 30 } } ] };
+    editSalesBill(json, colorSize);
+    var ret = isEqual(200, json["明细值"].data[0]["吊牌"]);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    ret = isAnd(ret, checkBillDetValue(json["明细值"]));
+    editSalesBillSave(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapLine();
+    ret = isAnd(ret, checkBillDetValue(json["明细值"]));
+    tapReturn();
+    return ret;
+}
+function test220062() {
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "zbs",// 适用价格为大客户价160
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 25, "M" : 30 } } ] };
+    editSalesBill(json, colorSize);
+    var ret = isAnd(isEqual(200, json["明细值"].data[0]["吊牌"]), isEqual(160,
+            json["明细值"].data[0]["单价"]));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapLine();
+    ret = isAnd(ret, checkBillDetValue(json["明细值"]));
+    tapReturn();
+    return ret;
+}
+function test220064() {
+    var qo = { "备注" : "双击行号的行为分类" };
+    var o = { "新值" : "0", "数值" : [ "进行第一个尺码数量的复制", "in" ] };
+    setGlobalParam(qo, o);
+    var menu = { "采购入库" : "新增入库+", "采购订货" : "新增订货+", "门店调出" : "批量调出+",
+        "销售订货" : "新增订货+", "销售开单" : ADDBILL, "盘点管理" : "新增盘点+" };
+    return test220064Field(menu);
+}
+function test220064Field(menu) {
+    var json = {
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "S" : 1 } } ],
+        "onlytest" : "yes" };
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        editSalesBill(json, colorSize);
+        var tf = getStaticText(getScrollView(-1), 0);
+        tf.doubleTap();
+        var titles = getDetSizheadTitle();
+        var view = getScrollView(-1), ret = true;
+        var str = getTFEnabledState(view, titles["颜色"] + 1, titles["col12"]);
+        logDebug("s="+(titles["颜色"] + 1)+"  col12="+titles["col12"]);
+        for (var i = 0; i < str.length; i++) {
+            var able = str[i], ok;
+            var v = getTextFieldValue(view, titles["颜色"] + 1 + i);
+            if (able == "1") {
+                ok = v == 5;
+            } else {
+                ok = v == "";
+            }
+            if (!ok) {
+                logWarn(gMenu1 + "-" + gMenu2 + " str=" + str + "  idx=" + i
+                        + "  value=" + v);
+                ret = false;
+                break;
+            }
+        }
+        tapReturn();
+    }
     return ret;
 }
 function testEditBillSizeHead() {

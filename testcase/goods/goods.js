@@ -279,7 +279,7 @@ function testGoods002() {
     run("【货品管理-货品查询】显示条码功能", "ts100058");
     run("【货品管理-货品查询】查询条件“是否停用 ”需要默认为“否", "ts100124");
     run("【货品管理-新增货品】在建款时出现下拉列表，用来提醒款号重复", "ts100131");
-    run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "ts100035");
+    run("【货品管理-新增货品】快速新增货品属性，新增货品选择新增的属性", "ts100035");// 返回时间太慢
     run("【货品管理-新增货品】显示条码/重设条码", "ts100042_100045");
     run("【货品管理-新增货品】最小库存或最大库存输入框输入特殊字符", "ts100092");
     // run("【货品管理-货品管理】条码增加 执行标准、等字段", "test100152");//app2未维护
@@ -932,8 +932,8 @@ function ts100007() {
 
 function ts100008_1() {
     tapMenu("货品管理", "货品进销存");
-    query();
-
+    var keys = { "上架从" : getDay(-30) };// 一个月内的话，大概有30~50页数据
+    conditionQuery(keys);// 数据过多，翻页压力太大，容易出错
     var ret = goPageCheck();
 
     ret = ret && sortByTitle("厂商");
@@ -1553,50 +1553,57 @@ function ts100033Field(key1, key2, key3) {
 }
 
 function ts100035() {
-    var r = getTimestamp(6);
-    tapMenu("货品管理", "新增货品+");
-    var texts = getEditGoodsElements();
-    var f = new TField("款号", TF, 0, "goods" + r);
-    var f2 = new TField("名称", TF, 1, "goods" + r);
-    setTFieldsValue(getScrollView(), [ f, f2 ]);
+    try {
+        var r = getTimestamp(6);
+        tapMenu("货品管理", "新增货品+");
+        var texts = getEditGoodsElements();
+        var f = new TField("款号", TF, 0, "goods" + r);
+        var f2 = new TField("名称", TF, 1, "goods" + r);
+        setTFieldsValue(getScrollView(), [ f, f2 ]);
 
-    var f = new TField("品牌", TF, 0, "b" + r);
-    ts100035Field(1, [ f ]);
+        var f = new TField("品牌", TF, 0, "b" + r);
+        ts100035Field(1, [ f ]);
+        // var btnIdx = addIdx - 4;
+        // var f = new TField("颜色组", BTN_SC, 0, "黄", -1, -1);
+        // var f2 = new TField("颜色名称", TF, 1, "c" + r);
+        // ts100035Field(btnIdx, [ f, f2 ]);
+        //
+        // var btnIdx = addIdx - 2;
+        // var f = new TField("尺码组", BTN_SC, 0, "球类", -1, -1);
+        // var f2 = new TField("尺码", TF, 1, "s" + r);
+        // ts100035Field(btnIdx, [ f, f2 ]);
 
-    // var btnIdx = addIdx - 4;
-    // var f = new TField("颜色组", BTN_SC, 0, "黄", -1, -1);
-    // var f2 = new TField("颜色名称", TF, 1, "c" + r);
-    // ts100035Field(btnIdx, [ f, f2 ]);
-    //
-    // var btnIdx = addIdx - 2;
-    // var f = new TField("尺码组", BTN_SC, 0, "球类", -1, -1);
-    // var f2 = new TField("尺码", TF, 1, "s" + r);
-    // ts100035Field(btnIdx, [ f, f2 ]);
+        var idx = getEditGoodsIndex(texts, "类别");
+        var f = new TField("类别", TF, 0, "t" + r);
+        ts100035Field(idx[1] + 2, [ f ]);
 
-    var idx = getEditGoodsIndex(texts, "类别");
-    var f = new TField("类别", TF, 0, "t" + r);
-    ts100035Field(idx[1] + 2, [ f ]);
+        var idx = getEditGoodsIndex(texts, "厂商");
+        var f = new TField("厂商", TF, 0, "p" + r);
+        ts100035Field(idx[1], [ f ]);
+        saveAndAlertOk();
+        tapReturn();
+        var cond = "window.buttons()['货品查询'].isVisible()";
+        waitUntil(cond, 30);// 不知道为什么特别慢
 
-    var idx = getEditGoodsIndex(texts, "厂商");
-    var f = new TField("厂商", TF, 0, "p" + r);
-    ts100035Field(idx[1], [ f ]);
-    saveAndAlertOk();
-    tapReturn();
+        tapMenu2("货品查询");
+        var keys = { "厂商" : "p" + r, "款号名称" : "goods" + r, "品牌" : "b" + r,
+            "类别" : "t" + r };
+        conditionQuery(keys);
+        var qr = getQR();
+        var ret = isEqualObject2(keys, qr.data[0]);
 
-    delay(0.5);// 返回较慢影响后面输入查询 不稳定
-    tapMenu2("货品查询");
-    var keys = { "厂商" : "p" + r, "款号名称" : "goods" + r, "品牌" : "b" + r,
-        "类别" : "t" + r };
-    conditionQuery(keys);
-    var qr = getQR();
-    var ret = isEqualObject2(keys, qr.data[0]);
-
-    tapFirstText();
-    keys = { "厂商" : "p" + r, "品牌" : "b" + r, "类别" : "t" + r }
-    var fields = editGoodsFields(keys, true);
-    ret = isAnd(ret, checkShowFields(getScrollView(), fields));
-    tapReturn();
-    return ret;
+        tapFirstText();
+        keys = { "厂商" : "p" + r, "品牌" : "b" + r, "类别" : "t" + r }
+        var fields = editGoodsFields(keys, true);
+        ret = isAnd(ret, checkShowFields(getScrollView(), fields));
+        tapReturn();
+        return ret;
+    } catch (e) {
+        logWarn(e);
+    } finally {
+        tapMenu2("货品查询");
+        query();// 清楚查询条件，防止对后续影响
+    }
 }
 function ts100035Field(btnIdx, fields) {
     delay();// 延迟，防止不触发后续操作
@@ -2646,7 +2653,7 @@ function ts100157For004_2() {
     return ts100157Field("004", true);
 }
 function ts100157Field(staff, check) {
-    var code, ret;
+    var code, ret = true;
     switch (colorSize) {
     case "no":
         code = "3035";
@@ -2658,25 +2665,31 @@ function ts100157Field(staff, check) {
     default:
         break;
     }
-
+    // 7.27以后 店员登陆，货品进销存去除门店查询条件，只显示本门店的数据
     tapMenu("货品管理", "货品进销存");
-    var keys = { "门店" : "常青店", "款号名称" : code };
+    var keys = { "款号名称" : code };
     conditionQuery(keys);
+    if (ipadVer < 7.27) {
+        keys = { "门店" : "常青店" };
+        conditionQuery(keys, false);
+    }
     var qr = getQR();
     var exp = qr.counts;
 
-    keys = { "门店" : "中洲店" };
-    conditionQuery(keys, false);
-    qr = getQR();
-    if (staff == "000") {
-        ret = qr.data.length > 0;
-    } else {
-        ret = qr.data.length == 0;
+    if (ipadVer < 7.27) {
+        keys = { "门店" : "中洲店" };
+        conditionQuery(keys, false);
+        qr = getQR();
+        if (staff == "000") {
+            ret = qr.data.length > 0;
+        } else {
+            ret = qr.data.length == 0;
+        }
     }
 
     if (check) {
         tapMenu("盘点管理", "盈亏表");
-        keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-365) };
+        keys = { "门店" : "常青店", "款号" : code, "日期从" : getDay(-500) };
         var fields = checkProfitAndLossFields(keys);
         query(fields);
         qr = getQR();
@@ -3600,7 +3613,7 @@ function test10_discount() {
 function ts100090() {
     var color = "均色", size = "均码";
     if (colorSize != "no") {
-        color = "花色";
+        color = "红色";
         size = "S";
     }
     var keys = addGoodsSimple();
@@ -4436,7 +4449,7 @@ function test100170() {
     conditionQuery(keys);
     var qr = getQR();
     var num = Number(qr.data[0]["累计进"]);
-    logDebug("num=" + num);
+    logDebug("累计进 num=" + num);
     tapMenu2("货品进销存");
     conditionQuery(keys);
 
@@ -5377,7 +5390,7 @@ function tsClearTField() {
     var ret = checkQResult("厂商", "Rt");
 
     clearTFieldsByIndex(window, fields["类别"].index, "SC");// 
-    tap(window.textFields()[0].textFields()[0]);// 随便点击一个其他的文本框，否则无法触发SC
+    tap(window.textFields()[2]);// 随便点击一个TF或者TF_AC的文本框，否则无法触发SC
     keys = { "类别" : "鞋" };
     conditionQuery(keys, false);
     ret = isAnd(ret, checkQResult("类别", "鞋"));
