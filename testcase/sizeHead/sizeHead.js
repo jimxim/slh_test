@@ -974,7 +974,7 @@ function test220064() {
 }
 function test220064Field(menu) {
     var json = {
-        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "S" : 1 } } ],
+        "明细" : [ { "货品" : "agc001", "颜色" : "花色", "尺码" : { "S" : 1 } } ],
         "onlytest" : "yes" };
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);

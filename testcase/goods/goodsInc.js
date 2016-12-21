@@ -308,12 +308,20 @@ function addRedeemPointsFields(points, money) {
  * @returns {Number}
  */
 function getBillDetCSGoodsFieldIndex() {
-    var goodsFieldIndex = -2;
-    // 销售开单-3 门店调出-1 其他都是-2
-    if (gMenu1 == "销售开单") {
-        goodsFieldIndex = -3;// 开单模式2
+    // 开单模式2 销售开单-3 门店调出-1 其他都是-2
+    var elements = getElements(window);
+    var tfIdx = 0;
+    for (var i = elements.length - 1; i > 0; i--) {
+        var e = elements[i];
+        if (isUIATextField(e)) {
+            tfIdx--;
+        }
+        if (isUIAStaticText(e) && e.name() == "款号") {
+            break;// 界面上唯一
+        }
     }
-    return goodsFieldIndex;
+    logDebug("颜色尺码模式  款号TF下标为" + tfIdx);
+    return tfIdx;
 }
 /**
  * 获取开单界面明细界面第一个内容为空的货品textField下标
@@ -1929,7 +1937,7 @@ function editBillDet(o) {
             for (i in details) {
                 var d = details[i];
                 if (isDefined(d["数量"])) {
-                    fields.push(new TField("入库数", TF, tfNum["明细输入框个数"] * i
+                    fields.push(new TField("数量", TF, tfNum["明细输入框个数"] * i
                             + tfNum[title_num], d["数量"]));
                 }
 
@@ -1937,7 +1945,7 @@ function editBillDet(o) {
                     fields.push(new TField("单价", TF, tfNum["明细输入框个数"] * i
                             + tfNum["单价"], d["单价"]));
                 }
-                
+
                 if (isDefined(d["折扣"])) {
                     fields.push(new TField("折扣", TF, tfNum["明细输入框个数"] * i
                             + tfNum["折扣"], d["折扣"]));

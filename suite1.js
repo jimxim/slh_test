@@ -21,8 +21,8 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "test220064");//
-// run(caseName, "onlyTest");//
+// run(caseName, "test220064");//
+ run(caseName, "onlyTest");//
 }   
 function onlyTest(){
 // delay();
@@ -31,12 +31,7 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{ 
-       var titles = getDetSizheadTitle();
-       var str = getTFEnabledState(view, titles["颜色"] + 1, titles["col12"]);
-       var view = getScrollView(-1);
-       logDebug("s="+(titles["颜色"] + 1)+"  col12="+titles["col12"]);
-// getSalesBillDetTfObject();
-// getDetSizheadTitle();
+       getBillDetCSGoodsFieldIndex();
    }catch(e){
       logWarn(e);
    }
