@@ -116,15 +116,14 @@ function testSalesColorSize003() {
     run("【销售开单-开单】颜色尺码下，快速新增货品", "test170715_2");
     run("【销售开单-开单】颜色尺码下，快速新增货品，必填项为空检查", "test170716");
     run("【销售开单-开单】颜色尺码下，快速新增货品，价格输入字母", "test170717");
-    run("【销售开单-开单】颜色尺码模式，折扣模式下不允许修改折扣", "test170733");
-    run("【销售开单-开单】款号对应的颜色被停用后，开单明细录入界面检查提示", "test170408");
-    run("【销售开单－开单】开单时显示当前库存", "test170112");
-    run("【销售开单－开单】开单时不显示当前库存", "test170113");
-    run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
-    run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
     run("【销售开单－开单】 未拿货款号做退货时提醒--不输客户名称+颜色尺码", "test170203");
     run("【销售开单】补货退货验证+允许继续输入+颜色尺码", "test170207");
     run("【销售开单】补货退货验证+不允许继续输入+颜色尺码", "test170208");
+    run("【销售开单－开单】开单时显示当前库存", "test170112_170113");
+    run("【销售开单－开单】开单是否显示所有门店库存", "test170114");
+    run("【销售开单－开单】开单是否显示所有门店库存", "test170115");
+    run("【销售开单-开单】颜色尺码模式，折扣模式下不允许修改折扣", "test170733");
+    run("【销售开单-开单】款号对应的颜色被停用后，开单明细录入界面检查提示", "test170408");
     // run("【销售开单-开单】童装模式手数需要四位数", "test170719");//童装开单模式生效需重新登录
 }
 function testSalesColorSize004() {
@@ -3807,7 +3806,7 @@ function testCs170251() {
     logDebug(" ret" + ret);
     return ret;
 }
-function test170112() {
+function test170112_170113() {
     // 颜色尺码模式下，开启参数 开单时是否显示当前库存
     var qo, o, ret = true;
     qo = { "备注" : "所有门店" };
@@ -3832,41 +3831,24 @@ function test170112() {
     var oStockNum = getColorSizeStockNum();
     tapNaviLeftButton();
     var n = oStockNum["黄色-L-常青店"];
-    var ret = isEqual(a, n);
+    var ret1 = isAnd(isEqual(a, n), !isEqual(0, a));
     tapReturn();
 
-    return ret;
-}
-function test170113() {
-    // 关闭参数 开单时是否显示当前库存
-    var qo, o, ret = true;
     qo = { "备注" : "开单时是否显示当前库存" };
     o = { "新值" : "0", "数值" : [ "不显示库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("货品管理", "当前库存");
-    query();
-    var keys = { "款号" : "x003", "门店" : "常青店", "颜色" : "黄色", "尺码" : "L" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
-    var qr = getQR();
-    var a = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var oStockNum = getColorSizeStockNum();
     tapNaviLeftButton();
-    var n = oStockNum["黄色-L-常青店"];
-    var ret = isUndefined(n);
-    var ret1 = false;
-    if (a != 0) {
-        ret1 = true;
-    }
+    var n1 = oStockNum["黄色-L-常青店"];
+    var ret2 = isUndefined(n);
     tapReturn();
 
-    logDebug("a=" + a + "n=" + n + "ret=" + ret + "ret1=" + ret1);
-    return ret && ret1;
+    logDebug("a=" + a + "ret=" + ret + "ret1=" + ret1 + "ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170114() {
     // 设置开单时显示当前库存，开启参数 开单时是否显示当前库存
@@ -3952,6 +3934,10 @@ function test170203() {
     o = { "新值" : "1", "数值" : [ "提醒，交互好，但耗流量，谨慎开启", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -3987,6 +3973,10 @@ function test170203() {
 }
 function test170207() {
     var qo, o, ret = true;
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "销售开单是否逐条进行补货退货时验证" };
     o = { "新值" : "1", "数值" : [ "会减慢开单速度", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));

@@ -23,7 +23,7 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
-// debugObject();
+// debugObject();   
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
