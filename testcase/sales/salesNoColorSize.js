@@ -6,8 +6,7 @@ function testSalesNoColorSizeAll() {
     run("【销售开单－开单】客户新增（不选择适用价格检查）", "test170247");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248");
     run("【销售开单－开单】客户新增（适用价格检查）", "test170248_1");
-    run("【销售开单－开单】客户停用后检查刷新情况", "test170044");
-    run("【销售开单－开单】客户输入框清除功能", "test170045");
+    run("【销售开单－开单】客户停用后检查刷新情况/输入框清除功能", "test170044_170045");
     run("【销售开单－开单】结余文本框检查", "test170046");
     run("【销售开单－开单】未付按钮", "test170047");
     run("【销售开单－开单】刷卡按钮", "test170048");
@@ -481,6 +480,10 @@ function setNoColorSize_1Params() {
     o = { "新值" : "1", "数值" : [ "默认分开", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
 
+    qo = { "备注" : "非总经理岗位是否只显示自己所在门店" };
+    o = { "新值" : "0", "数值" : [ "默认显示所有门店", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));// 需重新登录使参数生效
+
     // qo = { "备注" : "按明细" };
     // o = { "新值" : "1", "数值" : [ "显示与第1个价格的差额", "in" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
@@ -661,7 +664,7 @@ function test170043() {
     logDebug(", ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test170044() {
+function test170044_170045() {
     tapMenu("往来管理", "客户查询");
     var keys = { "客户名称" : "anewCus", "是否停用" : "否" };
     var qFields = queryCustomerFields(keys);
@@ -690,6 +693,13 @@ function test170044() {
     if (ret == false || equal == false) {
         ret1 = true;
     }
+
+    keys = { "客户" : "ls" };
+    editSalesBillCustomer(keys);
+    var k0 = getTextFieldValue(window, 0);
+    tapButton(window, CLEAR);
+    var k1 = getTextFieldValue(window, 0);
+    var ret5 = isAnd(isEqual("李四", k0), isEqual("", k1));
     tapReturn();
 
     var r = randomWord(false, 6);
@@ -739,21 +749,9 @@ function test170044() {
     var qr = getQR();
     var ret3 = isEqual("李四", qr.data[0]["客户"]);
 
-    logDebug(" ret1=" + ret1 + " ret4=" + ret4 + " ret3=" + ret3);
-    return ret1 && ret4 && ret3;
-}
-function test170045() {
-    tapMenu("销售开单", "开  单+");
-    var keys = { "客户" : "ls" };
-    editSalesBillCustomer(keys);
-
-    var k0 = getTextFieldValue(window, 0);
-    tapButton(window, CLEAR);
-    var k1 = getTextFieldValue(window, 0);
-    var ret = isAnd(isEqual("李四", k0), isEqual("", k1));
-    tapReturn();
-
-    return ret;
+    logDebug(" ret1=" + ret1 + " ret3=" + ret3 + " ret4=" + ret4 + " ret5="
+            + ret5);
+    return ret1 && ret3 && ret4 && ret5;
 }
 function test170046() {
     tapMenu("销售开单", "开  单+");

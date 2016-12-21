@@ -63,11 +63,11 @@ js_func="$js_func test000SalesColorSize003"
 #js_func="$js_func testSalesNoColorSize170649 testSalesNoColorSize170650"
 
 #店长权限
-js_func="$js_func setSales001Params test000SalesNoColorSize170742Params"
+js_func="$js_func setSales001Params"
 js_func="$js_func test004SalesNoColorSize004"
 
 #开单员权限
-js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSize170742Params"
 js_func="$js_func test005SalesNoColorSize005"
 #js_func="$js_func testSalesNoColorSize170586_5"
 

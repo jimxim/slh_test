@@ -755,7 +755,7 @@ function test180025() {
     tapReturn();
 
     tapMenu("采购入库", "新增入库+");
-    var json = { "客户" : "Rt", "明细" : [ { "货品" : s, "数量" : 20, "单价" : 100 } ] };
+    var json = { "客户" : "rt", "明细" : [ { "货品" : s, "数量" : 20, "单价" : 100 } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("货品管理", "款号库存");

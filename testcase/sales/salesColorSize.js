@@ -5906,8 +5906,8 @@ function test170716() {
     var r = "anewkhao1" + randomWord(false, 6);
     var r1 = "1" + getTimestamp(3);
     tapButton(window, GOODS);
-
     tapButton(getPop(), OK);
+    tapPrompt();
     var ret = isIn(alertMsg, "款号或名称不能为空");
 
     var o = { "款号" : r };
@@ -5915,13 +5915,23 @@ function test170716() {
     setTFieldsValue(getPopView(), fields);
     delay();
     tapButton(getPop(), OK);
+    tapPrompt();
     var ret1 = isIn(alertMsg, "款号或名称不能为空");
 
-    o = { "名称" : r, "颜色" : "红色,玫红" };
+    o = { "名称" : r };
     var fields = editQuickAddGoodsFields(o);
     setTFieldsValue(getPopView(), fields);
     delay();
     tapButton(getPop(), OK);
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "颜色或尺码不能为空");
+
+    o = { "颜色" : "红色,玫红" };
+    var fields = editQuickAddGoodsFields(o);
+    setTFieldsValue(getPopView(), fields);
+    delay();
+    tapButton(getPop(), OK);
+    tapPrompt();
     var ret2 = isIn(alertMsg, "颜色或尺码不能为空");
 
     o = { "尺码" : "S,M", "进货价" : r1, "零批价" : r1, "打包价" : r1 };
@@ -5930,6 +5940,7 @@ function test170716() {
     delay();
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
+    tapReturn();
 
     tapMenu("货品管理", "货品查询");
     var qKeys = [ "款号名称" ];
@@ -5937,7 +5948,6 @@ function test170716() {
     changeTFieldValue(qFields["款号名称"], r);
     query(qFields);
     var qr = getQR();
-
     tapFirstText();
     o = { "款号" : r, "名称" : r, "颜色" : "红色,玫红", "尺码" : "S,M", "进货价" : r1,
         "零批价" : r1, "打包价" : r1, "产品折扣" : 1, "计量单位" : "件", "仓位" : "默认",
@@ -5965,7 +5975,7 @@ function test170717() {
     setTFieldsValue(getPopView(), fields);
     delay();
     tapButton(getPop(), OK);
-    var ret = isIn(alertMsg, "价格错误");
+    var ret = isAnd(isIn(alertMsg, "价格错误"), !isIn(alertMsg, "启用了价格验证"));
     tapButton(getPop(), CLOSE);
     tapReturn();
 
@@ -6025,9 +6035,12 @@ function test170733() {
 
     var r = "0.9" + getTimestamp(2);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "折扣" : r } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : [ 10 ] } ],
+        "onlytest" : "yes" };
     editSalesBillColorSize(json);
+
+    var o = { "折扣" : "r" };
+    editChangeSalesBillOrderDiscount();
 
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
