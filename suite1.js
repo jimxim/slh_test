@@ -15,23 +15,23 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "head";
+// colorSize = "head";
     debug = true;
 // ipadVer = "7.27";//
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-// run(caseName, "test220064");//
- run(caseName, "onlyTest");//
+ run(caseName, "ts160073_74");// test160114
+// run(caseName, "onlyTest");//
 }   
 function onlyTest(){
 // delay();
-// UIATarget.localTarget().logElsementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{ 
-       getBillDetCSGoodsFieldIndex();
+       
    }catch(e){
       logWarn(e);
    }

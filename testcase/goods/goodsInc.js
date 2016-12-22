@@ -469,7 +469,7 @@ function getQRDet(view, o) {
     var data = [];
     var texts = getTextFields(view);
     var y = 0, yPro = 0;
-    var hidden = "";// 隐藏的文本下标 标题隐藏和对应文本隐藏不一定都是取得到，分开取
+    var hidden = [];// 隐藏的文本下标 标题隐藏和对应文本隐藏不一定都是取得到，分开取
     for (var i = 0; i < texts.length; i++) {
         yPre = y;
         y = getY(texts[i]);
@@ -478,7 +478,7 @@ function getQRDet(view, o) {
         }
         var w = texts[i].rect().size.width;
         if (w < 5) {
-            hidden += i + ","
+            hidden.push(i);
         }
         tfNum++;
     }
@@ -487,12 +487,9 @@ function getQRDet(view, o) {
         // 根据货品栏判断行是否取值 有地方使用了这个验证或判断行数，不好修改 161220
         if (texts[tfNum * j].value() != "") {
             var data1 = {};
-            var ignore = 0;
             for (var i = 0; i < tfNum; i++) {
-                if (isInArray(hidden, i)) {
-                    ignore++;
-                } else {
-                    var index = tfNum * j + i - ignore;
+                if (!isIn(hidden, i)) {
+                    var index = tfNum * j + i;
                     var v = texts[index].value();
                     for ( var t in titles) {
                         if (titles[t] == i) {
@@ -704,8 +701,8 @@ function getSalesBillDetTfObject() {
                 title = "cm" + tfNum;// 尺码头部 补全第一行尺码
             }
             ret[title] = tfNum;
-            tfNum++;
         }
+        tfNum++;
     }
     ret["明细输入框个数"] = tfNum - ignore;
     debugObject(ret, "titles");

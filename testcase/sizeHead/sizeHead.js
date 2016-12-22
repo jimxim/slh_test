@@ -118,6 +118,7 @@ function testSizeHead002_shop1() {
     run("【采购订货+省代+参数2】采购订货，检查款号下拉表显示的价格", "test220058");
     run("【销售开单+省代+参数2】销售开单-按订货开单，有吊牌这一列，且款号的吊牌价正确，正确开单", "test220060");
     run("【销售开单+省代+参数2】检查销售开单有吊牌这一列，款号的吊牌价正确，正确开单打印", "test220062");
+    run("【销售开单-开单】数量输入快速复制功能", "test220064");
 
 }
 function testSizeHeadCheck() {
@@ -983,13 +984,13 @@ function test220064Field(menu) {
         tf.doubleTap();
         var titles = getDetSizheadTitle();
         var view = getScrollView(-1), ret = true;
-        var str = getTFEnabledState(view, titles["颜色"] + 1, titles["col12"]);
-        logDebug("s="+(titles["颜色"] + 1)+"  col12="+titles["col12"]);
+        var str = getTFEnabledState(view, titles["颜色"] + 1, titles["cm12"]);
+        logDebug("s=" + (titles["颜色"] + 1) + "  cm12=" + titles["cm12"]);
         for (var i = 0; i < str.length; i++) {
             var able = str[i], ok;
             var v = getTextFieldValue(view, titles["颜色"] + 1 + i);
             if (able == "1") {
-                ok = v == 5;
+                ok = v == 1;
             } else {
                 ok = v == "";
             }
@@ -1003,6 +1004,10 @@ function test220064Field(menu) {
         tapReturn();
     }
     return ret;
+}
+// 放zy那
+function test220065() {
+    tapMenu("盘点管理", "新增盘点+");
 }
 function testEditBillSizeHead() {
     var colorSize = "head";

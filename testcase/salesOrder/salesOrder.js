@@ -598,7 +598,7 @@ function test160006() {
 
     tapButton(window, QUERY);
     qr = getQR();
-    var ret = isEqualObject(qr.data[0], jo2);
+    var ret = isEqualObject2(qr.data[0], jo2, 1);// 操作日期的1分钟误差
 
     tapLine();
     qr = getQRDet();
@@ -1791,7 +1791,7 @@ function test160072() {
 }
 
 function ts160073_74() {
-    var addDet = {};
+    var addDet = {}, alertMsgs = [];
     switch (colorSize) {
     case "no":
         addDet = { "明细" : [ { "货品" : "3035", "数量" : 10 } ] };
