@@ -2289,6 +2289,7 @@ function test160113() {
     return ret;
 }
 function test160114() {
+    var alertMsgs = [];
     var qo = { "备注" : "是否允许修改已发货的订单" };
     var o = { "新值" : "1", "数值" : [ "允许修改", "in" ] };
     setGlobalParam(qo, o);

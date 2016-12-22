@@ -602,13 +602,13 @@ function ts110013() {
         fields = editCustomerFields(keys, true);
         changeTFieldValue(fields["名称"], name);
         changeTFieldValue(fields["手机"], phone);
-        changeTFieldValue(fields["客户代码"], code);
+        changeTFieldValue(fields["客户代码"], code);// 后台权限手机新增可见编辑不可见不能勾选
         ret = checkShowFields(getScrollView(), fields);
         tapReturn();
     }
     return ret;
 }
-
+//后台权限手机新增可见编辑不可见不能勾选
 function test110014() {
     var r = "a" + getTimestamp(6);
     tapMenu("往来管理", "新增客户+");
@@ -4348,18 +4348,23 @@ function ts110107() {
 }
 function ts110108() {
     var tag = getRandomStr(5);
-    tapMenu("往来管理", "getMenu_More", "新增标签+");
+    tapMenu("往来管理", "getMenu_More", "客户标签");
+    var keys = { "名称" : tag };
+    conditionQuery(keys);
+    var qr = getQR();
     var f = new TField("名称", TF, 0, tag);
-    setTFieldsValue(getScrollView(-1), [ f ]);
-    tapButton(window, SAVE);
-    var ret = !isIn(alertMsg, "已存在");
-    tapReturn();
+    if (qr.data.length == 0) {
+        tapMenu("往来管理", "getMenu_More", "新增标签+");
+        setTFieldsValue(getScrollView(-1), [ f ]);
+        tapButton(window, SAVE);
+        tapReturn();
+    }
 
     tapMenu("往来管理", "getMenu_More", "新增标签+");
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButton(window, SAVE);
     tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "已存在"));
+    var ret = isIn(alertMsg, "已存在");
     tapReturn();
 
     f.value = getRandomStr(10);

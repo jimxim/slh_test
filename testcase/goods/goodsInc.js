@@ -1232,9 +1232,9 @@ function goPage2(page, qr) {
     var total = qr.totalPageNo;
     var curPageIndex = qr.curPageNo + "/" + total;
     if (total > 1 && page <= total && page > 0) {
-        // window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : {
-        // x : 0.08, y : 0.55 } });//坐标不稳定
-        window.elements()[curPageIndex].tap();
+        window.staticTexts()[curPageIndex].tapWithOptions({ tapOffset : {
+            x : 0.08, y : 0.55 } });// 坐标不稳定
+        // window.elements()[curPageIndex].tap();
         delay(); // 为了让跳转页面加载完成
 
         var index = getTextFieldIndex(window, -1);
@@ -1257,84 +1257,91 @@ function goPage2(page, qr) {
  * @returns {Boolean}
  */
 function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
-    if (isUndefined(pageInfoView)) {
-        pageInfoView = window;
-    }
-    if (isUndefined(dataView)) {
-        dataView = getScrollView();
-    }
-    if (isUndefined(firstTitle)) {
-        firstTitle = TITLE_SEQ;
-    }
-
-    // 当前页为1
-    var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-    var ok = qr.curPageNo == 1;
-    if (!ok) {
-        goPage(1, qr);
-        qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-    }
-
-    var totalPageNo = qr.totalPageNo;
-    var i, ret = true;
-
-    if (totalPageNo > 1) {
-        var page1 = qr.data;
-        // 总页数验证
-        ret = ret && Math.ceil(qr.total / 15) == totalPageNo;
-        if (!ret) {
-            logDebug("总页数错误");
+    try {
+        if (isUndefined(pageInfoView)) {
+            pageInfoView = window;
         }
-
-        // 最后一页验证
-        goPage(totalPageNo, qr);
-        qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-        var page2 = qr.data;
-        var finSeq = qr.curPageTotal - 1;
-        var firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
-        // 最后的序号应该等于总数据条数
-        ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
-                firstSeq, qr.data[0]["序号"]), totalPageNo == qr.curPageNo,
-                isDifferentArray(page1, page2, 1), scrollPrevPageCheck(
-                        pageInfoView, dataView, firstTitle, titleTotal));
-
-        // 当总页数大于2时，追加一页验证
-        if (totalPageNo > 2) {
-            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-            var midPage = Math.ceil(totalPageNo / 2);
-            logDebug("midPage=" + midPage);
-            // 输入值页面切换
-            goPage2(midPage, qr);
-            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-            firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
-            finSeq = Number(qr.curPageNo) * 15;
-            var page3 = qr.data;
-            ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
-                    finSeq, qr.data[14]["序号"]), isEqual(midPage, qr.curPageNo),
-                    scrollPrevPageCheck(pageInfoView, dataView, firstTitle,
-                            titleTotal), isDifferentArray(page1, page2, 1),
-                    isDifferentArray(page1, page3, 1), isDifferentArray(page2,
-                            page3, 1));
-
-            ret = isAnd(ret, goPageCheckField());
-            tapKeyboardHide();// 防止键盘挡住
-            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
-            goPage2(1, qr);
+        if (isUndefined(dataView)) {
+            dataView = getScrollView();
         }
-    } else {
-        if (qr.data.length > 0) {
-            // 只有一页的时候，滑动页面，检测有没有提示错误
-            scrollPrevPage();
-            scrollNextPage();
+        if (isUndefined(firstTitle)) {
+            firstTitle = TITLE_SEQ;
+        }
+        delay();// 等待界面加载 防止页面信息取错 161222
+        // 当前页为1
+        var qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+        var ok = qr.curPageNo == 1;
+        if (!ok) {
             goPage(1, qr);
-            ret = isAnd(ret, goPageCheckField());
-        } else {
-            logDebug("data.length=0,跳过翻页验证");
-            ret = false;
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
         }
+
+        var totalPageNo = qr.totalPageNo;
+        var i, ret = true;
+
+        if (totalPageNo > 1) {
+            var page1 = qr.data;
+            // 总页数验证
+            ret = ret && Math.ceil(qr.total / 15) == totalPageNo;
+            if (!ret) {
+                logDebug("总页数错误");
+            }
+
+            // 最后一页验证
+            goPage(totalPageNo, qr);
+            qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+            var page2 = qr.data;
+            var finSeq = qr.curPageTotal - 1;
+            var firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
+            // 最后的序号应该等于总数据条数
+            ret = isAnd(ret, isEqual(qr.total, qr.data[finSeq]["序号"]), isEqual(
+                    firstSeq, qr.data[0]["序号"]), totalPageNo == qr.curPageNo,
+                    isDifferentArray(page1, page2, 1), scrollPrevPageCheck(
+                            pageInfoView, dataView, firstTitle, titleTotal));
+
+            // 当总页数大于2时，追加一页验证
+            if (totalPageNo > 2) {
+                delay();// 等待界面加载 防止页面信息取错 161222
+                qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+                var midPage = Math.ceil(totalPageNo / 2);
+                logDebug("midPage=" + midPage);
+                // 输入值页面切换
+                goPage2(midPage, qr);
+                qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+                firstSeq = Number(qr.curPageNo - 1) * 15 + 1;
+                finSeq = Number(qr.curPageNo) * 15;
+                var page3 = qr.data;
+                ret = isAnd(ret, isEqual(firstSeq, qr.data[0]["序号"]), isEqual(
+                        finSeq, qr.data[14]["序号"]), isEqual(midPage,
+                        qr.curPageNo), scrollPrevPageCheck(pageInfoView,
+                        dataView, firstTitle, titleTotal), isDifferentArray(
+                        page1, page2, 1), isDifferentArray(page1, page3, 1),
+                        isDifferentArray(page2, page3, 1));
+                delay();// 等待界面加载 防止页面信息取错 161222
+                ret = isAnd(ret, goPageCheckField());
+                tapKeyboardHide();// 防止键盘挡住
+                delay();// 等待界面加载 防止页面信息取错 161222
+                qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
+                goPage2(1, qr);
+            }
+        } else {
+            if (qr.data.length > 0) {
+                // 只有一页的时候，滑动页面，检测有没有提示错误
+                scrollPrevPage();
+                scrollNextPage();
+                goPage(1, qr);
+                ret = isAnd(ret, goPageCheckField());
+            } else {
+                logDebug("data.length=0,跳过翻页验证");
+                ret = false;
+            }
+            logDebug("goPageCheck ret=" + ret);
+        }
+    } catch (e) {
+        logWarn(e);
+    } finally {
+        tapButton(window, QUERY);// 刷新界面，防止后续操作失败 eg:tapTitle无故scroll
     }
-    tapButton(window, QUERY);// 刷新界面，防止后续操作失败 eg:tapTitle无故scroll
-    logDebug("goPageCheck ret=" + ret);
     return ret;
 }
 
