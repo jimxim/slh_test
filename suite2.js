@@ -14,6 +14,7 @@ function test000All() {
     ipadVer ="7.27"; // 7.21// 7.23//"7.25"
 
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
+        
 // run("", "test0");
 }
 function test0(){
@@ -23,7 +24,8 @@ function test0(){
 // debugQResult(qr);
 // debugElements(window);
 // debugArray(texts);
-// debugObject();   
+// debugObject();
+// window.scrollViews()[0].switches()[0].setValue(1);
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};

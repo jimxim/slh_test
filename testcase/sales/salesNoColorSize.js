@@ -36,8 +36,7 @@ function testSalesNoColorSizeAll() {
 }
 function testSalesNoColorSizeAll_1() {
     run("【销售开单－开单】款号价格为负数时检查", "test170072");
-    run("【销售开单-开单】开单模式-代收模式2", "test170090");
-    run("【销售开单－开单】收款方式选择代收", "test170091");
+    run("【销售开单-开单】开单模式-代收模式2/收款方式选择代收", "test170090_170091");
     run("【销售开单－开单】代收模式2", "test170092");
     run("【销售开单－开单】代收模式2", "test170093");
     run("【销售开单－开单】保存代收单后再去修改界面查看代收信息", "test170094");
@@ -111,7 +110,6 @@ function testSalesNoColorSizeAll_2() {
 }
 function testSalesNoColorSize001() {
     run("【销售开单】客户或供应商信息不允许修改", "test170063");
-    run("【销售开单－开单】快速新增客户后折扣值检查", "test170067");
     run("【销售开单-开单】开单模式-快速标记代收", "test170070");
     run("【销售开单－开单】快速标记代收（代收设置为否）", "test170071");
     run("【销售开单－开单】开启退货数验证时提示具体哪个款号的退货数超出", "test170074");
@@ -120,7 +118,7 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】单价小数位精确到角对保存打印的影响", "test170076_1");
     run("【销售开单－开单】单价小数位精确到分对保存打印的影响", "test170076_2");
     run("【销售开单－开单】单价小数位精确到厘对保存打印的影响", "test170076_3");
-    run("【销售开单－开单】客户折扣支持3位小数", "test170077_1");
+    run("【销售开单－开单】客户折扣支持3位小数/快速新增客户后折扣值检查", "test170077_1_170067");
     run("【销售开单－开单】客户折扣支持3位小数", "test170077_2");
     run("【销售开单-开单】开单模式-客户折扣", "test170083");
     run("【销售开单－开单】客户折扣,复制-粘贴", "test170139_3");
@@ -338,6 +336,10 @@ function setNoColorSize_1Params() {
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "单价小数位" };
@@ -1825,7 +1827,6 @@ function test170067() {
 
     var qr = json["明细值"];
     var zk = qr.data[0]["折扣"];
-
     var ret1 = !isEqual(0, zk);
 
     return ret && ret1;
@@ -2077,7 +2078,7 @@ function test170076_3() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test170077_1() {
+function test170077_1_170067() {
     // 1，设置 单价小数位 精确到厘
     var qo, o, ret = true;
     qo = { "备注" : "单价小数位" };
@@ -2111,9 +2112,19 @@ function test170077_1() {
             isEqual(0.688, qr.data[0]["折扣"]));
     tapReturn();
 
+    tapMenu("销售开单", "开  单+");
+    var r = "anewkh" + getTimestamp(6);
+    var json = { "名称" : r };
+    editQuickAddCustomer(json);
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 9 } ] };
+    editSalesBillNoColorSize(json);
+    qr = json["明细值"];
+    var zk = qr.data[0]["折扣"];
+    var ret4 = !isEqual(0, zk);
+
     logDebug(" ret＝" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test170077_2() {
     var qo, o, ret = true;
@@ -2435,21 +2446,8 @@ function test170085() {
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test170090() {
-    // 开单模式-代收模式2
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
+function test170090_170091() {
+    // 默认开单模式2
     tapMenu("销售开单", "按汇总", "按客户销售");
     var keys = { "客户" : "ls" };
     var fields = salesCustomerConsumeFields(keys);
@@ -2458,40 +2456,21 @@ function test170090() {
     var ds = qr.data[0]["代收"];
 
     tapMenu("销售开单", "开  单+");
-    delay();
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "代收" : { "物流商" : "yt", "运单号" : "1234" } };
-    editSalesBillNoColorSize(json);
-    var money = json["代收"]["代收金额"];
-    var ret = isEqual(180, money);
-
-    tapMenu("销售开单", "按批次查");
-    var keys = { "客户" : "ls" };
-    var fields = salesQueryBatchFields(keys);
-    query(fields);
-    var qr = getQR();
-    var ret1 = isEqual(180, qr.data[0]["代收"]);
-
-    tapMenu("销售开单", "按汇总", "按客户销售");
-    tapButton(window, QUERY);
-    qr = getQR();
-    var ret2 = isEqual(180, sub(qr.data[0]["代收"], ds));
-
-    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
-}
-function test170091() {
-    // 界面检查在170092中检查
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "代收" : { "物流商" : "yt" } };
     editSalesBillNoColorSize(json);
     var money = json["代收"]["代收金额"];
 
+    tapMenu("销售开单", "按汇总", "按客户销售");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret = isEqual(money, sub(qr.data[0]["代收"], ds));
+
+    // 1700091界面检查在170092中检查
     tapMenu("销售开单", "按批次查");
     query();
     var qr = getQR();
-    var ret = isAnd(isEqual(180, money), isEqual("李四", qr.data[0]["客户"]),
+    var ret1 = isAnd(isEqual(180, money), isEqual("李四", qr.data[0]["客户"]),
             isEqual(money, qr.data[0]["金额"]), isEqual(money, qr.data[0]["代收"]),
             isEqual(0, qr.data[0]["未结"]), isAqualOptime(getOpTime(),
                     qr.data[0]["操作日期"]));
@@ -2503,10 +2482,10 @@ function test170091() {
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
+    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg2, "保存成功");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", 代收金额=" + money);
-    return ret && ret1;
+    logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170092() {
     tapMenu("销售开单", "开  单+");
@@ -12800,11 +12779,8 @@ function test170732() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -12838,11 +12814,8 @@ function test170732() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -12877,11 +12850,8 @@ function test170732() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -12929,11 +12899,8 @@ function test170734() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -12967,11 +12934,8 @@ function test170734() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
@@ -13006,11 +12970,8 @@ function test170734() {
     query();
     tapFirstText();
     r = 0.9 + getTimestamp(2);
-    var titles = getSalesBillDetTfObject();
-    var tfNum = titles["明细输入框个数"];
-    f = new TField("折扣", TF, titles["折扣"], r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(-1), fields);
+    o = { "修改明细" : [ { "折扣" : r } ] };
+    editBillDet(o);
     editSalesBillSave({});
 
     debugArray(alertMsgs);
