@@ -464,38 +464,21 @@ function getQRDet(view, o) {
         titles = getSalesBillDetTfObject();
     }
 
-    var tfNum = 0;// titles["明细输入框个数"]
+    var tfNum = titles["明细输入框个数"]
     var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
-    var data = [];
     var texts = getTextFields(view);
-    var y = 0, yPro = 0;
-    var hidden = [];// 隐藏的文本下标 标题隐藏和对应文本隐藏不一定都是取得到，分开取
-    for (var i = 0; i < texts.length; i++) {
-        yPre = y;
-        y = getY(texts[i]);
-        if (yPre > 0 && !isAqualNum(y, yPre, 10)) {
-            break;// Y轴可能存在偏移为5， 第二行跳出
-        }
-        var w = texts[i].rect().size.width;
-        if (w < 5) {
-            hidden.push(i);
-        }
-        tfNum++;
-    }
-    // logDebug("hidden=" + hidden + " tfNum=" + tfNum);
+    var data = [];
     for (var j = 0; j < line.length; j++) {
         // 根据货品栏判断行是否取值 有地方使用了这个验证或判断行数，不好修改 161220
         if (texts[tfNum * j].value() != "") {
             var data1 = {};
             for (var i = 0; i < tfNum; i++) {
-                if (!isIn(hidden, i)) {
-                    var index = tfNum * j + i;
-                    var v = texts[index].value();
-                    for ( var t in titles) {
-                        if (titles[t] == i) {
-                            data1[t] = v;
-                            break;
-                        }
+                for ( var t in titles) {
+                    if (titles[t] == i) {
+                        var index = tfNum * j + i;
+                        var v = texts[index].value();
+                        data1[t] = v;
+                        break;
                     }
                 }
             }
@@ -678,10 +661,10 @@ function getRandomStr(n) {
     return ret;
 }
 /**
- * 获取明细输入框个数，标题列号，从0开始
+ * 获取明细输入框标题，标题列号，从0开始
  * @returns {"货品":0, "颜色":1, "尺码":2,... "明细输入框个数":10 }
  */
-function getSalesBillDetTfObject() {
+function getSalesBillDetTitleObject() {
     // debugElementTree(window);
     // 标题以#开头，表示序号，以操作结束
     var texts = getStaticTexts(window);
@@ -706,6 +689,53 @@ function getSalesBillDetTfObject() {
     }
     ret["明细输入框个数"] = tfNum - ignore;
     debugObject(ret, "titles");
+    return ret;
+}
+/**
+ * 获取明细输入框个数，标题列号，从0开始
+ * @returns {"货品":0, "颜色":1, "尺码":2,... "明细输入框个数":10 }
+ */
+function getSalesBillDetTfObject() {
+    // 标题以#开头，表示序号，以操作结束
+    var texts = getStaticTexts(window);
+    var qrTitle1 = getSalesBillDetTitle1Index(texts);// 标题起始下标
+    var qrTitle2 = getQResultTitle(texts, "操作", "#");
+
+    var titles = {}, tfNum = 0;
+    for (var i = qrTitle1.index + 1; i < qrTitle2.index; i++) {
+        var t = texts[i];
+        var width = t.rect().size.width;// 隐藏的TF，宽度为0,设置为5保险~
+        if (width > 5) {
+            var title = t.name();// value
+            if (isNull(title) && isDefined(title)) {
+                title = "cm" + tfNum;// 尺码头部 补全第一行尺码
+            }
+            var x = getX(t);
+            titles[title] = x;
+        }
+        tfNum++;
+    }
+    // debugObject(titles, "标题");
+
+    var ret = {}, tfNum = 0;
+    var texts = getTextFields(getScrollView(-1));
+    var y = 0, yPre = 0;
+    for (var i = 0; i < texts.length; i++) {
+        yPre = y;
+        y = getY(texts[i]);
+        if (yPre > 0 && !isAqualNum(y, yPre, 10)) {
+            break;// Y轴可能存在偏移为5， 第二行跳出
+        }
+        var w = texts[i].rect().size.width;
+        var x = getX(texts[i]);
+        if (w > 5) {
+            var title = getKeyByXy(titles, x);
+            ret[title] = tfNum;
+        }
+        tfNum++;
+    }
+    ret["明细输入框个数"] = tfNum;
+    debugObject(ret, "明细输入框");
     return ret;
 }
 /**
