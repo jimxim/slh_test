@@ -3599,6 +3599,7 @@ function ts120116() {
     tapButton(window, EXPORT);
     tapButton(window, "对账单(按批次)");
     tapNaviClose();
+    delay();// 界面切换延迟
 
     tapMenu2("按批次查");
     keys = { "厂商" : "rt", "店员" : "rt" };

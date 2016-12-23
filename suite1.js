@@ -22,7 +22,7 @@ function test000All() {
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
  run(caseName, "onlyTest");// 
-// run(caseName, "test100068_100069");//
+// run(caseName, "test10_fuzzyQueryAndDropDownListCheck");//
 }   
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
@@ -30,9 +30,15 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{ 
-       tapMenu("货品管理", "getMenu_More", "仓位列表");
+// tapMenu("采购入库", "新增入库+");
+// var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
+// "未付" : "yes" };
+       tapMenu("采购入库", "按批次查");
        query();
-       return goPageCheck();
+       tapLine();
+       var json = { 
+       "现金" :getRandomNum(100,1000) };
+       editSalesBill(json,colorSize);
    }catch(e){
       logWarn(e);
    }
@@ -42,7 +48,6 @@ function onlyTest(){
  // debugObject(gCache,"gCache");
    return true;
 }
-
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};
