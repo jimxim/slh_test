@@ -186,6 +186,7 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730");// //
     run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730_1");// //
     run("【销售开单-按订货开单】自动填写发货数与勾选功能同时启用", "test170737");
+    run("【销售开单-按订货开单】增加本单查询功能", "test170738");
     run("【销售开单－按订货开单】键盘检查", "test170259");
     run("【销售开单-物流核销】核销明细，查询之后 顶部显示为0", "test170739");
     run("【销售开单-收款】跨门店收款", "test170740");
@@ -284,7 +285,7 @@ function test170001_1_170010_170011_170012() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isAqualNum(
+    var ret1 = isAnd(isAqualNum(qr.counts["数量"], sum1), isAqualNum(
             qr.counts["金额"], sum2), isAqualNum(qr.counts["现金"], sum3),
             isAqualNum(qr.counts["刷卡"], sum4),
             isAqualNum(qr.counts["汇款"], sum5),
@@ -9018,10 +9019,11 @@ function test170708() {
     var fields1 = salesQueryBatchFields(keys1);
     query(fields1);
     qr = getQR();
-    var ret1 = isAnd(isEqual(qr.counts["现金"], sum1), isEqual(qr.counts["刷卡"],
-            sum2), isEqual(qr.counts["汇款"], sum3), isEqual(qr.counts["代收"],
-            sum4), isEqual(qr.counts["数量"], sum8), isEqual(qr.counts["金额"],
-            sum9));
+    var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1), isAqualNum(
+            qr.counts["刷卡"], sum2), isAqualNum(qr.counts["汇款"], sum3),
+            isAqualNum(qr.counts["代收"], sum4),
+            isAqualNum(qr.counts["数量"], sum8),
+            isAqualNum(qr.counts["金额"], sum9));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
@@ -10404,6 +10406,29 @@ function test170737() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
+}
+function test170738() {
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu1("销售开单");
+    tapMenu2("getMenu_More");
+    var ret = false;
+    var bt = app.mainWindow().popover().buttons()[SELFQUERY];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret = true;
+    }
+    tapMenu3(SELFQUERY);
+    var g0 = new TField("款号名称＊", TF, 0, "3035");
+    var fields = [ g0 ];
+    setTFieldsValue(getPopView(), fields);
+    tapButton(getPop(), OK);
+    tapButton(getPop(), "关 闭");
+    tapReturn();
+
+    return ret;
 }
 function test170739() {
     tapMenu("销售开单", LogisticsVerify);

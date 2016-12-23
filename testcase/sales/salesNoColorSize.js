@@ -243,7 +243,7 @@ function setNoColorSize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否显示颜色尺码字样" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    o = { "新值" : "1", "数值" : [ "默认显示" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单是否显示尺码头部的界面" };

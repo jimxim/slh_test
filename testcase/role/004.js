@@ -1667,29 +1667,6 @@ function test170736() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test170738() {
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "xjkh1", "明细" : [ { "货品" : "3035", "数量" : 4 } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    tapMenu1("销售开单");
-    tapMenu2("getMenu_More");
-    var ret = false;
-    var bt = app.mainWindow().popover().buttons()[SELFQUERY];
-    if (!isUIAElementNil(bt) || bt.isVisible()) {
-        ret = true;
-    }
-    tapMenu3(SELFQUERY);
-    var g0 = new TField("款号名称＊", TF, 0, "3035");
-    var fields = [ g0 ];
-    setTFieldsValue(getPopView(), fields);
-    tapButton(getPop(), OK);
-    tapButton(getPop(), "关 闭");
-    tapReturn();
-
-    return ret;
-}
 function test170741() {
     var qo, o, ret = true;
     qo = { "备注" : "支持异地仓库" };

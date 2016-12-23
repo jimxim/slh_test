@@ -492,6 +492,7 @@ function test210018_7() {
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, OK);
 
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
 function test210022() {
@@ -1026,12 +1027,24 @@ function test210036() {
 }
 function test210039_210068() {
     var qo, o, ret = true;
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "1", "数值" : [ "默认显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否显示尺码头部的界面" };
+    o = { "新值" : "1", "数值" : [ "默认不支持" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
@@ -1089,12 +1102,20 @@ function test210039_210068() {
 }
 function test210039_1_210068() {
     var qo, o, ret = true;
+    qo = { "备注" : "是否显示颜色尺码字样" };
+    o = { "新值" : "1", "数值" : [ "默认显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    
+    qo = { "备注" : "是否允许负库存" };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
