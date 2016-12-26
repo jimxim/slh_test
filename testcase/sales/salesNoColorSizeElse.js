@@ -5114,9 +5114,9 @@ function test170363_170361_170648() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["销售数"], sum1), isEqual(qr.counts["退货数"],
-            sum2), isEqual(qr.counts["实销数"], sum3), isEqual(qr.counts["实销额"],
-            sum4));
+    var ret1 = isAnd(isAqualNum(qr.counts["销售数"], sum1), isAqualNum(
+            qr.counts["退货数"], sum2), isAqualNum(qr.counts["实销数"], sum3),
+            isAqualNum(qr.counts["实销额"], sum4));
 
     var keys = { "日期从" : getDay(-30), "到" : getToday(), "厂商" : "Vell",
         "门店" : "常青店" };

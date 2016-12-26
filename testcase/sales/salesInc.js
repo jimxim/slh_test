@@ -161,8 +161,10 @@ function testSalesPrepare007() {
     // tapFirstText();
     // tapButtonAndAlert(START, OK);
 }
-function testSalesCuanMaPrepare() {
-    var r = "anewCuanMa" + randomWord(false, 6);
+function testSalesCuanMaPrepare(r) {
+    if (isUndefined(r)) {
+        var r = "anewCuanMa" + randomWord(false, 6);
+    }
     tapMenu("货品管理", "新增货品+");
     var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "M,S",
         "进货价" : 100 };
@@ -174,6 +176,24 @@ function testSalesCuanMaPrepare() {
     if (!isUIAElementNil(bt) || bt.isVisible()) {
         tapReturn();
     }
+    return r;
+}
+function testSalesCompareCodePrepare(r) {
+    if (isUndefined(r)) {
+        var r = "anewSame" + randomWord(false, 6);
+    }
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "款号" : r, "名称" : "货品" + r, "颜色" : "红色,玫红", "尺码" : "L,XL",
+        "进货价" : 100 };
+    var fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay();
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
+    return r;
 }
 function test170637Prepare() {
     var qo, o, ret = true;

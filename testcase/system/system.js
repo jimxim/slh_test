@@ -427,7 +427,7 @@ function test210018_5() {
     tapButtonAndAlert(SAVE, OK);
 
     delay();
-    tapFirstText(getScrollView(), TITLE_SEQ);
+    tapFirstText();
     var b = getTextFieldValue(getScrollView(), 4);
     var ret1 = isEqual("习近平12p", b);
 
@@ -436,6 +436,7 @@ function test210018_5() {
     setTFieldsValue(getScrollView(-1), fields);
     tapButtonAndAlert(SAVE, OK);
 
+    logDebug(" ret=" + ret + ", ret=" + ret);
     return ret && ret1;
 }
 function test210018_6() {
@@ -1042,7 +1043,7 @@ function test210039_210068() {
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -1113,7 +1114,7 @@ function test210039_1_210068() {
     qo = { "备注" : "是否显示颜色尺码字样" };
     o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-    
+
     qo = { "备注" : "是否允许负库存" };
     o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));

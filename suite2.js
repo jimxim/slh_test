@@ -16,11 +16,6 @@ function test000All() {
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
-// run("【盘点管理—盘点处理】全盘处理", "test180025");//bug
-// run("【系统设置—小票信息】保存", "test210018_7");
- run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_210068");
-// run("【系统设置】是否需要颜色尺码参数影响了颜色尺码下销售开单修改界面的颜色尺码显示", "test210039_1_210068");
-    
 // run("", "test0");
 }
 function test0(){
@@ -32,17 +27,15 @@ function test0(){
 // debugArray(texts);
 // debugObject();
 // window.scrollViews()[0].switches()[0].setValue(1);
-    try{
-        var json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "关闭明细" : "no" };
-        editSalesBillDetColorSize(json);
-        delay();
-        tapAlertButton(0);// "不合并"
-    }catch(e){
-        
-    }
-    
+// try{
+// var json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "关闭明细" : "no" };
+// editSalesBillDetColorSize(json);
+// delay();
+// tapAlertButton(0);// "不合并"
+// }catch(e){
+//        
+// }
 // var ret5 = isAnd(isIn(alertMsg, "相同颜色尺码已经存在"));
-    
 // return ret5;
 }
 function setSales001Params() {

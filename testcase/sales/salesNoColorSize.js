@@ -210,6 +210,7 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-开单】积分是否跨门店共享 －不开启", "test170184");
     run("【销售开单-开单】积分抵现（积分不跨门店共享）", "test170690");
     run("【销售开单-开单】积分抵现（积分跨门店共享）", "test170691");
+    run("【销售开单-新增】颜色尺码/均色均码+找零模式", "test170743");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -394,7 +395,7 @@ function setNoColorSize_1Params() {
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "允许改高" };
+    qo = { "备注" : "销售价格允许改高不允许改低" };
     o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -7767,7 +7768,7 @@ function test170445_2() {
 }
 function test170450() {
     var qo, o, ret = true;
-    qo = { "备注" : "允许改高" };
+    qo = { "备注" : "销售价格允许改高不允许改低" };
     o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -7827,7 +7828,7 @@ function test170450() {
     var total1 = qr.total;
     var ret4 = isEqual(1, sub(total1, total));
 
-    qo = { "备注" : "允许改高" };
+    qo = { "备注" : "销售价格允许改高不允许改低" };
     o = { "新值" : "0", "数值" : [ "不检查" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -7918,7 +7919,7 @@ function test170450_1() {
     var total4 = qr.total;
     var ret9 = isEqual(1, sub(total4, total3));
 
-    qo = { "备注" : "允许改高" };
+    qo = { "备注" : "销售价格允许改高不允许改低" };
     o = { "新值" : "0", "数值" : [ "不检查" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
@@ -12984,6 +12985,81 @@ function test170734() {
             + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
             && ret9;
+}
+function test170743() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "优先结余还是优先找零" };
+    o = { "新值" : "1", "数值" : [ "优先找零" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret1 = isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret2 = isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret3 = !isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret4 = !isEqual("找零", a);
+    tapReturn();
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret5 = isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret6 = isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("采购入库", "新增入库+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret7 = !isEqual("找零", a);
+    tapReturn();
+
+    tapMenu("采购订货", "新增订货+");
+    var texts = getStaticTexts(window);
+    var index = getArrayIndexIn(texts, "找零");
+    var a = getStaticTextValue(window, index);
+    var ret8 = !isEqual("找零", a);
+    tapReturn();
+
+    logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7 + ", ret8=" + ret8);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test240002_240004() {
     var qo, o, ret = true;
