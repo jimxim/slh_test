@@ -33,6 +33,10 @@ function testCustBranch001() {
     run("【往来管理-客户查询】检查手机号是否重复", "test230050");
     run("【往来管理-客户查询】客户分店界面，排序", "test230051");
     run("【往来管理-客户查询】客户查询-消费明细-检查客户分店", "test110010");
+
+    run("设置--尺码表头", "setSizeHeadParams_1");
+    run("【销售开单－开单】查看上次成交记录", "test220075");
+    run("设置--均色均码模式", "closeSizeHeadParams");
 }
 // 店长004登陆验证非总经理部分
 function testCustBranch004() {
@@ -150,16 +154,16 @@ function test230006() {
 }
 // 230013
 function test230007() {
+    var qo = { "备注" : "开单是否显示上次单价" };
+    var o = { "新值" : "1", "数值" : [ "显示" ] };
+    setGlobalParam(qo, o);
+
     var json = { "客户" : "xwc",
         "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "单价" : "220" } ] };
     var jo = { "明细" : [ { "货品" : "303", "表格行包含" : "3035" } ] };
     return test230007(json, jo);
 }
 function test230007Field(json, jo) {
-    var qo = { "备注" : "开单是否显示上次单价" };
-    var o = { "新值" : "1", "数值" : [ "显示" ] };
-    setGlobalParam(qo, o);
-
     tapMenu("销售开单", ADDBILL);
     editSalesBill(json, colorSize);
 
@@ -195,7 +199,7 @@ function getBillGoodsDet() {
             break;
         }
     }
-    logDebug("index=" + index);
+    logDebug("上次成交记录 index=" + index);
     for (index + 1; index < texts.length; index++) {
         var value = texts[index].value();
         arr.push(value);

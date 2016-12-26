@@ -608,7 +608,7 @@ function ts110013() {
     }
     return ret;
 }
-//后台权限手机新增可见编辑不可见不能勾选
+// 后台权限手机新增可见编辑不可见不能勾选
 function test110014() {
     var r = "a" + getTimestamp(6);
     tapMenu("往来管理", "新增客户+");
@@ -1205,7 +1205,7 @@ function test110022() {
     ret3 = isAnd(ret3, isInQRData1Object(qr, a1), isInQRData1Object(qr, a2),
             isInQRData1Object(qr, a3), isInQRData1Object(qr, b1),
             isInQRData1Object(qr, b2), isInQRData1Object(qr, b3));
-
+    tapNaviClose();
     return isAnd(ret, ret2, ret3);
 }
 

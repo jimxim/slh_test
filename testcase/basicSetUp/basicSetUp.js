@@ -63,7 +63,7 @@ function testBasicSetUpAll() {
     run("plczcs2", "setGoods007");
     run("plczcs3", "setGoods008");
 
-    run("颜色尺码模式", "setGoodsColorParams");
+    run("颜色尺码模式", "setIgnorecolorsize_0");
     // run("x001", "setGoods009");
     // run("x003", "setGoods010");
     // run("nb001", "setGoods011");
@@ -80,7 +80,7 @@ function testBasicSetUpAll() {
     // 中洲店款
     // run("Aaa002", "setGoods015");// 设置门店为中洲店,入库10件
 
-    run("均色均码模式", "setGoodsNoColorParams");
+    run("均色均码模式", "setIgnorecolorsize_1");
 
     // 特价商品 9528
 

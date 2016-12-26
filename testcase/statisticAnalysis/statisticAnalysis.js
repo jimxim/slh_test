@@ -91,6 +91,7 @@ function testStatisticAnalysis001() {
     run("【统计分析—综合汇总】进入详细-还款", "test190040");
     run("【新综合汇总】新综合汇总的还款 欠款 抵扣 余款子页面检查合计行", "test190046");
     run("【统计分析-综合汇总】开单模式影响", "ts190141");
+    run("开单模式2", "setPaymethod2");// 防止190141出错
     if (ipadVer >= 7.25) {
         run("【统计分析-综合汇总】公式增加微信", "ts190143");
     }
@@ -1454,8 +1455,8 @@ function test190037() {
         }
     }
     var expected = { "刷" : 400, "汇" : 600, "金额" : 1000 };
-    var ret = isAnd(isAqualNum(a, sum1), isAqualNum(b, sum2), isEqual(c, sub(a,
-            b)), isEqualObject(expected, subObject(s2, s1)));
+    var ret = isAnd(isAqualNum(a, sum1), isAqualNum(b, sum2), isAqualNum(c,
+            sub(a, b)), isEqualObject(expected, subObject(s2, s1)));
     tapNaviClose();
     return ret;
 }

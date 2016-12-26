@@ -198,9 +198,8 @@ function login009Rights() {
 }
 
 // http://jira.hzdlsoft.com:7082/browse/SLH-7083
-var hasRights;
 function checkLimitsToRights_YES() {
-    hasRights = true;
+    var hasRights = true;
     run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");
@@ -215,7 +214,7 @@ function checkLimitsToRights_YES() {
 }
 
 function checkLimitsToRights_NO() {
-    hasRights = false;
+    var hasRights = false;
     run("货品管理", "checkRightsGoods");
     run("往来管理", "checkRightsCustomer");
     run("采购入库", "checkRightsPurchase");

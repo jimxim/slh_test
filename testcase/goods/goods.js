@@ -372,7 +372,7 @@ function testGoods003() {
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入必填项信息", "ts100025");
     run("【货品管理-新增货品】均色均码模式+默认价格模式+不自动生成款号：输入所有项信息", "ts100046");
     // 颜色尺码
-    var ok = setGoodsColorParams();
+    var ok = setIgnorecolorsize_0();
     if (ok) {
         colorSize = "yes";
         run("【货品管理-新增货品】颜色尺码模式+默认价格模式+不自动生成款号：只输入必填项信息", "ts100023");
@@ -380,7 +380,7 @@ function testGoods003() {
         run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项不包括款号", "ts100026");
         run("【货品管理-新增货品】颜色尺码模式+默认价格模式+自动生成款号：输入必填项包括款号", "ts100027");
     }
-    run(" 均色均码模式", "setGoodsNoColorParams");
+    run(" 均色均码模式", "setIgnorecolorsize_1");
 }
 function test200Goods003() {
     run("【货品管理-货品查询】不同门店不同价格在货品查询界面的数值验证", "ts100176");
@@ -394,7 +394,7 @@ function setPaymethod2() {
     return ret;
 }
 
-function setGoodsColorParams() {
+function setIgnorecolorsize_0() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
@@ -403,7 +403,7 @@ function setGoodsColorParams() {
     return ret;
 }
 
-function setGoodsNoColorParams() {
+function setIgnorecolorsize_1() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };

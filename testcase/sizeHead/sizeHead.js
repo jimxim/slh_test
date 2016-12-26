@@ -5,6 +5,7 @@
 // agc006 花色 黑色 白色 夹克 S1 S2 S3 S4 不在尺码表头中的尺码组
 //002 004 
 //kh000~kh015  黑色 花色 白色 均色  S M 均码 L XL
+//涉及盘点的用例放在zy那 用到款号x001 x003
 
 /**
  * 尺码表头参数1 省代 开单2 需要重新登录
@@ -70,6 +71,21 @@ function testSizeHead001_shop1() {
     run("【采购入库】采购入库（部分入库后再次入库）", "test220039");
     run("【采购入库】采购入库（一次性全部入库）", "test220040");
     run("【系统设置】在均色均码下开启开单尺码表头参数", "test220044");
+    run("【销售开单-开单】数量输入快速复制功能", "test220064");
+
+    run(" 设置销售价格允许改高不允许改低--不能低于零批价", "setSales_pricecheck1");
+    run("【销售开单】销售价格允许改高不允许改低--总经理不受控", "test220070");
+    run(" 设置--开单模式2", "setPaymethod2");
+    run(" 设置销售价格允许改高不允许改低--不检查", "setSales_pricecheck0");
+}
+// 开单员005登陆验证
+function testSizeHead001_shop1_005() {
+    var colorSize = "head";
+    run(" 设置销售价格允许改高不允许改低--不能低于零批价", "setSales_pricecheck1");
+    run("【销售开单】销售价格允许改高不允许改低--价格改低", "test220068");
+    run(" 设置--开单模式2", "setPaymethod2");
+    run("【销售开单】销售价格允许改高不允许改低--价格改高", "test220069");
+    run(" 设置销售价格允许改高不允许改低--不检查", "setSales_pricecheck0");
 }
 /**
  * 尺码表头参数2 省代 开单2 需要重新登录
@@ -85,7 +101,7 @@ function setSizeHeadParams_2() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单是否显示尺码头部的界面" };
-    o = { "新值" : "2", "数值" : [ "添加了吊牌价显示", "in" ] };
+    o = { "新值" : "2", "数值" : [ "吊牌价显示", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));// 设置后必须重启SLH
 
     qo = { "备注" : "开单模式" };
@@ -118,11 +134,13 @@ function testSizeHead002_shop1() {
     run("【采购订货+省代+参数2】采购订货，检查款号下拉表显示的价格", "test220058");
     run("【销售开单+省代+参数2】销售开单-按订货开单，有吊牌这一列，且款号的吊牌价正确，正确开单", "test220060");
     run("【销售开单+省代+参数2】检查销售开单有吊牌这一列，款号的吊牌价正确，正确开单打印", "test220062");
-    run("【销售开单-开单】数量输入快速复制功能", "test220064");
 
 }
 function testSizeHeadCheck() {
+    var colorSize = "head";
     run("【盘点管理】盘点单", "test220045");
+    run("【盘点管理】新增盘点界面，客户可以输入0来达到清除库存--全输入0", "test220045");
+    run("【盘点管理】新增盘点界面，客户可以输入0来达到清除库存--同一行既输入0，又输入正库存和负库存", "test220045");
     run("切换回均色均码模式", "closeSizeHeadParams");
 }
 function closeSizeHeadParams() {
@@ -133,6 +151,10 @@ function closeSizeHeadParams() {
 
     qo = { "备注" : "是否需要颜色尺码" };
     o = { "新值" : "1", "数值" : [ "均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
+    o = { "新值" : "1", "数值" : [ "部分客户需要打印给客户和仓库", "in" ] };// 打印选项 客户用/仓库用
     ret = isAnd(ret, setGlobalParam(qo, o));
     return ret;
 }
@@ -1007,7 +1029,153 @@ function test220064Field(menu) {
 }
 // 放zy那
 function test220065() {
+    var json = { "明细" : [ { "货品" : "x001", "颜色" : "红色", "尺码" : { "L" : 0 } } ],
+        "onlytest" : "yes" };
+    return test220065Field(json);
+}
+function test220065Field(json) {
     tapMenu("盘点管理", "新增盘点+");
+    editSalesBill(json, "head");
+    var tf = getStaticText(getScrollView(-1), 0);
+    tf.doubleTap();// 未输入数量的补全为0
+    editSalesBillSave({});
+
+    tapMenu2("盘点处理");
+    var keys = { "门店" : "常青店" };
+    editStockProcess(keys, "部分处理");
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : json["明细"][0]["货品"], "颜色" : json["明细"][0]["颜色"] };
+    conditionQuery(keys);
+    var qr = getQR();
+    return isEqual(0, qr.counts["库存"]);
+}
+function test220066() {
+    var json = {
+        "明细" : [ { "货品" : "x001", "颜色" : "红色",
+            "尺码" : { "L" : 0, "XL" : 5, "2XL" : -5 } } ], "onlytest" : "yes" };
+    return test220065Field(json);
+}
+function setSales_pricecheck0() {
+    var qo = { "备注" : "销售价格允许改高不允许改低" };
+    var o = { "新值" : 0, "数值" : [ "不检查", "in" ] };
+    return setGlobalParam(qo, o);
+}
+function setSales_pricecheck1() {
+    var qo = { "备注" : "销售价格允许改高不允许改低" };
+    var o = { "新值" : 1, "数值" : [ "不能低于零批价", "in" ] };
+    return setGlobalParam(qo, o);
+}
+// 受控制的店员登录
+function test220068() {
+    return test220068Field(true);
+}
+/**
+ * 220068实现
+ * @param haswarn 是否有错误提示
+ * @returns
+ */
+function test220068Field(haswarn) {
+    var alertMsgs = [], ret = true;
+    var msg = "价格输入错误";
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15 },
+            "单价" : 150 } ] }; // 零批价200
+    if (haswarn) {
+        var qo = { "备注" : "开单模式" };
+        var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+        setGlobalParam(qo, o);
+
+        tapMenu("销售开单", ADDBILL);
+        editSalesBill(json, colorSize);
+        ret = isAnd(ret, isInAlertMsgs(msg));
+        alertMsgs = [];
+    }
+
+    setPaymethod2();// 开单模式2
+    tapMenu("销售开单", ADDBILL);
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isInAlertMsgs(msg) == haswarn);
+    alertMsgs = [];
+
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    ret = isAnd(ret, isInAlertMsgs(msg) == haswarn);
+    return ret;
+}
+// setSales_pricecheck1
+function test220069() {
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色",
+            "尺码" : { "L" : 15, "XL" : 20 }, "单价" : 300 } ] };// 零批价200
+    editSalesBill(json, colorSize);
+    var ret = isInAlertMsgs("保存成功");
+
+    if (ret) {
+        tapMenu("销售订货", "按批次查");
+        query();
+        tapLine();
+        ret = checkBillDetValue(json["明细值"]);
+        tapReturn();
+    }
+    return ret;
+}
+// 总经理登陆
+function test220070() {
+    return test220068Field(false);
+}
+function test220075() {
+    var qo = { "备注" : "开单是否显示上次单价" };
+    var o = { "新值" : "1", "数值" : [ "显示" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色",
+            "尺码" : { "L" : 15, "XL" : 20 }, "单价" : 200 } ] };
+    editSalesBill(json, colorSize);
+
+    var cust = "xwc", price1 = 200, price2 = 400;
+    var ret = test220075Field(cust, price1, price2);
+    cust = "xwz", price1 = 400, price2 = 600;
+    ret = isAnd(ret, test220075Field(cust, price1, price2));
+    cust = "xw", price1 = 600, price2 = "";
+    ret = isAnd(ret, test220075Field(cust, price1, price2));
+    return ret;
+}
+function test220075Field(cust, price1, price2) {
+    tapMenu("销售开单", ADDBILL);
+    var jo = { "客户" : cust, "明细" : [ { "货品" : "agc", "表格行包含" : "agc001" } ] };
+    editSalesBillCustomer(jo);
+//    tapMenu1("销售开单");// 等待客户的tableView变空 防货品取错tableView
+    editSalesBillDetTapCell(jo, colorSize);
+    var arr = getBillGoodsDet();
+    var ret = isInArray(arr, "价格: " + price1);
+    var index = getButtonIndex(window, MORE, 2);// 有重名 1为菜单栏
+    tapButton(window, index);
+    var qr = getQR2(getScrollView(-1, 0), "门店", "备注");
+    ret = isAnd(ret, isEqual(qr.data[0]["单价"], price1));
+    tapNaviClose();
+    if (price2 != "") {
+        var json = {
+            "备注" : "head",
+            "明细" : [ { "货品" : "agc001", "颜色" : "白色",
+                "尺码" : { "L" : 15, "XL" : 20 }, "单价" : price2 } ] };
+        editSalesBill(json, colorSize);
+    } else {
+        tapReturn();
+    }
+    return ret;
+}
+function test220077() {
+
 }
 function testEditBillSizeHead() {
     var colorSize = "head";

@@ -15,30 +15,28 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
-// colorSize = "head";
+ colorSize = "head";
     debug = true;
 // ipadVer = "7.27";//
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
- run(caseName, "onlyTest");// 
-// run(caseName, "test10_fuzzyQueryAndDropDownListCheck");//
+ run(caseName, "onlyTest");//
+// run(caseName, "test220075");//
 }   
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
-   try{ 
-// tapMenu("采购入库", "新增入库+");
-// var json = { "客户" : "vell", "明细" : [ { "货品" : "3035", "数量" : "30" } ],
-// "未付" : "yes" };
-       tapMenu("采购入库", "按批次查");
-       query();
-       tapLine();
-       var json = { 
-       "现金" :getRandomNum(100,1000) };
-       editSalesBill(json,colorSize);
+   try{  
+//       var f = new TField("客户", TF_AC, 0, "xw", -1, 0);
+//       setTFieldsValue(window, [ f ]);
+//       getTableViewCells(window,f);
+ var cust = "xw", price1 = 600, price2 = "";
+ return test220075Field(cust, price1, price2);
+//       getLastTableView(window);
+//       UIATarget.localTarget().logElementTree();
    }catch(e){
       logWarn(e);
    }
@@ -517,7 +515,7 @@ function loginCustBranch001(){
 function testBillTimes(){
     var arr=[],msg;
     var jo = { "客户" : "xw" , "明细" : [ { "货品" : "3035", "数量" : 30 } ],"onlytest":"yes"};
-    gCache = {};
+    var gCache = {};
     var o1 = { "是否打印" : "打印(客户用)" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     tapMenu1("销售开单");
