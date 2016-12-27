@@ -195,6 +195,22 @@ function testSalesCompareCodePrepare(r) {
     }
     return r;
 }
+function testSalesNewCodePrepare(r) {
+    if (isUndefined(r)) {
+        var r = "anewkhao" + randomWord(false, 6);
+    }
+    tapMenu("货品管理", "新增货品+");
+    var keys = { "款号" : r, "名称" : r };// , "进货价" : 100
+    var fields = editGoodsFields(keys, false);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    delay();
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
+    return r;
+}
 function test170637Prepare() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
