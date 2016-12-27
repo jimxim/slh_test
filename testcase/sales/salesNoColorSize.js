@@ -475,6 +475,10 @@ function setNoColorSize_1Params() {
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "优先结余还是优先找零" };
+    o = { "新值" : "0", "数值" : [ "优先结余" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "名称" : "sales_show_printdialog" };// 开单界面，保存后显示是否打印确认窗口
     o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
     ret = isAnd(ret, setLocalParam(qo, o));
