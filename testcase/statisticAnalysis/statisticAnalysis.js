@@ -2706,22 +2706,27 @@ function ts190138() {
     qr = getQR();
     ret = isAnd(ret, isEqual("单位[赵本山]", qr.data[0]["备注"]));
 
-    tapMenu("往来管理", "客户查询");
-    var keys = { "客户名称" : "赵本山" };
-    conditionQuery(keys);
-    tapLine();
-    keys = { "名称" : "赵本山a" };
-    addCustomer(keys);
-    tapMenu("统计分析", "收支流水");
-    tapButton(window, QUERY);
-    qr = getQR();
-    ret = isAnd(ret, isEqual("单位[赵本山a]", qr.data[0]["备注"]));
-
-    tapMenu("往来管理", "客户查询");
-    tapButton(window, QUERY);
-    tapLine();
-    keys = { "名称" : "赵本山" };
-    addCustomer(keys);
+    try {
+        tapMenu("往来管理", "客户查询");
+        var keys = { "客户名称" : "赵本山" };
+        conditionQuery(keys);
+        tapLine();
+        keys = { "名称" : "赵本山a" };
+        addCustomer(keys);
+        tapMenu("统计分析", "收支流水");
+        tapButton(window, QUERY);
+        qr = getQR();
+        ret = isAnd(ret, isEqual("单位[赵本山a]", qr.data[0]["备注"]));
+    } catch (e) {
+        tapReturn();
+        logWarn(e);
+    } finally {
+        tapMenu("往来管理", "客户查询");
+        tapButton(window, QUERY);
+        tapLine();
+        keys = { "名称" : "赵本山" };
+        addCustomer(keys);// 名字必须改回来
+    }
     return ret;
 }
 

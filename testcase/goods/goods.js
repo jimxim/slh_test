@@ -1897,6 +1897,7 @@ function ts100057() {
     return !isEqualsTexts1(texts, "吊牌价");
 }
 function test100111() {
+    var alertMsgs = [];
     tapMenu("货品管理", "基本设置", "新增品牌+");
     var keys1 = { "名称" : "'" };
     var ret = test100111Field("品牌", keys1);
@@ -2151,7 +2152,7 @@ function ts100059Field(menu31, menu32, keys, qkeys) {
     var cond = "window.buttons()['当前库存'].isVisible";// 防返回不彻底
     waitUntil(cond, 10);
     tapMenu1("货品管理");// 刷新界面用,验证是否返回到相应的界面
-    gMenu3 = menu32;
+    var gMenu3 = menu32;
     if (isDefined(qkeys)) {
         keys = qkeys;
     }
@@ -2418,7 +2419,7 @@ function ts100142_143() {
 function ts100144() {
     tapMenu("货品管理", "基本设置", "价格名称");
     delay();
-
+    var alertMsgs = [];
     ts100144Field("零批价");
     var ret = isInAlertMsgs("这个是全局设置中设置的默认价格") || isInAlertMsgs("第一个价格不能停用");
     alertMsgs = [];
@@ -3836,21 +3837,23 @@ function ts100108() {
 }
 
 function ts100110() {
-    var qo, o, ok;
-    qo = { "备注" : "是否启用加工价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
-    ok = isAnd(ok, setGlobalParam(qo, o));
+    var qo = { "备注" : "是否启用加工价" }, ret;
+    var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
+    setGlobalParam(qo, o);
 
-    tapMenu("货品管理", "新增货品+");
-    var texts = getStaticTexts(getScrollView());
-    var ret = isAnd(!isEqualsTexts1(texts, "是否加工款"), !isEqualsTexts1(texts,
-            "加工价"));
-    tapReturn();
-
-    qo = { "备注" : "是否启用加工价" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ok = isAnd(ok, setGlobalParam(qo, o));
-    return ret;
+    try {
+        tapMenu("货品管理", "新增货品+");
+        var texts = getStaticTexts(getScrollView());
+        ret = isAnd(!isEqualsTexts1(texts, "是否加工款"), !isEqualsTexts1(texts,
+                "加工价"));
+    } catch (e) {
+        logWarn(e);
+    } finally {
+        tapReturn();
+        o = { "新值" : "1", "数值" : [ "启用" ] };
+        setGlobalParam(qo, o);
+        return ret;
+    }
 }
 
 function ts100116() {
@@ -4440,6 +4443,10 @@ function ts100169() {
     var arr2 = get130004QR("款号");
     return isEqualObject(arr1, arr2);
 }
+// http://jira.hzdlsoft.com:7082/browse/SLH-13221
+// 异地发货下当前库存和货品进销存的累计销。
+// 当前库存的累计销是统计发货门店的。货品进销存是统计开单门店的。
+// 这两个界面如果输门店查询条件得出的累计销不一致，不管他，只看总的累计销对不对的上。
 function test100170() {
     var det = addPOrderBillDet();
     var code = det["明细"][0]["货品"];
@@ -4447,10 +4454,12 @@ function test100170() {
     var keys = { "款号" : code, "门店" : "常青店" };
     conditionQuery(keys);
     var qr = getQR();
-    var num = Number(qr.data[0]["累计进"]);
-    logDebug("累计进 num=" + num);
+    var num1 = Number(qr.data[0]["累计进"]);
     tapMenu2("货品进销存");
     conditionQuery(keys);
+    qr = getQR();
+    var num2 = Number(qr.data[0]["累计进"]);
+    logDebug("累计进  款号库存num1=" + num1 + "  货品进销存num2=" + num2);
 
     var r1 = getRandomNum(21, 50), r2 = getRandomNum(-20, -1);
     var dif = add(r1, r2);
@@ -4459,36 +4468,36 @@ function test100170() {
         "客户" : "vell",
         "明细" : [ { "货品" : code, "数量" : [ r1 ] }, { "货品" : code, "数量" : [ r2 ] } ] };
     editSalesBill(json, colorSize);
-    var ret = test100170Field(add(num, dif));
+    var ret = test100170Field(num1, num2, dif);
 
     tapMenu("采购入库", "批量入库+");
     editPurchaseBatch(json, colorSize);
-    ret = isAnd(ret, test100170Field(add(num, 2 * dif)));// 这一步时，取值不稳定
+    ret = isAnd(ret, test100170Field(num1, num2, 2 * dif));// 这一步时，取值不稳定
 
     tapMenu("采购订货", "新增订货+");
     editSalesBill(json, colorSize);
-    ret = isAnd(ret, test100170Field(add(num, 2 * dif)));
+    ret = isAnd(ret, test100170Field(num1, num2, 2 * dif));
 
     tapMenu("采购入库", "按订货入库");
     query();
     tapLine();
     json = { "修改明细" : [ {}, { "数量" : r2 } ] };// 默认负数的入库数为0
     editSalesBill(json, colorSize);
-    ret = isAnd(ret, test100170Field(add(num, 3 * dif)));
+    ret = isAnd(ret, test100170Field(num1, num2, 3 * dif));
     return ret;
 }
-function test100170Field(num) {
+function test100170Field(num1, num2, dif) {
     tapMenu("货品管理", "款号库存");
     delay();
     tapButton(window, QUERY);
     var qr = getQR();
-    var ret = isEqual(qr.data[0]["累计进"], num);
+    var ret = isEqual(qr.data[0]["累计进"], add(num1 + dif));
 
     tapMenu2("货品进销存");
     delay();// 数据刷新慢，只点一次查询还是旧数据
     tapButton(window, QUERY);
     qr = getQR();
-    ret = isAnd(ret, isEqual(qr.data[0]["累计进"], num));
+    ret = isAnd(ret, isEqual(qr.data[0]["累计进"], add(num2 + dif)));
     return ret;
 }
 function ts100171() {

@@ -2367,7 +2367,6 @@ function test120065() {
     var ret = setGlobalParam(qo, o);
 
     localClean();
-
     ret = isAnd(ret, test120050Field(100));
 
     qo = { "备注" : "是否启用加工价" };
@@ -2660,7 +2659,7 @@ function test120050Field(price) {
 
     tapMenu2("按批次查");
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     var qr = getQRDet();
     tapReturn();
     ret = isAnd(ret, isEqual(qr.data[0]["单价"], price));
@@ -2955,7 +2954,7 @@ function ts120061() {
     tapMenu("采购订货", "新增订货+");
     var jo = { "客户" : "vell" };
     var json = mixObject(jo, det);
-    editSalesBillNoColorSize(json);
+    editSalesBill(json, colorSize);
 
     tapMenu("采购入库", "按订货入库");
     query();
@@ -2964,6 +2963,7 @@ function ts120061() {
 
     json = { "核销" : [ 4 ] };
     editSalesBillVerify(json);
+    delay();// 等待核销界面消失
     var actual = getSalesBillValueByLabel();
     tapReturn();
 

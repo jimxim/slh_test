@@ -1089,7 +1089,7 @@ function ts130016_1() {
     tapLine();
     runAndAlert("test130015EndBill", OK);
     tapReturn();
-    var ret = isInAlertMsgs("订单终结成功");
+    var ret = isInAlertMsgs("采购订单已终结");// 订单终结成功
 
     tapMenu("采购入库", "按订货入库");
     tapButton(window, QUERY);

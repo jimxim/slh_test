@@ -917,7 +917,6 @@ function test160020_160022() {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         }
     }
-
     return ret;
 }
 function test160021() {
@@ -2884,12 +2883,13 @@ function test160170() {
 
     rmk = getRandomStr(200);
     tapMenu("门店调出", "批量调出+");
-    var json = { "调出人" : "200", "接收店" : "中洲店",
+    var json = { "调出人" : "000", "接收店" : "中洲店",
         "明细" : [ { "货品" : "3035", "数量" : 50 } ], "备注" : rmk };
     editShopOutDecruitIn(json, colorSize);
 
     tapMenu2("按批次查");
-    query();
+    var keys = { "调出门店" : "常青店" };
+    conditionQuery(keys);
     tapLine();
     ret = isAnd(ret, test160170Field(rmk));
     tapReturn();
