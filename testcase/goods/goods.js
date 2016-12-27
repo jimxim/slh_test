@@ -387,13 +387,15 @@ function test200Goods003() {
 }
 
 function setPaymethod2() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-    return ret;
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    return setGlobalParam(qo, o);
 }
-
+function setPaymethod7() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "现金+刷卡+汇款+整单折扣", "in" ] };
+    return setGlobalParam(qo, o);
+}
 function setIgnorecolorsize_0() {
     var qo, o, ret = true;
     qo = { "备注" : "是否需要颜色尺码" };
@@ -1445,7 +1447,6 @@ function ts100033() {
     var r = getRandomStr(6);
     var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
         "吊牌价" : "200" };
-
     var keys2 = { "颜色" : "均色", "尺码" : "均码", "进货价" : "100", "零批价" : "200",
         "打包价" : "180", "大客户价" : "160", "Vip价格" : "140", "经办人" : "" };
     // 如果新增款号时没有输经办人,则经办人保持为空

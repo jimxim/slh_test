@@ -36,6 +36,9 @@ function testCustBranch001() {
 
     run("设置--尺码表头", "setSizeHeadParams_1");
     run("【销售开单－开单】查看上次成交记录", "test220075");
+    run(" 设置--开单模式7", "setPaymethod7");
+    run("【销售开单－开单】尺码表头开单模式 支持客户折扣模式--检查客户分店显示的折扣值", "test220081");
+    run(" 设置--开单模式2", "setPaymethod2");
     run("设置--均色均码模式", "closeSizeHeadParams");
 }
 // 店长004登陆验证非总经理部分
