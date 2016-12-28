@@ -451,33 +451,42 @@ function test170005() {
     return ret && ret1;
 }
 function test170006_170013() {
-    // var r = getTimestamp(8);
-    // tapMenu("销售开单", "开 单+");
-    // var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
-    // "onlytest" : "yes" };
-    // editSalesBillNoColorSize(json);
-    // var money = getTextFieldValue(window, 2);
-    // tapButtonAndAlert("挂 单", OK);
-    // tapReturn();
-    //
-    // tapMenu("销售开单", "按挂单");
-    // var qr = getQR();
-    // var a1 = qr.data[0]["日期"];
-    // var a2 = qr.data[0]["门店"];
-    // var a3 = qr.data[0]["客户"];
-    // var a4 = qr.data[0]["店员"];
-    // var a5 = qr.data[0]["金额"];
-    // var a6 = qr.data[0]["数量"];
-    // var a7 = qr.data[0]["未结"];
-    // var a8 = qr.data[0]["配货"];
-    // var ret = isAnd(isEqual(getToday(""), a1), isEqual("常青店", a2), isEqual(
-    // "李四", a3), isEqual("总经理", a4), isEqual(money, a5), isEqual(2, a6),
-    // isEqual(0, a7), isEqual("否", a8));
-    //
-    // tapFirstText();
-    // saveAndAlertOk();
-    // tapPrompt();
-    // tapReturn();
+    if (ipadVer < "7.25") {
+        var r = getTimestamp(8);
+        tapMenu("销售开单", "开 单+");
+        var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
+            "onlytest" : "yes" };
+        editSalesBillNoColorSize(json);
+        var money = getTextFieldValue(window, 2);
+        tapButtonAndAlert("挂 单", OK);
+        tapReturn();
+
+        tapMenu("销售开单", "按批次查");
+        var keys2 = { "作废挂单" : "挂单" };
+        var fields2 = salesQueryBatchFields(keys2);
+        query(fields2);
+        var qr = getQR();
+        var a1 = qr.data[0]["日期"];
+        var a2 = qr.data[0]["门店"];
+        var a3 = qr.data[0]["客户"];
+        var a4 = qr.data[0]["店员"];
+        var a5 = qr.data[0]["金额"];
+        var a6 = qr.data[0]["数量"];
+        var a7 = qr.data[0]["未结"];
+        var a8 = qr.data[0]["配货"];
+        var ret5 = isAnd(isEqual(getToday(""), a1), isEqual("常青店", a2),
+                isEqual("李四", a3), isEqual("总经理", a4), isEqual(money, a5),
+                isEqual(2, a6), isEqual(0, a7), isEqual("否", a8));
+    } else {
+        tapMenu("销售开单", "按批次查");
+        tap(getTextField(window, 10));
+        var ret5 = false;
+        var bt = app.mainWindow().popover().buttons()["挂单"];
+        if (isUIAElementNil(bt) || !bt.isVisible()) {
+            ret5 = true;
+        }
+        window.popover().dismiss();
+    }
 
     var qo, o, ret = true;
     qo = { "备注" : "是否显示待作废按钮功能" };
@@ -562,9 +571,18 @@ function test170006_170013() {
             "李四", a3), isEqual("总经理", a4), isEqual(money, a5),
             isEqual("3", a6), isEqual("0", a7), isEqual("否", a8));
 
+    tapFirstText();
+    tapMenu2("getMenu_More");
+    tapMenu3("商圈推送");
+    tapPrompt();
+    debugArray(alertMsgs);
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var ret4 = isAnd(isIn(alertMsg1, "不允许该操作"), isIn(alertMsg1, "单据已作废"));
+    tapReturn();
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170007() {
     // 运行test170007之前为准备数据应先运行test170006

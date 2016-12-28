@@ -7,6 +7,7 @@
 // #import "/Users/huxiaoyu/Documents/slh_test/suite2.js"
 // #import "/Users/hzdlmac/Documents/slh_test/suite2.js"
 // #import "/Users/sunway/Documents/slh_test/suite2.js"
+// #import "/Users/sunway/Desktop/slh_test/suite2.js"
 // 总经理
 function test000All() {
     colorSize = "no";// yes
@@ -16,11 +17,7 @@ function test000All() {
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
-// run("【销售开单】按挂单--正常功能检查/翻页_排序_汇总", "test170305_1");//bug
-    run("【销售开单－开单】更多-所有挂单-加载后修改内容再保存打印", "test170178");
-// testSalesNoColorSize001();
-// testSalesNoColorSize002();
-// testSalesNoColorSize001_1();
+
 // run("", "test0");
 }
 function test0(){

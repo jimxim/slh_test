@@ -103,11 +103,22 @@ function testSalesPrepare003() {
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
+    // 其他门店客户，销售开单-挂单
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    editSalesBillNoColorSize(json);
+
+    // 其他门店客户，销售订货-挂单
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    editSalesBillNoColorSize(json);
+
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "20", "数值" : [ "现金+刷卡+汇款+配货员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    // 店长004配货单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "k300", "数量" : 1 } ],
         "配货" : "004", "现金" : 100, "刷卡" : [ 1000 ] };
@@ -171,11 +182,7 @@ function testSalesCuanMaPrepare(r) {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay();
-    var bt = app.mainWindow().buttons()[RETURN];
-    if (!isUIAElementNil(bt) || bt.isVisible()) {
-        tapReturn();
-    }
+    tapReturn();
     return r;
 }
 function testSalesCompareCodePrepare(r) {
@@ -188,11 +195,7 @@ function testSalesCompareCodePrepare(r) {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay();
-    var bt = app.mainWindow().buttons()[RETURN];
-    if (!isUIAElementNil(bt) || bt.isVisible()) {
-        tapReturn();
-    }
+    tapReturn();
     return r;
 }
 function testSalesNewCodePrepare(r) {
@@ -204,11 +207,7 @@ function testSalesNewCodePrepare(r) {
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
-    delay();
-    var bt = app.mainWindow().buttons()[RETURN];
-    if (!isUIAElementNil(bt) || bt.isVisible()) {
-        tapReturn();
-    }
+    tapReturn();
     return r;
 }
 function test170637Prepare() {
