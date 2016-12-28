@@ -20,3 +20,5 @@ wangLai--往来
   模拟器的设置如下： Hardware - Keyboard 中，将“Connect Hardware Keyboard” 去掉，这样 虚拟键盘会出现，键盘事件就会起作用。
 3.虚拟键盘出现后，会占位置，导致单选等操作失败,先检测是否可见，不可见收起键盘。
 4.
+1
+
