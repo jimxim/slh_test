@@ -85,7 +85,6 @@ function testSalesPrepare003() {
 
     // 采购订货单
     tapMenu("采购订货", "新增订货+");
-    json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20, "单价" : 100 } ] };
     editSalesBillNoColorSize(json);
 
     // 门店调出单
@@ -105,13 +104,31 @@ function testSalesPrepare003() {
 
     // 其他门店客户，销售开单-挂单
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
+        "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
 
     // 其他门店客户，销售订货-挂单
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    // 其他门店客户，销售开单-挂单
+    tapMenu("销售订货", "新增订货+");
+    json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    // 其他门店客户，销售订货-挂单
+    tapMenu("销售订货", "新增订货+");
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
 
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };

@@ -31,7 +31,7 @@ function test004() {
     run("【销售开单-物流单】非总经理登录", "test170736");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
     run("【销售开单-按订货开单】异地发货/异地+代收 按订货开单界面显示开单门店的数据", "test170741");
-    run("【销售开单-新增】开单时挂单提醒", "test170747");
+    run("【销售开单-新增】开单时挂单提醒", "test17074_2");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
@@ -412,13 +412,13 @@ function test170241_4() {
     tapMenu("销售开单", "开  单+");
     var ret = false;
     var index = getEditSalesTFindex2("客户", "店员");
-    var f = new TField("店员", TF_AC, index, "1", -1);
+    var f = new TField("店员", TF_AC, index, "5", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         // debugElementTree(cell);
         var v = cell.name();
-        if (isEqual("101,财务员", v)) {
+        if (isEqual("205,开单员", v)) {
             ret = true;
             break;
         }

@@ -17,7 +17,6 @@ function test000All() {
 // run("【销售开单-核销】物流核销时待核销物流单选择界面---日期和客户查询条件查询", "test170577");
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
 // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
-
 // run("", "test0");
 }
 function test0(){
@@ -29,6 +28,8 @@ function test0(){
 // debugArray(texts);
 // debugObject();
 // window.scrollViews()[0].switches()[0].setValue(1);
+// var obj=getElements(window)[3];
+// logDebug("name="+obj.name());
 // try{
 // var json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "关闭明细" : "no" };
 // editSalesBillDetColorSize(json);

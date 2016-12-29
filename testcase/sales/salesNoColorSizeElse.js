@@ -2709,10 +2709,10 @@ function test170287() {
     editVerifyBill(o);
 
     tapMenu("销售开单", "getMenu_More", "代收收款查询");
-    var keys = { "门店" : "常青店" };
-    var fields = salesCollectionFields(keys);
+    keys = { "门店" : "常青店" };
+    fields = salesCollectionFields(keys);
     query(fields);
-    var qr = getQR();
+    qr = getQR();
     var dsje = add(add(qr.counts["现金"], qr.counts["刷卡"]), qr.counts["汇款"]);
     var totalDs = qr.counts["金额"];
     var je = qr.data[0]["金额"];
@@ -2722,8 +2722,8 @@ function test170287() {
             isEqual(dsje, totalDs));
 
     tapMenu("统计分析", "收支流水");
-    var keys = { "门店" : "常青店", "account" : "现" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
+    keys = { "门店" : "常青店", "account" : "现" };
+    fields = statisticAnalysisInOutAccountFields(keys);
     query(fields);
     var qr1 = getQR();
     var exp = { "类型" : "代收收款", "账户" : "东灵测试-现金账户", "金额" : je, "操作人" : "总经理",
@@ -2743,7 +2743,9 @@ function test170287() {
     var ret3 = isEqual(totalMoney, sub(x2, x1));
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
-    query();
+    keys = { "门店" : "常青店" };
+    fields = salesPriceFields(keys);
+    query(fields);
     var qr2 = getQR();
     var ret4 = isEqual(xj1, qr2.data[0]["现金"]);
 
@@ -5212,13 +5214,8 @@ function test170366() {
     var zk = getTextFieldValue(window, remitTFindex - 3);
     var price = qr.data[0]["单价"];
     var num = qr.data[0]["数量"];
-
     tapButtonAndAlert("挂 单", OK);
-    delay();
     tapReturn();
-    var bt = window.buttons()[QUERY];
-    var cond = !isUIAElementNil(bt) || bt.isVisible();
-    waitUntil(cond, 5);
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -5239,7 +5236,6 @@ function test170366() {
     editSalesBillAgency2(json);
 
     tapButtonAndAlert("挂 单", OK);
-    tapPrompt();
     tapReturn();
 
     tapMenu("销售开单", "按挂单");
@@ -7326,7 +7322,7 @@ function test170575() {
     tapReturn();
 
     tapMenu("往来管理", "getMenu_More", "新增物流商+");
-    var r1 = "anewz" + randomWord(false, 6);
+    var r1 = "anewc" + randomWord(false, 6);
     var keys = { "名称" : r1, "门店" : "仓库店" };
     var fields = editCustomerLogisticsFields(keys);
     setTFieldsValue(getScrollView(), fields);
@@ -7334,6 +7330,36 @@ function test170575() {
     tapReturn();
 
     tapMenu("销售开单", LogisticsVerify);
+    var ret1 = false;
+    var f = new TField("物流", TF_AC, 0, "anewz", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "anewz")) {
+            ret1 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
+    var ret2 = false;
+    var f = new TField("物流", TF_AC, 0, "anewc", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "anewc")) {
+            ret2 = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapButton(window, CLEAR);
+
     var ret = false;
     var f = new TField("物流", TF_AC, 0, "s", -1);
     var cells = getTableViewCells(window, f);
@@ -7349,39 +7375,23 @@ function test170575() {
     tapKeyboardHide();
     tapButton(window, CLEAR);
 
-    var ret1 = false;
-    var f = new TField("物流", TF_AC, 0, "anewz", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "anewz")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
-    tapButton(window, CLEAR);
+    var o = { "物流" : "yt", "特殊货品" : { "抹零" : 18, "打包费" : 30 }, "核销" : [ 0 ],
+        "onlytest" : "yes" };
+    editVerifyBill(o);
+    var remitTFindex = getEditSalesTFindex2("物流", "汇款");
+    var totalMoney = getTextFieldValue(window, remitTFindex - 1);
 
-    var ret1 = false;
-    var f = new TField("物流", TF_AC, 0, "anewz", -1);
-    var cells = getTableViewCells(window, f);
-    for (var i = 0; i < cells.length; i++) {
-        var cell = cells[i];
-        var v = cell.name();
-        if (isIn(v, "anewz")) {
-            ret1 = true;
-            break;
-        }
-    }
-    delay();
-    tapKeyboardHide();
     tapButton(window, CLEAR);
+    o = { "物流" : "sf" };
+    editVerifyBillCustomer(o);
+    var remitTFindex1 = getEditSalesTFindex2("物流", "汇款");
+    var totalMoney1 = getTextFieldValue(window, remitTFindex1 - 1);
+    var ret3 = isEqual(totalMoney, totalMoney1);
     tapReturn();
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test170576_170288_170569_170293() {
     tapMenu("统计分析", "综合汇总");
