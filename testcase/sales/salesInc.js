@@ -85,6 +85,7 @@ function testSalesPrepare003() {
 
     // 采购订货单
     tapMenu("采购订货", "新增订货+");
+    json = { "客户" : "Rt", "明细" : [ { "货品" : "4562", "数量" : 20, "单价" : 100 } ] };
     editSalesBillNoColorSize(json);
 
     // 门店调出单

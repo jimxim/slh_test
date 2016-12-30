@@ -1911,8 +1911,8 @@ function test170265_170266() {
     tapButton(window, "预付款");
     var texts = getStaticTexts(getPopOrView());
     var index = getArrayIndexIn(texts, "订货时间");
-
-    if (ipadVer >= "7.23") {
+    var v = eval("t." + f1 + "()");
+    if ("微信" in texts) {
         index = Number(index) + 1;
     }
     var a = getStaticTextValue(getPopOrView(), index + 6);

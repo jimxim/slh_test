@@ -2145,8 +2145,8 @@ function test170077_1_170067() {
     var zk = qr.data[0]["折扣"];
     var ret4 = !isEqual(0, zk);
 
-    logDebug(" ret＝" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    logDebug(", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
+            + ret4 + ", ret5=" + ret5);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170077_2() {
@@ -2425,7 +2425,6 @@ function test170085() {
 
     qo = { "备注" : "折扣后单价的核算模式" };
     o = { "新值" : "0", "数值" : [ "保留精确小数", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lx", "明细" : [ { "货品" : "8989", "数量" : 12 } ],
@@ -2480,7 +2479,6 @@ function test170085() {
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug("ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -10547,65 +10545,34 @@ function test170587() {
     return ret;
 }
 function test170593() {
+    var params = [ { "新值" : "2", "数值" : [ "允许输入中文", "in" ] },
+            { "新值" : "1", "数值" : [ "默认启用", "in" ] },
+            { "新值" : "0", "数值" : [ "不启用" ] } ];
     var menu = { "采购入库" : "新增入库+", "采购订货" : "新增订货+", "销售开单" : ADDBILL };
-    return test170593Field(menu);
+    return test170593Field(menu, params);
 }
-function test170593Field(menu) {
+function test170593Field(menu, params) {
     var qo = { "备注" : "是否启用自定义键盘" };
-    var o = { "新值" : "2", "数值" : [ "允许输入中文", "in" ] };
-    setGlobalParam(qo, o);
     var r = "anewkhao" + randomWord(false, 3);
     var ret = true;
-    for ( var menu1 in menu) {
-        tapMenu(menu1, menu[menu1]);
-        tapButton(window, GOODS);
-        var g0 = new TField("款号", TF, 0, r);
-        var fields = [ g0 ];
-        setTFieldsValue(getPopView(), fields);
-        var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
-        var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-        setTextFieldValueByPinyin(tf, o);
-        ret = isAnd(ret, isIn(getTextFieldValue(getPopView(), 1), "李"));
-        tapButton(getPop(), "关 闭");
-        tapReturn();
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for ( var menu1 in menu) {
+            tapMenu(menu1, menu[menu1]);
+            tapButton(window, GOODS);
+            var g0 = new TField("款号", TF, 0, r);
+            var fields = [ g0 ];
+            setTFieldsValue(getPopView(), fields);
+            var tf = window.popover().scrollViews()[0].textFields()[1]
+                    .textFields()[0];
+            var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
+            setTextFieldValueByPinyin(tf, o);
+            ret = isAnd(ret, isIn(getTextFieldValue(getPopView(), 1), "李"));
+            tapButton(getPop(), "关 闭");
+            tapReturn();
+        }
     }
-
-    qo = { "备注" : "是否启用自定义键盘" };
-    o = { "新值" : "1", "数值" : [ "默认启用", "in" ] };
-    var ret1 = true;
-    for ( var menu1 in menu) {
-        tapMenu(menu1, menu[menu1]);
-        tapButton(window, GOODS);
-        var g0 = new TField("款号", TF, 0, r);
-        var fields = [ g0 ];
-        setTFieldsValue(getPopView(), fields);
-        var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
-        var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-        setTextFieldValueByPinyin(tf, o);
-        ret1 = isAnd(ret1, isIn(getTextFieldValue(getPopView(), 1), "李"));
-        tapButton(getPop(), "关 闭");
-        tapReturn();
-    }
-
-    qo = { "备注" : "是否启用自定义键盘" };
-    o = { "新值" : "0", "数值" : [ "不启用" ] };
-    var ret2 = true;
-    for ( var menu1 in menu) {
-        tapMenu(menu1, menu[menu1]);
-        tapButton(window, GOODS);
-        var g0 = new TField("款号", TF, 0, r);
-        var fields = [ g0 ];
-        setTFieldsValue(getPopView(), fields);
-        var tf = window.popover().scrollViews()[0].textFields()[1].textFields()[0];
-        var o = { "键盘" : "简体拼音", "拼音" : [ "li" ], "汉字" : [ "李" ] };
-        setTextFieldValueByPinyin(tf, o);
-        ret2 = isAnd(ret2, isIn(getTextFieldValue(getPopView(), 1), "李"));
-        tapButton(getPop(), CLOSE);
-        tapReturn();
-    }
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    return ret;
 }
 function test170595() {
     var menu = { "采购入库" : "新增入库+", "采购订货" : "新增订货+", "门店调出" : "批量调出+",
@@ -10618,14 +10585,27 @@ function test170595Field(menu) {
     var ret = true;
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);
+        var cus = "rt";
+        if (menu1 == "销售订货") {
+            var cus = "ls";
+        }
+        if (menu1 == "采购订货" || menu1 == "销售订货") {
+            var json1 = { "客户" : cus };
+            editSalesBillCustomer(json1);
+        }
+        if (menu1 == "门店调出") {
+            var index = getEditSalesTFindex2("调出人", "接收店");
+            var F1 = new TField("接收店", TF_SC, index, "中洲店");
+            var fields = [ F1 ];
+            setTFieldsValue(window, fields);
+        }
         editSalesBillNoColorSize(json);
         saveAndAlertOk();
         tapPrompt();
         debugArray(alertMsgs);
         var alertMsg1 = getArray1(alertMsgs, -1);
-        var alertMsg2 = getArray1(alertMsgs, -2);
-        ret = isAnd(ret, isIn(alertMsg1, "必须从下拉列表选择")
-                || isIn(alertMsg2, "必须从下拉列表选择"));
+        ret = isAnd(ret, isIn(alertMsg1, "必须从下拉列表选择"), isIn(alertMsg1, r),
+                !isIn(alertMsg1, null));
         tapReturn();
     }
     return ret;
@@ -12088,10 +12068,8 @@ function test170694() {
     return ret && ret1;
 }
 function test170695() {
-    var qo, o, ret = true;
-    qo = { "备注" : "是否启用积分功能" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    var qo = { "备注" : "是否启用积分功能" };
+    var o = { "新值" : "1", "数值" : [ "启用" ] };
 
     tapMenu("往来管理", "客户查询");
     var key = { "customer" : "lt" };
@@ -12104,6 +12082,18 @@ function test170695() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "9528", "数量" : 10 } ] };
     editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    qr = getQRDet();
+    var ret = isEqual("特价款", qr.data[0]["备注"]);
+    tapReturn();
+
+    tapMenu("销售开单", "按明细查");
+    query();
+    qr = getQR();
+    ret = isAnd(ret, isEqual("特价款", qr.data[0]["备注"]));
 
     tapMenu("往来管理", "客户查询");
     tapButton(window, QUERY);
