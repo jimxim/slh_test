@@ -412,17 +412,17 @@ function onlytest() {
 }
 
 /**
- * 获取综合汇总第一条数据，一般为当天数据
+ * 获取综合汇总常青店的第一条数据，一般为当天数据
  * @returns
  */
 function getStatisticAnalysisSynthesis() {
-    tapMenu1("统计分析");
-    tapMenu2("综合汇总");
-    query();
-    var ret;
+    tapMenu("统计分析", "综合汇总");
+    tapButton(window, QUERY);
     var qr = getQR();
-    if (qr.data.length > 0) {
-        ret = qr.data[0]; // 当天汇总数据只有一条
+    if (qr.data[0]["门店"] != "常青店" || !isIn(getToday(), qr.data[0]["日期"])) {
+        var keys = { "门店" : "常青店" };
+        conditionQuery(keys);
+        qr = getQR();
     }
-    return ret;
+    return qr.data[0]; // 当天汇总数据只有一条
 }

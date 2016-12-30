@@ -1070,3 +1070,41 @@ function getQResult(pageInfoView, dataView, firstTitle, titleTotal) {
             totalPageNo, counts, hasError);// titleIndex,
     return qResult;
 }
+
+function getQRDet(view, o) {
+    if (isUndefined(view)) {
+        view = getScrollView(-1);
+    }
+    var titles = {};
+    if (isDefined(o) && o.hasOwnProperty("标题")) {
+        titles = o["标题"];
+    } else {
+        // 尺码表头模式，取值验证默认使用第一个尺码组来定标题
+        titles = getSalesBillDetTfObject();
+    }
+
+    var tfNum = titles["明细输入框个数"]
+    var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
+    var texts = getTextFields(view);
+    var data = [];
+    for (var j = 0; j < line.length; j++) {
+        // 根据货品栏判断行是否取值 有地方使用了这个验证或判断行数，不好修改 161220
+        if (texts[tfNum * j].value() != "") {
+            var data1 = {};
+            for (var i = 0; i < tfNum; i++) {
+                for ( var t in titles) {
+                    if (titles[t] == i) {
+                        var index = tfNum * j + i;
+                        var v = texts[index].value();
+                        data1[t] = v;
+                        break;
+                    }
+                }
+            }
+            data.push(data1);
+        }
+    }
+    var total = data.length;
+    var qResult = new QResult(titles, data, total);
+    return qResult;
+}

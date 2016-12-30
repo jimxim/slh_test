@@ -461,7 +461,7 @@ function getQRDet(view, o) {
         titles = o["标题"];
     } else {
         // 尺码表头模式，取值验证默认使用第一个尺码组来定标题
-        titles = getSalesBillDetTfObject();
+        titles = getSalesBillDetTfObject();// 不能显示库存
     }
 
     var tfNum = titles["明细输入框个数"]
@@ -488,6 +488,101 @@ function getQRDet(view, o) {
     var total = data.length;
     var qResult = new QResult(titles, data, total);
     return qResult;
+}
+/**
+ * 获取开单界面标题对应的TF下标
+ * @param titles eg getDetSizheadTitle
+ * @returns
+ */
+function getDetSizheadTFIndex(titles) {
+    var titleX = titles["标题坐标"];
+    var texts = getTextFields(getScrollView(-1));
+    var arrX = [], x = 0, ret = {};
+    for (var i = 0; i < texts.length; i++) {
+        var tf = texts[i];
+        x = getX(tf);
+        arrX.push(x);
+        if (isRepetitione(arrX)) {
+            break;
+        }
+        var t = getKeyByXy(titleX, x);
+        ret[t] = i;
+    }
+    ret["明细输入框个数"] = i--;
+    debugObject(ret, "尺码表头显示尺码，tf下标为");
+    return ret;
+}
+/**
+ * 获取尺码表头模式显示库存情况下，开单界面的明细值
+ * @returns {detResult}
+ */
+function getQRDetSizeHeadStock(view) {
+    if (isUndefined(view)) {
+        view = getScrollView(-1);
+    }
+    var titles = getDetSizheadTitle();
+    debugObject(titles);
+    var titles_tf = getDetSizheadTFIndex(titles);
+    debugObject(titles_tf);
+    var tfNum = titles_tf["明细输入框个数"];
+
+    var textFields = getTextFields(view);
+    var total = Math.floor(textFields.length / tfNum);
+    logDebug("明细行数=" + total);
+    var data = [];
+    for (var j = 0; j < total; j++) {
+        var data1 = {};
+        for (var i = 0; i < tfNum; i++) {
+            for ( var t in titles_tf) {
+                if (titles_tf[t] == i) {
+                    var index = tfNum * j + i;
+                    var v = textFields[index].value();
+                    data1[t] = v;
+                    break;
+                }
+            }
+        }
+        data.push(data1);
+    }
+
+    var stock = [], arrX = [], stNum;
+    var staticTexts = getStaticTexts(view);
+    for (stNum = 0; stNum < staticTexts.length; stNum++) {
+        var x = getX(staticTexts[stNum]);
+        arrX.push(x);
+        if (isRepetitione(arrX)) {
+            stNum--;
+            break;
+        }
+    }
+    if (i > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有12个以上
+        var titlesX=titles["标题坐标"];
+        for (j = 0; j < total; j++) {
+            var data1 = {};
+            for (i = 0; i < stNum; i++) {
+                var index = stNum * j + i;
+                var x=getX(staticTexts[index])
+                for ( var t in titlesX) {              
+                    if (titlesX[t] == x) {                      
+                        var v = staticTexts[index].value();
+                        data1[t] = v;
+                        break;
+                    }
+                }
+            }
+            stock.push(data1);
+        }
+    }
+
+    var result = new detResult(titles_tf, data, total, stock);
+    return result;
+}
+function detResult(titles, data, total, stock) {
+    this.titles = titles;
+    this.data = data;
+    this.total = total;
+    this.stock = stock;
+
 }
 function getQR3(dataView, firstTitle, lastTitle) {
     var qr = getQResult3(dataView, firstTitle, lastTitle);
@@ -1025,10 +1120,14 @@ function checkFuzzyQuery(f, title1, title2) {
     var fields = [ f ];
     query(fields);
     var qr = getQR();
-    var ret;
+    var ret = false;
     var v = String(f.value);
     var a = CC2PY(v).toUpperCase();// 中文转拼音
 
+    if (qr.data.length == 0) {
+        logWarn(gMenu1 + "-" + gMenu2 + "查询条件 " + f.type + " 无查询结果");
+        // target.captureScreenWithName("test");
+    }
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             var v1 = qr.data[i][title1];
@@ -2026,7 +2125,10 @@ function editBillDet(o) {
                 if (fields.length > 0) {
                     setTFieldsValue(view1, fields);
                 }
-
+                if (isDefined(d["箱数"])) {// 尺码头部3--靓点 必需输入，箱数0没有意义
+                    f = new TField("箱数", TF, start + o1["箱数"], d["箱数"]);
+                    setTFieldsValue(view1, [ f ]);
+                }
             }
         }
     }
