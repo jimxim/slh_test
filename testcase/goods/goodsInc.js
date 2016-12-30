@@ -448,48 +448,6 @@ function getElements(view) {
     return view.elements();
 }
 /**
- * 获取开单界面明细界面的值
- * @param view
- * @returns {QResult}
- */
-function getQRDet(view, o) {
-    if (isUndefined(view)) {
-        view = getScrollView(-1);
-    }
-    var titles = {};
-    if (isDefined(o) && o.hasOwnProperty("标题")) {
-        titles = o["标题"];
-    } else {
-        // 尺码表头模式，取值验证默认使用第一个尺码组来定标题
-        titles = getSalesBillDetTfObject();// 不能显示库存
-    }
-
-    var tfNum = titles["明细输入框个数"]
-    var line = getStaticTexts(view);// 获取明细界面静态文本数组，一行只有一个
-    var texts = getTextFields(view);
-    var data = [];
-    for (var j = 0; j < line.length; j++) {
-        // 根据货品栏判断行是否取值 有地方使用了这个验证或判断行数，不好修改 161220
-        if (texts[tfNum * j].value() != "") {
-            var data1 = {};
-            for (var i = 0; i < tfNum; i++) {
-                for ( var t in titles) {
-                    if (titles[t] == i) {
-                        var index = tfNum * j + i;
-                        var v = texts[index].value();
-                        data1[t] = v;
-                        break;
-                    }
-                }
-            }
-            data.push(data1);
-        }
-    }
-    var total = data.length;
-    var qResult = new QResult(titles, data, total);
-    return qResult;
-}
-/**
  * 获取开单界面标题对应的TF下标
  * @param titles eg getDetSizheadTitle
  * @returns
@@ -516,7 +474,7 @@ function getDetSizheadTFIndex(titles) {
  * 获取尺码表头模式显示库存情况下，开单界面的明细值
  * @returns {detResult}
  */
-function getQRDetSizeHeadStock(view) {
+function getQRDet(view) {
     if (isUndefined(view)) {
         view = getScrollView(-1);
     }
@@ -556,14 +514,14 @@ function getQRDetSizeHeadStock(view) {
         }
     }
     if (i > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有12个以上
-        var titlesX=titles["标题坐标"];
+        var titlesX = titles["标题坐标"];
         for (j = 0; j < total; j++) {
             var data1 = {};
             for (i = 0; i < stNum; i++) {
                 var index = stNum * j + i;
-                var x=getX(staticTexts[index])
-                for ( var t in titlesX) {              
-                    if (titlesX[t] == x) {                      
+                var x = getX(staticTexts[index])
+                for ( var t in titlesX) {
+                    if (titlesX[t] == x) {
                         var v = staticTexts[index].value();
                         data1[t] = v;
                         break;
@@ -577,12 +535,12 @@ function getQRDetSizeHeadStock(view) {
     var result = new detResult(titles_tf, data, total, stock);
     return result;
 }
+
 function detResult(titles, data, total, stock) {
     this.titles = titles;
     this.data = data;
     this.total = total;
     this.stock = stock;
-
 }
 function getQR3(dataView, firstTitle, lastTitle) {
     var qr = getQResult3(dataView, firstTitle, lastTitle);

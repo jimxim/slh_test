@@ -202,7 +202,7 @@ function editPurchaseBatchSave(o) {
     if (isDefined(o["onlytest"])) {
         return;
     }
-    o["明细值"] = getQRDet(getScrollView(-1), o);
+    o["明细值"] = getQRDet(getScrollView(-1));
     saveAndAlertOk();
     o["操作日期"] = getOpTime();
     delay();

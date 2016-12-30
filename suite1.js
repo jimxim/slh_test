@@ -46,7 +46,7 @@ function onlyTest(){
 // target.captureScreenWithName("test");
        
      var qr=  getQRDetSizeHeadStock();
-     debugObject(qr.stock[0]);
+     debugObject(qr.stock[1]);
    }catch(e){
 // UIATarget.localTarget().logElementTree();
       logWarn(e);
