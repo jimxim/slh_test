@@ -2147,7 +2147,7 @@ function test170077_1_170067() {
 
     logDebug(", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
             + ret4 + ", ret5=" + ret5);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+    return ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test170077_2() {
     var qo, o, ret = true;
@@ -12950,6 +12950,7 @@ function test170745() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
@@ -12975,6 +12976,7 @@ function test170745() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
 
     tapMenu("销售开单", "按挂单");
@@ -12988,6 +12990,7 @@ function test170745() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
 
     tapMenu("销售订货", "按挂单");
@@ -13001,6 +13004,7 @@ function test170745() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
@@ -13011,6 +13015,7 @@ function test170745() {
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
+    delay();
     tapReturn();
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
@@ -13026,6 +13031,10 @@ function test170745() {
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test170746() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170746Field(menu);
+}
+function test170746Field(menu) {
     var qo, o, ret = true;
     qo = { "备注" : "优先结余还是优先找零" };
     o = { "新值" : "1", "数值" : [ "优先找零" ] };
@@ -13035,25 +13044,20 @@ function test170746() {
     o = { "新值" : "1", "数值" : [ "开启" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开订货", "新增订货+");
-    var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "当前客户存在挂单");
-    tapReturn();
-
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "当前客户存在挂单");
+    var ret1 = true;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        editSalesBillCustomer(json);
+        tapPrompt();
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        ret1 = isAnd(ret1, isIn(alertMsg1, "当前客户存在挂单"));
+    }
 
     o = { "核销" : [ 0 ] };
-    editLogisticsVerifyDet1(o);
+    editSalesBillVerify(o);
     saveAndAlertOk();
     tapPrompt();
     debugArray(alertMsgs);

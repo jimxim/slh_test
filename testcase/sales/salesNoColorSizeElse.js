@@ -131,7 +131,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按厂商汇总】键盘输入检查", "test170362");
     run("【销售开单-按订货开单】部分发货/全部发货单据修改订货数", "test170596");
     run("【销售开单-按订货开单】按订货开单界面修改日期后再次检查开单日期", "test170482");
-    run("【销售开单－销售汇总-客户对帐单】键盘输入检查", "test170350");
+    run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350");
     run("【销售开单-按汇总】按配货员汇总--在既退货又拿货的情况下检查配货员业绩", "test170634_170635_170637");
     run("【销售开单-按汇总】按配货员汇总", "test170633");
     run("【销售开单-按汇总-按配货员汇总】查看权限", "test170685");
@@ -1911,9 +1911,13 @@ function test170265_170266() {
     tapButton(window, "预付款");
     var texts = getStaticTexts(getPopOrView());
     var index = getArrayIndexIn(texts, "订货时间");
-    var v = eval("t." + f1 + "()");
-    if ("微信" in texts) {
-        index = Number(index) + 1;
+    for (var i = 0; i < texts.length; i++) {
+        var t = texts[i];
+        var v = eval("t." + "name" + "()");
+        if (isIn(v, "微信")) {
+            index = Number(index) + 1;
+            break;
+        }
     }
     var a = getStaticTextValue(getPopOrView(), index + 6);
     var a1 = getStaticTextValue(getPopOrView(), index + 7);
@@ -4788,6 +4792,12 @@ function test170345() {
     return ret && ret1;
 }
 function test170350() {
+    return test170350Field(false);
+}
+function test170350_1() {
+    return test170747Field(true);
+}
+function test170350Field(rights) {
     // 检查苹果键盘，可输入中文即可
     tapMenu("销售开单", "按汇总", "客户对账单");
     var o = { "键盘" : "简体拼音", "拼音" : [ "lixiang" ], "汉字" : [ "李响" ] };
@@ -4797,7 +4807,36 @@ function test170350() {
     var ret = isEqual("李响", getTextFieldValue(window, 0));
     tapButton(window, CLEAR);
 
-    return ret;
+    tapButton(window, "导 出");
+    var btn = [ "对账单(按批次)", "对账单(按明细)" ];
+    for (var j = 0; j < btn.length; j++) {
+        tapButton(window, btn[j]);
+        tapPrompt();
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        var ret1 = isAnd(isIn(alertMsg1, "导出时请到查询界面选择客户和门店"));
+    }
+    tapNaviLeftButton();
+
+    var ret2 = true;
+    if (rights) {
+        tapMenu("销售开单", "按汇总", "客户对账单");
+        for (var j = 0; j < btn.length; j++) {
+            var keys = { "客户" : "l" };
+            var fields = salesQueryCustomerFields(keys);
+            query(fields);
+            tapButton(window, "导 出");
+            tapButton(window, btn[j]);
+            tapPrompt();
+            debugArray(alertMsgs);
+            var alertMsg1 = getArray1(alertMsgs, -1);
+            ret2 = isAnd(ret2, isIn(alertMsg1, "导出时请选择门店"));
+        }
+        tapNaviLeftButton();
+    }
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170351() {
     tapMenu("销售开单", "按汇总", "客户对账单");
@@ -7313,21 +7352,36 @@ function test170574() {
 }
 function test170575() {
     // "anewz"为中洲店物流商前缀
-    tapMenu("往来管理", "getMenu_More", "新增物流商+");
-    var r = "anewz" + randomWord(false, 6);
-    var keys = { "名称" : r, "门店" : "中洲店" };
-    var fields = editCustomerLogisticsFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    tapReturn();
+    tapMenu("往来管理", "getMenu_More", "物流商查询");
+    var keys = { "名称" : "anewz", "门店" : "中洲店" };
+    var fields = queryCustomerLogisticsFields(keys);
+    query(fields);
+    var qr = getQR();
+    var len = qr.length;
+    if (len == 0 || len == 1) {
+        tapMenu("往来管理", "getMenu_More", "新增物流商+");
+        var r = "anewz" + randomWord(false, 6);
+        var keys = { "名称" : r, "门店" : "中洲店" };
+        var fields = editCustomerLogisticsFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        tapButton(window, SAVE);
+        tapReturn();
+    }
 
-    tapMenu("往来管理", "getMenu_More", "新增物流商+");
-    var r1 = "anewc" + randomWord(false, 6);
-    var keys = { "名称" : r1, "门店" : "仓库店" };
-    var fields = editCustomerLogisticsFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, SAVE);
-    tapReturn();
+    var keys = { "名称" : "anewc", "门店" : "仓库店" };
+    var fields = queryCustomerLogisticsFields(keys);
+    query(fields);
+    qr = getQR();
+    len = qr.length;
+    if (len == 0 || len == 1) {
+        tapMenu("往来管理", "getMenu_More", "新增物流商+");
+        var r1 = "anewc" + randomWord(false, 6);
+        var keys = { "名称" : r1, "门店" : "仓库店" };
+        var fields = editCustomerLogisticsFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        tapButton(window, SAVE);
+        tapReturn();
+    }
 
     tapMenu("销售开单", LogisticsVerify);
     var ret1 = false;
@@ -7434,17 +7488,11 @@ function test170576_170288_170569_170293() {
         "汇款" : [ Number(money) - Number(2 * money1), "建" ], "onlytest" : "yes" };
     editVerifyBill(o);
 
-    var idx;
-    if (ipadVer >= "7.25") {
-        idx = 2;
-    } else {
-        idx = 1;
-    }
     var cashTFindex = getEditSalesTFindex2("物流", "现金");
-    var cardTFindex = getEditSalesTFindex2("物流", "刷卡");
+    var yingsTFindex = getEditSalesTFindex2("物流", "应收");
     var remitTFindex = getEditSalesTFindex2("物流", "汇款");
     var cash = getTextFieldValue(window, cashTFindex);
-    var yf = getTextFieldValue(window, cashTFindex + idx);
+    var yf = getTextFieldValue(window, yingsTFindex);
     var zj = getTextFieldValue(window, remitTFindex - 1);
     saveAndAlertOk();
     tapPrompt();

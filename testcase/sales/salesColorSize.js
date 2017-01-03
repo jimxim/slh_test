@@ -120,6 +120,8 @@ function testSalesColorSize003() {
     run("【销售开单－开单】开单时显示当前库存", "test170112_170113");
     run("【销售开单－开单】开单是否显示所有门店库存", "test170114_170115");
     run("【销售开单-开单】颜色尺码模式，折扣模式下不允许修改折扣", "test170733");
+    run("【销售开单-开单】颜色尺码模式，折扣模式下允许修改折扣", "test170735");
+    run("【销售开单-开单】折扣模式下特价款不打折", "test170749");
     run("【销售开单-开单】款号对应的颜色被停用后，开单明细录入界面检查提示", "test170408");
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
@@ -7168,6 +7170,14 @@ function test170719() {
     return ret && ret1;
 }
 function test170733() {
+    // 全局参数：非总经理开单时是否允许修改折扣：允许，开单模式：客户折扣、产品折扣、童装+产品折扣，产品折扣+代收
+    var params = [ { "新值" : "6", "数值" : [ "客户折扣", "in" ] },
+            { "新值" : "5", "数值" : [ "产品折扣", "in" ] },
+            { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] } ];
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170733Field(menu, params);
+}
+function test170733Field(menu, params) {
     // 全局参数：非总经理开单时是否允许修改折扣：默认不允许，开单模式：客户折扣、产品折扣、童装+产品折扣，产品折扣+代收
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否允许修改折扣" };
@@ -7175,267 +7185,120 @@ function test170733() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     var r = "0.9" + getTimestamp(2);
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-
-    var o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret3 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret4 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret5 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret6 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 1, 0, 1 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-    r = "0.9" + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret7 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ],
-        "onlytest" : "yes" };
-    editSalesBillColorSize(json);
-    r = "0.9" + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret8 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret9 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "x001", "数量" : [ 1 ], "折扣" : r } ] };
+    var ret1 = true, ret2 = true;
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for ( var menu1 in menu) {
+            tapMenu(menu1, menu[menu1]);
+            editSalesBillColorSize(json);
+            debugArray(alertMsgs);
+            var alertMsg1 = getArray1(alertMsgs, -1);
+            var alertMsg2 = getArray1(alertMsgs, -2);
+            ret1 = isAnd(ret1, isIn(alertMsg1, "保存成功")
+                    || isIn(alertMsg1, "保存成功"));
+        }
+        tapMenu("销售开单", "按订货开单");
+        query();
+        tapFirstText();
+        r = "0.9" + getTimestamp(2);
+        o = { "修改明细" : [ { "折扣" : r } ] };
+        editBillDet(o);
+        editSalesBillSave({});
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        var alertMsg2 = getArray1(alertMsgs, -2);
+        ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功"));
+    }
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170735() {
     // 全局参数：非总经理开单时是否允许修改折扣：允许，开单模式：客户折扣、产品折扣、童装+产品折扣，产品折扣+代收
+    var params = [ { "新值" : "6", "数值" : [ "客户折扣", "in" ] },
+            { "新值" : "5", "数值" : [ "产品折扣", "in" ] },
+            { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] } ];
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170735Field(menu, params);
+}
+function test170735Field(menu, params) {
     var qo, o, ret = true;
     qo = { "备注" : "开单时是否允许修改折扣" };
     o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     var r = "0.9" + getTimestamp(2);
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret1 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 10 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret2 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret3 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
+        "明细" : [ { "货品" : "x001", "数量" : [ 1 ], "折扣" : r } ] };
+    var ret1 = true, ret2 = true;
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for ( var menu1 in menu) {
+            tapMenu(menu1, menu[menu1]);
+            editSalesBillColorSize(json);
+            debugArray(alertMsgs);
+            var alertMsg1 = getArray1(alertMsgs, -1);
+            var alertMsg2 = getArray1(alertMsgs, -2);
+            ret1 = isAnd(ret1, isIn(alertMsg1, "保存成功")
+                    || isIn(alertMsg1, "保存成功"));
+        }
+        tapMenu("销售开单", "按订货开单");
+        query();
+        tapFirstText();
+        r = "0.9" + getTimestamp(2);
+        o = { "修改明细" : [ { "折扣" : r } ] };
+        editBillDet(o);
+        editSalesBillSave({});
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        var alertMsg2 = getArray1(alertMsgs, -2);
+        ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功"));
+    }
     qo = { "备注" : "开单模式" };
-    o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
 
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 1 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret4 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 1 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret5 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    var o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret6 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "19", "数值" : [ "产品折扣+代收", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    r = "0.9" + getTimestamp(2);
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : [ 1, 0, 1 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret7 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "k300", "数量" : [ 10 ], "折扣" : r } ] };
-    editSalesBillColorSize(json);
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret8 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    tapMenu("销售开单", "按订货开单");
-    query();
-    tapFirstText();
-    r = 0.9 + getTimestamp(2);
-    o = { "修改明细" : [ { "折扣" : r } ] };
-    editBillDet(o);
-    editSalesBillSave({});
-
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var alertMsg2 = getArray1(alertMsgs, -2);
-    var ret9 = isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功");
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170749() {
+    var params = [ { "新值" : "5", "数值" : [ "产品折扣", "in" ] },
+            { "新值" : "6", "数值" : [ "客户折扣", "in" ] } ];
+    return test170749Field(params);
+}
+function test170749Field(params) {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "7", "数值" : [ "整单折扣", "in" ] };
+    var json = {
+        "客户" : "ls",
+        "明细" : [ { "货品" : "9528", "数量" : [ 1 ] },
+                { "货品" : "x001", "数量" : [ 1 ] } ], "onlytest" : "yes" };
+    tapMenu("销售开单", "开  单+");
+    editSalesBillColorSize(json);
+    var index = getEditSalesTFindex2("客户", "汇款");
+    var zk = getTextFieldValue(window, index - 3);
+    var qr = getQRDet();
+    var ret = isAnd(!isEqual(1, zk), isEqual(qr.data[0]["小计"],
+            Number(qr.data[0]["单价"]) * Number(qr.data[0]["折扣"])
+                    * Number(qr.data[0]["数量"])));
+    tapReturn();
 
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        tapMenu("销售开单", "开  单+");
+        editSalesBillColorSize(json);
+        qr = getQRDet();
+        ret = isAnd(ret, isEqual(1, qr.data[0]["折扣"]));
+        tapReturn();
+    }
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+
+    logDebug(" ret=" + ret);
+    return ret;
 }

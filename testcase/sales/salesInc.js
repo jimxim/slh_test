@@ -1108,7 +1108,7 @@ function editLogisticsVerifyDet1(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
         var a1 = o["核销"];
-        var bt = window.buttons()[QUERY];
+        var bt = window.buttons()["全选"];
         var cond = !isUIAElementNil(bt) || bt.isVisible();
         waitUntil(cond, 10);
         var qr = getQRtable1(window, 8, -2);
@@ -1120,7 +1120,7 @@ function editLogisticsVerifyDet1(o) {
         var batch;
         for (var i = 0; i < a1.length; i++) {
             batch = qr.data[i]["批次"];
-            getTableView(window, -2).cells().firstWithName(batch).tap();
+            getLastTableView.cells().firstWithName(batch).tap();
         }
         tapNaviButton("完成");
     }
