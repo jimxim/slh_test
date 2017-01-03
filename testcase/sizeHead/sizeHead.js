@@ -87,6 +87,13 @@ function testSizeHead001_shop1() {
         run("【销售开单－开单】尺码表头开单模式 支持客户折扣模式--单价小数位对开单界面数值影响", "test220082");
     }
     run(" 设置--开单模式2", "setPaymethod2");
+
+    run(" 设置尺码表头开单模式是否显示当前库存--显示", "setSales_show_invnum_by_sizeheadmode1");
+    run("【销售开单-开单】尺码表头显示库存：注意点", "test220109");
+    run("【销售开单-开单】尺码表头显示库存：新增和修改界面，库存显示正确", "test220110");
+    run("【销售开单-开单】尺码表头显示库存：新增界面修改款号颜色，库存显示正确", "test220111");
+    run("【销售开单-物流核销】尺码表头显示库存：物流核销，输入特殊货品", "test220112");
+    run(" 设置尺码表头开单模式是否显示当前库存--不显示", "setSales_show_invnum_by_sizeheadmode0");
 }
 // 开单员005登陆验证
 function testSizeHead001_shop1_005() {
@@ -1734,13 +1741,173 @@ function test220108() {
     tapMenu("销售开单", ADDBILL);
     var json = { "明细" : [ { "货品" : "agc001" } ], "onlytest" : "yes" };
     editSalesBill(json, colorSize);
-    delay();
+    delay();// 若是有错误提示，给出处理时间，防止不会返回
     var ret = !hasAlerts();
     tapReturn();
     return ret;
 }
+function setSales_show_invnum_by_sizeheadmode1() {
+    var qo = { "备注" : "尺码表头开单模式是否显示当前库存" };
+    var o = { "新值" : "1", "数值" : [ "显示" ] };
+    return setGlobalParam(qo, o);
+}
+function setSales_show_invnum_by_sizeheadmode0() {
+    var qo = { "备注" : "尺码表头开单模式是否显示当前库存" };
+    var o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
+    return setGlobalParam(qo, o);
+}
 function test220109() {
-    
+    tapMenu("销售开单", ADDBILL);
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 25, "M" : 30 } } ],
+        "挂单" : "yes" };
+    editSalesBill(json, colorSize);
+
+    tapMenu2("按挂单");
+    query();
+    tapLine();
+    var det = getQRDet();
+    tapReturn();
+    return checkBillStock(json["明细值"], det);
+}
+/**
+ * 验证尺码表头显示库存是否正确
+ * @param det1 开单前 会显示该颜色下所有尺码的库存
+ * @param det2 开单后
+ * @param dif
+ * @returns {Boolean}
+ */
+function checkBillStock(det1, det2, dif) {
+    var data = det1.data;
+    var stock1 = det1.stock;
+    var stock2 = det2.stock;
+    if (isDefined(dif)) {
+        for (var i = 0; i < dif.length; i++) {
+            for ( var j in stock2[i]) {
+                var v = stock2[i][j], v1 = 0;
+                if (!isNaN(v) && isDefined(dif[i])) {
+                    v1 = dif[i][j];
+                    stock2[i][j] = add(Number(v), Number(v1));
+                }
+            }
+            // debugObject(stock2[i]);
+        }
+    }
+    var ret = true;
+    var length = Math.min(stock1.length, stock2.length);
+    for (var j = 0; j < length; j++) {
+        var ok = true;
+        var arr1 = stock1[j];
+        var arr2 = stock2[j];
+        for ( var i in arr1) {
+            if (!isNaN(arr2[i]) && arr1[i] != "" && arr2[i] != "") {// 修改界面只显示输入了数量的款号库存
+                var v1 = arr1[i];
+                var v2 = arr2[i];
+                ok = ok && (v1 == v2);
+            }
+        }
+        if (!ok) {
+            debugObject(arr1, "arr1");
+            debugObject(arr2, "arr2");
+            logWarn("checkBillStock 明细第" + j + "行结果为" + ok);
+        }
+        ret = ret && ok;
+    }
+    return ret;
+}
+function test220110() {
+    var json = {
+        "客户" : "xw",
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 25, "M" : 30 } } ] };
+
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号名称" : "agc001", "门店" : "常青店" };
+    conditionQuery(keys);
+
+    var dif = [ { "白色-L" : 15, "白色-XL" : 20 }, { "黑色-S" : 25, "黑色-M" : 30 } ];
+    var ret = test220110Field([ "销售开单", ADDBILL ], json, dif);
+
+    dif = [];
+    var menu = [ "销售订货", "新增订货+", "销售开单", "按订货开单" ];
+    ret = isAnd(ret, test220110Field(menu, json, dif));
+
+    json["客户"] = "vell";
+    dif = [ { "白色-L" : 15, "白色-XL" : 20 }, { "黑色-S" : 25, "黑色-M" : 30 } ];
+    ret = isAnd(ret, test220110Field([ "采购入库", "新增入库+" ], json, dif));
+
+    dif = [];
+    menu = [ "采购订货", "新增订货+", "采购入库", "按订货入库" ]
+    ret = isAnd(ret, test220110Field(menu, json, dif));
+    return ret;
+}
+function test220110Field(menu, json, dif) {
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var stock0 = getGoodCurStock();
+
+    tapMenu(menu[0], menu[1]);
+    editSalesBill(json, colorSize);
+    var ret = isAnd(isEqualObject2(stock0, json["明细值"].stock[0]),
+            isEqualObject2(stock0, json["明细值"].stock[1]));
+
+    tapMenu2("按批次查");
+    query();
+    tapLine();
+    var det = getQRDet();
+    tapReturn();
+    ret = isAnd(ret, checkBillStock(json["明细值"], det, dif));
+
+    if (isDefined(menu[3])) {
+        tapMenu(menu[3], menu[4]);
+        query();
+        tapLine();
+        var det = getQRDet();
+        tapReturn();
+        ret = isAnd(ret, checkBillStock(json["明细值"], det, dif));
+    }
+    return ret;
+}
+function test220111() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号名称" : "agc001", "门店" : "常青店" };
+    conditionQuery(keys);
+    var stock = getGoodCurStock();
+    var menu = { "销售开单" : ADDBILL, "销售订货" : "新增订货+", "采购入库" : "新增入库+",
+        "采购订货" : "新增订货+", "门店调出" : "批量调出+" };
+    return test220111Field(menu, stock);
+}
+function test220111Field(menu, stock) {
+    var json = {
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 15, "XL" : 20 } } ],
+        "修改明细" : [ { "颜色" : "黑色" } ], "onlytest" : "yes" };
+    var ret = true;
+    for ( var m in menu) {
+        tapMenu(m, menu[m]);
+        editSalesBill(json, colorSize);
+        var det = getQRDet();
+        tapReturn();
+        ret = isAnd(ret, isEqualObject2(stock, det.stock[0]));
+    }
+    return ret;
+}
+function test220112() {
+    var json = { "物流" : "sf", "核销" : 0, "特殊货品" : { "抹零" : 10, "打包费" : 20 } };
+    addLogisticsVerify(json);
+    return !isInAlertMsgs("付款金额与待核销金额不一致");
+}
+function test220113() {
+
+    tapMenu2(ADDBILL);
+    tapMenu("销售开单", MORE, "所有挂单");
+    delay();
+    loadHangBill(0);
 }
 function testEditBillSizeHead() {
     var colorSize = "head";
