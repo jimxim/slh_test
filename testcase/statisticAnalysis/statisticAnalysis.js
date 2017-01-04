@@ -1370,7 +1370,8 @@ function test190032() {
 
 function test190035() {
     tapMenu("统计分析", "综合汇总");
-    query();
+    var keys = { "门店" : "常青店" };
+    conditionQuery(keys);// 取常青店
     var qr = getQR();
     var jo = qr.counts;
 

@@ -1039,7 +1039,7 @@ function test120019() {
     var ret1 = isEqualObject2(expected, data);
     delay();//
     tapLine(0, getScrollView(-1, 0), "名称");
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    qr = getQR2(getScrollView(-1, 0), "名称", "文一店");// 排序方式改变 utf8 
     expected = { "名称" : r + "," + r, "颜色" : "均色", "尺码" : "均码", "库存" : 20,
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
     ret1 = isAnd(ret1, isEqualObject2(expected, qr.data[0]));

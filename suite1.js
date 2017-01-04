@@ -15,7 +15,7 @@
 // #import "/Users/dlsoft_dev_4/Documents/slh_test/suite1.js"
 // 总经理
 function test000All() {
- colorSize = "head";
+// colorSize = "head";
     debug = true;
 // ipadVer = "7.27";//
  var caseName="测试用例";
@@ -23,7 +23,8 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run(caseName, "setSizeHeadParams_1");//
- run(caseName, "test220112");//
+
+ run(caseName, "onlyTest");//
 }   
 function onlyTest(){
 // UIATarget.localTarget().logElementTree();
@@ -34,8 +35,9 @@ function onlyTest(){
 // var s1=getQRDet().stock;
 // debugObject(s1[0]);
 // test220110();
-    
-      return test220111();
+// var qr=getQRDet();
+
+// return test220111();
 // target.captureScreenWithName("test");
    }catch(e){
  UIATarget.localTarget().logElementTree();

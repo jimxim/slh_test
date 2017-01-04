@@ -1643,6 +1643,10 @@ function test110031_110032() {
     ret = isAnd(ret, test110031_110032Field2());
     return ret;
 }
+/**
+ * 检查门店列是否全为常青店
+ * @returns {Boolean}
+ */
 function test110031_110032Field() {
     var qr = getQR();
     var ret = true;
@@ -2293,21 +2297,18 @@ function ts110041Role000() {
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     query();
     // 应该显示其他门店
-    tapTitle(getScrollView(), "门店");
+    // tapTitle(getScrollView(), "门店");
     tapTitle(getScrollView(), "门店");
     var ret = !test110031_110032Field();
 
     var keys = { "门店" : "中洲店" };
-    var fields = queryProviderShopAccountFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, QUERY);
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, !isEqual(0, qr.data.length));
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "rt" };
-    var fields = queryCustomerProviderAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapFirstText();
     qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
     var ret1 = false;
@@ -2321,9 +2322,11 @@ function ts110041Role000() {
         if (!ret1 && j < qr.totalPageNo) {
             scrollNextPage();
             qr = getQR2(getScrollView(-1, 0), "门店", "异地核销");
+        } else {
+            break;
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
 
     return isAnd(ret, ret1);
 }
