@@ -23,32 +23,22 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run(caseName, "setSizeHeadParams_1");//
- run(caseName, "onlyTest");//
+ run(caseName, "test220112");//
 }   
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{  
-// var data=getQRDet().data;
-// getSalesBillDetTfObject();//取值时
-// getSalesBillDetTfNum({});
-// tapMenu("销售开单",ADDBILL);
-// var json = {
-// "客户" : "xw",
-// "备注" : "head",
-// "明细" : [
-// { "货品" : "agc001", "颜色" : "花色", "尺码" : { "L" : 4, "XL" : 6 }} ,
-// { "货品" : "agc001", "颜色" : "花色", "尺码" : { "S" : 4, "XL" : 6 }} ]
-// ,"onlytest":"yes"};
-// editSalesBill(json, colorSize);
+// var s1=getQRDet().stock;
+// debugObject(s1[0]);
+// test220110();
+    
+      return test220111();
 // target.captureScreenWithName("test");
-       
-     var qr=  getQRDetSizeHeadStock();
-     debugObject(qr.stock[1]);
    }catch(e){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
       logWarn(e);
    }
 // finally{

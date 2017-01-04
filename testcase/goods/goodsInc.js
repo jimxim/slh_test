@@ -213,7 +213,7 @@ function addLogisticsVerify(o) {
     logisticsVerifySetField(o, "备注");
 
     editLogisticsVerify(o);
-
+    editSalesBillSpecial(o);
     logisticsVerifySetField(o, "现金");
     editSalesBillCard(o);
     editSalesBillRemit(o);
@@ -503,9 +503,9 @@ function getQRDet(view) {
         data.push(data1);
     }
 
-    var stock = [], arrX = [], stNum;
+    var stock = [], arrX = [], stNum = 0;
     var staticTexts = getStaticTexts(view);
-    for (stNum = 0; stNum < staticTexts.length; stNum++) {
+    for (; stNum < staticTexts.length; stNum++) {
         var x = getX(staticTexts[stNum]);
         arrX.push(x);
         if (isRepetitione(arrX)) {
@@ -513,16 +513,19 @@ function getQRDet(view) {
             break;
         }
     }
-    if (i > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有12个以上
+    if (stNum > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有10个以上
         var titlesX = titles["标题坐标"];
         for (j = 0; j < total; j++) {
             var data1 = {};
             for (i = 0; i < stNum; i++) {
                 var index = stNum * j + i;
-                var x = getX(staticTexts[index])
+                var x = getX(staticTexts[index]);
                 for ( var t in titlesX) {
                     if (titlesX[t] == x) {
                         var v = staticTexts[index].value();
+                        if (isDefined(data[j]["颜色"])) {
+                            t = data[j]["颜色"] + "-" + t;
+                        }
                         data1[t] = v;
                         break;
                     }
@@ -535,7 +538,12 @@ function getQRDet(view) {
     var result = new detResult(titles_tf, data, total, stock);
     return result;
 }
-
+/**
+ * @param titles
+ * @param data
+ * @param total 显示的行数
+ * @param stock 库存
+ */
 function detResult(titles, data, total, stock) {
     this.titles = titles;
     this.data = data;
@@ -2059,17 +2067,17 @@ function editBillDet(o) {
                     setTFieldsValue(view1, [ f ]);
                 }
                 if (isDefined(d["颜色"])) {
-                    var popView = getPopView(window, -1);
-                    if (!isUIAElementNil(popView)) {
+                    try {
+                        var popView = getPopView(window, -1);
                         logDebug("自动弹窗");
-                        tapCheckBox(popView, d["颜色"]);// 自动弹窗
-                    } else {
+                        tapCheckBox(view, d["颜色"]);// 自动弹窗
+                        tapButton(getPop(window, -1), OK);
+                    } catch (e) {
                         var tf = getTextField(view1, start + o1["颜色"]);
                         tf.doubleTap();// 双击出颜色选择页面
                         popView = getPopView(window, -1);
-                        tapButton(popView, d["颜色"]);// 单选
+                        tapButton(popView, d["颜色"]);// 单选,popView自动关闭
                     }
-                    tapButton(getPop(window, -1), OK);
                 }
 
                 var fields = [];
