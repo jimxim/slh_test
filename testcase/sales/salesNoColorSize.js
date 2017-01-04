@@ -213,7 +213,8 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-新增】颜色尺码/均色均码+找零模式", "test170743_170744");
     run("【销售开单-新增】挂单+找零", "test170745");
     run("【销售开单-新增】核销/退货", "test170746");
-    run("【销售开单-新增】开单时挂单提醒", "test170747");
+    run("【销售开单-新增】开单时挂单提醒", "test170747_1");
+    run("【销售开单-新增】修改挂单客户信息", "test170748");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -238,6 +239,10 @@ function testSalesNoColorSize002() {
 }
 function setNoColorSize_1Params() {
     var qo, o, ret = true;
+    qo = { "备注" : "折扣后单价的核算模式" };
+    o = { "新值" : "0", "数值" : [ "保留精确小数", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+    // 折扣后单价的核算模式开启时，开单模式必须为折扣模式
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -5887,12 +5892,12 @@ function test170239Field(menu) {
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);
         var customer = "客户";
-        if (menu1 == "采购入库" || "采购订货") {
+        if (menu1 == "采购入库" || menu1 == "采购订货") {
             customer = "厂商";
         }
         var ret = true;
         var staffTFindex = getEditSalesTFindex2(customer, "店员");
-        var f = new TField("店员", TF_AC, staffTFindex, "2", -1);
+        var f = new TField("店员", TF_AC, staffTFindex, "4", -1);
         var cells = getTableViewCells(window, f);
         for (var i = 0; i < cells.length; i++) {
             var cell = cells[i];
@@ -5913,7 +5918,7 @@ function test170239Field(menu) {
     tapFirstText();
     var staffTFindex = getEditSalesTFindex2("厂商", "店员");
     var ret1 = false;
-    var f = new TField("店员", TF_AC, staffTFindex, "2", -1);
+    var f = new TField("店员", TF_AC, staffTFindex, "4", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -5934,6 +5939,7 @@ function test170239Field(menu) {
     tapFirstText();
     staffTFindex = getEditSalesTFindex2("客户", "店员");
     var ret2 = true;
+    var f = new TField("店员", TF_AC, staffTFindex, "4", -1);
     cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -5948,7 +5954,7 @@ function test170239Field(menu) {
 
     tapMenu("门店调出", "批量调出+");
     var ret3 = false;
-    var f = new TField("调出人", TF_AC, 0, "2", -1);
+    var f = new TField("调出人", TF_AC, 0, "4", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -13044,7 +13050,6 @@ function test170746Field(menu) {
     o = { "新值" : "1", "数值" : [ "开启" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls" };
     var ret1 = true;
     for ( var menu1 in menu) {
@@ -13054,9 +13059,11 @@ function test170746Field(menu) {
         debugArray(alertMsgs);
         var alertMsg1 = getArray1(alertMsgs, -1);
         ret1 = isAnd(ret1, isIn(alertMsg1, "当前客户存在挂单"));
+        if (menu1 == "销售订货") {
+            tapReturn();
+        }
     }
-
-    o = { "核销" : [ 0 ] };
+    o = { "核销" : [ 5 ] };
     editSalesBillVerify(o);
     saveAndAlertOk();
     tapPrompt();
@@ -13070,6 +13077,10 @@ function test170746Field(menu) {
     debugArray(alertMsgs);
     alertMsg1 = getArray1(alertMsgs, -2);
     var ret3 = isIn(alertMsg1, "现金栏必须有支付并大于找零");
+
+    qo = { "备注" : "开单时挂单提醒" };
+    o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
@@ -13142,15 +13153,153 @@ function test170747Field(rights) {
     tapNaviLeftButton();
     tapReturn();
 
+    qo = { "备注" : "开单时挂单提醒" };
+    o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
+    setGlobalParam(qo, o);
+
     logDebug(" ret=" + ret + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
             + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
     return ret && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170748() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : "开  单+" };
+    return test170748Field(menu);
+}
+function test170748Field(menu) {
     var qo, o, ret = true;
     qo = { "备注" : "开单时挂单提醒" };
     o = { "新值" : "1", "数值" : [ "开启" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var ret1 = true, ret2 = true;
+    var r = randomWord(false, 6);
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "备注" : r,
+        "onlytest" : "yes" };
+    var o = { "客户" : "lx" }, o1 = { "客户" : "ls" };
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        editSalesBillNoColorSize(json);
+        tapButtonAndAlert("挂 单", OK);
+        delay();
+        tapReturn();
+
+        gChace = {};
+        tapMenu(menu1, menu[menu1]);
+        var o1 = { "当前客户存在挂单" : OK };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        editSalesBillCustomer(o1);
+        delay(2);
+        var qr = getQRtable1();
+        tapNaviLeftButton();
+        tapReturn();
+
+        tapMenu(menu1, "按挂单");
+        query();
+        tapFirstText();
+        editSalesBillCustomer(o);
+        tapButtonAndAlert("挂 单", OK);
+        delay();
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        var o1 = { "当前客户存在挂单" : OK };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        editSalesBillCustomer(o1);
+        delay(2);
+        var qr1 = getQRtable1();
+        tapNaviLeftButton();
+        tapReturn();
+        ret1 = isAnd(ret1, isEqual(r, qr.data[0]["备注"]), !isEqual(r,
+                qr1.data[0]["备注"]));
+        tapNaviLeftButton();
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        var o1 = { "当前客户存在挂单" : OK };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        editSalesBillCustomer(o);
+        delay(2);
+        var qr2 = getQRtable1();
+        tapNaviLeftButton();
+        tapReturn();
+        ret2 = isAnd(ret2, isEqual(r, qr2.data[0]["备注"]));
+        tapNaviLeftButton();
+        tapReturn();
+    }
+    qo = { "备注" : "开单时挂单提醒" };
+    o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
+    setGlobalParam(qo, o);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170748_1() {
+    var qo, o, ret = true;
+    qo = { "备注" : "开单时挂单提醒" };
+    o = { "新值" : "1", "数值" : [ "开启" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var r = randomWord(false, 6);
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "备注" : r,
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapReturn();
+
+    gChace = {};
+    tapMenu("销售开单", "开  单+");
+    var o1 = { "当前客户存在挂单" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    var json = { "客户" : "ls" };
+    editSalesBillCustomer(json);
+    var qr = getQRtable1(getScrollView());
+    tapNaviLeftButton();
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText();
+    var json = { "客户" : "lx" };
+    editSalesBillCustomer(json);
+    tapButtonAndAlert("挂 单", OK);
+    delay();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var o1 = { "当前客户存在挂单" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    var json = { "客户" : "ls" };
+    editSalesBillCustomer(json);
+    var qr1 = getQRtable1(getScrollView());
+    tapNaviLeftButton();
+    tapReturn();
+    var ret1 = isAnd(isEqual(r, qr.data[0]["备注"]), !isEqual(r,
+            qr1.data[0]["备注"]));
+    tapNaviLeftButton();
+    tapReturn();
+
+    tapMenu("销售开单", "开  单+");
+    var o1 = { "当前客户存在挂单" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    var json = { "客户" : "lx" };
+    editSalesBillCustomer(json);
+    var qr2 = getQRtable1(getScrollView());
+    tapNaviLeftButton();
+    tapReturn();
+    var ret2 = isAnd(isEqual(r, qr2.data[0]["备注"]));
+    tapNaviLeftButton();
+    tapReturn();
+
+    tapMenu("销售订货", "新增订货+");
+    tapMenu("销售订货", "getMenu_More", "所有挂单");
+    delay();
+    var qr = getQRtable1(getScrollView());
+
+    qo = { "备注" : "开单时挂单提醒" };
+    o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
+    setGlobalParam(qo, o);
 
 }
 function test240002_240004() {

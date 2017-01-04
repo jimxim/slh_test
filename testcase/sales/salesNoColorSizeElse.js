@@ -106,8 +106,8 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单】按订货开单界面款号查询结果检查", "test170409");
     run("【销售开单－销售汇总-按金额汇总】按金额汇总", "test170306");// //修改，加上微信
     run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");// //修改，加上微信
-    run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170308");
     run("【销售开单－销售汇总-按款号汇总】增加门店查询条件", "test170437");
+    run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170308");
     run("【销售开单－销售汇总-按款号汇总】按款号汇总", "test170503");
     run("【销售开单－销售汇总-按退货汇总】点击查询记录后页面检查", "test170318_170707");
     run("【销售开单-按汇总-按退货汇总】查询不到门店调出的退货单", "test170644");
@@ -4170,7 +4170,6 @@ function test170325_1() {
     var fields = salesCustomerConsumeFields(keys);
     query(fields);
     var qr = getQR();
-
     var xj = qr.counts["现金"];
     var sk = qr.counts["刷卡"];
     var hk = qr.counts["汇款"];
@@ -4202,7 +4201,6 @@ function test170325_1() {
     var ts1 = qr.counts["退货数"];
     var sxs1 = qr.counts["实销数"];
     var sxe1 = qr.counts["实销额"];
-
     var ret = isAnd(isEqual(50, sub(xj1, xj)), isEqual(100, sub(sk1, sk)),
             isEqual(400, sub(hk1, hk)), isEqual(50, sub(ds1, ds)), isEqual(0,
                     sub(sxs1, sxs)), isEqual(600, sub(sxe1, sxe)));
@@ -4560,7 +4558,6 @@ function test170333_170332() {
         "店员" : "000," };
     var fields = salesCustomerOutstandingFields(keys);
     query(fields);
-
     tapButton(window, CLEAR);
     var a = getTextFieldValue(window, 0);
     var a1 = getTextFieldValue(window, 1);

@@ -190,6 +190,7 @@ function testSalesPrepare007() {
     // tapFirstText();
     // tapButtonAndAlert(START, OK);
 }
+// 设置客户"李小龙"的拿货折扣为1.2
 function testSalesCuanMaPrepare(r) {
     if (isUndefined(r)) {
         var r = "anewCuanMa" + randomWord(false, 6);
@@ -684,23 +685,20 @@ function editQuickAddGoodsNo(o1) {
     var titles = {}, i = 0;
     titles = getSalesBillDetTfObject();
     var tfNum = titles["明细输入框个数"];
-    if (tfNum == 9) {
-        x = 5;
-    } else {
-        x = 4;
-    }
+    var start = getBillDetInputIndex(tfNum);
     var f1 = getTextFieldValue(getScrollView(idx), 0);
     var f8 = getTextFieldValue(getScrollView(idx), tfNum);
     var qr = getQRDet();
-    var len = qr.data.length;
+    var len = 1;// qr.data.length;
     if (isAnd(!isEqual("", f1))) {
-        i = Number(tfNum) * Number(len) - x;
+        // i = Number(tfNum) * Number(len) - x;
+        i = Number(start) + titles["数量"] - tfNum;
         var Fi = new TField("数量", TF, i, o1);
         var fields = [ Fi ];
         setTFieldsValue(getScrollView(idx), fields);
     } else {
         i = Number(tfNum) * (Number(len) + 1) - x;
-        var Fi = new TField("数量", TF, i, o1);
+        var Fi = new TField("数量", TF, Number(start) + titles["数量"] + tfNum, o1);
         var fields = [ Fi ];
         setTFieldsValue(getScrollView(idx), fields);
     }
@@ -1107,8 +1105,9 @@ function editVerifyBillCustomer(o) {
 function editLogisticsVerifyDet1(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
+        delay();
         var a1 = o["核销"];
-        var bt = window.buttons()["全选"];
+        var bt = window.buttons()[QUERY];
         var cond = !isUIAElementNil(bt) || bt.isVisible();
         waitUntil(cond, 10);
         var qr = getQRtable1(window, 8, -2);
@@ -1120,7 +1119,7 @@ function editLogisticsVerifyDet1(o) {
         var batch;
         for (var i = 0; i < a1.length; i++) {
             batch = qr.data[i]["批次"];
-            getLastTableView.cells().firstWithName(batch).tap();
+            getTableView(window, -2).cells().firstWithName(batch).tap();
         }
         tapNaviButton("完成");
     }

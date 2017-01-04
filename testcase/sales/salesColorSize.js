@@ -122,6 +122,7 @@ function testSalesColorSize003() {
     run("【销售开单-开单】颜色尺码模式，折扣模式下不允许修改折扣", "test170733");
     run("【销售开单-开单】颜色尺码模式，折扣模式下允许修改折扣", "test170735");
     run("【销售开单-开单】折扣模式下特价款不打折", "test170749");
+    run("【销售开单-开单】客户折扣值大于1时输入特价商品", "test170750");
     run("【销售开单-开单】款号对应的颜色被停用后，开单明细录入界面检查提示", "test170408");
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
@@ -7300,5 +7301,41 @@ function test170749Field(params) {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
 
     logDebug(" ret=" + ret);
+    return ret;
+}
+function test170750() {
+    var qo = { "备注" : "开单模式" };
+    var o = { "新值" : "6", "数值" : [ "客户折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否检查折扣" };
+    o = { "新值" : "1", "数值" : [ "开单不允许折扣超出标准折扣", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售开单", "开  单+");
+    // 客户“lxl”拿货折扣大于1
+    var json = { "客户" : "lx", "明细" : [ { "货品" : "9528", "数量" : [ 1 ] } ],
+        "onlytest" : "yes" };
+    editSalesBillColorSize(json);
+    var qr = getQRDet();
+    var price = qr.data[0]["单价"];
+
+    var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    delay(5);
+
+    json = { "客户" : "lxl" };
+    editSalesBillCustomer(json);
+    qr = getQRDet();
+    var price1 = qr.data[0]["单价"];
+    var zk = qr.data[0]["折扣"];
+    editSalesBillSave({});
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = isAnd(!isIn(alertMsg1, "输入的折扣低于拿货折扣"), isIn(alertMsg1, "保存成功"),isEqual(price,price1),isEqual(1,zk));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+
     return ret;
 }

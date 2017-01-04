@@ -1721,48 +1721,42 @@ function test170742List() {
     tapButton(window, "...");
 }
 function test170742() {
+    var menu = { "往来管理" : "客户查询", "往来管理" : "客户活跃度", "往来管理" : "积分查询",
+        "采购入库" : "按批次查", "采购入库" : "按明细查", "采购订货" : "按批次查", "采购订货" : "按明细查",
+        "门店调入" : "在途调拨", "销售订货" : "按批次查", "销售订货" : "按明细查", "销售订货" : "按挂单",
+        "销售订货" : "订货对账单", "销售订货" : "按缺货查", "销售开单" : "按批次查", "销售开单" : "按明细查",
+        "销售开单" : "按挂单", "销售开单" : "按订货开单", "销售开单" : "物流单", "盘点管理" : "按批次查",
+        "盘点管理" : "按明细查", "盘点管理" : "盈亏表", "盘点管理" : "库存表", "统计分析" : "收支表",
+        "统计分析" : "日营业表", "统计分析" : "日利润表", "统计分析" : "综合汇总", "统计分析" : "收支流水",
+        "统计图表" : "按客户", "统计图表" : "按客户", "统计图表" : "按款号", "统计图表" : "按趋势",
+        "统计图表" : "按欠款", "统计图表" : "按类别" };
+    return test170742Field(menu);
+}
+function test170742Field() {
     // 检查整个系统门店的下拉列表
-    tapMenu("往来管理", "客户查询");
-    test170742List();
     var arr = [ "常青店" ], arr1 = [];
     var view = window.popover().scrollViews()[0];
-    var ret1 = isEqualDropDownList(arr, view);
-    arr1.push(ret1);
+    var ret = true;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        test170742List();
+        ret = isAnd(ret, isEqualDropDownList(arr, view));
+    }
 
     tapMenu("往来管理", "客户账款", "客户门店账");
     test170742List();
-    var ret2 = isEqualDropDownList(arr, view);
-    arr1.push(ret2);
+    var ret1 = isEqualDropDownList(arr, view);
+    arr1.push(ret1);
 
     tapMenu("往来管理", "客户账款", "按上级单位");
     test170742List();
-    var ret3 = isEqualDropDownList(arr, view);
-    arr1.push(ret3);
-
-    tapMenu("往来管理", "客户活跃度");
-    test170742List();
-    var ret4 = isEqualDropDownList(arr, view);
-    arr1.push(ret4);
-
-    tapMenu("往来管理", "积分查询");
-    test170742List();
-    var ret5 = isEqualDropDownList(arr, view);
-    arr1.push(ret5);
+    var ret2 = isEqualDropDownList(arr, view);
+    arr1.push(ret2);
 
     tapMenu("往来管理", "厂商账款", "厂商门店账");
     test170742List();
     var ret6 = isEqualDropDownList(arr, view);
     arr1.push(ret6);
-
-    tapMenu("采购入库", "按批次查");
-    test170742List();
-    var ret7 = isEqualDropDownList(arr, view);
-    arr1.push(ret7);
-
-    tapMenu("采购入库", "按明细查");
-    test170742List();
-    var ret8 = isEqualDropDownList(arr, view);
-    arr1.push(ret8);
 
     tapMenu("采购入库", "按汇总", "按款号汇总");
     test170742List();
@@ -1779,16 +1773,6 @@ function test170742() {
     var ret11 = isEqualDropDownList(arr, view);
     arr1.push(ret11);
 
-    tapMenu("采购订货", "按批次查");
-    test170742List();
-    var ret12 = isEqualDropDownList(arr, view);
-    arr1.push(ret12);
-
-    tapMenu("采购订货", "按明细查");
-    test170742List();
-    var ret13 = isEqualDropDownList(arr, view);
-    arr1.push(ret13);
-
     tapMenu("采购订货", "按汇总", "按款号");
     test170742List();
     var ret14 = isEqualDropDownList(arr, view);
@@ -1803,11 +1787,6 @@ function test170742() {
     test170742List();
     var ret16 = isEqualDropDownList(arr, view);
     arr1.push(ret16);
-
-    tapMenu("门店调入", "在途调拨");
-    test170742List();
-    var ret17 = isEqualDropDownList(arr, view);
-    arr1.push(ret17);
 
     tapMenu("门店调入", "按批次查");
     test170742List();
@@ -1849,21 +1828,6 @@ function test170742() {
     var ret25 = isEqualDropDownList(arr, view);
     arr1.push(ret25);
 
-    tapMenu("销售订货", "按批次查");
-    test170742List();
-    var ret26 = isEqualDropDownList(arr, view);
-    arr1.push(ret26);
-
-    tapMenu("销售订货", "按明细查");
-    test170742List();
-    var ret27 = isEqualDropDownList(arr, view);
-    arr1.push(ret27);
-
-    tapMenu("销售订货", "按挂单");
-    test170742List();
-    var ret28 = isEqualDropDownList(arr, view);
-    arr1.push(ret28);
-
     tapMenu("销售订货", "按汇总", "按款号");
     test170742List();
     var ret29 = isEqualDropDownList(arr, view);
@@ -1873,31 +1837,6 @@ function test170742() {
     test170742List();
     var ret30 = isEqualDropDownList(arr, view);
     arr1.push(ret30);
-
-    tapMenu("销售订货", "订货对账单");
-    test170742List();
-    var ret31 = isEqualDropDownList(arr, view);
-    arr1.push(ret31);
-
-    tapMenu("销售订货", "按缺货查");
-    test170742List();
-    var ret32 = isEqualDropDownList(arr, view);
-    arr1.push(ret32);
-
-    tapMenu("销售开单", "按批次查");
-    test170742List();
-    var ret33 = isEqualDropDownList(arr, view);
-    arr1.push(ret33);
-
-    tapMenu("销售开单", "按明细查");
-    test170742List();
-    var ret34 = isEqualDropDownList(arr, view);
-    arr1.push(ret34);
-
-    tapMenu("销售开单", "按挂单");
-    test170742List();
-    var ret35 = isEqualDropDownList(arr, view);
-    arr1.push(ret35);
 
     tapMenu("销售开单", "按汇总", "按金额汇总");
     test170742List();
@@ -1934,16 +1873,6 @@ function test170742() {
     var ret42 = isEqualDropDownList(arr, view);
     arr1.push(ret42);
 
-    tapMenu("销售开单", "按订货开单");
-    test170742List();
-    var ret43 = isEqualDropDownList(arr, view);
-    arr1.push(ret43);
-
-    tapMenu("销售开单", "物流单");
-    test170742List();
-    var ret44 = isEqualDropDownList(arr, view);
-    arr1.push(ret44);
-
     tapMenu("销售开单", "getMenu_More", "收款单");
     test170742List();
     var ret45 = isEqualDropDownList(arr, view);
@@ -1954,76 +1883,11 @@ function test170742() {
     var ret46 = isEqualDropDownList(arr, view);
     arr1.push(ret46);
 
-    tapMenu("盘点管理", "按批次查");
-    test170742List();
-    var ret47 = isEqualDropDownList(arr, view);
-    arr1.push(ret47);
-
     tapMenu("盘点管理", "按明细查");
     idx = getButtonIndex(window, "...", 2);
     tapButton(window, idx);
     var ret48 = isEqualDropDownList(arr, view);
     arr1.push(ret48);
-
-    tapMenu("盘点管理", "盈亏表");
-    test170742List();
-    var ret49 = isEqualDropDownList(arr, view);
-    arr1.push(ret49);
-
-    tapMenu("盘点管理", "库存表");
-    test170742List();
-    var ret50 = isEqualDropDownList(arr, view);
-    arr1.push(ret50);
-
-    tapMenu("统计分析", "收支表");
-    test170742List();
-    var ret51 = isEqualDropDownList(arr, view);
-    arr1.push(ret51);
-
-    tapMenu("统计分析", "日营业表");
-    test170742List();
-    var ret52 = isEqualDropDownList(arr, view);
-    arr1.push(ret52);
-
-    tapMenu("统计分析", "日利润表");
-    test170742List();
-    var ret53 = isEqualDropDownList(arr, view);
-    arr1.push(ret53);
-
-    tapMenu("统计分析", "综合汇总");
-    test170742List();
-    var ret54 = isEqualDropDownList(arr, view);
-    arr1.push(ret54);
-
-    tapMenu("统计分析", "收支流水");
-    test170742List();
-    var ret55 = isEqualDropDownList(arr, view);
-    arr1.push(ret55);
-
-    tapMenu("统计图表", "按客户");
-    test170742List();
-    var ret56 = isEqualDropDownList(arr, view);
-    arr1.push(ret56);
-
-    tapMenu("统计图表", "按款号");
-    test170742List();
-    var ret57 = isEqualDropDownList(arr, view);
-    arr1.push(ret57);
-
-    tapMenu("统计图表", "按趋势");
-    test170742List();
-    var ret58 = isEqualDropDownList(arr, view);
-    arr1.push(ret58);
-
-    tapMenu("统计图表", "按欠款");
-    test170742List();
-    var ret59 = isEqualDropDownList(arr, view);
-    arr1.push(ret59);
-
-    tapMenu("统计图表", "按类别");
-    test170742List();
-    var ret60 = isEqualDropDownList(arr, view);
-    arr1.push(ret60);
 
     var retX = true;
     var arr2 = [];
