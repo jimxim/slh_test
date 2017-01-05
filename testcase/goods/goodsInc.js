@@ -802,12 +802,16 @@ function getSalesBillDetTfObject() {
 /**
  * 获取开单界面起始标题下标
  * @param texts
+ * @param order 获取顺序 asc desc
  * @returns {Number}
  */
-function getSalesBillDetTitle1Index(texts) {
+function getSalesBillDetTitle1Index(texts, order) {
     var qrTitle1 = -1;
     if (isUndefined(texts)) {
         texts = getStaticTexts(window);
+    }
+    if (isUndefined(order)) {
+        order = "asc";
     }
     var arr = [ "选", "图", "#" ];
     for (var i = 0; i < arr.length; i++) {
@@ -1881,14 +1885,14 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle, titleTotal) {
     debugObject(sum, "sum=");
     debugObject(qr.counts, "qr.counts=");
     if (!ret) {
-        logDebug("汇总值错误");
+        logWarn("汇总值错误");
     }
     var ret1 = true;
     if (isDefined(arr)) {
         for (i = 0; i < arr.length; i++) {
             if (!qr.counts.hasOwnProperty(arr[i])) {
                 ret1 = false;
-                logDebug("缺少汇总值  " + arr[i]);
+                logWarn("缺少汇总值  " + arr[i]);
             }
         }
     }

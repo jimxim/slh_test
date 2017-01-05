@@ -2338,7 +2338,7 @@ function ts100132() {
     var keys = { "类别" : "登山服" };
     conditionQuery(keys);
     tapLine();
-    var arr1 = get130004QR2("名称", "中洲店", "名称");
+    var arr1 = get130004QR2("名称", "文一店", "名称");// utf8 门店顺序改变
     tapNaviClose();
 
     tapMenu("货品管理", "当前库存");
@@ -2420,7 +2420,7 @@ function ts100142_143() {
 function ts100144() {
     tapMenu("货品管理", "基本设置", "价格名称");
     delay();
-    var alertMsgs = [];
+    alertMsgs = [];
     ts100144Field("零批价");
     var ret = isInAlertMsgs("这个是全局设置中设置的默认价格") || isInAlertMsgs("第一个价格不能停用");
     alertMsgs = [];
