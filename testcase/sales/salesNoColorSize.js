@@ -6798,12 +6798,19 @@ function test170396() {
 
     setTFieldsValue(getScrollView(-1), fields);
     saveAndAlertOk();
-    tapPrompt();
+    // tapPrompt();
     debugArray(alertMsgs);
-    alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "必须从下拉列表选择")
-            || isIn(alertMsg1, "不能出现有数量没有货品的数据");
     tapReturn();
+    alertMsg1 = getArray1(alertMsgs, -1);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var alertMsg3 = getArray1(alertMsgs, -3);
+    var msg = "不能出现有数量没有货品的数据";
+    if (ipadVer >= "7.27") {
+        msg = "必须从下拉列表选择";
+    }
+    var ret1 = isIn(alertMsg1, msg) || isIn(alertMsg2, msg)
+            || isIn(alertMsg3, msg);
+    delay();
 
     logDebug(" ret=" + ret + " ret1=" + ret1);
     return ret && ret1;
@@ -9186,23 +9193,23 @@ function test170509() {
 }
 function test170522() {
     var qo, o, ret = true;
-    qo = { "备注" : "上次单价" };
-    o = { "新值" : "1", "数值" : [ "显示" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    // qo = { "备注" : "上次单价" };
+    // o = { "新值" : "1", "数值" : [ "显示" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "成交价" };
+    // o = { "新值" : "1", "数值" : [ "启用" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
+    //
+    // qo = { "备注" : "开单模式" };
+    // o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    // ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
-        "不返回" : "yes" };
-    editSalesBillNoColorSize(json);
+    // var json = { "客户" : "ls",
+    // "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
+    // "不返回" : "yes" };
+    // editSalesBillNoColorSize(json);
 
     var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
@@ -9245,7 +9252,7 @@ function test170522() {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-    tapReturn();
+    tapButtonAndAlert(RETURN, OK);
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -10586,7 +10593,7 @@ function test170595() {
     return test170595Field(menu);
 }
 function test170595Field(menu) {
-    var r = randomWord(false, 12);
+    var r = "undefined" + randomWord(false, 8);
     var json = { "明细" : [ { "货品" : r, "数量" : 3 } ], "onlytest" : "yes" };
     var ret = true;
     for ( var menu1 in menu) {
@@ -10607,11 +10614,13 @@ function test170595Field(menu) {
         }
         editSalesBillNoColorSize(json);
         saveAndAlertOk();
-        tapPrompt();
+        // tapPrompt();
         debugArray(alertMsgs);
         var alertMsg1 = getArray1(alertMsgs, -1);
-        ret = isAnd(ret, isIn(alertMsg1, "必须从下拉列表选择"), isIn(alertMsg1, r),
-                !isIn(alertMsg1, null));
+        ret = isAnd(ret, isIn(alertMsg1, "必须从下拉列表选择"), !isIn(alertMsg1, null));
+        if (ipadVer >= "7.27") {
+            ret = isAnd(ret, isIn(alertMsg1, r));
+        }
         tapReturn();
     }
     return ret;
@@ -12158,7 +12167,10 @@ function test170714() {
     editSalesBillUnpay(o);
     saveAndAlertOk();
     tapPrompt();
-    ret1 = isAnd(ret1, isIn(alertMsg, "保存成功"));
+    if (ipadVer >= "7.27") {
+        // 7.26上为自定义弹窗
+        ret1 = isAnd(ret1, isIn(alertMsg, "保存成功"));
+    }
     tapReturn();
 
     tapMenu("门店调出", "按批次查");
@@ -12989,7 +13001,7 @@ function test170745() {
     query();
     var qr = getQR();
     var ret5 = isAnd(isEqual(0, qr.data[0]["批次"]), isEqual("李响",
-            qr.data[0]["客户"]), isEqual(getOpTime(), qr.data[0]["操作日期"]));
+            qr.data[0]["客户"]), isAqualOptime(getOpTime(), qr.data[0]["操作日期"]));
 
     tapMenu("销售订货", "新增订货+");
     json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ], "现金" : 360,
@@ -13233,73 +13245,7 @@ function test170748Field(menu) {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test170748_1() {
-    var qo, o, ret = true;
-    qo = { "备注" : "开单时挂单提醒" };
-    o = { "新值" : "1", "数值" : [ "开启" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    var r = randomWord(false, 6);
-    tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "备注" : r,
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
-
-    gChace = {};
-    tapMenu("销售开单", "开  单+");
-    var o1 = { "当前客户存在挂单" : OK };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
-    var qr = getQRtable1(getScrollView());
-    tapNaviLeftButton();
-    tapReturn();
-
-    tapMenu("销售开单", "按挂单");
-    query();
-    tapFirstText();
-    var json = { "客户" : "lx" };
-    editSalesBillCustomer(json);
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
-
-    tapMenu("销售开单", "开  单+");
-    var o1 = { "当前客户存在挂单" : OK };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    var json = { "客户" : "ls" };
-    editSalesBillCustomer(json);
-    var qr1 = getQRtable1(getScrollView());
-    tapNaviLeftButton();
-    tapReturn();
-    var ret1 = isAnd(isEqual(r, qr.data[0]["备注"]), !isEqual(r,
-            qr1.data[0]["备注"]));
-    tapNaviLeftButton();
-    tapReturn();
-
-    tapMenu("销售开单", "开  单+");
-    var o1 = { "当前客户存在挂单" : OK };
-    setValueToCache(ALERT_MSG_KEYS, o1);
-    var json = { "客户" : "lx" };
-    editSalesBillCustomer(json);
-    var qr2 = getQRtable1(getScrollView());
-    tapNaviLeftButton();
-    tapReturn();
-    var ret2 = isAnd(isEqual(r, qr2.data[0]["备注"]));
-    tapNaviLeftButton();
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    tapMenu("销售订货", "getMenu_More", "所有挂单");
-    delay();
-    var qr = getQRtable1(getScrollView());
-
-    qo = { "备注" : "开单时挂单提醒" };
-    o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
-    setGlobalParam(qo, o);
+function test170751() {
 
 }
 function test240002_240004() {

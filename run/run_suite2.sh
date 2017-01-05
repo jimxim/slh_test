@@ -87,8 +87,8 @@ js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts
 js_func="$js_func setSales001Params"
 js_func="$js_func test000Check002"
 
-js_func="$js_func setSales001Params"
 js_func="$js_func test000Check001 testCheckts100157For000_2"
+js_func="$js_func test000Check003"
 
 #js_func="$js_func testCheck180058_Prepare"
 #js_func="$js_func testCheck180058"
