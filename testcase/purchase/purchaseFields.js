@@ -25,11 +25,11 @@ function purchaseQueryBatchField(key, show) {
         break;
     case "day1":
     case "日期从":
-        f = new TField("日期从_1", TF_DT, 1, getToday());
+        f = new TField("日期从_500", TF_DT, 1, getToday());
         break;
     case "day2":
     case "日期到":
-        f = new TField("到_25", TF_DT, 2, getToday());
+        f = new TField("到_505", TF_DT, 2, getToday());
         break;
     case "batch1":
     case "批次从":
