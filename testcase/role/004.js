@@ -1732,7 +1732,7 @@ function test170742() {
         "统计图表" : "按欠款", "统计图表" : "按类别" };
     return test170742Field(menu);
 }
-function test170742Field() {
+function test170742Field(menu) {
     // 检查整个系统门店的下拉列表
     var arr = [ "常青店" ], arr1 = [];
     var view = window.popover().scrollViews()[0];

@@ -7332,7 +7332,8 @@ function test170750() {
     editSalesBillSave({});
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = isAnd(!isIn(alertMsg1, "输入的折扣低于拿货折扣"), isIn(alertMsg1, "保存成功"),isEqual(price,price1),isEqual(1,zk));
+    var ret = isAnd(!isIn(alertMsg1, "输入的折扣低于拿货折扣"), isIn(alertMsg1, "保存成功"),
+            isEqual(price, price1), isEqual(1, zk));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };

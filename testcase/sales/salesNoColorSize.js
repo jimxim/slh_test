@@ -215,6 +215,7 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-新增】核销/退货", "test170746");
     run("【销售开单-新增】开单时挂单提醒", "test170747_1");
     run("【销售开单-新增】修改挂单客户信息", "test170748");
+    run("【销售开单-开单】新增界面返回提示", "test170751");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -13187,7 +13188,7 @@ function test170748Field(menu) {
     var r = randomWord(false, 6);
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "备注" : r,
         "onlytest" : "yes" };
-    var o = { "客户" : "lx" }, o1 = { "客户" : "ls" };
+    var json1 = { "客户" : "lx" }, json2 = { "客户" : "ls" };
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);
         editSalesBillNoColorSize(json);
@@ -13199,7 +13200,7 @@ function test170748Field(menu) {
         tapMenu(menu1, menu[menu1]);
         var o1 = { "当前客户存在挂单" : OK };
         setValueToCache(ALERT_MSG_KEYS, o1);
-        editSalesBillCustomer(o1);
+        editSalesBillCustomer(json2);
         delay(2);
         var qr = getQRtable1();
         tapNaviLeftButton();
@@ -13208,7 +13209,7 @@ function test170748Field(menu) {
         tapMenu(menu1, "按挂单");
         query();
         tapFirstText();
-        editSalesBillCustomer(o);
+        editSalesBillCustomer(json1);
         tapButtonAndAlert("挂 单", OK);
         delay();
         tapReturn();
@@ -13216,7 +13217,7 @@ function test170748Field(menu) {
         tapMenu(menu1, menu[menu1]);
         var o1 = { "当前客户存在挂单" : OK };
         setValueToCache(ALERT_MSG_KEYS, o1);
-        editSalesBillCustomer(o1);
+        editSalesBillCustomer(json2);
         delay(2);
         var qr1 = getQRtable1();
         tapNaviLeftButton();
@@ -13229,7 +13230,7 @@ function test170748Field(menu) {
         tapMenu(menu1, menu[menu1]);
         var o1 = { "当前客户存在挂单" : OK };
         setValueToCache(ALERT_MSG_KEYS, o1);
-        editSalesBillCustomer(o);
+        editSalesBillCustomer(json1);
         delay(2);
         var qr2 = getQRtable1();
         tapNaviLeftButton();
@@ -13246,7 +13247,48 @@ function test170748Field(menu) {
     return ret && ret1 && ret2;
 }
 function test170751() {
+    tapMenu("销售开单", "开  单+");
+    var keys = { "备注" : "zdbz" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    tapButton(window, RETURN);
+    var ret3 = !isIn(alertMsg, "确定返回吗");
+    var btn = getButton(window, RETURN);
+    if (isUIAButton(btn)) {
+        ret3 = isAnd(ret3, ret3 = false);
+        tapButtonAndAlert(RETURN, OK);
+    }
 
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "备注" : "zdbz", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    var o = [ { "备注" : [ "<>" ] } ];
+    editChangeSalesBillOrderRemarks(o, "no");
+    tapButtonAndAlert(RETURN, OK);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret = (isIn(alertMsg1, "确定返回吗"));
+
+    tapMenu("销售开单", "开  单+");
+    json = { "明细" : [ { "货品" : "3035", "数量" : 10 } ], "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert(RETURN, OK);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = (isIn(alertMsg1, "确定返回吗"));
+
+    tapMenu("销售开单", "开  单+");
+    var keys = { "现金" : 100, "刷卡" : "1.56" };
+    var fields = editSalesBillFields(keys);
+    setTFieldsValue(window, fields);
+    tapButtonAndAlert(RETURN, OK);
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isIn(alertMsg1, "确定返回吗");
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test240002_240004() {
     var qo, o, ret = true;
