@@ -2431,7 +2431,8 @@ function test170275() {
     var ret1 = isAnd(isAqualNum(qr.counts["现金"], sum1), isAqualNum(
             qr.counts["刷卡"], sum2), isAqualNum(qr.counts["汇款"], sum3));
 
-    logDebug("sum1=" + sum1 + "sum2=" + sum2 + "sum3=" + sum3);
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + " sum2=" + sum2 + " sum1="
+            + sum1 + " sum2=" + sum2 + " sum3=" + sum3);
     return ret && ret1;
 }
 function test170277() {

@@ -9194,28 +9194,27 @@ function test170509() {
 }
 function test170522() {
     var qo, o, ret = true;
-    // qo = { "备注" : "上次单价" };
-    // o = { "新值" : "1", "数值" : [ "显示" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    //
-    // qo = { "备注" : "成交价" };
-    // o = { "新值" : "1", "数值" : [ "启用" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-    //
-    // qo = { "备注" : "开单模式" };
-    // o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
 
     tapMenu("销售开单", "开  单+");
-    // var json = { "客户" : "ls",
-    // "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
-    // "不返回" : "yes" };
-    // editSalesBillNoColorSize(json);
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "4562", "数量" : 2, "备注" : "mxbz" } ], "备注" : "zdbz",
+        "不返回" : "yes" };
+    editSalesBillNoColorSize(json);
 
     var json = { "客户" : "ls", "明细" : [ { "货品" : "456", "表格行包含" : "Adidas" } ] };
     editSalesBillCustomer(json);
     editSalesBillDetTapCell(json);
-
     var index = getButtonIndex(window, "更多", 2);
     tapButton(window, index);
     var qr = getQR2(getScrollView(-1, 0), "门店", "备注");
@@ -9266,7 +9265,7 @@ function test170522() {
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
