@@ -32,11 +32,11 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{  
-// var s1=getQRDet().stock;
-// debugObject(s1[0]);
-// test220110();
-      var qr= getQRDet(getScrollView(-1));
-     debugObject(qr.data[0]);
+       var det =getQRCustUnshipping();
+       debugObject(det.data[0]);
+// query();
+// var arr=[];
+// return isEqualCounts(arr);
 // return test220111();
 // target.captureScreenWithName("test");
    }catch(e){

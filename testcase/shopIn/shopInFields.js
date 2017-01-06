@@ -58,11 +58,11 @@ function shopInQueryBatchField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从_1", TF_DT, 0, getToday());
+        f = new TField("日期从_500", TF_DT, 0, getToday());
         break;
     case "day2":
     case "日期到":
-        f = new TField("到_5", TF_DT, 1, getToday());
+        f = new TField("到_505", TF_DT, 1, getToday());
         break;
     case "shop-out":
     case "调出门店":

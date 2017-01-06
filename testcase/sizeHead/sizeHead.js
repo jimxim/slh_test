@@ -2077,6 +2077,7 @@ function test220119() {
     var dif = [];
     return test220110Field(menu, json, dif);
 }
+// 004店长
 function test220120() {
     var qo = { "备注" : "店长权限类别" };
     var o = { "新值" : "0", "数值" : [ "默认店长权限" ] };
@@ -2097,8 +2098,68 @@ function setSales_order_deliver_mode3() {
     var o = { "新值" : "3", "数值" : [ "直接开单", "in" ] };
     return setGlobalParam(qo, o);
 }
-function getTitle(){
-    
+/**
+ * 销售开单-更多-客户未发 明细值 界面接上个界面，导致元素混乱，因此单独取，方便以后优化
+ * @returns {detResult}
+ */
+function getQRCustUnshipping() {
+    var view = getScrollView(-1);
+    var titles = getDetSizheadTitle("desc");
+    var titles_tf = getDetSizheadTFIndex(titles);
+    var tfNum = titles_tf["明细输入框个数"];
+    var textFields = getTextFields(view);
+    var start = 0;
+    var total = 15;// 客户未发数据太多会不稳定，用例都是按新客户做，因此只取前15行数据
+    var data = [];
+    for (var j = 0; j < total; j++) {
+        var data1 = {};
+        for (var i = 0; i < tfNum; i++) {
+            for ( var t in titles_tf) {
+                if (titles_tf[t] == i) {
+                    var index = tfNum * j + i;
+                    var v = textFields[index].value();
+                    data1[t] = v;
+                    break;
+                }
+            }
+        }
+        data.push(data1);
+    }
+
+    var stock = [], arrX = [], stNum = 0;
+    var staticTexts = getStaticTexts(view);
+    for (; stNum < staticTexts.length; stNum++) {
+        var x = getX(staticTexts[stNum]);
+        arrX.push(x);
+        if (isRepetitione(arrX)) {
+            stNum--;
+            break;
+        }
+    }
+    if (stNum > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有10个以上
+        var titlesX = titles["标题坐标"];
+        for (j = 0; j < total; j++) {
+            var data1 = {};
+            for (i = 0; i < stNum; i++) {
+                var index = stNum * j + i;
+                var x = getX(staticTexts[index]);
+                for ( var t in titlesX) {
+                    if (titlesX[t] == x) {
+                        var v = staticTexts[index].value();
+                        if (isDefined(data[j]["颜色"])) {
+                            t = data[j]["颜色"] + "-" + t;
+                        }
+                        data1[t] = v;
+                        break;
+                    }
+                }
+            }
+            stock.push(data1);
+        }
+    }
+
+    var result = new detResult(titles_tf, data, total, stock);
+    return result;
 }
 function testEditBillSizeHead() {
     var colorSize = "head";

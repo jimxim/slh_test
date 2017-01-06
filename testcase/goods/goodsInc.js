@@ -479,9 +479,9 @@ function getQRDet(view) {
         view = getScrollView(-1);
     }
     var titles = getDetSizheadTitle();
-    debugObject(titles);
+    // debugObject(titles);
     var titles_tf = getDetSizheadTFIndex(titles);
-    debugObject(titles_tf);
+    // debugObject(titles_tf);
     var tfNum = titles_tf["明细输入框个数"];
 
     var textFields = getTextFields(view);
@@ -816,7 +816,7 @@ function getSalesBillDetTitle1Index(texts, order) {
     var arr = [ "选", "图", "#" ];
     for (var i = 0; i < arr.length; i++) {
         var title1 = arr[i];
-        qrTitle1 = getQResultTitle(texts, title1, "#");
+        qrTitle1 = getQResultTitle(texts, title1, "#", order);
         if (qrTitle1.index > 0) {
             break;
         }
