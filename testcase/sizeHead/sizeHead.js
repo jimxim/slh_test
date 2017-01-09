@@ -104,6 +104,15 @@ function testSizeHead001_shop1() {
     run("【采购订货-新增订货】尺码表头显示库存：总经理为其他门店做采购订货", "test220119");
 
     run(" 设置销售订货发货模式--自动核销订货数", "setSales_order_deliver_mode3");
+    run("【销售开单-开单-更多-客户未发】流程", "test220121");
+    run("【销售开单-开单-更多-客户未发】提示信息验证", "test220122");
+    run(" 设置--开单模式7", "setPaymethod7");
+    run("【销售开单-开单-更多-客户未发】整单折扣下，保存", "test220124");
+    run(" 设置--开单模式2", "setPaymethod2");
+    run("【销售开单-开单-更多-客户未发】结余验证", "test220127");
+    run("【销售开单-开单-更多-客户未发】结余验证", "test220132");
+    run("【销售开单-开单-更多-客户未发】连续进入客户未发，开单界面验证", "test220133");
+    run("【销售开单-开单-更多-客户未发】开单界面数据验证", "test220130");// 跑完变成按订货开单
     run(" 设置销售订货发货模式--按订货开单", "setSales_order_deliver_mode1");
     run(" 设置尺码表头开单模式是否显示当前库存--不显示", "setSales_show_invnum_by_sizeheadmode0");
 }
@@ -2089,14 +2098,223 @@ function test220120() {
     return test220119();
 }
 function setSales_order_deliver_mode1() {
-    var qo = { "备注" : " 销售订单发货模式" };
+    var qo = { "备注" : "销售订单发货模式" };
     var o = { "新值" : "1", "数值" : [ "按订货开单", "in" ] };
     return setGlobalParam(qo, o);
 }
+function setSales_order_deliver_mode2() {
+    var qo = { "备注" : "销售订单发货模式" };
+    var o = { "新值" : "2", "数值" : [ "按订单配货后开单", "in" ] };
+    return setGlobalParam(qo, o);
+}
 function setSales_order_deliver_mode3() {
-    var qo = { "备注" : " 销售订单发货模式" };
+    var qo = { "备注" : "销售订单发货模式" };
     var o = { "新值" : "3", "数值" : [ "直接开单", "in" ] };
     return setGlobalParam(qo, o);
+}
+function test220121Prepare(jo, jo2) {
+    var cust = "cust" + getRandomStr(5);
+    var keys = { "名称" : cust };
+    if (isDefined(jo)) {
+        keys = mixObject(keys, jo);
+    }
+    tapMenu("往来管理", "新增客户+");
+    addCustomer(keys);
+
+    tapMenu("销售订货", "新增订货+");
+    var json = {
+        "客户" : cust,
+        "备注" : "head",
+        "明细" : [
+                { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 1, "XL" : 2 } },
+                { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 3, "M" : 4 } } ] };
+    if (isDefined(jo2)) {
+        json = mixObject(json, jo2);
+    }
+    editSalesBill(json, colorSize);
+    return cust;
+}
+function test220121() {
+    var cust = test220121Prepare();
+    tapMenu("销售开单", ADDBILL);
+    // editSalesBillCustomer(json);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    var json = {
+        "客户未发" : { "客户" : cust },
+        "修改明细" : [ { "尺码" : { "L" : 1, "XL" : 2 } },
+                { "尺码" : { "S" : 3, "M" : 4 } } ] };
+    editSalesBillUnshipping(json);
+    var qr = getQRCustUnshipping();
+    tapButtonAndAlert("确 认", OK);
+    editSalesBillSave({});
+    var exp = { "白色-L" : 1, "白色-XL" : 2, "黑色-S" : 3, "黑色-M" : 4 };
+    var ret = isEqualObject2(exp, qr.stock);
+
+    tapMenu2(ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    json = { "客户未发" : { "客户" : cust } };
+    editSalesBillUnshipping(json);
+    var qr = getQRCustUnshipping();
+    tapNaviClose();
+    tapReturn();
+    ret = isAnd(ret, isEqual(qr.data[0]["货品"], ""));
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    qr = getQR();
+    var exp = { "门店" : "常青店", "客户" : cust, "数量" : 10, "已发" : 10, "差异数" : 0,
+        "发货状态" : "全部发货" };
+    ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
+    return ret;
+}
+function test220122() {
+    var cust = test220121Prepare();
+    tapMenu("销售开单", ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    var o1 = { "确定保存吗" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    tapButtonAndAlert("确 认", OK);
+    var ret = isIn(alertMsg, "请填写有效数据后保存");
+
+    var json = { "客户未发" : { "客户" : cust } };
+    editSalesBillUnshipping(json);
+    tapButtonAndAlert("确 认", OK);
+    ret = isAnd(ret, isIn(alertMsg, "请填写有效数据后保存"));
+    tapNaviClose();
+    var qr = getQRDet();
+    ret = isAnd(ret, isEqual("", qr.data[0]["货品"]));
+
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    json = { "客户未发" : { "客户" : cust }, "修改明细" : [ { "尺码" : { "L" : 5 } } ] };
+    editSalesBillUnshipping(json);
+    tapButtonAndAlert("确 认", OK);
+    ret = isAnd(ret, isIn(alertMsg, "开单数不能大于发货数"));
+
+    tapButton(window, CLEAR);// 清除
+    json = { "客户未发" : { "客户" : "zbs" } };
+    editSalesBillUnshipping(json);
+    qr = getQRCustUnshipping();
+    ret = isAnd(ret, qr.data.length > 1);
+    tapNaviClose();
+    qr = getQRDet();
+    ret = isAnd(ret, isEqual("", qr.data[0]["货品"]));
+    tapReturn();
+    return ret;
+}
+function test220124() {
+    var jo = { "拿货折扣" : "0.8" };
+    var cust = test220121Prepare(jo);
+    tapMenu("销售开单", ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    var json = {
+        "客户未发" : { "客户" : cust },
+        "修改明细" : [ { "尺码" : { "L" : 1, "XL" : 2 } },
+                { "尺码" : { "S" : 3, "M" : 4 } } ] };
+    editSalesBillUnshipping(json);
+    tapButtonAndAlert("确 认", OK);
+    editSalesBillSave({});
+
+    tapMenu("销售订货", "按批次查");
+    query();
+    var qr = getQR();
+    var exp = { "门店" : "常青店", "客户" : cust, "数量" : 10, "已发" : 10, "差异数" : 0,
+        "发货状态" : "全部发货" };
+    return isEqualObject2(exp, qr.data[0]);
+}
+function test220127() {
+    var jo = {}, jo2 = { "未付" : "yes" };
+    var cust1 = test220121Prepare(jo, jo2);// 欠款
+    var cust2 = test220121Prepare();
+    var st1 = "欠款", st2 = "余款", ret = true
+    for (var i = 0; i < 2; i++) {
+        tapMenu("销售开单", ADDBILL);
+        editSalesBillCustomer(cust1);
+        ret = isAnd(ret, isHasStaticTexts(window, st1));
+        tapMenu("销售开单", "getMenu_More", "客户未发");
+        var json = {
+            "客户未发" : { "客户" : cust2 },
+            "修改明细" : [ { "尺码" : { "L" : 1, "XL" : 2 } },
+                    { "尺码" : { "S" : 3, "M" : 4 } } ] };
+        editSalesBillUnshipping(json);
+        tapButtonAndAlert("确 认", OK);
+        ret = isAnd(ret, isHasStaticTexts(window, st2));
+        var cust = cust1;
+        cust1 = cust2;
+        cust2 = cust;
+        st1 = "余款", st2 = "欠款";
+    }
+    return ret;
+}
+function test220130() {
+    var msg = "必须开启“3.直接开单自动核销”的销售订单发货模式才能使用客户未发功能";
+    setSales_order_deliver_mode2();
+    tapMenu("销售开单", ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    tapReturn();
+    var ret = isInAlertMsgs(msg);
+    alertMsgs = [];
+    setSales_order_deliver_mode1();
+    tapMenu("销售开单", ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    tapReturn();
+    ret = isAnd(ret, isInAlertMsgs(msg));
+    return ret;
+}
+function test220132() {
+    var cust = test220121Prepare();
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw",
+        "明细" : [ { "货品" : "agc001", "颜色" : "白色", "尺码" : { "S" : 10 } } ],
+        "onlytest" : "yes" };
+    editSalesBill(json, colorSize);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    var json = { "客户未发" : { "客户" : cust }, "修改明细" : [ { "尺码" : { "L" : 1 } } ] };
+    editSalesBillUnshipping(json);
+    var data1 = getQRCustUnshipping().data;
+    tapButtonAndAlert("确 认", OK);
+    delay();
+    var data2 = getQRDet().data;
+    tapReturn();
+    return isEqualDyadicArray(data1, data2);
+}
+
+function test220132() {
+    var cust = test220121Prepare();
+    tapMenu("销售开单", ADDBILL);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    var json = { "客户未发" : { "客户" : cust }, "修改明细" : [ { "尺码" : { "L" : 1 } } ] };
+    editSalesBillUnshipping(json);
+    tapMenu("销售开单", "getMenu_More", "客户未发");
+    json = { "客户未发" : { "客户" : cust }, "修改明细" : [ { "尺码" : { "XL" : 2 } } ] };
+    editSalesBillUnshipping(json);// 连续输入 保留最后一次结果
+    var data1 = getQRCustUnshipping().data;
+    tapButtonAndAlert("确 认", OK);
+    delay();
+    var data2 = getQRDet().data;
+    tapReturn();
+    return isEqualDyadicArray(data1, data2);
+}
+/**
+ * 销售开单-更多-客户未发
+ * @param o
+ */
+function editSalesBillUnshipping(o) {
+    if (isUndefined(o["客户未发"])) {
+        return;
+    }
+    var jo = o["客户未发"];
+    if (isDefined(jo["客户"])) {
+        var tf = getTFieldsIndex(window);
+        var f = new TField("客户", TF_AC, tf["客户"], jo["客户"], -1, 0);
+        setTFieldsValue(window, [ f ]);
+        delay(2);// 等待加载
+    }
+    if (isDefined(o["修改明细"])) {
+        editBillUnshipping(o);
+    }
+    var o1 = { "确定保存吗" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
+    tapButton(window, "确 认");
 }
 /**
  * 销售开单-更多-客户未发 明细值 界面接上个界面，导致元素混乱，因此单独取，方便以后优化
@@ -2104,24 +2322,22 @@ function setSales_order_deliver_mode3() {
  */
 function getQRCustUnshipping() {
     var view = getScrollView(-1);
-    var titles = getDetSizheadTitle("desc");
-    var titles_tf = getDetSizheadTFIndex(titles);
+    var titles = getDetSizheadTitle("desc");// 获取尺码表头 倒叙取值
+    var titles_tf = getDetSizheadTFIndex(titles);// 获取输入框下标
     var tfNum = titles_tf["明细输入框个数"];
-    var textFields = getTextFields(view);
-    var start = 0;
-    var total = 15;// 客户未发数据太多会不稳定，用例都是按新客户做，因此只取前15行数据
+    delete titles_tf["明细输入框个数"];
+    // var titleTexts = getStaticTexts(window);
+    // var qrTitle1 = getSalesBillDetTitle1Index(titleTexts, order);// 起始标题 # 图
+    var textFields = getTextFields(view);// .splice(qrTitle1.index)
+    var total = 10;// 客户未发数据太多会不稳定，用例都是按新客户做，因此只取前15行数据
     var data = [];
-    for (var j = 0; j < total; j++) {
+    for (var j = 0; j < total; j++) {//
         var data1 = {};
-        for (var i = 0; i < tfNum; i++) {
-            for ( var t in titles_tf) {
-                if (titles_tf[t] == i) {
-                    var index = tfNum * j + i;
-                    var v = textFields[index].value();
-                    data1[t] = v;
-                    break;
-                }
-            }
+        for ( var t in titles_tf) {
+            var index = tfNum * j + titles_tf[t];
+            var tf = textFields[index];
+            var v = tf.value();
+            data1[t] = v;
         }
         data.push(data1);
     }
@@ -2131,16 +2347,16 @@ function getQRCustUnshipping() {
     for (; stNum < staticTexts.length; stNum++) {
         var x = getX(staticTexts[stNum]);
         arrX.push(x);
-        if (isRepetitione(arrX)) {
+        if (isRepetition(arrX)) {
             stNum--;
             break;
         }
     }
     if (stNum > 5) {// 一般一行静态文本个数只有1个为序号，若是尺码表头显示库存，则有10个以上
         var titlesX = titles["标题坐标"];
-        for (j = 0; j < total; j++) {
+        for (var j = 0; j < total; j++) {
             var data1 = {};
-            for (i = 0; i < stNum; i++) {
+            for (var i = 0; i < stNum; i++) {
                 var index = stNum * j + i;
                 var x = getX(staticTexts[index]);
                 for ( var t in titlesX) {
@@ -2160,6 +2376,35 @@ function getQRCustUnshipping() {
 
     var result = new detResult(titles_tf, data, total, stock);
     return result;
+}
+function editBillUnshipping(o) {
+    var details = o["修改明细"], i;
+    if (isDefined(details)) {
+        var view1 = getScrollView(-1);
+        var titles = getDetSizheadTitle("desc");// 获取尺码表头 倒叙取值
+        var titles_tf = getDetSizheadTFIndex(titles);// 获取输入框下标
+        var tfNum = titles_tf["明细输入框个数"];
+        for (i = 0; i < details.length; i++) {
+            var start = tfNum * i;
+            var d = details[i];
+            if (isDefined(d["货品"])) {
+                var f = new TField("货品", TF_AC, start + 0, d["货品"], -1, 0);
+                setTFieldsValue(view1, [ f ]);
+            }
+
+            var fields = [];
+            var sizeObj = d["尺码"];
+            for ( var j in sizeObj) {
+                var cm = sizeObj[j];
+                var colIndex = titles_tf[j];
+                f = new TField(j, TF, start + colIndex, cm);
+                fields.push(f);
+            }
+            if (fields.length > 0) {
+                setTFieldsValue(view1, fields);
+            }
+        }
+    }
 }
 function testEditBillSizeHead() {
     var colorSize = "head";

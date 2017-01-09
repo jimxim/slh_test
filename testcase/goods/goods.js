@@ -140,6 +140,8 @@ function setGoodsParams001() {
     o = { "新值" : "1", "数值" : [ "部分客户需要打印给客户和仓库", "in" ] };// 打印选项 客户用/仓库用
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    ret = isAnd(ret, setSales_order_deliver_mode1());// 销售订单发货模式 按订货开单
+
     qo = { "备注" : "退货期限(天数),销售开单退货时验证是否已经超出期限" };
     o = { "数值" : 0 };
     setGlobalParam2(qo, o);

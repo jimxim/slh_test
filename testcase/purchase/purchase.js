@@ -858,7 +858,7 @@ function test120031_120032() {
         }
     }
 
-    ret = isAnd(ret, isEqual(30, sub(a2, a1)), !isRepetitione(arr));// 判断是否有重复款号
+    ret = isAnd(ret, isEqual(30, sub(a2, a1)), !isRepetition(arr));// 判断是否有重复款号
     return ret;
 }
 function test120013_1() {

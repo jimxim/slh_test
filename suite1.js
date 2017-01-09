@@ -24,16 +24,16 @@ function test000All() {
 
 // run(caseName, "setSizeHeadParams_1");//
 
- run(caseName, "onlyTest");//
+// run(caseName, "test220130");//
 }   
 function onlyTest(){
- UIATarget.localTarget().logElementTree();
+// UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{  
-       var det =getQRCustUnshipping();
-       debugObject(det.data[0]);
+       var json={"客户未发":{"客户":"zbs"},"修改明细":[{"尺码" : { "L" : 1, "XL" : 2 }}]};
+       editBillUnshipping(json);
 // query();
 // var arr=[];
 // return isEqualCounts(arr);

@@ -460,11 +460,11 @@ function getDetSizheadTFIndex(titles) {
         var tf = texts[i];
         x = getX(tf);
         arrX.push(x);
-        if (isRepetitione(arrX)) {
+        if (isRepetition(arrX)) {
             break;
         }
         var t = getKeyByXy(titleX, x);
-        ret[t] = i;
+        ret[t] = i;// 根据X轴取标题 过滤掉隐藏的内容
     }
     ret["明细输入框个数"] = i--;
     debugObject(ret, "尺码表头显示尺码，tf下标为");
@@ -490,15 +490,11 @@ function getQRDet(view) {
     var data = [];
     for (var j = 0; j < total; j++) {
         var data1 = {};
-        for (var i = 0; i < tfNum; i++) {
-            for ( var t in titles_tf) {
-                if (titles_tf[t] == i) {
-                    var index = tfNum * j + i;
-                    var v = textFields[index].value();
-                    data1[t] = v;
-                    break;
-                }
-            }
+        for ( var t in titles_tf) {
+            var index = tfNum * j + titles_tf[t];
+            var tf = textFields[index];// titles_tf已经排除隐藏内容
+            var v = tf.value();
+            data1[t] = v;
         }
         data.push(data1);
     }
@@ -508,7 +504,7 @@ function getQRDet(view) {
     for (; stNum < staticTexts.length; stNum++) {
         var x = getX(staticTexts[stNum]);
         arrX.push(x);
-        if (isRepetitione(arrX)) {
+        if (isRepetition(arrX)) {
             stNum--;
             break;
         }
@@ -517,7 +513,7 @@ function getQRDet(view) {
         var titlesX = titles["标题坐标"];
         for (j = 0; j < total; j++) {
             var data1 = {};
-            for (i = 0; i < stNum; i++) {
+            for (var i = 0; i < stNum; i++) {
                 var index = stNum * j + i;
                 var x = getX(staticTexts[index]);
                 for ( var t in titlesX) {
@@ -810,9 +806,9 @@ function getSalesBillDetTitle1Index(texts, order) {
     if (isUndefined(texts)) {
         texts = getStaticTexts(window);
     }
-    if (isUndefined(order)) {
-        order = "asc";
-    }
+//    if (isUndefined(order)) {
+//        order = "asc";
+//    }
     var arr = [ "选", "图", "#" ];
     for (var i = 0; i < arr.length; i++) {
         var title1 = arr[i];
@@ -2711,7 +2707,7 @@ function getUnique(arr) {
  * @param arr
  * @returns {Boolean}
  */
-function isRepetitione(arr) {
+function isRepetition(arr) {
     var hash = {};
     for ( var i in arr) {
         if (hash[arr[i]]) {
