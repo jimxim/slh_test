@@ -216,6 +216,7 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-新增】开单时挂单提醒", "test170747_1");
     run("【销售开单-新增】修改挂单客户信息", "test170748");
     run("【销售开单-开单】新增界面返回提示", "test170751");
+    run("【销售开单-开单】挂单打印", "test170752_1");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -12226,9 +12227,24 @@ function test170714() {
     var ret5 = isIn(alertMsg, "不允许修改其它门店的盘点单");
     tapReturn();
 
+    var menu = { "采购入库" : "按订货入库", "销售开单" : "按订货开单" };
+    var ret6 = false;
+    for (menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        tapButtonAndAlert(RETURN, OK);
+        var ret6 = true;
+        var btn = getButton(window, RETURN);
+        if (isUIAButton(btn)) {
+            tapReturn();
+            ret6 = isAnd(ret6, ret6 = false);
+        }
+    }
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
 function test170722() {
     // 异地发货
@@ -12835,100 +12851,62 @@ function test170734() {
             && ret9;
 }
 function test170743_170744() {
+    var params = [ { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] },
+            { "新值" : "1", "数值" : [ "默认均色均码", "in" ] } ];
+    var menu = { "采购入库" : "新增入库+", "采购订货" : "新增订货+", "销售订货" : "新增订货+",
+        "销售开单" : ADDBILL };
+    return test170743_170744Field(menu, params);
+}
+function test170743_170744Field(menu, params) {
     var qo, o, ret = true;
-    qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
     qo = { "备注" : "优先结余还是优先找零" };
     o = { "新值" : "1", "数值" : [ "优先找零" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "开  单+");
-    var texts = getStaticTexts(window);
-    var index = getArrayIndexIn(texts, "找零");
-    var a = getStaticTextValue(window, index);
-    var ret1 = isEqual("找零", a);
-    tapReturn();
-
-    tapMenu("销售订货", "新增订货+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    var ret2 = isEqual("找零", a);
-    tapReturn();
-
-    tapMenu("采购入库", "新增入库+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    var ret3 = !isEqual("找零", a);
-    tapReturn();
-
-    tapMenu("采购订货", "新增订货+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    var ret4 = !isEqual("找零", a);
-    tapReturn();
-
     qo = { "备注" : "是否需要颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    var ret1 = true;
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for ( var menu1 in menu) {
+            tapMenu(menu1, menu[menu1]);
+            var texts = getStaticTexts(window);
+            var index = getArrayIndexIn(texts, "找零");
+            var a = getStaticTextValue(window, index);
+            if (menu1 == "采购入库" || menu1 == "采购订货") {
+                ret1 = isAnd(ret1, !isEqual("找零", a));
+            } else {
+                ret1 = isAnd(ret1, isEqual("找零", a));
+            }
+        }
+    }
 
     tapMenu("销售开单", "开  单+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
     var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
         "现金" : 1000 };
     editSalesBillNoColorSize(json);
-    var ret5 = isAnd(isEqual("找零", a), isIn(alertMsg, "保存成功"));
+    var ret5 = isAnd(isIn(alertMsg, "保存成功"));
 
     tapMenu("销售订货", "新增订货+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ], "现金" : 1000 };
     editSalesBillNoColorSize(json);
-    var ret6 = isAnd(isEqual("找零", a), isIn(alertMsg, "保存成功"));
-
-    tapMenu("采购入库", "新增入库+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    var ret7 = !isEqual("找零", a);
-    tapReturn();
-
-    tapMenu("采购订货", "新增订货+");
-    texts = getStaticTexts(window);
-    index = getArrayIndexIn(texts, "找零");
-    a = getStaticTextValue(window, index);
-    var ret8 = !isEqual("找零", a);
-    tapReturn();
+    var ret6 = isAnd(isIn(alertMsg, "保存成功"));
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "现金" : 180 };
+    json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 180 };
     editSalesBillNoColorSize(json);
     var ret9 = isIn(alertMsg, "保存成功");
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
-        "现金" : 360 };
     editSalesBillNoColorSize(json);
     var ret10 = isIn(alertMsg, "保存成功");
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 10 };
+    json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 10 };
     editSalesBillNoColorSize(json);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
     var ret11 = isIn(alertMsg1, "找零模式下，找零不允许有负数");
 
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
-        "现金" : 100 };
     editSalesBillNoColorSize(json);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -2);
@@ -12938,12 +12916,10 @@ function test170743_170744() {
     o = { "新值" : "0", "数值" : [ "优先结余" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8 + ", ret9=" + ret9
-            + ", ret10=" + ret10 + ", ret11=" + ret11 + ", ret12=" + ret12);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9 && ret10 && ret11 && ret12;
+    logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret5=" + ret5 + ", ret6="
+            + ret6 + ", ret9=" + ret9 + ", ret10=" + ret10 + ", ret11=" + ret11
+            + ", ret12=" + ret12);
+    return ret && ret1 && ret5 && ret6 && ret9 && ret10 && ret11 && ret12;
 }
 function test170745() {
     var qo, o, ret = true;
@@ -13083,12 +13059,17 @@ function test170746Field(menu) {
     alertMsg1 = getArray1(alertMsgs, -1);
     var ret2 = isIn(alertMsg1, "现金栏必须有支付并大于找零");
 
-    json = { "明细" : [ { "货品" : "3035", "数量" : -10 } ],
-        "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
-    editSalesBillNoColorSize(json);
-    debugArray(alertMsgs);
-    alertMsg1 = getArray1(alertMsgs, -2);
-    var ret3 = isIn(alertMsg1, "现金栏必须有支付并大于找零");
+    var ret3 = true;
+    if (colorSize == "no") {
+        json = { "明细" : [ { "货品" : "3035", "数量" : -10 } ],
+            "特殊货品" : { "抹零" : 19, "打包费" : 30 } };
+        editSalesBillNoColorSize(json);
+        debugArray(alertMsgs);
+        alertMsg1 = getArray1(alertMsgs, -2);
+        ret3 = isAnd(ret3, isIn(alertMsg1, "现金栏必须有支付并大于找零"));
+    } else {
+        tapReturn();
+    }
 
     qo = { "备注" : "开单时挂单提醒" };
     o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
@@ -13288,6 +13269,89 @@ function test170751() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);
     return ret && ret1 && ret2 && ret3;
+}
+function test170752_1() {
+    var menu = { "采购入库" : "新增入库+", "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170752Field(menu, false);
+}
+function test170752_2() {
+    var menu = { "采购入库" : "新增入库+", "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170752Field(menu, true);
+}
+function test170752Field(menu, rights) {
+    var qo, o;
+    qo = { "备注" : "挂单是否打印" };
+    o = { "新值" : "1", "数值" : [ "打印" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "打印后不允许修改" };
+    o = { "新值" : "1", "数值" : [ "明细不允许修改", "in" ] };
+    setGlobalParam(qo, o);
+
+    var ret = true, ret1 = true;
+    for ( var menu1 in menu) {
+        gChace = {};
+        var ret = true;
+        tapMenu(menu1, menu[menu1]);
+        var cus = "ls";
+        if (menu1 == "采购入库") {
+            cus = "rt";
+        }
+        var json = { "客户" : cus, "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+            "onlytest" : "yes" };
+        editSalesBillNoColorSize(json);
+        var o1 = { "保存成功，是否打印" : OK };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        delay(5);
+        if (menu1 == "采购入库") {
+            runAndAlert("test120052Hang", OK);
+        } else {
+            tapButtonAndAlert("挂 单", OK);
+        }
+        tapReturn();
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        var alertMsg2 = getArray1(alertMsgs, -2);
+        ret = isAnd(ret, isIn(alertMsg1, "是否打印") || isIn(alertMsg2, "是否打印"));
+
+        tapMenu(menu1, "按挂单");
+        query();
+        tapFirstText();
+        o = { "修改明细" : [ { "数量" : 5 } ] };
+        editBillDet(o);
+        var o1 = { "保存成功，是否打印" : OK };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        delay(5);
+        if (menu1 == "采购入库") {
+            runAndAlert("test120052Hang", OK);
+        } else {
+            tapButtonAndAlert("挂 单", OK);
+        }
+        tapReturn();
+        alertMsg1 = getArray1(alertMsgs, -1);
+        alertMsg2 = getArray1(alertMsgs, -2);
+        ret1 = isAnd(ret1, isIn(alertMsg1, "是否打印") || isIn(alertMsg2, "是否打印"));
+
+        var ret2 = true;
+        if (rights) {
+            tapMenu(menu1, "按挂单");
+            query();
+            tapFirstText();
+            o = { "修改明细" : [ { "数量" : 50 } ] };
+            editBillDet(o);
+            saveAndAlertOk();
+            tapPrompt();
+            ret2 = isAnd(ret2, !isIn(alertMsg, "已经打印的单据"));
+            tapReturn();
+        }
+    }
+
+    qo = { "备注" : "挂单是否打印" };
+    o = { "新值" : "0", "数值" : [ "默认不打印" ] };
+    setGlobalParam(qo, o);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test240002_240004() {
     var qo, o, ret = true;

@@ -48,7 +48,6 @@ function testSalesPrepare002() {
     var o1 = { "继续开单保存" : "仍然保存" };
     setValueToCache(ALERT_MSG_KEYS, o1);
     delay(5);
-
     tapPrompt();
     tapReturn();
 }
