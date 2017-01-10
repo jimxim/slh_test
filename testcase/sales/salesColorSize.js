@@ -5654,7 +5654,8 @@ function test170703() {
     var ret3 = isAnd(isIn(alertMsg, "X001,特步夹克"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret3 = isAnd(ret3, isEqual(2, qr.data.length));
+    ret3 = isAnd(ret3, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ "", "", "", -1 ] } ],
         "关闭明细" : "no" };
@@ -5662,42 +5663,48 @@ function test170703() {
     var ret4 = isAnd(isIn(alertMsg, "X001,特步夹克"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret4 = isAnd(ret4, isEqual(2, qr.data.length));
+    ret4 = isAnd(ret4, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ "", 1 ] } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var ret5 = isAnd(isIn(alertMsg, "X001,特步夹克"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret5 = isAnd(ret5, isEqual(2, qr.data.length));
+    ret5 = isAnd(ret5, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var ret6 = isAnd(isIn(alertMsg, "X001,特步夹克"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret6 = isAnd(ret6, isEqual(2, qr.data.length));
+    ret6 = isAnd(ret6, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ "", 1 ] } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var ret7 = isAnd(isIn(alertMsg, "anewSame"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret7 = isAnd(ret7, isEqual(2, qr.data.length));
+    ret7 = isAnd(ret7, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ "", -1 ] } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var ret8 = isAnd(isIn(alertMsg, "anewSame"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret8 = isAnd(ret8, isEqual(2, qr.data.length));
+    ret8 = isAnd(ret8, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ 1 ] } ], "关闭明细" : "no" };
     editSalesBillDetColorSize(json);
     var ret9 = isAnd(isIn(alertMsg, "anewSame"));
     tapNaviLeftButton();
     qr = getQRDet();
-    ret9 = isAnd(ret9, isEqual(2, qr.data.length));
+    ret9 = isAnd(ret9, isIn(qr.data[0]["货品"], "X001"), isIn(qr.data[1]["货品"],
+            "anewSame"));
     tapReturn();
 
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
@@ -5734,159 +5741,149 @@ function test170704() {
         "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret3 = isAnd(isEqual(3, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]));
+    var ret3 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ "", "", "", -1 ] } ],
         "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret4 = isAnd(isEqual(4, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]));
+    var ret4 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ "", 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret5 = isAnd(isEqual(5, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]));
+    var ret5 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]));
 
     json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret6 = isAnd(isEqual(6, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"),
-            isEqual("红色", qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]),
-            isEqual(1, qr.data[5]["数量"]));
+    var ret6 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"), isEqual("红色",
+            qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]), isEqual(1,
+            qr.data[5]["数量"]));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ "", 1 ] } ],
         "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret7 = isAnd(isEqual(7, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"),
-            isEqual("红色", qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]),
-            isEqual(1, qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"),
-            isEqual("红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]),
-            isEqual(1, qr.data[6]["数量"]));
+    var ret7 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"), isEqual("红色",
+            qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]), isEqual(1,
+            qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]), isEqual(
+            1, qr.data[6]["数量"]));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ "", -1 ] } ],
         "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret8 = isAnd(isEqual(8, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"),
-            isEqual("红色", qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]),
-            isEqual(1, qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"),
-            isEqual("红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]),
-            isEqual(1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"),
-            isEqual("红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]),
-            isEqual(-1, qr.data[7]["数量"]));
+    var ret8 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"), isEqual("红色",
+            qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]), isEqual(1,
+            qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]), isEqual(
+            1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]), isEqual(
+            -1, qr.data[7]["数量"]));
 
     json = { "明细" : [ { "货品" : "anewSame", "数量" : [ 1 ] } ], "onlytest" : "yes" };
     editSalesBillDetColorSize(json);
     qr = getQRDet();
-    var ret9 = isAnd(isEqual(9, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"),
-            isEqual("红色", qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]),
-            isEqual(1, qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"),
-            isEqual("红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]),
-            isEqual(1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"),
-            isEqual("红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]),
-            isEqual(-1, qr.data[7]["数量"]), isIn(qr.data[8]["货品"], "anewSame"),
-            isEqual("红色", qr.data[8]["颜色"]), isEqual("L", qr.data[8]["尺码"]),
-            isEqual(1, qr.data[8]["数量"]));
-    saveAndAlertOk();
-    tapPrompt();
-    tapReturn();
+    var ret9 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"), isEqual("红色",
+            qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]), isEqual(1,
+            qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]), isEqual(
+            1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]), isEqual(
+            -1, qr.data[7]["数量"]), isIn(qr.data[8]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[8]["颜色"]), isEqual("L", qr.data[8]["尺码"]), isEqual(1,
+            qr.data[8]["数量"]));
+    editSalesBillSave({});
 
     tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     qr = getQRDet();
-    var ret10 = isAnd(isEqual(9, qr.data.length),
-            isIn(qr.data[0]["货品"], "X001"), isEqual("红色", qr.data[0]["颜色"]),
-            isEqual("L", qr.data[0]["尺码"]), isEqual(1, qr.data[0]["数量"]), isIn(
-                    qr.data[1]["货品"], "anewSame"), isEqual("红色",
-                    qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(
-                    1, qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]),
-            isEqual(1, qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"),
-            isEqual("铁锈红", qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]),
-            isEqual(-1, qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"),
-            isEqual("红色", qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]),
-            isEqual(1, qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"),
-            isEqual("红色", qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]),
-            isEqual(1, qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"),
-            isEqual("红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]),
-            isEqual(1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"),
-            isEqual("红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]),
-            isEqual(-1, qr.data[7]["数量"]), isIn(qr.data[8]["货品"], "anewSame"),
-            isEqual("红色", qr.data[8]["颜色"]), isEqual("L", qr.data[8]["尺码"]),
-            isEqual(1, qr.data[8]["数量"]));
+    var ret10 = isAnd(isIn(qr.data[0]["货品"], "X001"), isEqual("红色",
+            qr.data[0]["颜色"]), isEqual("L", qr.data[0]["尺码"]), isEqual(1,
+            qr.data[0]["数量"]), isIn(qr.data[1]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[1]["颜色"]), isEqual("L", qr.data[1]["尺码"]), isEqual(1,
+            qr.data[1]["数量"]), isIn(qr.data[2]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[2]["颜色"]), isEqual("L", qr.data[2]["尺码"]), isEqual(1,
+            qr.data[2]["数量"]), isIn(qr.data[3]["货品"], "X001"), isEqual("铁锈红",
+            qr.data[3]["颜色"]), isEqual("L", qr.data[3]["尺码"]), isEqual(-1,
+            qr.data[3]["数量"]), isIn(qr.data[4]["货品"], "X001"), isEqual("红色",
+            qr.data[4]["颜色"]), isEqual("XL", qr.data[4]["尺码"]), isEqual(1,
+            qr.data[4]["数量"]), isIn(qr.data[5]["货品"], "X001"), isEqual("红色",
+            qr.data[5]["颜色"]), isEqual("L", qr.data[5]["尺码"]), isEqual(1,
+            qr.data[5]["数量"]), isIn(qr.data[6]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[6]["颜色"]), isEqual("XL", qr.data[6]["尺码"]), isEqual(
+            1, qr.data[6]["数量"]), isIn(qr.data[7]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[7]["颜色"]), isEqual("XL", qr.data[7]["尺码"]), isEqual(
+            -1, qr.data[7]["数量"]), isIn(qr.data[8]["货品"], "anewSame"), isEqual(
+            "红色", qr.data[8]["颜色"]), isEqual("L", qr.data[8]["尺码"]), isEqual(1,
+            qr.data[8]["数量"]));
     tapReturn();
 
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3 + ", ret4="
@@ -6916,13 +6913,12 @@ function test170715() {
     var o = { "款号" : r, "名称" : r, "颜色" : "红色,玫红", "尺码" : "M,S", "进货价" : r1,
         "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(o);
-
     var qr = getQRDet();
-    var ret = isEqual(0, qr.data.length);
+    var ret = isAnd(isEqual("", qr.data[0]["货品"]),
+            isEqual("", qr.data[1]["货品"]));
 
     var json = { "客户" : "lt", "明细" : [ { "货品" : r, "数量" : [ 1 ] } ] };
     editSalesBillColorSize(json);
-
     qr = json["明细值"];
     var ret1 = isIn(qr.data[0]["货品"], r);
 

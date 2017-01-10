@@ -161,7 +161,7 @@ function testSalesNoColorSize001_1() {
     run("【销售开单-开单】单价为0的退货和开单-不允许", "test170229");
     run("【销售开单-开单】单价为0的退货和开单-允许", "test170228");
     run("【销售开单】开单是否门店过滤人员--总经理不受控", "test170239");
-    run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值大于0", "test170384");
+    run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值大于0/参数控制信用额度", "test170384");
     run("【销售开单-信用额度控制】后台开启信用额度控制+客户信用额度值等于0", "test170385");
     run("【销售开单-信用额度控制】后台关闭信用额度控制", "test170386");
     run("【销售开单-开单】信用额度默认值1", "test170555_170611");
@@ -852,7 +852,7 @@ function test170046() {
 function test170047() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k200", "数量" : 10 } ],
-        "未付" : "yes" };
+        "未付" : "yes", "备注" : "unpayingbill" };
     editSalesBillNoColorSize(json);
     var qr1 = json["输入框值"];
     var totalMoney = qr1["总计"];
@@ -6591,6 +6591,10 @@ function test170251() {
 function test170384() {
     // 开启信用额度控制
     var qo, o, ret = true;
+    qo = { "备注" : "跨门店核销" };
+    o = { "新值" : "1", "数值" : [ "允许跨门核销" ] };
+    setGlobalParam(qo, o);
+
     qo = { "备注" : "开单是否启用客户信用额度控制" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -6617,15 +6621,42 @@ function test170384() {
     var json = { "客户" : r, "明细" : [ { "货品" : "3035", "数量" : "20" } ],
         "未付" : "yes" };
     editSalesBillNoColorSize(json);
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
     var ret1 = isIn(alertMsg1, "当前客户欠款累计金额（包含本次销售）为4,200, 大于信用额度金额1,000")
             || isIn(alertMsg2, "当前客户欠款累计金额（包含本次销售）为4,200, 大于信用额度金额1,000");
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("往来管理", "客户账款", "客户门店账");
+    keys = { "客户" : "zzy" };
+    fields = queryCustomerShopAccountFields(keys);
+    query(fields);
+    var qr = getQR();
+    var total = qr.counts["余额"];
+
+    tapMenu("往来管理", "客户查询");
+    feilds = queryCustomerFields(keys);
+    query(feilds);
+    tapFirstText();
+    delay();
+    var t = -Number(total) + 100;
+    var t1 = shiftNum(t);
+    keys = { "信用额度" : t };
+    addCustomer(keys);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
+        "未付" : "yes", "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    saveAndAlertOk();
+    tapPrompt();
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret2 = isIn(alertMsg1, "大于信用额度金额" + t1);
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test170385() {
     // 开启信用额度控制
@@ -9197,7 +9228,7 @@ function test170522() {
     var qo, o, ret = true;
     qo = { "备注" : "上次单价" };
     o = { "新值" : "1", "数值" : [ "显示" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "1", "数值" : [ "启用" ] };
@@ -9253,7 +9284,7 @@ function test170522() {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-    tapButtonAndAlert(RETURN, OK);
+    tapReturn();
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -10615,7 +10646,7 @@ function test170595Field(menu) {
         }
         editSalesBillNoColorSize(json);
         saveAndAlertOk();
-        // tapPrompt();
+        tapPrompt();
         debugArray(alertMsgs);
         var alertMsg1 = getArray1(alertMsgs, -1);
         ret = isAnd(ret, isIn(alertMsg1, "必须从下拉列表选择"), !isIn(alertMsg1, null));
@@ -12925,7 +12956,7 @@ function test170745() {
     var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     qo = { "备注" : "优先结余还是优先找零" };
     o = { "新值" : "1", "数值" : [ "优先找零" ] };
@@ -13017,7 +13048,7 @@ function test170745() {
 
     qo = { "备注" : "优先结余还是优先找零" };
     o = { "新值" : "0", "数值" : [ "优先结余" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     logDebug(", ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
@@ -13073,6 +13104,10 @@ function test170746Field(menu) {
 
     qo = { "备注" : "开单时挂单提醒" };
     o = { "新值" : "0", "数值" : [ "不开启", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "优先结余还是优先找零" };
+    o = { "新值" : "0", "数值" : [ "优先结余" ] };
     setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="

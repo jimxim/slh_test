@@ -1209,3 +1209,18 @@ function editVerifyBill(o) {
     editSalesBillSave(o);
     return o;
 }
+/**
+ * 将无逗号的数字转化为每三位含一个逗号的计法
+ * @param str
+ * @returns
+ */
+function shiftNum(str) {
+    str = str.toString();
+    var len = str.length, lastIndex, arr = [];
+    while (len > 0) {
+        lastIndex = len;
+        len -= 3;
+        arr.unshift(str.substring(len, lastIndex));
+    }
+    return arr.join(',');
+}

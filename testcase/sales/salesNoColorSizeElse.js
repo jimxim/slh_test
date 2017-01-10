@@ -179,8 +179,8 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单-按挂单】前几天的挂单保存之后日期应变为当天", "test170724_1");// //
     run("【销售开单-按汇总-按退货汇总】变动款号季节", "test170725");
     run("【销售开单-按汇总-按金额汇总】增加门店查询条件", "test170726");// //加上2
-    run("【销售开单-收款撤销】收款撤销", "test170277");
     run("【销售开单-按批次查】将付款方式修改为代收-点击打印-不点保存，物流单检查", "test170646");// ///
+    run("【销售开单-收款撤销】收款撤销", "test170277");
     // 以下为新增用例
     // run("[销售开单-按批次查]各界面按发生日期+批次的倒序 排列", "test170729");
     run("【销售开单-按挂单】前几天的挂单二次挂单，日期不变", "test170730");// //
@@ -2436,34 +2436,66 @@ function test170275() {
     return ret && ret1;
 }
 function test170277() {
-    tapMenu("销售开单", MORE, "收款单");
-    var keys = { "日期从" : getDay(-30), "到" : getDay(5) };
-    var fields = salesCollectionRecordFields(keys);
+    test170275Prepare();
+    tapMenu("销售开单", "按批次查");
+    var keys = { "日期到" : getDay(1), "作废挂单" : "正常" };
+    var fields = salesQueryBatchFields(keys);
     query(fields);
+    tapFirstText();
+    runAndAlert("test170275Getmoney", OK);
+    delay(2);
+    if (isIn(alertMsg, "本日不允许重新记账")) {
+        tapPrompt();
+    }
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapReturn();
+    }
+
+    tapMenu("销售开单", "按批次查");
+    query();
     var qr = getQR();
-    var total = qr.total;
-    if (total == 0) {
-        test170275Prepare();
-
-        tapMenu("销售开单", "按批次查");
-        var keys = { "日期到" : getDay(1), "作废挂单" : "正常" };
-        var fields = salesQueryBatchFields(keys);
-        query(fields);
-
-        tapFirstText();
-        runAndAlert("test170275Getmoney", OK);
-        delay(2);
-        if (isIn(alertMsg, "本日不允许重新记账")) {
-            tapPrompt();
-        }
-        var bt = app.mainWindow().buttons()[RETURN];
-        if (!isUIAElementNil(bt) || bt.isVisible()) {
-            tapReturn();
-        }
-        debugArray(alertMsgs);
-        var alertMsg1 = getArray1(alertMsgs, -2);
-        var ret1 = isIn(alertMsg1, "收款成功") || isIn(alertMsg, "本日不允许重新记账");
+    var print = qr.data[0]["打印"];
+    if (print != "是") {
+        tapTitle(window, "打印", TITLE_SEQ);
         delay();
+    }
+    tapFirstText();
+    var keys1 = { "店员" : "005" };
+    var fields1 = editSalesBillFields(keys1);
+    setTFieldsValue(window, fields1);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret3 = isIn(alertMsg, "单据已记账，不允许操作");
+    tapReturn();
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    if (print != "否") {
+        tapTitle(window, "打印", TITLE_SEQ);
+        delay();
+    }
+    tapFirstText();
+    setTFieldsValue(window, fields1);
+    saveAndAlertOk();
+    tapPrompt();
+    ret3 = isAnd(ret3, isIn(alertMsg, "单据已记账，不允许操作"));
+    tapReturn();
+
+    var key = [ { "备注" : "预付款" }, { "备注" : "unpayingbill" }, { "作废挂单" : "作废" } ];
+    for (var i = 0; i < key.length; i++) {
+        tapMenu("销售开单", "按批次查");
+        keys = key[i];
+        fields = salesQueryBatchFields(keys);
+        query(fields);
+        qr = getQR();
+        tapFirstText();
+        setTFieldsValue(window, fields1);
+        saveAndAlertOk();
+        tapPrompt();
+        ret3 = isAnd(ret3, isIn(alertMsg, "单据已记账，不允许操作"));
+        tapReturn();
     }
 
     tapMenu("销售开单", MORE, "收款单");
@@ -2481,8 +2513,8 @@ function test170277() {
     var total2 = qr.total;
     var ret2 = isEqual(1, sub(total1, total2));
 
-    logDebug(", ret2=" + ret2);
-    return ret2;
+    logDebug(", ret2=" + ret2 + ", ret3=" + ret3);
+    return ret2 && ret3;
 }
 function test170278_170285_170284() {
     tapMenu("销售开单", "开  单+");
@@ -7564,7 +7596,6 @@ function test170576_170288_170569_170293() {
     query(fields);
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
-
     var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
     waitUntil(cond, 10);
@@ -9935,7 +9966,7 @@ function test170725() {
 }
 function test170726() {
     tapMenu("销售开单", "按汇总", "按金额汇总");
-    var keys = { "日期从" : getDay(-3), "门店" : "常青店" };
+    var keys = { "日期从" : getDay(-4), "门店" : "常青店" };
     var fields = salesPriceFields(keys);
     query(fields);
     var qr = getQR();
@@ -9968,7 +9999,7 @@ function test170726() {
     var logist2 = qr2.counts["代收"];
 
     tapMenu("销售开单", "按批次查");
-    keys = { "日期从" : getDay(-3), "门店" : "常青店" };
+    keys = { "日期从" : getDay(-4), "门店" : "常青店" };
     fields = salesQueryBatchFields(keys);
     query(fields);
     var qr3 = getQR();
