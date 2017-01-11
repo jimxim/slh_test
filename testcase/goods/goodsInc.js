@@ -483,7 +483,7 @@ function getQRDet(view) {
     var titles_tf = getDetSizheadTFIndex(titles);
     // debugObject(titles_tf);
     var tfNum = titles_tf["明细输入框个数"];
-
+    delete titles_tf["明细输入框个数"];
     var textFields = getTextFields(view);
     var total = Math.floor(textFields.length / tfNum);
     logDebug("明细行数=" + total);
@@ -498,7 +498,7 @@ function getQRDet(view) {
         }
         data.push(data1);
     }
-
+    titles_tf["明细输入框个数"] = tfNum;
     var stock = [], arrX = [], stNum = 0;
     var staticTexts = getStaticTexts(view);
     for (; stNum < staticTexts.length; stNum++) {
@@ -806,9 +806,9 @@ function getSalesBillDetTitle1Index(texts, order) {
     if (isUndefined(texts)) {
         texts = getStaticTexts(window);
     }
-//    if (isUndefined(order)) {
-//        order = "asc";
-//    }
+    // if (isUndefined(order)) {
+    // order = "asc";
+    // }
     var arr = [ "选", "图", "#" ];
     for (var i = 0; i < arr.length; i++) {
         var title1 = arr[i];

@@ -931,11 +931,11 @@ function editShopOutDet() {
     switch (colorSize) {
     case "no":
         det = { "名称" : "jkk", "颜色" : "均色", "尺码" : "均码",
-            "明细" : [ { "货品" : "3035", "数量" : 50 } ] };
+            "明细" : [ { "货品" : "3035", "数量" : "50" } ] };
         break;
     case "yes":
         det = { "名称" : "auto001", "颜色" : "花色", "尺码" : "L",
-            "明细" : [ { "货品" : "agc001", "数量" : [ 50 ] } ] };
+            "明细" : [ { "货品" : "agc001", "数量" : [ "50" ] } ] };
         break;
     default:
         logWarn("未知colorSize＝" + colorSize);

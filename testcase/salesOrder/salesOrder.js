@@ -289,7 +289,7 @@ function test160055_160056_160057_160058() {
 
     tapButton(getScrollView(-1), 0);
     var data = getQRDet().data;
-    ret = isAnd(ret, data.length == 0);
+    ret = isAnd(ret, isEqual("", data[0]["货品"]));
     tapReturn();
 
     return ret;

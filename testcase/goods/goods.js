@@ -666,8 +666,8 @@ function test100101Field(p1, first) {
     var fields = queryGoodsDistributionDetFields(keys);
     setTFieldsValue(getScrollView(-1, 0), fields);
     tapButton(getScrollView(-1, 0), QUERY);
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
-    tapNaviLeftButton();
+    qr = getQR2(getScrollView(-1, 0), "名称", "文一店");// utf8
+    tapNaviClose();
     ret = isAnd(ret, isEqual(qr.data[0]["价值"], Number(qr.data[0]["库存"]) * p1));
 
     return ret;
@@ -840,8 +840,8 @@ function ts100006() {
     var expected = mixObject(de1, exp);
     var data2 = getDetTS100006(code, "no");
 
-    tapFirstText(getScrollView(-1, 0), "名称", 8);// 需要优化
-    qr = getQR2(getScrollView(-1, 0), "名称", "中洲店");
+    tapLine(0, getScrollView(-1, 0), "名称");
+    qr = getQR2(getScrollView(-1, 0), "名称", "文一店");// utf8
     var sum = {};
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
@@ -852,8 +852,7 @@ function ts100006() {
             qr = getQR2(view, "名称", "中洲店");
         }
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
     ret = isAnd(ret, isEqualObject(expected, actual),
             isEqualObject2(data2, sum), isEqualObject(exp, subObject(data2,
                     data1)));
@@ -880,22 +879,22 @@ function test100006_1() {
     // ret = ret && sortByTitle("中洲店", IS_NUM);
 
     // 这里 仓库店与文一店不一定有数据，所以不一定有汇总值
-    var arr = [ "库存", "价值", "常青店" ];
+    var arr = [ "库存", "价值" ];//, "常青店" 旧界面汇总值与标题对不上无法取值，等新界面再改
     ret = isAnd(ret, isEqualCounts(arr));
 
     // 库存=各门店库存之和
-    tapButton(window, QUERY);// 刷新界面，防止getQR出错
-    var qr = getQR();
-    var counts = qr.counts;
-    var a = 0, b = 0;
-    if (isDefined(counts["仓库店"])) {
-        a = counts["仓库店"];
-    }
-    if (isDefined(counts["文一店"])) {
-        b = counts["文一店"];
-    }
-    ret = isAnd(ret, isEqual(counts["库存"], Number(a) + Number(b)
-            + Number(counts["常青店"]) + Number(counts["中洲店"])));
+    // tapButton(window, QUERY);// 刷新界面，防止getQR出错
+    // var qr = getQR();
+    // var counts = qr.counts;
+    // var a = 0, b = 0;
+    // if (isDefined(counts["仓库店"])) {
+    // a = counts["仓库店"];
+    // }
+    // if (isDefined(counts["文一店"])) {
+    // b = counts["文一店"];
+    // }
+    // ret = isAnd(ret, isEqual(counts["库存"], Number(a) + Number(b)
+    //            + Number(counts["常青店"]) + Number(counts["中洲店"])));
 
     return ret;
 }
@@ -2152,10 +2151,10 @@ function ts100059Field(menu31, menu32, keys, qkeys) {
     saveAndAlertOk();
     tapReturn();
 
-    var cond = "window.buttons()['当前库存'].isVisible";// 防返回不彻底
+    var cond = "window.buttons()['当前库存'].isVisible()";// 防返回不彻底
     waitUntil(cond, 10);
     tapMenu1("货品管理");// 刷新界面用,验证是否返回到相应的界面
-    var gMenu3 = menu32;
+    gMenu3 = menu32;
     if (isDefined(qkeys)) {
         keys = qkeys;
     }
@@ -2164,8 +2163,8 @@ function ts100059Field(menu31, menu32, keys, qkeys) {
     var ret = isEqual(keys["名称"], qr.data[0]["名称"]);
 
     tapLine();
-    tapButtonAndAlert(STOP, OK);
-    tapReturn();
+    tapButtonAndAlert(STOP, OK);// 停用，防止其他界面颜色过多导致卡顿
+    tapReturn();// 会自动返回
 
     return ret;
 }

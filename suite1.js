@@ -23,17 +23,20 @@ function test000All() {
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
 
 // run(caseName, "setSizeHeadParams_1");//
-
-// run(caseName, "test220130");//
+ run(caseName, "onlyTest");
+// run(caseName, "ts100059Color");//
 }   
 function onlyTest(){
-// UIATarget.localTarget().logElementTree();
+ UIATarget.localTarget().logElementTree();
 // UIATarget.localTarget().deactivateAppForDuration(10);
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{  
-       var json={"客户未发":{"客户":"zbs"},"修改明细":[{"尺码" : { "L" : 1, "XL" : 2 }}]};
-       editBillUnshipping(json);
+
+       var qr=getQRDet();
+       debugObject(qr.titles);
+       debugObject(qr.data[0]);
+       debugObject(qr.data[1]);
 // query();
 // var arr=[];
 // return isEqualCounts(arr);

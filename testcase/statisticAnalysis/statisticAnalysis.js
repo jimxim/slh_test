@@ -1381,14 +1381,14 @@ function test190035() {
     var ret = isEqual(jo["进数"], qr.counts["总数"]);
 
     tapMenu("销售开单", "按汇总", "按店员汇总");
-    query();
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, isEqual(jo["销数"], qr.counts["销售数"]), isEqual(jo["实销数"],
             qr.counts["实销数"]), isEqual(jo["实销额"], qr.counts["实销额"]));
 
     tapMenu2("按汇总");
     tapMenu3("按退货汇总");
-    query();
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, isEqual(jo["退数"], qr.counts["数量"]), isEqual(jo["退额"], Math
             .round(qr.counts["小计"])));// 综合汇总里进行了四舍五入处理

@@ -13,7 +13,7 @@ function getDetTS100006(code, close) {
     setTFieldsValue(view, fields);
     tapButton(view, QUERY);
 
-    var qr = getQR2(view, "名称", "中洲店");
+    var qr = getQR2(view, "名称", "文一店");// utf-8
     // 查询结果唯一
     var data = qr.data[0];
 
@@ -25,7 +25,7 @@ function getDetTS100006(code, close) {
 }
 /**
  * 获取当前库存界面，货品的库存
- * @returns 
+ * @returns
  */
 function getGoodCurStock() {
     var qr = getQR();

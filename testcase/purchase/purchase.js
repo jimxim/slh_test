@@ -1039,7 +1039,7 @@ function test120019() {
     var ret1 = isEqualObject2(expected, data);
     delay();//
     tapLine(0, getScrollView(-1, 0), "名称");
-    qr = getQR2(getScrollView(-1, 0), "名称", "文一店");// 排序方式改变 utf8 
+    qr = getQR2(getScrollView(-1, 0), "名称", "文一店");// 排序方式改变 utf8
     expected = { "名称" : r + "," + r, "颜色" : "均色", "尺码" : "均码", "库存" : 20,
         "仓库店" : "", "常青店" : 20, "文一店" : "", "中洲店" : "" };
     ret1 = isAnd(ret1, isEqualObject2(expected, qr.data[0]));
@@ -1274,8 +1274,7 @@ function test120021() {
     var a1 = 0, a2 = 0, b1 = 0, b2 = 0, i, A1, A2, B1, B2;
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "3035" };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["仓库/门店"] == "常青店") {
@@ -1288,8 +1287,7 @@ function test120021() {
 
     tapMenu("货品管理", "款号库存");
     keys = { "款号" : "3035" };
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     for (i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["仓库/门店"] == "常青店") {
@@ -1302,8 +1300,7 @@ function test120021() {
 
     tapMenu("货品管理", "库存分布");
     keys = { "类别" : "登山服", "厂商" : "vell" };
-    fields = queryGoodsDistributionFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     var c1 = qr.data[0];
 
