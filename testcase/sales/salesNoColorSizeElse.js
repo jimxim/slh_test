@@ -2368,14 +2368,16 @@ function test170275Prepare() {
 
     var qr = getQR();
     var total1 = qr.total;
-    for (var i = 0; i < total1; i++) {
-        tapFirstText();
-        tapButtonAndAlert("作 废", OK);
+    if (total1 != 0) {
+        for (var i = 0; i < total1; i++) {
+            tapFirstText();
+            tapButtonAndAlert("作 废", OK);
 
-        qr = getQR();
-        var len = qr.data.length;
-        if (len = 0) {
-            break;
+            qr = getQR();
+            var len = qr.data.length;
+            if (len = 0) {
+                break;
+            }
         }
     }
 }

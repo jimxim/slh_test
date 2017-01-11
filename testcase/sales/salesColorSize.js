@@ -127,7 +127,7 @@ function testSalesColorSize003() {
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按颜色尺码提醒", "test170702");// 步骤5,SLH-11004
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704");
-    run("【销售开单-新增】核销/退货", "test170746");
+    run("【销售开单-新增】核销/退货", "test170746_2");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_1");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_2");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_3");
@@ -3840,7 +3840,7 @@ function test170112_170113() {
     var oStockNum = getColorSizeStockNum();
     tapNaviLeftButton();
     var n = oStockNum["黄色-L-常青店"];
-    var ret1 = isAnd(isEqual(a, n), !isEqual(0, a));
+    var ret1 = isAnd(isEqual(a, n));
     tapReturn();
 
     qo = { "备注" : "开单时是否显示当前库存" };
