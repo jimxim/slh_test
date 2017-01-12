@@ -164,7 +164,7 @@ function test230007() {
     var json = { "客户" : "xwc",
         "明细" : [ { "货品" : "3035", "数量" : [ 10 ], "单价" : "220" } ] };
     var jo = { "明细" : [ { "货品" : "303", "表格行包含" : "3035" } ] };
-    return test230007(json, jo);
+    return test230007Field(json, jo);
 }
 function test230007Field(json, jo) {
     tapMenu("销售开单", ADDBILL);

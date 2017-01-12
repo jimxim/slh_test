@@ -751,8 +751,8 @@ function test120011_2() {
     var qr = getQR2(getScrollView(-1, 0), "款号", "数量");
     tapNaviLeftButton();
 
-    tapTitle(getScrollView(), "类型");
-    tapTitle(getScrollView(), "类型");
+    // tapTitle(getScrollView(), "类型");
+    tapTitle(getScrollView(), "类型");// utf8
     qr = getQR();
     ret = isAnd(ret, isEqualQRData1Object(qr, jo2));
 
@@ -2644,10 +2644,10 @@ function test120050Field(price) {
     var qr = getQR();
     ret = isAnd(ret, isEqual(json["输入框值"]["totalmoney"], qr.data[0]["金额"]))
     tapFirstText();
-    var det = getQRDet();
+    var qr = getQRDet();
     tapReturn();
-    det = unityNotice(det);
-    ret = isAnd(ret, isEqualDyadicArray(qr1.data, det.data));
+    qr = unityNotice(qr);
+    ret = isAnd(ret, isEqualDyadicArray(qr1.data, qr.data));
 
     tapMenu2("批量入库+");
     editPurchaseBatch(det, colorSize);
@@ -3086,8 +3086,7 @@ function ts120090Field() {
 function ts120091() {
     tapMenu("门店调入", "按批次查");
     var keys = { "日期从" : getDay(-30) };
-    var fields = shopInQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     tapLine();
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
@@ -3100,8 +3099,10 @@ function ts120091() {
     tapReturn();
     var ret = isEqualDyadicArray(data1, data2);
     for (var i = 0; i < data2.length; i++) {
-        ret = isAnd(ret, isEqual("", data2[i]["单价"]), isEqual("0",
-                data2[i]["小计"]));
+        if (data2[i]["货品"] != "") {//getQRDet去除了判断有效行数
+            ret = isAnd(ret, isEqual("", data2[i]["单价"]), isEqual("0",
+                    data2[i]["小计"]));
+        }
     }
     return ret;
 }
@@ -3609,7 +3610,7 @@ function ts120117() {
     tapMenu("采购入库", "按汇总", "厂商对账单");
     var ret = ts120117Field("小王", "请选择正确的厂商");
     tapMenu("销售开单", "按汇总", "客户对账单");
-    ret = isAnd(ret, ts120117Field("vell", "选择客户"));
+    ret = isAnd(ret, ts120117Field("vell", "[客户]的查询必须从列表中选择"));
     return ret
 }
 function ts120117Field(value, msg) {
@@ -3620,6 +3621,7 @@ function ts120117Field(value, msg) {
     tapButton(window, "对账单(按批次)");
     tapPrompt();
     tapNaviClose();
+    tapButton(window, CLEAR);// 清除，防止影响后续用例输入
     return isInAlertMsgs(msg);
 }
 function ts120118() {

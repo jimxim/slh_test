@@ -372,22 +372,23 @@ function salesStaffField(key, show) {
     switch (key) {
     case "day1":
     case "日期从":
-        f = new TField("日期从", TF_DT, 0, "2015-9-11");
+        f = new TField("日期从_125", TF_DT, 0, getToday());
         break;
     case "day2":
+    case "日期到":
     case "到":
-        f = new TField("到", TF_DT, 1, getToday());
+        f = new TField("到_130", TF_DT, 1, getToday());
         break;
     case "staff":
     case "店员":
-        f = new TField("店员", TF_AC, 2, "000", -1, 0);
+        f = new TField("店员_135", TF_AC, 2, "000", -1, 0);
         if (show) {
-            f.value = "000,管理员";
+            f.value = "000,总经理";
         }
         break;
     case "shop":
     case "门店":
-        f = new TField("门店", TF, 3, "常青店", -1, 0);// TF_SC
+        f = new TField("门店_141", TF, 3, "常青店", -1, 0);// 实际为TF_AC
         break;
     default:
         logWarn("未知key＝" + key);

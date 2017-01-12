@@ -1376,7 +1376,7 @@ function test190035() {
     var jo = qr.counts;
 
     tapMenu("采购入库", "按批次查");
-    query();
+    conditionQuery(keys);
     var qr = getQR();
     var ret = isEqual(jo["进数"], qr.counts["总数"]);
 

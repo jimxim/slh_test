@@ -2110,7 +2110,8 @@ function ts110039() {
     var ret = isEqualDropDownListByExp(p);
     tapButton(getPop(), CLOSE);
     tapReturn();
-
+    delay();
+    
     tapMenu("采购入库", "新增入库+");
     tapButton(window, "新增+"); // 厂商的新增+按钮
     tapButton(getPopOrView(), "选 择");

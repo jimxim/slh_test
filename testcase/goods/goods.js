@@ -99,9 +99,7 @@ function setGoodsParams001() {
     o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "是否启用自定义键盘" };
-    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    ret = isAnd(ret, setSc_use_custom_keyboard_0());//是否启用自定义键盘-不启用
 
     // 现在异地仓库的2种模式都需要开启这个参数
     qo = { "备注" : "支持异地仓库" };
@@ -798,6 +796,7 @@ function test100005_3() {
     tapPrompt();
 
     tapMenu("货品管理", "款号库存");
+    delay();//处理弹窗
     keys = { "款号名称" : code, "是否停用" : "是" };
     conditionQuery(keys);
     qr = getQR();

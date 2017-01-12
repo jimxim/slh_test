@@ -1349,7 +1349,7 @@ function goPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
             // 总页数验证
             ret = ret && Math.ceil(qr.total / 15) == totalPageNo;
             if (!ret) {
-                logDebug("总页数错误");
+                logWarn("总页数错误");
             }
 
             // 最后一页验证
@@ -1658,7 +1658,7 @@ function scrollPrevPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
 
     // 向上翻页验证
     scrollPrevPage();
-    delay();
+    delay(0.5);
     qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
     var prevData = qr.data;
     var prevPageNo = qr.curPageNo;
@@ -1668,13 +1668,14 @@ function scrollPrevPageCheck(pageInfoView, dataView, firstTitle, titleTotal) {
 
     // 向下翻页验证
     scrollNextPage();
-    delay();
+    delay(0.5);
     qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
     var curPageNo = qr.curPageNo;
     ret = isAnd(ret, isEqualDyadicArray(qr.data, curData), isEqual(pageNo,
             curPageNo));
 
     scrollPrevPage();
+    delay(0.5);//滑动后，界面可能还没加载完毕
     qr = getQR(pageInfoView, dataView, firstTitle, titleTotal);
     ret = isAnd(ret, isEqualDyadicArray(qr.data, prevData));
 
@@ -2587,6 +2588,9 @@ function getQueryTFields(keys) {
                 break;
             case "按退货汇总":
                 qFields = salesReturnFields(keys);
+                break;
+            case "按店员汇总":
+                qFields = salesStaffFields(keys);
                 break;
             }
             break;
