@@ -10730,6 +10730,18 @@ function test170631() {
     var fields = salesMatcherFields(keys);
     query(fields);
     var qr = getQR();
+    if (qr.total == 0) {
+        tapMenu("销售开单", "开  单+");
+        var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "20" } ],
+            "配货" : "004", "现金" : 200, "刷卡" : [ 120, "交" ], "汇款" : [ 250, "农" ] };
+        editSalesBillNoColorSize(json);
+
+        tapMenu("销售开单", "按汇总", "按配货员汇总");
+        var keys = { "日期从" : "2015-01-01", "配货员" : "004" };
+        var fields = salesMatcherFields(keys);
+        query(fields);
+        qr = getQR();
+    }
     var xj = qr.data[0]["现金"];
     var sk = qr.data[0]["刷卡"];
     var hk = qr.data[0]["汇款"];

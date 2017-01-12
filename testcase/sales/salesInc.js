@@ -61,6 +61,12 @@ function testSalesPrepare003() {
     // 销售单// 客户“李四”需要用款号4562在常青店以外的门店开单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
+        "代收" : { "物流商" : "tt" }, "备注" : "zy" };
+    editSalesBillNoColorSize(json);
+
+    // 销售单// 客户“韩红”需要在常青店以外的门店有积分
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "hh", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
         "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
@@ -102,22 +108,22 @@ function testSalesPrepare003() {
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
     editSalesBillNoColorSize(json);
 
-    // 其他门店客户，销售开单-挂单
-    tapMenu("销售订货", "新增订货+");
+    // 销售开单-挂单
+    tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
 
-    // 其他门店客户，销售订货-挂单
+    // 销售订货-挂单
     tapMenu("销售订货", "新增订货+");
     editSalesBillNoColorSize(json);
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
 
     // 其他门店客户，销售开单-挂单
-    tapMenu("销售订货", "新增订货+");
+    tapMenu("销售开单", "开  单+");
     json = { "客户" : "zzy", "明细" : [ { "货品" : "3035", "数量" : 2 } ],
         "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
@@ -190,6 +196,7 @@ function testSalesPrepare007() {
     // tapButtonAndAlert(START, OK);
 }
 // 设置客户"李小龙"的拿货折扣为1.2
+// 客户“李天”在仓库店和中洲店都要有积分
 function testSalesCuanMaPrepare(r) {
     if (isUndefined(r)) {
         var r = "anewCuanMa" + randomWord(false, 6);

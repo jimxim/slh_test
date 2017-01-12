@@ -1130,12 +1130,12 @@ function test170028_2_1_170524() {
         idx = 2;
     }
     var ret = false;
-    var f = new TField("款号", TF_AC, idx, "303", -1);
+    var f = new TField("款号", TF_AC, idx, "456", -1);
     var cells = getTableViewCells(window, f);
     for (i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
-        if (isIn(v, "3035,jkk")) {
+        if (isIn(v, "4562,Story")) {
             ret = true;
             break;
         }
@@ -7389,8 +7389,8 @@ function test170575() {
     var fields = queryCustomerLogisticsFields(keys);
     query(fields);
     var qr = getQR();
-    var len = qr.length;
-    if (len == 0 || len == 1) {
+    var total = qr.total;
+    if (total == 0 || total == 1) {
         tapMenu("往来管理", "getMenu_More", "新增物流商+");
         var r = "anewz" + randomWord(false, 6);
         var keys = { "名称" : r, "门店" : "中洲店" };
@@ -7404,8 +7404,8 @@ function test170575() {
     var fields = queryCustomerLogisticsFields(keys);
     query(fields);
     qr = getQR();
-    len = qr.length;
-    if (len == 0 || len == 1) {
+    total = qr.total;
+    if (total == 0 || total == 1) {
         tapMenu("往来管理", "getMenu_More", "新增物流商+");
         var r1 = "anewc" + randomWord(false, 6);
         var keys = { "名称" : r1, "门店" : "仓库店" };
