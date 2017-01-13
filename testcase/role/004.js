@@ -1927,7 +1927,8 @@ function test170753Field(menu, colorSize) {
 
     var r = randomWord(false, 8);
     var json = { "客户" : "ls",
-        "明细" : [ { "货品" : "3035", "数量" : 8, "单价" : 70 } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "3035", "数量" : 8, "单价" : 70 } ], "onlytest" : "yes",
+        "备注" : r };
     var ret1 = true, ret2 = true;
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);
@@ -1941,11 +1942,11 @@ function test170753Field(menu, colorSize) {
         tapButtonAndAlert("挂 单", OK);
         delay();
         tapReturn();
-        tapMenu("销售开单", "按挂单");
+        tapMenu(menu1, "按挂单");
         query();
         var qr = getQR();
-        var ret2 = isAnd(isEqual(r, qr.data[0]["备注"]), isAqualOptime(r,
-                qr.data[0]["操作时间"]));
+        var ret2 = isAnd(isEqual(r, qr.data[0]["备注"]), isAqualOptime(
+                getOpTime(), qr.data[0]["操作日期"]));
     }
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);

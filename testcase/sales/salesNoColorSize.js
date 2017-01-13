@@ -113,9 +113,6 @@ function testSalesNoColorSize001() {
     run("【销售开单－开单】开启退货数验证时提示具体哪个款号的退货数超出", "test170074");
     run("【销售开单－开单】客户退货数量－不填客户", "test170075");
     run("【销售开单－开单】单价小数位精确到元对保存打印的影响", "test170076");
-    run("【销售开单－开单】单价小数位精确到角对保存打印的影响", "test170076_1");
-    run("【销售开单－开单】单价小数位精确到分对保存打印的影响", "test170076_2");
-    run("【销售开单－开单】单价小数位精确到厘对保存打印的影响", "test170076_3");
     run("【销售开单－开单】客户折扣支持3位小数/快速新增客户后折扣值检查", "test170077_1_170067");
     run("【销售开单－开单】客户折扣支持3位小数", "test170077_2");
     run("【销售开单-开单】开单模式-客户折扣", "test170083");
@@ -1988,110 +1985,36 @@ function test170075() {
     return ret && ret1 && ret2;
 }
 function test170076() {
-    // 设置 单价小数位 精确到元
-    var qo, o, ret = true;
-    qo = { "备注" : "单价小数位" };
-    o = { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : 300.1 } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "[第1行] 单价小数位超出了限制");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    var params = [ { "新值" : "0", "数值" : [ "货品单价精确到元", "in" ] },
+            { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ] },
+            { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] },
+            { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] } ];
+    var r = [ "300.1", "300.18", "300.188", "300.1886" ];
+    return test170076Field(params, r, "no");
 }
-function test170076_1() {
-    // 设置 单价小数位 精确到角
-    var qo, o, ret = true;
-    qo = { "备注" : "单价小数位" };
-    o = { "新值" : "1", "数值" : [ "货品单价精确到角", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+function test170076Field(params, r, colorSize) {
+    var qo = { "备注" : "成交价" };
+    var o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    setGlobalParam(qo, o);
 
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : 1, "单价" : "300.18" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "[第1行] 单价小数位超出了限制");
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
-}
-function test170076_2() {
-    // 设置 单价小数位 精确到分
-    var qo, o, ret = true;
-    qo = { "备注" : "单价小数位" };
-    o = { "新值" : "2", "数值" : [ "货品单价精确到分", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : "300.188" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "[第1行] 单价小数位超出了限制");
-
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
-}
-function test170076_3() {
-    // 设置 单价小数位 精确到厘
-    var qo, o, ret = true;
-    qo = { "备注" : "单价小数位" };
-    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "3035", "数量" : "1", "单价" : "300.1886" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    saveAndAlertOk();
-    tapPrompt();
-    debugArray(alertMsgs);
-    var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret1 = isIn(alertMsg1, "[第1行] 单价小数位超出了限制");
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    var qo = { "备注" : "单价小数位" };
+    var ret = true;
+    var json = { "明细" : [ { "货品" : "3035", "数量" : 1 } ], "onlytest" : "yes" };
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        tapMenu("销售开单", "开  单+");
+        editSalesBill(json, colorSize);
+        o = { "修改明细" : [ { "单价" : r[j] } ] };
+        editBillDet(o);
+        saveAndAlertOk();
+        tapPrompt();
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        ret = isAnd(ret, isIn(alertMsg1, "[第1行] 单价小数位超出了限制"));
+        tapReturn();
+    }
+    logDebug(" ret=" + ret);
+    return ret;
 }
 function test170077_1_170067() {
     // 1，设置 单价小数位 精确到厘

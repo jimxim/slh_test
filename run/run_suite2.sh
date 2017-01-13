@@ -84,7 +84,7 @@ js_func="$js_func ts170557_000_1 ts170557_004_1 ts170557_005_1 ts170557_000_2 ts
  ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"
                   
 #盘点管理
-js_func="$js_func setSales001Params"
+#js_func="$js_func setSales001Params"
 js_func="$js_func test000Check002"
 
 js_func="$js_func test000Check001 testCheckts100157For000_2"
