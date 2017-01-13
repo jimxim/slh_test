@@ -737,7 +737,8 @@ function ts150032() {
 
     tapMenu("采购入库", "按订货入库");
     query();
-    tapFirstText();
+    tapLine();
+    delay(0.5);// 防止随便点击进去的单据为超长订单，加载时间过长导致取标题错误
     ret = isAnd(ret, checkRightsField(true, window, arr));
     tapReturn();
 
@@ -751,7 +752,8 @@ function ts150032() {
 
     tapMenu("销售开单", "按订货开单");
     query();
-    tapFirstText();
+    tapLine();
+    delay(0.5);// 防止随便点击进去的单据为超长订单，加载时间过长导致取标题错误
     ret = isAnd(ret, checkRightsField(true, window, arr));
     tapReturn();
 

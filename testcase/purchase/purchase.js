@@ -3312,7 +3312,7 @@ function ts120100() {
     var json = mixObject(jo, det);
     editSalesBill(json, colorSize);
 
-    return checkCopyAndPaste("新增订货+");
+    return checkCopyAndPaste("新增入库+");
 }
 
 function ts120101() {

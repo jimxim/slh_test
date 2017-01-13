@@ -1513,13 +1513,12 @@ function checkCopyAndPaste(menu2) {
     tapMenu2("按批次查");
     query();
     tapLine();
+    var o1 = { "确定复制吗" : OK };
+    setValueToCache(ALERT_MSG_KEYS, o1);
     // delay();
     var v = getSalesBillValueByLabel();
     var data1 = getQRDet().data;
     tapButton(window, "整单复制");
-
-    var o1 = { "确定复制吗" : OK };
-    setValueToCache(ALERT_MSG_KEYS, o1);
     delay();
     // 门店调出不会自动返回,这里用tapReturn不稳定，容易跳过整单粘贴的步骤
     var btn = getButton(window, RETURN);

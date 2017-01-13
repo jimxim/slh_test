@@ -353,7 +353,7 @@ function ts140010() {
     var index = getEditSalesTFindex("日期", "总数");
     var value = getTextFieldValue(window, index);
     tapReturn();
-    return isAnd(isEqual(0, qr.data.length), isEqual(0, value));
+    return isAnd(isEqual("", qr.data[0]["货品"]), isEqual(0, value));
 }
 
 function ts140011() {
