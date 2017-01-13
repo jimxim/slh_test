@@ -85,6 +85,7 @@ function test170236() {
     qo = { "备注" : "单据打印后不允许修改" };
     o = { "新值" : "0", "数值" : [ "不限制", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
+    //需重新登录使参数生效
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "店员" : "000",

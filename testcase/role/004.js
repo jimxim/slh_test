@@ -1391,7 +1391,7 @@ function test170649() {
     tapMenu("销售开单", "按订货开单");
     query();
     qr = getQR();
-    var ret2 = isAnd(isEqual(getOpTime(), qr.data[0]["操作日期"]), isEqual("李四",
+    var ret2 = isAnd(isAqualOptime(getOpTime(), qr.data[0]["操作日期"]), isEqual("李四",
             qr.data[0]["客户"]), isEqual(15, qr.data[0]["订货数"]), isEqual("常青店",
             qr.data[0]["门店"]));
 

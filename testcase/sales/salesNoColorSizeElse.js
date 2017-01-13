@@ -4827,7 +4827,7 @@ function test170350() {
     return test170350Field(false);
 }
 function test170350_1() {
-    return test170747Field(true);
+    return test170350Field(true);
 }
 function test170350Field(rights) {
     // 检查苹果键盘，可输入中文即可
@@ -4835,7 +4835,6 @@ function test170350Field(rights) {
     var o = { "键盘" : "简体拼音", "拼音" : [ "lixiang" ], "汉字" : [ "李响" ] };
     var tf = window.textFields()[0].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-
     var ret = isEqual("李响", getTextFieldValue(window, 0));
     tapButton(window, CLEAR);
 
@@ -4853,12 +4852,12 @@ function test170350Field(rights) {
     var ret2 = true;
     if (rights) {
         tapMenu("销售开单", "按汇总", "客户对账单");
-        for (var j = 0; j < btn.length; j++) {
-            var keys = { "客户" : "l" };
-            var fields = salesQueryCustomerFields(keys);
-            query(fields);
-            tapButton(window, "导 出");
-            tapButton(window, btn[j]);
+        var keys = { "客户" : "l" };
+        var fields = salesQueryCustomerFields(keys);
+        query(fields);
+        tapButton(window, "导 出");
+        for (var i = 0; i < btn.length; i++) {
+            tapButton(window, btn[i]);
             tapPrompt();
             debugArray(alertMsgs);
             var alertMsg1 = getArray1(alertMsgs, -1);

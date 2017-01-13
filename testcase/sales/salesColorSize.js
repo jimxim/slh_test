@@ -3833,6 +3833,15 @@ function test170112_170113() {
     query(fields);
     var qr = getQR();
     var a = qr.data[0]["库存"];
+    if (qr.total == 0) {
+        var json = { "客户" : "ls", "明细" : [ { "货品" : "x003", "数量" : [ 10 ] } ] };
+        editSalesBillColorSize(json);
+
+        tapMenu("货品管理", "当前库存");
+        tapButton(window, QUERY);
+        qr = getQR();
+        a = qr.data[0]["库存"];
+    }
 
     tapMenu("销售开单", "开  单+");
     var json = { "明细" : [ { "货品" : "x003" } ], "关闭明细" : "no" };
@@ -5356,12 +5365,22 @@ function test170658() {
     o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "Aaa002", "数量" : [ 1 ] } ] };
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "Aaa002", "门店" : "常青店" };
     var fields = queryGoodsStockFields(keys);
     query(fields);
     var qr = getQR();
     var k = qr.data[0]["库存"];
+    if (qr.data == 0) {
+        tapMenu("销售开单", "开  单+");
+        editSalesBillColorSize(json);
+
+        tapMenu("货品管理", "当前库存");
+        tapButton(window, QUERY);
+        qr = getQR();
+        k = qr.data[0]["库存"];
+    }
 
     var qKeys = [ "门店" ];
     var qFields = queryGoodsStockFields(qKeys);
@@ -5387,7 +5406,6 @@ function test170658() {
     k = qr.data[0]["库存"];
 
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "Aaa002", "数量" : [ 1 ] } ] };
     editSalesBillColorSize(json);
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
@@ -5629,7 +5647,16 @@ function test170703() {
     o = { "新值" : "1", "数值" : [ "按款号提醒", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // var r = testSalesCompareCodePrepare();
+    tapMenu("货品管理", "货品查询");
+    var qKeys = [ "款号名称" ];
+    var qFields = queryGoodsFields(qKeys);
+    changeTFieldValue(qFields["款号名称"], "anewSame");
+    query(qFields);
+    var qr = getQR();
+    if (qr.total == 0) {
+        var r = testSalesCompareCodePrepare();
+    }
+
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "lt", "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ],
         "onlytest" : "yes" };
