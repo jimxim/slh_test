@@ -1530,8 +1530,6 @@ function checkCopyAndPaste(menu2) {
     tapMenu2(menu2);
     tapButton(window, "整单粘贴");
     delay();
-    var tf = getScrollView(-1).textFields()[0];
-    tf.scrollToVisible();// 显示为第16行，前面的坐标重合，导致标题取值错误，滑动回第一行
     var json = {};
     editSalesBillSave(json);
 

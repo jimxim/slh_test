@@ -196,7 +196,7 @@ function test110001() {
 
 function test110004() {
     tapMenu("货品管理", "基本设置", "价格名称");
-    var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
+    var qr = getQR(window, getScrollView(), TITLE_SEQ);
     var arr = new Array();
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["启用"] == "是") {
@@ -2045,7 +2045,7 @@ function ts110075() {
 
 function ts110038() {
     tapMenu("货品管理", "基本设置", "价格名称");
-    var qr = getQR(window, getScrollView(), TITLE_SEQ, 4);
+    var qr = getQR(window, getScrollView(), TITLE_SEQ);
     var arr = new Array();
     for (var i = 0; i < qr.curPageTotal; i++) {
         if (qr.data[i]["启用"] == "是") {
@@ -3038,7 +3038,7 @@ function test110047() {
     tapReturn();
 
     query();
-    var qr = getQR(window, getScrollView(), "序号", 7);
+    var qr = getQR(window, getScrollView(), "序号");
     var expected = { "回访日期" : getToday("yy"), "名称" : "小王", "主题" : r,
         "回访类型" : "售后回访", "店员" : "总经理", "反馈及建议" : "反馈及建议abc123" };
     var ret = isEqualObject(expected, qr.data[0]);

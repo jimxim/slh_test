@@ -99,7 +99,7 @@ function setGoodsParams001() {
     o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    ret = isAnd(ret, setSc_use_custom_keyboard_0());//是否启用自定义键盘-不启用
+    ret = isAnd(ret, setSc_use_custom_keyboard_0());// 是否启用自定义键盘-不启用
 
     // 现在异地仓库的2种模式都需要开启这个参数
     qo = { "备注" : "支持异地仓库" };
@@ -228,7 +228,7 @@ function testGoods001() {
 
 function testGoods002() {
     // 均色均码 开单模式2 省代模式
-    run("【货品管理-更多-仓位列表】启用停用新增货品界面验证", "test100071_100072");
+    // run("【货品管理-更多-仓位列表】启用停用新增货品界面验证", "test100071_100072");
     // run("【货品管理-当前库存】当前库存_单据类型_上架天数_累计销_单价_核算金额", "test100001_3");
     run("【货品管理-当前库存】单价和金额值正确性/库存分布中的价值检查", "ts100101_118");
     run("【货品管理-当前库存】默认排序", "ts100125");// 检验agc几个款号的默认排序
@@ -796,7 +796,7 @@ function test100005_3() {
     tapPrompt();
 
     tapMenu("货品管理", "款号库存");
-    delay();//处理弹窗
+    delay();// 处理弹窗
     keys = { "款号名称" : code, "是否停用" : "是" };
     conditionQuery(keys);
     qr = getQR();
@@ -878,7 +878,7 @@ function test100006_1() {
     // ret = ret && sortByTitle("中洲店", IS_NUM);
 
     // 这里 仓库店与文一店不一定有数据，所以不一定有汇总值
-    var arr = [ "库存", "价值" ];//, "常青店" 旧界面汇总值与标题对不上无法取值，等新界面再改
+    var arr = [ "库存", "价值" ];// , "常青店" 旧界面汇总值与标题对不上无法取值，等新界面再改
     ret = isAnd(ret, isEqualCounts(arr));
 
     // 库存=各门店库存之和
@@ -893,7 +893,7 @@ function test100006_1() {
     // b = counts["文一店"];
     // }
     // ret = isAnd(ret, isEqual(counts["库存"], Number(a) + Number(b)
-    //            + Number(counts["常青店"]) + Number(counts["中洲店"])));
+    // + Number(counts["常青店"]) + Number(counts["中洲店"])));
 
     return ret;
 }
@@ -2549,8 +2549,7 @@ function ts100147Field(title, type) {
     var keys = { "款号" : det["明细"][0]["货品"], "门店" : "常青店" };
 
     tapMenu("货品管理", "当前库存");
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.counts[title];
 
@@ -2572,14 +2571,12 @@ function ts100147Field(title, type) {
     var ret = isEqual(20, sub(b, a));
 
     tapMenu2("款号库存");
-    fields = queryGoodsCodeStockFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqual(b, qr.counts[title]));
 
     tapMenu2("货品进销存");
-    fields = queryGoodsInOutFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     ret = isAnd(ret, isEqual(b, qr.counts[title]));
 
@@ -2635,7 +2632,6 @@ function ts100147Field(title, type) {
     tapButton(window, QUERY);
     qr = getQR();
     ret = isAnd(ret, isEqual(b, qr.counts[title]));
-
     return ret;
 }
 function ts100157For000() {
@@ -3009,24 +3005,25 @@ function test100071_100072() {
     tapButton(getScrollView(), idx);// tapButtonScroll
     var view = getPopView(window, -1);
     var text = getStaticTexts(view);
+    UIATarget.localTarget().logElementTree();
+    window.popover().dismiss();
+    tapReturn();
 
     var value1 = "start" + getToday("yy");
     var value2 = "stop" + getToday("yy");
     var ret1 = false, ret2 = true;
-    for (var i = 0; i < text.length; i++) {
+    for (var i = 0; i < text.length; i += 2) {
+        var v = text[i].value();
+        if (v == null) {
+            continue;
+        }
         if (!ret1) {
-            if (getStaticTextValue(view, i) == value1) {
-                ret1 = true;
-            }
+            ret1 = v == value1;
         }
         if (ret2) {
-            if (getStaticTextValue(view, i) == value2) {
-                ret2 = false;
-            }
+            ret2 = v == value2;
         }
     }
-    window.popover().dismiss();
-    tapReturn();
     return isAnd(ret1, ret2);
 }
 function test100073_100074() {
@@ -4552,8 +4549,7 @@ function ts100172() {
 function ts100173() {
     tapMenu("采购入库", "按批次查");
     var keys = { "日期从" : getDay(-10), "门店" : "中洲店" };
-    var fields = purchaseQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var batch = Number(getQR().data[0]["批次"]);
 
     var keys = { "厂商" : "vell", "门店" : "中洲店" };
@@ -4579,6 +4575,7 @@ function ts100173() {
     tapButton(window, QUERY);
     ret = isAnd(ret, batch + 1 == getQR().data[0]["批次"]);
     exp["单价"] = 200;// 进货价
+    tapLine();
     data = getQRDet().data;
     ret = isAnd(ret, isEqualDyadicArray(data, exp));
     tapReturn();
@@ -5390,8 +5387,7 @@ function checkDeadline(title, k1, k2) {
 function tsClearTField() {
     tapMenu("货品管理", "货品查询");
     var keys = { "厂商" : "vell", "类别" : "登山服" };// 厂商为AC，类别为SC
-    var fields = queryGoodsFields(keys);
-    query(fields);
+    var fields = conditionQuery(keys);
 
     clearTFieldsByIndex(window, fields["厂商"].index);
     keys = { "厂商" : "rt" };

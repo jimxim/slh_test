@@ -145,10 +145,10 @@ function test190012() {
     tapReturn();
 
     tapMenu("统计分析", "收支类别");
-    var qr = getQR(window, getScrollView(), "序号", 3);
+    var qr = getQR(window, getScrollView(), "序号");
     if (qr.curPageNo != "1") {
         goPage(1, qr);
-        qr = getQR(window, getScrollView(), "序号", 3);
+        qr = getQR(window, getScrollView(), "序号");
     }
     ret = isAnd(ret, isEqual("收入", qr.data[0]["出入类别"]), isEqual(r,
             qr.data[0]["名称"]));
@@ -220,7 +220,7 @@ function test190013() {
 
 function test190014() {
     tapMenu("统计分析", "收支表");
-    var qr = getQR(window, getScrollView(), "序号", 9);
+    var qr = getQR(window, getScrollView(), "序号");
     var a = qr.data[0];
 
     var r = getTimestamp(6);
@@ -231,7 +231,7 @@ function test190014() {
     tapReturn();
     delay();
 
-    qr = getQR(window, getScrollView(), "序号", 9);
+    qr = getQR(window, getScrollView(), "序号");
     var b = qr.data[0];
     var ret = isEqualObject(a, b);
 
@@ -273,10 +273,10 @@ function test190016() {
     tapReturn();
 
     tapMenu("统计分析", "收支类别");
-    var qr = getQR(window, getScrollView(), "序号", 3);
+    var qr = getQR(window, getScrollView(), "序号");
     if (qr.curPageNo != "1") {
         goPage(1, qr);
-        qr = getQR(window, getScrollView(), "序号", 3);
+        qr = getQR(window, getScrollView(), "序号");
     }
     ret = isAnd(ret, isEqual("支出", qr.data[0]["出入类别"]), isEqual(r,
             qr.data[0]["名称"]));
@@ -1246,11 +1246,11 @@ function test190028() {
 
     tapMenu2("收支类别");
     delay();// 防止界面未刷新
-    var qr = getQR(window, getScrollView(), TITLE_SEQ, 3);
+    var qr = getQR(window, getScrollView(), TITLE_SEQ);
     var titles1 = qr.titles;
     var ret = isEqualQRData1ByTitle(qr, "名称", r);
 
-    tapFirstText(getScrollView(), TITLE_SEQ, 3);
+    tapFirstText(getScrollView(), TITLE_SEQ);
     f = new TField("名称", TF, 0, "汇款");
     fields = [ f ];
     setTFieldsValue(getScrollView(), fields);
@@ -1260,7 +1260,7 @@ function test190028() {
 
     var cond = "window.buttons()['收支表'].isVisible()";
     waitUntil(cond, 5);// 等待返回
-    qr = getQR(window, getScrollView(), TITLE_SEQ, 3);
+    qr = getQR(window, getScrollView(), TITLE_SEQ);
     var titles2 = qr.titles;
     ret = isAnd(ret, isEqualObject(titles1, titles2));// 验证返回回到收支类别界面
 
