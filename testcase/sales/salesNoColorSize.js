@@ -212,6 +212,8 @@ function testSalesNoColorSize001_2() {
     run("【销售开单-新增】修改挂单客户信息", "test170748");
     run("【销售开单-开单】新增界面返回提示", "test170751");
     run("【销售开单-开单】挂单打印", "test170752_1");
+    run("【销售开单-开单】销售价格允许改高不允许改低：销售价不能低于零批价；销售开单价不能低于指定的价格类型-采购价",
+            "test170754_1");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -4221,6 +4223,7 @@ function test170166() {
     var firstOpt = getStaticTextValue(getPopOrView(), index - 5);
     tapButton(getPop(), OK);
     tapReturn();
+
     var ret = isAnd(isAqualOptime(getOpTime(), date, 2), isAqualOptime(
             getOpTime(), opt, 2), isEqual("总经理", staff), isAqualOptime(
             getOpTime(), firstOpt, 2), isEqual("总经理", firstStaff));
@@ -13213,6 +13216,73 @@ function test170752Field(menu, rights) {
     qo = { "备注" : "挂单是否打印" };
     o = { "新值" : "0", "数值" : [ "默认不打印" ] };
     setGlobalParam(qo, o);
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170754_1() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    var r = [ 150, 70, 250 ];
+    return test170754Field(menu, r, false);
+}
+function test170754_2() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    var r = [ 150, 70, 250 ];
+    return test170754Field(menu, r, true);
+}
+function test170754Field(menu, r, rights) {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售价格允许改高不允许改低" };
+    o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "0", "数值" : [ "采购价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 8, "单价" : 70 } ], "onlytest" : "yes" };
+    var ret1 = true, ret2 = true;
+    for (var j = 0; j < r.length; j++) {
+        for ( var menu1 in menu) {
+            tapMenu(menu1, menu[menu1]);
+            editSalesBill(json, colorSize);
+            o = { "修改明细" : [ { "单价" : r[j] } ] };
+            editBillDet(o);
+            saveAndAlertOk();
+            tapPrompt();
+            debugArray(alertMsgs);
+            alertMsg1 = getArray1(alertMsgs, -1);
+            if (rights) {
+                ret1 = isAnd(ret1, isIn(alertMsg1, "[3035] 价格输入错误，因为启用了价格验证"));
+            } else {
+                ret1 = isAnd(ret1, isIn(alertMsg1, "保存成功"));
+            }
+            if (r[j] == 250) {
+                ret1 = isAnd(ret1, isIn(alertMsg1, "保存成功"));
+            }
+            tapReturn();
+
+            tapMenu(menu1, menu[menu1]);
+            editSalesBill(json, colorSize);
+            o = { "修改明细" : [ { "单价" : r[j] } ] };
+            editBillDet(o);
+            tapButtonAndAlert("挂 单", OK);
+            if (rights) {
+                ret2 = isAnd(ret2, isIn(alertMsg1, "[3035] 价格输入错误，因为启用了价格验证"));
+            } else {
+                ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功"));
+            }
+            if (r[j] == 250) {
+                tapMenu("销售开单", "按挂单");
+                query();
+                var qr = getQR();
+                ret2 = isAnd(ret2, isAqualOptime(getOpTime(),
+                        qr.data[0]["操作日期"]));
+            }
+            tapReturn();
+        }
+    }
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;

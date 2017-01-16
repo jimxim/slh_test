@@ -115,7 +115,7 @@ function testSalesNoColorSizeElseAll_1() {
     run("【销售开单－销售汇总-按退货汇总】按退货汇总", "test170313");
     run("【销售开单－销售汇总-按店员汇总】按店员汇总", "test170319_1");
     run("【销售开单-按汇总-按店员汇总】每日业绩", "test170708");// //
-    run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709");
+    run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_2");
     run("【销售开单－销售汇总-按客户销售】按客户销售", "test170325_1");
     run("【销售开单-按汇总-按客户销售】上下级模式下查看客户销售数据", "test170554");
     run("【销售开单－销售汇总-按客户销售】点击查询记录后页面检查", "test170331");
@@ -9076,9 +9076,15 @@ function test170708() {
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
 }
-function test170709() {
+function test170709_1() {
+    return test170709Field(true);
+}
+function test170709_2() {
+    return test170709Field(false);
+}
+function test170709Field(rights) {
     tapMenu("销售开单", "按汇总", "按店员汇总");
-    var keys = { "日期从" : "2015-01-01", "到" : getToday(), "门店" : "中洲店",
+    var keys = { "日期从" : "2015-01-01", "到" : getToday(), "门店" : "常青店",
         "店员" : "000" };
     var fields = salesStaffFields(keys);
     query(fields);
@@ -9138,54 +9144,58 @@ function test170709() {
     var fields = salesStaffFields(keys);
     query(fields);
     var qr = getQR();
-    var xj = qr.counts["现金"];
-    var sk = qr.counts["刷卡"];
-    var hk = qr.counts["汇款"];
-    var ds = qr.counts["代收"];
-    var te = qr.counts["退额"];
-    var xs = qr.counts["销售数"];
-    var ts = qr.counts["退货数"];
-    var sxs = qr.counts["实销数"];
-    var sxe = qr.counts["实销额"];
-    var ml = qr.counts["抹零"];
-    var sxe2 = qr.counts["实销额2"];
-    var qt = qr.counts["其他费用"];
-    var qk = qr.counts["欠款"];
+    if (rights) {
+        ret = isAnd(ret, isEqual(0, qr.data.length));
+    } else {
+        var xj = qr.counts["现金"];
+        var sk = qr.counts["刷卡"];
+        var hk = qr.counts["汇款"];
+        var ds = qr.counts["代收"];
+        var te = qr.counts["退额"];
+        var xs = qr.counts["销售数"];
+        var ts = qr.counts["退货数"];
+        var sxs = qr.counts["实销数"];
+        var sxe = qr.counts["实销额"];
+        var ml = qr.counts["抹零"];
+        var sxe2 = qr.counts["实销额2"];
+        var qt = qr.counts["其他费用"];
+        var qk = qr.counts["欠款"];
 
-    tapFirstText();
-    tapNaviRightButton();
-    qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
-    var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
-    var sum8 = 0, sum9 = 0, sum10 = 0, sum11 = 0, sum12 = 0, sum13 = 0;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal; i++) {
-            sum1 += Number(qr.data[i]["现金"]);
-            sum2 += Number(qr.data[i]["刷卡"]);
-            sum3 += Number(qr.data[i]["汇款"]);
-            sum4 += Number(qr.data[i]["代收"]);
-            sum5 += Number(qr.data[i]["退额"]);
-            sum6 += Number(qr.data[i]["销售数"]);
-            sum7 += Number(qr.data[i]["退货数"]);
-            sum8 += Number(qr.data[i]["实销数"]);
-            sum9 += Number(qr.data[i]["实销额"]);
-            sum10 += Number(qr.data[i]["抹零"]);
-            sum11 += Number(qr.data[i]["实销额2"]);
-            sum12 += Number(qr.data[i]["其他费用"]);
-            sum13 += Number(qr.data[i]["欠款"]);
+        tapFirstText();
+        tapNaviRightButton();
+        qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
+        var sum1 = 0, sum2 = 0, sum3 = 0, sum4 = 0, sum5 = 0, sum6 = 0, sum7 = 0;
+        var sum8 = 0, sum9 = 0, sum10 = 0, sum11 = 0, sum12 = 0, sum13 = 0;
+        var totalPageNo = qr.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal; i++) {
+                sum1 += Number(qr.data[i]["现金"]);
+                sum2 += Number(qr.data[i]["刷卡"]);
+                sum3 += Number(qr.data[i]["汇款"]);
+                sum4 += Number(qr.data[i]["代收"]);
+                sum5 += Number(qr.data[i]["退额"]);
+                sum6 += Number(qr.data[i]["销售数"]);
+                sum7 += Number(qr.data[i]["退货数"]);
+                sum8 += Number(qr.data[i]["实销数"]);
+                sum9 += Number(qr.data[i]["实销额"]);
+                sum10 += Number(qr.data[i]["抹零"]);
+                sum11 += Number(qr.data[i]["实销额2"]);
+                sum12 += Number(qr.data[i]["其他费用"]);
+                sum13 += Number(qr.data[i]["欠款"]);
+            }
+            if (j < totalPageNo) {
+                scrollNextPage();
+                qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
+            }
         }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR2(getScrollView(-1, 0), "日期", "欠款");
-        }
+        tapNaviLeftButton();
+        tapNaviLeftButton();
+        var ret1 = isAnd(isEqual(xj, sum1), isEqual(sk, sum2),
+                isEqual(hk, sum3), isEqual(ds, sum4), isEqual(te, sum5),
+                isEqual(xs, sum6), isEqual(ts, sum7), isEqual(sxs, sum8),
+                isEqual(sxe, sum9), isAqualNum(ml, sum10),
+                isEqual(sxe2, sum11), isEqual(qt, sum12), isEqual(qk, sum13));
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
-    var ret1 = isAnd(isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk, sum3),
-            isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6), isEqual(
-                    ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
-            isAqualNum(ml, sum10), isEqual(sxe2, sum11), isEqual(qt, sum12),
-            isEqual(qk, sum13));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

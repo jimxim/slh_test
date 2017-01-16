@@ -149,7 +149,7 @@ function testSalesPrepare003() {
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     return ret;
 }

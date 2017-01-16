@@ -28,6 +28,7 @@ function test004() {
     run("【销售开单-开单】开启积分跨门店共享，总经理和店员查看", "test170694");
     run("【销售开单-按明细查】增加厂商查询条件", "test170699_4");
     run("【销售开单-物流单】非总经理登录", "test170641_4");
+    run("【销售开单-按汇总-按店员汇总】每日业绩-同一个店员同一天在不同门店销售", "test170709_1");
     run("【销售开单-开单】颜色尺码模式，折扣模式下允许修改折扣", "test170735");
     run("【销售开单-物流单】非总经理登录", "test170736");
     run("【销售开单-按订货开单】增加本单查询功能", "test170738");
@@ -36,6 +37,8 @@ function test004() {
     run("【销售开单-开单】挂单打印", "test170752_2");
     run("【销售开单-开单】销售开单价不能低于指定的价格类型-采购价+销售开单低于指定价格时是否允许继续保存：只允许挂单",
             "test170753_1");
+    run("【销售开单-开单】销售价格允许改高不允许改低：销售价不能低于零批价；销售开单价不能低于指定的价格类型-采购价",
+            "test170754_2");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350_1");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -1391,9 +1394,9 @@ function test170649() {
     tapMenu("销售开单", "按订货开单");
     query();
     qr = getQR();
-    var ret2 = isAnd(isAqualOptime(getOpTime(), qr.data[0]["操作日期"]), isEqual("李四",
-            qr.data[0]["客户"]), isEqual(15, qr.data[0]["订货数"]), isEqual("常青店",
-            qr.data[0]["门店"]));
+    var ret2 = isAnd(isAqualOptime(getOpTime(), qr.data[0]["操作日期"]), isEqual(
+            "李四", qr.data[0]["客户"]), isEqual(15, qr.data[0]["订货数"]), isEqual(
+            "常青店", qr.data[0]["门店"]));
 
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
@@ -1937,7 +1940,8 @@ function test170753Field(menu, colorSize) {
         tapPrompt();
         debugArray(alertMsgs);
         alertMsg1 = getArray1(alertMsgs, -1);
-        var ret1 = isIn(alertMsg1, "[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账");
+        ret1 = isAnd(ret1, isIn(alertMsg1,
+                "[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账"));
 
         tapButtonAndAlert("挂 单", OK);
         delay();
@@ -1945,7 +1949,7 @@ function test170753Field(menu, colorSize) {
         tapMenu(menu1, "按挂单");
         query();
         var qr = getQR();
-        var ret2 = isAnd(isEqual(r, qr.data[0]["备注"]), isAqualOptime(
+        ret2 = isAnd(ret2, isEqual(r, qr.data[0]["备注"]), isAqualOptime(
                 getOpTime(), qr.data[0]["操作日期"]));
     }
 
