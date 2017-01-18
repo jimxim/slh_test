@@ -1125,7 +1125,7 @@ function test170052() {
     editSalesBillDetNoColorSize(json);
     var ret1 = false, ret2 = true;
     var staffTFindex = getEditSalesTFindex2("客户", "店员");
-    var f = new TField("店员", TF_AC, staffTFindex, "00", -1);
+    var f = new TField("店员", TF_AC, staffTFindex, "3", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -1607,7 +1607,6 @@ function test170062() {
 
     var ret = isIn(e, "下级客户1 其他店");
     tapSalesBillVerify_OK();
-
     saveAndAlertOk();
     tapPrompt();
     delay();
@@ -1615,7 +1614,6 @@ function test170062() {
     var keys = { "客户" : "ls" };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
-
     tapButton(window, "核销");
     var a = getStaticTextValue(getScrollView(-1, 0), 0);
     tapNaviLeftButton();
@@ -3469,9 +3467,9 @@ function test170121_170523() {
     qr = getQR();
     var stock2 = add(qr.data[0]["库存"], qr.data[0]["在途数"]);
 
-    changeTFieldValue(qFields["门店"], "");
-    setTFieldsValue(window, qFields);
-    tapButton(window, QUERY);
+    keys = { "款号" : "3035" };
+    fields = queryGoodsCodeStockFields(keys);
+    query(fields);
     qr = getQR();
     var kuc = add(qr.counts["库存"], qr.counts["在途数"]);
 
@@ -13268,11 +13266,15 @@ function test170754Field(menu, r, rights) {
             o = { "修改明细" : [ { "单价" : r[j] } ] };
             editBillDet(o);
             tapButtonAndAlert("挂 单", OK);
+            tapPrompt();
+            debugArray(alertMsgs);
+            alertMsg1 = getArray1(alertMsgs, -1);
             if (rights) {
                 ret2 = isAnd(ret2, isIn(alertMsg1, "[3035] 价格输入错误，因为启用了价格验证"));
             } else {
                 ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功"));
             }
+            tapReturn();
             if (r[j] == 250) {
                 tapMenu("销售开单", "按挂单");
                 query();
