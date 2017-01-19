@@ -94,7 +94,7 @@ function test170757() {
     tapButton(window, QUERY);
     var stock1 = getGoodCurStock();
     var inc = { "均色-均码" : "5" };
-    var ret = isEqualObject2(addObject(stock0, inc), stock1);
+    var ret = isEqualObject2(subObject(stock0, inc), stock1);
 
     tapMenu("销售订货", "新增订货+");
     editSalesBill(json, colorSize);
@@ -110,7 +110,7 @@ function test170757() {
     tapMenu("货品管理", "当前库存");
     tapButton(window, QUERY);
     var stock3 = getGoodCurStock();
-    ret = isAnd(ret, isEqualObject2(addObject(stock2, inc), stock3));
+    ret = isAnd(ret, isEqualObject2(subObject(stock2, inc), stock3));
     return ret;
 }
 
