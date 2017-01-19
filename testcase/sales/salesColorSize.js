@@ -7253,6 +7253,11 @@ function test170735() {
 }
 function test170735Field(menu, params) {
     var qo, o, ret = true;
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    setGlobalParam(qo, o);
+
     qo = { "备注" : "开单时是否允许修改折扣" };
     o = { "新值" : "1", "数值" : [ "允许" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -7285,8 +7290,13 @@ function test170735Field(menu, params) {
         var alertMsg2 = getArray1(alertMsgs, -2);
         ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功") || isIn(alertMsg1, "保存成功"));
     }
-    qo = { "备注" : "开单模式" };
+
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    setGlobalParam(qo, o);
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;

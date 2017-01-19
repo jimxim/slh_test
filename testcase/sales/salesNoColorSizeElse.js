@@ -9132,20 +9132,21 @@ function test170709Field(rights) {
     }
     tapNaviLeftButton();
     tapNaviLeftButton();
-    var ret = isAnd(isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk, sum3),
-            isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6), isEqual(
-                    ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
-            isAqualNum(ml, sum10), isEqual(sxe2, sum11), isEqual(qt, sum12),
-            isEqual(qk, sum13));
+    var ret = isAnd(isAqualNum(xj, sum1), isAqualNum(sk, sum2), isAqualNum(hk,
+            sum3), isAqualNum(ds, sum4), isAqualNum(te, sum5), isAqualNum(xs,
+            sum6), isAqualNum(ts, sum7), isAqualNum(sxs, sum8), isAqualNum(sxe,
+            sum9), isAqualNum(ml, sum10), isAqualNum(sxe2, sum11), isAqualNum(
+            qt, sum12), isAqualNum(qk, sum13));
 
     tapMenu("销售开单", "按汇总", "按店员汇总");
     var keys = { "日期从" : "2015-01-01", "到" : getToday(), "门店" : "仓库店",
         "店员" : "000" };
     var fields = salesStaffFields(keys);
     query(fields);
+    var ret1 = true;
     var qr = getQR();
     if (rights) {
-        ret = isAnd(ret, isEqual(0, qr.data.length));
+        ret1 = isAnd(ret1, isEqual(0, qr.data.length));
     } else {
         var xj = qr.counts["现金"];
         var sk = qr.counts["刷卡"];
@@ -9190,11 +9191,11 @@ function test170709Field(rights) {
         }
         tapNaviLeftButton();
         tapNaviLeftButton();
-        var ret1 = isAnd(isEqual(xj, sum1), isEqual(sk, sum2),
-                isEqual(hk, sum3), isEqual(ds, sum4), isEqual(te, sum5),
-                isEqual(xs, sum6), isEqual(ts, sum7), isEqual(sxs, sum8),
-                isEqual(sxe, sum9), isAqualNum(ml, sum10),
-                isEqual(sxe2, sum11), isEqual(qt, sum12), isEqual(qk, sum13));
+        ret1 = isAnd(ret1, isEqual(xj, sum1), isEqual(sk, sum2), isEqual(hk,
+                sum3), isEqual(ds, sum4), isEqual(te, sum5), isEqual(xs, sum6),
+                isEqual(ts, sum7), isEqual(sxs, sum8), isEqual(sxe, sum9),
+                isAqualNum(ml, sum10), isEqual(sxe2, sum11),
+                isEqual(qt, sum12), isEqual(qk, sum13));
     }
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);

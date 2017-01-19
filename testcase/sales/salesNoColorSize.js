@@ -5693,7 +5693,7 @@ function test170227() {
 
     qo = { "备注" : "开单保存开启退货数和上次购买数的比对验证" };
     o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -5741,7 +5741,7 @@ function test170228() {
 
     qo = { "备注" : "销售允许单价为0的退货和开单" };
     o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -8632,6 +8632,10 @@ function test170492_2() {
     o = { "新值" : "5", "数值" : [ "产品折扣", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "默认显示价格类型" };
+    o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
+    setGlobalParam(qo, o);
+
     var r = "anewkhVip2" + randomWord(false, 4);
     tapMenu("往来管理", "新增客户+");
     delay();
@@ -8884,7 +8888,7 @@ function test170506() {
     var batch = qr.data[0]["批次"];
 
     tapFirstText();
-    tapButton(window, NOPAY);
+    tapButton(window, "未付");
     keys = { "现金" : money };
     var fields = editSalesBillFields(keys);
     setTFieldsValue(window, fields);
@@ -13269,10 +13273,13 @@ function test170754Field(menu, r, rights) {
             tapPrompt();
             debugArray(alertMsgs);
             alertMsg1 = getArray1(alertMsgs, -1);
+            var alertMsg2 = getArray1(alertMsgs, -2);
             if (rights) {
-                ret2 = isAnd(ret2, isIn(alertMsg1, "[3035] 价格输入错误，因为启用了价格验证"));
+                ret2 = isAnd(ret2, isIn(alertMsg1, "[3035] 价格输入错误，因为启用了价格验证")
+                        || isIn(alertMsg2, "[3035] 价格输入错误，因为启用了价格验证"));
             } else {
-                ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功"));
+                ret2 = isAnd(ret2, isIn(alertMsg1, "保存成功")
+                        || isIn(alertMsg2, "保存成功"));
             }
             tapReturn();
             if (r[j] == 250) {
@@ -13288,6 +13295,25 @@ function test170754Field(menu, r, rights) {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170450() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售价格允许改高不允许改低" };
+    o = { "新值" : "1", "数值" : [ "销售价不能低于零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls",
+        "明细" : [ { "货品" : "3035", "数量" : 8, "单价" : 170 } ] };
+    editSalesBillNoColorSize(json);
+
+    debugArray(alertMsgs);
+    var alertMsg1 = getArray1(alertMsgs, -1);
+    var ret1 = isIn(alertMsg1, "保存成功，是否打印");
 }
 function test240002_240004() {
     var qo, o, ret = true;
