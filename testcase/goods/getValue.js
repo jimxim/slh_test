@@ -162,9 +162,7 @@ function getWindowTFieldsIndex() {
  * @returns
  */
 function getTFieldsValue(view) {
-    if (isUndefined(view)) {
-        view = window;
-    }
+    view = view || window;
     var tf = getTFieldsIndex(view);
     var arr = {};
     for ( var i in tf) {
@@ -173,7 +171,7 @@ function getTFieldsValue(view) {
         arr[i] = v;
     }
     if (isDefined(arr["totalmoney"])) {
-        arr["总计"] = arr["totalmoney"];
+        arr["总计"] = arr["totalmoney"];// zy那需要
     }
     debugObject(arr, "值为");
     return arr;

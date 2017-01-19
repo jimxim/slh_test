@@ -1656,37 +1656,37 @@ function test120026() {
 
 function test120027() {
     tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : "50" } ] };
-    editSalesBillNoColorSize(json);
-    var det1 = json["明细值"].data;
+    var json = { "客户" : "vell", "明细" : [ { "货品" : "k300", "数量" : [ "50" ] } ] };
+    editSalesBill(json, colorSize);
+    var det1 = json["明细值"];
 
     tapMenu("采购入库", "按订货入库");
     query();
-    tapFirstText();
+    tapLine();
     var ret = isDisabledTField(0, getScrollView(-1));// 无法修改已有款号，应灰化
-    var json2 = { "明细" : [ { "货品" : "3035", "数量" : "20" } ] };
-    editSalesBillNoColorSize(json2);
+    var json2 = { "明细" : [ { "货品" : "3035", "数量" : [ "20" ] } ] };
+    editSalesBill(json2, colorSize);
 
     tapButton(window, QUERY);
-    tapFirstText();
+    tapLine();
     var qr = getQRDet();
     tapReturn();
-    ret = isAnd(ret, qr.data.length == 1, isIn(qr.data[0]["货品"], "k300"));
+    ret = isAnd(ret, isEqual("", qr.data[1]["货品"]), isIn(qr.data[0]["货品"],
+            "k300"));// 只显示1行
 
     tapMenu2("按批次查");
     query();
-    tapFirstText();
+    tapLine();
     var qr = getQRDet();
     tapReturn();
-    ret = isAnd(ret, qr.data.length == 2, isIn(qr.data[0]["货品"], "k300"), isIn(
-            qr.data[1]["货品"], "3035"));
+    ret = isAnd(ret, isEqual("", qr.data[2]["货品"]), isIn(qr.data[0]["货品"],
+            "k300"), isIn(qr.data[1]["货品"], "3035"));// 只显示2行
 
     tapMenu("采购订货", "按批次查");
     query();
-    tapFirstText();
-    var qr = getQRDet();
+    tapLine();
+    ret = isAnd(ret, checkBillDetValue(det1));// json
     tapReturn();
-    ret = isAnd(ret, isEqualDyadicArray(qr.data, det1));
 
     return ret;
 }
@@ -3099,7 +3099,7 @@ function ts120091() {
     tapReturn();
     var ret = isEqualDyadicArray(data1, data2);
     for (var i = 0; i < data2.length; i++) {
-        if (data2[i]["货品"] != "") {//getQRDet去除了判断有效行数
+        if (data2[i]["货品"] != "") {// getQRDet去除了判断有效行数
             ret = isAnd(ret, isEqual("", data2[i]["单价"]), isEqual("0",
                     data2[i]["小计"]));
         }

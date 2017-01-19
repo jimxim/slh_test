@@ -1357,15 +1357,11 @@ function test190031() {
 function test190032() {
     tapMenu("统计分析", "综合汇总");
     var keys = { "日期从" : getDay(-30), "到" : getDay(-10), "门店" : "常青店" };
-    var fields = statisticAnalysisSynthesisFields(keys);
-    setTFieldsValue(window, fields);
-    tapButton(window, CLEAR);
+    conditionQuery(keys);
 
-    var ret = isEqual(getToday(), getTextFieldValue(window, 0))
-            && isEqual(getToday(), getTextFieldValue(window, 1))
-            && isEqual("", getTextFieldValue(window, 2))
-
-    return ret;
+    return isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
+            getToday(), getTextFieldValue(window, 1)), isEqual("",
+            getTextFieldValue(window, 2)));
 }
 
 function test190035() {

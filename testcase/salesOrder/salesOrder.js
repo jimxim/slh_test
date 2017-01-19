@@ -845,11 +845,8 @@ function test160012() {
 function test160023_160024() {
     tapMenu("销售订货", "按明细查");
     var keys = { "日期从" : getDay(-30), "日期到" : getToday() };
-    var fields = salesOrderQueryParticularFields(keys);
-    setTFieldsValue(window, fields);
-    query(fields);
-    // 点击翻页
-    var ret = goPageCheck();
+    conditionQuery(keys);
+    var ret = goPageCheck(); // 翻页
 
     ret = ret && sortByTitle("批次", IS_NUM);
     ret = ret && sortByTitle("日期", IS_DATE2);
@@ -895,7 +892,8 @@ function test160020_160022() {
     var json = {
         "客户" : "xw",
         "日期" : getDay(-1),
-        "明细" : [ { "货品" : "3035", "数量" : "10" }, { "货品" : "4562", "数量" : "20" } ] };
+        "明细" : [ { "货品" : "3035", "数量" : [ "10" ] },
+                { "货品" : "4562", "数量" : [ "20" ] } ] };
     editSalesBill(json, colorSize);
 
     tapMenu2("按明细查");

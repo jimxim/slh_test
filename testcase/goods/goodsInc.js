@@ -1798,13 +1798,11 @@ function dropDownListCheck2(index, value, expected, o) {
 /**
  * 下拉列表是否包含期望值的内容
  * @param exp eg：exp = "进货价 零批价 打包价 大客户价 Vip价格"
- * @param view
+ * @param view 默认window
  * @returns {Boolean}
  */
 function isEqualDropDownListByExp(exp, view) {
-    if (isUndefined(view)) {
-        view = window;
-    }
+    view = view || window;
     delay(0.5);// 等待popover出现
     var view1 = getPopView(view, -1);
     var ret = true;
@@ -2663,9 +2661,7 @@ function getQueryTFields(keys) {
  * @returns qFields
  */
 function conditionQuery(keys, tapClear, view) {
-    if (isUndefined(view)) {
-        view = window;
-    }
+    view = view || window;
     if (isUndefined(tapClear) || tapClear) {
         tapButton(view, CLEAR);
     }

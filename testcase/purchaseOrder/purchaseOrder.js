@@ -227,7 +227,9 @@ function ts130001() {
         return true;
     }
 }
-// 在130001中顺带检验
+/**
+ * 按明细查差异数验证 130001中顺带检验
+ */
 function ts130019(num) {
     tapMenu2("按明细查");
     query();
@@ -1308,6 +1310,7 @@ function ts130040() {
     tapMenu2("按批次查");
     tapButton(window, QUERY);// 刷新，防止元素无效
     tapLine();
+    delay(0.5);// 等待界面加载
     var v = getSalesBillValueByLabel();
     tapReturn();
     return isAnd(ret, isIn(v["店员"], "总经理"));
@@ -1585,9 +1588,7 @@ function editOverLengthBillDet() {
  * @param remarks 备注
  */
 function addPOrderBillDet(num, remarks) {
-    if (isUndefined(num)) {
-        num = 30;
-    }
+    num = num || "30";
     var det = {};
     switch (colorSize) {
     case "no":
