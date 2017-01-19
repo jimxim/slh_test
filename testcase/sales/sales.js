@@ -78,6 +78,42 @@ function testEditSalesBillDetRepeatGoods() {
     return true;
 }
 
+// 【销售开单-开单】均色均码模式+异地仓库+绑定仓库，库存检查
+// 仓库店绑定文一店 仓库店登陆验证
+function test170757() {
+    tapMenu("货品管理", "当前库存");
+    var keys = { "款号" : "3035", "门店" : "仓库店" };
+    conditionQuery(keys);
+    var stock0 = getGoodCurStock();
+
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "5" } ] };
+    editSalesBill(json, colorSize);
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var stock1 = getGoodCurStock();
+    var inc = { "均色-均码" : "5" };
+    var ret = isEqualObject2(addObject(stock0, inc), stock1);
+
+    tapMenu("销售订货", "新增订货+");
+    editSalesBill(json, colorSize);
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var stock2 = getGoodCurStock();
+    ret = isAnd(ret, isEqualObject2(stock1, stock2));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapLine();
+    editSalesBillSave({});
+    tapMenu("货品管理", "当前库存");
+    tapButton(window, QUERY);
+    var stock3 = getGoodCurStock();
+    ret = isAnd(ret, isEqualObject2(addObject(stock2, inc), stock3));
+    return ret;
+}
+
 // slh-5062
 // 使用3035测试 总经理不受控制，店长，开单员受到控制
 // "进货价":"100","零批价":"200","打包价":"180","大客户价":"160","Vip价格":"140"
