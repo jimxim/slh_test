@@ -7331,6 +7331,7 @@ function test170749Field(params) {
         ret = isAnd(ret, isEqual(1, qr.data[0]["折扣"]));
         tapReturn();
     }
+
     qo = { "备注" : "开单模式" };
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
 
