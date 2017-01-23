@@ -3685,7 +3685,6 @@ function testCs170247() {
     var a4 = getTextFieldValue(getScrollView(), 17);
     var ret = isAnd(isEqual(r, a), isEqual(r1, a1), isIn(a2, "总经理"), isEqual(
             "", a3), isEqual(r, a4));
-
     tapReturn();
 
     tapMenu("销售开单", "开  单+");
@@ -3695,7 +3694,6 @@ function testCs170247() {
 
     var b = getTextFieldValue(getScrollView(), 4);
     var ret1 = isEqual("490", b);
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -3704,9 +3702,7 @@ function testCs170247() {
     var json = { "客户" : r, "明细" : [ { "货品" : "x001", "数量" : [ 2, 1, 2, 3 ] } ],
         "onlytest" : "yes", "goodsFieldIndex" : -2 };
     editSalesBillColorSize(json);
-
     var c = getTextFieldValue(getScrollView(), 4);
-
     var ret2 = isEqual("490", c);
     tapReturn();
 

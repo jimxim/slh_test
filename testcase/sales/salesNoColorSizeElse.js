@@ -8267,7 +8267,7 @@ function test170639_170640() {
 }
 function test170642() {
     tapMenu("销售开单", "按挂单");
-    var keys1 = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
+    var keys1 = { "日期从" : getDay(-30), "日期到" : getDay(-1), "门店" : "常青店" };
     var fields1 = salesQueryGuaDanFields(keys1);
     query(fields1);
 
@@ -8404,7 +8404,7 @@ function test170645() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "按挂单");
-    var keys = { "日期从" : "2015-01-10", "日期到" : getDay(-1) };
+    var keys = { "日期从" : "2015-01-10", "日期到" : getDay(-1), "门店" : "常青店" };
     var fields = salesQueryGuaDanFields(keys);
     query(fields);
 

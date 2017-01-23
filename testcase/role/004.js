@@ -40,6 +40,7 @@ function test004() {
     run("【销售开单-开单】销售价格允许改高不允许改低：销售价不能低于零批价；销售开单价不能低于指定的价格类型-采购价",
             "test170754_2");
     run("【销售开单-开单】销售价格允许改高不允许改低：不检查+销售开单价不能低于指定的价格类型-不检查", "test170755_1");
+    run("【销售开单-按批次查】店长权限为4/店长权限为4时，修改打印后单据验证", "test170761");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350_1");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -2005,4 +2006,43 @@ function test170755Field(menu, colorSize) {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170761() {
+    var params = [ { "新值" : "4", "数值" : [ "店长可以修改打印后的单据", "in" ] },
+            { "新值" : "0", "数值" : [ "默认店长权限", "in" ] } ];
+    var params1 = [ { "新值" : "2", "数值" : [ "都不允许修改", "in" ] },
+            { "新值" : "1", "数值" : [ "明细不允许修改", "in" ] },
+            { "新值" : "0", "数值" : [ "不限制" ] } ];
+    var altM = [ "打印后单据只允许修改支付方式", "不能修改实际的金额", "不能修改" ];
+    return test170761Field(params, params1, altM);
+}
+function test170761Field(params, params1, altM) {
+    var qo = { "备注" : "店长权限类别" };
+    var qo1 = { "备注" : "单据打印后不允许修改" };
+    var r = "anewkhao" + randomWord(false, 3);
+    var ret = true;
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for (var i = 0; i < params1.length; i++) {
+            setGlobalParam(qo1, params1[i]);
+            tapMenu("销售开单", "开  单+");
+            var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : "1" } ],
+                "打印" : "打印(客户用)" };
+            editSalesBillNoColorSize(json);
+
+            tapMenu("销售开单", "按批次查");
+            query();
+            tapFirstText();
+            o = { "修改明细" : [ { "数量" : 3 } ] };
+            editBillDet(o);
+            saveAndAlertOk();
+            tapPrompt();
+            debugArray(alertMsgs);
+            var alertMsg1 = getArray1(alertMsgs, -1);
+            var ret1 = isIn(alertMsg1, altM[0]) || isIn(alertMsg1, altM[1])
+                    || isIn(alertMsg1, altM[2]);
+        }
+    }
+    logDebug(" ret=" + ret + " ret1=" + ret1);
+    return ret && ret1;
 }

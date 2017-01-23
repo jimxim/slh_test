@@ -101,9 +101,8 @@ function testSalesNoColorSizeAll_2() {
     run("【 开单】快速新增客户时自动刷新检查", "test170538");
     run("【销售开单－开单】汇款需填写客户", "test170582");// SLH-11804
     run("【销售开单－开单】汇款无需填写客户", "test170583");
+    // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从A切换到B", "test170619_170620");
     // run("【销售开单-按汇总】按金额汇总,增加实收栏", "test170588");
-    // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从A切换到B", "test170619");
-    // run("【销售开单-开单】是否要弹出价格刷新窗口--客户从无切换到有", "test170620");
     // run("采购入库/采购订货价格刷新", "test170527");//(功能已去除)
 
 }
@@ -10511,66 +10510,47 @@ function test170608() {
 
     return ret;
 }
-function test170619() {
+function test170619_170620() {
+    var menu = { "采购订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170619Field(menu);
+}
+function test170619Field(menu) {
     var qo, o, ret = true;
     qo = { "备注" : "刷新窗口" };
     o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    tapMenu("销售开单", "开  单+");
+    var ret1 = true, ret2 = true;
     var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : "10" } ],
         "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
+    var json1 = { "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
+    for (var j = 0; j < params.length; j++) {
+        setGlobalParam(qo, params[j]);
+        for ( var menu1 in menu) {
+            var cus = "ls";
+            if (menu1 == "采购订货") {
+                cus = "rt";
+            }
+            tapMenu(menu1, menu[menu1]);
+            editSalesBillNoColorSize(json);
 
-    tapButton(window, CLEAR);
-    var o = { "客户" : "lt" };
-    editSalesBillCustomer(o);
-    var ret1 = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
-    tapPrompt();
-    tapReturn();
+            tapButton(window, CLEAR);
+            var o = { "客户" : "lt" };
+            editSalesBillCustomer(o);
+            ret1 = isAnd(ret1, isIn(alertMsg, "是否需要重新刷新明细价格等信息"));
+            tapPrompt();
+            tapReturn();
 
-    tapMenu("采购订货", "新增订货+");
-    var json = { "客户" : "vell", "明细" : [ { "货品" : "4562", "数量" : "20" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    tapButton(window, CLEAR);
-    var o = { "客户" : "rt" };
-    editSalesBillCustomer(o);
-    var ret2 = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
-    tapPrompt();
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
-}
-function test170620() {
-    var qo, o, ret = true;
-    qo = { "备注" : "刷新窗口" };
-    o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    tapMenu("销售开单", "开  单+");
-    var json = { "明细" : [ { "货品" : "k300", "数量" : "10" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    var o = { "客户" : "ls" };
-    editSalesBillCustomer(o);
-    var ret1 = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
-    tapPrompt();
-    tapReturn();
-
-    tapMenu("采购订货", "新增订货+");
-    var json = { "明细" : [ { "货品" : "4562", "数量" : "20" } ], "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-
-    var o = { "客户" : "rt" };
-    editSalesBillCustomer(o);
-    var ret2 = isIn(alertMsg, "是否需要重新刷新明细价格等信息");
-    tapPrompt();
-    tapReturn();
-
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+            tapMenu(menu1, menu[menu1]);
+            editSalesBillNoColorSize(json1);
+            var o = { "客户" : "ls" };
+            editSalesBillCustomer(o);
+            ret2 = isAnd(ret2, isIn(alertMsg, "是否需要重新刷新明细价格等信息"));
+            tapPrompt();
+            tapReturn();
+        }
+    }
+    loDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
     return ret && ret1 && ret2;
 }
 function test170621() {
@@ -13291,7 +13271,7 @@ function test170754Field(menu, r, rights) {
             }
             tapReturn();
             if (r[j] == 250) {
-                tapMenu("销售开单", "按挂单");
+                tapMenu(menu1, "按挂单");
                 query();
                 var qr = getQR();
                 ret2 = isAnd(ret2, isAqualOptime(getOpTime(),
@@ -13300,6 +13280,8 @@ function test170754Field(menu, r, rights) {
             tapReturn();
         }
     }
+    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
@@ -13327,11 +13309,52 @@ function test170758() {
     tapMenu("销售订货", "按批次查");
     query();
     var qr = getQR();
-    var ret
-    isEqual(20, qr.data[0]["已发"]);
+    var ret = isEqual(20, qr.data[0]["已发"]);
 
     logDebug(" ret=" + ret);
     return ret;
+}
+function test170759() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单允许作废和修改天数" };
+    o = { "新值" : "0", "数值" : [ "不能作废", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否允许修改单据日期" };
+    o = { "新值" : "0", "数值" : [ "默认不限制", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    o = [ getDay(-1), getDay(1) ];
+    var r = randomWord(false, 6);
+    for (var j = 0; j < o.length; j++) {
+        tapMenu("销售订货", "新增订货+");
+        var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ],
+            "日期" : o[j], "备注" : r };
+        editSalesBill(json, colorSize);
+    }
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "日期从" : getDay(-1), "日期到" : getDay(-1) };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+    tapFirstText();
+    editSalesBillSave({});
+
+    keys = { "日期从" : getDay(1), "日期到" : getDay(1) };
+    fields = salesBillOrderFields(keys);
+    query(fields);
+    tapFirstText();
+    editSalesBillSave({});
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var qr = getQR();
+    var ret1 = isAnd(isEqual(getToday(""), qr.data[0]["日期"]), isEqual(r,
+            qr.data[0]["备注"]), isEqual(getToday(""), qr.data[1]["日期"]),
+            isEqual(r, qr.data[1]["备注"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
 function test240002_240004() {
     var qo, o, ret = true;
