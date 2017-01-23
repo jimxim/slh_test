@@ -366,7 +366,14 @@ function check170557Alert(price, expMsg) {
     tapReturn();
     return ret;
 }
-
+// 文一店配货员407登陆
+function test170760() {
+    tapMenu("销售开单", "按批次查");
+    var ret = checkShopQueryRights();
+    tapMenu2("按明细查");
+    ret = isAnd(ret, checkShopQueryRights());
+    return ret;
+}
 function editSPCBill(price) {
     tapMenu("销售开单", "开  单+");
     // 李四适用价格打包价

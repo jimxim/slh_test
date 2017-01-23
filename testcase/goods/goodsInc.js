@@ -98,9 +98,7 @@ function cToEn(str) {
  * @returns keys
  */
 function addCustomer(keys, o) {
-    if (isUndefined(o)) {
-        o = {};
-    }
+    o = o || {};
     var fields = editCustomerFields(keys);
     setTFieldsValue(getScrollView(), fields);
 
@@ -145,24 +143,14 @@ function editCustomerSave(o) {
  */
 function addGoods(keys, o) {
     delay();// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
-    // if (isUndefined(keys)) {
-    // return;
-    // }
-    if (isUndefined(o)) {
-        o = {};
-    }
-    if (isDefined(o["上架日期"])) {
-        changeMarketTime(o["上架日期"]);
-    }
+    o = o || {};
+    o["上架日期"] && changeMarketTime(o["上架日期"]);
+
     var fields = editGoodsFields(keys, false);
     setTFieldsValue(getScrollView(-1), fields);
 
-    if (isDefined(o["库存录入"])) {
-        editStockEntry(o);//
-    }
-    if (isDefined(o["厂商价格"])) {
-        editSupplierPrice(o);
-    }
+    o["库存录入"] && editStockEntry(o);//
+    o["厂商价格"] && editSupplierPrice(o);
     editGoodsSave(o)
 }
 function editGoodsSave(o) {
@@ -338,7 +326,7 @@ function getBillDetInputIndex(tfNum, idx) {
     }
     var view = getScrollView(idx);
     var text = getTextFields(view);
-    for (var i = 0; i < text.length; i = i + tfNum) {
+    for (var i = 0, len = text.length; i < len; i = i + tfNum) {
         if (getTextFieldValue(view, i) == "") {
             // logDebug("开单明细第一个输入下标 i=" + i);
             break;
@@ -427,7 +415,7 @@ function getDayToFullYear(day) {
  */
 function getEditBillValue(firstTitle, arr) {
     var data = {};
-    for (var i = 0; i < arr.length; i++) {
+    for (var i = 0, len = arr.length; i < arr; i++) {
         var title = arr[i];
         var index = getEditSalesTFindex(firstTitle, title);
         if (index >= 0) {
@@ -456,7 +444,7 @@ function getDetSizheadTFIndex(titles) {
     var titleX = titles["标题坐标"];
     var texts = getTextFields(getScrollView(-1));
     var arrX = [], x = 0, ret = {};
-    for (var i = 0; i < texts.length; i++) {
+    for (var i = 0, len = texts.length; i < len; i++) {
         var tf = texts[i];
         x = getX(tf);
         arrX.push(x);
@@ -504,7 +492,7 @@ function getQRDet(view) {
     titles_tf["明细输入框个数"] = tfNum;
     var stock = [], arrX = [], stNum = 0;
     var staticTexts = getStaticTexts(view);
-    for (; stNum < staticTexts.length; stNum++) {
+    for (var len = staticTexts.length; stNum < len; stNum++) {
         var x = getX(staticTexts[stNum]);
         arrX.push(x);
         if (isRepetition(arrX)) {
@@ -573,7 +561,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
     var firstIndex = 0;
     var lastIndex = 0;
     var texts = getStaticTexts(window);
-    for (var i = 0; i < texts.length; i++) {
+    for (var i = 0, len = texts.length; i < len; i++) {
         var v = texts[i].value();
         if (firstIndex == 0 && v == firstTitle) {
             firstIndex = i;
@@ -621,14 +609,14 @@ function getQResult3(dataView, firstTitle, lastTitle) {
 function getQRVerify_x(view, firstTitle) {
     var i = 0, y = 0, yPre = 0, titles = {};
     var texts = getStaticTexts(view);
-    for (; i < texts.length; i++) {
+    for (var len = texts.length; i < len; i++) {
         if (firstTitle == texts[i].value()) {
             yPre = getY(texts[i]);
             titles[firstTitle] = getX(texts[i]);
             break;
         }
     }
-    for (; i < texts.length; i++) {
+    for (var len = texts.length; i < len; i++) {
         y = getY(texts[i]);
         if (yPre == y) {
             var key = texts[i].value();
@@ -673,7 +661,7 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
     var firstIndex = 0;
     var lastIndex = 0;
     var texts = getStaticTexts(dataView);
-    for (var i = 0; i < texts.length; i++) {
+    for (var i = 0, len = texts.length; i < len; i++) {
         var v = texts[i].value();
         if (firstIndex == 0 && v.indexOf(firstTitle) != -1) {
             firstIndex = i;
@@ -700,9 +688,7 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
  * @returns
  */
 function getRandomNum(min, max, dn) {
-    if (isUndefined(dn)) {
-        dn = 0;
-    }
+    dn = dn || 0;
     var num = min + Math.random() * (max - min);
     return Number(num.toFixed(dn));
 }
@@ -1807,7 +1793,7 @@ function isEqualDropDownListByExp(exp, view) {
     var view1 = getPopView(view, -1);
     var ret = true;
     var texts = getStaticTexts(view1);
-    for (var i = 0; i < texts.length; i++) {
+    for (var i = 0, len = texts.length; i < len; i++) {
         var v = texts[i].name();
         if (v) {
             ret = isAnd(ret, isIn(exp, v));
@@ -1906,7 +1892,7 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle) {
  */
 function isEqualDropDownList(expected, view1) {
     var ret = true;
-    for (var i = 0; i < expected.length; i++) {
+    for (var i = 0, len = expected.length; i < len; i++) {
         // 下拉框奇数行内容为空
         ret = ret && isEqual(expected[i], getStaticTextValue(view1, i * 2));
     }
@@ -1976,7 +1962,7 @@ function retry(fn1, maxTries, i) {
     while (tries < maxTries) {
         try {
             var f1 = fn1 + "('";
-            for (var j = 3; j < arguments.length; j++) {
+            for (var j = 3, len = arguments.length; j < len; j++) {
                 var arg = arguments[j];
                 if (isDefined(arg)) {
                     f1 += "," + arguments[j];

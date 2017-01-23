@@ -1226,7 +1226,7 @@ function test190026() {
 function test190027() {
     tapMenu("统计分析", "收支类别");
     tapMenu2("收支类别");// 重新点击一次，相当于延迟操作，防止getQR取值出错
-    var ret = goPageCheck(window, getScrollView(), TITLE_SEQ, 3);
+    var ret = goPageCheck(window, getScrollView(), TITLE_SEQ);
 
     ret = ret && sortByTitle("出入类别");
     ret = ret && sortByTitle("名称");
@@ -1236,11 +1236,10 @@ function test190027() {
 
 function test190028() {
     tapMenu("统计分析", "收支类别");
-    tapFirstText(getScrollView(), TITLE_SEQ, 3);
+    tapLine();
     var r = "类别" + getTimestamp(7);
     var f = new TField("名称", TF, 0, r);
-    var fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(), [ f ]);
     saveAndAlertOk();
     tapReturn();
 
@@ -1250,10 +1249,9 @@ function test190028() {
     var titles1 = qr.titles;
     var ret = isEqualQRData1ByTitle(qr, "名称", r);
 
-    tapFirstText(getScrollView(), TITLE_SEQ);
+    tapLine();
     f = new TField("名称", TF, 0, "汇款");
-    fields = [ f ];
-    setTFieldsValue(getScrollView(), fields);
+    setTFieldsValue(getScrollView(), [ f ]);
     saveAndAlertOk();
     tapReturn();
     ret = isAnd(ret, isInAlertMsgs("相同记录已存在"));
