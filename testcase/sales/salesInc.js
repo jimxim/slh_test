@@ -58,11 +58,34 @@ function testSalesPrepare003() {
         "代收" : { "物流商" : "sf", "代收金额" : 50 }, "备注" : "zy" };
     editSalesBillNoColorSize(json);
 
+    var ret = true, qo, o;
+    qo = { "备注" : "上次单价" };
+    o = { "新值" : "1", "数值" : [ "显示" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "1", "数值" : [ "启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否按门店取客户上次价" };
+    o = { "新值" : "0", "数值" : [ "按门店获取客户上次价" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
     // 销售单// 客户“李四”需要用款号4562在常青店以外的门店开单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
-        "代收" : { "物流商" : "tt" }, "备注" : "zy" };
+        "单价" : "250", "代收" : { "物流商" : "tt" }, "备注" : "zy", "不返回" : "yes" };
     editSalesBillNoColorSize(json);
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    var qr = getQRDet();
+    var ret1 = isEqual(250, qr.data[0]["单价"]);
+    tapReturn();
 
     // 销售单// 客户“韩红”需要在常青店以外的门店有积分
     tapMenu("销售开单", "开  单+");
@@ -136,7 +159,6 @@ function testSalesPrepare003() {
     tapButtonAndAlert("挂 单", OK);
     tapReturn();
 
-    var qo, o, ret = true;
     qo = { "备注" : "开单模式" };
     o = { "新值" : "20", "数值" : [ "现金+刷卡+汇款+配货员", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -151,7 +173,7 @@ function testSalesPrepare003() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     setGlobalParam(qo, o);
 
-    return ret;
+    return ret && ret1;
 }
 function testSalesPrepare005() {
     // "Aaa002"中洲店入库10件

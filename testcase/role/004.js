@@ -2041,6 +2041,7 @@ function test170761Field(params, params1, altM) {
             var alertMsg1 = getArray1(alertMsgs, -1);
             var ret1 = isIn(alertMsg1, altM[0]) || isIn(alertMsg1, altM[1])
                     || isIn(alertMsg1, altM[2]);
+            tapReturn();
         }
     }
     logDebug(" ret=" + ret + " ret1=" + ret1);

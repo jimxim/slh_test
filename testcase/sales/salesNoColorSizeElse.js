@@ -10270,9 +10270,58 @@ function test170730() {
     var ret6 = isEqual(getToday(), getTextFieldValue(window, index));
     editSalesBillSave({});
 
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 2 } ],
+        "特殊货品" : { "抹零" : 50, "打包费" : 100 }, "日期" : getDay(-3), "备注" : "日期检查",
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    tapButtonAndAlert("挂 单", OK);
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    var keys1 = { "日期从" : getDay(-3), "日期到" : getDay(-3) };
+    var fields1 = salesQueryGuaDanFields(keys1);
+    query(fields1);
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
+            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]));
+
+    tapFirstText();
+    var keys = { "日期" : getDay(-1) };
+    var qFields = editSalesBillFields(keys);
+    setTFieldsValue(window, qFields);
+    editSalesBillSave({});
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr = getQR();
+    var ret7 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
+            qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]), isEqual(
+            getToday(), qr.data[0]["日期"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"]));
+
+    tapMenu("销售开单", "按挂单");
+    keys1 = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
+    fields1 = salesQueryGuaDanFields(keys1);
+    query(fields1);
+    qr = getQR();
+    var batch = qr.data[0]["批次"];
+    tapFirstText();
+    tapButtonAndAlert("作 废", OK);
+
+    tapMenu("销售开单", "按批次查");
+    var keys1 = [ "作废挂单" ];
+    var fields1 = salesQueryBatchFields(keys1);
+    changeTFieldValue(fields1["作废挂单"], "作废");
+    query(fields1);
+    var qr = getQR();
+    var ret8 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
+            qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
+            + ", ret7=" + ret7 + ", ret8=" + ret8);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test170730_1() {
     var ret;
