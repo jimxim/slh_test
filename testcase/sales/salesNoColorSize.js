@@ -6125,9 +6125,9 @@ function test170247() {
     var params = [ { "新值" : "2", "数值" : [ "默认打包价", "in" ] },
             { "新值" : "1", "数值" : [ "默认零批价", "in" ] } ];
     var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
-    return test170247Field(menu, params);
+    return test170247Field(menu, params, "no");
 }
-function test170247Field(menu, params) {
+function test170247Field(menu, params, colorSize) {
     var qo = { "备注" : "默认显示价格类型" };
     var r = "anewkhao" + randomWord(false, 4);
     var ret = true, qr, price, keys;
@@ -6151,7 +6151,7 @@ function test170247Field(menu, params) {
             "onlytest" : "yes" };
         for ( var menu1 in menu) {
             tapMenu(menu1, menu[menu1]);
-            editSalesBillNoColorSize(json);
+            editSalesBill(json, colorSize);
             qr = getQRDet();
             ret = isAnd(ret, isEqual(price, qr.data[0]["单价"]));
             editSalesBillSave({});

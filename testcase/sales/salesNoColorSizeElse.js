@@ -10297,26 +10297,28 @@ function test170730() {
     qr = getQR();
     var ret7 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(2,
             qr.data[0]["数量"]), isEqual("日期检查", qr.data[0]["备注"]), isEqual(
-            getToday(), qr.data[0]["日期"]), isAqualOptime(getOpTime(),
-            qr.data[0]["操作日期"]));
+            getToday(""), qr.data[0]["日期"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"], 2));
+
+    tapMenu("销售开单", "按挂单");
+    keys1 = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
+    fields1 = salesQueryGuaDanFields(keys1);
+    query(fields1);
+    var qr = getQR();
+    var total1 = qr.total;
 
     tapMenu("销售开单", "按挂单");
     keys1 = { "日期从" : getDay(-30), "日期到" : getDay(-1) };
     fields1 = salesQueryGuaDanFields(keys1);
     query(fields1);
     qr = getQR();
-    var batch = qr.data[0]["批次"];
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
 
-    tapMenu("销售开单", "按批次查");
-    var keys1 = [ "作废挂单" ];
-    var fields1 = salesQueryBatchFields(keys1);
-    changeTFieldValue(fields1["作废挂单"], "作废");
-    query(fields1);
-    var qr = getQR();
-    var ret8 = isAnd(isEqual(batch, qr.data[0]["批次"]), isEqual("李四",
-            qr.data[0]["客户"]), isEqual(getToday(""), qr.data[0]["日期"]));
+    tapMenu("销售开单", "按挂单");
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret8 = isAnd(isEqual(qr.total, Number(total1) - 1));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6

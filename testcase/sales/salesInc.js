@@ -73,28 +73,30 @@ function testSalesPrepare003() {
     // 销售单// 客户“李四”需要用款号4562在常青店以外的门店开单
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
-        "单价" : "250", "代收" : { "物流商" : "tt" }, "备注" : "zy", "不返回" : "yes" };
+        "代收" : { "物流商" : "tt" }, "备注" : "zy", "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
+    o = [ { "单价" : [ 170, 0 ] } ];
+    editChangeSalesBillOrderPrice(o);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "1" } ],
+        "onlytest" : "yes" };
+    editSalesBillNoColorSize(json);
+    var qr = getQRDet();
+    var ret1 = isEqual(170, qr.data[0]["单价"]);
+    tapReturn();
 
     qo = { "备注" : "成交价" };
     o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : "1" } ],
-        "onlytest" : "yes" };
-    editSalesBillNoColorSize(json);
-    var qr = getQRDet();
-    var ret1 = isEqual(250, qr.data[0]["单价"]);
-    tapReturn();
-
     // 销售单// 客户“韩红”需要在常青店以外的门店有积分
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "hh", "明细" : [ { "货品" : "4562", "数量" : "5" } ],
-        "备注" : "zy" };
+        "备注" : "zy", "不返回" : "yes" };
     editSalesBillNoColorSize(json);
 
     // 准备兑换单
-    tapMenu("销售开单", "开  单+");
     json = { "客户" : "lt" };
     editSalesBillCustomer(json);
     tapButton(window, "核销");
@@ -662,7 +664,6 @@ function editQuickAddCustomer(o, ret) {
 }
 function editQuickAddCustomerYes(o) {
     tapReturn();
-    delay();
 }
 function editQuickAddCustomerNo(o) {
     return;
