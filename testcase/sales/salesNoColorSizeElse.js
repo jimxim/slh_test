@@ -190,6 +190,9 @@ function testSalesNoColorSizeElseAll_2() {
     run("【销售开单－按订货开单】键盘检查", "test170259");
     run("【销售开单-物流核销】核销明细，查询之后 顶部显示为0", "test170739");
     run("【销售开单-收款】跨门店收款", "test170740");
+    run("【销售开单-按汇总-客户对账单-打印】打印", "test170763");
+    run("【销售开单-开单】按订货开单的销售单允许修改，同时更新订单状态", "test170764");
+    run("【销售开单-开单】按订货开单的销售单不允许修改，必须作废后重新按订货开单", "test170765");
     // run("【销售开单】挂单界面打印时提示检查", "test170400");//打印按钮灰化，无法点击
     // run("【销售开单】挂单界面打印时提示检查", "test170400_2");//打印按钮灰化，无法点击
     // run("【销售开单-核销】物流单核销-特殊货品", "test170569");//加到170288
@@ -10595,4 +10598,197 @@ function test170740() {
             isEqual("仓库店", qr.data[0]["门店"]));
 
     return ret;
+}
+function test170763() {
+    tapMenu("销售开单", "按汇总", "客户对账单");
+    tapButton(window, PRINT);
+    var btn = [ "打印预览(按批次)", "打印预览(按明细)" ];
+    for (var j = 0; j < btn.length; j++) {
+        tapButton(window, btn[j]);
+        tapPrompt();
+        debugArray(alertMsgs);
+        var alertMsg1 = getArray1(alertMsgs, -1);
+        var ret = isAnd(isIn(alertMsg1, "打印预览时请到查询界面选择客户和门店"));
+    }
+    tapNaviLeftButton();
+
+    logDebug(" ret=" + ret);
+    return ret;
+}
+function test170764() {
+    var qo, o, ret = true;
+    qo = { "备注" : "按订货开单的销售单是否允许修改" };
+    o = { "新值" : "0", "数值" : [ "允许修改,同时更新订单状态", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    json = editSalesBillSave({});
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+    var a = qr.data[0]["发货状态"];
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 10 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    var qr2 = getQR();
+    var b = qr2.data[0]["发货状态"];
+    var batch1 = qr.data[0]["批次"];
+    var ret1 = isAnd(isEqual("全部发货", a), isEqual("部分发货", b), isEqual(batch,
+            batch1), isEqual(20, qr2.data[0]["订货数"]), isEqual(10,
+            qr2.data[0]["已发数"]), isEqual(10, qr2.data[0]["差异数"]));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 20 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    qr2 = getQR();
+    var c = qr2.data[0]["发货状态"];
+    var batch2 = qr.data[0]["批次"];
+    var ret2 = isAnd(isEqual("部分发货", b), isEqual("全部发货", c), isEqual(batch1,
+            batch2), isEqual(20, qr2.data[0]["订货数"]), isEqual(20,
+            qr2.data[0]["已发数"]), isEqual(0, qr2.data[0]["差异数"]));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 0 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    qr2 = getQR();
+    var d = qr2.data[0]["发货状态"];
+    var batch3 = qr.data[0]["批次"];
+    var ret3 = isAnd(isEqual("全部发货", c), isEqual("未发货", d), isEqual(batch3,
+            batch2), isEqual(20, qr2.data[0]["订货数"]), isEqual(0,
+            qr2.data[0]["已发数"]), isEqual(20, qr2.data[0]["差异数"]));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 10 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 30 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    qr2 = getQR();
+    var e = qr2.data[0]["发货状态"];
+    var batch4 = qr.data[0]["批次"];
+    var ret4 = isAnd(isEqual("全部发货", e), isEqual(batch3, batch4), isEqual(20,
+            qr2.data[0]["订货数"]), isEqual(30, qr2.data[0]["已发数"]), isEqual(-10,
+            qr2.data[0]["差异数"]));
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    var batch7 = qr.data[0]["批次"];
+    tapFirstText();
+    tapButtonAndAlert("作 废", OK);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    qr2 = getQR();
+    var f = qr2.data[0]["发货状态"];
+    var batch5 = qr.data[0]["批次"];
+    var ret5 = isAnd(isEqual("未发货", f), isEqual(batch5, batch4), isEqual(20,
+            qr2.data[0]["订货数"]), isEqual(0, qr2.data[0]["已发数"]), isEqual(20,
+            qr2.data[0]["差异数"]));
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 10 ] } ];
+    editChangeSalesBillOrderNum(o);
+
+    tapMenu("销售订货", "按批次查");
+    tapFirstText();
+    runAndAlert("test170262End", OK);
+    tapPrompt();
+    // 销售订货-按批次查界面检查订单状态在test170262
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 30 ] } ];
+    editChangeSalesBillOrderNum(o);
+    tapMenu("销售开单", "按批次查");
+    query();
+    qr2 = getQR();
+    var batch6 = qr.data[0]["批次"];
+    var ret6 = isAnd(isEqual(batch7, batch6), isEqual(30, qr2.data[0]["数量"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
+}
+function test170765() {
+    var qo, o, ret = true;
+    qo = { "备注" : "按订货开单的销售单是否允许修改" };
+    o = { "新值" : "1", "数值" : [ "不允许修改,必须作废后重新按订货开单", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售订货", "新增订货+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 20 } ] };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    json = editSalesBillSave({});
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    var qr = getQR();
+    var batch = qr.data[0]["批次"];
+    var a = qr.data[0]["发货状态"];
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 10 ] } ];
+    editChangeSalesBillOrderNum(o);
+    debugArray(alertMsgs);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret1 = isAnd(isIn(alertMsg2, "按订货开单的销售单是否允许修改\"为\"不允许"));
+
+    tapMenu("销售订货", "按批次查");
+    tapFirstText();
+    runAndAlert("test170262End", OK);
+    tapPrompt();
+    // 销售订货-按批次查界面检查订单状态在test170262
+
+    tapMenu("销售开单", "按批次查");
+    query();
+    tapFirstText();
+    var o = [ { "数量" : [ 30 ] } ];
+    editChangeSalesBillOrderNum(o);
+    debugArray(alertMsgs);
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret2 = isAnd(isIn(alertMsg2, "按订货开单的销售单是否允许修改\"为\"不允许"));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

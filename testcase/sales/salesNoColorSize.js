@@ -519,6 +519,10 @@ function setNoColorSize_1Params() {
     o = { "新值" : "0", "数值" : [ "按门店获取客户上次价" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "按订货开单的销售单是否允许修改" };
+    o = { "新值" : "0", "数值" : [ "允许修改,同时更新订单状态", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     // qo = { "备注" : "按明细" };
     // o = { "新值" : "1", "数值" : [ "显示与第1个价格的差额", "in" ] };
     // ret = isAnd(ret, setGlobalParam(qo, o));
@@ -12421,7 +12425,7 @@ function test170731() {
     var f1 = new TField("接收店", TF_SC, 1, "中洲店");
     var fields = [ f0, f1 ];
     setTFieldsValue(window, fields);
-    json = { "明细" : [ { "货品" : "3035", "数量" : r } ] };
+    json = { "明细" : [ { "货品" : "k300", "数量" : r } ] };
     editSalesBillNoColorSize(json);
 
     tapMenu("门店调出", "按批次查");
@@ -12430,12 +12434,12 @@ function test170731() {
     tapFirstText();
     qr1 = getQRDet();
     tapReturn();
-    var ret3 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isEqual("3035,jkk",
-            qr1.data[0]["货品"]), isAqualNum(r, qr1.data[0]["数量"]));
+    var ret3 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isIn(qr1.data[0]["货品"],
+            "k300"), isAqualNum(r, qr1.data[0]["数量"]));
 
     r = "1." + getRandomInt(100);
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : r } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : r } ],
         "特殊货品" : { "抹零" : 2.7, "打包费" : 7.8 } };
     editSalesBillNoColorSize(json);
 
@@ -12445,11 +12449,10 @@ function test170731() {
     tapFirstText();
     qr1 = getQRDet();
     tapReturn();
-    var ret4 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isEqual("8989,我们",
-            qr1.data[0]["货品"]), isAqualNum(r, qr1.data[0]["数量"]), isEqual(
-            "00000,抹零", qr1.data[1]["货品"]), isAqualNum(2.7, qr1.data[1]["单价"]),
-            isEqual("00001,打包费", qr1.data[2]["货品"]), isAqualNum(7.8,
-                    qr1.data[2]["单价"]));
+    var ret4 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isIn(qr1.data[0]["货品"],
+            "k300"), isAqualNum(r, qr1.data[0]["数量"]), isEqual("00000,抹零",
+            qr1.data[1]["货品"]), isAqualNum(2.7, qr1.data[1]["单价"]), isEqual(
+            "00001,打包费", qr1.data[2]["货品"]), isAqualNum(7.8, qr1.data[2]["单价"]));
 
     tapMenu("销售开单", "按订货开单");
     query();
@@ -12469,7 +12472,7 @@ function test170731() {
 
     r = "1." + getRandomInt(100);
     tapMenu("销售开单", "开  单+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : r } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : r } ],
         "特殊货品" : { "抹零" : 1.9, "打包费" : 3.5 } };
     editSalesBillNoColorSize(json);
 
@@ -12479,11 +12482,10 @@ function test170731() {
     tapFirstText();
     qr1 = getQRDet();
     tapReturn();
-    var ret6 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isEqual("3035,jkk",
-            qr1.data[0]["货品"]), isAqualNum(r, qr1.data[0]["数量"]), isEqual(
-            "00000,抹零", qr1.data[1]["货品"]), isAqualNum(1.9, qr1.data[1]["单价"]),
-            isEqual("00001,打包费", qr1.data[2]["货品"]), isAqualNum(3.5,
-                    qr1.data[2]["单价"]));
+    var ret6 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isIn(qr1.data[0]["货品"],
+            "k300"), isAqualNum(r, qr1.data[0]["数量"]), isEqual("00000,抹零",
+            qr1.data[1]["货品"]), isAqualNum(1.9, qr1.data[1]["单价"]), isEqual(
+            "00001,打包费", qr1.data[2]["货品"]), isAqualNum(3.5, qr1.data[2]["单价"]));
 
     r = "1." + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
@@ -12499,10 +12501,51 @@ function test170731() {
             qr2.data[0]["货品"]), isAqualNum(r, qr2.data[0]["数量"]));
     tapReturn();
 
+    // 采购入库单,采购订货单,销售订货单,销售单,门店调出单,单据修改时不提示款号已停用
+    tapMenu("货品管理", "货品查询");
+    var Keys = [ "款号名称" ];
+    var Fields = queryGoodsFields(Keys);
+    changeTFieldValue(Fields["款号名称"], "k300");
+    query(Fields);
+    tapFirstText();
+    tapButtonAndAlert("停 用", OK);
+    tapPrompt();
+
+    var menu = { "采购入库" : "按批次查", "采购订货" : "按批次查", "销售订货" : "按批次查",
+        "销售开单" : "按批次查", "门店调出" : "按批次查" };
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        var t = randomWord(false, 6);
+        var o = [ { "备注" : [ t ] } ];
+        editChangeSalesBillOrderRemarks(o, "no");
+        saveAndAlertOk();
+        tapPrompt();
+        var ret8 = isAnd(!isIn(alertMsg, "款号已停用"));
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        var qr2 = getQRDet();
+        tapReturn();
+        ret8 = isAnd(ret8, isEqual(t, qr2.data[0]["备注"]));
+    }
+
+    tapMenu("货品管理", "货品查询");
+    tapButton(window, CLEAR);
+    var Keys = { "款号名称" : "k300", "是否停用" : "是" };
+    var Fields = queryGoodsFields(Keys);
+    query(Fields);
+    tapFirstText();
+    tapButtonAndAlert("启 用", OK);
+    tapPrompt();
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
+            + ", ret7=" + ret7 + ", ret8=" + ret8);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
 }
 function test170732() {
     // 全局参数：非总经理开单时是否允许修改折扣：默认不允许，开单模式：客户折扣、产品折扣、童装+产品折扣，产品折扣+代收
