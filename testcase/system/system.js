@@ -45,6 +45,9 @@ function testSystem001() {
     run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
     run("【系统设置-全局设置】异地发货开单模式必须先开启异地仓库", "test210073");
+    run("【系统设置-全局设置】均色均码和童装模式限制", "test210074");
+    run("【用户帮助-用户反馈】新增反馈", "test210075");
+    run("【用户帮助-用户反馈】新增反馈-输入过长的反馈标题或反馈内容", "test210076");
 }
 function testSystem002() {
     run("【系统设置】", "testSystem002prepare");
@@ -2397,5 +2400,115 @@ function test210073() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test210074() {
+    var qo, o, ret = true;
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
+    qo = { "备注" : "开单模式" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "8,按组开单模式，适用于童装", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "操作失败，[童装模式需在颜色尺码模式下进行]");
+    tapReturn();
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "8", "数值" : [ "适用于童装", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    var fields = querySystemGlobalFields(qo);
+    query(fields);
+
+    tapFirstText();
+    var setObj = {};
+    setObj["数值"] = [ "1,默认均色均码", "in" ];
+    setObj["授权码"] = [];
+    var fields = editSystemGlobalFields(setObj);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "操作失败，[使用均色均码时，不能再使用童装模式]");
+    tapReturn();
+
+    qo = { "备注" : "开单模式" };
+    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "是否需要颜色尺码" };
+    o = { "新值" : "1", "数值" : [ "默认均色均码", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test210075() {
+    tapMenu("用户帮助", "用户反馈", "新增反馈");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "标题或内容必须要填写");
+
+    var keys = { "反馈标题" : "check" };
+    var fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("用户帮助", "用户反馈", "反馈列表");
+    var qr = getQR();
+    var ret1 = isAnd(isEqual("check", qr.data[0]["标题"]), isAqualOptime(
+            getOpTime(), qr.data[0]["操作日期"]));
+
+    tapMenu("用户帮助", "用户反馈", "新增反馈");
+    var keys = { "反馈内容" : "abcdefghi正常" };
+    var fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("用户帮助", "用户反馈", "反馈列表");
+    var qr = getQR();
+    var ret2 = isAnd(isEqual("abcdefghi", qr.data[0]["标题"]), isAqualOptime(
+            getOpTime(), qr.data[0]["操作日期"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test210076() {
+    var r = randomWord(false, 51);
+    tapMenu("用户帮助", "用户反馈", "新增反馈");
+    var keys = { "反馈标题" : r };
+    var fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret = isIn(alertMsg, "[[抬头]超过限制，最大允许长度为50");
+    tapReturn();
+
+    var r1 = randomWord(false, 501);
+    tapMenu("用户帮助", "用户反馈", "新增反馈");
+    var keys = { "反馈内容" : r1 };
+    var fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "最大允许长度为500");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }

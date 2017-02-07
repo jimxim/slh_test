@@ -4402,3 +4402,6 @@ function test180100() {
 
     return ret;
 }
+function test180101() {
+
+}

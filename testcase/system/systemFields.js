@@ -118,7 +118,7 @@ function testSystemrReceiptFields() {
 }
 
 function systemrReceiptFields(keys, show) {
-    return getTFields("systemrReceiptField",getScrollView(),  keys, show);
+    return getTFields("systemrReceiptField", getScrollView(), keys, show);
 }
 function systemrReceiptField(key, show) {
     var f;
@@ -205,7 +205,7 @@ function testQuerySystemStaffFields() {
 }
 
 function querySystemStaffFields(keys, show) {
-    return getTFields("querySystemStaffField",window, keys, show);
+    return getTFields("querySystemStaffField", window, keys, show);
 }
 function querySystemStaffField(key, show) {
     var f;
@@ -242,7 +242,7 @@ function testEditSystemStaffFields() {
 }
 
 function EditSystemStaffFields(keys, show) {
-    return getTFields("EditSystemStaffField",getScrollView(), keys, show);
+    return getTFields("EditSystemStaffField", getScrollView(), keys, show);
 }
 function EditSystemStaffField(key, show) {
     var f;
@@ -316,7 +316,7 @@ function testSystemShopFields() {
 }
 
 function editSystemShopFields(keys, show) {
-    return getTFields("editSystemShopField",window, keys, show);
+    return getTFields("editSystemShopField", window, keys, show);
 }
 function editSystemShopField(key, show) {
     var f;
@@ -342,7 +342,7 @@ function testSystemShopAddFields() {
 }
 
 function editSystemShopAddFields(keys, show) {
-    return getTFields("editSystemShopAddField",window, keys, show);
+    return getTFields("editSystemShopAddField", window, keys, show);
 }
 function editSystemShopAddField(key, show) {
     var f;
@@ -404,7 +404,7 @@ function testSystemAccountFields() {
 }
 
 function editSystemAccountFields(keys, show) {
-    return getTFields("editSystemAccountField",window, keys, show);
+    return getTFields("editSystemAccountField", window, keys, show);
 }
 function editSystemAccountField(key, show) {
     var f;
@@ -428,7 +428,7 @@ function editSystemAccountField(key, show) {
 }
 // 新增账户
 function editSystemAccountAddFields(keys, show) {
-    return getTFields("editSystemAccountAddField",window, keys, show);
+    return getTFields("editSystemAccountAddField", window, keys, show);
 }
 function editSystemAccountAddField(key, show) {
     var f;
@@ -447,6 +447,25 @@ function editSystemAccountAddField(key, show) {
     case "card/remit":
     case "刷卡/汇款":
         f = new TField("门店", BTN_SC, 1, "通用");
+        break;
+    default:
+        logWarn("未知key＝" + key);
+    }
+    return f;
+}
+// 用户帮助-新增反馈
+function editUserFeedbackFields(keys, show) {
+    return getTFields("editUserFeedbackField", window, keys, show);
+}
+function editUserFeedbackField(key, show) {
+    var f;
+    switch (key) {
+    case "title":
+    case "反馈标题":
+        f = new TField("反馈标题", TF, 0, "");
+        break;
+    case "反馈内容":
+        f = new TField("反馈内容", TV, 0, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
