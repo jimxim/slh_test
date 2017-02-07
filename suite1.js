@@ -4,7 +4,7 @@
 //帐套autotest1(上下级)  autotest1Branch(分店) 
 //7.27起添加accessibilityLabel
 //nocol000~015 均色均码超长订单用 均色均码价格随便设置 
-//kh000~015 颜色尺码/尺码表头超长订单用 kh000需要有16种以上颜色 尺码组全选择衣服尺码
+//kh000~015颜色尺码/尺码表头超长订单用 kh000需要有16种以上颜色 尺码组全选择衣服尺码
 
 #import "all.js"
 #import "testcase/goods/editBill.js"
@@ -24,7 +24,7 @@ function test000All() {
 
 // run(caseName, "setSizeHeadParams_1");//
 // testSizeHead001_shop1();
- run(caseName, "ts100173");
+ run(caseName, "onlyTest");
 // run(caseName, "ts100059Color");//
 }   
 function onlyTest(){
@@ -33,15 +33,15 @@ function onlyTest(){
 // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
 // delay();
    try{  
-     return  test100071_100072();
-// var qr=getQRDet();
-// debugObject(qr.titles);
-// debugObject(qr.data[0]);
-// debugObject(qr.data[1]);
-// query();
-// var arr=[];
-// return isEqualCounts(arr);
-// return test220111();
+// tapMenu("销售订货", "新增订货+");
+// var json = {
+// "客户" : "xw",
+// "备注" : "head",
+// "明细" : [
+// { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 20 } },
+// { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 30 } } ]};
+// editSalesBill(json, colorSize);
+
 // target.captureScreenWithName("test");
    }catch(e){
  UIATarget.localTarget().logElementTree();
@@ -297,7 +297,7 @@ function login000ShopIn002(){
     var p1 = {"角色":"总经理"};
     var ok = login("000","000000",p1);
     if( ok ) {
-        testShopIn002(); 
+// testShopIn002();//调拨启用密码验证
         UIALogger.logStart("设置参数");
         ok = testShopOutParams02();
         if (ok) {

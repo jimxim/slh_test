@@ -26,10 +26,10 @@ function testShopOut001() {
 
     run("【门店调入-在途调拨】整单复制粘贴", "test160170ShopIn");// test160170会生成一个超长备注的调出单
     run("【销售订货-新增订货】总经理加载挂单时显示所有门店的挂单", "ts160171");
-    run(" 门店调入数据准备", "shopInPrepare");
-    // run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
+    run(" 门店调入数据准备", "shopInPrepare");   
 }
-
+//取未保存实现不稳定。先行去除
+//run("【门店调出-批量调出】取未保存数据准备", "ts150025Prepare");
 function testShopOut003() {
     // run("【门店调出-批量调出】取未保存", "ts150025");
 }

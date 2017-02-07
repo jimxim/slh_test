@@ -1242,9 +1242,7 @@ function toDate(day) {
  * @param maxSeconds
  */
 function waitUntilAlertInvisible(maxSeconds) {
-    if (isUndefined(maxSeconds)) {
-        maxSeconds = 10;
-    }
+    maxSeconds = maxSeconds || 10;
     for (var i = 0; i < maxSeconds; i++) {
         delay();
         var ok = isAlertVisible();
@@ -1258,9 +1256,7 @@ function waitUntilAlertInvisible(maxSeconds) {
  * @param maxTime最大等待时间，默认60s
  */
 function waitForLoad(maxTime) {
-    if (isUndefined(maxTime)) {
-        maxTime = 20;
-    }
+    maxTime = maxTime || 20;
     var times = 0;
     while (times < maxTime) {
         // var indicator = window.activityIndicators()[i];
@@ -1311,15 +1307,9 @@ function goPage2(page, qr) {
  */
 function goPageCheck(pageInfoView, dataView, firstTitle) {
     try {
-        if (isUndefined(pageInfoView)) {
-            pageInfoView = window;
-        }
-        if (isUndefined(dataView)) {
-            dataView = getScrollView();
-        }
-        if (isUndefined(firstTitle)) {
-            firstTitle = TITLE_SEQ;
-        }
+        pageInfoView = pageInfoView || window;
+        dataView = dataView || getScrollView();
+        firstTitle = firstTitle || TITLE_SEQ;
         delay();// 等待界面加载 防止页面信息取错 161222
         // 当前页为1
         var qr = getQR(pageInfoView, dataView, firstTitle);
@@ -1444,7 +1434,7 @@ function isAqualOptimeX(expected, actual, allow) {
     }
     var a1 = stringToDate(expected);
     var a2 = stringToDate(actual);
-    var result = (a2 - a1) / 60000;// 精确到分
+    var result = (a2 - a1) / 60000;
     var ret = Math.abs(result) <= allow;
     logDebug("expected=" + expected + ",actual=" + actual + ",allow=" + allow
             + ",ret=" + ret);
@@ -1557,9 +1547,7 @@ function isDifferentArrayField(arr1, arr2) {
  * @param view 默认window
  */
 function isDisabledTField(idx, view) {
-    if (isUndefined(view)) {
-        view = window;
-    }
+    view = view || window;
     return !view.textFields()[idx].isEnabled();
 }
 
