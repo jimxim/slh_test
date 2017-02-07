@@ -117,6 +117,15 @@ function test000SalesNoColorSize005() {
         logout();
     }
 }
+function test000SalesNoColorSize006() {
+    var p1 = {"角色":"总经理"};
+    var ok = login("000","000000",p1);
+    if( ok ) {
+        testSalesNoColorSize001_3();
+        
+        logout();
+    }
+}
 // 销售开单同时订货
 function testSalesNoColorSize170125_Params() {
     var p1 = {"角色":"总经理"};

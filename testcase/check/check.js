@@ -46,6 +46,8 @@ function testCheckAll() {
     // run("【盘点管理-新增盘点】是否允许负库存 设为 允许负库存/不允许负库存", "test180090_180091");//
     run("【盘点管理-新增盘点】盘点时是否允许允许输入负数", "test180091_1");
     run("【盘点管理—盘点处理】处理日期设置", "test180027");
+    run("【盘点管理-更多-未盘点款号】店长和开单员只能看自己门店的数据", "test180098_1");
+    run("【盘点管理-按批次查】修改界面款号下拉列表价格检查", "test180099");
 }
 function testCheck003() {
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
@@ -4149,6 +4151,53 @@ function test180097() {
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
-function test180098() {
+function test180098_1() {
+    return test180098Field(true);
+}
+function test180098_2() {
+    return test180098Field(false);
+}
+function test180098Field(rights) {
+    var ret = true;
+    if (rights) {
+        tapMenu("盘点管理", "按批次查");
+        var keys = { "日期从" : getDay(-5), "门店" : "仓库店" };
+        var fields = queryCheckBatchFields(keys);
+        query(fields);
+        var qr = getQR();
+        ret = isAnd(ret, !isEqual(0, qr.data.total), isEqual("仓库店",
+                qr.data[0]["门店"]));
+    } else {
+        tapMenu("盘点管理", "按批次查");
+        var keys = { "日期从" : getDay(-5), "门店" : "仓库店" };
+        var fields = queryCheckBatchFields(keys);
+        query(fields);
+        var qr = getQR();
+        ret = isAnd(ret, isEqual(0, qr.data.total));
+    }
 
+    return ret;
+}
+function test180099() {
+    tapMenu("盘点管理", "按批次查");
+    query();
+    tapFirstText();
+    var ret = false;
+    var titles = getSalesBillDetTfObject();
+    var title_num = "货品";
+    var f = new TField("货品", TF_AC, titles[title_num], "456", -1);
+    var cells = getTableViewCells(getScrollView(-1), f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "4562,Story,713元")) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    tapReturn();
+
+    return ret;
 }

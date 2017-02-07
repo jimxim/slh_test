@@ -324,7 +324,7 @@ function testCheckPlanAddFields() {
 }
 
 function checkPlanAddFields(keys, show) {
-    return getTFields("checkPlanAddField", keys, show);
+    return getTFields("checkPlanAddField", window, keys, show);
 }
 function checkPlanAddField(key, show) {
     var f;

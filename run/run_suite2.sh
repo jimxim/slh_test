@@ -25,6 +25,9 @@ js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize005"
 
 js_func="$js_func setSales001Params"
+js_func="$js_func test000SalesNoColorSize006"
+
+js_func="$js_func setSales001Params"
 js_func="$js_func test000SalesNoColorSize003"
 
 #均色均码 销售开单-其它
