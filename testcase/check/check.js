@@ -52,10 +52,12 @@ function testCheckAll() {
 function testCheck003() {
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店不存在未处理的盘点单和盘点计划）", "test180061");
     run("【盘点管理-盘点计划】新增盘点计划-按品牌（门店存在未处理的盘点单和盘点计划）", "test180062");
+    run("【盘点管理-盘点计划】新增盘点计划-按品牌-检查品牌下拉列表", "test180063");
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单", "test180064");
     run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180066");
     run("【盘点管理-盘点计划】新增盘点计划-按类别（门店不存在未处理的盘点单和盘点计划）", "test180067");
     run("【盘点管理-盘点计划】新增盘点计划-按类别（门店存在未处理的盘点单和盘点计划）", "test180068");
+    run("【盘点管理-盘点计划】新增盘点计划-按类别-检查类别下拉列表", "test180069");
     run("【盘点管理-盘点计划】新增类别盘点计划成功后-新增盘点单", "test180070");// //
     run("【盘点管理-盘点计划】新增厂商计划-按厂商（门店不存在未处理的盘点单和盘点计划）", "test180073");
     run("【盘点管理-盘点计划】新增盘点计划-按厂商（门店存在未处理的盘点单和盘点计划）", "test180074_180082_180083");
@@ -74,6 +76,7 @@ function testCheck003() {
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单", "test180095");
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180096");
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180097");
+    run("【盘点管理-盘点计划】新增盘点计划-按组合-检查类别/品牌/厂商/季节下拉列表", "test180100");
     // run("【盘点管理－新增盘点计划】停用", "test180098");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
@@ -2354,6 +2357,41 @@ function test180062() {
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
     return ret1 && ret2 && ret3;
 }
+function test180063() {
+    tapMenu("盘点管理", "盘点计划+", "按品牌+");
+    tapButton(getScrollView(), 1);
+    cells = test180100GetCells();
+    var len2 = cells.length;
+    var arr2 = [];
+    for (var l = 0; l < len2; l++) {
+        a = cells[l].name();
+        arr2.push(a);
+    }
+    window.popover().dismiss();
+    tapReturn();
+
+    tapMenu("货品管理", "基本设置", "所有品牌");
+    var keys = { "是否停用" : "否" };
+    var fields = goodsBrandFields(keys);
+    query(fields);
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr2, qr.data[t]["名称"]), isEqual(len2,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    return ret;
+}
 function test180064() {
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -2475,7 +2513,9 @@ function test180066() {
     tapPrompt();
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
-    var ret = (isIn(alertMsg1, "盘点计划正在执行中，盘点处理无法撤销"));
+    var alertMsg2 = getArray1(alertMsgs, -2);
+    var ret = isIn(alertMsg1, "盘点计划正在执行中，盘点处理无法撤销")
+            || isIn(alertMsg2, "盘点计划正在执行中，盘点处理无法撤销");
     delay();
 
     if (ipadVer >= "7.21") {
@@ -2666,6 +2706,41 @@ function test180068() {
     logDebug(" ret1=" + ret1 + ", ret2=" + ret2 + ", ret3=" + ret3);
     return ret1 && ret2 && ret3;
 }
+function test180069() {
+    tapMenu("盘点管理", "盘点计划+", "按类别+");
+    tapButton(getScrollView(), 1);
+    var cells = test180100GetCells();
+    var len1 = cells.length;
+    var arr1 = [], a;
+    for (var l = 0; l < len1; l++) {
+        a = cells[l].name();
+        arr1.push(a);
+    }
+    window.popover().dismiss();
+    tapReturn();
+
+    tapMenu("货品管理", "基本设置", "货品类别");
+    var keys = { "是否停用" : "否" };
+    var fields = goodsTypeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr1, qr.data[t]["名称"]), isEqual(len1,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    return ret;
+}
 function test180070() {
     tapMenu("盘点管理", "盘点处理");
     var keys = { "盘点门店" : "常青店" };
@@ -2709,8 +2784,8 @@ function test180070() {
     var ret1 = isEqual(1, sub(total2, total1));
     tapFirstText();
     qr = getQRDet();
-    ret1 = isAnd(ret1, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(1,
-            qr.data.length));
+    ret1 = isAnd(ret1, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual("",
+            qr.data[1]["货品"]));
 
     var josn = { "明细" : [ { "货品" : "4562", "数量" : 20 } ] };
     editCheckAddDetNoColorSize(josn);
@@ -2727,8 +2802,8 @@ function test180070() {
     var ret3 = isEqual(total2, total3);
     tapFirstText();
     qr = getQRDet();
-    ret3 = isAnd(ret3, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual(1,
-            qr.data.length));
+    ret3 = isAnd(ret3, isEqual("3035,jkk", qr.data[0]["货品"]), isEqual("",
+            qr.data[1]["货品"]));
     tapReturn();
 
     checkPrepare1();
@@ -4159,20 +4234,15 @@ function test180098_2() {
 }
 function test180098Field(rights) {
     var ret = true;
+    tapMenu("盘点管理", "按批次查");
+    var keys = { "日期从" : getDay(-5), "门店" : "仓库店" };
+    var fields = queryCheckBatchFields(keys);
+    query(fields);
+    var qr = getQR();
     if (rights) {
-        tapMenu("盘点管理", "按批次查");
-        var keys = { "日期从" : getDay(-5), "门店" : "仓库店" };
-        var fields = queryCheckBatchFields(keys);
-        query(fields);
-        var qr = getQR();
         ret = isAnd(ret, !isEqual(0, qr.data.total), isEqual("仓库店",
                 qr.data[0]["门店"]));
     } else {
-        tapMenu("盘点管理", "按批次查");
-        var keys = { "日期从" : getDay(-5), "门店" : "仓库店" };
-        var fields = queryCheckBatchFields(keys);
-        query(fields);
-        var qr = getQR();
         ret = isAnd(ret, isEqual(0, qr.data.total));
     }
 
@@ -4198,6 +4268,137 @@ function test180099() {
     delay();
     tapKeyboardHide();
     tapReturn();
+
+    return ret;
+}
+function test180100GetCells() {
+    var view1 = getPop(window, -1);
+    var table1 = getTableViews(view1)[0];
+    var cells = table1.cells();
+    return cells;
+}
+function test180100() {
+    tapMenu("盘点管理", "盘点计划+", "按组合+");
+    tapButton(getScrollView(), 1);
+    var cells = test180100GetCells();
+    var len1 = cells.length;
+    var arr1 = [], a;
+    for (var l = 0; l < len1; l++) {
+        a = cells[l].name();
+        arr1.push(a);
+    }
+    window.popover().dismiss();
+
+    tapButton(getScrollView(), 2);
+    cells = test180100GetCells();
+    var len2 = cells.length;
+    var arr2 = [];
+    for (var l = 0; l < len2; l++) {
+        a = cells[l].name();
+        arr2.push(a);
+    }
+    window.popover().dismiss();
+
+    tapButton(getScrollView(), 3);
+    cells = test180100GetCells();
+    var len3 = cells.length;
+    var arr3 = [];
+    for (var l = 0; l < len3; l++) {
+        a = cells[l].name();
+        arr3.push(a);
+    }
+    window.popover().dismiss()
+
+    tapButton(getScrollView(), 4);
+    cells = test180100GetCells();
+    var len4 = cells.length;
+    var arr4 = [];
+    for (var l = 0; l < len4; l++) {
+        a = cells[l].name();
+        arr4.push(a);
+    }
+    window.popover().dismiss();
+    tapReturn();
+
+    tapMenu("货品管理", "基本设置", "货品类别");
+    var keys = { "是否停用" : "否" };
+    var fields = goodsTypeFields(keys);
+    query(fields);
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr1, qr.data[t]["名称"]), isEqual(len1,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapMenu("货品管理", "基本设置", "所有品牌");
+    var keys = { "是否停用" : "否" };
+    var fields = goodsBrandFields(keys);
+    query(fields);
+    var qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr2, qr.data[t]["名称"]), isEqual(len2,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapMenu("往来管理", "厂商查询");
+    var keys = { "是否停用" : "否" };
+    var fields = queryCustomerProviderFields(keys);
+    query(fields);
+    qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr3, qr.data[t]["名称"]), isEqual(len3,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    tapMenu("往来管理", "厂商查询");
+    var keys = { "是否停用" : "否" };
+    var fields = queryCustomerProviderFields(keys);
+    query(fields);
+    qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            for (var t = 0; t < qr.data.length; t++) {
+                ret = isAnd(ret, isIn(arr3, qr.data[t]["名称"]), isEqual(len3,
+                        qr.total));
+            }
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
 
     return ret;
 }
