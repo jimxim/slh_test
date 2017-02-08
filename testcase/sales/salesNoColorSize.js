@@ -216,6 +216,7 @@ function testSalesNoColorSize001_3() {
             "test170754_1");
     run("【销售开单-按订货开单】删除特殊货品后再操作-颜色尺码/均色均码", "test170758");
     run("【销售开单-开单】均色均码开单显示库存/开单不显示库存", "test170762");
+    run("【销售开单-开单】单据修改时不提示款号已停用", "test170766");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -12438,7 +12439,7 @@ function test170731() {
 
     r = "1." + getRandomInt(100);
     tapMenu("销售订货", "新增订货+");
-    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : r } ],
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : r } ],
         "特殊货品" : { "抹零" : 2.7, "打包费" : 7.8 } };
     editSalesBillNoColorSize(json);
 
@@ -12449,7 +12450,7 @@ function test170731() {
     qr1 = getQRDet();
     tapReturn();
     var ret4 = isAnd(isAqualNum(r, qr.data[0]["数量"]), isIn(qr1.data[0]["货品"],
-            "k300"), isAqualNum(r, qr1.data[0]["数量"]), isEqual("00000,抹零",
+            "8989"), isAqualNum(r, qr1.data[0]["数量"]), isEqual("00000,抹零",
             qr1.data[1]["货品"]), isAqualNum(2.7, qr1.data[1]["单价"]), isEqual(
             "00001,打包费", qr1.data[2]["货品"]), isAqualNum(7.8, qr1.data[2]["单价"]));
 
@@ -12500,51 +12501,10 @@ function test170731() {
             qr2.data[0]["货品"]), isAqualNum(r, qr2.data[0]["数量"]));
     tapReturn();
 
-    // 采购入库单,采购订货单,销售订货单,销售单,门店调出单,单据修改时不提示款号已停用
-    tapMenu("货品管理", "货品查询");
-    var Keys = [ "款号名称" ];
-    var Fields = queryGoodsFields(Keys);
-    changeTFieldValue(Fields["款号名称"], "k300");
-    query(Fields);
-    tapFirstText();
-    tapButtonAndAlert("停 用", OK);
-    tapPrompt();
-
-    var menu = { "采购入库" : "按批次查", "采购订货" : "按批次查", "销售订货" : "按批次查",
-        "销售开单" : "按批次查", "门店调出" : "按批次查" };
-    for ( var menu1 in menu) {
-        tapMenu(menu1, menu[menu1]);
-        query();
-        tapFirstText();
-        var t = randomWord(false, 6);
-        var o = [ { "备注" : [ t ] } ];
-        editChangeSalesBillOrderRemarks(o, "no");
-        saveAndAlertOk();
-        tapPrompt();
-        var ret8 = isAnd(!isIn(alertMsg, "款号已停用"));
-        tapReturn();
-
-        tapMenu(menu1, menu[menu1]);
-        query();
-        tapFirstText();
-        var qr2 = getQRDet();
-        tapReturn();
-        ret8 = isAnd(ret8, isEqual(t, qr2.data[0]["备注"]));
-    }
-
-    tapMenu("货品管理", "货品查询");
-    tapButton(window, CLEAR);
-    var Keys = { "款号名称" : "k300", "是否停用" : "是" };
-    var Fields = queryGoodsFields(Keys);
-    query(Fields);
-    tapFirstText();
-    tapButtonAndAlert("启 用", OK);
-    tapPrompt();
-
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5 + ", ret6=" + ret6
-            + ", ret7=" + ret7 + ", ret8=" + ret8);
-    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8;
+            + ", ret7=" + ret7);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7;
 }
 function test170732() {
     // 全局参数：非总经理开单时是否允许修改折扣：默认不允许，开单模式：客户折扣、产品折扣、童装+产品折扣，产品折扣+代收
@@ -13470,6 +13430,60 @@ function test170762() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
+}
+function test170766() {
+    tapMenu("采购入库", "新增入库+");
+    var json = { "客户" : "Rt", "明细" : [ { "货品" : "k300", "数量" : 2 } ],
+        "备注" : "abc" };
+    editSalesBillNoColorSize(json);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "客户" : "ls", "明细" : [ { "货品" : "k300", "数量" : 3 } ] };
+    editSalesBillNoColorSize(json);
+
+    // 采购入库单,采购订货单,销售订货单,销售单,门店调出单,单据修改时不提示款号已停用
+    tapMenu("货品管理", "货品查询");
+    var Keys = [ "款号名称" ];
+    var Fields = queryGoodsFields(Keys);
+    changeTFieldValue(Fields["款号名称"], "k300");
+    query(Fields);
+    tapFirstText();
+    tapButtonAndAlert("停 用", OK);
+    tapPrompt();
+
+    var menu = { "采购入库" : "按批次查", "采购订货" : "按批次查", "销售订货" : "按批次查",
+        "销售开单" : "按批次查", "门店调出" : "按批次查" };
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        var t = randomWord(false, 6);
+        var o = [ { "备注" : [ t ] } ];
+        editChangeSalesBillOrderRemarks(o, "no");
+        saveAndAlertOk();
+        tapPrompt();
+        var ret = isAnd(!isIn(alertMsg, "款号已停用"));
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        var qr2 = getQRDet();
+        tapReturn();
+        ret = isAnd(ret, isEqual(t, qr2.data[0]["备注"]));
+    }
+
+    tapMenu("货品管理", "货品查询");
+    tapButton(window, CLEAR);
+    var Keys = { "款号名称" : "k300", "是否停用" : "是" };
+    var Fields = queryGoodsFields(Keys);
+    query(Fields);
+    tapFirstText();
+    tapButtonAndAlert("启 用", OK);
+    tapPrompt();
+
+    logDebug(" ret=" + ret);
+    return ret;
 }
 function test240002_240004() {
     var qo, o, ret = true;

@@ -2218,6 +2218,9 @@ function test210067() {
 
     return ret;
 }
+function test210067_1() {
+
+}
 function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
@@ -2474,8 +2477,8 @@ function test210075() {
             getOpTime(), qr.data[0]["操作日期"]));
 
     tapMenu("用户帮助", "用户反馈", "新增反馈");
-    var keys = { "反馈内容" : "abcdefghi正常" };
-    var fields = editUserFeedbackFields(keys);
+    keys = { "反馈内容" : "abcdefghi正常" };
+    fields = editUserFeedbackFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -2486,8 +2489,8 @@ function test210075() {
             getOpTime(), qr.data[0]["操作日期"]));
 
     tapMenu("用户帮助", "用户反馈", "新增反馈");
-    var keys = { "反馈标题" : "check1", "反馈内容" : "abcdefghi正常1" };
-    var fields = editUserFeedbackFields(keys);
+    keys = { "反馈标题" : "check1", "反馈内容" : "abcdefghi正常1" };
+    fields = editUserFeedbackFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
     tapReturn();
@@ -2509,9 +2512,21 @@ function test210075() {
         ret4 = true;
     }
 
+    tapFirstText();
+    keys = { "反馈内容" : "" };
+    fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("用户帮助", "用户反馈", "反馈列表");
+    var qr = getQR();
+    var ret5 = isAnd(isEqual("check1", qr.data[0]["标题"]), isEqual("",
+            qr.data[0]["内容"]));
+
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4);
-    return ret && ret1 && ret2 && ret3 && ret4;
+            + ret3 + ", ret4=" + ret4 + ", ret5=" + ret5);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5;
 }
 function test210076() {
     var r = randomWord(false, 51);
