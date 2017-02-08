@@ -4849,8 +4849,8 @@ function test170179() {
     delay();
     var qr = getQRtable1(getScrollView());
     loadHangBill(0);
+    delay();
     editSalesBillSave({});
-
     debugArray(alertMsgs);
     var alertMsg1 = getArray1(alertMsgs, -1);
     var alertMsg2 = getArray1(alertMsgs, -2);
@@ -6015,8 +6015,7 @@ function test170245() {
 
     runAndAlert("test210020Clear", OK);
     tapPrompt();
-    var cond = "isIn(alertMsg, '清理')";
-    waitUntil(cond, 30);
+    delay(10);
 
     tapMenu("销售开单", "开  单+");
     var ret = true;

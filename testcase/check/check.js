@@ -16,6 +16,7 @@ function testCheck001() {
 }
 function testCheckAll() {
     run("处理掉待作废", "checkPrepare");
+    run("调拨单入库", "checkPrepare_1");
     run("处理掉盘点计划", "checkPrepare1");
     run("处理掉盘点单", "checkPrepare2");
     run("【盘点管理-更多-未盘点款号】检查数据正确性", "test180088");
@@ -77,7 +78,9 @@ function testCheck003() {
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-进行盘点处理", "test180096");
     run("【盘点管理-盘点计划】新增组合盘点计划成功后-新增盘点单成功后-盘点处理完毕后-进行盘点撤销", "test180097");
     run("【盘点管理-盘点计划】新增盘点计划-按组合-检查类别/品牌/厂商/季节下拉列表", "test180100");
-    // run("【盘点管理－新增盘点计划】停用", "test180098");
+    // run("【盘点管理-盘点计划】新增品牌盘点计划成功后-新增盘点单成功后-进行盘点处理",
+    // "test180065_180071_180077");//需要调拨单，陆那么运行
+    // run("【盘点管理－新增盘点计划】停用", "test180101");
     // run("【盘点管理-盘点处理】待作废不允许盘点处理", "test180057");
 }
 function checkPrepare_Off() {
@@ -108,7 +111,8 @@ function checkPrepare() {
     if (t2 < 1) {
         ret = true;
     }
-
+}
+function checkPrepare_1() {
     tapMenu("门店调入", "在途调拨");
     var keys = { "日期从" : "2015-01-01" };
     var fields = shopInFlitFields(keys);
@@ -121,6 +125,10 @@ function checkPrepare() {
         runAndAlert("checkPrepare_IN", OK);
         delay();
     }
+
+    tapButton(window, QUERY);
+    qr = getQR();
+    var ret = isEqual(0, qr.data.length);
 
     logDebug(" t1=" + t1);
     return ret;
@@ -150,42 +158,46 @@ function checkPrepare1() {
 }
 function checkPrepare2() {
     tapMenu("盘点管理", "按批次查");
-    query();
+    var keys = { "日期从" : getDay(-3) };
+    var fields = queryCheckBatchFields(keys);
+    query(fields);
     var qr = getQR();
     var ret = true;
-    for (var i = 0; i < qr.total - 1; i++) {
-        var qr1 = getQR();
-        var date = qr1.data[0]["处理时间"];
-        if (date == "") {
+    if (qr.data.length != 0) {
+        for (var i = 0; i < qr.total - 1; i++) {
+            var qr1 = getQR();
+            var date = qr1.data[0]["处理时间"];
+            if (date == "") {
+                tapFirstText();
+                tapButtonAndAlert("删 除", OK);
+                delay();
+            }
+        }
+
+        tapMenu("盘点管理", "按批次查");
+        tapButton(window, QUERY);
+        var qr = getQR();
+        if (qr.data[0]["处理时间"] == "") {
             tapFirstText();
             tapButtonAndAlert("删 除", OK);
             delay();
         }
-    }
 
-    tapMenu("盘点管理", "按批次查");
-    tapButton(window, QUERY);
-    var qr = getQR();
-    if (qr.data[0]["处理时间"] == "") {
-        tapFirstText();
-        tapButtonAndAlert("删 除", OK);
-        delay();
-    }
-
-    tapButton(window, QUERY);
-    var qr = getQR();
-    var arr = [], date;
-    var totalPageNo = qr.totalPageNo;
-    for (var j = 1; j <= totalPageNo; j++) {
-        for (var i = 0; i < qr.curPageTotal - 1; i++) {
-            date = qr.data[i]["处理时间"];
-            if (date == "") {
-                ret = false;
+        tapButton(window, QUERY);
+        var qr = getQR();
+        var arr = [], date;
+        var totalPageNo = qr.totalPageNo;
+        for (var j = 1; j <= totalPageNo; j++) {
+            for (var i = 0; i < qr.curPageTotal - 1; i++) {
+                date = qr.data[i]["处理时间"];
+                if (date == "") {
+                    ret = false;
+                }
             }
-        }
-        if (j < totalPageNo) {
-            scrollNextPage();
-            qr = getQR();
+            if (j < totalPageNo) {
+                scrollNextPage();
+                qr = getQR();
+            }
         }
     }
 
@@ -199,7 +211,6 @@ function test180001_180003_180005() {
     tapMenu("盘点管理", "按批次查");
     var keys = { "日期从" : getDay(-1) };
     var fields = queryCheckBatchFields(keys);
-    setTFieldsValue(window, fields);
     query(fields);
     // // 点击翻页
     var ret = goPageCheck();
@@ -2445,6 +2456,66 @@ function test180064() {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test180065_180071_180077() {
+    var menu = [ "按品牌+", "按类别+", "按厂商+" ];
+    return test180065_180071_180077Field(menu);
+}
+function test180065_180071_180077Field(menu) {
+    checkPrepare();
+    checkPrepare1();
+    checkPrepare2();
+    for (var j = 0; j < menu.length; j++) {
+        var menu1 = menu[j];
+        tapMenu("盘点管理", "盘点计划+", menu1);
+        var keys = { "门店" : "常青店" };
+        var fields = checkPlanAddFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        delay();
+
+        var menu2;
+        switch (menu1) {
+        case "按品牌+":
+            menu2 = "按品牌";
+            break;
+        case "按类别+":
+            menu2 = "按类别";
+            break;
+        case "按厂商+":
+            menu2 = "按厂商";
+            break;
+        default:
+            menu2 = "按品牌";
+            break;
+        }
+        testAddPlanCheck(menu2);
+        tapButtonAndAlert(SAVE, OK);
+        tapPrompt();
+        tapReturn();
+
+        var code = "3035";
+        if (menu2 == "按厂商") {
+            code = "adidas";
+        }
+        var josn = { "明细" : [ { "货品" : code, "数量" : 50 } ] };
+        tapMenu("盘点管理", "新增盘点+");
+        editCheckAddNoColorSize(josn);
+
+        tapMenu("盘点管理", "盘点处理");
+        var keys = { "盘点门店" : "常青店" };
+        var fields = checkProcessFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        delay();
+        tapButtonAndAlert("部分处理");
+        tapPrompt();
+        var ret1 = isIn(alertMsg, "本仓库(店铺)还有调拨单没有接收入库，请全部接收之后再做盘点处理");
+        tapReturn();
+
+        checkPrepare1();
+        checkPrepare2();
+    }
+
+    return ret1;
 }
 function test180066() {
     tapMenu("盘点管理", "盘点处理");

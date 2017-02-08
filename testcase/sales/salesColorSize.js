@@ -168,230 +168,6 @@ function setNoColorSize_2Params() {
     o = { "新值" : "0", "数值" : [ "显示颜色尺码表", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    qo = { "备注" : "开单模式" };
-    o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "显示颜色尺码" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单是否显示尺码头部的界面" };
-    o = { "新值" : "0", "数值" : [ "默认不支持" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "默认显示价格类型" };
-    o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售允许单价为0" };
-    o = { "新值" : "0", "数值" : [ "默认退货和销售价格不能为零", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否允许修改已发货的订单" };
-    o = { "新值" : "1", "数值" : [ "允许修改已发货的订单", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "进货入库" };
-    o = { "新值" : "0", "数值" : [ "不更新", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "询问打印" };
-    o = { "新值" : "1", "数值" : [ "询问打印" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单是否显示多种小票格式打印的界面" };
-    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "刷新窗口" };
-    o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "价格刷新" };
-    o = { "新值" : "1", "数值" : [ "默认支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "现金" };
-    o = { "新值" : "1", "数值" : [ "自动汇总现金栏", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单未付单子" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单货品列表是否显示品牌信息" };
-    o = { "新值" : "1", "数值" : [ "部分客户需要", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "款号是否按门店区分" };
-    o = { "新值" : "0", "数值" : [ "默认不区分", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "区分客户" };
-    o = { "新值" : "0", "数值" : [ "默认不区分" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "发货数" };
-    o = { "新值" : "0", "数值" : [ "默认不填写" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "信用额度" };
-    o = { "新值" : "0", "数值" : [ "不启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "积分是否跨门店共享" };
-    o = { "新值" : "1", "数值" : [ "共享" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "加工价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单时同时订货" };
-    o = { "新值" : "0", "数值" : [ "默认不启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "退货数" };
-    o = { "新值" : "0", "数值" : [ "默认不开启", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "成交价" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "单价小数位" };
-    o = { "新值" : "3", "数值" : [ "货品单价精确到厘", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "允许折扣大于1" };
-    o = { "新值" : "1", "数值" : [ "允许折扣大于1", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否检查折扣" };
-    o = { "新值" : "2", "数值" : [ "折扣无限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "折扣后单价的核算模式" };
-    o = { "新值" : "0", "数值" : [ "保留精确小数", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "总计是否需要四舍五入" };
-    o = { "新值" : "1", "数值" : [ "需要" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "单据是否允许修改客户或厂商" };
-    o = { "新值" : "1", "数值" : [ "允许" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "支持异地仓库" };
-    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否允许修改单据日期" };
-    o = { "新值" : "0", "数值" : [ "默认不限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单是否合并重复的款号" };
-    o = { "新值" : "0", "数值" : [ "不合并", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否显示待作废按钮功能" };
-    o = { "新值" : "0", "数值" : [ "不显示", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单是否门店过滤人员" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "价格模式" };
-    o = { "新值" : "0", "数值" : [ "统一的价格体系", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "建款" };
-    o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "允许改高" };
-    o = { "新值" : "0", "数值" : [ "不检查", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "修改单价" };
-    o = { "新值" : "1", "数值" : [ "都可修改单价", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "补货退货" };
-    o = { "新值" : "0", "数值" : [ "不验证", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单补货退货时验证时,是否允许继续输入" };
-    o = { "新值" : "1", "数值" : [ "可以继续输入", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "未拿货款号做退货" };
-    o = { "新值" : "0", "数值" : [ "不提醒", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "自动生成款号" };
-    o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "打印后不允许修改" };
-    o = { "新值" : "0", "数值" : [ "不限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "新增界面格式" };
-    o = { "新值" : "0", "数值" : [ "老模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "采购入库模式" };
-    o = { "新值" : "2", "数值" : [ "默认复杂模式", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "调拨是否启用密码验证" };
-    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否启用自定义键盘" };
-    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "是否启用积分功能" };
-    o = { "新值" : "1", "数值" : [ "启用" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售单已配货的单子" };
-    o = { "新值" : "0", "数值" : [ "不限制" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "销售开单价不能低于指定的价格类型" };
-    o = { "新值" : "-1", "数值" : [ "不限制", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "颜色尺码模式下开单" };
-    o = { "新值" : "0", "数值" : [ "默认按颜色尺码提醒", "in" ] };
-    ret = isAnd(ret, setGlobalParam(qo, o));
-
-    // qo = { "备注" : "跨门店核销" };
-    // o = { "新值" : "0", "数值" : [ "默认不允许" ] };
-    // ret = isAnd(ret, setGlobalParam(qo, o));
-
-    qo = { "备注" : "开单界面，保存后显示是否打印确认窗口" };
-    o = { "新值" : "1", "数值" : [ "默认显示", "in" ] };
-    ret = isAnd(ret, setLocalParam(qo, o));
-
-    qo = { "备注" : "童装模式是否批发零售分开(按组按件分开)" };
-    o = { "新值" : "1", "数值" : [ "默认分开", "in" ] };
-    ret = isAnd(ret, setLocalParam(qo, o));
-
     return ret;
 }
 function testCs170047() {
@@ -402,12 +178,9 @@ function testCs170047() {
 
     tapButton(window, "未付");
     delay();
-
     var totalMoney = getTextFieldValue(window, 3);
-
     var ret = isAnd(isEqual("", getTextFieldValue(window, 2)), isEqual("-4840",
             getTextFieldValue(window, 14)));
-
     saveAndAlertOk();
     tapPrompt();
     tapReturn();
@@ -5358,7 +5131,7 @@ function test170657() {
 function test170658() {
     var qo, o, ret = true;
     qo = { "备注" : "是否允许负库存" };
-    o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
+    o = { "新值" : "0", "数值" : [ "允许负库存", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     var json = { "客户" : "ls", "明细" : [ { "货品" : "Aaa002", "数量" : [ 1 ] } ] };
@@ -5400,6 +5173,9 @@ function test170658() {
     tapButton(window, QUERY);
     qr = getQR();
     k = qr.data[0]["库存"];
+
+    o = { "新值" : "2", "数值" : [ "适用窜码销售情况", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     tapMenu("销售开单", "开  单+");
     editSalesBillColorSize(json);

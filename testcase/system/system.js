@@ -2485,8 +2485,33 @@ function test210075() {
     var ret2 = isAnd(isEqual("abcdefghi", qr.data[0]["标题"]), isAqualOptime(
             getOpTime(), qr.data[0]["操作日期"]));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
-    return ret && ret1 && ret2;
+    tapMenu("用户帮助", "用户反馈", "新增反馈");
+    var keys = { "反馈标题" : "check1", "反馈内容" : "abcdefghi正常1" };
+    var fields = editUserFeedbackFields(keys);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapReturn();
+
+    tapMenu("用户帮助", "用户反馈", "反馈列表");
+    var qr = getQR();
+    var ret3 = isAnd(isEqual("check1", qr.data[0]["标题"]), isEqual(
+            "abcdefghi正常1", qr.data[0]["内容"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"]));
+
+    tapFirstText();
+    ret3 = isAnd(ret3,
+            isEqual("check1", getTextFieldValue(getScrollView(), 0)), isEqual(
+                    "abcdefghi正常1", getTextViewValue(getScrollView(), 0)));
+    tapReturn();
+    var ret4 = false;
+    var bt = app.mainWindow().buttons()[RETURN];
+    if (isUIAElementNil(bt) || !bt.isVisible()) {
+        ret4 = true;
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3 + ", ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
 }
 function test210076() {
     var r = randomWord(false, 51);
