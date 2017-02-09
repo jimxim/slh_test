@@ -217,6 +217,7 @@ function testSalesNoColorSize001_3() {
     run("【销售开单-按订货开单】删除特殊货品后再操作-颜色尺码/均色均码", "test170758");
     run("【销售开单-开单】均色均码开单显示库存/开单不显示库存", "test170762");
     run("【销售开单-开单】单据修改时不提示款号已停用", "test170766");
+    run("【销售开单-开单】均色均码模式，保留价格刷新验证", "test170769");
     // run("【销售开单】日期查询条件“日期从...到” 不能换行，必须 日期从 到 是在一行上的", "test170404");//未完
     // run("【销售开单】不同门店不同价格在销售开单和图片选款界面的数值检查", "test170242");//
     // run("【销售开单】不同门店不同价格时销售开单-按明细查界面检查差额值", "test170244");
@@ -6898,7 +6899,7 @@ function test170424() {
 
     var o1 = { "是否需要重新刷新明细价格等信息" : "刷新价格" };
     setValueToCache(ALERT_MSG_KEYS, o1);
-    delay(6);
+    delay(5);
 
     qr = getQRDet();
     ret1 = isAnd(ret1, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(200,
@@ -13488,6 +13489,81 @@ function test170766() {
 
     logDebug(" ret=" + ret);
     return ret;
+}
+function test170769() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170769Field(menu);
+}
+function test170769Field(menu) {
+    var qo, o, ret = true;
+    qo = { "备注" : "刷新窗口" };
+    o = { "新值" : "1", "数值" : [ "默认刷新", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "默认显示价格类型" };
+    o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    setGlobalParam(qo, o);
+
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        var json = { "明细" : [ { "货品" : "3035", "数量" : 10 } ],
+            "onlytest" : "yes" };
+        editSalesBillNoColorSize(json);
+        var qr = getQRDet();
+        window.segmentedControls()[2].buttons()["大客户价"].tap();
+        var qr1 = getQRDet();
+        ret = isAnd(ret, !isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(200,
+                qr.data[0]["单价"]), isEqual(160, qr1.data[0]["单价"]));
+
+        // 李六为无适用价格的客户
+        clearCache();
+        var o1 = { "是否需要重新刷新明细价格等信息" : "保留当前" };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        delay(5);
+        var keys = { "客户" : "Ll" };
+        var fields = editSalesBillFields(keys);
+        setTFieldsValue(window, fields);
+        qr1 = getQRDet();
+        var ret1 = isAnd(isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(160,
+                qr1.data[0]["单价"]));
+
+        editSalesBillNoColorSize(json);
+        qr1 = getQRDet();
+        ret1 = isAnd(ret1, isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(160,
+                qr1.data[0]["单价"]), isEqual(160, qr1.data[1]["单价"]));
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        editSalesBillNoColorSize(json);
+        window.segmentedControls()[2].buttons()["大客户价"].tap();
+        // 李四的适用价格为打包价
+        var o1 = { "是否需要重新刷新明细价格等信息" : "保留当前" };
+        setValueToCache(ALERT_MSG_KEYS, o1);
+        delay(5);
+        keys = { "客户" : "ls" };
+        fields = editSalesBillFields(keys);
+        setTFieldsValue(window, fields);
+        qr1 = getQRDet();
+        // 价格类型跳到“打包价”，但是明细价格仍为大客户价
+        var ret2 = isAnd(isIn(alertMsg, "是否需要重新刷新明细价格等信息"), isEqual(160,
+                qr1.data[0]["单价"]));
+        editSalesBillSave({});
+
+        tapMenu(menu1, "按批次查");
+        query();
+        var qr = getQR();
+        var ret3 = isAnd(isEqual("李四", qr.data[0]["客户"]), isEqual(10,
+                qr.data[0]["数量"]), isEqual(1600, qr.data[0]["金额"]),
+                isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
+            + ret3);
+    return ret && ret1 && ret2 && ret3;
 }
 function test240002_240004() {
     var qo, o, ret = true;
