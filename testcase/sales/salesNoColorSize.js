@@ -12951,13 +12951,17 @@ function test170746Field(menu, colorSize) {
             tapReturn();
         }
     }
-    o = { "核销" : [ 5 ] };
-    editSalesBillVerify(o);
-    saveAndAlertOk();
-    tapPrompt();
-    debugArray(alertMsgs);
-    alertMsg1 = getArray1(alertMsgs, -1);
-    var ret2 = isIn(alertMsg1, "现金栏必须有支付并大于找零");
+
+    var ret2 = true;
+    if (menu1 == "销售开单") {
+        o = { "核销" : [ 5 ] };
+        editSalesBillVerify(o);
+        saveAndAlertOk();
+        tapPrompt();
+        debugArray(alertMsgs);
+        alertMsg1 = getArray1(alertMsgs, -1);
+        ret2 = isAnd(ret2, isIn(alertMsg1, "现金栏必须有支付并大于找零"));
+    }
 
     var ret3 = true;
     if (colorSize == "no") {

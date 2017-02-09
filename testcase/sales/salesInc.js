@@ -1254,3 +1254,15 @@ function shiftNum(str) {
     }
     return arr.join(',');
 }
+
+/**
+ * 点击弹窗cell，合并\不合并\取消操作
+ * @param i 下标，从0开始
+ */
+function tapAlertCell(i) {   
+    var view1 = app.alert().collectionViews()[0];
+    var cells = view1.cells();
+    var len = cells.length;
+    tap(cells[i]);
+    logDebug(" len=" + len);
+}

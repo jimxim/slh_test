@@ -128,6 +128,8 @@ function testSalesColorSize003() {
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-按款号提醒", "test170703");// 步骤5,SLH-11004
     run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704");
     run("【销售开单-新增】核销/退货", "test170746_2");
+    run("【销售开单-新增】同一销售单，同一款号通过普通选款方式两次输入", "test170767");
+    run("【销售开单-新增】同一销售单同一款号,先拿货在退货", "test170768");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_1");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_2");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_3");
@@ -5141,7 +5143,7 @@ function test170658() {
     query(fields);
     var qr = getQR();
     var k = qr.data[0]["库存"];
-    if (qr.data == 0) {
+    if (qr.data.length == 0) {
         tapMenu("销售开单", "开  单+");
         editSalesBillColorSize(json);
 
@@ -7150,4 +7152,106 @@ function test170750() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
 
     return ret;
+}
+function test170767() {
+    var menu = { "采购入库" : "新增入库+", "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170767Field(menu);
+}
+function test170767Field(menu) {
+    var ret = true, ret1 = true, ret2 = true;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        var cus = "lt";
+        if (menu1 == "采购入库") {
+            cus = "rt";
+        }
+        var json = { "客户" : cus };
+        editSalesBillCustomer(json);
+        json = { "明细" : [ { "货品" : "x001", "数量" : [ -1 ] } ],
+            "onlytest" : "yes" };
+        editSalesBillDetColorSize(json);
+        var qr = getQRDet();
+        alertRet = true;
+        editSalesBillDetColorSize(json);
+        tapAlertCell(0);
+        var qr1 = getQRDet();
+        ret = isAnd(ret, isIn(qr.data[0]["货品"], "X001"), isEqual("-1",
+                qr.data[0]["数量"]), isEqual(qr.data[1]["货品"], ""), isIn(
+                qr1.data[0]["货品"], "X001"), isEqual("-1", qr1.data[0]["数量"]),
+                isIn(qr1.data[1]["货品"], "X001"), isEqual("-1",
+                        qr1.data[1]["数量"]));
+
+        tapButton(getScrollView(-1), 1);
+        alertRet = true;
+        editSalesBillDetColorSize(json);
+        tapAlertCell(1);
+        qr1 = getQRDet();
+        ret1 = isAnd(ret, isIn(qr.data[0]["货品"], "X001"), isEqual("-1",
+                qr.data[0]["数量"]), isEqual(qr.data[1]["货品"], ""), isIn(
+                qr1.data[0]["货品"], "X001"), isEqual("-2", qr1.data[0]["数量"]),
+                isEqual(qr1.data[1]["货品"], ""), isEqual("", qr1.data[1]["数量"]));
+
+        alertRet = true;
+        editSalesBillDetColorSize(json);
+        tapAlertCell(2);
+        qr1 = getQRDet();
+        ret2 = isAnd(ret2, isIn(qr1.data[0]["货品"], "X001"), isEqual("-2",
+                qr1.data[0]["数量"]), isEqual(qr1.data[1]["货品"], ""), isEqual("",
+                qr1.data[1]["数量"]));
+        tapReturn();
+    }
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170768() {
+    var menu = { "采购入库" : "新增入库+", "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170768Field(menu);
+}
+function test170768Field(menu) {
+    var ret = true, ret1 = true, ret2 = true;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        var cus = "lt";
+        if (menu1 == "采购入库") {
+            cus = "rt";
+        }
+        var json = { "客户" : cus };
+        editSalesBillCustomer(json);
+        json = { "明细" : [ { "货品" : "x001", "数量" : [ 2 ] } ], "onlytest" : "yes" };
+        editSalesBillDetColorSize(json);
+        var qr = getQRDet();
+        alertRet = true;
+        json = { "明细" : [ { "货品" : "x001", "数量" : [ -1 ] } ],
+            "onlytest" : "yes" };
+        editSalesBillDetColorSize(json);
+        tapAlertCell(0);
+        var qr1 = getQRDet();
+        ret = isAnd(ret, isIn(qr.data[0]["货品"], "X001"), isEqual("2",
+                qr.data[0]["数量"]), isEqual(qr.data[1]["货品"], ""), isIn(
+                qr1.data[0]["货品"], "X001"), isEqual("2", qr1.data[0]["数量"]),
+                isIn(qr1.data[1]["货品"], "X001"), isEqual("-1",
+                        qr1.data[1]["数量"]));
+
+        tapButton(getScrollView(-1), 1);
+        alertRet = true;
+        editSalesBillDetColorSize(json);
+        tapAlertCell(1);
+        qr1 = getQRDet();
+        ret1 = isAnd(ret, isIn(qr1.data[0]["货品"], "X001"), isEqual("2",
+                qr1.data[0]["数量"]), isIn(qr1.data[1]["货品"], "X001"), isEqual(
+                "-1", qr1.data[1]["数量"]));
+
+        alertRet = true;
+        editSalesBillDetColorSize(json);
+        tapAlertCell(2);
+        qr1 = getQRDet();
+        ret2 = isAnd(ret2, isIn(qr1.data[0]["货品"], "X001"), isEqual("2",
+                qr1.data[0]["数量"]), isIn(qr1.data[1]["货品"], "X001"), isEqual(
+                "-1", qr1.data[1]["数量"]));
+        tapReturn();
+    }
+
+    logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

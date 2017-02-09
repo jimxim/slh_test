@@ -27,16 +27,6 @@ function test0(){
 // window.scrollViews()[0].switches()[0].setValue(1);
 // var obj=getElements(window)[3];
 // logDebug("name="+obj.name());
-// try{
-// var json = { "明细" : [ { "货品" : "x001", "数量" : [ 1 ] } ], "关闭明细" : "no" };
-// editSalesBillDetColorSize(json);
-// delay();
-// tapAlertButton(0);// "不合并"
-// }catch(e){
-//        
-// }
-// var ret5 = isAnd(isIn(alertMsg, "相同颜色尺码已经存在"));
-// return ret5;
 }
 function setSales001Params() {
     var p1 = {"角色":"总经理"};
