@@ -1264,5 +1264,6 @@ function tapAlertCell(i) {
     var cells = view1.cells();
     var len = cells.length;
     tap(cells[i]);
+    tapNaviLeftButton();
     logDebug(" len=" + len);
 }

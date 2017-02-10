@@ -13560,6 +13560,10 @@ function test170769Field(menu) {
                 qr.data[0]["数量"]), isEqual(1600, qr.data[0]["金额"]),
                 isAqualOptime(getOpTime(), qr.data[0]["操作日期"], 2));
     }
+    
+    qo = { "备注" : "刷新窗口" };
+    o = { "新值" : "0", "数值" : [ "不允许刷新", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3);

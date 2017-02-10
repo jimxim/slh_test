@@ -130,6 +130,7 @@ function testSalesColorSize003() {
     run("【销售开单-新增】核销/退货", "test170746_2");
     run("【销售开单-新增】同一销售单，同一款号通过普通选款方式两次输入", "test170767");
     run("【销售开单-新增】同一销售单同一款号,先拿货在退货", "test170768");
+    run("【销售开单-新增】选择款号时隐藏键盘", "test170770");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_1");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_2");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_3");
@@ -7218,7 +7219,7 @@ function test170768Field(menu) {
         }
         var json = { "客户" : cus };
         editSalesBillCustomer(json);
-        json = { "明细" : [ { "货品" : "x001", "数量" : [ 2 ] } ], "onlytest" : "yes" };
+        json = { "明细" : [ { "货品" : "x001", "数量" : [ 2 ] } ] };
         editSalesBillDetColorSize(json);
         var qr = getQRDet();
         alertRet = true;
@@ -7254,4 +7255,26 @@ function test170768Field(menu) {
 
     logDebug(" ret=" + ret + " ret1=" + ret1 + " ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170770() {
+    tapMenu("销售开单", ADDBILL);
+    var ret = false;
+    tap(getTextField(getScrollView(-1), 0));
+    var f = new TField("货品", TF_AC, -3, "x00", -1);
+    var cells = getTableViewCells(window, f);
+    for (var i = 0; i < cells.length; i++) {
+        var cell = cells[i];
+        var v = cell.name();
+        if (isIn(v, "X001")) {
+            ret = true;
+            break;
+        }
+    }
+    delay();
+    tapKeyboardHide();
+    ret = isAnd(ret, !isEqual(0, cells.length));
+    tapNaviLeftButton();
+    tapReturn();
+
+    return ret;
 }
