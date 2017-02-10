@@ -13404,6 +13404,10 @@ function test170759() {
     var ret1 = isAnd(isEqual(getToday(""), qr.data[0]["日期"]), isEqual(r,
             qr.data[0]["备注"]), isEqual(getToday(""), qr.data[1]["日期"]),
             isEqual(r, qr.data[1]["备注"]));
+    
+    qo = { "备注" : "销售开单允许作废和修改天数" };
+    o = { "新值" : "5", "数值" : [ "只能作废5天", "in" ] };
+    setGlobalParam(qo, o);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;

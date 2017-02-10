@@ -2510,7 +2510,6 @@ function test170277() {
     qr = getQR();
     var total1 = qr.total;
     tapButton(getScrollView(-1), 0);
-
     tapMenu("销售开单", "getMenu_More", RECIEVE);
     delay(3);
     tapButton(window, QUERY);

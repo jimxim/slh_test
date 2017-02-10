@@ -42,13 +42,15 @@ function test004() {
             "test170754_2");
     run("【销售开单-开单】销售价格允许改高不允许改低：不检查+销售开单价不能低于指定的价格类型-不检查", "test170755_1");
     run("【销售开单-按批次查】店长权限为4/店长权限为4时，修改打印后单据验证", "test170761");
+    run("【销售开单-按批次查】作废天数", "test170772");
+    run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773");
+    run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773_1");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350_1");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
     run("【盘点管理-盈亏表】店长权限", "test180050");
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For004_2");
-
 }
 function test210038() {
     // 店长工号登录,常青店长004
@@ -2047,4 +2049,117 @@ function test170761Field(params, params1, altM) {
     }
     logDebug(" ret=" + ret + " ret1=" + ret1);
     return ret && ret1;
+}
+function test170772() {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单允许作废和修改天数" };
+    o = { "新值" : "5", "数值" : [ "只能作废5天", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    tapMenu("销售开单", MORE, "收款单");
+    var keys = { "日期从" : getDay(-40), "到" : getDay(5) };
+    var fields = salesCollectionRecordFields(keys);
+    query(fields);
+    var qr = getQR();
+    var t1 = qr.total;
+    if (t1 != 0) {
+        for (var i = 0; i < t1; i++) {
+            tapButton(window, QUERY);
+            tapButton(getScrollView(-1), 0);
+            tapMenu("销售开单", "getMenu_More", RECIEVE);
+            delay(2);
+        }
+    }
+
+    tapMenu("销售开单", "按批次查");
+    keys = { "日期从" : getDay(-40), "日期到" : getDay(-30), "作废挂单" : "正常",
+        "备注" : "zdbz" };
+    fields = salesQueryBatchFields(keys);
+    query(fields);
+    qr = getQR();
+    tapFirstText();
+    saveAndAlertOk();
+    tapPrompt();
+    var ret1 = isIn(alertMsg, "只允许作废或修改5天内的单据");
+
+    tapButtonAndAlert("作 废", OK);
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "只允许作废或修改5天内的单据");
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170773() {
+    var menu = { "采购入库" : "按挂单", "销售订货" : "按挂单", "销售开单" : "按挂单" };
+    var qfields = [ purchaseHangFields, salesOrderHangFields,
+            salesQueryGuaDanFields ];
+    return test170773Field(menu, qfields);
+}
+function test170773Field(menu, qfields) {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售开单允许作废和修改天数" };
+    o = { "新值" : "0", "数值" : [ "不能作废", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    var keys = { "日期从" : getDay(-10), "日期到" : getDay(-1) };
+    var ret1 = true, ret2 = true;
+    for ( var menu1 in menu) {
+        var i, fields;
+        switch (menu1) {
+        case "采购入库":
+            i = 0;
+            break;
+        case "销售订货":
+            i = 1;
+            break;
+        case "销售开单":
+            i = 2;
+            break;
+        default:
+            i = 0;
+            break;
+        }
+        tapMenu(menu1, menu[menu1]);
+        fields = eval(qfields[i](keys));
+        query(fields);
+        tapFirstText();
+        saveAndAlertOk();
+        tapPrompt();
+        ret1 = isAnd(ret1, isIn(alertMsg, "保存成功"));
+        tapReturn();
+
+        tapMenu(menu1, menu[menu1]);
+        query();
+        tapFirstText();
+        saveAndAlertOk();
+        tapPrompt();
+        ret2 = isAnd(ret2, isIn(alertMsg, "保存成功"));
+        tapReturn();
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
+}
+function test170773_1() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170773_1Field(menu);
+}
+function test170773_1Field(menu) {
+    var ret = true;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        tapMenu2("getMenu_More");
+        tapMenu3("所有挂单");
+        loadHangBill(0);
+
+        var o = [ { "数量" : [ 50 ] } ];
+        editChangeSalesBillOrderNum(o, "no");
+        saveAndAlertOk();
+        tapPrompt();
+        ret = isAnd(ret, isIn(alertMsg, "保存成功"));
+        tapReturn();
+    }
+
+    return ret;
 }

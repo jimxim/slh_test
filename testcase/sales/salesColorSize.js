@@ -131,6 +131,7 @@ function testSalesColorSize003() {
     run("【销售开单-新增】同一销售单，同一款号通过普通选款方式两次输入", "test170767");
     run("【销售开单-新增】同一销售单同一款号,先拿货在退货", "test170768");
     run("【销售开单-新增】选择款号时隐藏键盘", "test170770");
+    run("【销售开单-按明细查】价格类型", "test170771");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_1");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_2");
     // run("【销售开单-开单】开单按颜色尺码提醒已存在的重复记录-都不提醒，保留原样", "test170704_3");
@@ -7260,7 +7261,7 @@ function test170770() {
     tapMenu("销售开单", ADDBILL);
     var ret = false;
     tap(getTextField(getScrollView(-1), 0));
-    var f = new TField("货品", TF_AC, -3, "x00", -1);
+    var f = new TField("款号", TF_AC, -3, "x00", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -7277,4 +7278,42 @@ function test170770() {
     tapReturn();
 
     return ret;
+}
+function test170771() {
+    var qo, o, ret = true;
+    qo = { "备注" : "默认显示价格类型" };
+    o = { "新值" : "1", "数值" : [ "默认零批价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "成交价" };
+    o = { "新值" : "0", "数值" : [ "默认不启用", "in" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("销售开单", "开  单+");
+    var json = { "明细" : [ { "货品" : "x003", "数量" : [ 1 ] } ] };
+    editSalesBillDetColorSize(json);
+    tap(getTextField(getScrollView(-1), 0));
+    window.segmentedControls()[2].buttons()["打包价"].tap();
+    delay();
+    var f = new TField("款号", TF_AC, -3, "x001", -1, 0);
+    var fields = [ f ];
+    setTFieldsValue(window, fields);
+
+    f = new TField("数量", TF, 0, 1);
+    fields = [ f ];
+    setTFieldsValue(getScrollView(-1), fields);
+    tapButton(window, OK);
+    tapNaviLeftButton();
+    editSalesBillSave({});
+
+    tapMenu("销售开单", "按明细查");
+    query();
+    var qr = getQR();
+    var ret1 = isAnd(isEqual("打包价", qr.data[0]["价格类型"]), isEqual("打包价",
+            qr.data[1]["价格类型"]), isEqual(1, qr.data[0]["数量"]), isEqual(
+            qr.data[1]["批次"], qr.data[0]["批次"]), isAqualOptime(getOpTime(),
+            qr.data[0]["操作日期"]));
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1);
+    return ret && ret1;
 }
