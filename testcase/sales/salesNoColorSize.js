@@ -4364,12 +4364,8 @@ function test170170() {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 2 },
                 { "货品" : "8989", "数量" : 2, "备注" : "mxbz1" },
-                { "货品" : "k200", "数量" : 3 } ], "onlytest" : "yes" };
+                { "货品" : "k200", "数量" : 3 } ], "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4406,12 +4402,8 @@ function test170169_170171() {
     var r = getRandomInt(10);
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : r } ],
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4488,12 +4480,8 @@ function test170172() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : "1" }, { "货品" : "8989", "数量" : "1" } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4542,11 +4530,8 @@ function test170173() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 1 } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes"};
     editSalesBillNoColorSize(json);
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4555,13 +4540,8 @@ function test170173() {
 
     var json = {
         "明细" : [ { "货品" : "k200", "数量" : 3 }, { "货品" : "k300", "数量" : 4 } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay(2);
-    tapReturn();
-    delay();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4591,12 +4571,8 @@ function test170174() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 1 } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -4754,12 +4730,8 @@ function test170178() {
     var json = {
         "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 2 }, { "货品" : "k300", "数量" : 3 },
-                { "货品" : "8989", "数量" : 5 } ], "onlytest" : "yes" };
+                { "货品" : "8989", "数量" : 5 } ],"挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     tapMenu2("getMenu_More");
@@ -7738,11 +7710,8 @@ function test170450_1() {
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 170 } ],
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -7760,11 +7729,8 @@ function test170450_1() {
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 150 } ],
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -7782,11 +7748,8 @@ function test170450_1() {
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 2, "单价" : 200 } ],
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -9182,12 +9145,8 @@ function test170525() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 1 }, { "货品" : "8989", "数量" : 2 } ],
-        "onlytest" : "yes" };
+        "挂单" : "yes"};
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "开  单+");
     tapMenu2("getMenu_More");
@@ -11267,12 +11226,8 @@ function test170674_170675() {
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 7 }, { "货品" : "k300", "数量" : 8 } ],
         "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "a" + r, "代收金额" : 3500 },
-        "onlytest" : "yes" };
+        "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -11302,12 +11257,8 @@ function test170674_170675() {
     var json = { "客户" : "ls",
         "明细" : [ { "货品" : "3035", "数量" : 10 }, { "货品" : "k300", "数量" : 20 } ],
         "代收" : { "物流商" : "tt", "运单号" : r1, "备注" : "a" + r1, "代收金额" : 5500 },
-        "发货" : "仓库店", "onlytest" : "yes" };
+        "发货" : "仓库店", "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -11393,12 +11344,8 @@ function test170676() {
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 10 } ],
         "备注" : r,
         "代收" : { "物流商" : "tt", "运单号" : r, "备注" : "bz", "代收金额" : 5000 },
-        "发货" : "中洲店", "onlytest" : "yes" };
+        "发货" : "中洲店", "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     var bt = window.buttons()[QUERY];
     var cond = !isUIAElementNil(bt) || bt.isVisible();
@@ -12864,11 +12811,8 @@ function test170745() {
 
     tapMenu("销售开单", "开  单+");
     json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 1 } ], "现金" : 180,
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -12878,11 +12822,8 @@ function test170745() {
 
     tapMenu("销售订货", "新增订货+");
     json = { "客户" : "lx", "明细" : [ { "货品" : "3035", "数量" : 2 } ], "现金" : 360,
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售订货", "按挂单");
     query();

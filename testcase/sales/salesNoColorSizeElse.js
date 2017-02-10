@@ -3248,17 +3248,13 @@ function test170303() {
 function test170304() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "3035", "数量" : 1 } ],
-        "未付" : "yes", "onlytest" : "yes" };
+        "未付" : "yes", "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
     var qr = getQR();
     var a = qr.total;
-
     tapFirstText();
     tapButtonAndAlert("作 废", OK);
     tapPrompt();
@@ -3322,7 +3318,6 @@ function test170305_1() {
         "代收" : { "物流商" : "yt", "运单号" : r, "备注" : "a", "代收金额" : "50" },
         "备注" : r, "onlytest" : "yes" };
     editSalesBillNoColorSize(json);
-
     var remitindex = getEditSalesTFindex2("客户", "汇款");
     var je = getTextFieldValue(window, remitindex - 1);
     tapButtonAndAlert("挂 单", OK);
@@ -5503,12 +5498,8 @@ function test170375() {
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "8989", "数量" : 1 } ],
         "特殊货品" : { "抹零" : 6 },
-        "代收" : { "物流商" : "ht", "运单号" : r, "备注" : "aht" }, "onlytest" : "yes" };
+        "代收" : { "物流商" : "ht", "运单号" : r, "备注" : "aht" }, "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -9231,12 +9222,8 @@ function test170710() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : 1, "单价" : 0 } ],
-        "onlytest" : "yes" };
+            "挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售开单", "按挂单");
     query();
@@ -9264,12 +9251,8 @@ function test170710() {
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "lt",
-        "明细" : [ { "货品" : "4562", "数量" : "1", "单价" : 0 } ], "onlytest" : "yes" };
+        "明细" : [ { "货品" : "4562", "数量" : "1", "单价" : 0 } ],"挂单" : "yes" };
     editSalesBillNoColorSize(json);
-
-    tapButtonAndAlert("挂 单", OK);
-    delay();
-    tapReturn();
 
     tapMenu("销售订货", "按挂单");
     query();
