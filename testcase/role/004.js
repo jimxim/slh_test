@@ -82,8 +82,23 @@ function test210038() {
         }
     }
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    tapMenu("系统设置", "人员列表");
+    query();
+    qr = getQR();
+    var totalPageNo = qr.totalPageNo;
+    var ret2 = true;
+    for (var j = 1; j <= totalPageNo; j++) {
+        for (var i = 0; i < qr.curPageTotal; i++) {
+            ret2 = isAnd(ret2, isEqual("常青店", qr.data[0]["门店"]));
+        }
+        if (j < totalPageNo) {
+            scrollNextPage();
+            qr = getQR();
+        }
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210043_4() {
     // 店长004登录
