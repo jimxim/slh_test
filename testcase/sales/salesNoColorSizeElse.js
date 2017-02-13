@@ -1128,14 +1128,12 @@ function test170031_170032_170033() {
 function test170028_2_1_170524() {
     tapMenu("销售开单", "按明细查");
     query();
-    var i, idx = 0;
-    if (ipadVer >= "7.27") {
-        idx = 2;
-    }
+    var f = salesQueryParticularField("款号");
+    var idx = f.index;
     var ret = false;
     var f = new TField("款号", TF_AC, idx, "456", -1);
     var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
         if (isIn(v, "4562,Story")) {
@@ -1147,11 +1145,10 @@ function test170028_2_1_170524() {
     tapKeyboardHide();
     query();
 
-    var idx = 6, idx1 = 5;
-    if (ipadVer >= "7.27") {
-        idx = 8;
-        idx1 = 7;
-    }
+    var tf = salesQueryParticularField("价格类型");
+    var tf1 = salesQueryParticularField("类型");
+    var idx = tf.index;
+    var idx1 = tf1.index;
     tap(getTextField(window, idx));
     var arr = [ "零批价", "打包价", "大客户价", "Vip价格" ];
     var view = window.popover().scrollViews()[0];
@@ -1351,11 +1348,8 @@ function test170034() {
     var keys = { "日期从" : "2015-01-01" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-
-    var idx = 2;
-    if (ipadVer >= "7.27") {
-        idx = 4;
-    }
+    var tf = salesQueryParticularField("客户");
+    var idx = tf.index;
     var o = { "键盘" : "简体拼音", "拼音" : [ "hanhong" ], "汉字" : [ "韩红" ] };
     var tf = window.textFields()[Number(idx)].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
@@ -4660,7 +4654,7 @@ function test170338_170344() {
             qr1 = getQR2(getScrollView(-1, 0), "批次", "操作日期");
         }
     }
-    var ret = isAnd(isEqual(totalNum, sum1), isEqual(totalMoney, sum2),
+    var ret = isAnd(isEqual(totalNum, sum1), isAqualNum(totalMoney, sum2),
             isEqual(getToday("yy"), qr.data[0]["最后一次拿货"]), isEqual(qr1.total,
                     qr.data[0]["拿货次数"]));
     tapNaviLeftButton();
@@ -4669,14 +4663,13 @@ function test170338_170344() {
     var keys = { "客户" : "ls", "款号" : "k300" };
     var fields = salesQueryParticularFields(keys);
     query(fields);
-
     var qr2 = getQR();
-    var ret1 = isAnd(isEqual(totalNum, qr2.counts["数量"]), isEqual(totalMoney,
+    var ret1 = isAnd(isEqual(totalNum, qr2.counts["数量"]), isAqualNum(totalMoney,
             qr2.counts["小计"]));
 
     var ret2 = isAnd(isEqual(qr2.data[0]["批次"], batch), isEqual(
             qr2.data[0]["款号"], code), isEqual(qr2.data[0]["名称"], name),
-            isEqual(qr2.data[0]["单价"], price), isEqual(qr2.data[0]["数量"], num),
+            isEqual(qr2.data[0]["单价"], price), isAqualNum(qr2.data[0]["数量"], num),
             isEqual(getToday("yy"), date), isAqualOptime(getOpTime(),
                     qr2.data[0]["操作日期"], 2));
 
@@ -9222,7 +9215,7 @@ function test170710() {
 
     tapMenu("销售开单", "开  单+");
     var json = { "客户" : "ls", "明细" : [ { "货品" : "4562", "数量" : 1, "单价" : 0 } ],
-            "挂单" : "yes" };
+        "挂单" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售开单", "按挂单");
@@ -9251,7 +9244,7 @@ function test170710() {
 
     tapMenu("销售订货", "新增订货+");
     var json = { "客户" : "lt",
-        "明细" : [ { "货品" : "4562", "数量" : "1", "单价" : 0 } ],"挂单" : "yes" };
+        "明细" : [ { "货品" : "4562", "数量" : "1", "单价" : 0 } ], "挂单" : "yes" };
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按挂单");
@@ -9575,8 +9568,9 @@ function test170718() {
     }
     var ret1 = isAnd(isAqualNum(Number(qr2.data[0]["退货率(%)"]), 100
             * Number(qr2.data[0]["退货数"]) / Number(qr2.data[0]["拿货数"])),
-            isEqual("", qr2.data[1]["品牌"]), !isEqual(1, qr2.total), isEqual(2,
-                    sub(ts1, ts)), isEqual(Number(3 + Number(ns)), ns1));
+            isEqual("", qr2.data[1]["品牌"]) || isEqual("", qr2.data[0]["品牌"]),
+            !isEqual(1, qr2.total), isEqual(2, sub(ts1, ts)), isEqual(
+                    Number(3 + Number(ns)), ns1));
     tapNaviLeftButton();
     tapNaviLeftButton();
 

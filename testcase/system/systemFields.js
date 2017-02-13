@@ -413,13 +413,13 @@ function editSystemAccountField(key, show) {
     case "名称":
         f = new TField("名称", TF, 0, "");
         break;
-    case "section":
-    case "部门":
-        f = new TField("部门", TF_SC, 1, "常青店");
-        break;
     case "stop":
     case "是否停用":
-        f = new TField("是否停用", TF_SC, 2, "否");
+        f = new TField("是否停用", TF_SC, 1, "否");
+        break;
+    case "section":
+    case "门店":
+        f = new TField("门店", TF, 2, "常青店");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -446,7 +446,7 @@ function editSystemAccountAddField(key, show) {
         break;
     case "card/remit":
     case "刷卡/汇款":
-        f = new TField("门店", BTN_SC, 1, "通用");
+        f = new TField("刷卡/汇款", BTN_SC, 1, "通用");
         break;
     default:
         logWarn("未知key＝" + key);

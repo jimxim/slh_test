@@ -191,23 +191,35 @@ function testSalesPrepare006() {
 }
 // 检查款号3035为启用
 function testSalesPrepare007() {
+    var s = [ "3035", "k300" ];
+    return testSalesPrepare007Field(s);
+}
+function testSalesPrepare007Field(s) {
     tapMenu("货品管理", "货品查询");
-    var Keys = { "款号名称" : "3035" };
-    var Fields = queryGoodsFields(Keys);
-    query(Fields);
-    var qr = getQR();
-    if (qr.data.length == 0) {
-        var qKeys = [ "是否停用" ];
-        var qFields = queryGoodsFields(qKeys);
-        changeTFieldValue(qFields["是否停用"], "是");
-        setTFieldsValue(window, qFields);
-        tapButton(window, QUERY);
-        tapFirstText();
-        tapButtonAndAlert(START, OK);
-        tapPrompt();
-        tapRefresh();
-    }
+    var ret = true;
+    for (var i = 0; i <= s.length; i++) {
+        var Keys = { "款号名称" : s[i] };
+        var Fields = queryGoodsFields(Keys);
+        query(Fields);
+        var qr = getQR();
+        if (qr.data.length == 0) {
+            var qKeys = [ "是否停用" ];
+            var qFields = queryGoodsFields(qKeys);
+            changeTFieldValue(qFields["是否停用"], "是");
+            setTFieldsValue(window, qFields);
+            tapButton(window, QUERY);
+            tapFirstText();
+            tapButtonAndAlert(START, OK);
+            tapPrompt();
+            tapRefresh();
 
+            tapMenu("货品管理", "货品查询");
+            query(Fields);
+            qr = getQR();
+            ret = isAnd(ret, !isEqual(0, qr.data.length));
+        }
+    }
+    return ret;
     // tapMenu("货品管理", "基本设置", "所有颜色");
     // var keys = { "名称" : "淡黄" };
     // conditionQuery(keys);
@@ -1259,7 +1271,7 @@ function shiftNum(str) {
  * 点击弹窗cell，合并\不合并\取消操作
  * @param i 下标，从0开始
  */
-function tapAlertCell(i) {   
+function tapAlertCell(i) {
     var view1 = app.alert().collectionViews()[0];
     var cells = view1.cells();
     var len = cells.length;

@@ -42,7 +42,7 @@ function testSystem001() {
     run("【系统设置】人员列表里同一工号显示多条记录，如988工号显示3条。", "test210041");
     run("【系统设置】参数互斥检查", "test210042");
     run("【系统设置-更多】门店停用规则", "test210067");
-    run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070");
+    run("【系统设置-更多】新增门店功能/【系统设置-更多】新增帐户功能", "test210069_210070_210072");
     run("【系统设置-更多】刷卡或汇款帐户已经有6个后再新增帐户", "test210071");
     run("【系统设置-全局设置】异地发货开单模式必须先开启异地仓库", "test210073");
     run("【系统设置-全局设置】均色均码和童装模式限制", "test210074");
@@ -2221,7 +2221,7 @@ function test210067() {
 function test210067_1() {
 
 }
-function test210069_210070() {
+function test210069_210070_210072() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增门店＋");
@@ -2260,7 +2260,6 @@ function test210069_210070() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
-
     saveAndAlertOk();
     tapPrompt();
     var ret1 = isIn(alertMsg, "账户全称不能为空");
@@ -2293,19 +2292,19 @@ function test210069_210070() {
             getTextFieldValue(getScrollView(), 0)), !isEqual("",
             getTextFieldValue(getScrollView(), 1)));
 
-    // var r2 = randomWord(false, 2);
-    // keys1 = { "门店" : "test210069", "账户简称" : r2 };
-    // fields = editSystemAccountAddFields(keys1);
-    // setTFieldsValue(getScrollView(), fields);
-    // saveAndAlertOk();
-    // tapPrompt();
-    // var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+    var r2 = randomWord(false, 2);
+    keys1 = { "门店" : "test210069", "账户简称" : r2 };
+    fields = editSystemAccountAddFields(keys1);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
+    var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
 
-    // keys1 = { "门店" : "m" };
-    // fields = editSystemAccountAddFields(keys1);
-    // setTFieldsValue(getScrollView(), fields);
-    // saveAndAlertOk();
-    // tapPrompt();
+    keys1 = { "门店" : "m" };
+    fields = editSystemAccountAddFields(keys1);
+    setTFieldsValue(getScrollView(), fields);
+    saveAndAlertOk();
+    tapPrompt();
     tapReturn();
 
     tapMenu("系统设置", "getMenu_More", "账户列表");
@@ -2315,39 +2314,73 @@ function test210069_210070() {
     var qr = getQR();
     var ret3 = isAnd(isEqual(1, qr.data.length),
             isEqual(r, qr.data[0]["账户名称"]), isEqual(r2, qr.data[0]["简称"]),
-            isEqual(m, qr.data[0]["门店"]));
+            isEqual("银行账户", qr.data[0]["账户类型"]), isEqual("销售",
+                    qr.data[0]["销售/采购"]), isEqual(m, qr.data[0]["门店"]));
     // var ret3 = isEqual(0, qr.data.length);
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2 + " ret3="
-            + ret3);
-    return ret && ret1 && ret2 && ret3;
-}
-function test210071() {
     tapMenu1("系统设置");
     tapMenu2("getMenu_More");
     tapMenu3("新增账户＋");
-
-    var r = "zh" + randomWord(false, 4);
-    var r1 = randomWord(false, 2);
-    var keys = { "账户全称" : r, "账户简称" : r1, "门店" : "常青店", "刷卡/汇款" : "通用" };
-    var fields = editSystemAccountAddFields(keys);
+    r = "zh" + randomWord(false, 4);
+    var r3 = randomWord(false, 2);
+    keys1 = { "账户全称" : r, "账户简称" : r1, "门店" : m };
+    fields = editSystemAccountAddFields(keys1);
     setTFieldsValue(getScrollView(), fields);
-
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
     tapReturn();
 
-    tapMenu1("系统设置");
-    tapMenu2("getMenu_More");
-    tapMenu3("账户列表");
-
-    query();
+    tapMenu("系统设置", "getMenu_More", "账户列表");
+    keys1 = { "名称" : r };
+    fields = editSystemAccountFields(keys1);
+    query(fields);
     var qr = getQR();
-    var ret1 = !isEqual(r, qr.data[0]["账户名称"]);
+    var ret4 = isAnd(isEqual(1, qr.data.length),
+            isEqual(r, qr.data[0]["账户名称"]), isEqual(r3, qr.data[0]["简称"]),
+            isEqual("银行账户", qr.data[0]["账户类型"]), isEqual("销售",
+                    qr.data[0]["销售/采购"]), isEqual(m, qr.data[0]["门店"]));
 
-    logDebug(" ret=" + ret + ", ret1=" + ret1);
-    return ret && ret1;
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + " ret2=" + ret2 + " ret3="
+            + ret3 + " ret4=" + ret4);
+    return ret && ret1 && ret2 && ret3 && ret4;
+}
+function test210071() {
+    var s = [ "通用", "仅刷卡", "仅汇款" ];
+    return test210071Field(s);
+}
+function test210071Field(s) {
+    for (var i = 0; i <= s.length; i++) {
+        tapMenu1("系统设置");
+        tapMenu2("getMenu_More");
+        tapMenu3("新增账户＋");
+        var r = "zh" + randomWord(false, 4);
+        var r1 = randomWord(false, 2);
+        var keys = { "账户全称" : r, "账户简称" : r1, "门店" : "常青店", "刷卡/汇款" : s[i] };
+        var fields = editSystemAccountAddFields(keys);
+        setTFieldsValue(getScrollView(), fields);
+        saveAndAlertOk();
+        tapPrompt();
+        var ret = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+        tapReturn();
+
+        tapMenu1("系统设置");
+        tapMenu2("getMenu_More");
+        tapMenu3("账户列表");
+        var keys1 = { "门店" : "常青店" };
+        var fields1 = editSystemAccountFields(keys1);
+        query(fields1);
+        var qr = getQR();
+        var ret1 = !isEqual(r, qr.data[0]["账户名称"]);
+        tapFirstText();
+        setTFieldsValue(getScrollView(), fields);
+        tapButtonAndAlert(EDIT_SAVE, OK);
+        tapPrompt();
+        var ret2 = isIn(alertMsg, "能够刷卡或汇款的账户不允许超过6个");
+        tapReturn();
+    }
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }
 function test210073() {
     var qo, o, ret = true;
