@@ -3256,7 +3256,6 @@ function test180078() {
         "是否撤销" : "否" };
     var fields = checkProcessRecordFields(keys);
     query(fields);
-
     var qr = getQR();
     var total1 = qr.total;
     tapButton(getScrollView(), 0);
@@ -3309,7 +3308,7 @@ function test180078() {
     qr = getQR();
     var kcun2 = add(qr.counts["库存"], qr.counts["在途数"]);
     var ret2 = isAnd(!isEqual(r, kc), isEqual(r, kc1), isEqual(kc, kc2),
-            isEqual(kcu, kcu1), isEqual(kcu2, kcu1), isEqual(kcun1, kcun),
+            isEqual(0, kcu1), isEqual(kcu2, kcu), isEqual(kcun1, kcun),
             isEqual(kcun2, kcun1));
 
     if (ipadVer >= "7.21") {

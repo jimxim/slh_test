@@ -1188,14 +1188,10 @@ function test210042() {
     o = { "新值" : "1", "数值" : [ "省代价格模式", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    var menu1 = "系统设置";
-    var menu2 = "全局设置";
-    tapMenu(menu1, menu2);
-
+    tapMenu("系统设置", "全局设置");
     qo = { "备注" : "价格模式" };
     var fields = querySystemGlobalFields(qo);
     query(fields);
-
     tapFirstText();
     var setObj = {};
     setObj["数值"] = [ "不同门店不同的价格体系", "in" ];
@@ -1238,12 +1234,7 @@ function test210042() {
 
     runAndAlert("test210020Clear", OK);
     tapPrompt();
-    if (ipadVer >= "7.21") {
-        var cond = "isIn(alertMsg, '清理刷新结束')";
-    } else {
-        var cond = "isIn(alertMsg, '清理和刷新成功')";
-    }
-    waitUntil(cond, 300);
+    delay(20);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
