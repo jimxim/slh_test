@@ -1119,7 +1119,7 @@ function test170031_170032_170033() {
             qr = getQR();
         }
     }
-    var ret1 = isAnd(isEqual(qr.counts["数量"], sum1), isAqualNum(
+    var ret1 = isAnd(isAqualNum(qr.counts["数量"], sum1), isAqualNum(
             qr.counts["小计"], sum2), isAqualNum(qr.counts["差额"], sum3));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);

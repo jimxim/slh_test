@@ -45,6 +45,7 @@ function test004() {
     run("【销售开单-按批次查】作废天数", "test170772");
     run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773");
     run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773_1");
+    run("【销售开单-开单】特殊货品的显示", "test170774");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350_1");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -2177,4 +2178,43 @@ function test170773_1Field(menu) {
     }
 
     return ret;
+}
+function test170774() {
+    var menu = { "采购入库" : "新增入库+", "销售订货" : "新增订货+", "销售开单" : ADDBILL,
+        "销售开单" : "物流核销+" };
+    return test170774Field(menu);
+}
+function test170774Field(menu) {
+    var ret = false;
+    for ( var menu1 in menu) {
+        tapMenu(menu1, menu[menu1]);
+        var bt = window.buttons()["特殊货品"];
+        if (!isUIAElementNil(bt) || bt.isVisible()) {
+            ret = true;
+        }
+        tapReturn();
+    }
+
+    tapMenu("销售开单", "按订货开单");
+    query();
+    tapFirstText();
+    var ret1 = false;
+    var bt = window.buttons()["特殊货品"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret1 = true;
+    }
+    tapReturn();
+
+    tapMenu("销售开单", "按挂单");
+    query();
+    tapFirstText();
+    var ret2 = false
+    var bt = window.buttons()["特殊货品"];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        ret2 = true;
+    }
+    tapReturn();
+
+    logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
+    return ret && ret1 && ret2;
 }

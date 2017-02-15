@@ -6810,12 +6810,10 @@ function test170715_2() {
         "零批价" : r1, "打包价" : r1 };
     editQuickAddGoods(o);
 
-    var o = { "客户" : "Rt" };
+    o = { "客户" : "Rt" };
     editSalesBillCustomer(o);
-
     var json = { "明细" : [ { "货品" : r, "数量" : [ 1 ] } ], "goodsFieldIndex" : -2 };
     editSalesBillColorSize(json);
-
     qr = json["明细值"];
     var ret1 = isIn(qr.data[0]["货品"], r);
 
@@ -6888,6 +6886,10 @@ function test170716() {
     delay();
     tapButton(getPop(), OK);
     tapButton(getPop(), CLOSE);
+    var bt = app.navigationBar().buttons()[CLOSE];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapNaviLeftButton();
+    }
     tapReturn();
 
     tapMenu("货品管理", "货品查询");
@@ -7160,6 +7162,11 @@ function test170767() {
     return test170767Field(menu);
 }
 function test170767Field(menu) {
+    var qo, o, ret = true;
+    qo = { "备注" : "颜色尺码模式下开单是否按颜色尺码提醒已存在的重复记录" };
+    o = { "新值" : "0", "数值" : [ "默认按颜色尺码提醒", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     var ret = true, ret1 = true, ret2 = true;
     for ( var menu1 in menu) {
         tapMenu(menu1, menu[menu1]);

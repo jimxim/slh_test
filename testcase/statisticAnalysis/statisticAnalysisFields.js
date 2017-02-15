@@ -164,7 +164,9 @@ function statisticAnalysisSynthesisField(key, show) {
  */
 function getSACountsQR(name, type, value) {
     tapLine();
-    var texts = getStaticTexts(getScrollView(-1, 0));
+    var view1 = window.scrollViews()[1].scrollViews()[0].scrollViews()[0];
+    // var texts = getStaticTexts(getScrollView(-1, 0));
+    var texts = getStaticTexts(view1);
     var qr = getQRverify(texts, "名称");
     tapNaviClose();
 

@@ -130,7 +130,7 @@ function checkPrepare_1() {
     qr = getQR();
     var ret = isEqual(0, qr.data.length);
 
-    logDebug(" t1=" + t1);
+    logDebug(" t2=" + t2);
     return ret;
 }
 function checkPrepare1() {

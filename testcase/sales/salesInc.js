@@ -712,6 +712,10 @@ function editQuickAddGoods(o, o1, ret) {
     return ret;
 }
 function editQuickAddGoodsYes(o1) {
+    var bt = app.navigationBar().buttons()[CLOSE];
+    if (!isUIAElementNil(bt) || bt.isVisible()) {
+        tapNaviLeftButton();
+    }
     tapReturn();
     delay();
 }

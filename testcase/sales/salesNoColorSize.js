@@ -12434,6 +12434,10 @@ function test170731() {
             qr1.data[1]["货品"]), isAqualNum(1.9, qr1.data[1]["单价"]), isEqual(
             "00001,打包费", qr1.data[2]["货品"]), isAqualNum(3.5, qr1.data[2]["单价"]));
 
+    checkPrepare();
+    checkPrepare_1();
+    checkPrepare1();
+    checkPrepare2();
     r = "1." + getRandomInt(100);
     tapMenu("盘点管理", "新增盘点+");
     var josn = { "明细" : [ { "货品" : "4562", "数量" : r } ] };
