@@ -307,13 +307,11 @@ function test170001_2_170002_170003_170004_170020_170485() {
     editSalesBillNoColorSize(json);
     var opt = json["操作日期"];
 
-    var idx1 = 0;
-    if (ipadVer >= "7.27") {
-        idx1 = 7;
-    }
     tapMenu("销售开单", "按批次查");
+    var tf = salesQueryBatchField("客户");
+    var idx = tf.index;
     var ret = false;
-    var f = new TField("客户", TF_AC, idx1, "lx", -1);
+    var f = new TField("客户", TF_AC, idx, "lx", -1);
     var cells = getTableViewCells(window, f);
     for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
@@ -327,7 +325,9 @@ function test170001_2_170002_170003_170004_170020_170485() {
     tapKeyboardHide();
     query();
 
-    tap(getTextField(window, 12));
+    var tf1 = salesQueryBatchField("客户类别");
+    var idx1 = tf1.index;
+    tap(getTextField(window, idx1));
     var arr = [ "零批客户", "VIP客户", "打包客户", "零售客户", "网购客户" ];
     var view = window.popover().scrollViews()[0];
     var ret1 = isEqualDropDownList(arr, view);
@@ -711,11 +711,9 @@ function test170008() {
 }
 function test170014() {
     // 检查苹果键盘，可输入中文即可
-    var idx = 0;
-    if (ipadVer >= "7.27") {
-        idx = 7;
-    }
     tapMenu("销售开单", "按批次查");
+    var f = salesQueryBatchField("客户");
+    var idx = f.index;
     var o = { "键盘" : "简体拼音", "拼音" : [ "lixiang" ], "汉字" : [ "李响" ] };
     var tf = window.textFields()[idx].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
@@ -726,10 +724,12 @@ function test170014() {
     ret = isAnd(ret, isEqual("李响", qr.data[0]["客户"]));
 
     tapButton(window, CLEAR);
+    var f1 = salesQueryBatchField("客户分店");
+    var idx1 = f1.index;
     var o = { "键盘" : "简体拼音", "拼音" : [ "cangku" ], "汉字" : [ "仓库" ] };
-    var tf = window.textFields()[Number(idx) + 1].textFields()[0];
+    var tf = window.textFields()[idx1].textFields()[0];
     setTextFieldValueByPinyin(tf, o);
-    var ret1 = isEqual("仓库", getTextFieldValue(window, Number(idx) + 1));
+    var ret1 = isEqual("仓库", getTextFieldValue(window, idx1));
     tapButton(window, CLEAR);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
@@ -798,7 +798,8 @@ function test170019() {
     var lo = qr.data[0]["代收"];
     // 综合收支表
     tapFirstText();
-    var texts = getStaticTexts(getScrollView(-1, 0));
+    var view1 = window.scrollViews()[1].scrollViews()[0].scrollViews()[0];
+    var texts = getStaticTexts(view1);
     qr = getQRverify(texts, "名称");
     tapNaviLeftButton();
     var arr = qr.data;
@@ -839,7 +840,6 @@ function test170019() {
     var index = getEditSalesTFindex2("客户", "汇款");
     var money = getTextFieldValue(window, index - 1);
     var money1 = Number(money / 3).toFixed(2);
-
     o = { "现金" : Number(money1) + 10, "刷卡" : [ Number(money1) - 10, "交" ],
         "汇款" : [ Number(money) - Number(2 * money1), "建" ] };
     editSalesBill(o);
@@ -4664,14 +4664,14 @@ function test170338_170344() {
     var fields = salesQueryParticularFields(keys);
     query(fields);
     var qr2 = getQR();
-    var ret1 = isAnd(isEqual(totalNum, qr2.counts["数量"]), isAqualNum(totalMoney,
-            qr2.counts["小计"]));
+    var ret1 = isAnd(isEqual(totalNum, qr2.counts["数量"]), isAqualNum(
+            totalMoney, qr2.counts["小计"]));
 
     var ret2 = isAnd(isEqual(qr2.data[0]["批次"], batch), isEqual(
             qr2.data[0]["款号"], code), isEqual(qr2.data[0]["名称"], name),
-            isEqual(qr2.data[0]["单价"], price), isAqualNum(qr2.data[0]["数量"], num),
-            isEqual(getToday("yy"), date), isAqualOptime(getOpTime(),
-                    qr2.data[0]["操作日期"], 2));
+            isEqual(qr2.data[0]["单价"], price), isAqualNum(qr2.data[0]["数量"],
+                    num), isEqual(getToday("yy"), date), isAqualOptime(
+                    getOpTime(), qr2.data[0]["操作日期"], 2));
 
     logDebug(" sum1=" + sum1 + ", sum2=" + sum2 + ", ret=" + ret + ", ret1="
             + ret1 + ", ret2=" + ret2);
@@ -8873,20 +8873,17 @@ function test170699() {
     var keys = { "款号名称" : "3035" };
     var fields = queryGoodsFields(keys);
     query(fields);
-
     tapFirstText();
     var provider = getTextFieldValue(getScrollView(), 14);
     tapReturn();
 
-    tapMenu("销售开单", "按批次查");
-    var i, idx = 0;
-    if (ipadVer >= "7.27") {
-        idx = 7;
-    }
+    tapMenu("销售开单", "按明细查");
+    var tf = salesQueryParticularField("客户");
+    var idx = tf.index;
     var ret2 = false;
     var f = new TField("客户", TF_AC, idx, "lx", -1);
     var cells = getTableViewCells(window, f);
-    for (i = 0; i < cells.length; i++) {
+    for (var i = 0; i < cells.length; i++) {
         var cell = cells[i];
         var v = cell.name();
         if (isIn(v, "李响")) {

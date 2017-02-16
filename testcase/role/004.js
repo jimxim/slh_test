@@ -46,6 +46,7 @@ function test004() {
     run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773");
     run("【销售开单-按挂单】挂单不受参数-作废天数控制", "test170773_1");
     run("【销售开单-开单】特殊货品的显示", "test170774");
+    run("【销售开单-开单】销售价格允许改高不允许改低：店长不检查", "test170775_1");
     run("【销售开单－销售汇总-客户对帐单】键盘输入检查/客户对账单", "test170350_1");
     run("【系统设置】数据清理授权", "test210043_4");
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
@@ -2217,4 +2218,122 @@ function test170774Field(menu) {
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
+}
+function test170775_1() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170775Field(menu, false);
+}
+function test170775_2() {
+    var menu = { "销售订货" : "新增订货+", "销售开单" : ADDBILL };
+    return test170775Field(menu, true);
+}
+function test170775Field(menu, rights) {
+    var qo, o, ret = true;
+    qo = { "备注" : "销售价格允许改高不允许改低" };
+    o = { "新值" : "2", "数值" : [ "店长权限", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "不能低于指定的价格类型" };
+    o = { "新值" : "0", "数值" : [ "采购价", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    qo = { "备注" : "销售开单价低于指定的价格" };
+    o = { "新值" : "0", "数值" : [ "有权限可以记账", "in" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
+    for ( var menu1 in menu) {
+        tapMenu("销售开单", "按挂单");
+        query();
+        var qr = getQR();
+        var total = qr.total;
+
+        tapMenu(menu1, menu[menu1]);
+        var json = { "客户" : "ls",
+            "明细" : [ { "货品" : "3035", "数量" : 5, "单价" : 1 } ],
+            "onlytest" : "yes" };
+        editSalesBillNoColorSize(json);
+        saveAndAlertOk();
+        tapPrompt();
+        var msg = "款号[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账";
+        var ret1 = isIn(alertMsg, msg);
+
+        tapButtonAndAlert("挂 单", OK);
+        if (rights) {
+            tapPrompt();
+            ret1 = isAnd(ret1, isIn(alertMsg, msg));
+        }
+        tapReturn();
+
+        tapMenu(menu1, "按挂单");
+        query();
+        qr = getQR();
+        var total1 = qr.total;
+        if (!rights) {
+            var ret2 = isEqual(1, total1 - total);
+        }
+    }
+
+    tapMenu("销售开单", "按订货开单");
+    var keys = { "发货状态" : "未发货" };
+    var fields = salesBillOrderFields(keys);
+    query(fields);
+    tapFirstText();
+    var o = [ { "单价" : [ 1 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret3 = isAnd(isIn(alertMsg, msg));
+    tapReturn();
+
+    for ( var menu1 in menu) {
+        tapMenu("销售开单", "按挂单");
+        query();
+        var qr = getQR();
+        var total = qr.total;
+
+        tapMenu(menu1, menu[menu1]);
+        var json = { "客户" : "ls",
+            "明细" : [ { "货品" : "3035", "数量" : 5, "单价" : 150 } ],
+            "onlytest" : "yes" };
+        editSalesBillNoColorSize(json);
+        saveAndAlertOk();
+        tapPrompt();
+        var msg = "款号[3035]销售价已低于指定底价,此单您只允许挂单,不允许直接保存记账";
+        var msg1 = "保存成功";
+        if (!rights) {
+            msg = msg1;
+        }
+        var ret4 = isIn(alertMsg, msg);
+
+        editSalesBillNoColorSize(json);
+        tapButtonAndAlert("挂 单", OK);
+        if (rights) {
+            tapPrompt();
+            msg = msg;
+            ret4 = isAnd(ret4, isIn(alertMsg, msg));
+        }
+        tapReturn();
+
+        tapMenu(menu1, "按挂单");
+        query();
+        qr = getQR();
+        var total1 = qr.total;
+        if (!rights) {
+            var ret5 = isEqual(1, total1 - total);
+        }
+    }
+
+    tapMenu("销售开单", "按订货开单");
+    query(fields);
+    tapFirstText();
+    var o = [ { "单价" : [ 150 ] } ];
+    editChangeSalesBillOrderPrice(o, "no");
+    saveAndAlertOk();
+    tapPrompt();
+    var ret6 = isAnd(isIn(alertMsg, msg1));
+    tapReturn();
+
+    logDebug(" ret=" + ret + ",  ret1=" + ret1 + ",  ret2=" + ret2 + ",  ret3="
+            + ret3 + ",  ret4=" + ret4 + ",  ret5=" + ret5 + ",  ret6=" + ret6);
+    return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6;
 }
