@@ -164,27 +164,21 @@ function statisticAnalysisSynthesisField(key, show) {
  */
 function getSACountsQR(name, type, value) {
     tapLine();
-    var view1 = window.scrollViews()[1].scrollViews()[0].scrollViews()[0];
-    // var texts = getStaticTexts(getScrollView(-1, 0));
-    var texts = getStaticTexts(view1);
+    // 综合收支表7.2721中scrollView变成三层需要确认是否需要这样改动 等高有时间帮忙确认
+    // 目前最多只遇到过两层，层次变动比较对自动化影响很大，需要确认
+    var view1 = getScrollView(-1, 0).scrollViews()[0];
+    var texts = getStaticTexts(view1);// getScrollView(-1, 0)
     var qr = getQRverify(texts, "名称");
     tapNaviClose();
 
     var arr = qr.data;
-    var length = arr.length - 1// 最后一行为合计
+    var length = arr.length - 1// 最后一行为合计,排除
     var bank = "现", ret = 0;
     for (var i = 0; i < length; i++) {
-        if (isDefined(arr[i]["名称"])) {
-            bank = arr[i]["名称"];
-        }
+        bank = arr[i]["名称"] || bank;
         if (name == bank && isIn(arr[i][type], value)) {
             // 某个行现金,刷卡,汇款同时出现时,在综合收支界面体现出来,分别为刷卡**,汇款**
-            if (type == "收入") {
-                ret = Number(arr[i]["金额"]);
-            }
-            if (type == "支出") {
-                ret = Number(arr[i]["金额2"]);
-            }
+            ret = type == "收入" ? Number(arr[i]["金额"]) : Number(arr[i]["金额2"]);
             break;
         }
     }

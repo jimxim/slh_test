@@ -40,10 +40,8 @@ function onlyTest(){
 // { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 20 } },
 // { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 30 } } ]};
 // editSalesBill(json, colorSize);
-//       tapMenu("盘点管理", "更多", "未盘点款号");
-//       var tf = getQueryTFields([ "厂商" ]);
-//       debugObject(tf[0]);
-
+       getSACountsQR("现", "收入", "订金");
+       
 // target.captureScreenWithName("test");
    }catch(e){
  UIATarget.localTarget().logElementTree();
