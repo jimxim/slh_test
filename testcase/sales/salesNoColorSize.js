@@ -971,15 +971,15 @@ function test170050() {
             isEqual("0", qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]),
             isEqual(money, qr.data[0]["代收"]));
 
+    tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var json1 = { "明细" : [ { "货品" : "3035", "数量" : 5 } ] };
     editSalesBillNoColorSize(json1);
-
     var qr1 = json1["明细值"];
     var qr2 = json1["输入框值"];
     var totalMoney1 = qr2["代收"];
-    var ret1 = isEqual(qr1.data[1]["小计"], sub(totalMoney1, money));
+    var ret1 = isEqual(qr1.data[1]["小计"], Number(totalMoney1) - Number(money));
 
     tapMenu("销售开单", "按批次查");
     query();
@@ -1034,11 +1034,11 @@ function test170050() {
             isEqual(0, qr.data[0]["刷卡"]), isEqual(4500, qr.data[0]["汇款"]),
             isEqual(0, qr.data[0]["代收"]));
 
+    tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var json1 = { "明细" : [ { "货品" : "3035", "数量" : 8 } ] };
     editSalesBillDetNoColorSize(json);
-
     var cashTFindex = getEditSalesTFindex2("客户", "现金");
     var cardTFindex = getEditSalesTFindex2("客户", "刷卡");
     var remitTFindex = getEditSalesTFindex2("客户", "汇款");
@@ -1069,6 +1069,7 @@ function test170050() {
             qr.data[0]["刷卡"]), isEqual("0", qr.data[0]["汇款"]), isEqual(0,
             qr.data[0]["代收"]));
 
+    tapMenu("销售开单", "按批次查");
     query();
     tapFirstText();
     var json1 = { "明细" : [ { "货品" : "3035", "数量" : 5 } ] };
@@ -1077,7 +1078,7 @@ function test170050() {
     var qr1 = json1["明细值"];
     var qr2 = json1["输入框值"];
     var totalMoney1 = qr2["现金"];
-    var ret10 = isEqual(qr1.data[1]["小计"], sub(totalMoney1, money));
+    var ret10 = isEqual(qr1.data[1]["小计"], Number(totalMoney1) - Number(money));
 
     tapMenu("销售开单", "按批次查");
     query();

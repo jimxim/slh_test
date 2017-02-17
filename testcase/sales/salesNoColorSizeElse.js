@@ -482,7 +482,9 @@ function test170006_170013() {
                 isEqual(2, a6), isEqual(0, a7), isEqual("否", a8));
     } else {
         tapMenu("销售开单", "按批次查");
-        tap(getTextField(window, 10));
+        var tf = salesQueryBatchField("作废挂单");
+        var idx = tf.index;
+        tap(getTextField(window, idx));
         var ret5 = false;
         var bt = app.mainWindow().popover().buttons()["挂单"];
         if (isUIAElementNil(bt) || !bt.isVisible()) {

@@ -2416,15 +2416,6 @@ function test210073() {
     o = { "新值" : "2", "数值" : [ "现金+刷卡+代收+汇款", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
-    // runAndAlert("test210020Clear", OK);
-    // tapPrompt();
-    // if (ipadVer >= "7.21") {
-    // var cond = "isIn(alertMsg, '清理刷新结束')";
-    // } else {
-    // var cond = "isIn(alertMsg, '清理和刷新成功')";
-    // }
-    // waitUntil(cond, 300);
-
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2);
     return ret && ret1 && ret2;
 }
