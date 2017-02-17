@@ -52,6 +52,7 @@ function test004() {
     run("【系统设置】店长查询人员列表时结果为空", "test210038");
     run("【盘点管理—按批次查】单据检查", "test180047");
     run("【盘点管理-盈亏表】店长权限", "test180050");
+    run("【盘点管理-盘点计划】店长只能新增本门店的盘点计划", "test180080");
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For004_2");
 }
 function test210038() {
@@ -156,6 +157,23 @@ function test180050() {
     tapReturn();
 
     return ret && ret1;
+}
+function test180080() {
+    var menu = [ "按品牌+", "按类别+", "按厂商+", "按组合+" ];
+    return test180080Field(menu);
+}
+function test180080Field(menu) {
+    var ret = true;
+    for (var j = 0; j < menu.length; j++) {
+        var menu1 = menu[j];
+        var arr = [ "常青店" ];
+        tapMenu("盘点管理", "盘点计划+", menu1);
+        tapButton(getScrollView(), "选 择");
+        var view = window.popover().scrollViews()[0];
+        ret = isAnd(ret, isEqualDropDownList(arr, view));
+        tapReturn();
+    }
+    return ret;
 }
 function test170134_170670() {
     // 总经理，全局设置里设置 单据打印后不允许修改 为 都不允许修改
