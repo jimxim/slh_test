@@ -921,8 +921,7 @@ function ts130012() {
 
     tapMenu("往来管理", "厂商账款", "厂商总账");
     var keys = { "厂商" : "vell" };
-    var fields = queryCustomerProviderAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     var a = qr.data[0]["余额"];
 
@@ -1265,33 +1264,19 @@ function ts130038() {
     var fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     var qr = getQR();
-    var ret = qr.data.length > 0;
-    if (ret) {
-        ret = checkQResult("门店", "中洲店");
-    }
-
-    return ret;
+    return qr.data.length > 0 && checkQResult("门店", "中洲店");
 }
 function ts130039() {
     tapMenu("采购订货", "按批次查");
     var keys = { "日期从" : getDay(-365) };
-    var fields = purchaseOrderQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
-    var ret = qr.data.length > 0;
-    if (ret) {
-        ret = checkQResult("操作人", "采购员");
-    }
+    var ret = qr.data.length > 0 && checkQResult("操作人", "采购员");
 
     tapMenu2("按明细查");
-    fields = purchaseOrderQueryParticularFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
-    var ret2 = qr.data.length > 0;
-    if (ret2) {
-        ret2 = checkQResult("操作人", "采购员");
-    }
-
+    var ret2 = qr.data.length > 0 && checkQResult("操作人", "采购员");
     return isAnd(ret, ret2);
 }
 function ts130040() {
@@ -1327,10 +1312,7 @@ function ts130042() {
 function ts130041Field(json) {
     tapMenu("采购订货", "新增订货+");
     editSalesBill(json, colorSize);
-    var cash = json["现金"];
-    if (isUndefined(cash)) {
-        cash = 0;
-    }
+    var cash = json["现金"] || 0;
 
     tapMenu2("按批次查");
     query();
@@ -1347,12 +1329,8 @@ function ts130041Field(json) {
     query();
     qr = getQR();
     exp = { "总数" : 0, "现金" : cash, "备注" : "预付款" };// 预付款单检查
-    if (cash == 0) {
-        ret = isAnd(ret, !isEqualObject2(exp, qr.data[0]));
-    } else {
-        ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
-    }
-
+    ret = cash == 0 ? isAnd(ret, !isEqualObject2(exp, qr.data[0])) : isAnd(ret,
+            isEqualObject2(exp, qr.data[0]));
     return ret;
 }
 function ts130043() {

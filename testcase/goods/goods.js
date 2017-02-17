@@ -3866,9 +3866,8 @@ function ts100116() {
     editSalesBill(json, colorSize);
 
     tapMenu("货品管理", "当前库存");
-    var keys = { "款号" : code };
-    var fields = queryGoodsStockFields(keys);
-    query(fields);
+    var qKeys = { "款号" : code };
+    conditionQuery(qKeys);
     var qr = getQR();
     var ret = isEqual(1, qr.data[0]["上架天数"]);
 

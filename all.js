@@ -53,6 +53,8 @@
 #import "testcase/salesOrder/salesOrder.js"
 #import "testcase/salesOrder/salesOrderFields.js"
 
+#import "testcase/sensitive/sensitive.js"
+
 #import "testcase/shopIn/shopIn.js"
 #import "testcase/shopIn/shopInFields.js"
 

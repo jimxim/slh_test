@@ -17,9 +17,7 @@ function testQueryGoodsStockFields() {
  * @returns
  */
 function queryGoodsStockFields(keys, show) {
-    if (isUndefined(show)) {
-        show = false;
-    }
+    show = show || false;
     var idx = getValueFromCacheF1("getQueryBtnIndex");// 第一个...按钮下标
     return getTFields("queryGoodsStockField", window, keys, show, idx);
 }

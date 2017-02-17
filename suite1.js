@@ -21,11 +21,10 @@ function test000All() {
  var caseName="测试用例";
 // TITLE_SXE = getTitleSXE();//新综合汇总 列表标题
 // testCheckMenuAll();//菜单检查，跑用例前先跑一遍
-
 // run(caseName, "setSizeHeadParams_1");//
 // testSizeHead001_shop1();
- run(caseName, "onlyTest");
-// run(caseName, "ts100059Color");//
+// run(caseName, "test280001");
+ run(caseName, "onlyTest");//
 }   
 function onlyTest(){
  UIATarget.localTarget().logElementTree();
@@ -41,6 +40,9 @@ function onlyTest(){
 // { "货品" : "agc001", "颜色" : "白色", "尺码" : { "L" : 10, "XL" : 20 } },
 // { "货品" : "agc001", "颜色" : "黑色", "尺码" : { "S" : 30 } } ]};
 // editSalesBill(json, colorSize);
+//       tapMenu("盘点管理", "更多", "未盘点款号");
+//       var tf = getQueryTFields([ "厂商" ]);
+//       debugObject(tf[0]);
 
 // target.captureScreenWithName("test");
    }catch(e){
@@ -53,6 +55,7 @@ function onlyTest(){
  // debugObject(gCache,"gCache");
    return true;
 }
+
 //
 function loginGoodsParams001(){
     var p1 = {"角色":"总经理","帐套":"autotest1"};

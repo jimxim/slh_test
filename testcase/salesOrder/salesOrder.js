@@ -436,7 +436,7 @@ function test160001() {
     editSalesBillNoColorSize(json);
 
     tapMenu("销售订货", "按批次查");
-    var i, j, ret = true;
+    var i, j;
     var keys = { "客户" : "xw", "日期从" : getDay(-30) };
     var fields = salesOrderQueryBatchFields(keys);
     query(fields);
@@ -1967,7 +1967,6 @@ function ts160073_74() {
     qo = { "备注" : "是否允许修改已发货的订单" };
     o = { "新值" : "0", "数值" : [ "默认不允许", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
-
     return ret;
 }
 

@@ -1178,6 +1178,7 @@ function test220068() {
 }
 /**
  * 220068实现
+ * 
  * @param haswarn 是否有错误提示
  * @returns
  */
@@ -1801,6 +1802,7 @@ function test220109() {
 }
 /**
  * 验证尺码表头显示库存是否正确
+ * 
  * @param det1 开单前 会显示该颜色下所有尺码的库存
  * @param det2 开单后
  * @param dif
@@ -1879,6 +1881,7 @@ function test220110() {
 }
 /**
  * 尺码表头库存验证
+ * 
  * @param menu
  * @param json
  * @param dif 开单前后库存变化 开单为+，入库为- 开单后+dif=开单前
@@ -2296,6 +2299,7 @@ function test220132() {
 }
 /**
  * 销售开单-更多-客户未发
+ * 
  * @param o
  */
 function editSalesBillUnshipping(o) {
@@ -2318,12 +2322,13 @@ function editSalesBillUnshipping(o) {
 }
 /**
  * 销售开单-更多-客户未发 明细值 界面接上个界面，导致元素混乱，因此单独取，方便以后优化
+ * 
  * @returns {detResult}
  */
 function getQRCustUnshipping() {
     var view = getScrollView(-1);
     var titles = getDetSizheadTitle("desc");// 获取尺码表头 倒叙取值
-    var titles_tf = getDetSizheadTFIndex(titles);// 获取输入框下标
+    var titles_tf = getDetSizheadTFIndex(titles["标题坐标"]);// 获取输入框下标
     var tfNum = titles_tf["明细输入框个数"];
     delete titles_tf["明细输入框个数"];
     // var titleTexts = getStaticTexts(window);
@@ -2382,7 +2387,7 @@ function editBillUnshipping(o) {
     if (isDefined(details)) {
         var view1 = getScrollView(-1);
         var titles = getDetSizheadTitle("desc");// 获取尺码表头 倒叙取值
-        var titles_tf = getDetSizheadTFIndex(titles);// 获取输入框下标
+        var titles_tf = getDetSizheadTFIndex(titles["标题坐标"]);// 获取输入框下标
         var tfNum = titles_tf["明细输入框个数"];
         for (i = 0; i < details.length; i++) {
             var start = tfNum * i;

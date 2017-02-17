@@ -2683,12 +2683,8 @@ function test120050Field(price) {
 }
 
 function ts120050Det(num1, num2) {
-    if (isUndefined(num1)) {
-        num1 = 20;
-    }
-    if (isUndefined(num2)) {
-        num2 = 30;
-    }
+    num1 = num1 || 20;
+    num2 = num2 || 30;
     var det = {};
     switch (colorSize) {
     case "no":

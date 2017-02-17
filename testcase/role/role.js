@@ -671,6 +671,11 @@ function checkRightsCheck() {
     var f = checkMaterialFields([ "厂商" ]);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
             f));
+    
+    tapMenu("盘点管理", "更多", "未盘点款号");
+    var f=getQueryTFields([ "厂商" ]);
+    ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
+            f));
     return ret;
 }
 function checkRightsStatisticAnalysis() {
@@ -696,8 +701,7 @@ function checkRightsStatisticAnalysis() {
     } else {
         ret = isAnd(ret, qr.data[0]["成本额"] == "", qr.data[0]["利润额"] == "");// 这里价值标题显示，但是无内容
     }
-    tapNaviLeftButton();
-    tapNaviLeftButton();
+    tapNaviClose();
 
     tapMenu2("汇总表");
     tapMenu3("款号利润表");
@@ -751,18 +755,15 @@ function checkRightsStatisticPicture() {
  * @returns {Boolean}
  */
 function checkRightsField(hasRights, view, arr, view2, f) {
-    if (isUndefined(hasRights)) {
-        hasRights == false;
-    }
-    var i, j;
+    hasRights = hasRights || false;
+    var i, j,ret = true;
     var texts = getStaticTexts(view);
-    var ret = true;
     for (i = 0; i < arr.length; i++) {
         var v, ok = false;
         for (j = 0; j < texts.length; j++) {
             var t = texts[j];
             try {
-                v = eval("t." + "name" + "()");
+                v = t.name();
             } catch (e) {
                 logError(e);
             }
@@ -810,3 +811,4 @@ function checkRightsField(hasRights, view, arr, view2, f) {
     }
     return ret;
 }
+

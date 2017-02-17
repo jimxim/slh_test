@@ -190,7 +190,6 @@ function ts150010_2() {
             ret = ret && isEqual("", getTextFieldValue(window, i));
         }
     }
-
     return ret;
 }
 function ts150001_09() {
@@ -266,8 +265,7 @@ function ts150001Field(qr, det) {
 function ts150002() {
     tapMenu("门店调出", "按批次查");
     var keys = { "日期从" : getDay(-60), "调出门店" : "中洲店" };
-    var fields = shopOutQueryBatchFields(keys);
-    query(fields);
+    conditionQuery(keys);
 
     tapTitle(getScrollView(), "状态");
     tapTitle(getScrollView(), "状态");
