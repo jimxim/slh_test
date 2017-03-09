@@ -2136,7 +2136,7 @@ function getSizeCode(size) {
     return f;
 }
 /**
- * 
+ *
  * @param menu31 新增界面
  * @param menu32 查询界面
  * @param keys
@@ -3893,7 +3893,8 @@ function ts100116() {
 function ts100117() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号名称" : "g" };
-    tapButton(window, CLEAR);// 前面用例影响,一次清楚可能无效
+    tapPrompt();//前面用例影响,可能有弹窗需要处理
+    tapButton(window, CLEAR);// 前面用例影响,一次清除可能无效
     conditionQuery(keys);
     var qr = getQR(), i = 0;
     for (; i < qr.data.length; i++) {
@@ -5393,7 +5394,7 @@ function tsClearTField() {
     conditionQuery(keys, false);
     var ret = checkQResult("厂商", "Rt");
 
-    clearTFieldsByIndex(window, fields["类别"].index, "SC");// 
+    clearTFieldsByIndex(window, fields["类别"].index, "SC");//
     tap(window.textFields()[2]);// 随便点击一个TF或者TF_AC的文本框，否则无法触发SC
     keys = { "类别" : "鞋" };
     conditionQuery(keys, false);
