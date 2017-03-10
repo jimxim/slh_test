@@ -436,16 +436,13 @@ function ts130004_2() {
     var det = addPOrderBillDet();
     tapMenu("采购订货", "按汇总", "按款号");
     var keys = { "日期从" : getDay(-3), "款号" : det["明细"][0]["货品"], "门店" : "常青店" };
-    if (ipadVer >= 7.21) {
-        keys["类别"] = "登山服";
-    }
-    var fields = purchaseOrderCodeFields(keys);
-    query(fields);
+    ipadVer >= 7.21 && keys["类别"] = "登山服";
+    conditionQuery(keys);
     var qr = getQR();
     var ret = isAnd(isEqual(det["明细"][0]["货品"], qr.data[0]["款号"]), isEqual(
             det["名称"], qr.data[0]["名称"]));
 
-    tapFirstText();
+    tapLine();
     var jo2 = get130004QR2("厂商", "差异数", "厂商");
 
     tapButton(window, CLEAR);
@@ -462,8 +459,8 @@ function ts130004_2() {
     delete keys["类别"];
     conditionQuery(keys);
     var jo1 = get130004QR("厂商");
-    var ret1 = isEqualObject(jo1, jo2);
-    return ret && ret1;
+    ret = isAnd(ret,isEqualObject(jo1, jo2));
+    return ret;
 }
 /**
  * 总经理可以看到其他门店的数据
@@ -544,7 +541,7 @@ function get130004QR2(firstTitle, lastTitle, title) {
             }
         }
     }
-    tapNaviLeftButton();
+    tapNaviClose();
     arr = getUnique(arr).sort();
 
     return arr;
