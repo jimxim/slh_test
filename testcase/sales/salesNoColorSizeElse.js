@@ -368,8 +368,8 @@ function test170001_2_170002_170003_170004_170020_170485() {
             isEqual(batch, a11));
 
     tapButton(window, CLEAR);
-    var idx;
-    if (ipadVer <= "7.27") {
+    var idx = 0;
+    if (ipadVer < "7.27") {
         idx = 2;
     }
     for (var i = 0; i < 13; i++) {
@@ -4810,7 +4810,7 @@ function test170345() {
     tapButton(window, QUERY);
     var qr2 = getQR();
     var oNum1 = qr2.data[0]["拿货次数"];
-    var ret1 = isEqual(oNum1, Number(oNum) + 1);
+    var ret1 = isEqual(oNum1, oNum);
 
     logDebug(" ret=" + ret + ", ret1=" + ret1);
     return ret && ret1;
