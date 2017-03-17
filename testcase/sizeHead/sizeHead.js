@@ -4,7 +4,7 @@
 // agc002 花色 L 库存含有小数
 // agc005 花色 黑色 白色 裤子尺码 25 26 27 30 31 32 33 34（28 29用例验证灰化 不能选，需要含有8个尺码）
 // agc006 花色 黑色 白色 夹克 S1 S2 S3 S4 不在尺码表头中的尺码组
-//002 004 
+//002 004
 //kh000~kh015  黑色 花色 白色 均色  S M 均码 L XL
 //涉及盘点的用例放在zy那 用到款号x001 x003
 
@@ -660,8 +660,9 @@ function test220020() {
     var str3 = getTFEnabledState(getScrollView(-1), titles["颜色"] + 1 + 2
             * tfNum, titles["单价"] - 1);
     tapReturn();
+    var ret1 = ipadVer >= 7.27?isIn(str3, "1"):!isIn(str3, "1");//7.27后可显示所有尺码组
     return isAnd(isEqual("11011100000", str1), isEqual("11100111110", str2),
-            !isIn(str3, "1"));
+            ret1);
 }
 function test220021() {
     var json = {
@@ -1178,7 +1179,7 @@ function test220068() {
 }
 /**
  * 220068实现
- * 
+ *
  * @param haswarn 是否有错误提示
  * @returns
  */
@@ -1802,7 +1803,7 @@ function test220109() {
 }
 /**
  * 验证尺码表头显示库存是否正确
- * 
+ *
  * @param det1 开单前 会显示该颜色下所有尺码的库存
  * @param det2 开单后
  * @param dif
@@ -1881,7 +1882,7 @@ function test220110() {
 }
 /**
  * 尺码表头库存验证
- * 
+ *
  * @param menu
  * @param json
  * @param dif 开单前后库存变化 开单为+，入库为- 开单后+dif=开单前
@@ -2299,7 +2300,7 @@ function test220132() {
 }
 /**
  * 销售开单-更多-客户未发
- * 
+ *
  * @param o
  */
 function editSalesBillUnshipping(o) {
@@ -2322,7 +2323,7 @@ function editSalesBillUnshipping(o) {
 }
 /**
  * 销售开单-更多-客户未发 明细值 界面接上个界面，导致元素混乱，因此单独取，方便以后优化
- * 
+ *
  * @returns {detResult}
  */
 function getQRCustUnshipping() {
