@@ -6,9 +6,9 @@
 //nocol000~015 均色均码超长订单用 均色均码价格随便设置
 //kh000~015颜色尺码/尺码表头超长订单用 kh000需要有16种以上颜色 尺码组全选择衣服尺码
 
-#
-import "all.js"#
-import "testcase/goods/editBill.js"
+
+#import "all.js"
+#import "testcase/goods/editBill.js"
 
 // #import "lib/Msg_EN.js"
 // #import "/Users/xukeqiang/Documents/slh_test/suite1.js"
