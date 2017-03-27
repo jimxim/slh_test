@@ -1,4 +1,4 @@
-//LuXingXin <52619481 at qq.com> 20151012
+ //LuXingXin <52619481 at qq.com> 20151012
 
 function testPurchaseOrder001() {
     run("【采购订货-按批次查】翻页_排序", "ts130020_1");// 差异数目前不支持排序
@@ -435,8 +435,7 @@ function ts130004_1() {
 function ts130004_2() {
     var det = addPOrderBillDet();
     tapMenu("采购订货", "按汇总", "按款号");
-    var keys = { "日期从" : getDay(-3), "款号" : det["明细"][0]["货品"], "门店" : "常青店" };
-    ipadVer >= 7.21 && keys["类别"] = "登山服";
+    var keys = { "日期从" : getDay(-3), "款号" : det["明细"][0]["货品"], "门店" : "常青店" ,"类别":"登山服"};
     conditionQuery(keys);
     var qr = getQR();
     var ret = isAnd(isEqual(det["明细"][0]["货品"], qr.data[0]["款号"]), isEqual(

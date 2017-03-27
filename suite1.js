@@ -35,7 +35,7 @@ function onlyTest() {
     // delay();
     try {
         tapMenu('货品管理', '当前库存');
-        let keys = {
+        var keys = {
             '类别': "登山服"
         };
         conditionQuery(keys);
