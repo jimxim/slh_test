@@ -148,7 +148,7 @@ function salesQueryParticularField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_135", TF_SC, 10, "备注");
+        f = new TField("类别_135", TF_PT, 10, "备注");
         break;
     case "provider":
     case "厂商":
@@ -540,7 +540,7 @@ function salesCustomerSupplyField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 7 + idx, "登山服");
+        f = new TField("类别", TF_PT, 7 + idx, "登山服");
         break;
     case "season":
     case "季节":
@@ -671,7 +671,7 @@ function salesTypeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_SC, 2, "登山服");
+        f = new TField("类别", TF_PT, 2, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -870,7 +870,7 @@ function getDateTFindex() {
     var index = getEditSalesTFindex2("客户,厂商", "日期");
     if (index < 0) {
         var cardTFindex = getValueFromCacheF1("getCardTFindex");
-        index = cardTFindex + 2;// 
+        index = cardTFindex + 2;//
     }
     return index;
 }
@@ -892,7 +892,7 @@ function getBillBalTFindex() {
     return staffTFindex--;
 }
 /**
- * 
+ *
  * @param title1
  * @param title2
  * @returns {Number}

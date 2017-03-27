@@ -96,7 +96,7 @@ function queryGoodsStockField(key, show, idx) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_8", TF_PT, 11, "登山服",-1,0);
+        f = new TField("类别_8", TF_PT, 11, "登山服");
         break;
     default:
         logDebug("未知key＝" + key);
@@ -179,7 +179,7 @@ function queryGoodsDistributionField(key, show) {
     switch (key) {
     case "type":
     case "类别":
-        f = new TField("类别_5", TF_SC, 0, "登山服");
+        f = new TField("类别_5", TF_PT, 0, "登山服");
         break;
     case "provider":
     case "厂商":
@@ -306,7 +306,7 @@ function queryGoodsInOutField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_9", TF_SC, 9 + idx, "登山服", -1, 0);
+        f = new TField("类别_9", TF_PT, 9 + idx, "登山服", -1, 0);
         break;
     case "staff":
     case "经办人":
@@ -387,7 +387,7 @@ function queryGoodsField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_5", TF_SC, 9 + i, "登山服");
+        f = new TField("类别_5", TF_PT, 9 + i, "登山服");
         break;
     case "season":
     case "季节":
@@ -1415,7 +1415,7 @@ function goodsHangQueryField(key, show) {
         f = new TField("厂商_70", TF_AC, 4, "a", -1, 0);
         break;
     case "类别":
-        f = new TField("类别_5", TF_SC, 5, "a");
+        f = new TField("类别_5", TF_PT, 5, "a");
         break;
     case "品牌":
         f = new TField("品牌_208", TF_AC, 6, "a", -1, 0);

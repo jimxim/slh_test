@@ -2,7 +2,7 @@
 //一些不靠谱的方法
 /**
  * 加
- * 
+ *
  * @param a
  * @param b
  * @returns {Number}
@@ -24,7 +24,7 @@ function add(a, b) {
 }
 /**
  * 减
- * 
+ *
  * @param a
  * @param b
  * @returns {Number}
@@ -46,7 +46,7 @@ function sub(a, b) {
 }
 /**
  * 乘
- * 
+ *
  * @param a
  * @param b
  * @returns {Number}
@@ -66,7 +66,7 @@ function mul(a, b) {
 }
 /**
  * 除
- * 
+ *
  * @param a
  * @param b
  * @returns {Number}
@@ -97,7 +97,7 @@ function cToEn(str) {
 
 /**
  * 新增/修改客户
- * 
+ *
  * @param keys
  * @param o
  * @returns keys
@@ -142,12 +142,15 @@ function editCustomerSave(o) {
 }
 /**
  * 新增货品
- * 
+ *
  * @param keys
  * @param o
  * @param isEdit
  */
 function addGoods(keys, o) {
+  if(isDefined(keys["类别"])){
+    delete  keys["类别"];//类别控件改变，暂时删除验证
+  };
     delay();// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
     o = o || {};
     o["上架日期"] && changeMarketTime(o["上架日期"]);
@@ -183,7 +186,7 @@ function editGoodsSave(o) {
 }
 /**
  * 新增盘点处理
- * 
+ *
  * @param keys
  * @param btn 全盘处理/部分处理
  */
@@ -197,7 +200,7 @@ function editStockProcess(keys, btn) {
 }
 /**
  * 新增物流核销单
- * 
+ *
  * @param o eg{ "物流" : "sf", "核销" : 0 }或{ "物流" : "sf", "核销" : [100] }批次号
  * @returns
  */
@@ -219,7 +222,7 @@ function addLogisticsVerify(o) {
 
 /**
  * 对象相加
- * 
+ *
  * @param jo1 不能为空
  * @param jo2
  * @returns
@@ -246,7 +249,7 @@ function addObject(jo1, jo2) {
 
 /**
  * 新增厂商
- * 
+ *
  * @param keys
  */
 function addProvider(keys) {
@@ -261,7 +264,7 @@ function addProvider(keys) {
 
 /**
  * 新增积分兑换
- * 
+ *
  * @param customer
  * @param points 兑换积分
  * @param money 兑换金额
@@ -278,7 +281,7 @@ function addRedeemPoints(customer, points, money) {
 }
 /**
  * 积分兑换
- * 
+ *
  * @param points
  * @param money
  */
@@ -305,7 +308,7 @@ function addRedeemPointsFields(points, money) {
 }
 /**
  * 获取颜色尺码模式开单界面明细中货品的textField下标
- * 
+ *
  * @returns {Number}
  */
 function getBillDetCSGoodsFieldIndex() {
@@ -326,7 +329,7 @@ function getBillDetCSGoodsFieldIndex() {
 }
 /**
  * 获取开单界面明细界面第一个内容为空的货品textField下标
- * 
+ *
  * @param tfNum 明细输入框个数
  * @param idx scrollView下标 默认-1
  * @returns {Number}
@@ -350,7 +353,7 @@ function getBillDetInputIndex(tfNum, idx) {
 }
 /**
  * 计算汇总值
- * 
+ *
  * @param cond
  */
 function getCounts(cond) {
@@ -371,7 +374,7 @@ function getCounts(cond) {
     return sum;
 }
 /**
- * 
+ *
  * @param i
  * @returns
  */
@@ -392,7 +395,7 @@ function getPopCollectionView(view, i) {
 }
 /**
  * 简单的月日转4位年月日 大于当日改成去年,需要定期清理数据 一般不会往后做数据
- * 
+ *
  * @param day
  * @returns {String}
  */
@@ -407,7 +410,7 @@ function getDay04(day) {
 }
 /**
  * 将日期转化为4位年月日
- * 
+ *
  * @param day
  * @returns {String}
  */
@@ -426,7 +429,7 @@ function getDayToFullYear(day) {
 }
 /**
  * 获取开单界面window视图中的值,标题与文本框必须一一对应
- * 
+ *
  * @param firstTitle 起始标题
  * @param arr 需要获取的标题数组
  * @returns
@@ -444,7 +447,7 @@ function getEditBillValue(firstTitle, arr) {
 }
 /**
  * 获取视图中所有元素的数组
- * 
+ *
  * @param view
  * @returns
  */
@@ -454,7 +457,7 @@ function getElements(view) {
 }
 /**
  * 获取开单界面标题对应的TF下标
- * 
+ *
  * @param titleX eg getDetSizheadTitle()["标题坐标"]
  * @returns
  */
@@ -482,7 +485,7 @@ function getDetSizheadTFIndex(titleX) {
 }
 /**
  * 获取尺码表头模式显示库存情况下，开单界面的明细值
- * 
+ *
  * @returns {detResult}
  */
 function getQRDet(view) {
@@ -571,7 +574,7 @@ function getQR3(dataView, firstTitle, lastTitle) {
 }
 /**
  * 获取类似往来管理-客户账款-客户门店账-所有未结界面明细的查询结果
- * 
+ *
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -626,7 +629,7 @@ function getQResult3(dataView, firstTitle, lastTitle) {
 }
 /**
  * 类似核销界面取值 标题和内容都在一个视图内
- * 
+ *
  * @param view getScrollView(-1,0)
  * @param firstTitle
  * @returns {QResult}
@@ -674,7 +677,7 @@ function getQRVerify_x(view, firstTitle) {
 }
 /**
  * 获取类似往来管理-客户账款-所有统计window界面的值
- * 
+ *
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -708,7 +711,7 @@ function getQRStaticTexts(dataView, firstTitle, lastTitle) {
 }
 /**
  * 取指定范围内的随机数
- * 
+ *
  * @param min
  * @param max
  * @param dn 小数位
@@ -721,7 +724,7 @@ function getRandomNum(min, max, dn) {
 }
 /**
  * 取N位随机字符串
- * 
+ *
  * @param n
  * @returns {String}
  */
@@ -736,7 +739,7 @@ function getRandomStr(n) {
 }
 /**
  * 获取明细输入框标题，标题列号，从0开始
- * 
+ *
  * @returns {"货品":0, "颜色":1, "尺码":2,... "明细输入框个数":10 }
  */
 function getSalesBillDetTitleObject() {
@@ -768,7 +771,7 @@ function getSalesBillDetTitleObject() {
 }
 /**
  * 获取明细输入框个数，标题列号，从0开始
- * 
+ *
  * @returns {"货品":0, "颜色":1, "尺码":2,... "明细输入框个数":10 }
  */
 function getSalesBillDetTfObject() {
@@ -816,7 +819,7 @@ function getSalesBillDetTfObject() {
 }
 /**
  * 获取开单界面起始标题下标
- * 
+ *
  * @param texts
  * @param order 获取顺序 asc desc
  * @returns {Number}
@@ -895,7 +898,7 @@ function subTime(day1, day2) {
 
 /**
  * 点击第N行
- * 
+ *
  * @param n 从0开始
  * @param view
  * @param firstTitle 标题行第一个标题
@@ -933,7 +936,7 @@ function tapLine(n, view, firstTitle) {
 }
 /**
  * 点击导航栏左按钮，防止用例出错卡界面
- * 
+ *
  * @param max 最大尝试次数
  */
 function tapNaviClose(max) {
@@ -989,7 +992,7 @@ function tapStaticTextByValue(view1, txt1) {
 }
 /**
  * 点击第一个内容为希望值的静态文本
- * 
+ *
  * @param name 默认为1，即点击第一条数据
  * @param view1
  */
@@ -1011,7 +1014,7 @@ function tapTextByFirstWithName(name, view1) {
 
 /**
  * 修改密码
- * 
+ *
  * @param oldSecure
  * @param newSecure
  */
@@ -1036,7 +1039,7 @@ function changeSecure(oldSecure, newSecure) {
 }
 /**
  * 修改TField值
- * 
+ *
  * @param view
  * @param fields
  */
@@ -1065,7 +1068,7 @@ function checkDate(str) {
 }
 /**
  * 验证单据值
- * 
+ *
  * @param json
  * @returns {Boolean}
  */
@@ -1075,7 +1078,7 @@ function checkBillValue(json) {
 }
 /**
  * 开单简单的界面值对比 TV的备注有用例覆盖，这里跳过
- * 
+ *
  * @param exp
  * @returns {Boolean}
  */
@@ -1091,7 +1094,7 @@ function checkBillWinValue(exp) {
 }
 /**
  * 验证单据明细值
- * 
+ *
  * @param exp json["明细值"]
  * @returns {Boolean}
  */
@@ -1105,7 +1108,7 @@ function checkBillDetValue(exp) {
 }
 /**
  * 模糊查询验证
- * 
+ *
  * @param f
  * @param title1
  * @param title2 比如款号名称对应款号/名称，2个符合一个就可以
@@ -1155,7 +1158,7 @@ function testCheckFuzzyQuery() {
 
 /**
  * 单项查询条件验证
- * 
+ *
  * @param title
  * @param expected
  * @param type batch/day/in
@@ -1220,7 +1223,7 @@ function checkQResultField(title, expected, type, expected2) {
 }
 /**
  * 验证其他角色门店查询结果
- * 
+ *
  * @param onlymyshop 是否只显示本门店数据 默认本门店
  * @returns {Boolean}
  */
@@ -1254,7 +1257,7 @@ function checkShopQueryRights(onlymyshop) {
 }
 /**
  * 清除指定下标的文本框的内容
- * 
+ *
  * @param view
  * @param index
  * @param type "SC":TF_SC一类的文本框
@@ -1282,7 +1285,7 @@ function toDate(day) {
 
 /**
  * 先等1S，等到没有弹窗为止
- * 
+ *
  * @param maxSeconds
  */
 function waitUntilAlertInvisible(maxSeconds) {
@@ -1297,7 +1300,7 @@ function waitUntilAlertInvisible(maxSeconds) {
 }
 /**
  * 等待loading图 activityIndicator
- * 
+ *
  * @param maxTime最大等待时间，默认60s
  */
 function waitForLoad(maxTime) {
@@ -1320,7 +1323,7 @@ function waitForLoad(maxTime) {
 }
 /**
  * 跳转到指定页面(输入值)
- * 
+ *
  * @param page
  * @param qr
  */
@@ -1346,7 +1349,7 @@ function goPage2(page, qr) {
 
 /**
  * 翻页检验 取页面每一条数据与其他页面的每一条数据做对比 正常情况下，应该不存在完全相同的数据吧~ 最后会回到第一页
- * 
+ *
  * @param pageInfoView
  * @param dataView
  * @param firstTitle
@@ -1438,7 +1441,7 @@ function goPageCheck(pageInfoView, dataView, firstTitle) {
 
 /**
  * 页面切换，输入页码后点取消，验证留在当前页
- * 
+ *
  * @param qr
  */
 function goPageCheckField() {
@@ -1471,7 +1474,7 @@ function stringToDate(str) {
 
 /**
  * 操作时间是否相等 格式 mm-dd hh:mm
- * 
+ *
  * @param expected
  * @param actual
  * @param allow 允许的误差值，默认1分钟
@@ -1492,7 +1495,7 @@ function isAqualOptimeX(expected, actual, allow) {
 
 /**
  * 二维数组是否相似
- * 
+ *
  * @param data1
  * @param data2
  * @param allow 操作时间允许的误差值，默认为0
@@ -1511,7 +1514,7 @@ function isEqualDyadicArray(data1, data2, allow) {
 
 /**
  * 2个对象相同属性的值是否相等
- * 
+ *
  * @param expected
  * @param actual
  * @param allow 操作时间允许的误差值，默认为1分钟
@@ -1548,7 +1551,7 @@ function arrayToString(data) {
 }
 /**
  * 数组是否不同
- * 
+ *
  * @param data1
  * @param data2
  * @returns {Boolean}
@@ -1605,7 +1608,7 @@ function isDisabledTField(idx, view) {
 
 /**
  * 判断2个数组是否有相同数据
- * 
+ *
  * @param arr1
  * @param arr2
  * @returns {Boolean}
@@ -1627,7 +1630,7 @@ function isHasSame(arr1, arr2) {
 
 /**
  * 弹窗消息数组中是否包含希望内容
- * 
+ *
  * @param str
  * @returns
  */
@@ -1638,7 +1641,7 @@ function isInAlertMsgs(str) {
 }
 /**
  * 数组b是否包含数组a
- * 
+ *
  * @param arr2
  * @param arr1
  * @returns {Boolean}
@@ -1657,7 +1660,7 @@ function isInArray2(arr2, arr1) {
 }
 /**
  * 如果expected里的内容包含查询结果数据中一行数据的内容 ，返回真
- * 
+ *
  * @param qr QResult对象
  * @param expected 期望行数据对象
  * @returns {Boolean}
@@ -1717,7 +1720,7 @@ function scrollPrevPageCheck(pageInfoView, dataView, firstTitle) {
 
 /**
  * 详细页面滑动翻页验证
- * 
+ *
  * @param dataView
  * @param firstTitle
  * @param titleTotal
@@ -1767,7 +1770,7 @@ function scrollPrevPageCheck2(dataView, firstTitle, lastTitle) {
 
 /**
  * 下拉列表验证,有一个符合就返回true 已去除空格逗号等
- * 
+ *
  * @param index 静态文本下标
  * @param value 输入值
  * @param expected 希望显示的内容
@@ -1801,7 +1804,7 @@ function dropDownListCheck(index, value, expected, o) {
 
 /**
  * 下拉列表验证,有一个不符合就返回false
- * 
+ *
  * @param index
  * @param value
  * @param expected
@@ -1830,7 +1833,7 @@ function dropDownListCheck2(index, value, expected, o) {
 }
 /**
  * 下拉列表是否包含期望值的内容
- * 
+ *
  * @param exp eg：exp = "进货价 零批价 打包价 大客户价 Vip价格"
  * @param view 默认window
  * @returns {Boolean}
@@ -1854,7 +1857,7 @@ function isEqualDropDownListByExp(exp, view) {
 }
 /**
  * 是否空对象
- * 
+ *
  * @param obj
  * @returns {Boolean}
  */
@@ -1866,7 +1869,7 @@ function isEmptyObject(obj) {
 }
 /**
  * 是否相等 不考虑标点符号
- * 
+ *
  * @param expected
  * @param actual
  * @returns {Boolean}
@@ -1882,7 +1885,7 @@ function isEqual2(expected, actual) {
 
 /**
  * 查询界面汇总值验证 会判断汇总栏有汇总值的标题的汇总值是否正确（没有作废数据影响的情况下）
- * 
+ *
  * @param arr 应该存在的汇总值的标题数组
  * @param pageInfoView
  * @param dataView
@@ -1937,7 +1940,7 @@ function isEqualCounts(arr, pageInfoView, dataView, firstTitle) {
 
 /**
  * 下拉框内容是否与期望内容相同
- * 
+ *
  * @param expected
  * @param view1
  * @returns {Boolean}
@@ -1997,7 +2000,7 @@ function repealRecordsForCheck(day) {
 
 /**
  * 重试
- * 
+ *
  * @param fn1
  * @param maxTries 最大尝试次数
  * @param i 延迟时间
@@ -2034,7 +2037,7 @@ function retry(fn1, maxTries, i) {
 }
 /**
  * 修改物流核销界面
- * 
+ *
  * @param o
  */
 function editLogisticsVerify(o) {
@@ -2065,7 +2068,7 @@ function editLogisticsVerify(o) {
 }
 /**
  * 修改单据已经存在货品的数量等信息,均色均码和颜色尺码是一样的
- * 
+ *
  * @param o
  */
 function editBillDet(o) {
@@ -2144,7 +2147,7 @@ function editBillDet(o) {
 }
 /**
  * 获取开单界面各种数量的标题名
- * 
+ *
  * @param title
  * @returns {String}
  */
@@ -2160,7 +2163,7 @@ function getBillTitle_Num(title) {
 }
 /**
  * 获取数组中第一个与期望值相同的下标，没有返回-1
- * 
+ *
  * @param arr
  * @param expected
  * @returns {Number}
@@ -2182,7 +2185,7 @@ function getFirstIndexOfArrayIsExp(arr, expected) {
 }
 /**
  * 获取版本号 在主界面时取
- * 
+ *
  * @returns
  */
 function getIpadVer() {
@@ -2193,7 +2196,7 @@ function getIpadVer() {
 
 /**
  * 期望界面的静态文本中是否包含value 类似销售开单，代收，物流商界面的内容判断
- * 
+ *
  * @param texts
  * @param value
  * @param f1
@@ -2227,7 +2230,7 @@ function getImages(view1) {
 }
 /**
  * 模拟键盘输入
- * 
+ *
  * @param view1
  * @param f
  */
@@ -2249,7 +2252,7 @@ function setTextFieldValueByKb(view1, f) {
 }
 /**
  * 明细详细页面排序验证
- * 
+ *
  * @param dataView
  * @param firstTitle
  * @param lastTitle
@@ -2272,7 +2275,7 @@ function sortByTitle2(dataView, firstTitle, lastTitle, title, isNum) {
     return isAnd(ret1, ret2);
 }
 /**
- * 
+ *
  * @param title
  * @param type
  * @param order
@@ -2329,7 +2332,7 @@ function compareQR2(title, type, order, dataView, firstTitle, lastTitle) {
 }
 /**
  * 获取查询界面fields对象集
- * 
+ *
  * @param keys
  */
 function getQueryTFields(keys) {
@@ -2713,7 +2716,7 @@ function getQueryTFields(keys) {
 }
 /**
  * 条件查询 根据菜单直接找相应的fields
- * 
+ *
  * @param keys
  * @param tapClear false 不点击清除
  * @param view 默认window
@@ -2731,7 +2734,7 @@ function conditionQuery(keys, tapClear, view) {
 }
 /**
  * 去除字符串中的标点符号
- * 
+ *
  * @param str
  * @returns
  */
@@ -2743,7 +2746,7 @@ function deletePunctuation(str) {
 }
 /**
  * 点击TF左上角的标签位置 eg 开单新界面模式 代收
- * 
+ *
  * @param view
  * @param i
  */
@@ -2753,7 +2756,7 @@ function tapTFLabel(view, i) {
 }
 /**
  * 去除数组重复元素
- * 
+ *
  * @param arr
  * @returns {Array}
  */
@@ -2769,7 +2772,7 @@ function getUnique(arr) {
 }
 /**
  * 判断数组是否有重复,有返回true
- * 
+ *
  * @param arr
  * @returns {Boolean}
  */

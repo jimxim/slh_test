@@ -215,7 +215,7 @@ function purchaseCodeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_135", TF_SC, 8, "登山服");
+        f = new TField("类别_135", TF_PT, 8, "登山服");
         break;
     case "brand":
     case "品牌":
@@ -434,7 +434,7 @@ function purchaseTypeField(key) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_455", TF_SC, 2, "登山服");
+        f = new TField("类别_455", TF_PT, 2, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);
