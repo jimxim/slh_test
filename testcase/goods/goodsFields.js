@@ -96,7 +96,7 @@ function queryGoodsStockField(key, show, idx) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_8", TF_SC, 11, "登山服");
+        f = new TField("类别_8", TF_PT, 11, "登山服",-1,0);
         break;
     default:
         logDebug("未知key＝" + key);
