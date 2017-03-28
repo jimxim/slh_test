@@ -152,7 +152,7 @@ function purchaseOrderCodeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_135", TF_PT, 4, "登山服");
+        f = new TField("类别_135", TF_TYPE, 4, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);

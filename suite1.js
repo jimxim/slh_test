@@ -26,21 +26,20 @@ function test000All() {
     // testSizeHead001_shop1();
     // run(caseName, "test280001");
     run(caseName, "onlyTest"); //
+    
 }
 
 function onlyTest() {
-    // UIATarget.localTarget().logElementTree();
+     UIATarget.localTarget().logElementTree();
     // UIATarget.localTarget().deactivateAppForDuration(10);
     // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
     // delay();
     try {
-        tapMenu('货品管理', '当前库存');
-        var keys = {
-            '类别': "登山服"
-        };
-        conditionQuery(keys);
-
+       var o={"onlytest":"yes"};
+       var keys = {"类别": "登山服"};
+       addGoods(keys,o);
         // target.captureScreenWithName("test");
+        
     } catch (e) {
         UIATarget.localTarget().logElementTree();
         logWarn(e);

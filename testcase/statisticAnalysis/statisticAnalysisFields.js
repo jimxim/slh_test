@@ -238,7 +238,7 @@ function statisticAnalysisCodeProfitField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_15", TF_PT, 9, "登山服");
+        f = new TField("类别_15", TF_TYPE, 9, "登山服");
         break;
     case "brand":
     case "品牌":
@@ -452,7 +452,7 @@ function statisticAnalysColorField(key, show, idx) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_16", TF_PT, 10, "登山服");
+        f = new TField("类别_16", TF_TYPE, 10, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -533,7 +533,7 @@ function statisticAnalysSizeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_16", TF_PT, 10, "登山服");
+        f = new TField("类别_16", TF_TYPE, 10, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -592,7 +592,7 @@ function statisticAnalysTypeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_16", TF_PT, 2, "v", -1, 0);
+        f = new TField("类别_16", TF_TYPE, 2, "v", -1, 0);
         if (show) {
             f.value = "Vell";
         }

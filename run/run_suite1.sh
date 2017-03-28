@@ -51,6 +51,6 @@ js_func="$js_func login008Rights login009Rights"
 #js_func="$js_func ts170557_000_3 ts170557_004_3 ts170557_005_3 ts170557_000_4 ts170557_004_4 ts170557_005_4"
 #js_func="$js_func ts170557_000_5 ts170557_004_5 ts170557_005_5 ts170557_000_6 ts170557_004_6 ts170557_005_6"
 
-SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air (9.2)"
+SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air 2 (9.2)"
 
 . $D/run_uia.sh

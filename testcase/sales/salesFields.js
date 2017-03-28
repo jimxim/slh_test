@@ -148,7 +148,7 @@ function salesQueryParticularField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_135", TF_PT, 10, "备注");
+        f = new TField("类别_135", TF_TYPE, 10, "备注");
         break;
     case "provider":
     case "厂商":
@@ -540,7 +540,7 @@ function salesCustomerSupplyField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_PT, 7 + idx, "登山服");
+        f = new TField("类别", TF_TYPE, 7 + idx, "登山服");
         break;
     case "season":
     case "季节":
@@ -671,7 +671,7 @@ function salesTypeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别", TF_PT, 2, "登山服");
+        f = new TField("类别", TF_TYPE, 2, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);

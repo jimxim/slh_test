@@ -148,9 +148,6 @@ function editCustomerSave(o) {
  * @param isEdit
  */
 function addGoods(keys, o) {
-  if(isDefined(keys["类别"])){
-    delete  keys["类别"];//类别控件改变，暂时删除验证
-  };
     delay();// 点击菜单带0.5s，这个地方容易取下标错误，需要多点时间加载
     o = o || {};
     o["上架日期"] && changeMarketTime(o["上架日期"]);
