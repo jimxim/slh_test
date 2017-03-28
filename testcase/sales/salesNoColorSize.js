@@ -79,7 +79,7 @@ function testSalesNoColorSizeAll_2() {
     run("【销售订货-开单】更多-预览（可排序）", "test170098_1");
     run("【销售开单－开单】积分兑换", "test170186");
     run("【销售开单－开单】积分兑换后再次检查剩余积分", "test170187");
-    run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");
+    // run("【销售开单-开单】积分兑换后的金额在综合收支表和收支流水的正确性和正负值检查", "test170188");//功能已去掉
     run("【开单  】积分兑换时输入负数", "test170545");
     run("【销售开单－开单】兑换记录", "test170189");
     run("【销售开单-开单】特价商品不计算积分", "test170695");
@@ -9722,23 +9722,24 @@ function test170545() {
     ret3 = isAnd(ret3, isEqual(a6[1], a5[1]), isEqual(a7[1], a6[1]), isEqual(
             a8[1], a7[1]));
 
-    tapMenu("统计分析", "收支流水");
-    var keys = { "门店" : "常青店", "账户" : "现" };
-    var fields = statisticAnalysisInOutAccountFields(keys);
-    query(fields);
-    var qr = getQR();
-    var exp = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money, "操作人" : "总经理" };
-    var exp1 = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money1,
-        "操作人" : "总经理" };
-    var exp2 = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money2,
-        "操作人" : "总经理" };
-    var ret4 = isAnd(isEqualObject(exp, qr.data[2]), isEqualObject(exp1,
-            qr.data[1]), isEqualObject(exp2, qr.data[0]));
+    // tapMenu("统计分析", "收支流水");
+    // var keys = { "门店" : "常青店", "账户" : "现" };
+    // var fields = statisticAnalysisInOutAccountFields(keys);
+    // query(fields);
+    // var qr = getQR();
+    // var exp = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money, "操作人" :
+    // "总经理" };
+    // var exp1 = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money1,
+    // "操作人" : "总经理" };
+    // var exp2 = { "类型" : "积分兑换", "账户" : "东灵测试-现金账户", "金额" : money2,
+    // "操作人" : "总经理" };
+    // var ret4 = isAnd(isEqualObject(exp, qr.data[2]), isEqualObject(exp1,
+    // qr.data[1]), isEqualObject(exp2, qr.data[0]));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
             + ret3 + ", ret4=" + ret4 + ", money=" + money + ", money1="
             + money1 + ", money2=" + money2);
-    return ret && ret1 && ret2 && ret3 && ret4;
+    return ret && ret1 && ret2 && ret3;
 }
 function test170548() {
     var qo, o, ret = true;
