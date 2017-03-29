@@ -989,15 +989,15 @@ function test190025_2() {
 function test190025_3() {
     var jo1 = getStatisticAnalysisSynthesis();// 取综合汇总起始值
     var ret = true;
-    logDebug("------积分兑换------");
-    var n1 = getSACountsQR("现", "支出", "积分兑换");
-    addRedeemPoints("xw", 1000, 1000);
-    var jo2 = getStatisticAnalysisSynthesis();
-    var n2 = getSACountsQR("现", "支出", "积分兑换");
-    var expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理",
-        "备注" : "单位[小王]" };
-    ret = isAnd(ret, test190025Field1(expected), isEqualObject(jo1, jo2),
-            isEqual(1000, n2 - n1));
+    // logDebug("------积分兑换------");
+    // var n1 = getSACountsQR("现", "支出", "积分兑换");
+    // addRedeemPoints("xw", 1000, 1000);
+    // var jo2 = getStatisticAnalysisSynthesis();
+    // var n2 = getSACountsQR("现", "支出", "积分兑换");
+    // var expected = { "类型" : "积分兑换", "金额" : "-1000", "操作人" : "总经理",
+    // "备注" : "单位[小王]" };
+    // ret = isAnd(ret, test190025Field1(expected), isEqualObject(jo1, jo2),
+    // isEqual(1000, n2 - n1));
 
     logDebug("------代收核销收入 正值------");
     tapMenu2("综合汇总");
@@ -1356,7 +1356,7 @@ function test190032() {
     tapMenu("统计分析", "综合汇总");
     var keys = { "日期从" : getDay(-30), "到" : getDay(-10), "门店" : "常青店" };
     conditionQuery(keys);
-
+    tapButton(window,CLEAR);
     return isAnd(isEqual(getToday(), getTextFieldValue(window, 0)), isEqual(
             getToday(), getTextFieldValue(window, 1)), isEqual("",
             getTextFieldValue(window, 2)));
@@ -1968,7 +1968,7 @@ function test190078_190080() {
     var expected = { "门店" : "常青店", "款号" : "3035", "名称" : "jkk",
         "上架日期" : "15-10-13", "最后售出日期" : getToday("yy"), "滞销天数" : "0",
         "库存" : stcok };
-    var ret = isEqualObject(expected, qr.data[0]);
+    var ret = isEqualObject2(expected, qr.data[0]);
 
     tapButton(window, CLEAR);
     ret = ret && isEqual("", getTextFieldValue(window, 0))
@@ -1997,7 +1997,7 @@ function test190078_190080() {
     query();
     tapTitle(getScrollView(), "在途数");
     tapTitle(getScrollView(), "在途数");
-    var arr2;
+    var arr2={};
     qr = getQR();
     for (j = 1; j <= qr.totalPageNo; j++) {
         var ok = false;
@@ -2020,12 +2020,11 @@ function test190078_190080() {
 
     tapMenu("统计分析", "汇总表", "滞销表");
     keys = { "款号" : arr2["款号"], "门店" : arr2["仓库/门店"] };
-    fields = statisticAnalysisUnsalableFields(keys);
-    query(fields);
+    conditionQuery(keys);
     qr = getQR();
     expected = { "门店" : arr2["仓库/门店"], "款号" : arr2["款号"], "名称" : arr2["名称"],
         "库存" : arr2["在途数"] };
-    ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
+    ret = isAnd(ret, isEqualObject2(expected, qr.data[0]));
 
     return ret;
 }

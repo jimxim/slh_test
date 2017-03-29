@@ -119,6 +119,9 @@ function setSupplierPrice(details) {
         for (var i = 0; i < details.length; i++) {
             var d = details[i];
             f = new TField("厂商", TF_AC, i * 2, d["厂商"], -1, "pop");// popview
+            if(d["厂商"]=="undefined"){
+                f.type = TF;//验证错误弹窗，需要强制输入
+            }
             fields.push(f)
             f = new TField("进货价", TF, i * 2 + 1, d["进货价"]);// TF_KB
             fields.push(f)

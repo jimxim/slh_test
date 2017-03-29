@@ -25,7 +25,7 @@ function test000All() {
     // run(caseName, "setSizeHeadParams_1");//
     // testSizeHead001_shop1();
     // run(caseName, "test280001");
-    run(caseName, "onlyTest"); //
+    run(caseName, "test120013_2"); //
     
 }
 
@@ -35,11 +35,8 @@ function onlyTest() {
     // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
     // delay();
     try {
-       var o={"onlytest":"yes"};
-       var keys = {"类别": "登山服"};
-       addGoods(keys,o);
-        // target.captureScreenWithName("test");
-        
+        arr = [ "余额" ];
+        return isEqualCounts(arr);
     } catch (e) {
         UIATarget.localTarget().logElementTree();
         logWarn(e);

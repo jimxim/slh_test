@@ -916,7 +916,7 @@ function ts100007() {
     // 停用不显示
     var ret = !isEqualQRData1ByTitle(qr, "名称", "登山服");
     tap(getTextField(window, fields["类别"].index));
-    ret = isAnd(ret, !isEqualDropDownListByExp("登山服"));
+    ret = isAnd(ret, !isInTableViewCells("登山服"));
 
     tapMenu2("基本设置");
     tapMenu3("货品类别");
@@ -2136,7 +2136,7 @@ function getSizeCode(size) {
     return f;
 }
 /**
- *
+ * 
  * @param menu31 新增界面
  * @param menu32 查询界面
  * @param keys
@@ -3893,7 +3893,7 @@ function ts100116() {
 function ts100117() {
     tapMenu("货品管理", "当前库存");
     var keys = { "款号名称" : "g" };
-    tapPrompt();//前面用例影响,可能有弹窗需要处理
+    tapPrompt();// 前面用例影响,可能有弹窗需要处理
     tapButton(window, CLEAR);// 前面用例影响,一次清除可能无效
     conditionQuery(keys);
     var qr = getQR(), i = 0;
@@ -5297,23 +5297,21 @@ function ts100197() {
     return ret;
 }
 function ts100198() {
+    var ret=true;
     tapMenu("货品管理", "getMenu_More", "款号管理");
     var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
     waitUntil(cond, 5);// collectionView载入时间不稳定
-    var keys = { "款号" : "undefined" };
-    conditionQuery(keys);
-    tapPrompt();
-    var ret = isIn(alertMsg, "必须从下拉列表选择");
-
-    keys = { "厂商" : "undefined" };
-    conditionQuery(keys);
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "客户或厂商必须从下拉列表选择"));
-
-    keys = { "品牌" : "undefined" };
-    conditionQuery(keys);
-    tapPrompt();
-    ret = isAnd(ret, isIn(alertMsg, "从下拉列表选择品牌"));
+    var keys = { "款号" : "undefined","厂商" : "undefined","品牌" : "undefined" };
+    var qFields = getQueryTFields(keys);
+    for(var i in keys){
+        tapButton(window, CLEAR);
+        qFields[i].type= TF;//强制输入验证
+        setTFieldsValue(window, qFields[i]);
+        tapButton(window, QUERY);
+        tapPrompt();
+        ret=isAnd(ret, isIn(alertMsg, "从下拉列表选择"));
+        alertMsg=[];
+    }
     tapNaviClose();
     return ret;
 }

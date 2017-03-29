@@ -228,9 +228,7 @@ function test110004() {
     if (ipadVer < 7.21) {
         keys["性别"] = undefined;
     }
-    fields = editCustomerFields(keys);
-    setTFieldsValue(getScrollView(), fields);
-    tapButton(window, EDIT_SAVE);// 自动返回
+    addCustomer(keys);
 
     tapMenu2("客户查询");
     tapButton(window, QUERY);
@@ -626,8 +624,9 @@ function test110014() {
         ret = isAnd(ret, !test110014Field(keys, "已存在[13122221112]号码的[客户]"));
         tapReturn();
         tapMenu2("客户查询");
-        query();
+        conditionQuery(keys);
         tapLine();
+        delay(0.5);
         var fields = editCustomerFields(keys);
         clearTFieldsByIndex(getScrollView(-1), fields["手机"].index);// 还原
         editCustomerSave({});
@@ -817,7 +816,7 @@ function test110017() {
 
     tapButton(window, QUERY);
     qr = getQR();
-    cond = "getQR()";
+    // cond = "getQR()";
     counts = getCounts(cond);
     var sum1 = counts["余额"];
     ret = isAnd(ret, isEqual(qr.counts["余额"], sum1));
@@ -2111,7 +2110,7 @@ function ts110039() {
     tapButton(getPop(), CLOSE);
     tapReturn();
     delay();
-    
+
     tapMenu("采购入库", "新增入库+");
     tapButton(window, "新增+"); // 厂商的新增+按钮
     tapButton(getPopOrView(), "选 择");
@@ -2240,8 +2239,7 @@ function ts110041() {
     ret = ret && sortByTitle("余额", IS_NUM);
 
     var keys = { "厂商" : "vell", "厂商名称" : "vell", "门店" : "常青店" };
-    var fields = queryProviderShopAccountFields(keys);
-    query(fields);
+    conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, isEqual("Vell", qr.data[0]["名称"]), isEqual(1, qr.total),
             isEqual(1, qr.totalPageNo), isEqual(qr.data[0]["余额"],

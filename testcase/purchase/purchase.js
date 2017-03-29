@@ -1573,7 +1573,7 @@ function test120025_2() {
     var qr = getQR();
     var ret = isAnd(isEqual("Rt", qr.data[0]["厂商"]), isEqual("常青店",
             qr.data[0]["门店"]), isEqual("xx", qr.data[0]["备注"]), isIn(
-            qr.data[0]["操作日期"], getToday("")),
+            qr.data[0]["操作日期"], getOpTime()),
             isEqual("总经理", qr.data[0]["操作人"]));
 
     tapButton(window, CLEAR);
@@ -1737,7 +1737,7 @@ function test120029_1() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
-
+    
     var arr = [ "余额" ];
     ret = isAnd(ret, isEqualCounts(arr));
 

@@ -166,10 +166,10 @@ function getSACountsQR(name, type, value) {
     tapLine();
     // 综合收支表7.2721中scrollView变成三层需要确认是否需要这样改动 等高有时间帮忙确认
     // 目前最多只遇到过两层，层次变动比较对自动化影响很大，需要确认
-    var view1 = getScrollView(-1,0);
-    var view2 = view1.scrollViews()[0];
-    var view = view2 || view1;//7.26前为2层
-    var texts = getStaticTexts(view);
+    var view1 = getScrollView(-1, 0);
+    // var view2 = view1.scrollViews()[0];
+    // var view = view2 || view1;//7.26前为2层
+    var texts = getStaticTexts(view1);
     var qr = getQRverify(texts, "名称");
     tapNaviClose();
 
