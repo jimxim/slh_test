@@ -9737,8 +9737,8 @@ function test170545() {
     // qr.data[1]), isEqualObject(exp2, qr.data[0]));
 
     logDebug(" ret=" + ret + ", ret1=" + ret1 + ", ret2=" + ret2 + ", ret3="
-            + ret3 + ", ret4=" + ret4 + ", money=" + money + ", money1="
-            + money1 + ", money2=" + money2);
+            + ret3 + ", money=" + money + ", money1=" + money1 + ", money2="
+            + money2);
     return ret && ret1 && ret2 && ret3;
 }
 function test170548() {

@@ -112,6 +112,6 @@ js_func="$js_func test000System001  test000System002"
 js_func="$js_func loginSizeHeadParams001  loginSizeHeadCheck"
 
 
-SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air 2 (9.2)"
+SIMULATOR_NAME_OR_DEVICE_UDID="iPad Air (9.0)"
 
 . $D/run_uia.sh
