@@ -1387,12 +1387,12 @@ function test170057() {
     tapNaviLeftButton();
     var ret1 = isEqual(b, "下级客户1 其他店结余: 0.0");
 
-    tapButton(window, "图片选款");
-    tapNaviLeftButton();
-    tapButton(window, "核销");
-    var b1 = getStaticTextValue(getScrollView(-1, 0), 0);
-    tapNaviLeftButton();
-    var ret10 = isIn(b1, "下级客户1 其他店");
+    // tapButton(window, "图片选款");
+    // tapNaviLeftButton();
+    // tapButton(window, "核销");
+    // var b1 = getStaticTextValue(getScrollView(-1, 0), 0);
+    // tapNaviLeftButton();
+    // var ret10 = isIn(b1, "下级客户1 其他店");
 
     tapMenu1("销售开单");
     tapMenu2("getMenu_More");
@@ -1483,9 +1483,9 @@ function test170057() {
     logDebug("ret＝" + ret + ", ret1＝" + ret1 + ", ret2＝" + ret2 + ", ret3＝"
             + ret3 + ", ret4＝" + ret4 + ", ret5＝" + ret5 + ", ret6＝" + ret6
             + ", ret7＝" + ret7 + ", ret8＝" + ret8 + ", ret9＝" + ret9
-            + ", ret10＝" + ret10 + ", ret11＝" + ret11);
+            + ", ret11＝" + ret11);
     return ret && ret1 && ret2 && ret3 && ret4 && ret5 && ret6 && ret7 && ret8
-            && ret9 && ret10 && ret11;
+            && ret9 && ret11;
 }
 function test170058() {
     // 有余款单客户
