@@ -2836,9 +2836,10 @@ function ts190142() {
     tapReturn();
     return ret;
 }
+//开启手机付显示微信
 function ts190143() {
     tapMenu("统计分析", "综合汇总");
-    var msg = "实销=销额-退额+特殊货品=现金+微信+刷卡+汇款+代收+欠款-还款-余款+抵扣";
+    var msg = "实销=销额-退额+特殊货品=现金+刷卡+汇款+代收+欠款-还款-余款+抵扣";
     var obj = getStaticText(window, msg);
     return obj.isVisible();
 }

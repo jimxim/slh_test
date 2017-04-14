@@ -2750,6 +2750,7 @@ function getQueryTFields(keys) {
 function conditionQuery(keys, tapClear, view) {
     view = view || window;
     if (isUndefined(tapClear) || tapClear) {
+        tapPrompt();//防止前面用例出现弹窗导致无法清除
         tapButton(view, CLEAR);
     }
     var qFields = getQueryTFields(keys);

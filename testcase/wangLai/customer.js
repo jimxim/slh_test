@@ -2916,7 +2916,7 @@ function ts110061Field(staff) {
 }
 
 function ts110062() {
-    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    tapMenu("往来管理", "getMenu_More", "物流商新增+");
     var r = "l" + getTimestamp(6);
     var keys = { "名称" : r };
     var fields = editCustomerLogisticsFields(keys);
@@ -2939,7 +2939,7 @@ function ts110062() {
 }
 
 function test110045_110046() {
-    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    tapMenu("往来管理", "getMenu_More", "物流商新增+");
     var r = "kd" + getTimestamp(6);
     var keys = { "名称" : "天天物流", "店员" : "004", "区域" : "华北", "手机" : r,
         "邮编" : "312000", "地址" : "abc", "账号" : "123", "门店" : "中洲店", "备注" : "备注" };
@@ -3026,7 +3026,7 @@ function test110045_110046() {
 }
 
 function test110047() {
-    tapMenu("往来管理", "getMenu_More", "新增回访+");
+    tapMenu("往来管理", "getMenu_More", "客户回访新增+");
     var r = "主题" + getTimestamp(6);
     var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
         "反馈及建议" : "反馈及建议abc123" };
@@ -3051,7 +3051,7 @@ function test110047() {
 }
 
 function test110048() {
-    tapMenu("往来管理", "getMenu_More", "新增回访+");
+    tapMenu("往来管理", "getMenu_More", "客户回访新增+");
     var r = "主题" + getTimestamp(6);
     var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
         "反馈及建议" : r };
@@ -3091,7 +3091,7 @@ function test110048() {
 }
 
 function test110049() {
-    tapMenu("往来管理", "getMenu_More", "新增回访+");
+    tapMenu("往来管理", "getMenu_More", "客户回访新增+");
     var r = "主题" + getTimestamp(6), msg = "反馈及建议" + getTimestamp(4);
     var keys = { "客户" : "xw", "经办人" : "000", "回访类型" : "售后回访", "主题" : r,
         "反馈及建议" : msg };
@@ -4102,7 +4102,7 @@ function ts110099() {
     return ret;
 }
 function ts110100() {
-    tapMenu("往来管理", "getMenu_More", "新增回访+");
+    tapMenu("往来管理", "getMenu_More", "客户回访新增+");
     saveAndAlertOk();
     tapPrompt();
     var ret = isIn(alertMsg, "必填项不能为空");
@@ -4165,7 +4165,7 @@ function ts110101Field(share) {
     }
 
     var view = getScrollView(-1), num1 = getRandomNum(100, 1000);
-    tapMenu("往来管理", "getMenu_More", "新增积分调整+");
+    tapMenu("往来管理", "getMenu_More", "积分调整新增+");
     var keys = { "门店" : "常青店", "客户" : "xw", "调整" : num1, "备注" : "备注" + num1 };
     var fields = editCustomerPointAdjFields(keys);
     setTFieldsValue(view, fields);
@@ -4189,7 +4189,7 @@ function ts110101Field(share) {
     ret = isAnd(ret, isEqualObject(exp, qr.data[0]));
 
     var num2 = getRandomNum(-1000, -100);
-    tapMenu("往来管理", "getMenu_More", "新增积分调整+");
+    tapMenu("往来管理", "getMenu_More", "积分调整新增+");
     keys = { "门店" : "中洲店", "客户" : "xw", "调整" : num2, "备注" : "备注" + num2 };
     fields = editCustomerPointAdjFields(keys);
     setTFieldsValue(view, fields);
@@ -4216,7 +4216,7 @@ function ts110101Field(share) {
             && isEqual("", getTextFieldValue(window, 2))
             && isEqual("", getTextFieldValue(window, 3));
 
-    tapMenu("往来管理", "getMenu_More", "新增积分调整+");
+    tapMenu("往来管理", "getMenu_More", "积分调整新增+");
     keys = { "门店" : "常青店", "客户" : "xw", "调整" : "0" };
     fields = editCustomerPointAdjFields(keys);
     setTFieldsValue(view, fields);
@@ -4227,7 +4227,7 @@ function ts110101Field(share) {
     return ret;
 }
 function ts110103() {
-    tapMenu("往来管理", "getMenu_More", "新增积分调整+");
+    tapMenu("往来管理", "getMenu_More", "积分调整新增+");
     var view = getScrollView(-1), num = getRandomNum(100, 1000);
     var keys = { "门店" : "常青店", "客户" : "xw", "调整" : num, "备注" : "备注" + num };
     var fields = editCustomerPointAdjFields(keys);
@@ -4356,13 +4356,13 @@ function ts110108() {
     var qr = getQR();
     var f = new TField("名称", TF, 0, tag);
     if (qr.data.length == 0) {
-        tapMenu("往来管理", "getMenu_More", "新增标签+");
+        tapMenu("往来管理", "getMenu_More", "客户标签新增+");
         setTFieldsValue(getScrollView(-1), [ f ]);
         tapButton(window, SAVE);
         tapReturn();
     }
 
-    tapMenu("往来管理", "getMenu_More", "新增标签+");
+    tapMenu("往来管理", "getMenu_More", "客户标签新增+");
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButton(window, SAVE);
     tapPrompt();
@@ -4370,7 +4370,7 @@ function ts110108() {
     tapReturn();
 
     f.value = getRandomStr(10);
-    tapMenu("往来管理", "getMenu_More", "新增标签+");
+    tapMenu("往来管理", "getMenu_More", "客户标签新增+");
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButton(window, SAVE);
     tapPrompt();
@@ -4388,7 +4388,7 @@ function ts110109() {
 }
 // 数据准备 中洲店新增标签中洲店
 function ts110110() {
-    tapMenu("往来管理", "getMenu_More", "新增标签+");
+    tapMenu("往来管理", "getMenu_More", "客户标签新增+");
     var f = new TField("名称", TF, 0, "中洲店");
     setTFieldsValue(getScrollView(-1), [ f ]);
     tapButton(window, SAVE);
@@ -4796,13 +4796,13 @@ function testCheckCustomerDropDownList() {
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
-    tapMenu("往来管理", "getMenu_More", "新增物流商+");
+    tapMenu("往来管理", "getMenu_More", "物流商新增+");
     view = getScrollView();
     f = new TField("店员", TF_AC, 1, "y", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));
     tapReturn();
 
-    tapMenu("往来管理", "getMenu_More", "新增回访+");
+    tapMenu("往来管理", "getMenu_More", "客户回访新增+");
     view = getScrollView();
     f = new TField("客户", TF_AC, 1, "yun", -1, 0);
     ret = isAnd(ret, testCheckCustomerDropDownListField(f, view));

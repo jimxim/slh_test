@@ -306,7 +306,7 @@ function queryGoodsInOutField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_9", TF_TYPE, 9 + idx, "登山服", -1, 0);
+        f = new TField("类别_9", TF_TYPE, 9 + idx, "登山服", -1);
         break;
     case "staff":
     case "经办人":

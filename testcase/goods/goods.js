@@ -5297,20 +5297,20 @@ function ts100197() {
     return ret;
 }
 function ts100198() {
-    var ret=true;
+    var ret = true;
     tapMenu("货品管理", "getMenu_More", "款号管理");
     var cond = "getCollectionView(getPop(window, -1),0).isVisible()";
     waitUntil(cond, 5);// collectionView载入时间不稳定
-    var keys = { "款号" : "undefined","厂商" : "undefined","品牌" : "undefined" };
+    var keys = { "款号" : "undefined", "厂商" : "undefined", "品牌" : "undefined" };
     var qFields = getQueryTFields(keys);
-    for(var i in keys){
+    for ( var i in keys) {
         tapButton(window, CLEAR);
-        qFields[i].type= TF;//强制输入验证
-        setTFieldsValue(window, qFields[i]);
+        qFields[i].type = TF;// 强制输入验证
+        setTFieldsValue(window, [ qFields[i] ]);
         tapButton(window, QUERY);
         tapPrompt();
-        ret=isAnd(ret, isIn(alertMsg, "从下拉列表选择"));
-        alertMsg=[];
+        ret = isAnd(ret, isIn(alertMsg, "从下拉列表选择"));
+        alertMsg = [];
     }
     tapNaviClose();
     return ret;

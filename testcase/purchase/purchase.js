@@ -1572,8 +1572,8 @@ function test120025_2() {
     query(fields);
     var qr = getQR();
     var ret = isAnd(isEqual("Rt", qr.data[0]["厂商"]), isEqual("常青店",
-            qr.data[0]["门店"]), isEqual("xx", qr.data[0]["备注"]), isIn(
-            qr.data[0]["操作日期"], getOpTime()),
+            qr.data[0]["门店"]), isEqual("xx", qr.data[0]["备注"]), isAqualOptime(
+            qr.data[0]["操作日期"], getOpTime(),2),
             isEqual("总经理", qr.data[0]["操作人"]));
 
     tapButton(window, CLEAR);
