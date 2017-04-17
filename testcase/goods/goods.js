@@ -730,6 +730,8 @@ function test100005_1() {
     ret = ret && sortByTitle("累计进", IS_NUM);
     ret = ret && sortByTitle("在途数", IS_NUM);
 
+    var keys = {"上架从": getDay(-365)};
+    conditionQuery(keys); //数据过多，验证一年内数据
     var arr = [ "库存", "待发货", "累计进", "在途数", "待入库" ];
     ret = isAnd(ret, isEqualCounts(arr));
     return ret;
@@ -2136,7 +2138,7 @@ function getSizeCode(size) {
     return f;
 }
 /**
- * 
+ *
  * @param menu31 新增界面
  * @param menu32 查询界面
  * @param keys
