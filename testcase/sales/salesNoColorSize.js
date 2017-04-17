@@ -498,7 +498,7 @@ function setNoColorSize_1Params() {
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "是否启用手机支付" };
-    o = { "新值" : "0", "数值" : [ "不启用" ] };
+    o = { "新值" : "0", "数值" : [ "不启用", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
     qo = { "备注" : "开单界面的主字段部分是否启用新的文本框" };
