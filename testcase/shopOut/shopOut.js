@@ -875,6 +875,7 @@ function shopInPrepare() {
  * 门店调出-批量调出+
  */
 function editShopOutDecruitIn(o, colorSize) {
+    delay(0.5);//第一次加载有点慢
     editShopOutDecruitField1(o, "调出人");
     editShopOutDecruitField1(o, "接收店");
     editShopOutDecruitField1(o, "日期");

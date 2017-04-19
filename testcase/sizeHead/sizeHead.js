@@ -1634,7 +1634,7 @@ function test220091() {
     tf0.doubleTap();// 双击第1行复制
     var tf1 = getStaticText(getScrollView(-1), 1);
     tf1.doubleTap();// 粘贴到第2行
-    var det = getQRDet.data;
+    var det = getQRDet().data;
     tapReturn();
     var ret = isEqualObject2(det[0], det[1]);
 
@@ -1644,7 +1644,7 @@ function test220091() {
     tf0.doubleTap();// 双击第1行复制
     tf1 = getStaticText(getScrollView(-1), 1);
     tf1.doubleTap();// 粘贴到第2行
-    det = getQRDet.data;
+    det = getQRDet().data;
     tapReturn();
     ret = isAnd(ret, isEqualObject2(det[0], det[1]));
     return ret;

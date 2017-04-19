@@ -1495,7 +1495,7 @@ function checkCopyAndPaste(menu2) {
     // delay();
     var v = getSalesBillValueByLabel();
     var data1 = getQRDet().data;
-    tapButton(window, "整单复制");
+    tapButton(window, gMenu1=="销售开单"?"复 制":"整单复制");
     delay();
     // 门店调出不会自动返回,这里用tapReturn不稳定，容易跳过整单粘贴的步骤
     var btn = getButton(window, RETURN);
@@ -1505,7 +1505,7 @@ function checkCopyAndPaste(menu2) {
     }
 
     tapMenu2(menu2);
-    tapButton(window, "整单粘贴");
+    tapButton(window, gMenu1=="销售开单"?"粘 贴":"整单粘贴");
     delay();
     var json = {};
     editSalesBillSave(json);

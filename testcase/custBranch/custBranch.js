@@ -69,6 +69,9 @@ function test230001Field() {
         "分店" : "小王常", "操作日期" : json["操作日期"] };// 订货为客户分店 开单为分店
     tapLine();
     json["输入框值"]["店员"] = "000,总经理";
+    if(gMenu1=='销售开单'){
+        json["输入框值"]["库存"] = sub(json["输入框值"]["库存"],30);
+    }
     var ret = checkBillValue(json);
     tapReturn();
 
@@ -357,7 +360,7 @@ function test230028() {
     tapButton(getScrollView(-1, 0), 4);
     tapNaviButton(OK);
     var value = getSalesBillValueByLabel();
-    exp = { "客户" : "小王", "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0,
+    exp = { "客户" : "小王常", "现金" : 0, "刷卡" : 0, "汇款" : 0, "代收" : 0,
         "还款\/抵扣" : -2000, "分店" : "小王常" };
     ret = isAnd(ret, isEqualObject2(exp, value));
     editSalesBillSave({});
@@ -370,6 +373,7 @@ function test230028() {
     tapMenu2("按批次查");
     query();
     qr = getQR();
+    exp['客户']='小王';
     ret = isAnd(ret, isEqualObject2(exp, qr.data[0]));
     return ret;
 }
@@ -410,7 +414,7 @@ function test230032() {
         setTextFieldValue(window, f);
         tapNaviButton("保存");
         tapPrompt();
-        ret = isAnd(ret, isIn(alertMsg, "非法字符"));// || isIn(alertMsg, "特殊字符")
+        ret = isAnd(ret, isIn(alertMsg, "非法字符")|| isIn(alertMsg, "特殊字符"));
         clearTFieldsByIndex(window, f.index);
     }
     tapNaviClose();
@@ -655,7 +659,7 @@ function test110010() {
     tapMenu2("按批次查");
     query();
     var qr = getQR();
-    var d1 = qr.data[0], b2 = qr.data[1];
+    var d1 = qr.data[0], d2 = qr.data[1];
     d1["日期"] = getToday("yy"), d2["日期"] = getToday("yy");
     d1["客户分店"] = d1["分店"], d2["客户分店"] = d2["分店"];
 
