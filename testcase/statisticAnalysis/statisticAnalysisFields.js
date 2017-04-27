@@ -497,9 +497,9 @@ function statisticAnalysSizeField(key, show) {
         break;
     case "size":
     case "尺码":
-        f = new TField("尺码_19", TF, 5, "均码", -1, 0);// 实际为TF_AC
+        f = new TField("尺码_19", TF_SC, 5, "均码", -1, 0);// 实际为TF_AC
         break;
-    case "尺码":
+    case "尺码2":
         f = new TField("尺码_19", BTN_SC, idx + 1, "均码", -1, 0);
         if (show) {
             f.type = TF;
@@ -592,7 +592,7 @@ function statisticAnalysTypeField(key, show) {
         break;
     case "type":
     case "类别":
-        f = new TField("类别_16", TF_TYPE, 2, "v", -1, 0);
+        f = new TField("类别_16", TF_TYPE, 2, "v", -1);
         if (show) {
             f.value = "Vell";
         }

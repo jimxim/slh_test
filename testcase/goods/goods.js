@@ -3759,7 +3759,7 @@ function test100104_100105() {
     keys = { "批次从" : batch, "批次到" : batch + 1 };
     conditionQuery(keys, false);
     qr = getQR();
-    var exp = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday("yy"),
+    var exp = { "批次" : batch + 1, "门店" : "常青店", "日期" : getToday(""),
         "款号" : gKeys["款号"], "名称" : gKeys["名称"], "颜色" : jo["颜色"],
         "尺码" : jo["尺码"], "调整前数量" : "30", "调整后数量" : r, "调整数量" : sub(r, 30) };
     var ret = isEqualObject(exp, qr.data[0]);

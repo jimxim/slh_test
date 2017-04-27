@@ -186,7 +186,7 @@ function test190013() {
     query();
     qr = getQR();
     var batch = qr.data[0]["批次"];
-    var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
         "金额" : rm, "备注" : r, "操作人" : "总经理" };
     var ret = isEqualObject2(expected, qr.data[0]);
 
@@ -318,7 +318,7 @@ function test190017() {
 
     tapTextByFirstWithName("物业");
     qr = getQR2(getScrollView(-1, 0), "日期", "操作人");
-    expected = { "日期" : getToday("yy"), "账户" : "东灵测试-现金账户", "金额" : 123.45,
+    expected = { "日期" : getToday(""), "账户" : "东灵测试-现金账户", "金额" : 123.45,
         "操作人" : "总经理" };
     ret = isAnd(ret, isEqualQRData1Object(qr, expected));
     tapNaviClose();
@@ -474,7 +474,7 @@ function test190002_190003_190008() {
     query(fields, false);
     qr = getQR();
     var a = qr.counts["金额"];
-    var expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-银行账户", "简称" : "银",
+    var expected = { "日期" : getToday(""), "账户名称" : "东灵测试-银行账户", "简称" : "银",
         "金额" : rm1, "备注" : r1, "操作人" : "总经理" };
     var ret = isEqualObject(expected, qr.data[0]);
 
@@ -482,7 +482,7 @@ function test190002_190003_190008() {
     query(fields, false);
     qr = getQR();
     var b = qr.counts["金额"];// 支出汇总值为负数
-    expected = { "日期" : getToday("yy"), "账户名称" : "东灵测试-现金账户", "简称" : "现",
+    expected = { "日期" : getToday(""), "账户名称" : "东灵测试-现金账户", "简称" : "现",
         "金额" : rm2, "备注" : r2, "操作人" : "总经理" };
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]));
 
@@ -2255,7 +2255,7 @@ function test190087_190101() {
     qr = getQR();
     var jo2 = qr.data[0];
     var actual = subObject(jo2, jo1);
-    var expected = { "序号" : 0, "日期" : getToday("yy"), "门店" : "常青店", "数量" : 10,
+    var expected = { "序号" : 0, "日期" : getToday(""), "门店" : "常青店", "数量" : 10,
         "金额" : 2000, "成本额" : 1000, "利润额" : 1000 };
     var ret = isEqualObject(expected, actual);
 

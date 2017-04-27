@@ -261,7 +261,7 @@ function ts130020_2() {
     fields = purchaseOrderQueryBatchFields(keys);
     query(fields);
     qr = getQR();
-    var expected = { "批次" : batch + 1, "日期" : getToday("yy"), "厂商" : "Vell",
+    var expected = { "批次" : batch + 1, "日期" : getToday(""), "厂商" : "Vell",
         "门店" : "常青店", "总数" : 30, "金额" : 3000, "入库数" : 0, "差异数" : 30,
         "现金" : 1000, "刷卡" : 600, "汇款" : 300, "操作日期" : json["操作日期"],
         "操作人" : "总经理", "备注" : "xx" };
@@ -783,7 +783,7 @@ function ts130007_08() {
     tapMenu2("按批次查");
     query();
     qr = getQR();
-    var exp = { "日期" : getToday("yy"), "厂商" : r1, "门店" : "常青店", "总数" : 50,
+    var exp = { "日期" : getToday(""), "厂商" : r1, "门店" : "常青店", "总数" : 50,
         "金额" : 5000, "现金" : 5000 };
     var ret = qr.data.length > 0
     if (ret) {

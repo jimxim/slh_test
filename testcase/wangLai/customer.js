@@ -476,33 +476,38 @@ function test110002() {
     return isAnd(ret, ret1, ret2);
 }
 
-// 常青店店长或者店员登陆
+//店长可以参看所有门店数据
+function test110002_1All() {
+  return test110002_1Field(true);
+}
 function test110002_1() {
+  return test110002_1Field(false);
+}
+// 常青店店长或者店员登陆
+function test110002_1Field(all) {
     tapMenu("往来管理", "客户查询");
     var keys = { "客户" : "xjkh1" };// 下级客户1,数据过多时会报错
-    var qFields = queryCustomerFields(keys);
-    query(qFields);
+    conditionQuery(keys);
 
-    tapFirstText();
+    tapLine();
     tapButton(window, "销售明细");
-    var qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
-    var ret = true;
+    var qr = getQR2(getScrollView(-1, 0), "批次", "备注");
+    var hasShop2 = false;
     for (var j = 1; j <= qr.totalPageNo; j++) {
         for (var i = 0; i < qr.curPageTotal; i++) {
             if (!isEqual("常青店", qr.data[i]["门店"])) {
-                ret = false;
+                hasShop2 = true;
                 break;
             }
         }
-        if (j < qr.totalPageNo) {
+        if (!hasShop2&&j < qr.totalPageNo) {
             scrollNextPage();
-            qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
+            qr = getQR2(getScrollView(-1, 0), "批次", "备注");
         }
     }
-    tapNaviLeftButton();
-    tapButton(window, RETURN);
-
-    return ret;
+    tapNaviClose();
+    tapReturn();
+    return all?hasShop2:!hasShop2;
 }
 
 function test110008() {
@@ -561,7 +566,7 @@ function test110012() {
     keys = { "厂商" : r, "是否停用" : "是" };
     conditionQuery(keys);
     var qr = getQR();
-    var ret = isAnd(isEqual(r, qr.data[0]["名称"]), dropDownListCheck(0, search,
+    var ret = isAnd(isEqual(r, qr.data[0]["名称"]), !dropDownListCheck(0, search,
             r));
 
     tapMenu("采购入库", "新增入库+");
@@ -816,8 +821,8 @@ function test110017() {
 
     tapButton(window, QUERY);
     qr = getQR();
-    // cond = "getQR()";
-    counts = getCounts(cond);
+    var cond2 = "getQR()";
+    counts = getCounts(cond2);
     var sum1 = counts["余额"];
     ret = isAnd(ret, isEqual(qr.counts["余额"], sum1));
 
@@ -1715,7 +1720,8 @@ function ts110033() {
     var qr = getQR();
     // 确定结果只有一条
     var expected = { "门店" : "常青店", "名称" : "赵本山", "手机" : "13922211121",
-        "所属店员" : "总经理", "最后一次拿货" : day, "未拿货天数" : day1 }
+        "所属店员" : "总经理", "最后一次拿货" : day, "未拿货天数" : day1 };
+    qr.data[0]['最后一次拿货']=getDayToFullYear(qr.data[0]['最后一次拿货']);//日期格式统一
     ret = isAnd(ret, isEqualObject(expected, qr.data[0]), isEqual(1, qr.total),
             isEqual(1, qr.totalPageNo));
     tapButton(window, CLEAR);
@@ -2239,7 +2245,7 @@ function ts110041() {
     ret = ret && sortByTitle("余额", IS_NUM);
 
     var keys = { "厂商" : "vell", "厂商名称" : "vell", "门店" : "常青店" };
-    conditionQuery(keys);
+    var fields=conditionQuery(keys);
     var qr = getQR();
     ret = isAnd(ret, isEqual("Vell", qr.data[0]["名称"]), isEqual(1, qr.total),
             isEqual(1, qr.totalPageNo), isEqual(qr.data[0]["余额"],
@@ -3949,7 +3955,6 @@ function ts110093() {
     var qr = getQR2(view, "批次", "物流备注");
     var ret2 = isEqualQRData1ByTitle(qr, "门店", "中洲店");
     if (!ret2) {
-        tapTitle(view, "门店");
         tapTitle(view, "门店");
         qr = getQR2(view, "批次", "物流备注");
         ret2 = isEqualQRData1ByTitle(qr, "门店", "中洲店");

@@ -886,8 +886,8 @@ function getSalesOrderDistributeDet() {
 }
 
 function subTime(day1, day2) {
-    var date1 = Date.parse(getDay24(day1));
-    var date2 = Date.parse(getDay24(day2));
+    var date1 = Date.parse(getDayToFullYear(day1));
+    var date2 = Date.parse(getDayToFullYear(day2));
     var ret = (date1 - date2) / (24 * 60 * 60 * 1000);
     logDebug("subTime   day1=" + day1 + "   day2=" + day2 + "   ret=" + ret);
     return ret;
