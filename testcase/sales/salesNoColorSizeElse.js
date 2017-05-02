@@ -1965,7 +1965,8 @@ function test170267() {
     var qr = getQRDet();
     var ret1 = isAnd(isEqual(0, qr.data[0]["数量"]),
             isEqual(0, qr.data[1]["数量"]), isEqual(0, qr.data[2]["数量"]),
-            isEqual(0, qr.data[3]["数量"]), isEqual(0, qr.data[4]["数量"]));
+            isEqual(0, qr.data[3]["数量"]), isEqual(0, qr.data[4]["数量"]),
+            isEqual("", qr.data[5]["数量"]));
     tapReturn();
 
     qo = { "备注" : "是否增加选择框" };
