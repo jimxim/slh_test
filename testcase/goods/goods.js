@@ -2201,7 +2201,7 @@ function ts100059SizeID() {
 function ts100059Msg() {
     tapMenu("货品管理", "基本设置", "新增类别+");
     var keys = { "名称" : "\'" };
-    var ret = test100111Field("类别", keys, "非法字符");
+    var ret = test100111Field("类别", keys, "包含特殊字符");//非法字符 0503
     keys = { "名称" : "登山服" };
     ret = isAnd(ret, test100111Field("类别", keys, "相同记录已存在"));
     tapReturn();

@@ -770,7 +770,7 @@ function test160011Field(staff, menu1, keys) {
         if (jo2.hasOwnProperty(i)) {
             v1 = jo1[i];
             v2 = jo2[i];
-            if (i.indexOf("时间") != -1 && v2 != null) {
+            if (i.indexOf("时间") != -1&& v1 != null && v2 != null) {
                 ret = ret && isAqualOptimeX(v1, v2, 1);
             } else {
                 ret = ret && (v1 == v2);
@@ -900,6 +900,7 @@ function test160020_160022() {
     keys = { "日期到" : getDay(-1), "客户" : "xw", "批次从" : batch, "批次到" : batch,
         "款号" : "3035" };
     var f2 = conditionQuery(keys, false);
+    delay();
     qr = getQR();// 取值太快可能为空
     var expected = { "批次" : batch, "日期" : getDay(-1, "yy"), "客户" : "小王",
         "款号" : "3035", "名称" : "jkk", "颜色" : "均色", "尺码" : "均码", "数量" : "10",
