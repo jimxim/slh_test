@@ -134,10 +134,13 @@ function shopInQueryParticularField(key, show) {
     case "日期到":
         f = new TField("到_10", TF_DT, 4, getToday());
         break;
-
     case "shop-in":
     case "调入门店":
         f = new TField("调入门店_36", TF, 5, "仓库店", -1, 0);// 实际为TF_AC
+        break;
+    case "type":
+    case "类别":
+        f = new TField("类别_135", TF_TYPE, 6, "登山服");
         break;
     default:
         logWarn("未知key＝" + key);
