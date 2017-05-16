@@ -1700,7 +1700,7 @@ function ts110033() {
     query(fields);
     var qr = getQR();
     var day =getDayToFullYear(qr.data[0]["日期"]);
-    var day1 = subTime(getToday("yy"), day);
+    var day1 = subTime(getToday(), day);
     // logDebug(" day1=" + day1);
 
     tapMenu("往来管理", "客户活跃度");
