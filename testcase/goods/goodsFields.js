@@ -499,7 +499,7 @@ function getEditGoodsIndex2(value) {
     var view = getScrollView();
     var tfs = getTextFields(view);
     for (var i = 0,length=tfs.length; i < length; i++) {
-     if (tfs[i].value()==value) {
+     if (tfs[i].name()==value) {
        idx=i;
        break;
      }
