@@ -465,7 +465,7 @@ function getEditGoodsElements() {
  * @param value
  * @returns {Array}
  */
-function getEditGoodsIndex(value) {
+function getEditGoodsIndex(texts,value) {
     var idx = new Array(2), tfNum = -1, btnNum = -1;
     for (var i = 0, length = texts.length; i < length; i++) {
         var e = texts[i];
@@ -484,18 +484,12 @@ function getEditGoodsIndex(value) {
     return idx;
 }
 /**
- * 获取吊牌价的TF下标，有2个重合的TF，取后面一个
+ * 根据name获取TextField下标，用于2个TextField重合叠在一起的情况
  * @param idx
  * @returns
  */
 function getEditGoodsIndex2(value) {
-    // var obj1 = getScrollView().textFields()[idx];
-    // var y1 = getY(obj1);
-    // var obj2 = getScrollView().textFields()[idx + 1];
-    // var y2 = getY(obj2);
-    // logDebug('新增货品界面 getEditGoodsIndex2 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
     var idx = -1;
-    // return Math.abs(y1 - y2 < 1) ? idx++ : idx;
     var view = getScrollView();
     var tfs = getTextFields(view);
     for (var i = 0,length=tfs.length; i < length; i++) {
@@ -510,7 +504,7 @@ function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
     }
-    var f, idx = [],i;
+    var f, idx;
     switch (key) {
     case "code":
     case "款号":

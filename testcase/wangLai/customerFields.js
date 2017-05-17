@@ -166,9 +166,8 @@ function editCustomerField(key, show, texts) {
         break;
     case "code":
     case "客户代码":
-        idx = getEditGoodsIndex(texts, "客户代码");
-        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
-        f = new TField("客户代码", TF, i, "1234567890");
+        idx = getEditGoodsIndex2("客户代码");// 可能有2个重合的TF
+        f = new TField("客户代码", TF, idx, "1234567890");
         break;
     case "return":
     case "允许退货":
@@ -194,7 +193,7 @@ function editCustomerField(key, show, texts) {
         f = new TField("适用价格", BTN_SC, idx[1], "零批价");
         if (show) {
             f.type = TF;
-            f.index = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+            f.index = getEditGoodsIndex2("适用价格");// 可能有2个重合的TF
         }
         break;
     case "fax":
@@ -1036,7 +1035,7 @@ function editCustomerPointAdjField(key, show) {
         f = new TField("当前积分", TF, 2, "");// 灰化，不可输入
         break;
     case "调整(±)":
-    case "调整":   
+    case "调整":
         f = new TField("调整(±)", TF, 3, "100");
         break;
     case "店员":
