@@ -493,14 +493,14 @@ function getEditGoodsIndex2(idx) {
     var y1 = getY(obj1);
     var obj2 = getScrollView().textFields()[idx + 1];
     var y2 = getY(obj2);
-    logDebug('新增货品界面 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
+    logDebug('新增货品界面 getEditGoodsIndex2 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
     return Math.abs(y1 - y2 < 1) ? idx++ : idx;
 }
 function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
         return;
     }
-    var f, idx = [];
+    var f, idx = [],i;
     switch (key) {
     case "code":
     case "款号":
@@ -558,19 +558,20 @@ function editGoodsField(key, show, texts) {
     case "tag":
     case "吊牌价":
         idx = getEditGoodsIndex(texts, "吊牌价");
-        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        logDebug('idx[0] = '+idx[0]);
+        i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
         f = new TField("吊牌价", TF, i, "200");
         break;
     case "purchase-price":
     case "进货价":
         idx = getEditGoodsIndex(texts, "进货价");
-        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
         f = new TField("进货价", TF, i, "100");
         break;
     case "retail":
     case "零批价":
         idx = getEditGoodsIndex(texts, "零批价");
-        var i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
         f = new TField("零批价", TF, i, "200");
         break;
     case "pack":
