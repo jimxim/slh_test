@@ -465,7 +465,7 @@ function getEditGoodsElements() {
  * @param value
  * @returns {Array}
  */
-function getEditGoodsIndex(texts, value) {
+function getEditGoodsIndex(value) {
     var idx = new Array(2), tfNum = -1, btnNum = -1;
     for (var i = 0, length = texts.length; i < length; i++) {
         var e = texts[i];
@@ -488,13 +488,23 @@ function getEditGoodsIndex(texts, value) {
  * @param idx
  * @returns
  */
-function getEditGoodsIndex2(idx) {
-    var obj1 = getScrollView().textFields()[idx];
-    var y1 = getY(obj1);
-    var obj2 = getScrollView().textFields()[idx + 1];
-    var y2 = getY(obj2);
-    logDebug('新增货品界面 getEditGoodsIndex2 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
-    return Math.abs(y1 - y2 < 1) ? idx++ : idx;
+function getEditGoodsIndex2(value) {
+    // var obj1 = getScrollView().textFields()[idx];
+    // var y1 = getY(obj1);
+    // var obj2 = getScrollView().textFields()[idx + 1];
+    // var y2 = getY(obj2);
+    // logDebug('新增货品界面 getEditGoodsIndex2 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
+    var idx = -1;
+    // return Math.abs(y1 - y2 < 1) ? idx++ : idx;
+    var view = getScrollView();
+    var tfs = getTextFields(view);
+    for (var i = 0,length=tfs.length; i < length; i++) {
+     if (tfs[i].value()==value) {
+       idx=i;
+       break;
+     }
+    }
+    return idx;
 }
 function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
@@ -557,9 +567,8 @@ function editGoodsField(key, show, texts) {
         break;
     case "tag":
     case "吊牌价":
-        idx = getEditGoodsIndex(texts, "吊牌价");
-        logDebug('idx[0] = '+idx[0]);
-        i = getEditGoodsIndex2(idx[0]);// 可能有2个重合的TF
+        // idx = getEditGoodsIndex(texts, "吊牌价");
+        idx = getEditGoodsIndex2("吊牌价");// 可能有2个重合的TF
         f = new TField("吊牌价", TF, i, "200");
         break;
     case "purchase-price":
