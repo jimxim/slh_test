@@ -622,7 +622,7 @@ function test110014() {
     ret = isAnd(ret, test110014Field(keys, "已存在[vell]名称的[厂商]"));
 
     keys = { "名称" : r, "手机" : "13922211121" };// 客户手机
-    ret = isAnd(ret, test110014Field(keys, "已存在[13922211121]号码的[客户]"));// 
+    ret = isAnd(ret, test110014Field(keys, "已存在[13922211121]号码的[客户]"));//
 
     if (ipadVer >= 7) {// 7.0商圈版本后，客户手机
         keys = { "手机" : "13122221112" };// 厂商手机
@@ -813,26 +813,20 @@ function test110017() {
     var qr = getQR();
     var a = qr.data[0]["余额"];
     tapLine();
-    var cond = "getQR2(getScrollView(-1, 0), '批次', '未结')";
-    var counts = getCounts(cond);
+    var counts = getCounts("getQR2(getScrollView(-1, 0), '批次', '未结')");
     tapNaviClose();
-    var sum3 = counts["未结"];
-    var ret = isEqual(a, sum3);
+    var ret = isEqual(a, counts["未结"]);
 
     tapButton(window, QUERY);
-    qr = getQR();
-    var cond2 = "getQR()";
-    counts = getCounts(cond2);
-    var sum1 = counts["余额"];
-    ret = isAnd(ret, isEqual(qr.counts["余额"], sum1));
+    counts = getCounts();
+    ret = isAnd(ret, isEqual(qr.counts["余额"], counts["余额"]));
 
     // 每人客户的欠余款汇总和下端的汇总数值一致。
     var keys = { "客户" : "xw" };
     conditionQuery(keys);
     qr = getQR();
-    counts = getCounts(cond);
-    sum1 = counts["余额"];
-    ret = isAnd(ret, isEqual(sum1, qr.counts["余额"]));
+    counts = getCounts();
+    ret = isAnd(ret, isEqual(qr.counts["余额"],counts["余额"]));
     return ret;
 }
 

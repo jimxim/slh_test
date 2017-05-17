@@ -25,18 +25,19 @@ function test000All() {
     // run(caseName, "setSizeHeadParams_1");//
     // testSizeHead001_shop1();
     // run(caseName, "test280001");
-    run(caseName, "test120013_2"); //
-    
+    run(caseName, "onlyTest"); //
+
 }
 
 function onlyTest() {
-     UIATarget.localTarget().logElementTree();
+    //  UIATarget.localTarget().logElementTree();
     // UIATarget.localTarget().deactivateAppForDuration(10);
     // target.flickFromTo({ x:515, y:238 }, {x:515, y:197})
     // delay();
     try {
-        arr = [ "余额" ];
-        return isEqualCounts(arr);
+        tapMenu('货品管理','新增货品+');
+        var keys={'品牌':'1010pp','吊牌价':200,'季节':'夏季'};
+        addGoods(keys,{'onlytest':'yes'});
     } catch (e) {
         UIATarget.localTarget().logElementTree();
         logWarn(e);

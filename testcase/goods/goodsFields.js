@@ -467,7 +467,7 @@ function getEditGoodsElements() {
  */
 function getEditGoodsIndex(texts, value) {
     var idx = new Array(2), tfNum = -1, btnNum = -1;
-    for (var i = 0; i < texts.length; i++) {
+    for (var i = 0, length = texts.length; i < length; i++) {
         var e = texts[i];
         if (isUIATextField(e)) {
             tfNum++;
@@ -493,10 +493,8 @@ function getEditGoodsIndex2(idx) {
     var y1 = getY(obj1);
     var obj2 = getScrollView().textFields()[idx + 1];
     var y2 = getY(obj2);
-    if (y1 == y2) {
-        idx++;
-    }
-    return idx;
+    logDebug('新增货品界面 y1 = '+y1+' y2 = '+y2+' idx = ' + idx);
+    return Math.abs(y1 - y2 < 1) ? idx++ : idx;
 }
 function editGoodsField(key, show, texts) {
     if (isUndefined(key)) {
