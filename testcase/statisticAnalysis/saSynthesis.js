@@ -16,6 +16,7 @@ function testSASynthesisAll() {
     var caseName = "【新综合汇总接口】";
     // run("作废仓库店的销售单", "repealWarehouseSalesBill");
     // if (ok) {
+    run(caseName+'数据准备',"prepareSynthesisData");
     run(caseName, "test190047");
     run(caseName, "test190048");
     run(caseName, "test190049");
@@ -425,4 +426,15 @@ function getStatisticAnalysisSynthesis() {
         qr = getQR();
     }
     return qr.data[0]; // 当天汇总数据只有一条
+}
+function prepareSynthesisData() {
+  tapMenu("统计分析", "综合汇总");
+  query();
+  var qr = getQR();
+  if (qr.data.length == 0 || qr.data[0]["门店"] != "常青店") {
+    tapMenu("销售开单", ADDBILL);
+    var json = { "客户" : "xw", "明细" : [ { "货品" : "3035", "数量" : "10" } ] };
+    editSalesBill(json,colorSize);
+  }
+  return true;
 }
