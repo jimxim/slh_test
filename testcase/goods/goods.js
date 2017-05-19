@@ -3642,9 +3642,8 @@ function ts100090() {
             && isEqual(size, getTextFieldValue(window, stockIndex - 1));// 尺码
 
     runAndAlert("test100090Field", OK)
-    delay();
-    ret = isAnd(ret, isIn(alertMsg, "调整后库存不能为空或必须数字"));
     tapPrompt();
+    ret = isAnd(ret, isInAlertMsgs("调整后库存不能为空或必须数字"));//有延迟
 
     keys = "a";
     setValue100090(keys);
@@ -4490,6 +4489,7 @@ function test100170Field(num1, num2, dif) {
     tapMenu("货品管理", "款号库存");
     delay();
     tapButton(window, QUERY);
+    delay();//小计加载延迟
     var qr = getQR();
     var ret = isEqual(qr.data[0]["累计进"], add(num1 + dif));
 

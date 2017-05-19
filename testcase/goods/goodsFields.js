@@ -561,20 +561,17 @@ function editGoodsField(key, show, texts) {
         break;
     case "tag":
     case "吊牌价":
-        // idx = getEditGoodsIndex(texts, "吊牌价");
         idx = getEditGoodsIndex2("吊牌价");// 可能有2个重合的TF
         f = new TField("吊牌价", TF, idx, "200");
         break;
     case "purchase-price":
     case "进货价":
-        // idx = getEditGoodsIndex(texts, "进货价");
         idx = getEditGoodsIndex2("进货价");// 可能有2个重合的TF
         f = new TField("进货价", TF, idx, "100");
         break;
     case "retail":
     case "零批价":
-        // idx = getEditGoodsIndex(texts, "零批价");
-        idx= getEditGoodsIndex2("零批价");// 可能有2个重合的TF
+        idx= getEditGoodsIndex2("stdprice1");// 可能有2个重合的TF
         f = new TField("零批价", TF, idx, "200");
         break;
     case "pack":

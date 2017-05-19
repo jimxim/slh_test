@@ -163,6 +163,7 @@ function statisticAnalysisSynthesisField(key, show) {
  * @returns {Number}
  */
 function getSACountsQR(name, type, value) {
+    delay(0.5);//输入条件查询后有个延迟
     tapLine();
     // 综合收支表7.2721中scrollView变成三层需要确认是否需要这样改动 等高有时间帮忙确认
     // 目前最多只遇到过两层，层次变动比较对自动化影响很大，需要确认

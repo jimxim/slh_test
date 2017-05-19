@@ -1179,8 +1179,8 @@ function checkQResult(title, expected, type, expected2) {
         if (totalPageNo == 1) {
             ret = checkQResultField(title, expected, type, expected2);
         } else {
-            logWarn(gMenu1 + "-" + gMenu2 + "-" + gMenu3 + "  标题" + title
-                    + "的查询结果无数据，跳过验证");
+            logWarn(gMenu1 + "-" + gMenu2 + "-" + gMenu3 + "  标题 = " + title
+                    + " 查询结果无数据，跳过验证");
         }
     }
 
@@ -2068,7 +2068,8 @@ function retry(fn1, maxTries, i) {
 function editLogisticsVerify(o) {
     if (isDefined(o["核销"])) {
         tapButton(window, "核销");
-        delay();//
+        var cond="getLastTableView(window).cells().length>0";
+        waitUntil(cond,10);
         tapButton(window, QUERY);// 刷新界面
         var tableView = getLastTableView(window);
         var a1 = o["核销"];
