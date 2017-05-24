@@ -133,7 +133,7 @@ function ts140001() {
     conditionQuery(keys);
     var qr = getQR();
     var outExp = qr.data[0];
-    tapFirstText();
+    tapLine();
     var expData = getQRDet().data;
     tapReturn();
 
