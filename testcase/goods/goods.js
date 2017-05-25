@@ -3921,6 +3921,10 @@ function ts100117() {
 // 1.门店库存是否允许跨门店查询 设置为 默认门店可自由查询各自库存
 // 2.后台PAD店长权限里勾上货品进销存
 function test100120() {
+    var qo = { "备注" : "门店库存是否允许跨门店查询" };
+    var o = { "新值" : "1", "数值" : [ "默认门店可自由查询", "in" ] };
+    setGlobalParam(qo, o);
+
     tapMenu("货品管理", "货品进销存");
     query();
     var qr = getQR();
@@ -4884,6 +4888,7 @@ function ts100183() {
     if (colorSize == "no") {
         jo["库存录入"][0]["颜色"] = "均色";
     }
+    keys["厂商"]="vell";
     var json = addGoodsSimple(keys, jo);
 
     return isAnd(ret, !hasAlerts());

@@ -3246,10 +3246,7 @@ function ts120094Field() {
  */
 function ts120095() {
     var keys = { "日期从" : getDay(-30), "门店" : "中洲店" };
-    tapMenu("采购入库");
-
-    tapMenu2("按汇总");
-    tapMenu3("按款号汇总");
+    tapMenu("采购入库","按汇总","按款号汇总");//可能无法点击"按汇总"，不稳定
     var fields = purchaseCodeFields(keys);
     query(fields);
     var qr = getQR();
