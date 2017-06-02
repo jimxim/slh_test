@@ -1638,20 +1638,17 @@ function test120025() {
 // 需要现在其他门店新增订货
 function test120026() {
     tapMenu("采购入库", "按订货入库");
-    var keys = { "日期从" : getDay(-30), "款号" : "k300", "备注" : "120026" };
-    var fields = purchaseOrderFields(keys);
-    query(fields);
+    var keys = { "日期从" : getDay(-30), "备注" : "120026" };
+    conditionQuery(keys);
     // var qr=getQR();
     // var ret = false;
     // if (qr.data.length > 0) {
-    tapFirstText();
+    tapLine();
     saveAndAlertOk();
     tapPrompt();
-    var ret = isIn(alertMsg, "目前不支持按订货开单或入库的跨门店操作");
     tapReturn();
     // }
-
-    return ret;
+    return isInAlertMsgs("目前不支持按订货开单入库的跨门店操作");
 }
 
 function test120027() {

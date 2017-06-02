@@ -2042,6 +2042,8 @@ function test190079_190099() {
     ret = ret && sortByTitle("滞销天数", IS_NUM);
     ret = ret && sortByTitle("库存", IS_NUM);
 
+    var keys = { "上架从":getDay(-30) };
+    conditionQuery(keys);
     var arr = [ "库存" ];
     ret = isAnd(ret, isEqualCounts(arr));
 

@@ -480,6 +480,8 @@ function test100001_1() {
     ret = ret && sortByTitle("单价", IS_NUM);
     ret = ret && sortByTitle("核算金额", IS_NUM);
 
+    var keys = {"上架从":getDay(-30)};
+    conditionQuery(keys);//全部验证数据过多，翻页超过300页。。可能出错。。
     var arr = [ "库存", "在途数", "累计销", "核算金额" ];
     ret = ret && isEqualCounts(arr);
     return ret;

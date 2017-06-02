@@ -817,7 +817,8 @@ function test110017() {
     tapNaviClose();
     var ret = isEqual(a, counts["未结"]);
 
-    tapButton(window, QUERY);
+    var keys = { "客户名称" : "kh" };
+    conditionQuery(keys);//减少数据，防止过多翻页延迟出错
     counts = getCounts();
     ret = isAnd(ret, isEqual(qr.counts["余额"], counts["余额"]));
 
