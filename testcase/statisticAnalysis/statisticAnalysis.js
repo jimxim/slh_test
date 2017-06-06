@@ -1610,7 +1610,7 @@ function ts190110() {
   for(var i = 0; i < qr.data.length; i++) {
     if(qr.data[i]["类型"] == "采购单") {
       var rmk = qr.data[i]["备注"];
-      ret = isIn(rmk, "Vell") !!isIn(rmk, "Rt"); // 190138厂商备注验证
+      ret = isIn(rmk, "Vell") || isIn(rmk, "Rt"); // 190138厂商备注验证
       break;
     }
   }
