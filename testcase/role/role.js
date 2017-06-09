@@ -310,7 +310,7 @@ function checkRightsGoods() {
             f));
 
     tapMenu2("新增货品+");
-    arr = [ "厂商" ];// "进货价",
+    arr = [ "厂商" ,"库存录入" ];// "进货价",
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapReturn();
 
@@ -470,13 +470,13 @@ function checkRightsPurchase() {
     tapMenu2("按汇总");
     tapMenu3("按类别汇总");
     tapButton(window, QUERY);
-    arr = [ "总额" ];// 
+    arr = [ "总额" ];//
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
 
     tapMenu2("按汇总");
     tapMenu3("按品牌汇总");
     tapButton(window, QUERY);
-    arr = [ "金额" ];// 
+    arr = [ "金额" ];//
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr));
     tapLine();
     var qr = getQR2(getScrollView(-1, 0), "款号", "金额");
@@ -489,7 +489,7 @@ function checkRightsPurchase() {
     tapReturn();
 
     tapMenu2("批量入库+");
-    arr = [ "单价", "小计" ];// 
+    arr = [ "单价", "小计" ];//
     ret = isAnd(ret, checkRightsField(hasRights, window, arr));
     tapReturn();
 
@@ -671,7 +671,7 @@ function checkRightsCheck() {
     var f = checkMaterialFields([ "厂商" ]);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
             f));
-    
+
     tapMenu("盘点管理", "更多", "未盘点款号");
     var f=getQueryTFields([ "厂商" ]);
     ret = isAnd(ret, checkRightsField(hasRights, getScrollView(), arr, window,
@@ -811,4 +811,3 @@ function checkRightsField(hasRights, view, arr, view2, f) {
     }
     return ret;
 }
-

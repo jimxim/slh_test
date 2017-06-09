@@ -197,6 +197,7 @@ function testGoods001() {
     run("【货品管理-库存分布】库存分布_汇总", "test100006_1");// 都不支持排序
     run("【货品管理-货品进销存】货品进销存_翻页/排序/汇总", "ts100008_1");
     run("【货品管理-货品进销存】货品进销存", "ts100008");
+    run("【货品管理-货品进销存】二级界面库存", "ts100206");
     run("【货品管理-货品查询】修改货品信息", "ts100010_100011_100013");
     run("【货品管理-货品查询】翻页_排序", "test100010_100011_100013_1");
     run("【货品管理-货品查询】颜色支持手动输入", "ts100161");
@@ -221,8 +222,11 @@ function testGoods001() {
     run("【货品管理-更多-颜色组】页面跳转", "ts100195");
     run("【货品管理-更多-仓位列表】启用停用新增货品界面验证数据准备", "test100071_100072Prepare");
     run("【货品管理-更多-款号管理】查询，清除”", "ts100197");// 界面载入时间不稳定，放最后，防止卡用例
-    run("【货品管理-更多-款号管理】输入不存在内容查询验证弹窗”", "ts100198");
-
+    run("【货品管理-更多-款号管理】输入不存在内容查询验证弹窗 ", "ts100198");
+    run("【货品管理-新增货品】隐藏键盘检查下拉列表 ", "ts100199");
+    run("【货品管理-货品查询】修改已停用季节的款号", "ts100200");
+    run("【货品查询】只有一条记录时点击全选", "ts100201");
+    run("【货品管理-货品查询】", "ts100202");
     run("按清除x后重新输入查询，结果验证", "tsClearTField");
 }
 
@@ -241,6 +245,7 @@ function testGoods002() {
     run("【货品管理-当前库存】库存调整", "ts100090");
     run("【货品管理-当前库存】库存调整不能调整有在途数的货品", "ts100090_1");
     run("【货品管理-库存分布】停用的类型在库存分布里不出现", "ts100007");
+    run("【货品管理-库存分布】输入不存在的款号验证", "ts100205");
     run("【货品管理-货品进销存】库存显示的门店情况", "ts100009");
     run("【货品管理-货品进销存】特殊货品不能显示", "ts100129");
     run("【货品管理-货品进销存】累计调入、累计调出、盈亏数量", "ts100157For000");
@@ -322,6 +327,7 @@ function testGoods002() {
 
     run("设置销售订单发货模式3", "setSales_order_distribute_3");
     run("【货品管理-当前库存】销售订单发货模式3，检查待发货", "ts100185");
+    run("【货品管理-当前库存】销售订货发货模式-3，待发货数验证", "ts100204");
     run("设置销售订单发货模式1", "setSales_order_distribute_1");
 
     // 启用上次价
@@ -331,6 +337,7 @@ function testGoods002() {
     run("【货品管理-新增货品】启用上次价-否+对上次折扣也有影响", "ts100191");// 折扣模式，
     run("关闭 是否启用上次成交价作为本次开单单价", "setSales_use_lastsaleprice_0");// 防止对后续用例造成影响
 
+    run("【货品管理-货品查询/当前库存】颜色查询条件验证", "ts100207");
     // run("【当前库存/款号库存/货品进销存/货品查询】模糊查询/下拉列表验证",
     // "test10_fuzzyQueryAndDropDownListCheck");// 开单模式5
     run("【货品管理-当前库存】异地发货模式下检查发货门店的销售数和库存数", "ts100140");// 开单模式15 异地发货
@@ -4947,9 +4954,29 @@ function ts100185Field(jo, dueout) {
 // 后台参数当前库存-出入库明细备注显示内容 1,显示客户和厂商
 // 设置为显示时,如果厂商敏感字段没有勾上,就不显示,勾上就显示
 function ts100186() {
+    var qo = { "备注" : "当前库存-出入库明细备注显示内容" };
+    var o = { "新值" : "0", "数值" : [ "默认隐藏客户和厂商" ] };
+    setGlobalParam(qo, o);
+
     tapMenu("货品管理", "当前库存");
     var keys = { "款号" : "role0617" };
     conditionQuery(keys);
+    tapLine();
+    var qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
+    var exp = {"调拨入库" : "", "调拨出库" : "","采购进货" : "", "销售出货" : "", "调整入库" : ""};
+    var act = {};
+    for (var i = 0; i < qr.data.length; i++) {
+        var k = qr.data[i]["名称"];
+        act[k] = qr.data[i]["备注"];
+    }
+    tapNaviClose();
+    var ret=isEqualObject(exp, act);
+
+    var o = { "新值" : "1", "数值" : [ "显示客户和厂商" ] };
+    setGlobalParam(qo, o);
+
+    tapMenu("货品管理", "当前库存");
+    tapButton(window,QUERY);
     tapLine();
     var qr = getQResult2(getScrollView(-1, 0), "批次", "备注");
     var exp = { "调拨入库" : "调入门店：常青店，调出门店：中洲店", "调拨出库" : "调出门店：常青店，调入门店：中洲店",
@@ -4960,8 +4987,8 @@ function ts100186() {
         act[k] = qr.data[i]["备注"];
     }
     tapNaviClose();
-    return isEqualObject(exp, act);
-}
+    return isAnd(ret,isEqualObject(exp, act));
+}//开启显
 function ts100187() {
     var qo = { "备注" : "是否启用上次成交价作为本次开单单价" };
     var o = { "新值" : "0", "数值" : [ "默认不启用" ] };
@@ -5323,6 +5350,159 @@ function ts100198() {
     }
     tapNaviClose();
     return ret;
+}
+function ts100199() {
+  tapMenu("货品管理","新增货品+");
+  var f = new TField("款号", TF, 0, "1");
+  setTFieldsValue(getScrollView(-1), [f]);
+  tapKeyboardHide();
+  var tableView = getLastTableView(window);
+  var ret = tableView.cells() && tableView.cells().length>0;
+  tapReturn();
+  return ret;
+}
+
+//数据准备 货品ts100200 选用季节‘停用季节’
+function ts100200() {
+  tapMenu("货品管理","货品查询");
+  var keys={"款号名称":"ts100200"};
+  conditionQuery(keys);
+  tapLine();
+  editGoodsSave();
+  return isInAlertMsgs("提示季节[停用季节]已经被停用");
+}
+
+//验证不闪退
+function ts100201() {
+  function tapALLAndNONE(keys) {
+    if (key!={}) {
+      conditionQuery(keys);
+      tapButton(window,ALL);
+      tapButton(window,NONE);
+    }
+    query();
+    tapButton(window,ALL);
+    tapButton(window,NONE);
+  }
+  tapMenu("货品管理","货品查询");
+  var keys={"款号名称":"3035"};
+  tapALLAndNONE(keys);
+
+  tapMenu("往来管理","客户查询");
+  keys={"客户":"小王"};
+  tapALLAndNONE(keys);
+
+  tapMenu("销售开单","getMenu_More","收款单");
+  keys={};
+  tapALLAndNONE(keys);
+
+  tapMenu("盘点管理","处理记录");
+  tapALLAndNONE(keys);
+  return true;
+}
+//存在两个相同的款号 g65324
+function ts100202() {
+  tapMenu("货品管理","货品查询");
+  var keys={"款号名称":"g65324","是否停用":"是"};
+  conditionQuery(keys);
+  tapLine();
+  tapButtonAndAlert(START, OK);
+  tapReturn();
+  return isInAlertMsgs("款号[g65324]已存在");
+}
+function ts100203() {
+  tapMenu("货品管理","getMenu_More","挂版查询");
+  var keys ={"仓库":"中洲店"};
+  conditionQuery(keys);
+  var qr=getQR();
+  var code=qr.data[0]["款号"];
+  var keys={"款号":"3035","名称":"jkk","上架从":"2015-01-01","上架到":getDay(-100),"厂商":""};
+}
+function ts100204() {
+  var keys = addGoodsSimple();// 越早的越优先发货,使用已经存在的款号不方便验证
+  var code = keys["款号"];
+
+  tapMenu("销售订货", "新增订货+");
+  var json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 10 ] } ] };
+  editSalesBill(json, colorSize);
+  tapMenu("销售订货", "新增订货+");
+  json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 20 ] } ] };
+  editSalesBill(json, colorSize);
+
+  tapMenu("销售开单", ADDBILL);
+  json = { "客户" : "xw", "明细" : [ { "货品" : code, "数量" : [ 30 ] } ] };
+  editSalesBill(json, colorSize);
+  query();
+  tapLine();
+  json = {  "明细" : [ { "数量" : [ 3 ] } ] };
+  editSalesBill(json, colorSize);
+
+  tapMenu("货品管理", "当前库存");
+  var keys = { "款号名称" : code };
+  conditionQuery(keys);
+  var qr = getQR();
+  var ret=isEqual(qr.data[0]["待发货"],27);
+
+  tapMenu("销售订货","按批次查");
+  query();
+  qr=getQR();
+  ret = isAnd(ret,isEqual(3,qr.data[0]["已发数"]));
+
+  return ret;
+}
+function ts100205() {
+  tapMenu("货品管理","库存分布");
+  query();
+  tapLine();
+  var keys = { "款号" : "不存在货品" };
+  var fields = queryGoodsDistributionDetFields(keys);
+  setTFieldsValue(getScrollView(-1, 0), fields);
+  tapButton(getScrollView(-1, 0), QUERY);
+  tapNaviClose();
+  return isInAlertMsgs("查询必须从列表中选择");
+}
+function ts100206() {
+  var qo = { "备注" : "开单时是否显示当前库存" };
+  var o = { "新值" : "0", "数值" : [ "不显示库存","in" ] };
+  setGlobalParam(qo, o);
+
+  tapMenu("货品管理","货品进销存");
+  var keys = {"款号":"3035"};
+  conditionQuery(keys);
+  tapLine();
+  var stock=getColorSizeStockNum();
+  tapNaviClose();
+
+  o = { "新值" : "1", "数值" : [ "显示库存" ] };
+  setGlobalParam(qo, o);
+  return stock.length==0;
+}
+function ts100207() {
+  tapMenu("货品管理","当前库存");
+  var ret=ts100207Field();
+  tapMenu("销售开单","按汇总","按款号汇总");
+  ret=isAnd(ret,ts100207Field());
+  tapMenu("统计分析","汇总表","颜色销售表");
+  return isAnd(ret,ts100207Field());
+}
+function ts100207Field() {
+  var keys = {"颜色":"白色"};
+  var qFields=conditionQuery(keys);
+  clearTField(window,qFields[0]);//点击
+  var ret=true;
+  keys = {"颜色":"黑色"};
+  conditionQuery(keys,false);
+  var qr=getQR();
+  for (var i = 0,length=qr.data.length; i <length ; i++) {
+    if (qr.data[i]["颜色"]!="黑色") {
+      ret=false;
+      break;
+    }
+  }
+  return ret;
+}
+function ts100208() {
+  tapMenu("货品管理","");
 }
 /**
  * 日期从，日期到验证
