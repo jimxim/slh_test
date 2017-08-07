@@ -5,6 +5,10 @@
  */
 function setGoodsParams001() {
     var qo, o, ret = true;
+    qo = { "备注" : "网格界面是否启用固定+滚动表头模式" };
+    o = { "新值" : "0", "数值" : [ "不启用" ] };
+    ret = isAnd(ret, setGlobalParam(qo, o));
+
     qo = { "备注" : "开单是否显示尺码头部的界面" };
     o = { "新值" : "0", "数值" : [ "默认不支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
@@ -211,6 +215,7 @@ function testGoods001() {
     run("【货品管理-基本设置】所有品牌启用1010pp", "test10_brandstart");
     run("【货品管理-基本设置】所有尺码组", "test10_sizeID");
     run("【货品管理-基本设置】所有品牌折扣", "test10_discount");// 适用价格不能排序，操作日期不验证排序是否正确，没有年份
+    run("【货品管理-货品查询】颜色顺序号过长时", "ts100211");
 
     run("【货品管理-更多-仓位列表】查询_清除", "test100068_100069");
     run("【货品管理-更多-超储统计】翻页/排序/查询条件单项查询/组合查询/清除/底部数据统计",
@@ -266,13 +271,17 @@ function testGoods002() {
         run("【货品管理-新增货品】颜色尺码模式+省代价格模式+自动生成款号：输入所有项信息不包括款号", "ts100030");
         run("【货品管理-新增货品】新增货品可以录入期初库存-支持多种颜色尺码", "ts100174");
         run("【货品管理-新增货品】颜色尺码+库存录入+不输入进货价", "ts100181");
+        run("【货品管理-新增货品】库存录入时颜色尺码检查", "ts100209");
+        run("【货品管理-货品查询】款号选择不同颜色组中的颜色，按顺序号显示", "ts100210");
     }
     run("【货品管理-新增货品】库存录入+输入进货价弹窗判断", "ts100180");
     run("【货品管理-新增货品】检查加工款库存录入取的价格是加工价", "ts100182");
+    run("【货品管理-新增货品】加工商品，库存录入", "ts100213");
     run("【货品管理-新增货品】检查库存录入-清除按钮", "ts100184");
     run("【货品管理-新增货品】厂商价格默认不显示", "ts100177");
     run("【货品管理-新增货品】不同厂商不同价格保存成功", "ts100192");
     run("【货品管理-新增货品】厂商价格-清除", "ts100193");
+    run("【货品管理-货品查询】不同厂商不同价格，价格输入负数", "ts100221");
     run("【货品管理-新增货品/货品查询】季节增加空白选项", "ts100172");
     run("【货品管理-货品查询】款号新增/修改界面，建款时可以使用首字母自动完成的方式来选择品牌", "ts100015_100017");
     run("【货品管理-货品查询/新增货品】最大库存 = > < 最小库存", "ts100038_100039_100040");
@@ -304,6 +313,7 @@ function testGoods002() {
     run("【货品管理-基本设置】检查基本尺码新增", "ts100059Size");
     run("【货品管理-基本设置】检查基本尺码组新增", "ts100059SizeID");
     run("【货品管理-基本设置】检查基本品牌新增", "ts100059Brand");
+    run("【货品管理-基本设置-所有品牌折扣】修改品牌时检查提示信息", "ts100220");
     run("【货品管理-基本设置】检查基本属性新增提示框验证", "ts100059Msg");
     // run("【货品管理-基础设置-所有尺码】新增/显示配码", "ts100095_96");//配码功能去除
     run("【货品管理-基本设置-所有颜色】选择已停用的颜色类别的颜色保存", "ts100194");
@@ -312,6 +322,8 @@ function testGoods002() {
     run("【货品管理-基础设置-价格名称】修改价格名称重复", "ts100122");
     run("【货品管理-基础设置-所有品牌】品牌不应该区分门店显示", "ts100150");
     run("【货品管理-基础设置-所有类别】类别不应该区分门店显示", "ts100151");
+    testGoodsType();//ts100214~219
+
     run("【货品管理-更多-仓位列表】保存修改", "test100070");
     run("【货品管理-更多-新增仓位】新增仓位,修改页面返回", "test100073_100074");
     run("【货品管理-更多-超储统计】最大库存为0不计入超储统计/库存>最大库存/库存=最大库存",
@@ -3458,6 +3470,7 @@ function test10_color() {
     ret = ret && sortByTitle("类别");
     ret = ret && sortByTitle("编码");
     ret = ret && sortByTitle("名称");
+    ret = ret && sortByTitle("顺序号");
 
     var keys = { "名称" : "红" };
     var fields = goodsColorFields(keys);
@@ -3954,6 +3967,7 @@ function test100120() {
     ret = isAnd(ret, isEqual(qr.data.length, 0));
     return ret;
 }
+//建款保存后清空保留字段，规则中设置品牌字段
 function ts100121() {
     var qo, o, ok = true;
     qo = { "备注" : "单价小数位" };
@@ -3974,6 +3988,10 @@ function ts100121() {
     var fields = editGoodsBrandDiscountFields(keys);
     setTFieldsValue(getScrollView(), fields);
     saveAndAlertOk();
+    keys = { "品牌" : "","进货价折扣" : "", "零批价" : "", "打包价" : "",
+        "大客户价" : "", "Vip价格" : "" };
+    fields = editGoodsBrandDiscountFields(keys);
+    var ret = checkShowFields(getScrollView(), fields);
     tapReturn();
 
     tapMenu("货品管理", "新增货品+");
@@ -3991,6 +4009,15 @@ function ts100121() {
     ok = isAnd(ok, setGlobalParam(qo, o));
     return ret;
 }
+function ts100220() {
+  tapMenu("货品管理", "基本设置", "所有品牌折扣");
+  tapLine();
+  var keys={"品牌":"0309pp"};
+  editGoodsSettings("品牌折扣", keys);
+  tapReturn();
+  return isInAlertMsgs("品牌折扣中的品牌不能更改");
+}
+
 function ts100122() {
     tapMenu("货品管理", "基本设置", "价格名称");
     // delay();//
@@ -4847,6 +4874,7 @@ function ts100180() {
 
     return ret;
 }
+
 function ts100181() {
     var keys = { "进货价" : "" };// 不输入进货价
     var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10, 20 ] } ] };
@@ -5240,6 +5268,17 @@ function ts100193() {
 
     return ret;
 }
+function ts100221() {
+    var qo = { "备注" : "不同厂商不同价格" };
+    var o = { "新值" : "1", "数值" : [ "使用不同厂商不同价格", "in" ] };
+    setGlobalParam(qo, o);
+
+    var jo = {"厂商价格" : [ { "厂商" : "rt", "进货价" : "-100" }]
+    , "supplierPriceCancel":"yes","onlytest":true };//出现提示
+    addGoodsSimple({}, jo);// 新增厂商价格后点击清楚按钮
+    tapReturn();
+    return isInAlertMsgs("进货价不能为负数");
+}
 function ts100194() {
     tapMenu("货品管理", "基本设置", "所有颜色");
     var keys = { "名称" : "停用颜色" };
@@ -5502,8 +5541,151 @@ function ts100207Field() {
   return ret;
 }
 function ts100208() {
-  tapMenu("货品管理","");
+  var staffKeys = {"工号":"5501"};
+  try  {
+    tapMenu("货品管理","货品查询");
+    var keys={"款号名称":"g"};
+    conditionQuery(keys);
+    tapLine();
+    keys={"经办人":staffKeys["工号"]};
+    addGoods(keys);
+
+    stopStaff(staffKeys);
+
+    tapMenu("货品管理","货品查询");
+    tapButton(window,QUERY);
+    tapLine();
+    editGoodsSave();
+  } catch (e) {
+    logWarn(e);
+  } finally {
+    stopStaff(staffKeys,true);//
+    return isInAlertMsgs("经办人已停用");
+  }
 }
+function ts100209() {
+  tapMenu("货品管理", "新增货品+");
+  delay();// 防止取不到吊牌价后的下标
+  var r = getRandomStr(6);
+  var code = "g" + r;
+  var keys = { "款号" : code, "名称" : "货品" + r ,"颜色":"花色,黑色","尺码":"S,M"};
+  var jo = { "onlytest" : "yes" ,"库存录入" : [ { "颜色" : "花色", "数量" : [ 10 ,20] } ],{ "颜色" : "黑色", "数量" : [ 10 ,20] }};
+  addGoods(keys, jo);
+
+  keys={"颜色":"花色"};
+  jo={"onlytest" : "yes"};
+  addGoods(keys,jo);
+  tapPrompt();
+  var ret= isInAlertMsgs("库存录入中颜色\"花色\"在对应款号的颜色中不存在");
+
+  keys={"颜色":"花色","尺码":"S"};
+  addGoods(keys,jo);
+  addGoods(keys,jo);
+  tapPrompt();
+  ret=isAnd(ret,isInAlertMsgs("库存录入中尺码\"S\"在对应款号的尺码中不存在"));
+  tapReturn();
+  return ret;
+}
+//顺序号 黑色1 白色2 灰色 4
+function ts100210() {
+  tapMenu("货品管理", "新增货品+");
+  var keys = { "颜色":"灰色,白色,黑色","尺码":"S,M"};
+  var jo = { "onlytest" : "yes" ,"库存录入" : [ { "颜色" : "花色", "数量" : [ 10 ,20] } ],{ "颜色" : "黑色", "数量" : [ 10 ,20] }};
+  addGoods(keys, jo);
+  keys={"颜色":"黑色,白色,灰色"};
+  var view=getScrollView();
+  var fields = editGoodsFields(keys, true);
+  var stockEntry = getTextViewValue(view,fields["库存录入"].index);
+  var ret = isAnd(checkShowFields(getScrollView(), fields),  stockEntry.indexof("黑色")<stockEntry.indexof("灰色"));
+  tapReturn();
+  return ret;
+}
+function ts100211() {
+  var keys = {"显示顺序":"10000000000"};
+  return ts100211Field(keys,"显示顺序内容超出了长度限制");
+}
+function ts100211Field(keys,msg) {
+  tapMenu("货品管理","基本设置","所有颜色");
+  query();
+  tapLine();
+  editGoodsSettings("类别",keys);
+  tapReturn();
+  return isInAlertMsgs(msg);
+}
+
+function ts100212() {
+  var keys = {"显示顺序":"-"};
+  return ts100211Field(keys,"填入的值必须是数字");
+}
+function ts100213() {
+  var keys = { "进货价" : "100", "是否加工款" : "是", "加工价" : "120" };// 默认启用了进货价
+  var jo = { "库存录入" : [ { "颜色" : "红色", "数量" : [ 10 ] } ] };
+  if (colorSize == "no") {
+      jo["库存录入"][0]["颜色"] = "均色";
+  }
+  addGoodsSimple(keys, jo);
+  return isInAlertMsgs("厂商不能为空");
+}
+function testGoodsType() {
+  try {
+    var typeStr = "type"+getRandomStr(5);
+    tapMenu("货品管理","基本设置","新增类别+");
+    var keys = {"父类别":"Qqq","名称":typeStr};// 3 10
+    editGoodsSettings("类别",keys);
+
+    run("【货品管理-新增类别】新增类别时，选择父类别", "ts100214");
+    run("【货品管理-新增类别】新增类别后新增货品", "ts100215");
+    run("【货品管理-货品查询】填写类别后，点击清除按钮是否生效", "ts100218");
+
+  } catch (e) {
+    logWarn(e);
+  } finally {
+    tapMenu("货品管理","基本设置","货品类别");
+    keys={"名称":typeStr};
+    conditionQuery(keys);
+    tapLine();
+    tapButtonAndAlert(STOP,OK);
+    tapReturn();
+  }
+}
+function ts100214() {
+  tapMenu("货品管理","当前库存");
+  var key = {"类别":"Qqq"};
+  var f=queryGoodsStockField(key);
+  tap(window.textFields()[f.index].textFields()[0]);
+  var view = getTableView(getPop(),-1);
+  var cell = view.cells()[v];
+  cell.tapWithOptions({ tapOffset : { x : 0.9, y : 0.5 } });
+  var element = view.cells()[typeStr];
+  getPop().dismiss();
+  return isDefined(element);
+}
+function ts100215() {
+  var r = getTimestamp(8);
+  var keys1 = { "款号" : "g" + r, "名称" : "货品" + r, "品牌" : "1010pp",
+      "进货价" : "100", "类别" : "Qqq-"+typeStr};
+  var keys2 = { "颜色" : "均色", "尺码" : "均码" };
+  return ts100033Field(keys1,keys2);
+}
+function ts100218() {
+  var code="g"+getRandomStr(8);
+  tapMenu("货品管理","新增货品+");
+  var keys={"款号" : code,"类别" : "Qqq-"+typeStr};
+  var fields = editGoodsFields(keys, false);
+  setTFieldsValue(getScrollView(-1), fields);
+  tapButton(getScrollView(-1),fields["类别"].index-1);
+  editGoodsSave();
+
+  tapMenu2("货品查询");
+  query();
+  tapLine();
+  keys={"款号" : code,"类别" :""};
+  var ret= checkShowFields(getScrollView(-1),fields);
+  tapReturn();
+  return ret;
+}
+
+
 /**
  * 日期从，日期到验证
  */

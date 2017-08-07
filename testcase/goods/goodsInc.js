@@ -163,10 +163,7 @@ function editGoodsSave(o) {
     if (isDefined(o["onlytest"])) {
         return;
     }
-    var btn = SAVE;
-    if (gMenu2 == "货品查询") {
-        btn = EDIT_SAVE;
-    }
+    var btn = gMenu2 == "货品查询" ? EDIT_SAVE : SAVE;
     tapButtonAndAlert(btn, OK);
     delay();
     if (isDefined(o["不返回"]) && "yes" == o["不返回"]) {
@@ -2734,6 +2731,13 @@ function getQueryTFields(keys) {
             break;
         }
         break;
+    case "系统设置":
+        switch (gMenu2) {
+        case "人员列表":
+            qFields = querySystemStaffFields(keys);
+            break;
+        }
+        break;
     default:
         logDebug("未知模块 " + msg);
         break;
@@ -2780,6 +2784,16 @@ function deletePunctuation(str) {
 function tapTFLabel(view, i) {
     var tf = getTextField(view, i);
     tf.tapWithOptions({ tapOffset : { x : 0.1, y : 0.1 } });
+}
+
+function stopStaff(keys,START) {
+  tapMenu("系统设置","人员列表");
+  conditionQuery(keys);
+  tapLine();
+  var btn = !START ? STOP : START;
+  tapButtonAndAlert(btn，OK);
+  tapReturn();//自动返回，防出错
+  tapRefresh();
 }
 /**
  * 去除数组重复元素

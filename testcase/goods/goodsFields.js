@@ -895,9 +895,15 @@ function editGoodsTypeFields(keys, show) {
 function editGoodsTypeField(key, show) {
     var f;
     switch (key) {
+    case "父类别":
+        f = new TField("父类别", BTN_SC, 0, "登山服");
+        if (show) {
+            f.type = TF;
+        }
+        break;
     case "name":
     case "名称":
-        f = new TField("名称", TF, 0, "qqq");
+        f = new TField("名称", TF, 1, "qqq");
         break;
     default:
         logWarn("未知key＝" + key);
@@ -959,6 +965,9 @@ function editGoodsColorField(key, show) {
     case "name":
     case "名称":
         f = new TField("名称", TF, 2, "qqq");
+        break;
+    case "显示顺序":
+        f = new TField("显示顺序", TF, 4, "0");
         break;
     // 颜色值
     default:
