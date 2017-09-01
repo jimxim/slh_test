@@ -186,7 +186,11 @@ function test110001() {
 
     query();
     for (var i = 0; i < 8; i++) {
-        ret = ret && isEqual("", getTextFieldValue(window, i));
+        if (i==3) {
+            ret = ret && isEqual("否", getTextFieldValue(window, i));
+        }else {
+            ret = ret && isEqual("", getTextFieldValue(window, i));
+        }
     }
     // 清除后显示所有客户
     qr = getQR();
