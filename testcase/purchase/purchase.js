@@ -1734,7 +1734,7 @@ function test120029_1() {
 
     ret = ret && sortByTitle("名称");
     ret = ret && sortByTitle("余额", IS_NUM);
-    
+
     var arr = [ "余额" ];
     ret = isAnd(ret, isEqualCounts(arr));
 
@@ -2234,7 +2234,7 @@ function ts120060() {
 //
 function test120079() {
     var qo, o, ret = true;
-    qo = { "备注" : "开单是否根据客户变化时对已有记录进行价格刷新" };
+    qo = { "备注" : "是否要弹出价格刷新窗口" };
     o = { "新值" : "1", "数值" : [ "默认支持", "in" ] };
     ret = isAnd(ret, setGlobalParam(qo, o));
 
